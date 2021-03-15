@@ -5,7 +5,7 @@ import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
 import './index.css';
-import '../src/assets/scss'
+import '../src/assets/scss/common.scss'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import rootReducer from './redux/rootReducer'
