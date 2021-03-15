@@ -6,7 +6,6 @@ function App() {
   return (
     <Router>
       <div className="App">
-        <p>Tickt Web</p>
         <Switch>
           {routes.map((route) => 
           !route.redirectTO?

@@ -1,0 +1,237 @@
+/*-------------------Link hover effect---------------*/
+.link {
+  position: relative;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--blue-two);
+  cursor: pointer;
+  @media (max-width: 812px) {
+    font-size: 13px !important;
+  }
+  @media (max-width: 320px) {
+    font-size: 11px;
+  }
+  &:after {
+    content: "";
+    @include position(absolute, auto, auto, 0, 0);
+    width: 0;
+    height: 1px;
+    background: var(--blue);
+    -webkit-transition: all ease 0.4s;
+    -o-transition: all ease 0.4s;
+    transition: all ease 0.4s;
+  }
+  &:hover {
+    color: var(--blue) !important;
+    &:after {
+      width: 100%;
+    }
+  }
+}
+
+/*-------------------Link hover effect close---------------*/
+
+
+
+/*-------------------Tab hover effect---------------*/
+.tab_link{
+	font-size: 14px;
+	font-weight: 600;
+	line-height: 1.29;
+	color: var(--blue);
+	position: relative;
+	&:hover, &.active{
+		color: #ed1c24;
+		&::after{
+      content: "";
+      @include position(absolute, auto, auto, -8px, 50%);
+			transform: translateX(-50%);
+			width: 6px;
+      height: 6px;
+      @include border-radius(50%);
+			background-color: #ed1c24;
+			-webkit-transition: all ease .4s;
+			-o-transition: all ease .4s;
+			transition: all ease .4s;
+		}
+	}
+}
+
+/*-------------------Tab hover effect close---------------*/
+
+
+
+/*--------------------------video media effect------------------------*/
+
+.video-play-button {
+  @include position(absolute, 50%, auto, auto, 50%);
+  z-index: 10;
+  transform: translate(-50%, -50%);
+  box-sizing: content-box;
+  display: block;
+  width: 20px;
+  height: 22px;
+  @include border-radius(50%);
+  padding: 18px 20px 18px 28px;
+
+  &:before {
+    content: "";
+    @include position(absolute, 50%, auto, auto, 50%);
+    z-index: 0;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: #b04206;
+    @include border-radius(50%);
+    animation: pulse-border 1500ms ease-out infinite;
+  }
+
+  &:after {
+    content: "";
+    @include position(absolute, 50%, auto, auto, 50%);
+    z-index: 1;
+    transform: translate(-50%, -50%);
+    display: block;
+    width: 50px;
+    height: 50px;
+    background: #fc6e20;
+    @include border-radius(50%);
+    transition: all 200ms;
+  }
+
+  &:hover:after {
+    background-color: darken(#fc6e20, 10%);
+  }
+
+  img {
+    position: relative;
+    z-index: 3;
+    max-width: 100%;
+    width: auto;
+    height: auto;
+  }
+
+  span {
+    display: block;
+    position: relative;
+    z-index: 3;
+    width: 0;
+    height: 0;
+    border-left: 18px solid var(--white);
+    border-top: 11px solid transparent;
+    border-bottom: 10px solid transparent;
+  }
+}
+
+@keyframes pulse-border {
+  0% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: translateX(-50%) translateY(-50%) translateZ(0) scale(1.5);
+    opacity: 0;
+  }
+}
+/*--------------------------video media effect close------------------------*/
+
+
+/*--------------------Text Effect--------------------------*/
+.text_effect {
+  animation: textAnimation 1.8s linear infinite alternate;
+}
+@keyframes textAnimation {
+  from {
+    width: 0;
+    color: #d3d3d3;
+  }
+  to {
+    max-width: 600px;
+    width: 100%;
+    color: var(--white);
+  }
+}
+/*--------------------Text Effect--------------------------*/
+
+/*--------------------Bell effect--------------------------*/
+.bell{
+  img{
+    &:hover{
+      animation: ring 0.8s ease;
+    }
+  }
+}
+@keyframes ring {
+  0% {
+      transform: rotate(35deg);
+  }
+  12.5% {
+      transform: rotate(-30deg);
+  }
+  25% {
+      transform: rotate(25deg);
+  }
+  37.5% {
+      transform: rotate(-20deg);
+  }
+  50% {
+      transform: rotate(15deg);
+  }
+  62.5% {
+      transform: rotate(-10deg);
+  }
+  75% {
+      transform: rotate(5deg);
+  }
+  100% {
+      transform: rotate(0deg);
+  }
+}
+/*--------------------Bell effect close--------------------------*/
+
+/*--------------------btn effect--------------------------*/
+.buttonfx {
+  overflow: hidden;
+  transition: all .5s;
+  position: relative;
+  &:before, &:after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    height: 100%;
+    background: var(--white);
+    z-index: -1;
+    transform: translate3D(0, -100%, 0);
+    transition: all .5s;
+  }
+  &:before {
+    background: #fafcd6;
+    z-index: -2;
+    transform: translate3D(0, 0, 0);
+  }
+  &:hover {
+    &:after {
+      transform: translate3D(0, 0, 0);
+      transition: all .5s;
+    }
+  }
+}
+.curtainup {
+  transform-style: preserve-3d;
+  &:before, &:after {
+    transform-origin: center center;
+    transform: scale(1, 0);
+  }
+  &:hover {
+    &:before, &:after {
+      transform: scale(1);
+      border-radius: 0;
+    }
+  }
+}
+/*--------------------btn effect close--------------------------*/

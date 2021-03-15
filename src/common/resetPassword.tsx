@@ -1,9 +1,42 @@
-import React from 'react'
+import React from 'react';
+import colorLogo from '../assets/images/ic-logo-yellow.png';
+import SliderComponent from '../pages/component/slider-component';
 
 const ResetPassword = () => {
     return (
-        <div>
-            Reset Password
+        <div className="onboard_wrapper">
+            <div className="f_row">
+                <div className="left_col">
+                    <SliderComponent></SliderComponent>
+                </div>
+                <div className="right_col">
+                    <figure className="mob_logo hide">
+                        <img src={colorLogo} alt="Tickt-logo" />
+                    </figure>
+                    <div className="onboarding_head">
+                        <button className="back_btn"></button>
+                        <h1>Reset password </h1>
+                    </div>
+                    <div className="form_wrapper">
+                        <form>
+                            <div className="form_field">
+                                <label className="form_label">Phone number</label>
+                                <div className="text_field">
+                                    <input type="text" placeholder="Enter your Phone number" />
+                                </div>
+                            </div>
+
+                            <div className="form_field">
+                                <span className="show_label">Enter the number associated with your account and we will send a code to reset your password.</span>
+                            </div>
+                            <div className="form_field">
+                                <button className="fill_btn">Next</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }
