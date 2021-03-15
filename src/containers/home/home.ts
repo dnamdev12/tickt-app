@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 
-import HomePage from '../../pages/home/home'
+import HomePage from '../../pages/home/userType.server'
 import * as actions from '../../redux/homeReducer/actions'
 
 const mapStateToProps = (state: any) => {
