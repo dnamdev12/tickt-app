@@ -2,58 +2,51 @@ import Home from './containers/home/home'
 import Login from './pages/login/login'
 import NotFound from './pages/notFound/notFound'
 import Signup from './pages/signup/signup'
-import ForgerPassword from './common/forgetPassword'
-import ResetPassword from './common/resetPassword'
-import SendOtp from './common/sendOtp'
+import ForgerPassword from '../src/pages/forgetPassword/forgetPassword'
+import SendOtp from './common//sendOtp'
 import VerifyOtp from './common/verifyOtp'
 
  const routes = [
     {
         name: 'home',
-        path: '/',
+        path: '/builder',
         exact: true,
         component: Home
     },
     {
         name: 'login',
-        path: '/login',
+        path: '/builder/login',
         exact: true,
         component: Login
     },
     {
-        name: 'signup',
-        path: '/signup',
-        exact: true,
+        name: 'buildersignup',
+        path: '/builder/signup/:step',
+        exact: false,
         component: Signup
     },
     {
         name: 'forgetpassword',
-        path: '/forgetpassword',
+        path: '/builder/forget-password/reset/:step',
         exact: true,
         component: ForgerPassword
     },
     {
-        name: 'resetpassword',
-        path: '/resetpassword',
-        exact: true,
-        component: ResetPassword
-    },
-    {
         name: 'sendotp',
-        path: '/sendotp',
+        path: '/builder/send-otp',
         exact: true,
         component: SendOtp
     },
     {
         name: 'verifyotp',
-        path: '/verifyotp',
+        path: '/builder/verify-otp',
         exact: true,
         component: VerifyOtp
     },
 
     {
         name: 'notFound',
-        path: '/404',
+        path: '/builder/404',
         exact: true,
         component: NotFound
     },
@@ -61,7 +54,7 @@ import VerifyOtp from './common/verifyOtp'
         name: '404',
         path: '/*',
         exact: true,
-        redirectTO:'/404'
+        redirectTO:'/builder/404'
     }
 ]
 

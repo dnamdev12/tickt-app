@@ -1,8 +1,8 @@
 import React from 'react';
-import colorLogo from '../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../pages/common/slider-component';
+import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import SliderComponent from '../../common/slider-component';
 
-const VerifyOtp = () => {
+const VerifyPhoneNumber = () => {
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -56,4 +56,5 @@ const VerifyOtp = () => {
     )
 }
 
-export default VerifyOtp
+export default VerifyPhoneNumber
+

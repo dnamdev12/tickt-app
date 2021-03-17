@@ -3,10 +3,14 @@ import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import gmail from '../../assets/images/ic-google.png';
 import linkedin from '../../assets/images/ic-linkedin.png';
 import apple from '../../assets/images/ic-apple.png';
-import SliderComponent from '../component/slider-component';
+import SliderComponent from '../common/slider-component';
 
+const InitialLoginPage = (props: any) => {
 
-function Login() {
+    const forgetPasswordHandler = () => {
+        props.history.push('/builder/forget-password/reset/3')
+    }
+    
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -38,9 +42,7 @@ function Login() {
                                 </div>
                             </div>
                             <div className="form_field">
-                                <a href="/forgot" className="link">Forgotten
-                                your
-                           password?</a>
+                                <a href="/forgot" className="link" onClick={forgetPasswordHandler}>Forgotten your password?</a>
                             </div>
                             <div className="form_field">
                                 <button className="fill_btn">Log in</button>
@@ -69,4 +71,4 @@ function Login() {
     )
 }
 
-export default Login
+export default InitialLoginPage

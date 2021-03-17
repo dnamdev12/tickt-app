@@ -2,7 +2,7 @@ import routes from './routes'
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import './App.css';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <div className="App">

@@ -1,8 +1,21 @@
 import React from 'react'
-import colorLogo from '../../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../common/slider-component';
+import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import SliderComponent from '../../common/slider-component';
 
-const Home = () => {
+interface Propstype {
+    updateSteps: (num: number) => void
+    stepCount: number
+    history:any
+}
+
+const InitialSignupPage = (props: Propstype) => {
+
+    const nextPageHandler = () => {
+        console.log(props.stepCount, 'okk')
+        props.updateSteps(props.stepCount + 1)
+        props.history.push('/builder/signup/2')
+    }
+
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -18,7 +31,7 @@ const Home = () => {
                         <span className="show_label">Australia's fastest growing network for builders and tradesmen</span>
                     </div>
                     <div className="form_wrapper">
-                        <div className="form_field"><button className="fill_btn">I’m builder</button></div>
+                        <div className="form_field"><button className="fill_btn" onClick={nextPageHandler}>I’m builder</button></div>
                         <div className="form_field text-center"><span className="show_label text-center">or</span></div>
                         <div className="form_field"><button className="fill_grey_btn">I’m tradie</button></div>
                         {/* <div className="text-center"><a className="link">Login as Guest</a></div> */}
@@ -29,4 +42,15 @@ const Home = () => {
     )
 }
 
-export default Home
+export default InitialSignupPage
+
+// export interface Props {
+//     requestApiData: any
+//     userData: any
+// }
+
+// export interface State {
+//     userData: Array<any>
+// }
+
+// export {}

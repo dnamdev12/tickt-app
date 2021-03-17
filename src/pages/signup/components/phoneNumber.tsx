@@ -1,8 +1,8 @@
 import React from 'react';
-import colorLogo from '../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../pages/common/slider-component';
+import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import SliderComponent from '../../common/slider-component';
 
-const SendOtp = () => {
+const PhoneNumber = () => {
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -45,4 +45,5 @@ const SendOtp = () => {
     )
 }
 
-export default SendOtp
+export default PhoneNumber
+

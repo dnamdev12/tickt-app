@@ -1,8 +1,8 @@
 import React from 'react';
-import colorLogo from '../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../pages/common/slider-component';
+import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import SliderComponent from '../../common/slider-component';
 
-const SendOtp = () => {
+const ResetPassword = () => {
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -15,14 +15,7 @@ const SendOtp = () => {
                     </figure>
                     <div className="onboarding_head">
                         <button className="back_btn"></button>
-                        <h1>Phone number </h1>
-                        <ul className="custom_steppr">
-                            <li className="active"></li>
-                            <li className="active"></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
+                        <h1>Reset password </h1>
                     </div>
                     <div className="form_wrapper">
                         <form>
@@ -33,6 +26,9 @@ const SendOtp = () => {
                                 </div>
                             </div>
 
+                            <div className="form_field">
+                                <span className="show_label">Enter the number associated with your account and we will send a code to reset your password.</span>
+                            </div>
                             <div className="form_field">
                                 <button className="fill_btn">Next</button>
                             </div>
@@ -45,4 +41,4 @@ const SendOtp = () => {
     )
 }
 
-export default SendOtp
+export default ResetPassword

@@ -1,4 +1,4 @@
-import URLS from '../../network/api'
+import URLS from '../../network/config'
 
 export const fetchData = async () => {
     try {
