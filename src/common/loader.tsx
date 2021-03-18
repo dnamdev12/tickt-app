@@ -1,10 +1,14 @@
-import React from 'react'
+import React from 'react';
+import loader from '../assets/images/page-loader.gif';
 
 const Loader = () => {
     return (
-        <div>
-            
-        </div>
+        // Add active class next to loader class to show loader
+        <div className="loader"> 
+        <figure>
+          <img src={loader} alt="loader" />
+        </figure>
+      </div>
     )
 }
 
