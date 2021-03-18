@@ -10,9 +10,11 @@ phoneNumberEmpty: 'Phone Number cannot be empty',
 phoneNumberErr: 'Please enter correct Phone Number',
 phoneNumberExist: 'Phone number already in use',
 password: 'Invalid password',
+passwordLengthErr: 'Password must be 8 character in length',
+passwordErr: 'Password must contain atleast one special character and one number',
 otpEmpty: 'OTP cannot be empty',
 otpErr: 'Please enter a valid OTP',
-otpIncorrect: 'Incorrect OTP'
+otpIncorrect: 'Incorrect OTP',
 }
 
 export default messages;

@@ -14,6 +14,7 @@ const Urls = {
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
+    createPassword: `${versions.v1}${ServiceEnum.auth}createPassword`,
 }
 
 export const urlFor = (service: String): string => {

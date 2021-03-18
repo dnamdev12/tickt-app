@@ -12,7 +12,7 @@ import CreatePassword from './components/createPassword'
 import {postSignup} from '../../redux/auth/actions'
 
 const Signup = (props: any) => {
-    const [steps, setSteps] = useState(1);
+    const [steps, setSteps] = useState(6);
     const [signupData, setSignupData] = useState({
         firstName: '',
         email: '',
@@ -35,6 +35,11 @@ const Signup = (props: any) => {
     }
 
     const signupStepThree = (data: any, step: number) => {
+        setSteps(step)
+        setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
+    }
+
+    const signupStepFour = (data: any, step: number) => {
         setSteps(step)
         setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
     }
@@ -80,7 +85,7 @@ const Signup = (props: any) => {
                 return <VerifyPhoneNumber signupStepThree={signupStepThree} step={steps}/>
                 break;
             case 5:
-                return <CreatePassword />
+                return <CreatePassword signupStepFour={signupStepFour} step={steps}/>
                 break;
             case 6:
                 return <SelectCategories />

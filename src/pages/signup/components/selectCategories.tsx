@@ -1,7 +1,7 @@
 import React from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import sphere from '../../../assets/images/sphere.png';
-import SliderComponent from '../../common/slider-component';
+import SliderComponent from '../../../common/slider-component';
 
 
 const SelectCategories = () => {

@@ -36,3 +36,12 @@ export const verifyOtp = async(otp: string | number) => {
   }
   return {success: false, message: response.message};
 };
+
+export const createPassword = async(passwordInfo: object) => {
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.createPassword, passwordInfo);
+  console.log('res', response);
+  if(response.status === 200 || response.status_code === 200) {
+    return {success: true, message: response.message};
+  }
+  return {success: false, message: response.message};
+};
