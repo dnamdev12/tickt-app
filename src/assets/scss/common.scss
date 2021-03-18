@@ -75,10 +75,10 @@ body {
 }
 
 .title {
-  font-size: 30px;
+  font-size: 32px;
   font-weight: 700;
   line-height: 1.16;
-  color: var(--black-four);
+  color: var(--blue);
   margin-bottom: 40px;
   display: block;
   @media (max-width: 812px) {
@@ -1517,26 +1517,140 @@ body {
 }
 
 
-//---------------Center-Image-Text---------------//
+//---------------Success-img-text---------------//
 .img_text_wrap{
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column;
-  .title{
-    margin-bottom: 16px;
+  background: url('../images/lets-go-bg.jpg') top no-repeat;
+  width: 100%;
+  height: 100vh;
+  background-size: cover;
+  position: relative;
+  .logo{
+    top: 15%;
   }
-  .show_label{
-    margin-bottom: 40px;
-    font-weight: 500;
-    &.msg{
-      max-width: 327px;
-      margin: 0 auto 92px;
-      text-align: center;
+  .content{
+    padding-top: 250px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    .title{
+      margin-bottom: 16px;
+      color: var(--white);
+    }
+    .show_label{
+      margin-bottom: 50px;
+      font-weight: 400;
+      color: var(--white);
+      &.msg{
+        max-width: 262px;
+        font-size: 18px;
+        text-align: center;
+        line-height: 1.33;
+      }
+    }
+    .full_btn{
+      margin-bottom: 0;
     }
   }
-  .full_btn{
-    margin-bottom: 0;
+}
+//------------Success-img-text close---------------//
+
+//------------Center-Image-Text---------------//
+.error_page_wrap{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  .no_img {
+    width: 600px;
+    margin: 0 auto 30px;
+    img {
+      width: 100%;
+    }
   }
+ .content{
+   text-align: center;
+    h1 {
+      font-size: 30px;
+      color: var(--blue);
+      line-height: 1.5;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+ }
 }
 //------------Center-Image-Text close---------------//
+
+
+
+//------------Select sphere---------------//
+.select_sphere{
+  &.form_wrapper {
+    width: 100%;
+    max-width: 640px;
+    .fill_btn{
+      width: 327px;
+    }
+  }
+  ul{
+    display: flex;
+    flex-wrap: wrap;
+    li{
+      display: inline-block;
+      text-align: center;
+      margin: 0 13px 44px 13px;
+      position: relative;
+      cursor: pointer;
+      &::after {
+        width: 24px;
+        height: 24px;
+        content: "";
+        position: absolute;
+        right: -5px;
+        top: 5px;
+        background: url("../images/blue-tick.png") center no-repeat;
+        background-size: contain;
+        opacity: 0;
+      }
+      &.active{
+        figure{
+          border-color: var(--blue-two);
+        }
+        .name{
+          font-weight: 600;
+        }
+       &::after{
+        opacity: 1;
+       }
+      }
+      &:hover{
+        figure{
+          border-color: var(--blue-two);
+        }
+      }
+      figure{
+        margin-bottom: 8px;
+        width: 80px;
+        height: 80px;
+        background-color: #dfe5ef;
+        border-radius: 50%;
+        overflow: hidden;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border: 2px solid transparent;
+      }
+      .name{
+        font-size: 12px;
+        line-height: 1.67;
+        color: var(--blue);
+        font-weight: 500;
+      }
+    }
+  }
+}
+//------------Select sphere close---------------//

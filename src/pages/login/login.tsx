@@ -10,7 +10,7 @@ const InitialLoginPage = (props: any) => {
     const forgetPasswordHandler = () => {
         props.history.push('/builder/forget-password/reset/3')
     }
-    
+
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -32,6 +32,7 @@ const InitialLoginPage = (props: any) => {
                                 <div className="text_field">
                                     <input type="text" placeholder="Enter your email" />
                                 </div>
+                                <span className="error_msg"></span>
                             </div>
                             <div className="form_field">
                                 <label className="form_label">Password</label>
