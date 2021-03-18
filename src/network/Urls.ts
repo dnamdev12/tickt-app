@@ -1,0 +1,23 @@
+const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
+//const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
+
+const versions = {
+    v1: 'v1/',
+}
+
+const ServiceEnum = {
+    auth: 'auth/',
+}
+
+const Urls = {
+    signup: `${versions.v1}${ServiceEnum.auth}signup`,
+    checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
+    checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
+    verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
+}
+
+export const urlFor = (service: String): string => {
+    return `${ACTIVE_HOST}/${service}`;
+  };
+
+export default Urls;

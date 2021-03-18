@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../common/slider-component';
+import SliderComponent from '../../common/slider-component';
 import CreateAccount from './components/createAccount'
 import InitialSignupPage from './components/initialSignupPage'
 import LetsGo from './components/letsGo'
@@ -9,38 +9,75 @@ import PhoneNumber from './components/phoneNumber'
 import VerifyPhoneNumber from './components/verifyPhoneNumber'
 import AlmostDone from './components/almostDone'
 import CreatePassword from './components/createPassword'
+import {postSignup} from '../../redux/auth/actions'
 
 const Signup = (props: any) => {
     const [steps, setSteps] = useState(1);
     const [signupData, setSignupData] = useState({
-        step: 1,
         firstName: '',
         email: '',
         tnc: false,
+        mobileNumber: ''
     })
 
-    const stepsHandler = (step: number) => {
+    const updateSteps = (step: number) => {
         setSteps(step)
     }
 
-    const signupDataHandler = () => {
-        
+    const signupStepOne = (data: any, step: number) => {
+        setSteps(step)
+        setSignupData((prevData: any) => ({ ...prevData, firstName: data.firstName, email: data.email }))
+    }
+
+    const signupStepTwo = (data: any, step: number) => {
+        setSteps(step)
+        setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
+    }
+
+    const signupStepThree = (data: any, step: number) => {
+        setSteps(step)
+        setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
+    }
+
+    const signupDataHandler = async (e: any) => {
+        e.preventDefault();
+        const data = {
+            firstName: "abc",
+            mobileNumber: "1234567890",
+            email: "dhavalddsdjitrafsefsdfsdfs@gmail.com",
+            "password": "19999398",
+            "deviceToken": "323245356tergdfgrtuy68u566452354dfwe",
+            "trade": [
+              "60486a001abc8a08073cf0e1",
+              "60486a3d1abc8a08073cf0e2"
+            ],
+            "specialization": [
+              "6049c78102f48e868d8dfdbd",
+              "6049c85e02f48e868d8e0a40"
+            ],
+            "company_name": "abc",
+            "position": "Owner",
+            "abn": "12345678901",
+            "user_type": 2
+          }
+        const res = await postSignup(data);
+        console.log(res,' signup res');
     }
 
     const renderPages = () => {
         //switch(Number(props.match.params.step) | steps){
         switch(steps){
             case 1:
-                return <InitialSignupPage updateSteps={stepsHandler} history={props.history} stepCount={signupData.step}/>
+                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps}/>
                 break;
             case 2:
-                return <CreateAccount updateSteps={stepsHandler}  signupDetails={signupDataHandler}/>
+                return <CreateAccount signupStepOne={signupStepOne} step={steps} />
                 break;
             case 3:
-                return <PhoneNumber />
+                return <PhoneNumber signupSteptwo={signupStepTwo} step={steps}/>
                 break;
             case 4:
-                return <VerifyPhoneNumber />
+                return <VerifyPhoneNumber signupStepThree={signupStepThree} step={steps}/>
                 break;
             case 5:
                 return <CreatePassword />
@@ -54,7 +91,7 @@ const Signup = (props: any) => {
             case 8:
                 return <LetsGo />
                 break;
-            default: 
+            default: return null
 
         }
     }

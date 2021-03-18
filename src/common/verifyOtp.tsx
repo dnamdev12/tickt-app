@@ -1,6 +1,6 @@
 import React from 'react';
 import colorLogo from '../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../pages/common/slider-component';
+import SliderComponent from './slider-component';
 
 const VerifyOtp = () => {
     return (

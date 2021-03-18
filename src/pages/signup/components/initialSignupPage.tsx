@@ -1,19 +1,18 @@
 import React from 'react'
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../../common/slider-component';
+import SliderComponent from '../../../common/slider-component';
 
 interface Propstype {
     updateSteps: (num: number) => void
-    stepCount: number
+    step: number
     history:any
 }
 
 const InitialSignupPage = (props: Propstype) => {
 
     const nextPageHandler = () => {
-        console.log(props.stepCount, 'okk')
-        props.updateSteps(props.stepCount + 1)
-        props.history.push('/builder/signup/2')
+        console.log(props.step, 'okk')
+        props.updateSteps(props.step + 1)
     }
 
     return (

@@ -9,7 +9,7 @@ import '../src/assets/scss/common.scss'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 import rootReducer from './redux/rootReducer'
-import mySaga from './redux/homeReducer/sagas'
+import rootSaga from './redux/rootSaga';
 
 declare global {
   interface Window {
@@ -27,7 +27,7 @@ const store = createStore(rootReducer, composeEnhancers(
 ))
 
 //run the saga
-sagaMiddleware.run(mySaga)
+sagaMiddleware.run(rootSaga)
 
 const app = (
   <Provider store={store}>

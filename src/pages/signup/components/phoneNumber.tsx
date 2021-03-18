@@ -1,8 +1,58 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../../common/slider-component';
+import SliderComponent from '../../../common/slider-component';
+import { checkMobileNumber } from '../../../redux/auth/actions';
+import Messages from '../../../common/Messages';
+import globalRegex from '../../../common/globalRegex'
+interface Propstype {
+    step: number
+    history?: any
+    signupSteptwo: (data: any, step: number) => void,
+}
 
-const PhoneNumber = () => {
+const PhoneNumber = (props: Propstype) => {
+    const [errors, setErrors] = useState<any>({});
+    const [mobileNumber, setMobileNumber] = useState<any>(null)
+
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMobileNumber(e.target.value)
+    }
+
+    const validateForm = () => {
+        const newErrors: any = {};
+        if (!mobileNumber) {
+            newErrors.mobileNumber = Messages.phoneNumberEmpty;
+        } else {
+            const nameRegex = new RegExp(globalRegex.regex.mobile);
+            if (!nameRegex.test(mobileNumber)) {
+                newErrors.mobileNumber = Messages.phoneNumberErr
+            }
+            // else if (nameRegex.test(mobileNumber) && mobileNumber.length > 50) {
+            //     newErrors.mobileNumber = Messages.fullNameLengthErr
+            // }
+        }
+        console.log(newErrors)
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
+    }
+
+    const onSubmit = async (e: any) => {
+        e.preventDefault();
+        if (validateForm()) {
+            console.log('ok 68')
+            const res: any = await checkMobileNumber(mobileNumber)
+            if (res.success && res.message === 'This Mobile Number is Unique') {
+                props.signupSteptwo(mobileNumber, props.step + 1)
+            } else if (res.success && res.message === 'This Mobile Number is already in use') {
+                let newErrors: any = {}
+                newErrors.email = Messages.phoneNumberExist
+                setErrors(newErrors)
+            } else {
+                alert('something went wrong. Please try later!')
+            }
+        }
+    }
+
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -25,12 +75,13 @@ const PhoneNumber = () => {
                         </ul>
                     </div>
                     <div className="form_wrapper">
-                        <form>
+                        <form onSubmit={onSubmit}>
                             <div className="form_field">
                                 <label className="form_label">Phone number</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="Enter your Phone number" />
+                                    <input type="text" placeholder="Enter your Phone number" onChange={changeHandler} />
                                 </div>
+                                {!!errors.mobileNumber &&<span className="error_msg">{errors.mobileNumber}</span>}
                             </div>
 
                             <div className="form_field">
