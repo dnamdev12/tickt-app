@@ -12,7 +12,7 @@ import CreatePassword from './components/createPassword'
 import {postSignup} from '../../redux/auth/actions'
 
 const Signup = (props: any) => {
-    const [steps, setSteps] = useState(6);
+    const [steps, setSteps] = useState(1);
     const [signupData, setSignupData] = useState({
         firstName: '',
         email: '',
@@ -34,9 +34,8 @@ const Signup = (props: any) => {
         setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
     }
 
-    const signupStepThree = (data: any, step: number) => {
+    const signupStepThree = (step: number) => {
         setSteps(step)
-        setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
     }
 
     const signupStepFour = (data: any, step: number) => {
@@ -74,30 +73,21 @@ const Signup = (props: any) => {
         switch(steps){
             case 1:
                 return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps}/>
-                break;
             case 2:
                 return <CreateAccount signupStepOne={signupStepOne} step={steps} />
-                break;
             case 3:
                 return <PhoneNumber signupSteptwo={signupStepTwo} step={steps}/>
-                break;
             case 4:
-                return <VerifyPhoneNumber signupStepThree={signupStepThree} step={steps}/>
-                break;
+                return <VerifyPhoneNumber mobileNumber={signupData.mobileNumber} signupStepThree={signupStepThree} step={steps}/>
             case 5:
                 return <CreatePassword signupStepFour={signupStepFour} step={steps}/>
-                break;
             case 6:
                 return <SelectCategories />
-                break;
             case 7:
                 return <AlmostDone />
-                break;
             case 8:
                 return <LetsGo />
-                break;
             default: return null
-
         }
     }
 

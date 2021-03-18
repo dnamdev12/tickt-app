@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import SliderComponent from '../../../common/slider-component';
-import { verifyOtp } from '../../../redux/auth/actions';
+import { checkMobileNumber, verifyOtp } from '../../../redux/auth/actions';
 import Messages from '../../../common/Messages';
 import globalRegex from '../../../common/globalRegex';
 import OtpInput from "react-otp-input";
@@ -9,12 +9,13 @@ import OtpInput from "react-otp-input";
 interface Propstype {
     step: number
     history?: any
-    signupStepThree: (data: any, step: number) => void,
+    signupStepThree: (step: number) => void,
+    mobileNumber: string
 }
 
 const VerifyPhoneNumber = (props: Propstype) => {
-    const [errors, setErrors] = useState({});
-    const [timer, setTimer] = useState(60);
+    const [errors, setErrors] = useState<any>({});
+    const [counter, setCounter] = useState(10);
     const [OTP, setOTP] = useState('');
     const [resendOTP, setResendOTP] = useState(false)
 
@@ -23,41 +24,21 @@ const VerifyPhoneNumber = (props: Propstype) => {
         setOTP(otp)
     }
 
-    // useEffect(() => {
-    //     var time = 60
-    //     if (timer > 0 && time > 0) {
-    //         setInterval(() => {
-    //             console.log('useEffect cdm')
-    //             setTimer(time--)
-    //         }, 1000)
-    //     }
-    // }, [])
-
-    // useEffect(() => {
-    //     if (timer > 0 && resendOTP === false) {
-    //         setInterval(() => {
-    //             console.log('useEffect cdm')
-    //             setTimer({timer: timer -1})
-    //         }, 1000)
-    //     }
-    //     if(timer === 0){
-    //         setResendOTP(true)
-    //     }
-    // }, [resendOTP])
-
-
-    console.log('ook')
+    useEffect(() => {
+        const timer: any = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }, [counter, resendOTP]);
 
     const validateForm = () => {
         const newErrors: any = {};
         if (!OTP) {
-            newErrors.OTP = Messages.otpEmpty;
+            newErrors.otp = Messages.otpEmpty;
         } else {
-            const nameRegex = new RegExp(globalRegex.regex.mobile);
+            const nameRegex = new RegExp(globalRegex.regex.otp);
             if (!nameRegex.test(OTP)) {
-                newErrors.OTP = Messages.otpErr
+                newErrors.otp = Messages.otpErr
             } else if (nameRegex.test(OTP) && OTP.length < 5) {
-                newErrors.OTP = Messages.otpIncorrect
+                newErrors.otp = Messages.otpIncorrect
             }
         }
         console.log(newErrors)
@@ -69,16 +50,26 @@ const VerifyPhoneNumber = (props: Propstype) => {
         e.preventDefault();
         if (validateForm()) {
             console.log('ok 68')
-            const res: any = await verifyOtp(OTP)
-            if (res.success && res.message === 'This Mobile Number is Unique') {
-                props.signupStepThree(OTP, props.step + 1)
-            } else if (res.success && res.message === 'This Mobile Number is already in use') {
-                let newErrors: any = {}
-                newErrors.email = Messages.phoneNumberExist
-                setErrors(newErrors)
-            } else {
-                alert('something went wrong. Please try later!')
+            const data = {
+                otp: OTP
             }
+            const res: any = await verifyOtp(data)
+            if (res.success && res.message === 'OTP verified successfully') {
+                props.signupStepThree(props.step + 1)
+            } else {
+                alert('wrong OTP')
+            }
+        }
+    }
+
+    const resendHandler = async (e: any) => {
+        e.preventDefault()
+        setResendOTP(true)
+        setCounter(10)
+        const res: any = await checkMobileNumber(props.mobileNumber)
+        console.log(res, "resend Clicked")
+        if (!res.success) {
+            alert('something went wrong. Please try later!')
         }
     }
 
@@ -113,7 +104,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
                                 <input type="number" className="sms-no-box" name="ssn-4" maxLength={1} onChange={changeHandler} />
                                 <input type="number" className="sms-no-box" name="ssn-5" maxLength={1} onChange={changeHandler} />
                             </div> */}
-                            <div>
+                            <div className="otp_input_wrapper">
                                 <OtpInput
                                     className="sms-no-box"
                                     value={OTP}
@@ -123,16 +114,17 @@ const VerifyPhoneNumber = (props: Propstype) => {
                                     separator={<span>-</span>}
                                 />
                             </div>
+                            {!!errors.otp &&<span className="error_msg">{errors.otp}</span>}
                             <div className="form_field">
                                 <span className="show_label">We have sent a verification code to your phone.
                           Please check SMS and enter the 5-digit code here.</span>
                             </div>
-                            {resendOTP && <div className="form_field text-center">
+                            {counter === 0 && <div className="form_field text-center">
                                 <span className="show_label">Don’t you receive any codes?</span>
-                                <a href="#" className="link">Re-send code</a>
+                                <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
                             </div>}
-                            {timer > 0 && <div className="form_field text-center">
-                                <span className="show_label timer">{timer}</span>
+                            {counter > 0 && <div className="form_field text-center">
+                                <span className="show_label timer">{counter}</span>
                             </div>}
                             <div className="form_field">
                                 <button className="fill_btn">Next</button>

@@ -17,7 +17,7 @@ const CreatePassword = (props: Propstype) => {
     const [createPassword, setCreatePassword] = useState<any>(null)
 
     const changeHandler = (e: any) => {
-        setCreatePassword((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+        setCreatePassword(e.target.value)
     }
 
     const validateForm = () => {
@@ -39,16 +39,7 @@ const CreatePassword = (props: Propstype) => {
     const onSubmit = async (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            const res: any = await createPassword(createPassword)
-            if (res.success && res.message === 'This Email Id is Unique') {
-                //props.signupStepFour(createPassword.step + 1)
-            } else if (res.success && res.message === 'This Email Id is already in use') {
-                let newErrors: any = {}
-                newErrors.email = Messages.emailExist
-                setErrors(newErrors)
-            } else {
-                alert('something went wrong. Please try later!')
-            }
+            props.signupStepFour(createPassword, props.step + 1)
         }
     }
 
@@ -67,15 +58,15 @@ const CreatePassword = (props: Propstype) => {
                         <h1>Create password</h1>
                     </div>
                     <div className="form_wrapper">
-                        <form>
+                        <form onSubmit={onSubmit}>
                             <div className="form_field">
                                 <label className="form_label">Password</label>
                                 <div className="text_field">
-                                    <input type="password" className="detect_input" placeholder="Enter password" />
+                                    <input type="password" className="detect_input" placeholder="Enter password" onChange={changeHandler} />
                                     <span className="detect_icon">
                                     </span>
                                 </div>
-                                <span className="error_msg"></span>
+                                {!!errors.createPassword &&<span className="error_msg">{errors.createPassword}</span>}
                             </div>
 
                             <div className="form_field">
