@@ -28,8 +28,8 @@ export const checkMobileNumber = async(mobile: string | number) => {
   return {success: false, message: response.message};
 };
 
-export const verifyOtp = async(otp: string | number) => {
-  const response: FetchResponse = await NetworkOps.postToJson(Urls.verifyOTP, otp);
+export const verifyOtp = async(data: object) => {
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.verifyOTP, data);
   console.log('res', response);
   if(response.status === 200 || response.status_code === 200) {
     return {success: true, message: response.message};
