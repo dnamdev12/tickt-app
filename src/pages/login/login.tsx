@@ -3,15 +3,12 @@ import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import gmail from '../../assets/images/ic-google.png';
 import linkedin from '../../assets/images/ic-linkedin.png';
 import apple from '../../assets/images/ic-apple.png';
-
-
-
 import SliderComponent from '../../common/slider-component';
 
 const InitialLoginPage = (props: any) => {
-
-    const forgetPasswordHandler = () => {
-        props.history.push('/builder/forget-password/reset/3')
+    const forgetPasswordHandler = (e: any) => {
+        e.preventDefault()
+        props.history.push('/builder/forget-password/reset')
     }
 
     return (

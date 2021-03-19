@@ -11,7 +11,7 @@ interface Propstype {
 const InitialSignupPage = (props: Propstype) => {
 
     const nextPageHandler = () => {
-        console.log(props.step, 'okk')
+        //sessionStorage.clear()
         props.updateSteps(props.step + 1)
     }
 

@@ -1,24 +1,40 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react';
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import SliderComponent from '../../common/slider-component';
-import CreateAccount from './components/createAccount'
-import InitialSignupPage from './components/initialSignupPage'
-import LetsGo from './components/letsGo'
-import SelectCategories from './components/selectCategories'
-import PhoneNumber from './components/phoneNumber'
-import VerifyPhoneNumber from './components/verifyPhoneNumber'
-import AlmostDone from './components/almostDone'
-import CreatePassword from './components/createPassword'
-import {postSignup} from '../../redux/auth/actions'
+import CreateAccount from './components/createAccount';
+import InitialSignupPage from './components/initialSignupPage';
+import LetsGo from './components/letsGo';
+import SelectYourSphere from './components/selectYourSphere';
+import PhoneNumber from './components/phoneNumber';
+import VerifyPhoneNumber from './components/verifyPhoneNumber';
+import CreatePassword from './components/createPassword';
+import Specialisation from './components/specialisation';
+import ChooseQualification from './components/chooseQualification';
+import AddQualification from './components/addQualification';
+import AddABN from './components/addABN';
+import {postSignup} from '../../redux/auth/actions';
 
 const Signup = (props: any) => {
-    const [steps, setSteps] = useState(1);
+    const [steps, setSteps] = useState(0);
     const [signupData, setSignupData] = useState({
         firstName: '',
+        mobileNumber: '',
         email: '',
+        password: '',
+        trade: [],
         tnc: false,
-        mobileNumber: ''
     })
+
+    useEffect(() => {
+        const prevUserSignupData: any = JSON.parse(sessionStorage.getItem('userSignupData')!)
+        if(prevUserSignupData)
+            setSignupData(prevUserSignupData)
+    }, [])
+
+    useEffect(() => {
+        console.log(signupData, 'signupData useEffect homesign')
+        sessionStorage.setItem('userSignupData', JSON.stringify(signupData))
+    }, [signupData])
 
     const updateSteps = (step: number) => {
         setSteps(step)
@@ -26,12 +42,12 @@ const Signup = (props: any) => {
 
     const signupStepOne = (data: any, step: number) => {
         setSteps(step)
-        setSignupData((prevData: any) => ({ ...prevData, firstName: data.firstName, email: data.email }))
+        setSignupData((prevData: any) => ({ ...prevData, firstName: data.firstName, email: data.email, tnc: data.tnc }))
     }
 
     const signupStepTwo = (data: any, step: number) => {
         setSteps(step)
-        setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
+        setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data }))
     }
 
     const signupStepThree = (step: number) => {
@@ -40,7 +56,32 @@ const Signup = (props: any) => {
 
     const signupStepFour = (data: any, step: number) => {
         setSteps(step)
-        setSignupData((prevData: any) => ({ ...prevData, mobileNumber: data.mobileNumber }))
+        setSignupData((prevData: any) => ({ ...prevData, password: data }))
+    }
+
+    const signupStepFive = (data: any, step: number) => {
+        setSteps(step)
+        //setSignupData((prevData: any) => ({ ...prevData, password: data }))
+    }
+
+    const signupStepSix = (data: any, step: number) => {
+        setSteps(step)
+        //setSignupData((prevData: any) => ({ ...prevData, password: data }))
+    }
+
+    const signupStepSeven = (data: any, step: number) => {
+        setSteps(step)
+        //setSignupData((prevData: any) => ({ ...prevData, password: data }))
+    }
+
+    const signupStepEight = (data: any, step: number) => {
+        setSteps(step)
+        //setSignupData((prevData: any) => ({ ...prevData, password: data }))
+    }
+
+    const signupStepNine = (data: any, step: number) => {
+        setSteps(step)
+        //setSignupData((prevData: any) => ({ ...prevData, password: data }))
     }
 
     const signupDataHandler = async (e: any) => {
@@ -49,9 +90,9 @@ const Signup = (props: any) => {
             firstName: "abc",
             mobileNumber: "1234567890",
             email: "dhavalddsdjitrafsefsdfsdfs@gmail.com",
-            "password": "19999398",
+            password: "19999398",
             "deviceToken": "323245356tergdfgrtuy68u566452354dfwe",
-            "trade": [
+            trade: [
               "60486a001abc8a08073cf0e1",
               "60486a3d1abc8a08073cf0e2"
             ],
@@ -69,33 +110,34 @@ const Signup = (props: any) => {
     }
 
     const renderPages = () => {
-        //switch(Number(props.match.params.step) | steps){
         switch(steps){
-            case 1:
+            case 0:
                 return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps}/>
+            case 1:
+                return <CreateAccount  updateSteps={updateSteps} signupStepOne={signupStepOne} step={steps} />
             case 2:
-                return <CreateAccount signupStepOne={signupStepOne} step={steps} />
+                return <PhoneNumber  updateSteps={updateSteps} signupSteptwo={signupStepTwo} step={steps}/>
             case 3:
-                return <PhoneNumber signupSteptwo={signupStepTwo} step={steps}/>
+                return <VerifyPhoneNumber updateSteps={updateSteps}  mobileNumber={signupData.mobileNumber} signupStepThree={signupStepThree} step={steps}/>
             case 4:
-                return <VerifyPhoneNumber mobileNumber={signupData.mobileNumber} signupStepThree={signupStepThree} step={steps}/>
+                return <CreatePassword  updateSteps={updateSteps} signupStepFour={signupStepFour} step={steps}/>
             case 5:
-                return <CreatePassword signupStepFour={signupStepFour} step={steps}/>
+                return <SelectYourSphere updateSteps={updateSteps} signupStepFive={signupStepFive} step={steps}/>
             case 6:
-                return <SelectCategories />
+                return <Specialisation updateSteps={updateSteps} signupStepSix={signupStepSix} step={steps}/>
             case 7:
-                return <AlmostDone />
+                return <ChooseQualification updateSteps={updateSteps} signupStepSeven={signupStepSeven} step={steps}/>
             case 8:
-                return <LetsGo />
+                return <AddQualification updateSteps={updateSteps} signupStepEight={signupStepEight} step={steps}/>
+            case 9:
+                return <AddABN updateSteps={updateSteps} signupStepNine={signupStepNine} step={steps}/>
+            case 10:
+                return <LetsGo history={props.history}/>
             default: return null
         }
     }
 
-    return (
-        <>
-            {renderPages()}
-        </>
-    )
+    return renderPages()
 }
 
 export default Signup

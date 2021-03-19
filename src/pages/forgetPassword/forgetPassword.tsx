@@ -6,36 +6,25 @@ import VerifyPhoneNumber from './components/verifyPhoneNumber'
 
 const ForgetPassword = () => {
     const [steps, setSteps] = useState(3);
-    const [signupData, setSignupData] = useState({
-        step: 1,
-        firstName: '',
+    const [loginData, setLoginData] = useState({
         email: '',
-        tnc: false,
+        password: '',
     })
 
     const renderPages = () => {
-        switch(steps){
+        switch (steps) {
             case 1:
                 return <ResetPassword />
-                break;
             case 2:
                 return <VerifyPhoneNumber />
-                break;
             case 3:
                 return <CreatePassword />
-                break;
             case 4:
                 return <SuccessPage />
-                break;
-            default: 
+            default: return null
         }
     }
-
-    return (
-        <>
-            {renderPages()}
-        </>
-    )
+    return renderPages()
 }
 
 export default ForgetPassword
