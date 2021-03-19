@@ -2,7 +2,7 @@
 .link {
   position: relative;
   font-size: 14px;
-  font-weight: 700;
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   color: var(--blue-two);
   cursor: pointer;
   @media (max-width: 812px) {
@@ -36,7 +36,7 @@
 /*-------------------Tab hover effect---------------*/
 .tab_link{
 	font-size: 14px;
-	font-weight: 600;
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
 	line-height: 1.29;
 	color: var(--blue);
 	position: relative;
