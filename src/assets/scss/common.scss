@@ -2,7 +2,7 @@
 
 
 
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
+// @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
 html,
 body {
@@ -18,9 +18,69 @@ body {
 @import "./mixin";
 @import "./effects";
 
-body {
-  font-family: "DM Sans", sans-serif !important;
+
+// -------------------Fonts-----------------------//
+@font-face {
+  font-family: 'NeueNormal';
+  src: url('../fonts/NeueHaasDisplay-Roman.eot');
+  src: local('../fonts/NeueHaasDisplay-Roman'),
+      url('../fonts/NeueHaasDisplay-Roman.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/NeueHaasDisplay-Roman.woff2') format('woff2'),
+      url('../fonts/NeueHaasDisplay-Roman.woff') format('woff'),
+      url('../fonts/NeueHaasDisplay-Roman.ttf') format('truetype');
   font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeueRoman';
+  src: url('../fonts/NeueHaasDisplay-Mediu.eot');
+  src: local('../fonts/NeueHaasDisplay-Mediu'),
+      url('../fonts/NeueHaasDisplay-Mediu.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/NeueHaasDisplay-Mediu.woff2') format('woff2'),
+      url('../fonts/NeueHaasDisplay-Mediu.woff') format('woff'),
+      url('../fonts/NeueHaasDisplay-Mediu.ttf') format('truetype');
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeueBold';
+  src: url('../fonts/NeueHaasDisplay-Bold.eot');
+  src: local('../fonts/NeueHaasDisplay-Bold'),
+      url('../fonts/NeueHaasDisplay-Bold.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/NeueHaasDisplay-Bold.woff2') format('woff2'),
+      url('../fonts/NeueHaasDisplay-Bold.woff') format('woff'),
+      url('../fonts/NeueHaasDisplay-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'NeueBolder';
+  src: url('../fonts/NeueHaasDisplay-Black.eot');
+  src: local('../fonts/NeueHaasDisplay-Black'),
+      url('../fonts/NeueHaasDisplay-Black.eot?#iefix') format('embedded-opentype'),
+      url('../fonts/NeueHaasDisplay-Black.woff2') format('woff2'),
+      url('../fonts/NeueHaasDisplay-Black.woff') format('woff'),
+      url('../fonts/NeueHaasDisplay-Black.ttf') format('truetype');
+  font-weight: 900;
+  font-style: normal;
+}
+
+
+// -------------------Fonts close-----------------------//
+
+
+
+
+
+
+
+
+
+body {
+  font-family: 'NeueNormal' !important;
 }
 
 .app_wrapper {
@@ -68,7 +128,7 @@ body {
 }
 .heading {
   font-size: 32px;
-  font-weight: 700;
+  font-family: 'NeueBold';
   line-height: 1.06;
   color: var(--white);
   margin-bottom: 5px;
@@ -76,7 +136,7 @@ body {
 
 .title {
   font-size: 32px;
-  font-weight: 700;
+  font-family: 'NeueBold';
   line-height: 1.16;
   color: var(--blue);
   margin-bottom: 40px;
@@ -97,7 +157,7 @@ body {
 
 .sub_title {
   font-size: 24px;
-  font-weight: 700;
+  font-family: 'NeueBold';
   line-height: 1.33;
   color: var(--black-four);
   letter-spacing: 0.1px;
@@ -135,7 +195,7 @@ body {
     @include border-radius(6px);
     background-color: #f6f7f9;
     font-size: 12px;
-    font-weight: 600;
+      font-weight: bold;
     line-height: 1.3;
     color: var(--blue);
     @media (max-width: 812px) {
@@ -153,7 +213,7 @@ body {
   padding: 4px 8px;
   @include border-radius(4px);
   font-size: 10px;
-  font-weight: 600;
+    font-weight: bold;
   line-height: 1.3;
   letter-spacing: 0.5px;
   background-color: var(--light-gray);
@@ -299,7 +359,7 @@ body {
 //--------------------Icons------------------------//
 .share {
   font-size: 14px;
-  font-weight: 600;
+  font-weight: bold;
   line-height: 1.14;
   letter-spacing: 0.1px;
   color: var(--black-four);
@@ -325,7 +385,7 @@ body {
 }
 .rating {
   font-size: 18px;
-  font-weight: 600;
+  font-weight: bold;
   line-height: 1.29;
   display: block;
   color: var(--black-four);
@@ -400,7 +460,7 @@ body {
   color: var(--black-four);
   position: relative;
   padding-left: 55px;
-  font-weight: 600;
+  font-weight: bold;
   cursor: pointer;
   &::before {
     @include position(absolute, 50%, auto, auto, 0);
@@ -536,7 +596,7 @@ body {
     @include border-radius(4px);
     background-color: var(--white);
     font-size: 10px;
-    font-weight: 700;
+    font-family: 'NeueBold';
     text-transform: uppercase;
     color: var(--black-four);
   }
@@ -1081,7 +1141,7 @@ body {
     .user_name {
       display: block;
       font-size: 14px;
-      font-weight: 700;
+      font-family: 'NeueBold';
       line-height: 1.29;
       text-align: left;
       color: #2d2d2d;
@@ -1147,7 +1207,7 @@ body {
     width: 80%;
     .user_name {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: bold;
       line-height: 1.29;
       color: var(--black-four);
       display: block;
@@ -1444,7 +1504,7 @@ body {
     }
     .price {
       font-size: 14px;
-      font-weight: 600;
+      font-weight: bold;
       line-height: 1.29;
       color: var(--black-four);
       margin-bottom: 16px;
@@ -1488,7 +1548,7 @@ body {
         position: relative;
         padding-left: 30px;
         font-size: 14px;
-        font-weight: 600;
+        font-weight: bold;
         color: var(--black-four);
         &:before{
             width: 24px;
@@ -1641,7 +1701,7 @@ body {
           border-color: var(--blue-two);
         }
         .name{
-          font-weight: 600;
+          font-weight: bold;
         }
        &::after{
         opacity: 1;

@@ -38,8 +38,7 @@ const InitialLoginPage = (props: any) => {
                                 <label className="form_label">Password</label>
                                 <div className="text_field">
                                     <input type="password" className="detect_input" placeholder="Enter your password" />
-                                    <span className="detect_icon">
-                                    </span>
+                                    <span className="detect_icon eye"></span>
                                 </div>
                             </div>
                             <div className="form_field">

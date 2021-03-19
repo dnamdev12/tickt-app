@@ -99,7 +99,7 @@
   align-items: center;
   .show_label{
     margin-bottom: 0;
-    font-weight: 600;
+    font-family: 'NeueBold';
   }
 }
 
@@ -137,7 +137,7 @@
     h1{
       font-size: 32px;
       position: relative;
-      font-weight: 500;
+      font-family: 'NeueBold';
       line-height: 1.16;
       color: var(--white);
       margin-bottom: 15px;
@@ -160,7 +160,7 @@
     .checkbox_wrap{
       margin-bottom: 24px;
       label{
-        font-weight: 500;
+        font-family: 'NeueRoman';
         font-size: 16px;
       }
     }

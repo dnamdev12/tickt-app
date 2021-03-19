@@ -15,7 +15,7 @@
   margin-bottom: 5px;
   color: var(--greyish-brown);
   display: block;
-  font-weight: 500;
+  font-family: 'NeueRoman';
 }
 .show_label {
   font-size: 14px;
@@ -23,7 +23,7 @@
   color: var(--greyish-brown);
   display: block;
   line-height: 1.5;
-  font-weight: 500;
+  font-family: 'NeueRoman';
 }
 .error_msg {
   color: red;
@@ -48,7 +48,7 @@ textarea {
   background-color: var(--white);
   border: solid 1px var(--warm-gray);
   font-size: 14px;
-  font-weight: 600;
+  font-family: 'NeueRoman';
   letter-spacing: 0.5px;
   -webkit-appearance: none;
   transition: all 0.30s ease-in-out;
@@ -114,7 +114,7 @@ a.fill_btn {
   @include border-radius(3px);
   background-color: var(--yellow);
   font-size: 14px;
-  font-weight: 600;
+  font-family: 'NeueBold';
   line-height: 1.43;
   letter-spacing: 0.3px;
   color: var(--blue);
@@ -140,7 +140,7 @@ a.fill_grey_btn {
   @include border-radius(3px);
   background-color: var(--grey);
   font-size: 14px;
-  font-weight: 600;
+  font-family: 'NeueBold';
   line-height: 1.43;
   letter-spacing: 0.3px;
   color: var(--blue);
@@ -209,7 +209,7 @@ a.fill_grey_btn {
   @include border-radius(12px);
   border: solid 1px rgba(160, 159, 167, 0.35);
   font-size: 14px;
-  font-weight: 500;
+  font-family: 'NeueRoman';
   line-height: 1.29;
   display: inline-block;
   color: var(--blue);
@@ -231,6 +231,17 @@ a.fill_grey_btn {
   top: 50%;
   transform: translateY(-50%);
   background-color: transparent;
+  &.eye{
+    width: 24px;
+    height: 24px;
+    background: url('../images/icon-eye-closed.png') center no-repeat;
+    background-size: contain;
+    &.active{
+      background: url('../images/icon-eye-open.png') center no-repeat;
+      background-size: contain;
+    }
+  }
+
 }
 
 .detect_input_ltr {
@@ -270,7 +281,6 @@ a.fill_grey_btn {
   line-height: 18px;
   font-size: 14px;
   color: #282828;
-  font-weight: 400;
   -webkit-user-select: none;
   -moz-user-select: none;
   -khtml-user-select: none;
@@ -369,9 +379,7 @@ a.fill_grey_btn {
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  font-weight: 400;
   color: #363636;
-  font-weight: 400;
 }
 
 [type="radio"] + label:before,
@@ -439,7 +447,7 @@ a.fill_grey_btn {
     color: var(--blue);
     margin-right: 5px;
     a {
-      font-weight: bold;
+      font-family: 'NeueBold';
       color: var(--blue);
     }
   }
@@ -614,7 +622,7 @@ a.fill_grey_btn {
   }
   .heading {
     font-size: 32px;
-    font-weight: 700;
+    font-family: 'NeueBold';
     line-height: 1.16;
     text-align: left;
     color: var(--blue);
@@ -628,11 +636,11 @@ a.fill_grey_btn {
     font-size: 14px;
     line-height: 1.29;
     margin: 20px 0;
-    font-weight: 500;
+    font-family: 'NeueRoman';
   }
   .form_label {
     font-size: 18px;
-    font-weight: 600;
+    font-family: 'NeueBold';
     line-height: 1;
   }
   .show_label {
