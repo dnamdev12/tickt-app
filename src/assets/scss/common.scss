@@ -4,6 +4,8 @@
 
 // @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
 
+// @import url('http://fonts.cdnfonts.com/css/neue-haas-grotesk-text-pro');
+
 html,
 body {
   height: 100%;
@@ -21,51 +23,17 @@ body {
 
 // -------------------Fonts-----------------------//
 @font-face {
-  font-family: 'NeueNormal';
-  src: url('../fonts/NeueHaasDisplay-Roman.eot');
-  src: local('../fonts/NeueHaasDisplay-Roman'),
-      url('../fonts/NeueHaasDisplay-Roman.eot?#iefix') format('embedded-opentype'),
-      url('../fonts/NeueHaasDisplay-Roman.woff2') format('woff2'),
-      url('../fonts/NeueHaasDisplay-Roman.woff') format('woff'),
-      url('../fonts/NeueHaasDisplay-Roman.ttf') format('truetype');
-  font-weight: 400;
+  font-family: 'Neue Haas Grotesk Text Pro Roman';
   font-style: normal;
+  font-weight: normal;
+  src: local('Neue Haas Grotesk Text Pro Roman'), url('../fonts/NHaasGroteskTXPro-55Rg.woff') format('woff');
 }
 
 @font-face {
-  font-family: 'NeueRoman';
-  src: url('../fonts/NeueHaasDisplay-Mediu.eot');
-  src: local('../fonts/NeueHaasDisplay-Mediu'),
-      url('../fonts/NeueHaasDisplay-Mediu.eot?#iefix') format('embedded-opentype'),
-      url('../fonts/NeueHaasDisplay-Mediu.woff2') format('woff2'),
-      url('../fonts/NeueHaasDisplay-Mediu.woff') format('woff'),
-      url('../fonts/NeueHaasDisplay-Mediu.ttf') format('truetype');
-  font-weight: 500;
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   font-style: normal;
-}
-
-@font-face {
-  font-family: 'NeueBold';
-  src: url('../fonts/NeueHaasDisplay-Bold.eot');
-  src: local('../fonts/NeueHaasDisplay-Bold'),
-      url('../fonts/NeueHaasDisplay-Bold.eot?#iefix') format('embedded-opentype'),
-      url('../fonts/NeueHaasDisplay-Bold.woff2') format('woff2'),
-      url('../fonts/NeueHaasDisplay-Bold.woff') format('woff'),
-      url('../fonts/NeueHaasDisplay-Bold.ttf') format('truetype');
-  font-weight: bold;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'NeueBolder';
-  src: url('../fonts/NeueHaasDisplay-Black.eot');
-  src: local('../fonts/NeueHaasDisplay-Black'),
-      url('../fonts/NeueHaasDisplay-Black.eot?#iefix') format('embedded-opentype'),
-      url('../fonts/NeueHaasDisplay-Black.woff2') format('woff2'),
-      url('../fonts/NeueHaasDisplay-Black.woff') format('woff'),
-      url('../fonts/NeueHaasDisplay-Black.ttf') format('truetype');
-  font-weight: 900;
-  font-style: normal;
+  font-weight: normal;
+  src: local('Neue Haas Grotesk Text Pro Bold'), url('../fonts/NHaasGroteskTXPro-75Bd.woff') format('woff');
 }
 
 
@@ -73,15 +41,12 @@ body {
 
 
 
-
-
-
-
-
-
-body {
-  font-family: 'NeueNormal' !important;
+body{
+  font-family: 'Neue Haas Grotesk Text Pro Roman', sans-serif !important;
+                                              
 }
+
+
 
 .app_wrapper {
   position: relative;
@@ -128,7 +93,7 @@ body {
 }
 .heading {
   font-size: 32px;
-  font-family: 'NeueBold';
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   line-height: 1.06;
   color: var(--white);
   margin-bottom: 5px;
@@ -136,7 +101,7 @@ body {
 
 .title {
   font-size: 32px;
-  font-family: 'NeueBold';
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   line-height: 1.16;
   color: var(--blue);
   margin-bottom: 40px;
@@ -157,7 +122,7 @@ body {
 
 .sub_title {
   font-size: 24px;
-  font-family: 'NeueBold';
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   line-height: 1.33;
   color: var(--black-four);
   letter-spacing: 0.1px;
@@ -596,7 +561,7 @@ body {
     @include border-radius(4px);
     background-color: var(--white);
     font-size: 10px;
-    font-family: 'NeueBold';
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
     text-transform: uppercase;
     color: var(--black-four);
   }
@@ -1141,7 +1106,7 @@ body {
     .user_name {
       display: block;
       font-size: 14px;
-      font-family: 'NeueBold';
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
       line-height: 1.29;
       text-align: left;
       color: #2d2d2d;

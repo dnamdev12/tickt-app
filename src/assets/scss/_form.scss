@@ -15,7 +15,6 @@
   margin-bottom: 5px;
   color: var(--greyish-brown);
   display: block;
-  font-family: 'NeueRoman';
 }
 .show_label {
   font-size: 14px;
@@ -23,7 +22,6 @@
   color: var(--greyish-brown);
   display: block;
   line-height: 1.5;
-  font-family: 'NeueRoman';
 }
 .error_msg {
   color: red;
@@ -48,7 +46,6 @@ textarea {
   background-color: var(--white);
   border: solid 1px var(--warm-gray);
   font-size: 14px;
-  font-family: 'NeueRoman';
   letter-spacing: 0.5px;
   -webkit-appearance: none;
   transition: all 0.30s ease-in-out;
@@ -114,7 +111,7 @@ a.fill_btn {
   @include border-radius(3px);
   background-color: var(--yellow);
   font-size: 14px;
-  font-family: 'NeueBold';
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   line-height: 1.43;
   letter-spacing: 0.3px;
   color: var(--blue);
@@ -140,7 +137,7 @@ a.fill_grey_btn {
   @include border-radius(3px);
   background-color: var(--grey);
   font-size: 14px;
-  font-family: 'NeueBold';
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   line-height: 1.43;
   letter-spacing: 0.3px;
   color: var(--blue);
@@ -209,7 +206,6 @@ a.fill_grey_btn {
   @include border-radius(12px);
   border: solid 1px rgba(160, 159, 167, 0.35);
   font-size: 14px;
-  font-family: 'NeueRoman';
   line-height: 1.29;
   display: inline-block;
   color: var(--blue);
@@ -447,7 +443,7 @@ a.fill_grey_btn {
     color: var(--blue);
     margin-right: 5px;
     a {
-      font-family: 'NeueBold';
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
       color: var(--blue);
     }
   }
@@ -622,7 +618,7 @@ a.fill_grey_btn {
   }
   .heading {
     font-size: 32px;
-    font-family: 'NeueBold';
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
     line-height: 1.16;
     text-align: left;
     color: var(--blue);
@@ -636,11 +632,10 @@ a.fill_grey_btn {
     font-size: 14px;
     line-height: 1.29;
     margin: 20px 0;
-    font-family: 'NeueRoman';
   }
   .form_label {
     font-size: 18px;
-    font-family: 'NeueBold';
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
     line-height: 1;
   }
   .show_label {
