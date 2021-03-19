@@ -211,6 +211,7 @@ body {
 .mob_logo {
   max-width: 200px;
   margin: 30px auto 0;
+  text-align: center;
 }
 
 
@@ -221,12 +222,14 @@ body {
     margin: 0 auto 0 140px;
     max-width: 327px;
   @media (max-width: 1150px) {
-    padding: 40px 30px;
+    padding: 70px 30px 40px;
     max-width: 427px;
     margin: 0 auto;
+    width: 100%;
   }
-  @media (max-width: 766px) {
+  @media (max-width: 768px) {
     max-width: 100%;
+    width: 427px;
   }
   @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     width: 400px;
@@ -1582,6 +1585,9 @@ body {
   .no_img {
     width: 600px;
     margin: 0 auto 30px;
+    @media (max-width: 650px) {
+      width: 300px;
+    }
     img {
       width: 100%;
     }
