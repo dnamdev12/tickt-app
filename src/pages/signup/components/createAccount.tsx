@@ -13,22 +13,16 @@ interface Propstype {
     step: number
     history?: any
     signupStepOne: (data: any, step: number) => void,
+    data: any,
 }
 
 const CreateAccount = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
     const [signupData, setSignupData] = useState<any>({
-        firstName: '',
-        email: '',
+        firstName: props.data.firstName,
+        email: props.data.email,
         tnc: false,
     })
-
-    useEffect(() => {
-        const prevUserSignupData: any = JSON.parse(sessionStorage.getItem('userSignupData')!)
-        if (prevUserSignupData) {
-            setSignupData({ firstName: prevUserSignupData.firstName, email: prevUserSignupData.email, tnc: prevUserSignupData.tnc })
-        }
-    }, [])
 
     const backButtonHandler = () => {
         props.updateSteps(props.step - 1)
@@ -49,12 +43,10 @@ const CreateAccount = (props: Propstype) => {
         } else {
             const nameRegex = new RegExp(globalRegex.regex.fullname);
             console.log(nameRegex, 'firstName regex', nameRegex.test(signupData.firstName))
-            if(signupData.firstName.length < 2){
+            if(signupData.firstName.length < 3){
                 newErrors.firstName = Messages.fullNameShortErr 
             } else if (!nameRegex.test(signupData.firstName)) {
                 newErrors.firstName = Messages.fullNameErr
-            } else if (nameRegex.test(signupData.firstName) && signupData.firstName.length > 50) {
-                newErrors.firstName = Messages.fullNameLengthErr
             }
         }
         if (!signupData.email) {
@@ -105,9 +97,6 @@ const CreateAccount = (props: Propstype) => {
                         <h1>Create account</h1>
                         <ul className="custom_steppr">
                             <li className="active"></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
                             <li></li>
                             <li></li>
                             <li></li>

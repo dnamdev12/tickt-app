@@ -1,54 +1,121 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-
 import SliderComponent from '../../../common/slider-component';
+import Messages from '../../../common/Messages';
+import globalRegex from '../../../common/globalRegex'
 
-const AlmostDone = () => {
+interface Propstype {
+    updateSteps: (num: number) => void
+    step: number
+    signupStepSeven: (data: any, step: number) => void,
+}
+
+const AlmostDone = (props: Propstype) => {
+    const [errors, setErrors] = useState<any>({});
+    const [almostDoneData, setAlmostDoneData] = useState<any>({
+        companyName: '',
+        position: '',
+        abn: '',
+    })
+
+    const backButtonHandler = () => {
+        props.updateSteps(props.step - 1)
+    }
+
+    const changeHandler = (e: any) => {
+        setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+    }
+
+    const validateForm = () => {
+        const newErrors: any = {};
+        if (!almostDoneData.companyName) {
+            newErrors.firstName = Messages.companyNameEmpty;
+        } else {
+            const nameRegex = new RegExp(globalRegex.regex.fullname);
+            if (almostDoneData.companyName.length < 3) {
+                newErrors.companyName = Messages.companyNameShortErr
+            } else if (!nameRegex.test(almostDoneData.firstName)) {
+                newErrors.companyName = Messages.companyNameErr
+            }
+        }
+        if (!almostDoneData.position) {
+            newErrors.position = Messages.positionNameEmpty;
+        } else {
+            const emailRegex = new RegExp(globalRegex.regex.fullname);
+            if (almostDoneData.position.length < 3) {
+                newErrors.position = Messages.positionNameShortErr
+            } else if (!emailRegex.test(almostDoneData.position)) {
+                newErrors.position = Messages.positionNameErr;
+            }
+        }
+
+        if (!almostDoneData.abn) {
+            newErrors.abn = Messages.abnEmpty;
+        } else {
+            const nameRegex = new RegExp(globalRegex.regex.abn);
+            if (!nameRegex.test(almostDoneData.abn)) {
+                newErrors.abn = Messages.abnErr
+            }
+        }
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
+    }
+
+    const onSubmit = (e: any) => {
+        e.preventDefault();
+        if (validateForm()) {
+            props.signupStepSeven(almostDoneData, props.step + 1)
+        }
+    }
+
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
                 <div className="left_col">
-                    <SliderComponent></SliderComponent>
+                    <SliderComponent />
                 </div>
                 <div className="right_col">
                     <figure className="mob_logo hide">
                         <img src={colorLogo} alt="Tickt-logo" />
                     </figure>
                     <div className="onboarding_head">
-                        <button className="back_btn"></button>
+                        <button className="back_btn" onClick={backButtonHandler}/>
                         <h1>Almost done</h1>
                         <ul className="custom_steppr">
                             <li className="active"></li>
                             <li className="active"></li>
-                            <li></li>
-                            <li></li>
+                            <li className="active"></li>
+                            <li className="active"></li>
+                            <li className="active"></li>
+                            <li className="active"></li>
+                            <li className="active"></li>
                             <li></li>
                         </ul>
                     </div>
                     <div className="form_wrapper">
-                        <form>
+                        <form onSubmit={onSubmit}>
                             <div className="form_field">
                                 <label className="form_label">Company Name</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="Enter company name" />
+                                    <input type="text" placeholder="Enter company name" value={almostDoneData.companyName} name="companyName" onChange={changeHandler}/>
                                 </div>
-                                <span className="error_msg"></span>
+                                {!!errors.companyName && <span className="error_msg">{errors.companyName}</span>}
                             </div>
 
                             <div className="form_field">
                                 <label className="form_label">Your Position</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="Enter your position" />
+                                    <input type="text" placeholder="Enter your position" value={almostDoneData.position} name="position" onChange={changeHandler}/>
                                 </div>
-                                <span className="error_msg"></span>
+                                {!!errors.position && <span className="error_msg">{errors.position}</span>}
                             </div>
 
                             <div className="form_field">
                                 <label className="form_label">Australian Business Number</label>
                                 <div className="text_field">
-                                    <input type="number" placeholder="Enter australian business number" />
+                                    <input type="number" placeholder="Enter australian business number" value={almostDoneData.abn} name="abn" onChange={changeHandler} />
                                 </div>
-                                <span className="error_msg"></span>
+                                {!!errors.abn && <span className="error_msg">{errors.abn}</span>}
                             </div>
 
                             <div className="form_field">

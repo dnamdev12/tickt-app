@@ -1,16 +1,16 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import SignupComponent from './signup';
+import { callTradeList } from './../../redux/auth/actions';
 
 const mapStateToProps = (state: any) => {
     return {
-        userData: state.homeReducer.userData,
-        error: state.homeReducer.error
+        tradeListData: state.auth.tradeListData,
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-    return bindActionCreators({}, dispatch);
+    return bindActionCreators({callTradeList}, dispatch);
 }
 
 const Signup  = connect(

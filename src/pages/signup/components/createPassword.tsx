@@ -11,18 +11,12 @@ interface Propstype {
     step: number
     history?: any
     signupStepFour: (data: any, step: number) => void,
+    password: any,
 }
 
 const CreatePassword = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
-    const [createPassword, setCreatePassword] = useState<any>('')
-
-    useEffect(() => {
-        const prevUserSignupData: any = JSON.parse(sessionStorage.getItem('userSignupData')!)
-        if (prevUserSignupData) {
-            setCreatePassword(prevUserSignupData.password)
-        }
-    }, [])
+    const [createPassword, setCreatePassword] = useState<any>(props.password)
 
     const backButtonHandler = () => {
         props.updateSteps(props.step - 2)
@@ -73,9 +67,6 @@ const CreatePassword = (props: Propstype) => {
                             <li className="active"></li>
                             <li className="active"></li>
                             <li className="active"></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
                             <li></li>
                             <li></li>
                             <li></li>

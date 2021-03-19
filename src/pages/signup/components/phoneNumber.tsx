@@ -9,19 +9,12 @@ interface Propstype {
     step: number
     history?: any
     signupSteptwo: (data: any, step: number) => void,
+    mobileNumber: any,
 }
 
 const PhoneNumber = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
-    const [mobileNumber, setMobileNumber] = useState<any>('')
-
-    useEffect(() => {
-        const prevUserSignupData: any = JSON.parse(sessionStorage.getItem('userSignupData')!)
-        if (prevUserSignupData) {
-            console.log(prevUserSignupData.mobileNumber, 'prevUserSignupData   effect')
-            setMobileNumber(prevUserSignupData.mobileNumber)
-        }
-    }, [])
+    const [mobileNumber, setMobileNumber] = useState<any>(props.mobileNumber)
 
     const backButtonHandler = () => {
         props.updateSteps(props.step - 1)
@@ -40,11 +33,7 @@ const PhoneNumber = (props: Propstype) => {
             if (!nameRegex.test(mobileNumber)) {
                 newErrors.mobileNumber = Messages.phoneNumberErr
             }
-            // else if (nameRegex.test(mobileNumber) && mobileNumber.length > 50) {
-            //     newErrors.mobileNumber = Messages.fullNameLengthErr
-            // }
         }
-        console.log(newErrors)
         setErrors(newErrors);
         return !Object.keys(newErrors).length;
     }
@@ -82,9 +71,6 @@ const PhoneNumber = (props: Propstype) => {
                         <ul className="custom_steppr">
                             <li className="active"></li>
                             <li className="active"></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
                             <li></li>
                             <li></li>
                             <li></li>

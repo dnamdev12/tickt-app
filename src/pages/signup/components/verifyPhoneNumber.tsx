@@ -32,7 +32,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
     useEffect(() => {
         const timer: any = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
         return () => clearInterval(timer);
-    }, [counter, resendOTP]);
+    }, [counter]);
 
     const validateForm = () => {
         const newErrors: any = {};
@@ -95,9 +95,6 @@ const VerifyPhoneNumber = (props: Propstype) => {
                             <li className="active"></li>
                             <li className="active"></li>
                             <li className="active"></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
                             <li></li>
                             <li></li>
                             <li></li>

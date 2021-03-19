@@ -5,6 +5,7 @@ export interface FetchResponse {
     status?: number | boolean,
     status_code?: number
     message: string,
+    data: any
 }
 
 export class NetworkOps {
@@ -49,7 +50,7 @@ export class NetworkOps {
             }
             else {
                 const res = await response.text();
-                console.log('res -->>', res)
+                console.log('res -->>', JSON.parse(res))
                 try {
                     return JSON.parse(res);
                 }
