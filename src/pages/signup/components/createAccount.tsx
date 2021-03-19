@@ -9,6 +9,7 @@ import Messages from '../../../common/Messages';
 import globalRegex from '../../../common/globalRegex'
 
 interface Propstype {
+    updateSteps: (num: number) => void
     step: number
     history?: any
     signupStepOne: (data: any, step: number) => void,
@@ -22,8 +23,23 @@ const CreateAccount = (props: Propstype) => {
         tnc: false,
     })
 
+    useEffect(() => {
+        const prevUserSignupData: any = JSON.parse(sessionStorage.getItem('userSignupData')!)
+        if (prevUserSignupData) {
+            setSignupData({ firstName: prevUserSignupData.firstName, email: prevUserSignupData.email, tnc: prevUserSignupData.tnc })
+        }
+    }, [])
+
+    const backButtonHandler = () => {
+        props.updateSteps(props.step - 1)
+    }
+
     const changeHandler = (e: any) => {
-            setSignupData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+        setSignupData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+    }
+
+    const tncHandler = () => {
+        setSignupData((prevData: any) => ({ ...prevData, tnc: !prevData.tnc }))
     }
 
     const validateForm = () => {
@@ -33,7 +49,9 @@ const CreateAccount = (props: Propstype) => {
         } else {
             const nameRegex = new RegExp(globalRegex.regex.fullname);
             console.log(nameRegex, 'firstName regex', nameRegex.test(signupData.firstName))
-            if (!nameRegex.test(signupData.firstName)) {
+            if(signupData.firstName.length < 2){
+                newErrors.firstName = Messages.fullNameShortErr 
+            } else if (!nameRegex.test(signupData.firstName)) {
                 newErrors.firstName = Messages.fullNameErr
             } else if (nameRegex.test(signupData.firstName) && signupData.firstName.length > 50) {
                 newErrors.firstName = Messages.fullNameLengthErr
@@ -83,11 +101,16 @@ const CreateAccount = (props: Propstype) => {
                         <img src={colorLogo} alt="Tickt-logo" />
                     </figure>
                     <div className="onboarding_head">
-                        <button className="back_btn" />
+                        <button className="back_btn" onClick={backButtonHandler} />
                         <h1>Create account</h1>
                         <ul className="custom_steppr">
                             <li className="active"></li>
-                            <li className="active"></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
                             <li></li>
                             <li></li>
                             <li></li>
@@ -95,11 +118,10 @@ const CreateAccount = (props: Propstype) => {
                     </div>
                     <div className="form_wrapper">
                         <form onSubmit={onSubmit}>
-
                             <div className="form_field">
                                 <label className="form_label">Full Name</label>
                                 <div className="text_field">
-                                    <input placeholder="Enter your Full Name" name="firstName"onChange={changeHandler} />
+                                    <input placeholder="Enter your Full Name" value={signupData.firstName} name="firstName" onChange={changeHandler} />
                                 </div>
                                 {!!errors.firstName && <span className="error_msg">{errors.firstName}</span>}
                             </div>
@@ -107,9 +129,8 @@ const CreateAccount = (props: Propstype) => {
                             <div className="form_field">
                                 <label className="form_label">Email</label>
                                 <div className="text_field">
-                                    <input className="detect_input" name="email"
+                                    <input className="detect_input" name="email" value={signupData.email}
                                         placeholder="Enter your Email" onChange={changeHandler} />
-
                                 </div>
                                 {!!errors.email && <span className="error_msg">{errors.email}</span>}
                             </div>
@@ -118,13 +139,13 @@ const CreateAccount = (props: Propstype) => {
                             <div className="form_field">
                                 <div className="checkbox_wrap agree_check">
                                     <input className="filter-type filled-in" type="checkbox" name="tnc" id="tnc"
-                                        onChange={changeHandler} />
+                                        checked={signupData.tnc} onChange={tncHandler} />
                                     <label htmlFor="tnc">I agree to </label>
                                     <a className="link">Privacy Policy</a>
                                     <label className="and">and</label>
                                     <a className="link m-l-30">Terms &amp; Conditions</a>
                                 </div>
-                                {!!errors.tnc &&<span className="error_msg">{errors.tnc}</span>}
+                                {!!errors.tnc && <span className="error_msg">{errors.tnc}</span>}
                             </div>
                             <div className="form_field">
                                 <button type="submit" className="fill_btn">Sign up</button>

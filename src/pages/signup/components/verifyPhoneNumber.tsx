@@ -7,6 +7,7 @@ import globalRegex from '../../../common/globalRegex';
 import OtpInput from "react-otp-input";
 
 interface Propstype {
+    updateSteps: (num: number) => void
     step: number
     history?: any
     signupStepThree: (step: number) => void,
@@ -18,6 +19,10 @@ const VerifyPhoneNumber = (props: Propstype) => {
     const [counter, setCounter] = useState(10);
     const [OTP, setOTP] = useState('');
     const [resendOTP, setResendOTP] = useState(false)
+
+    const backButtonHandler = () => {
+        props.updateSteps(props.step -1)
+    }
 
     const changeHandler = (otp: any) => {
         console.log(otp, 'otp')
@@ -77,18 +82,23 @@ const VerifyPhoneNumber = (props: Propstype) => {
         <div className="onboard_wrapper">
             <div className="f_row">
                 <div className="left_col">
-                    <SliderComponent></SliderComponent>
+                    <SliderComponent />
                 </div>
                 <div className="right_col">
                     <figure className="mob_logo hide">
                         <img src={colorLogo} alt="Tickt-logo" />
                     </figure>
                     <div className="onboarding_head">
-                        <button className="back_btn"></button>
+                        <button className="back_btn" onClick={backButtonHandler}/>
                         <h1>Verify your number</h1>
                         <ul className="custom_steppr">
                             <li className="active"></li>
                             <li className="active"></li>
+                            <li className="active"></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
                             <li></li>
                             <li></li>
                             <li></li>
@@ -107,11 +117,12 @@ const VerifyPhoneNumber = (props: Propstype) => {
                             <div className="otp_input_wrapper">
                                 <OtpInput
                                     className="sms-no-box"
+                                    inputStyle={{"width": "48px"}}
                                     value={OTP}
                                     onChange={changeHandler}
                                     numInputs={5}
                                     isInputNum
-                                    separator={<span>-</span>}
+                                    //separator={<span>-</span>}
                                 />
                             </div>
                             {!!errors.otp &&<span className="error_msg">{errors.otp}</span>}

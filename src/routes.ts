@@ -25,7 +25,7 @@ import VerifyOtp from './common/verifyOtp'
     },
     {
         name: 'forgetpassword',
-        path: '/builder/forget-password/reset/:step',
+        path: '/builder/forget-password/reset',
         component: ForgerPassword
     },
     {
@@ -38,7 +38,6 @@ import VerifyOtp from './common/verifyOtp'
         path: '/builder/verify-otp',
         component: VerifyOtp
     },
-
     {
         name: 'notFound',
         path: '/builder/404',

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import SliderComponent from '../../../common/slider-component';
 import { createPassword } from '../../../redux/auth/actions';
@@ -7,6 +7,7 @@ import globalRegex from '../../../common/globalRegex'
 
 
 interface Propstype {
+    updateSteps: (num: number) => void
     step: number
     history?: any
     signupStepFour: (data: any, step: number) => void,
@@ -14,7 +15,18 @@ interface Propstype {
 
 const CreatePassword = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
-    const [createPassword, setCreatePassword] = useState<any>(null)
+    const [createPassword, setCreatePassword] = useState<any>('')
+
+    useEffect(() => {
+        const prevUserSignupData: any = JSON.parse(sessionStorage.getItem('userSignupData')!)
+        if (prevUserSignupData) {
+            setCreatePassword(prevUserSignupData.password)
+        }
+    }, [])
+
+    const backButtonHandler = () => {
+        props.updateSteps(props.step - 2)
+    }
 
     const changeHandler = (e: any) => {
         setCreatePassword(e.target.value)
@@ -23,13 +35,13 @@ const CreatePassword = (props: Propstype) => {
     const validateForm = () => {
         const newErrors: any = {};
         if (!createPassword) {
-            newErrors.firstName = Messages.password;
+            newErrors.createPassword = Messages.password;
         } else {
             const nameRegex = new RegExp(globalRegex.regex.password);
-            if (!nameRegex.test(createPassword)) {
-                newErrors.createPassword = Messages.passwordErr
-            } else if (nameRegex.test(createPassword) && createPassword.length < 8) {
+            if (createPassword.length < 8) {
                 newErrors.createPassword = Messages.passwordLengthErr
+            } else if (!nameRegex.test(createPassword)) {
+                newErrors.createPassword = Messages.passwordErr
             }
         }
         setErrors(newErrors);
@@ -47,26 +59,38 @@ const CreatePassword = (props: Propstype) => {
         <div className="onboard_wrapper">
             <div className="f_row">
                 <div className="left_col">
-                    <SliderComponent></SliderComponent>
+                    <SliderComponent />
                 </div>
                 <div className="right_col">
                     <figure className="mob_logo hide">
                         <img src={colorLogo} alt="Tickt-logo" />
                     </figure>
                     <div className="onboarding_head">
-                        <button className="back_btn"></button>
+                        <button className="back_btn" onClick={backButtonHandler} />
                         <h1>Create password</h1>
+                        <ul className="custom_steppr">
+                            <li className="active"></li>
+                            <li className="active"></li>
+                            <li className="active"></li>
+                            <li className="active"></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
                     </div>
                     <div className="form_wrapper">
                         <form onSubmit={onSubmit}>
                             <div className="form_field">
                                 <label className="form_label">Password</label>
                                 <div className="text_field">
-                                    <input type="password" className="detect_input" placeholder="Enter password" onChange={changeHandler} />
+                                    <input type="password" className="detect_input" value={createPassword} placeholder="Enter password" onChange={changeHandler} />
                                     <span className="detect_icon">
                                     </span>
                                 </div>
-                                {!!errors.createPassword &&<span className="error_msg">{errors.createPassword}</span>}
+                                {!!errors.createPassword && <span className="error_msg">{errors.createPassword}</span>}
                             </div>
 
                             <div className="form_field">
