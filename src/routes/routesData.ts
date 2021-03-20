@@ -1,8 +1,8 @@
-import Home from './pages/home'
-import Login from './pages/login/login'
-import NotFound from './pages/notFound/notFound'
-import Signup from './pages/signup'
-import ForgerPassword from '../src/pages/forgetPassword/forgetPassword'
+import Home from '../pages/home'
+import Login from '../pages/login/login'
+import NotFound from '../pages/notFound/notFound'
+import Signup from '../pages/signup'
+import ForgerPassword from '../pages/forgetPassword/forgetPassword'
 
  const routes = [
     {
@@ -14,7 +14,8 @@ import ForgerPassword from '../src/pages/forgetPassword/forgetPassword'
     {
         name: 'login',
         path: '/login',
-        component: Login
+        component: Login,
+        privateRoute: true,
     },
     {
         name: 'signup',

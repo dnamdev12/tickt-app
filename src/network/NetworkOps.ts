@@ -21,10 +21,10 @@ export class NetworkOps {
             },
         };
 
-        if (localStorage.token) {
+        if (localStorage.jwtToken) {
             request.headers = {
                 ...request.headers,
-                Authorization: `Bearer ${localStorage.token}`,
+                Authorization: `Bearer ${localStorage.jwtToken}`,
             }
         }
         return request;
