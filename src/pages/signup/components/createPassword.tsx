@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import eyeIconClose from '../../../assets/images/icon-eye-closed.png';
+import eyeIconOpen from '../../../assets/images/icon-eye-open.png';
 import SliderComponent from '../../../common/slider-component';
-import { createPassword } from '../../../redux/auth/actions';
-import Messages from '../../../common/Messages';
-import globalRegex from '../../../common/globalRegex'
+import Constants from '../../../utils/constants';
+import regex from '../../../utils/regex'
 
 
 interface Propstype {
@@ -17,6 +18,7 @@ interface Propstype {
 const CreatePassword = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
     const [createPassword, setCreatePassword] = useState<any>(props.password)
+    const [showPassword, setShowPassword] = useState(false)
 
     const backButtonHandler = () => {
         props.updateSteps(props.step - 2)
@@ -29,13 +31,13 @@ const CreatePassword = (props: Propstype) => {
     const validateForm = () => {
         const newErrors: any = {};
         if (!createPassword) {
-            newErrors.createPassword = Messages.password;
+            newErrors.createPassword = Constants.errorStrings.password;
         } else {
-            const nameRegex = new RegExp(globalRegex.regex.password);
+            const nameRegex = new RegExp(regex.password);
             if (createPassword.length < 8) {
-                newErrors.createPassword = Messages.passwordLengthErr
+                newErrors.createPassword = Constants.errorStrings.passwordLengthErr
             } else if (!nameRegex.test(createPassword)) {
-                newErrors.createPassword = Messages.passwordErr
+                newErrors.createPassword = Constants.errorStrings.passwordErr
             }
         }
         setErrors(newErrors);
@@ -77,9 +79,8 @@ const CreatePassword = (props: Propstype) => {
                             <div className="form_field">
                                 <label className="form_label">Password</label>
                                 <div className="text_field">
-                                    <input type="password" className="detect_input" value={createPassword} placeholder="Enter password" onChange={changeHandler} />
-                                    <span className="detect_icon">
-                                    </span>
+                                    <input type={showPassword ? 'text' : 'password'} className="detect_input" value={createPassword} placeholder="Enter password" onChange={changeHandler} />
+                                    <span className="detect_icon" onClick={() => setShowPassword(!showPassword)}><img src={showPassword ? eyeIconOpen : eyeIconClose}/></span>
                                 </div>
                                 {!!errors.createPassword && <span className="error_msg">{errors.createPassword}</span>}
                             </div>
@@ -89,8 +90,7 @@ const CreatePassword = (props: Propstype) => {
                             </div>
                         </form>
                         <div className="form_field hide text-center">
-                            <span className="reg">No account? <a className="link">Sign
-                        up</a></span>
+                            <span className="reg">No account? <a className="link">Signup</a></span>
                         </div>
                     </div>
                 </div>

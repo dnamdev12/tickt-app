@@ -1,6 +1,7 @@
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
 import * as actionTypes from './constants';
+import { setShowToast, setLoading } from './../common/actions';
 
 export const postSignup = async(data: any) => {
     const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
@@ -30,12 +31,14 @@ export const checkMobileNumber = async(mobile: string | number) => {
 };
 
 export const verifyOtp = async(data: object) => {
+  setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.verifyOTP, data);
-  console.log('res', response);
+  setLoading(false);
   if(response.status_code === 200) {
     return {success: true, message: response.message};
   }
-  return {success: false, message: response.message};
+  setShowToast(true, response.message);
+  return {success: false}
 };
 
 export const createPassword = async(passwordInfo: object) => {

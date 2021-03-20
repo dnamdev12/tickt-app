@@ -16,7 +16,7 @@ import AddABN from './components/addABN';
 import {postSignup} from '../../redux/auth/actions';
 
 const Signup = (props: any) => {
-    const [steps, setSteps] = useState(5);
+    const [steps, setSteps] = useState(0);
     const [signupData, setSignupData] = useState({
         firstName: '',
         mobileNumber: '',

@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import SliderComponent from '../../../common/slider-component';
 import { checkMobileNumber } from '../../../redux/auth/actions';
-import Messages from '../../../common/Messages';
-import globalRegex from '../../../common/globalRegex'
+import Constants from '../../../utils/constants';
+import regex from '../../../utils/regex'
 interface Propstype {
     updateSteps: (num: number) => void
     step: number
@@ -27,11 +27,11 @@ const PhoneNumber = (props: Propstype) => {
     const validateForm = () => {
         const newErrors: any = {};
         if (!mobileNumber) {
-            newErrors.mobileNumber = Messages.phoneNumberEmpty;
+            newErrors.mobileNumber = Constants.errorStrings.phoneNumberEmpty;
         } else {
-            const nameRegex = new RegExp(globalRegex.regex.mobile);
+            const nameRegex = new RegExp(regex.mobile);
             if (!nameRegex.test(mobileNumber)) {
-                newErrors.mobileNumber = Messages.phoneNumberErr
+                newErrors.mobileNumber = Constants.errorStrings.phoneNumberErr
             }
         }
         setErrors(newErrors);
@@ -47,7 +47,7 @@ const PhoneNumber = (props: Propstype) => {
                 props.signupSteptwo(mobileNumber, props.step + 1)
             } else if (res.success && res.message === 'This Mobile Number is already in use') {
                 let newErrors: any = {}
-                newErrors.email = Messages.phoneNumberExist
+                newErrors.email = Constants.errorStrings.phoneNumberExist
                 setErrors(newErrors)
             } else {
                 alert('something went wrong. Please try later!')

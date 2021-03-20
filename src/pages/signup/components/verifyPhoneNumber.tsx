@@ -2,8 +2,8 @@ import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import SliderComponent from '../../../common/slider-component';
 import { checkMobileNumber, verifyOtp } from '../../../redux/auth/actions';
-import Messages from '../../../common/Messages';
-import globalRegex from '../../../common/globalRegex';
+import Constants from '../../../utils/constants';
+import regex from '../../../utils/regex';
 import OtpInput from "react-otp-input";
 
 interface Propstype {
@@ -37,13 +37,13 @@ const VerifyPhoneNumber = (props: Propstype) => {
     const validateForm = () => {
         const newErrors: any = {};
         if (!OTP) {
-            newErrors.otp = Messages.otpEmpty;
+            newErrors.otp = Constants.errorStrings.otpEmpty;
         } else {
-            const nameRegex = new RegExp(globalRegex.regex.otp);
+            const nameRegex = new RegExp(regex.otp);
             if (!nameRegex.test(OTP)) {
-                newErrors.otp = Messages.otpErr
+                newErrors.otp = Constants.errorStrings.otpErr
             } else if (nameRegex.test(OTP) && OTP.length < 5) {
-                newErrors.otp = Messages.otpIncorrect
+                newErrors.otp = Constants.errorStrings.otpIncorrect
             }
         }
         console.log(newErrors)
@@ -61,8 +61,6 @@ const VerifyPhoneNumber = (props: Propstype) => {
             const res: any = await verifyOtp(data)
             if (res.success && res.message === 'OTP verified successfully') {
                 props.signupStepThree(props.step + 1)
-            } else {
-                alert('wrong OTP')
             }
         }
     }

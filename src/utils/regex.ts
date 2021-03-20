@@ -1,5 +1,4 @@
-const global = {
-    regex: {
+const regex = {
         password: /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,20}$/,
         //password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})$/,
         mobile: /^([6789][0-9]{9})$/,
@@ -11,7 +10,6 @@ const global = {
         numeric: /^[0-9]*$/,
         alphaNumeric: /^[a-zA-Z0-9]*$/,
         fullname: /^[a-zA-Z ]{3,50}$/,
-    }
 };
 
-export default global;
+export default regex;

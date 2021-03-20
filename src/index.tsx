@@ -4,7 +4,6 @@ import { Provider } from 'react-redux'
 import { createStore, applyMiddleware, compose } from 'redux'
 import createSagaMiddleware from 'redux-saga'
 
-import './index.css';
 import '../src/assets/scss/common.scss'
 import App from './App';
 import reportWebVitals from './reportWebVitals';
@@ -35,7 +34,7 @@ const app = (
     <React.StrictMode>
       <App />
       <Loader />
-      {/* <Toast /> */}
+      <Toast />
     </React.StrictMode>
   </Provider>
 )

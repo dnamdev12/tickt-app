@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import SliderComponent from '../../../common/slider-component';
-import Messages from '../../../common/Messages';
-import globalRegex from '../../../common/globalRegex'
+import Constants from '../../../utils/constants';
+import regex from '../../../utils/regex'
 
 interface Propstype {
     updateSteps: (num: number) => void
@@ -29,32 +29,32 @@ const AlmostDone = (props: Propstype) => {
     const validateForm = () => {
         const newErrors: any = {};
         if (!almostDoneData.companyName) {
-            newErrors.firstName = Messages.companyNameEmpty;
+            newErrors.firstName = Constants.errorStrings.companyNameEmpty;
         } else {
-            const nameRegex = new RegExp(globalRegex.regex.fullname);
+            const nameRegex = new RegExp(regex.fullname);
             if (almostDoneData.companyName.length < 3) {
-                newErrors.companyName = Messages.companyNameShortErr
+                newErrors.companyName = Constants.errorStrings.companyNameShortErr
             } else if (!nameRegex.test(almostDoneData.firstName)) {
-                newErrors.companyName = Messages.companyNameErr
+                newErrors.companyName = Constants.errorStrings.companyNameErr
             }
         }
         if (!almostDoneData.position) {
-            newErrors.position = Messages.positionNameEmpty;
+            newErrors.position = Constants.errorStrings.positionNameEmpty;
         } else {
-            const emailRegex = new RegExp(globalRegex.regex.fullname);
+            const emailRegex = new RegExp(regex.fullname);
             if (almostDoneData.position.length < 3) {
-                newErrors.position = Messages.positionNameShortErr
+                newErrors.position = Constants.errorStrings.positionNameShortErr
             } else if (!emailRegex.test(almostDoneData.position)) {
-                newErrors.position = Messages.positionNameErr;
+                newErrors.position = Constants.errorStrings.positionNameErr;
             }
         }
 
         if (!almostDoneData.abn) {
-            newErrors.abn = Messages.abnEmpty;
+            newErrors.abn = Constants.errorStrings.abnEmpty;
         } else {
-            const nameRegex = new RegExp(globalRegex.regex.abn);
+            const nameRegex = new RegExp(regex.abn);
             if (!nameRegex.test(almostDoneData.abn)) {
-                newErrors.abn = Messages.abnErr
+                newErrors.abn = Constants.errorStrings.abnErr
             }
         }
         setErrors(newErrors);

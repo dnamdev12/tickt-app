@@ -15,9 +15,9 @@ function* postSignup({ data }: any) {
 }
 
 function* callTradeList() {
-  commonActions.setLoading(true);
+  // commonActions.setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.tradeList);
-  commonActions.setLoading(false);
+  // commonActions.setLoading(false);
   if (response.status_code === 200) {
     yield put({type: actionTypes.CALL_TRADE_LIST_SUCCESSED, payload: response.data.trade});
   }

@@ -5,8 +5,8 @@ import linkedin from '../../../assets/images/ic-linkedin.png';
 import apple from '../../../assets/images/ic-apple.png';
 import SliderComponent from '../../../common/slider-component';
 import { checkEmailId } from '../../../redux/auth/actions';
-import Messages from '../../../common/Messages';
-import globalRegex from '../../../common/globalRegex'
+import Constants from '../../../utils/constants';
+import regex from '../../../utils/regex'
 
 interface Propstype {
     updateSteps: (num: number) => void
@@ -39,26 +39,26 @@ const CreateAccount = (props: Propstype) => {
     const validateForm = () => {
         const newErrors: any = {};
         if (!signupData.firstName) {
-            newErrors.firstName = Messages.fullNameEmpty;
+            newErrors.firstName = Constants.errorStrings.fullNameEmpty;
         } else {
-            const nameRegex = new RegExp(globalRegex.regex.fullname);
+            const nameRegex = new RegExp(regex.fullname);
             console.log(nameRegex, 'firstName regex', nameRegex.test(signupData.firstName))
             if(signupData.firstName.length < 3){
-                newErrors.firstName = Messages.fullNameShortErr 
+                newErrors.firstName = Constants.errorStrings.fullNameShortErr 
             } else if (!nameRegex.test(signupData.firstName)) {
-                newErrors.firstName = Messages.fullNameErr
+                newErrors.firstName = Constants.errorStrings.fullNameErr
             }
         }
         if (!signupData.email) {
-            newErrors.email = Messages.emailEmpty;
+            newErrors.email = Constants.errorStrings.emailEmpty;
         } else {
-            const emailRegex = new RegExp(globalRegex.regex.email);
+            const emailRegex = new RegExp(regex.email);
             if (!emailRegex.test(signupData.email)) {
-                newErrors.email = Messages.emailErr;
+                newErrors.email = Constants.errorStrings.emailErr;
             }
         }
         if (!signupData.tnc) {
-            newErrors.tnc = Messages.tncEmpty;
+            newErrors.tnc = Constants.errorStrings.tncEmpty;
         }
         console.log(newErrors)
         setErrors(newErrors);
@@ -74,7 +74,7 @@ const CreateAccount = (props: Propstype) => {
                 props.signupStepOne(signupData, props.step + 1)
             } else if (res.success && res.message === 'This Email Id is already in use') {
                 let newErrors: any = {}
-                newErrors.email = Messages.emailExist
+                newErrors.email = Constants.errorStrings.emailExist
                 setErrors(newErrors)
             } else {
                 alert('something went wrong. Please try later!')
@@ -131,7 +131,7 @@ const CreateAccount = (props: Propstype) => {
                                         checked={signupData.tnc} onChange={tncHandler} />
                                     <label htmlFor="tnc">I agree to </label>
                                     <a className="link">Privacy Policy</a>
-                                    <label className="and">and</label>
+                                    <label className="and">&nbsp;and&nbsp;</label>
                                     <a className="link m-l-30">Terms &amp; Conditions</a>
                                 </div>
                                 {!!errors.tnc && <span className="error_msg">{errors.tnc}</span>}

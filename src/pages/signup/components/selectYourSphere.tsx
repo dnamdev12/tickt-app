@@ -28,7 +28,7 @@ const SelectCategories = (props: Propstype) => {
     //     if (!signupData.firstName) {
     //         newErrors.firstName = Messages.fullNameEmpty;
     //     } else {
-    //         const nameRegex = new RegExp(globalRegex.regex.fullname);
+    //         const nameRegex = new RegExp(regex.fullname);
     //         console.log(nameRegex, 'firstName regex', nameRegex.test(signupData.firstName))
     //         if(signupData.firstName.length < 3){
     //             newErrors.firstName = Messages.fullNameShortErr 
@@ -39,7 +39,7 @@ const SelectCategories = (props: Propstype) => {
     //     if (!signupData.email) {
     //         newErrors.email = Messages.emailEmpty;
     //     } else {
-    //         const emailRegex = new RegExp(globalRegex.regex.email);
+    //         const emailRegex = new RegExp(regex.email);
     //         if (!emailRegex.test(signupData.email)) {
     //             newErrors.email = Messages.emailErr;
     //         }
