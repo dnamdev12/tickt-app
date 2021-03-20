@@ -18,14 +18,22 @@ phoneNumberExist: 'Phone number already in use',
 abnEmpty: 'ABN cannot be empty',
 abnErr: 'Please enter correct ABN',
 abnExist: 'Phone number already in use',
-password: 'Invalid password',
-passwordLengthErr: 'Password must be eight character in length',
-passwordErr: 'Password must contain atleast one alphabet, one numeric and one special character',
+password: 'Please enter password',
+passwordInValid: 'Password must be 8 charaters longs and should contain atleast one alphabet, one numeric and one special character',
 otpEmpty: 'OTP cannot be empty',
 otpErr: 'Please enter a valid OTP',
 otpIncorrect: 'Incorrect OTP',
+sphereEmpty: 'Please select your sphere',
+specializationEmpty: 'Please select your specialization'
 }
+
+const OTP_TIMER = 60;
+
+// 1 --> tradie | 2 --> builder
+const USER_TYPE = 2;  
 
 export default {
     errorStrings,
+    OTP_TIMER,
+    USER_TYPE
 }

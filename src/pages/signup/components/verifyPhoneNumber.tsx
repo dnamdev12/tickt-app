@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../../../common/slider-component';
+import { useState, useEffect } from 'react';
 import { checkMobileNumber, verifyOtp } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
@@ -10,23 +8,16 @@ interface Propstype {
     updateSteps: (num: number) => void
     step: number
     history?: any
-    signupStepThree: (step: number) => void,
     mobileNumber: string
 }
 
 const VerifyPhoneNumber = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
-    const [counter, setCounter] = useState(10);
-    const [OTP, setOTP] = useState('');
-    const [resendOTP, setResendOTP] = useState(false)
+    const [counter, setCounter] = useState(Constants.OTP_TIMER);
+    const [otp, setOTP] = useState('');
 
-    const backButtonHandler = () => {
-        props.updateSteps(props.step -1)
-    }
-
-    const changeHandler = (otp: any) => {
-        console.log(otp, 'otp')
-        setOTP(otp)
+    const changeHandler = (newOtp: any) => {
+        setOTP(newOtp)
     }
 
     useEffect(() => {
@@ -36,17 +27,16 @@ const VerifyPhoneNumber = (props: Propstype) => {
 
     const validateForm = () => {
         const newErrors: any = {};
-        if (!OTP) {
+        if (!otp) {
             newErrors.otp = Constants.errorStrings.otpEmpty;
         } else {
             const nameRegex = new RegExp(regex.otp);
-            if (!nameRegex.test(OTP)) {
+            if (!nameRegex.test(otp)) {
                 newErrors.otp = Constants.errorStrings.otpErr
-            } else if (nameRegex.test(OTP) && OTP.length < 5) {
+            } else if (nameRegex.test(otp) && otp.length < 5) {
                 newErrors.otp = Constants.errorStrings.otpIncorrect
             }
         }
-        console.log(newErrors)
         setErrors(newErrors);
         return !Object.keys(newErrors).length;
     }
@@ -54,91 +44,58 @@ const VerifyPhoneNumber = (props: Propstype) => {
     const onSubmit = async (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('ok 68')
             const data = {
-                otp: OTP
+                otp: otp
             }
             const res: any = await verifyOtp(data)
-            if (res.success && res.message === 'OTP verified successfully') {
-                props.signupStepThree(props.step + 1)
+            if (res.success) {
+                props.updateSteps(props.step + 1)
             }
         }
     }
 
     const resendHandler = async (e: any) => {
         e.preventDefault()
-        setResendOTP(true)
-        setCounter(10)
         const res: any = await checkMobileNumber(props.mobileNumber)
-        console.log(res, "resend Clicked")
-        if (!res.success) {
-            alert('something went wrong. Please try later!')
+        if(res.success) {
+            setCounter(Constants.OTP_TIMER)
         }
     }
 
     return (
-        <div className="onboard_wrapper">
-            <div className="f_row">
-                <div className="left_col">
-                    <SliderComponent />
-                </div>
-                <div className="right_col">
-                    <figure className="mob_logo hide">
-                        <img src={colorLogo} alt="Tickt-logo" />
-                    </figure>
-                    <div className="onboarding_head">
-                        <button className="back_btn" onClick={backButtonHandler}/>
-                        <h1>Verify your number</h1>
-                        <ul className="custom_steppr">
-                            <li className="active"></li>
-                            <li className="active"></li>
-                            <li className="active"></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div className="form_wrapper">
-                        <form onSubmit={onSubmit}>
-                            <span className="show_label"><b>Verification Code</b></span>
-                            {/* <div className="otp_input_wrapper">
+        <div className="form_wrapper">
+            <form onSubmit={onSubmit}>
+                <span className="show_label"><b>Verification Code</b></span>
+                {/* <div className="otp_input_wrapper">
                                 <input type="number" className="sms-no-box" name="ssn-1" maxLength={1} onChange={changeHandler} />
-                                <input type="number" className="sms-no-box" name="ssn-2" maxLength={1} onChange={changeHandler} />
-                                <input type="number" className="sms-no-box" name="ssn-3" maxLength={1} onChange={changeHandler} />
-                                <input type="number" className="sms-no-box" name="ssn-4" maxLength={1} onChange={changeHandler} />
-                                <input type="number" className="sms-no-box" name="ssn-5" maxLength={1} onChange={changeHandler} />
                             </div> */}
-                            <div className="otp_input_wrapper">
-                                <OtpInput
-                                    className="sms-no-box"
-                                    inputStyle={{"width": "48px"}}
-                                    value={OTP}
-                                    onChange={changeHandler}
-                                    numInputs={5}
-                                    isInputNum
-                                    //separator={<span>-</span>}
-                                />
-                            </div>
-                            {!!errors.otp &&<span className="error_msg">{errors.otp}</span>}
-                            <div className="form_field">
-                                <span className="show_label">We have sent a verification code to your phone.
-                          Please check SMS and enter the 5-digit code here.</span>
-                            </div>
-                            {counter === 0 && <div className="form_field text-center">
-                                <span className="show_label">Don’t you receive any codes?</span>
-                                <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
-                            </div>}
-                            {counter > 0 && <div className="form_field text-center">
-                                <span className="show_label timer">{counter}</span>
-                            </div>}
-                            <div className="form_field">
-                                <button className="fill_btn">Next</button>
-                            </div>
-                        </form>
-                    </div>
+                <div className="otp_input_wrapper">
+                    <OtpInput
+                        className="sms-no-box"
+                        inputStyle={{ "width": "48px" }}
+                        value={otp}
+                        onChange={changeHandler}
+                        numInputs={5}
+                        isInputNum
+                    //separator={<span>-</span>}
+                    />
                 </div>
-            </div>
+                {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
+                <div className="form_field">
+                    <span className="show_label">We have sent a verification code to your phone.
+                          Please check SMS and enter the 5-digit code here.</span>
+                </div>
+                {counter === 0 && <div className="form_field text-center">
+                    <span className="show_label">Don’t you receive any codes?</span>
+                    <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
+                </div>}
+                {counter > 0 && <div className="form_field text-center">
+                    <span className="show_label timer">{counter}</span>
+                </div>}
+                <div className="form_field">
+                    <button className="fill_btn">Next</button>
+                </div>
+            </form>
         </div>
     )
 }

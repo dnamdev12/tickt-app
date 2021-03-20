@@ -1,6 +1,5 @@
-import React from 'react';
 import notFound from '../../assets/images/not-found.png';
-
+import { Link } from 'react-router-dom';
 
 export default function NotFound() {
     return (
@@ -10,7 +9,7 @@ export default function NotFound() {
             </figure>
             <div className="content">
                 <h1>Page Not Found</h1>
-                <a className="fill_btn" title=" Home">Back To Home</a>
+                <Link to="/" className="fill_btn" title=" Home">Back To Home</Link>
             </div>
         </div>
     )

@@ -1,4 +1,3 @@
-import React from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 
 interface Propstype {
@@ -8,7 +7,7 @@ interface Propstype {
 const LetsGo = (props: Propstype) => {
 
     const goToLogin = () => {
-        props.history.push('/builder/login')
+        props.history.push('/login')
     }
 
     return (

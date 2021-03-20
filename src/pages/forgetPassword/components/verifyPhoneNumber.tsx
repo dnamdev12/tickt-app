@@ -1,13 +1,11 @@
 import React from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import SliderComponent from '../../../common/slider-component';
 
 const VerifyPhoneNumber = () => {
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
                 <div className="left_col">
-                    <SliderComponent></SliderComponent>
                 </div>
                 <div className="right_col">
                     <figure className="mob_logo hide">
