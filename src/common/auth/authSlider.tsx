@@ -2,10 +2,10 @@ import { Component } from 'react';
 import 'react-multi-carousel/lib/styles.css';
 import { Link } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
-import logoyellow from '../assets/images/ic-logo-yellow.png';
-import bannerimage1 from '../assets/images/onboarding-banner-1.jpg';
-import bannerimage2 from '../assets/images/onboarding-banner-2.jpg';
-import bannerimage3 from '../assets/images/onboarding-banner-3.jpg';
+import logoyellow from '../../assets/images/ic-logo-yellow.png';
+import bannerimage1 from '../../assets/images/onboarding-banner-1.jpg';
+import bannerimage2 from '../../assets/images/onboarding-banner-2.jpg';
+import bannerimage3 from '../../assets/images/onboarding-banner-3.jpg';
 
 interface Props {
     type: string
