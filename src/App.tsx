@@ -1,9 +1,9 @@
 import Routes from './routes';
-import { Provider } from 'react-redux'
-import { createStore, applyMiddleware, compose } from 'redux'
-import createSagaMiddleware from 'redux-saga'
+import { Provider } from 'react-redux';
+import { createStore, applyMiddleware, compose } from 'redux';
+import createSagaMiddleware from 'redux-saga';
 
-import rootReducer from './redux/rootReducer'
+import rootReducer from './redux/rootReducer';
 import rootSaga from './redux/rootSaga';
 import Loader from './common/loader';
 import Toast from './common/toast';

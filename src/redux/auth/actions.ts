@@ -2,7 +2,9 @@ import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
 import * as actionTypes from './constants';
 import { setShowToast, setLoading } from './../common/actions';
+import storageService from '../../utils/storageService';
 
+//signup
 export const postSignup = async(data: any) => {
     setLoading(true);
     const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
@@ -48,12 +50,39 @@ export const verifyOtp = async(data: object) => {
 };
 
 export const createPassword = async(passwordInfo: object) => {
-  const response: FetchResponse = await NetworkOps.postToJson(Urls.createPassword, passwordInfo);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.createPassword, passwordInfo);
   console.log('res', response);
   if(response.status_code === 200) {
     return {success: true, message: response.message};
   }
+  setShowToast(true, response.message);
   return {success: false, message: response.message};
 };
 
 export const callTradeList = () => ({type: actionTypes.CALL_TRADE_LIST})
+
+//login
+export const callLogin = async(data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.login, data);
+  setLoading(false);
+  if(response.status_code === 200) {
+    storageService.setItem("jwtToken", response.result.token);
+    return {success: true};
+  }
+  setShowToast(true, response.message);
+  return {success: false};
+};
+
+export const callForgotPassword = async(data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.forgotPassword, data);
+  setLoading(false);
+  if(response.status_code === 200) {
+    return {success: true};
+  }
+  setShowToast(true, response.message);
+  return {success: false};
+};
+
+

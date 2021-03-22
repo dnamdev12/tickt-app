@@ -49,23 +49,24 @@ class AuthSlider extends Component<Props> {
         return (
             <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false}>
                 {SLIDER_DATA.map((item) => {
-                    return (<div>
-                        <figure className="banner_img">
-                            <figure className="logo">
-                                <img src={logoyellow} alt="logo" />
-                            </figure>
-                            <img src={item.image} alt="banner-img" />
-                            <div className="slider_txt">
-                                <span>Make yourself on what you do best</span>
-                            </div>
-                            <div className="bottom_txt">
-                                <span className="reg">{data.title}
-                                    <Link to={data.nav} className="link"> {data.button}</Link>
-                                </span>
-                            </div>
+                    return (
+                        <div>
+                            <figure className="banner_img">
+                                <figure className="logo">
+                                    <img src={logoyellow} alt="logo" />
+                                </figure>
+                                <img src={item.image} alt="banner-img" />
+                                <div className="slider_txt">
+                                    <span>Make yourself on what you do best</span>
+                                </div>
+                                <div className="bottom_txt">
+                                    <span className="reg">{data.title}
+                                        <Link to={data.nav} className="link"> {data.button}</Link>
+                                    </span>
+                                </div>
 
-                        </figure>
-                    </div>)
+                            </figure>
+                        </div>)
                 })}
             </Carousel>
         )

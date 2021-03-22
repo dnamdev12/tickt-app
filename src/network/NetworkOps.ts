@@ -1,11 +1,13 @@
 import { get } from 'lodash';
+import storageService from '../utils/storageService';
 import { urlFor } from './Urls';
 
 export interface FetchResponse {
     status?: number | boolean,
     status_code?: number
     message: string,
-    data: any
+    results: any,
+    result: any
 }
 
 export class NetworkOps {
@@ -20,11 +22,11 @@ export class NetworkOps {
                 ...headerOverrides
             },
         };
-
-        if (localStorage.jwtToken) {
+        const token = storageService.getItem('jwtToken');
+        if (token) {
             request.headers = {
                 ...request.headers,
-                Authorization: `Bearer ${localStorage.jwtToken}`,
+                Authorization: `Bearer ${token}`,
             }
         }
         return request;
@@ -36,8 +38,9 @@ export class NetworkOps {
             const response = await fetch(url, request);
             if (!response.ok) {
                 if (response.status === 401) {
-                    if (localStorage.token) {
-                        localStorage.clear();
+                    if (storageService.getItem('jwtToken'))
+                    {
+                        storageService.clearAll();
                         alert('Token Expired')
                     }
                 }
@@ -86,7 +89,7 @@ export class NetworkOps {
         }
     }
 
-    putToJson = async (service: string, data: any): Promise<any> => {
+    putToJson = async (service: string, data: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('PUT');
             request.body = JSON.stringify(data);
