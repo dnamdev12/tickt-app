@@ -298,10 +298,33 @@ body.loader_show .full_loader {
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: var(--yellow); 
+    background: var(--blue); 
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
 ::-webkit-scrollbar-thumb:window-inactive {
-    background:  var(--yellow); 
+    background:  var(--blue); 
 }
 //-------------- Scroll Bar ------------------// 
+
+
+
+//----------------Onboarding carowsel--------------------//
+.react-multi-carousel-dot-list{
+    bottom: 255px;
+}
+.react-multi-carousel-dot {
+    button{
+        background-color: rgba(255, 255, 255, 0.4);
+        width: 8px;
+        height: 8px;
+        border: none;
+    }
+    &.react-multi-carousel-dot--active {
+        button{
+            background-color: var(--white);
+        }
+    }
+}
+
+//----------------Onboarding carowsel--------------------//
+

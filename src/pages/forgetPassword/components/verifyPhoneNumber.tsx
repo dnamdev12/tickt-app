@@ -24,6 +24,7 @@ const VerifyPhoneNumber = () => {
                     </div>
                     <div className="form_wrapper">
                         <form>
+                        <div className="form_field">
                             <span className="show_label"><b>Verification Code</b></span>
                             <div className="otp_input_wrapper">
                                 <input type="number" className="sms-no-box" />
@@ -31,6 +32,7 @@ const VerifyPhoneNumber = () => {
                                 <input type="number" className="sms-no-box" />
                                 <input type="number" className="sms-no-box" />
                                 <input type="number" className="sms-no-box" />
+                            </div>
                             </div>
                             <div className="form_field">
                                 <span className="show_label">We have sent a verification code to your phone.
