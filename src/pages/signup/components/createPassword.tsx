@@ -58,9 +58,6 @@ const CreatePassword = (props: Propstype) => {
                     <button className="fill_btn">Next</button>
                 </div>
             </form>
-            <div className="form_field hide text-center">
-                <span className="reg">No account? <a className="link">Signup</a></span>
-            </div>
         </div>
     )
 }

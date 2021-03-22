@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import gmail from '../../../assets/images/ic-google.png';
 import linkedin from '../../../assets/images/ic-linkedin.png';
 import apple from '../../../assets/images/ic-apple.png';
@@ -117,7 +118,7 @@ const CreateAccount = (props: Propstype) => {
                     </a>
                 </div>
                 <div className="form_field hide text-center">
-                    <span className="reg">Have an account? <a className="link">Sign in</a></span>
+                    <span className="reg">Have an account? <Link to="/login" className="link">Sign in</Link></span>
                 </div>
 
             </form>

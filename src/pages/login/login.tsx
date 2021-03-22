@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-
 import { callLogin } from '../../redux/auth/actions';
 import gmail from '../../assets/images/ic-google.png';
 import linkedin from '../../assets/images/ic-linkedin.png';
@@ -102,8 +101,7 @@ const InitialLoginPage = (props: any) => {
                     </a>
                 </div>
                 <div className="form_field hide text-center">
-                    <span className="reg">No account? <a className="link">Sign
-                        up</a></span>
+                    <span className="reg">No account? <Link to="/signup" className="link">Signup</Link></span>
                 </div>
             </div>
         </AuthParent>
