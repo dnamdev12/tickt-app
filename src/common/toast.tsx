@@ -23,6 +23,7 @@ const Toast = (props: any) => {
     }, [props.showToast]);
 
     return !!props.showToast ? (
+        // Use success and failed class conditionally next to active class
         <div className={`body-message active ${props.toastType}`}>
             <span className="cross-icon" onClick={hideToast}>
                 <img src={close} alt="close" />
