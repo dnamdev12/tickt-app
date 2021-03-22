@@ -75,10 +75,10 @@ textarea {
 }
 .otp_input_wrapper {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
   align-items: center;
-  max-width: 300px;
-  margin: 0 auto 24px;
+  max-width: 330px;
+  margin: 0 auto 0 0;
   .sms-no-box {
     width: 48px;
     height: 48px;
@@ -227,6 +227,7 @@ a.fill_grey_btn {
   top: 50%;
   transform: translateY(-50%);
   background-color: transparent;
+  cursor: pointer;
   &.eye{
     width: 24px;
     height: 24px;
@@ -257,6 +258,24 @@ a.fill_grey_btn {
     height: 17px;
     object-fit: contain;
   }
+}
+
+
+.timer{
+  position: relative;
+  padding-left: 25px;
+  display: inline-block;
+  &::before {
+      width: 15px;
+      height: 15px;
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      background: url('../images/clock.svg') center no-repeat;
+      background-size: contain;
+    }
 }
 
 //--------------Input Check/Radio Box--------------//
@@ -440,7 +459,7 @@ a.fill_grey_btn {
   label {
     font-size: 14px;
     line-height: 1.5;
-    color: var(--blue);
+    color: var(--greyish-brown);
     margin-right: 5px;
     a {
       font-family: 'Neue Haas Grotesk Text Pro Bold';

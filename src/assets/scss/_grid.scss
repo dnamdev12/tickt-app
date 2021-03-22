@@ -118,6 +118,9 @@
       margin: 50px auto;
       text-align: center;
     }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      margin: 50px 0 0 140px;
+    }
     .back_btn{
       background: url('../images/ic-back.png') center no-repeat;
       position: absolute;

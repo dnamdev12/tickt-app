@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import loader from '../assets/images/page-loader.gif';
+import loader from '../assets/images/loader.gif';
 
 const Loader = (props: any) => {
     return (

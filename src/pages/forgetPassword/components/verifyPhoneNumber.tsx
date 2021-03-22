@@ -80,7 +80,6 @@ const VerifyPhoneNumber = (props: Propstype) => {
                     //separator={<span>-</span>}
                     />
                 </div>
-                {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
                 <div className="form_field">
                     <span className="show_label">We have sent a verification code to your phone.
                           Please check SMS and enter the 5-digit code here.</span>

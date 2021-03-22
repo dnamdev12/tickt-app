@@ -69,6 +69,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
                 {/* <div className="otp_input_wrapper">
                                 <input type="number" className="sms-no-box" name="ssn-1" maxLength={1} onChange={changeHandler} />
                             </div> */}
+                             <div className="form_field">
                 <div className="otp_input_wrapper">
                     <OtpInput
                         className="sms-no-box"
@@ -81,6 +82,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
                     />
                 </div>
                 {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
+                </div>
                 <div className="form_field">
                     <span className="show_label">We have sent a verification code to your phone.
                           Please check SMS and enter the 5-digit code here.</span>
