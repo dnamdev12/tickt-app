@@ -4,7 +4,6 @@ import regex from '../../../utils/regex'
 
 interface Propstype {
     onSubmitSignup: (data: any) => void
-    step: number
 }
 
 const AlmostDone = (props: Propstype) => {

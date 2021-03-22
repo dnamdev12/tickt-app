@@ -11,11 +11,13 @@ const ServiceEnum = {
 
 const Urls = {
     signup: `${versions.v1}${ServiceEnum.auth}signup`,
+    login: `${versions.v1}${ServiceEnum.auth}login`,
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
     createPassword: `${versions.v1}${ServiceEnum.auth}createPassword`,
     tradeList: `${versions.v1}${ServiceEnum.auth}tradeList`,
+    forgotPassword: `${versions.v1}${ServiceEnum.auth}forgot_password`,
 }
 
 export const urlFor = (service: String): string => {

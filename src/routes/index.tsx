@@ -13,6 +13,9 @@ const Routes = () => {
             if(route.privateRoute) {
               return <PrivateRoute path={route.path} component={route.component} />
             }
+            if(route.authRoute) {
+              return <PrivateRoute path={route.path} component={route.component} authRoute />
+            }
             return <Route path={route.path} component={route.component} exact={route.exact}/>
           }
           )}

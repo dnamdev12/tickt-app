@@ -64,10 +64,7 @@ const Signup = (props: any) => {
         const data = {
             ...newData,
             company_name: newData.companyName,
-            trade: [
-                "60486a001abc8a08073cf0e1",
-                "60486a3d1abc8a08073cf0e2"
-            ],
+            trade: [newData.trade],
             user_type: Constants.USER_TYPE,
             deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
         }
@@ -101,7 +98,7 @@ const Signup = (props: any) => {
             // case 9:
             //     return <AddABN updateSteps={updateSteps} step={steps}/>
             case 7:
-                return <AlmostDone onSubmitSignup={onSubmitSignup} step={steps} />
+                return <AlmostDone onSubmitSignup={onSubmitSignup} />
             case 8:
                 return <LetsGo history={props.history} />
             default:

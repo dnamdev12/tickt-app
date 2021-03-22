@@ -1,55 +1,101 @@
-import React from 'react';
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import { useState, useEffect } from 'react';
+import { callForgotPassword, verifyOtp } from '../../../redux/auth/actions';
+import Constants from '../../../utils/constants';
+import regex from '../../../utils/regex';
+import OtpInput from "react-otp-input";
 
-const VerifyPhoneNumber = () => {
+interface Propstype {
+    updateSteps: (num: number) => void
+    step: number
+    history?: any
+    mobileNumber: string
+}
+
+const VerifyPhoneNumber = (props: Propstype) => {
+    const [errors, setErrors] = useState<any>({});
+    const [counter, setCounter] = useState(Constants.OTP_TIMER);
+    const [otp, setOTP] = useState('');
+
+    const changeHandler = (newOtp: any) => {
+        setOTP(newOtp)
+    }
+
+    useEffect(() => {
+        const timer: any = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }, [counter]);
+
+    const validateForm = () => {
+        const newErrors: any = {};
+        if (!otp) {
+            newErrors.otp = Constants.errorStrings.otpEmpty;
+        } else {
+            const nameRegex = new RegExp(regex.otp);
+            if (!nameRegex.test(otp)) {
+                newErrors.otp = Constants.errorStrings.otpErr
+            } else if (nameRegex.test(otp) && otp.length < 5) {
+                newErrors.otp = Constants.errorStrings.otpIncorrect
+            }
+        }
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
+    }
+
+    const onSubmit = async (e: any) => {
+        e.preventDefault();
+        if (validateForm()) {
+            const data = {
+                otp: otp
+            }
+            const res: any = await verifyOtp(data)
+            if (res.success) {
+                props.updateSteps(props.step + 1)
+            }
+        }
+    }
+
+    const resendHandler = async (e: any) => {
+        e.preventDefault()
+        const data = {
+            mobileNumber: props.mobileNumber
+        }
+        const res: any = await callForgotPassword(data)
+        if (res.success) {
+            setCounter(Constants.OTP_TIMER)
+        }
+    }
+
     return (
-        <div className="onboard_wrapper">
-            <div className="f_row">
-                <div className="left_col">
+        <div className="form_wrapper">
+            <form onSubmit={onSubmit}>
+                <span className="show_label"><b>Verification Code</b></span>
+                <div className="otp_input_wrapper">
+                    <OtpInput
+                        className="sms-no-box"
+                        inputStyle={{ "width": "48px" }}
+                        value={otp}
+                        onChange={changeHandler}
+                        numInputs={5}
+                        isInputNum
+                    //separator={<span>-</span>}
+                    />
                 </div>
-                <div className="right_col">
-                    <figure className="mob_logo hide">
-                        <img src={colorLogo} alt="Tickt-logo" />
-                    </figure>
-                    <div className="onboarding_head">
-                        <button className="back_btn"></button>
-                        <h1>Verify your number</h1>
-                        <ul className="custom_steppr">
-                            <li className="active"></li>
-                            <li className="active"></li>
-                            <li></li>
-                            <li></li>
-                            <li></li>
-                        </ul>
-                    </div>
-                    <div className="form_wrapper">
-                        <form>
-                            <span className="show_label"><b>Verification Code</b></span>
-                            <div className="otp_input_wrapper">
-                                <input type="number" className="sms-no-box" />
-                                <input type="number" className="sms-no-box" />
-                                <input type="number" className="sms-no-box" />
-                                <input type="number" className="sms-no-box" />
-                                <input type="number" className="sms-no-box" />
-                            </div>
-                            <div className="form_field">
-                                <span className="show_label">We have sent a verification code to your phone.
+                {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
+                <div className="form_field">
+                    <span className="show_label">We have sent a verification code to your phone.
                           Please check SMS and enter the 5-digit code here.</span>
-                            </div>
-                            <div className="form_field text-center">
-                                <span className="show_label">Don’t you receive any codes?</span>
-                                <a href="#" className="link">Re-send code</a>
-                            </div>
-                            <div className="form_field text-center">
-                                <span className="show_label timer">0:21</span>
-                            </div>
-                            <div className="form_field">
-                                <button className="fill_btn">Next</button>
-                            </div>
-                        </form>
-                    </div>
                 </div>
-            </div>
+                {counter === 0 && <div className="form_field text-center">
+                    <span className="show_label">Don’t you receive any codes?</span>
+                    <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
+                </div>}
+                {counter > 0 && <div className="form_field text-center">
+                    <span className="show_label timer">{counter}</span>
+                </div>}
+                <div className="form_field">
+                    <button className="fill_btn">Next</button>
+                </div>
+            </form>
         </div>
     )
 }

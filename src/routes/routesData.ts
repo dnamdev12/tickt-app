@@ -9,23 +9,26 @@ import ForgerPassword from '../pages/forgetPassword/forgetPassword'
         name: 'home',
         path: '/',
         exact: true,
-        component: Home
+        component: Home,
     },
     {
         name: 'login',
         path: '/login',
         component: Login,
-        privateRoute: true,
+        authRoute: true,
     },
     {
         name: 'signup',
         path: '/signup',
-        component: Signup
+        component: Signup,
+        authRoute: true,
+        // privateRoute: true
     },
     {
         name: 'forgetpassword',
-        path: '/forget-password/reset',
-        component: ForgerPassword
+        path: '/reset-password',
+        component: ForgerPassword,
+        authRoute: true,
     },
     {
         name: 'notFound',

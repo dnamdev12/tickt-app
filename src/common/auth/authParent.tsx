@@ -1,5 +1,4 @@
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
-
 import AuthSlider from './authSlider';
 
 interface Props {
@@ -8,6 +7,7 @@ interface Props {
     header: any;
     children: any,
     sliderType: string,
+    hideProgres?: boolean
 }
 
 const AuthParent = (props: Props) => {
@@ -25,12 +25,10 @@ const AuthParent = (props: Props) => {
                         {(!!props.steps || props.sliderType === 'signup') && <button className="back_btn" onClick={props.backButtonHandler} />}
                         <h1>{props.header.title}</h1>
                         {props.header.subTitle && <span className="show_label">{props.header.subTitle}</span>}
-                        {!!props.steps && <ul className="custom_steppr">
+                        {!!props.steps && !props.hideProgres && <ul className="custom_steppr">
                             {
                                 Array.from(Array(8).keys()).map((i) => {
-                                    return (
-                                        <li key={i} className={i < 1 ? 'active' : ''} />
-                                    )
+                                    return <li key={i} className={props.steps !== undefined && i < props.steps ? 'active' : ''} />
                                 })
                             }
                         </ul>}
