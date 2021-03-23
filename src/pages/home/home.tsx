@@ -10,10 +10,7 @@ import menu from '../../assets/images/menu-line-white.svg';
 import bell from '../../assets/images/ic-notification.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import profile from '../../assets/images/ic-profile.png';
-import referal from '../../assets/images/ic-referal.png';
-import terms from '../../assets/images/ic-terms.png';
-import support from '../../assets/images/ic-support.png';
-import tutorials from '../../assets/images/ic-tutorial.png';
+import uc from '../../assets/images/uc.png';
 
 const Home = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -61,18 +58,17 @@ const Home = () => {
                             <img src={menu} alt="menu" />
                         </li>
                         <div className="profile_notification">
-                            <div className="notification_bell">
+                            {storageService.getItem("jwtToken") && <div className="notification_bell">
                                 <figure className="bell">
                                     <span className="badge">4 </span>
                                     <img src={bell} alt="notify" />
                                 </figure>
-                            </div>
+                            </div>}
                             <div className="user_profile">
-                                {storageService.getItem("jwtToken") ?
-                                    (<figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                {storageService.getItem("jwtToken") &&
+                                    <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                         <img src={dummy} alt="profile-img" />
-                                    </figure>) :
-                                    (<li> <Link to="/login" className="active">Log in</Link></li>)}
+                                    </figure>}
                                 <Menu className="sub_menu"
                                     id="simple-menu"
                                     anchorEl={anchorEl}
@@ -80,6 +76,7 @@ const Home = () => {
                                     open={Boolean(anchorEl)}
                                     onClose={handleClose}
                                 >
+                                    <span className="sub_title">John Oldman</span>
                                     <MenuItem onClick={handleClose}>
                                         <span className="setting_icon">
                                             <img src={profile} />
@@ -87,45 +84,24 @@ const Home = () => {
                                         </span>
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <span className="setting_icon" onClick={logoutHandler}>Logout</span>
+                                        <span className="setting_icon logout" onClick={logoutHandler}>Logout</span>
                                     </MenuItem>
                                 </Menu>
-
-
-                                {/* <div className="sub_menu">
-                                    <span className="setting_icon">
-                                        <img src={profile} />
-                          My Profile
-                          </span>
-                                    <span className="setting_icon">
-                                        <img src={referal} />
-                          Referral Program
-                          </span>
-                                    <span className="setting_icon">
-                                        <img src={terms} />
-                          Terms & Conditions
-                          </span>
-                                    <span className="setting_icon">
-                                        <img src={support} />
-                          Support Chat
-                          </span>
-                                    <span className="setting_icon">
-                                        <img src={tutorials} />
-                          Tutorial
-                          </span>
-
-                                    <span className="setting_icon">Logout</span>
-
-                                </div> */}
                             </div>
                         </div>
-
-
-                        {/* <li>
-                            <a className="active">Log in</a>
-                        </li> */}
+                        {!storageService.getItem("jwtToken") && <li> <Link to="/login" className="active">Log in</Link></li>}
                     </ul>
                 </div>
+                {/* Under construction */}
+                <div className="custom_container">
+                    <div className="under_construction_wrap">
+                        <figure className="constrction_img">
+                            <img src={uc} alt="coming soon" />
+                        </figure>
+                        <h2>This Page is under construction. Please come back later.</h2>
+                    </div>
+                </div>
+                {/* Under construction close*/}
             </div>
         </header>
     )
