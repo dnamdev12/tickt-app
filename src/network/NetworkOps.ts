@@ -6,7 +6,6 @@ export interface FetchResponse {
     status?: number | boolean,
     status_code?: number
     message: string,
-    results: any,
     result: any
 }
 

@@ -1,7 +1,9 @@
 import React from 'react';
+import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import storageService from '../../utils/storageService';
 
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
@@ -13,11 +15,7 @@ import terms from '../../assets/images/ic-terms.png';
 import support from '../../assets/images/ic-support.png';
 import tutorials from '../../assets/images/ic-tutorial.png';
 
-
-
 const Home = () => {
-
-
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -28,6 +26,9 @@ const Home = () => {
         setAnchorEl(null);
     };
 
+    const logoutHandler = () => {
+        storageService.removeItem("jwtToken")
+    }
 
     return (
         <header id="header">
@@ -67,9 +68,11 @@ const Home = () => {
                                 </figure>
                             </div>
                             <div className="user_profile">
-                                <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                    <img src={dummy} alt="profile-img" />
-                                </figure>
+                                {storageService.getItem("jwtToken") ?
+                                    (<figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                        <img src={dummy} alt="profile-img" />
+                                    </figure>) :
+                                    (<li> <Link to="/login" className="active">Log in</Link></li>)}
                                 <Menu className="sub_menu"
                                     id="simple-menu"
                                     anchorEl={anchorEl}
@@ -84,7 +87,7 @@ const Home = () => {
                                         </span>
                                     </MenuItem>
                                     <MenuItem onClick={handleClose}>
-                                        <span className="setting_icon">Logout</span>
+                                        <span className="setting_icon" onClick={logoutHandler}>Logout</span>
                                     </MenuItem>
                                 </Menu>
 

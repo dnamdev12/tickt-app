@@ -50,8 +50,9 @@ export const verifyOtp = async(data: object) => {
 };
 
 export const createPassword = async(passwordInfo: object) => {
+  setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.createPassword, passwordInfo);
-  console.log('res', response);
+  setLoading(false);
   if(response.status_code === 200) {
     return {success: true, message: response.message};
   }
