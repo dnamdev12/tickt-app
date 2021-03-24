@@ -11,7 +11,7 @@ import AlmostDone from './components/almostDone';
 import ChooseQualification from './components/chooseQualification';
 import AddQualification from './components/addQualification';
 import AddABN from './components/addABN';
-import { postSignup } from '../../redux/auth/actions';
+import { postSignup, socialSignup } from '../../redux/auth/actions';
 import Constants from '../../utils/constants';
 import AuthParent from '../../common/auth/authParent';
 
@@ -33,6 +33,8 @@ const Signup = (props: any) => {
         mobileNumber: '',
         email: '',
         password: '',
+        socialId: '',
+        accountType: '',
         trade: '',
         specialization: [],
         // companyName: '',
@@ -59,7 +61,19 @@ const Signup = (props: any) => {
         }
     }
 
+    const onAuthSocial = (profileData: any, authType: string) => {
+        setSteps(steps + 1);
+        const newProfileData = {
+            firstName: profileData.name,
+            email: profileData.email,
+            socialId: profileData.googleId,
+            accountType: authType
+        }
+        setSignupData((prevData: any) => ({ ...prevData, ...newProfileData }))
+    }
+
     const onSubmitSignup = async (almostData: any) => {
+        var res;
         const newData = {...signupData, ...almostData};
         const data = {
             ...newData,
@@ -69,7 +83,13 @@ const Signup = (props: any) => {
             deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
         }
         delete data.companyName;
-        const res = await postSignup(data);
+        if(!signupData.accountType){
+            delete data.socialId;
+            delete data.accountType;
+            res = await postSignup(data);
+        } else {
+            res = await socialSignup(data);
+        }
         if(res.success) {
             setSteps(8);
         }
@@ -80,7 +100,7 @@ const Signup = (props: any) => {
             case 0:
                 return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} />
             case 1:
-                return <CreateAccount updateSteps={updateSteps} step={steps} data={signupData} />
+                return <CreateAccount updateSteps={updateSteps} step={steps} data={signupData} onAuthSocial={onAuthSocial}/>
             case 2:
                 return <PhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
             case 3:

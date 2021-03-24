@@ -5,13 +5,14 @@ import linkedin from '../../../assets/images/ic-linkedin.png';
 import apple from '../../../assets/images/ic-apple.png';
 import { checkEmailId } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
-import regex from '../../../utils/regex'
-
+import regex from '../../../utils/regex';
+import SocialAuth from "../../../common/auth/socialAuth";
 interface Propstype {
-    updateSteps: (num: number, data: any) => void
-    step: number
-    history?: any
+    updateSteps: (num: number, data: any) => void,
+    step: number,
+    history?: any,
     data: any,
+    onAuthSocial: (data: object, authType: string) => void,
 }
 
 const CreateAccount = (props: Propstype) => {
@@ -36,7 +37,6 @@ const CreateAccount = (props: Propstype) => {
             newErrors.firstName = Constants.errorStrings.fullNameEmpty;
         } else {
             const nameRegex = new RegExp(regex.fullname);
-            console.log(nameRegex, 'firstName regex', nameRegex.test(signupData.firstName))
             if (signupData.firstName.length < 3) {
                 newErrors.firstName = Constants.errorStrings.fullNameShortErr
             } else if (!nameRegex.test(signupData.firstName)) {
@@ -59,7 +59,7 @@ const CreateAccount = (props: Propstype) => {
     }
 
     const onSubmit = async (e: any) => {
-        const data = {...signupData};
+        const data = { ...signupData };
         delete data.tnc;
         e.preventDefault();
         if (validateForm()) {
@@ -106,17 +106,7 @@ const CreateAccount = (props: Propstype) => {
                     <button type="submit" className="fill_btn">Sign up</button>
                 </div>
                 <span className="show_label text-center">or continue with</span>
-                <div className="continue_with">
-                    <a href="javascript:void(0)">
-                        <img src={gmail} alt="google" />
-                    </a>
-                    <a href="javascript:void(0)" >
-                        <img src={linkedin} alt="facebook" />
-                    </a>
-                    <a href="javascript:void(0)" >
-                        <img src={apple} alt="facebook" />
-                    </a>
-                </div>
+                <SocialAuth onSuccess={props.onAuthSocial} />
                 <div className="form_field hide text-center">
                     <span className="reg">Have an account? <Link to="/login" className="link">Sign in</Link></span>
                 </div>
