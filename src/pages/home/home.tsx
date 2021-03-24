@@ -28,82 +28,86 @@ const Home = () => {
     }
 
     return (
-        <header id="header">
-            <div className="custom_container">
-                <div className="flex_headrow">
-                    <div className="brand_wrap">
-                        <figure>
-                            <img src={colorLogo}
-                                alt="logo-white" />
-                        </figure>
-                    </div>
-                    <ul className="center_nav">
-                        <li>
-                            <a className="active">Discover</a>
-                        </li>
-                        <li>
-                            <a >Jobs</a>
-                        </li>
-                        <li>
-                            <a >Post</a>
-                        </li>
-                        <li>
-                            <a >Chat</a>
-                        </li>
-                    </ul>
+        <div className="app_wrapper">
+            <header id="header">
+                <div className="custom_container">
+                    <div className="flex_headrow">
+                        <div className="brand_wrap">
+                            <figure>
+                                <img src={colorLogo}
+                                    alt="logo-white" />
+                            </figure>
+                        </div>
+                        <ul className="center_nav">
+                            <li>
+                                <a className="active">Discover</a>
+                            </li>
+                            <li>
+                                <a >Jobs</a>
+                            </li>
+                            <li>
+                                <a >Post</a>
+                            </li>
+                            <li>
+                                <a >Chat</a>
+                            </li>
+                        </ul>
 
 
-                    <ul className="side_nav">
-                        <li className="mob_nav">
-                            <img src={menu} alt="menu" />
-                        </li>
-                        <div className="profile_notification">
-                            {storageService.getItem("jwtToken") && <div className="notification_bell">
-                                <figure className="bell">
-                                    <span className="badge">4 </span>
-                                    <img src={bell} alt="notify" />
-                                </figure>
-                            </div>}
-                            <div className="user_profile">
-                                {storageService.getItem("jwtToken") &&
-                                    <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                        <img src={dummy} alt="profile-img" />
-                                    </figure>}
-                                <Menu className="sub_menu"
-                                    id="simple-menu"
-                                    anchorEl={anchorEl}
-                                    keepMounted
-                                    open={Boolean(anchorEl)}
-                                    onClose={handleClose}
-                                >
-                                    <span className="sub_title">John Oldman</span>
-                                    <MenuItem onClick={handleClose}>
-                                        <span className="setting_icon">
-                                            <img src={profile} />
+                        <ul className="side_nav">
+                            <li className="mob_nav">
+                                <img src={menu} alt="menu" />
+                            </li>
+                            <div className="profile_notification">
+                                {storageService.getItem("jwtToken") && <div className="notification_bell">
+                                    <figure className="bell">
+                                        <span className="badge">4 </span>
+                                        <img src={bell} alt="notify" />
+                                    </figure>
+                                </div>}
+                                <div className="user_profile">
+                                    {storageService.getItem("jwtToken") &&
+                                        <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                            <img src={dummy} alt="profile-img" />
+                                        </figure>}
+                                    <Menu className="sub_menu"
+                                        id="simple-menu"
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={Boolean(anchorEl)}
+                                        onClose={handleClose}
+                                    >
+                                        <span className="sub_title">John Oldman</span>
+                                        <MenuItem onClick={handleClose}>
+                                            <span className="setting_icon">
+                                                <img src={profile} />
                                             My Profile
                                         </span>
-                                    </MenuItem>
-                                    <MenuItem onClick={handleClose}>
-                                        <span className="setting_icon logout" onClick={logoutHandler}>Logout</span>
-                                    </MenuItem>
-                                </Menu>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleClose}>
+                                            <span className="setting_icon logout" onClick={logoutHandler}>Logout</span>
+                                        </MenuItem>
+                                    </Menu>
+                                </div>
                             </div>
-                        </div>
-                        {!storageService.getItem("jwtToken") && <li> <Link to="/login" className="active">Log in</Link></li>}
-                    </ul>
-                </div>
-                {/* Under construction */}
-                <div className="custom_container">
-                    <div className="under_construction_wrap">
-                        <figure className="constrction_img">
-                            <img src={uc} alt="coming soon" />
-                        </figure>
-                        <h2>This Page is under construction. Please come back later.</h2>
+                            {!storageService.getItem("jwtToken") && <li> <Link to="/login" className="active">Log in</Link></li>}
+                        </ul>
                     </div>
+
                 </div>
-                {/* Under construction close*/}
+            </header>
+
+           
+            <div className="custom_container">
+                <div className="under_construction_wrap">
+                    <figure className="constrction_img">
+                        <img src={uc} alt="coming soon" />
+                    </figure>
+                    <h2>This Page is under construction. Please come back later.</h2>
+                </div>
             </div>
-        </header>
+            
+        </div>
     )
 }
 

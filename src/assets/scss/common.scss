@@ -79,7 +79,7 @@ body{
 .commn_para {
   font-size: 14px;
   line-height: 1.56;
-  color: var(--black-four);
+  color: var(--blue);
   margin: 0 0 15px 0;
   @media (max-width: 650px) {
     font-size: 12px;
@@ -1800,12 +1800,12 @@ body{
 .body-message {
   position: fixed;
   width: 350px;
-  min-height: 60px;
+  min-height: 120px;
   right: 50px;
   top: 0;
   margin: 15px 0;
   display: flex;
-  background: var(--blue-two);
+  background-color: var(--white);
   box-shadow: 0 0 5px #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -1817,13 +1817,48 @@ body{
     visibility: visible;
   }
   &.success{
-    background-color: var(--green);
+    background: var(--white) url('../images/check.png') no-repeat;
+    background-size: 45%;
+    background-position: -18% 70%;
+    .fill_btn{
+      background-color: var(--green);
+    }
   }
   &.failed{
-    background-color: #ed1c24;
+    background: var(--white) url('../images/close.png') no-repeat;
+    background-size: 45%;
+    background-position: -18% 70%;
+    .fill_btn{
+      background-color: #ed1c24;
+    }
+  }
+  &.warning{
+    background: var(--white) url('../images/warning.png') no-repeat;
+    background-size: 45%;
+    background-position: -18% 70%;
+    .fill_btn{
+      background-color: #e0d861;
+    }
+  }
+  &.info{
+    background: var(--white) url('../images/info-button.png') no-repeat;
+    background-size: 45%;
+    background-position: -18% 70%;
+    .fill_btn{
+      background-color: var(--blue-two);
+    }
+  }
+  .wrapppr{
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    flex-flow: column;
+    width: 98%;
   }
   .commn_para{
-    color: var(--white);
+    max-width: 75%;
+    text-align: right;
+    margin: 0 0 7px 0;
   }
   .cross-icon {
     display: inline-block;
@@ -1831,6 +1866,11 @@ body{
     right: 3px;
     top: 4px;
     cursor: pointer;
+  }
+  .fill_btn{
+    padding: 8px 20px;
+    font-size: 12px;
+    color: var(--white);
   }
 }
 //-------------Toast close-----------------//
