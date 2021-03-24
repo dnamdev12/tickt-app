@@ -9,7 +9,7 @@ const ServiceEnum = {
     auth: 'auth/',
 }
 
-const Urls = {
+ const Urls = {
     signup: `${versions.v1}${ServiceEnum.auth}signup`,
     login: `${versions.v1}${ServiceEnum.auth}login`,
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
@@ -18,6 +18,8 @@ const Urls = {
     createPassword: `${versions.v1}${ServiceEnum.auth}createPassword`,
     tradeList: `${versions.v1}${ServiceEnum.auth}tradeList`,
     forgotPassword: `${versions.v1}${ServiceEnum.auth}forgot_password`,
+    checkSocialId: `${versions.v1}${ServiceEnum.auth}checkSocialId`,
+    SocialAuth: `${versions.v1}${ServiceEnum.auth}socialAuth`,
 }
 
 export const urlFor = (service: String): string => {

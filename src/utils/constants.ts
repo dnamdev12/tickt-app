@@ -1,3 +1,8 @@
+const SocialAuth = {
+    GOOGLE_CLIENT_ID: '851150341637-9eaf8kkqhlq75gd30ck7ouhqjtn8j4cq.apps.googleusercontent.com',
+    GOOGLE_SECRET_KEY: 'QZPArMrdjCvt7ODvnKRa1hhA',
+}
+
 const errorStrings = {
 fullNameEmpty: 'Full Name cannnot be empty',
 fullNameErr: 'Please enter a valid name',
@@ -35,5 +40,6 @@ const USER_TYPE = 2;
 export default {
     errorStrings,
     OTP_TIMER,
-    USER_TYPE
+    USER_TYPE,
+    SocialAuth
 }

@@ -5,85 +5,108 @@ import { setShowToast, setLoading } from './../common/actions';
 import storageService from '../../utils/storageService';
 
 //signup
-export const postSignup = async(data: any) => {
-    setLoading(true);
-    const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
-    setLoading(false);
-    if(response.status_code === 200) {
-      return {success: true};
-    }
-    setShowToast(true, response.message);
-    return {success: false};
+export const postSignup = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
 };
 
-export const checkEmailId = async(email: string) => {
+export const checkEmailId = async (email: string) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkEmailId + `?email=${email}`);
   setLoading(false);
-  if(response.status_code === 200) {
-    return {success: true};
+  if (response.status_code === 200) {
+    return { success: true };
   }
   setShowToast(true, response.message);
-  return {success: false};
+  return { success: false };
 };
 
-export const checkMobileNumber = async(mobile: string | number) => {
+export const checkMobileNumber = async (mobile: string | number) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkMobileNumber + `?mobileNumber=${mobile}`);
   setLoading(false);
-  if(response.status_code === 200) {
-    return {success: true};
+  if (response.status_code === 200) {
+    return { success: true };
   }
   setShowToast(true, response.message);
-  return {success: false};
+  return { success: false };
 };
 
-export const verifyOtp = async(data: object) => {
+export const verifyOtp = async (data: object) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.verifyOTP, data);
   setLoading(false);
-  if(response.status_code === 200) {
-    return {success: true, message: response.message};
+  if (response.status_code === 200) {
+    return { success: true, message: response.message };
   }
   setShowToast(true, response.message);
-  return {success: false}
+  return { success: false }
 };
 
-export const createPassword = async(passwordInfo: object) => {
+export const createPassword = async (passwordInfo: object) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.createPassword, passwordInfo);
   setLoading(false);
-  if(response.status_code === 200) {
-    return {success: true, message: response.message};
+  if (response.status_code === 200) {
+    return { success: true, message: response.message };
   }
   setShowToast(true, response.message);
-  return {success: false, message: response.message};
+  return { success: false, message: response.message };
 };
 
-export const callTradeList = () => ({type: actionTypes.CALL_TRADE_LIST})
+export const callTradeList = () => ({ type: actionTypes.CALL_TRADE_LIST })
 
 //login
-export const callLogin = async(data: any) => {
+export const callLogin = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.login, data);
   setLoading(false);
-  if(response.status_code === 200) {
+  if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
-    return {success: true};
+    return { success: true };
   }
   setShowToast(true, response.message);
-  return {success: false};
+  return { success: false };
 };
 
-export const callForgotPassword = async(data: any) => {
+export const callForgotPassword = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.forgotPassword, data);
   setLoading(false);
-  if(response.status_code === 200) {
-    return {success: true};
+  if (response.status_code === 200) {
+    return { success: true };
   }
   setShowToast(true, response.message);
-  return {success: false};
+  return { success: false };
+};
+
+export const checkSocialId = async (socialID: string) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.checkSocialId + `?socialId=${socialID}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  //setShowToast(true, response.message);
+  return { success: false };
+};
+
+//social signup
+export const socialSignup = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.SocialAuth, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
 };
 
 
