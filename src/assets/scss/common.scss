@@ -728,7 +728,7 @@ body{
 }
 .bottom_txt {
   position: absolute;
-  bottom: 18%;
+  bottom: 25%;
   left: 50%;
   transform: translateX(-50%);
   z-index: 9;
@@ -755,6 +755,7 @@ body{
     height: 100vh;
   }
   img {
+    width: 100%;
     @media (max-width: 1366px) {
       height: 100%;
       object-fit: cover;
@@ -773,7 +774,7 @@ body{
   z-index: 9;
   text-align: center;
   position: absolute;
-  top: 50%;
+  top: 45%;
   left: 50%;
   transform: translate(-50%, 50%);
   width: 100%;
