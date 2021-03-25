@@ -3,14 +3,33 @@ import Constants from '../../utils/constants';
 import gmail from '../../assets/images/ic-google.png';
 import linkedin from '../../assets/images/ic-linkedin.png';
 import apple from '../../assets/images/ic-apple.png';
-import { checkSocialId } from '../../redux/auth/actions';
+import { checkSocialId, callSocialLinkedin } from '../../redux/auth/actions';
+import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
+// @ts-ignore
 import { GoogleLogin } from 'react-google-login';
 // @ts-ignore
 import { LinkedIn } from 'react-linkedin-login-oauth2';
-import AppleLogin from 'react-apple-login'
+// @ts-ignore
+//import AppleLogin from 'react-apple-login'
 
 interface Propstype {
     onSuccess: Function
+}
+
+const linkedinData = {
+    //url: "https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&code=",
+    //url: "https://www.linkedin.com/oauth/v2/authorization?response_type=code&state=789878909&scope=r_liteprofile&client_id=77vhhfg24hx1s2&redirect_uri=https://www.google.com/",
+    authorizationCode: '',
+    REDIRECT_URI: `${window.location.origin}/linkedin`,
+    CLIENT_ID: '77vhhfg24hx1s2',
+    CLIENT_SECRET: '83ODjX9bN2GIjCoj',
+    //1.
+    //https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=77vhhfg24hx1s2&scope=r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/
+    //https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77vhhfg24hx1s2&scope=r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/
+
+    //2
+    //https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&redirect_uri=http://localhost:3000/&client_id=77vhhfg24hx1s2&client_secret=83ODjX9bN2GIjCoj&code=AQSdeaJsO1qXWgna4dYRAZawQs4MCiB9foRUKqtmiuR2egEsWYXFP7M6iaRXSOO13GaOnQS8t5sAHJgCE1Gd63Bt0HNthIP0yDW4nbDsRTOKdHBHe72ayfH2MtDvFx77nSOwQMaN7zzeqaRxbGRqivyK10FHpY4wX5AZ2tmsDT-KYXgDXOtigV7HRhEwdm4I_OzbqenhxatGVN7rMVk&state=gjhcbf355ESDE
+    //https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&redirect_uri=http://localhost:3000/&client_id=77vhhfg24hx1s2&client_secret=83ODjX9bN2GIjCoj&code=AQSmVVpQz0hq65r5aD2Tv2IkpM75IqCkLLKR2cpgv_zWUfSKClhpATa_4UVVkxivWAs6qgzIPwdfZLix5zVWIEw_v_Hiz0C1hZcq3uaj8GweTz_yXU8c2fP_PWFriV-264VjPk_Qfy7s-WJ0x6a9w-zanbaZ-SKcJN_ic4BD74fUVoNoxHHeH2Zrt84TFp5wRBApR9ER_EmkPnLR1QU&state=abhj57rfyged2
 }
 
 const SocialAuth = (props: Propstype) => {
@@ -22,17 +41,23 @@ const SocialAuth = (props: Propstype) => {
 
     const onFailure = (error: any) => {
         console.log(error);
+        console.log(error.errorMessage)
     };
 
-    const googleResponse = (response: any) => {
+    const googleResponse = async (response: any) => {
         console.log(response, "g-oauth response");
-        if (checkSocialId(response.googleId)) {
+        const res = await checkSocialId(response.googleId)
+        if (res.success) {
             props.onSuccess(response.profileObj, 'google')
         }
     };
 
-    const linkedinResponse = (response: any) => {
+    const linkedinResponse = async (response: any) => {
         console.log(response, "linkedin-oauth response")
+        linkedinData.authorizationCode = response.code
+        const url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${linkedinData.CLIENT_ID}&scope=r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/`
+        const res = await callSocialLinkedin(url)
+        console.log(res, "okk")
     }
 
     return (
@@ -41,26 +66,32 @@ const SocialAuth = (props: Propstype) => {
                 clientId={Constants.SocialAuth.GOOGLE_CLIENT_ID}
                 onSuccess={googleResponse}
                 onFailure={onFailure}
-                render={(renderProps) => (<a href="javascript:void(0)" onClick={renderProps.onClick}>
+                render={(renderProps: any) => (<a href="javascript:void(0)" onClick={renderProps.onClick}>
                     <img src={gmail} alt="google" />
                 </a>)}
             />
-            {/* <LinkedIn
-                clientId="81lx5we2omq9xh"
-                onFailure={linkedinResponse}
-                onSuccess={onFailure}
-                redirectUri="http://localhost:3000/linkedin"
+            <LinkedIn
+                clientId="77vhhfg24hx1s2"
+                onSuccess={linkedinResponse}
+                onFailure={onFailure}
+                scope="r_emailaddress"
+                state="34232423"
+                redirectUri={`${window.location.origin}/linkedin`}
+                renderElement={(renderProps: any) => (<a href="javascript:void(0)" onClick={renderProps.onClick} >
+                    <img src={linkedin} alt="linkedin" />
+                </a>
+                )}
             />
-            <AppleLogin
+            {/* <AppleLogin
                 clientId="com.react.apple.login"
                 redirectURI="https://redirectUrl.com"
             /> */}
-            <a href="javascript:void(0)" >
+            {/* <a href="javascript:void(0)" >
                 <img src={linkedin} alt="linkedin" />
-            </a>
-            <a href="javascript:void(0)" >
+            </a> */}
+            {/* <a href="javascript:void(0)" >
                 <img src={apple} alt="apple" />
-            </a>
+            </a> */}
         </div>
     )
 }
