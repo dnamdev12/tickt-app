@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import Constants from '../../../utils/constants';
-import { setShowToast } from '../../../redux/common/actions'
+import { setShowToast } from '../../../redux/common/actions';
+import  spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
+
 interface Propstype {
     updateSteps: (num: number, data: any) => void
     step: number
@@ -32,7 +34,8 @@ const SelectCategories = (props: Propstype) => {
                     return (
                         <li className={active ? 'active' : ''} onClick={() => onClick(item._id)}>
                             <figure>
-                                <img src={item[active ? 'selected_url' : 'unselected_url']} alt={item.trade_name} />
+                                {/* <img src={item[active ? 'selected_url' : 'unselected_url']} alt={item.trade_name} /> */}
+                                <img src= {spherePlaceholder} />
                             </figure>
                             <span className="name">{item.trade_name}</span>
                         </li>

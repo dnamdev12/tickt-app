@@ -47,7 +47,7 @@ class AuthSlider extends Component<Props> {
         };
         const data = DATA[this.props.type];
         return (
-            <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false}>
+            <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false} infinite={true}>
                 {SLIDER_DATA.map((item) => {
                     return (
                         <div>

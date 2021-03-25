@@ -161,10 +161,22 @@
       padding-left: 35px;
     }
     .checkbox_wrap{
-      margin-bottom: 24px;
       label{
-        font-size: 16px;
+        max-width: 240px;
       }
+    }
+    .f_spacebw{
+      margin-bottom: 24px;
+    }
+    .upload_btn{
+      @include border-radius(3px);
+      background-color: var(--grey);
+      font-size: 12px;
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      color: var(--blue);
+      padding: 10px 15px;
+      display: inline-block;
+      cursor: pointer;
     }
   }
 
