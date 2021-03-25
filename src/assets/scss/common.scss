@@ -219,6 +219,10 @@ body{
   }
 }
 
+.none{
+  display: none;
+}
+
 .mb_wrap {
   @media (max-width: 812px) {
     display: flex;
@@ -239,6 +243,46 @@ body{
   max-width: 200px;
   margin: 30px auto 0;
   text-align: center;
+}
+
+
+// preview
+
+.file_upload_box{
+  border: 1px solid var(--warm-gray);
+  padding: 4px 7px;
+  width: 100px;
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 3px;
+  .close {
+    position: absolute;
+    right: -8px;
+    top: -8px;
+    cursor: pointer;
+    img {
+      width: 18px;
+    }
+  }
+  .file_icon {
+    width: 32px;
+    height: 32px;
+    display: inline-block;
+    margin: 0 8px 0 0;
+  }
+  .file_details {
+    width: 73%;
+  }
+  .name {
+    width: 95%;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    color: var(--blue);
+  }
 }
 
 
@@ -1905,3 +1949,234 @@ body{
 
 
 
+//-------------------Home----------------//
+.home_banner {
+  .banner_img {
+    position: relative;
+    width: 100%;
+    height: 472px;
+    @media (max-width: 650px) {
+      height: 390;
+    }
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .banner_container {
+    position: absolute;
+    top: 150px;
+    left: 380px;
+    width: 864px;
+    @media (max-width: 1200px) {
+      left: 60px;
+      width: 650px;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      left: 80px;
+      top: 90px;
+    }
+    @media (max-width: 768px) {
+      top: 100px;
+    }
+    @media (max-width: 650px) {
+      width: 95%;
+      left: 10px;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 560px;
+    }
+    .commn_para {
+      color: var(--white);
+      margin-bottom: 25px;
+      font-size: 16px;
+    }
+    .view-btn {
+      background-color: var(--white);
+      border: 1px solid  var(--white);
+      color:  var(--blue-two);
+      padding: 14px 20px;
+      max-width: 176px;
+      width: 100%;
+      &:hover{
+        background-color: transparent;
+        color: var(--white);
+      }
+    }
+  }
+  .commn_para {
+    font-size: 14px;
+    line-height: 1.56;
+    color: var(--blue);
+    margin: 0 0 15px 0;
+    @media (max-width: 650px) {
+      font-size: 12px;
+    }
+  }
+
+  .heading {
+    font-size: 34px;
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    line-height: 1;
+    letter-spacing: 0.3px;
+    color: var(--white);
+    margin-bottom: 5px;
+    white-space: nowrap;
+    // width: 0;
+    overflow: hidden;
+    @media (max-width: 650px) {
+      font-size: 24px;
+    }
+  }
+}
+
+.home_search {
+  margin-bottom: 55px;
+  position: relative;
+  width: 864px;
+  border-radius: 3px;
+  z-index: 99;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    width: 100%;
+    margin-bottom: 35px;
+  }
+  .modal_srch_close {
+    display: none;
+  }
+  &.top_search {
+    background-color: var(--white);
+    margin: auto;
+    position: fixed;
+    top: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 99;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      position: absolute;
+    }
+
+    .modal_srch_close {
+      position: absolute;
+      right: 9px;
+      z-index: 99;
+      background-color: transparent;
+      padding: 5px;
+      border-radius: 50%;
+      display: none;
+    }
+
+    @media (max-width: 812px) {
+      left: -100%;
+      -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+      transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+      &.active {
+        left: 50%;
+        top: 90px;
+      }
+      .modal_srch_close {
+        display: block;
+        top: -15px;
+        right: 5px;
+      }
+    }
+  }
+
+  input {
+    padding: 22px 26px 22px 40px;
+    border-color: transparent;
+    &:hover,
+    &:focus,
+    &.active {
+      @media (max-width: 768px) {
+        border-color: transparent !important;
+      }
+    }
+  }
+  .detect_icon_ltr {
+    left: 15px;
+    &.calendar {
+      background: url('../images/ic-calendar.png') 50% no-repeat;
+      background-size: contain;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+  }
+  @media (max-width: 650px) {
+    margin-bottom: 40px;
+  }
+  .search_wrapr {
+    width: 100%;
+    border-radius: 3px;
+    border: solid 1px var(--light-gray);
+    background-color: var(--white);
+    position: relative;
+    ul {
+      display: flex;
+      flex: 1;
+      @media (max-width: 768px) {
+        flex-flow: column;
+      }
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        flex-flow: column;
+      }
+      li {
+        width: 30.8%;
+        @media (max-width: 768px) {
+          width: 100%;
+        }
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+          width: 100%;
+        }
+        &:last-child {
+          @media (max-width: 768px) {
+            width: 85%;
+          }
+        }
+        &.categ_box {
+          .selectd_input {
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            input {
+              padding: 22px 30px 22px 60px;
+            }
+          }
+        }
+        &.loc_box {
+          input {
+            padding: 22px 32px 22px 40px;
+          }
+        }
+      }
+      .search_btn {
+        position: absolute;
+        right: 0;
+        top: 0;
+        @media (max-width: 768px) {
+          top: auto;
+          bottom: 10px;
+        }
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+          top: auto;
+          bottom: 10px;
+        }
+        .fill_btn,
+        .outline_btn {
+          padding: 12px 15px;
+          width: 64px;
+          height: 64px;
+          img{
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
+}
+//-------------------Home close----------------//
