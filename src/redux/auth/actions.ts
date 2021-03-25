@@ -93,14 +93,33 @@ export const checkSocialId = async (socialID: string) => {
   if (response.status_code === 200) {
     return { success: true };
   }
-  //setShowToast(true, response.message);
+  // in case of existing user - return success
+  if (response.status_code === 409) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
   return { success: false };
 };
 
 //social signup
-export const socialSignup = async (data: any) => {
+export const socialSignupLogin = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.SocialAuth, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    //store token when auto logged in after social signup
+    storageService.setItem("jwtToken", response.result.token);
+    return { success: true };
+  }
+  //setShowToast(true, response.message);
+  return { success: false };
+};
+
+export const callSocialLinkedin = async (data: string) => {
+  setLoading(true);
+  //const response: FetchResponse = await NetworkOps.get(data);
+  const response: any = await fetch(data)
+  console.log(response, 'okk')
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true };

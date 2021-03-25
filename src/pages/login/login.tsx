@@ -1,4 +1,5 @@
 import { useState } from "react";
+// @ts-ignore
 import { Link } from "react-router-dom";
 import { callLogin } from '../../redux/auth/actions';
 import eyeIconClose from '../../assets/images/icon-eye-closed.png';
@@ -6,9 +7,10 @@ import eyeIconOpen from '../../assets/images/icon-eye-open.png';
 import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
+import { socialSignupLogin } from '../../redux/auth/actions';
 import SocialAuth from "../../common/auth/socialAuth";
 
-const InitialLoginPage = (props: any) => {
+const LoginPage = (props: any) => {
     const [errors, setErrors] = useState<any>({});
     const [loginData, setLoginData] = useState<any>({
         email: '',
@@ -49,6 +51,30 @@ const InitialLoginPage = (props: any) => {
         return !Object.keys(newErrors).length;
     }
 
+    const onAuthSocial = async (profileData: any, authType: string) => {
+        // {
+        //     "firstName": "tesst tk",
+        //         "email": "ddfcz@gail.com",
+        //             "socialId": "109876548142472750902",
+        //                 "deviceToken": "323245356tergdfgrtuy68u566452354dfwe",
+        //                     "accountType": "google",
+        //                         "user_type": 2
+        // }
+        const data = {
+            firstName: profileData.name,
+            email: profileData.email,
+            socialId: profileData.googleId,
+            deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+            accountType: authType,
+            user_type: Constants.USER_TYPE,
+        }
+        //setLoginData((prevData: any) => ({ ...prevData, ...newProfileData }))
+        const res = await socialSignupLogin(data)
+        if (res) {
+            props.history.push('/')
+        }
+    }
+
     const onSubmit = async (e: any) => {
         e.preventDefault();
         const newData = { ...loginData, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
@@ -75,9 +101,9 @@ const InitialLoginPage = (props: any) => {
                         <label className="form_label">Password</label>
                         <div className="text_field">
                             <input type={showPassword ? "text" : "password"} className="detect_input" placeholder="Enter your password" name="password" onChange={changeHandler} />
-                            <span className="detect_icon" onClick={() => setShowPassword(!showPassword)}><img src={showPassword ? eyeIconOpen : eyeIconClose}/></span>
+                            <span className="detect_icon" onClick={() => setShowPassword(!showPassword)}><img src={showPassword ? eyeIconOpen : eyeIconClose} /></span>
                         </div>
-                    {!!errors.password && <span className="error_msg">{errors.password}</span>}
+                        {!!errors.password && <span className="error_msg">{errors.password}</span>}
                     </div>
                     <div className="form_field">
                         <Link to="/reset-password" className="link">Forgotten your password?</Link>
@@ -87,7 +113,7 @@ const InitialLoginPage = (props: any) => {
                     </div>
                 </form>
                 <span className="show_label text-center">or continue with</span>
-                <SocialAuth onSuccess={() => {}}/>
+                <SocialAuth onSuccess={onAuthSocial} />
                 <div className="form_field hide text-center">
                     <span className="reg">No account? <Link to="/signup" className="link">Signup</Link></span>
                 </div>
@@ -96,4 +122,4 @@ const InitialLoginPage = (props: any) => {
     )
 }
 
-export default InitialLoginPage
+export default LoginPage

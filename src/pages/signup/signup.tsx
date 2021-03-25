@@ -11,7 +11,7 @@ import AlmostDone from './components/almostDone';
 import ChooseQualification from './components/chooseQualification';
 import AddQualification from './components/addQualification';
 import AddABN from './components/addABN';
-import { postSignup, socialSignup } from '../../redux/auth/actions';
+import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
 import Constants from '../../utils/constants';
 import AuthParent from '../../common/auth/authParent';
 
@@ -88,7 +88,7 @@ const Signup = (props: any) => {
             delete data.accountType;
             res = await postSignup(data);
         } else {
-            res = await socialSignup(data);
+            res = await socialSignupLogin(data);
         }
         if(res.success) {
             setSteps(8);
