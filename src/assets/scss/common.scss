@@ -1986,9 +1986,9 @@ body{
     top: 150px;
     left: 380px;
     width: 864px;
-    @media (max-width: 1200px) {
+    @media (max-width: 1024px) {
       left: 60px;
-      width: 650px;
+      width: 864px;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       left: 80px;
@@ -1996,6 +1996,7 @@ body{
     }
     @media (max-width: 768px) {
       top: 100px;
+      width: 650px;
     }
     @media (max-width: 650px) {
       width: 95%;
@@ -2176,7 +2177,7 @@ body{
         top: 0;
         @media (max-width: 768px) {
           top: auto;
-          bottom: 10px;
+          bottom: 0px;
         }
         @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
           top: auto;
@@ -2201,6 +2202,17 @@ body{
 
 
 //-----------------Tradie card--------------------//
+.tradies_row{
+  .flex_col_sm_4{
+    @media (max-width: 1024px) {
+      width: 50%;
+    }
+    @media (max-width: 650px) {
+      width: 100%;
+    }
+  }
+}
+
 .tradie_card{
   min-height: 274px;
   width: 384px;
@@ -2208,6 +2220,14 @@ body{
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
   background-color: var(--white);
   position: relative;
+  @media (max-width: 1024px){
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
   .more_detail{
     position: absolute;
     top: 16px;
@@ -2258,6 +2278,7 @@ body{
 //---------------------Categories--------------------------//
 .categories {
   display: flex;
+  flex-flow: wrap;
   margin-bottom: 40px;
   li {
     margin: 0;
@@ -2265,14 +2286,14 @@ body{
     width: 12%;
     @media (max-width: 768px) {
       margin: 0 15px 20px;
-      width: 16%;
+      width: 20%;
     }
     @media(max-width:650px){
-      width: 20.3%;
+      width: 24%;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       margin: 0 20px 20px 12px;
-      width: 16%;
+      width: 15.5%;
     }
     .categ_card {
       display: flex;
@@ -2329,7 +2350,7 @@ body{
 //-----------------Popular Tradies----------------------//
 .popular_tradies{
   display: flex;
-  margin: 0 -10px 40px;
+  margin: 0 -10px;
   flex-wrap: wrap;
   li{
     display: inline-block;
@@ -2338,8 +2359,17 @@ body{
     text-align: center;
     padding: 10px;
     border-radius: 3px;
-    &:last-child{
-      margin-right: 0;
+    @media (max-width: 1024px){
+      width: 20%;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 25%;
+    }
+    @media(max-width:768px){
+      width: 25%;
+    }
+    @media(max-width:650px){
+      width: 50%;
     }
     &:hover{
       box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
@@ -2351,6 +2381,11 @@ body{
       border-radius: 50%;
       overflow: hidden;
       margin: 0 auto 16px;
+      @media(max-width:650px){
+        width: 80px;
+        height: 80px;
+        margin: 0 auto 12px;
+      }
       img{
         width: 100%;
         height: 100%;
@@ -2363,11 +2398,22 @@ body{
       font-family: 'Neue Haas Grotesk Text Pro Bold';
       display: block;
       margin-bottom: 8px;
+      @media(max-width:768px){
+        font-size: 18px;
+        margin-bottom: 5px;
+      }
+      @media(max-width:650px){
+        font-size: 16px;
+      }
     }
     .post{
       font-size: 14px;
       line-height: 1.29;
       color: var(--blue);
+      @media(max-width:650px){
+        font-size: 12px;
+        line-height: 1;
+      }
     }
   }
 }

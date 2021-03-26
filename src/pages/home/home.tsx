@@ -230,6 +230,14 @@ const Home = () => {
                                 <span className="categ_name">Electrician </span>
                             </a>
                         </li>
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -240,7 +248,7 @@ const Home = () => {
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
                     <span className="title">Saved tradies</span>
-                    <div className="flex_row">
+                    <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
                                 <a href="javascript:void(0)" className="more_detail"></a>
@@ -387,7 +395,7 @@ const Home = () => {
                             <span className="post">Electrician</span>
                         </li>
                     </ul>
-                    <button className="fill_grey_btn full_btn">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
                 </div>
             </div>
             {/* Popular Tradies close*/}
@@ -397,7 +405,7 @@ const Home = () => {
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
                     <span className="title">Reccomended tradies</span>
-                    <div className="flex_row">
+                    <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
                                 <a href="javascript:void(0)" className="more_detail"></a>
