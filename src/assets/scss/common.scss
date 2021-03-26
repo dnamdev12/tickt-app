@@ -1847,7 +1847,8 @@ body{
         font-size: 12px;
         line-height: 1.67;
         color: var(--blue);
-        font-weight: 500;
+        max-width: 80px;
+        display: inline-block;
       }
     }
   }
