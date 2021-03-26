@@ -251,7 +251,7 @@ const Home = () => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -281,7 +281,7 @@ const Home = () => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -311,7 +311,7 @@ const Home = () => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -408,7 +408,7 @@ const Home = () => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -438,7 +438,7 @@ const Home = () => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -468,7 +468,7 @@ const Home = () => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />

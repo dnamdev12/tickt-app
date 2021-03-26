@@ -1873,6 +1873,9 @@ body{
   z-index: 9999;
   opacity: 0;
   visibility: hidden;
+  @media (max-width: 1024px){
+    right: 12px;
+  }
   &.active {
     opacity: 1;
     visibility: visible;
@@ -1993,6 +1996,7 @@ body{
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       left: 80px;
       top: 90px;
+      width: 580px;
     }
     @media (max-width: 768px) {
       top: 100px;
@@ -2181,13 +2185,17 @@ body{
         }
         @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
           top: auto;
-          bottom: 10px;
+          bottom: 0px;
         }
         .fill_btn,
         .outline_btn {
           padding: 12px 15px;
           width: 64px;
           height: 64px;
+          @media (max-width: 812px){
+            width: 62px;
+            height: 62px;
+          }
           img{
             width: 18px;
             height: 18px;
@@ -2220,6 +2228,9 @@ body{
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
   background-color: var(--white);
   position: relative;
+  &:hover{
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.02);
+  }
   @media (max-width: 1024px){
     width: 100%;
     margin-bottom: 20px;
