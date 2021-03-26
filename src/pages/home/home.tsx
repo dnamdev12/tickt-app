@@ -16,6 +16,7 @@ import search from "../../assets/images/ic-search.png";
 import Location from "../../assets/images/ic-location.png";
 import bannerimg from '../../assets/images/home-banner.png'
 
+
 const Home = () => {
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -33,6 +34,8 @@ const Home = () => {
 
     return (
         <div className="app_wrapper">
+
+            {/* Header */}
             <header id="header">
                 <div className="custom_container">
                     <div className="flex_headrow">
@@ -100,8 +103,10 @@ const Home = () => {
 
                 </div>
             </header>
+            {/* Header close */}
 
 
+            {/* Under construction */}
             {/* <div className="custom_container">
                 <div className="under_construction_wrap">
                     <figure className="constrction_img">
@@ -110,8 +115,10 @@ const Home = () => {
                     <h2>This Page is under construction. Please come back later.</h2>
                 </div>
             </div> */}
+            {/* Under construction */}
 
 
+            {/* Banner */}
             <div className="home_banner">
                 <figure className="banner_img">
                     <img src={bannerimg} alt="bannerimg" />
@@ -161,13 +168,333 @@ const Home = () => {
                             </form>
                         </div>
                         <div className="text-center">
-                            <h1 className="heading">Your local network</h1>
+                            <h1 className="heading text_effect">Your local network</h1>
                             <p className="commn_para">Connect with Tradies in your area</p>
                             <a className="fill_btn view-btn">View More</a>
                         </div>
                     </div>
                 </figure>
             </div>
+            {/* Banner close */}
+
+
+            {/* Categories */}
+            <div className="section_wrapper">
+                <div className="custom_container">
+                    <ul className="categories">
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician </span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            {/* Categories close*/}
+
+
+            {/* Saved Tradies */}
+            <div className="section_wrapper bg_gray">
+                <div className="custom_container">
+                    <span className="title">Saved tradies</span>
+                    <div className="flex_row">
+                        <div className="flex_col_sm_4">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">John Oldman</span>
+                                        <span className="rating">4.9, 36 reviews </span>
+                                    </div>
+                                </div>
+                                <div className="tags_wrap">
+                                    <ul>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Plumber
+                                    </li>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Electrician
+                                    </li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>More</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex_col_sm_4">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">John Oldman</span>
+                                        <span className="rating">4.9, 36 reviews </span>
+                                    </div>
+                                </div>
+                                <div className="tags_wrap">
+                                    <ul>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Plumber
+                                    </li>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Electrician
+                                    </li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>More</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex_col_sm_4">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">John Oldman</span>
+                                        <span className="rating">4.9, 36 reviews </span>
+                                    </div>
+                                </div>
+                                <div className="tags_wrap">
+                                    <ul>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Plumber
+                                    </li>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Electrician
+                                    </li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>More</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
+                </div>
+            </div>
+            {/* Saved Tradies close*/}
+
+
+            {/* Popular Tradies */}
+            <div className="section_wrapper">
+                <div className="custom_container">
+                    <span className="title">Popular tradies</span>
+                    <ul className="popular_tradies">
+                        <li>
+                            <figure className="tradies_img">
+                                <img src={dummy} alt="tradies-img" />
+                            </figure>
+                            <span className="name">John Oldman</span>
+                            <span className="post">Electrician</span>
+                        </li>
+                        <li>
+                            <figure className="tradies_img">
+                                <img src={dummy} alt="tradies-img" />
+                            </figure>
+                            <span className="name">John Oldman</span>
+                            <span className="post">Electrician</span>
+                        </li>
+                        <li>
+                            <figure className="tradies_img">
+                                <img src={dummy} alt="tradies-img" />
+                            </figure>
+                            <span className="name">John Oldman</span>
+                            <span className="post">Electrician</span>
+                        </li>
+                        <li>
+                            <figure className="tradies_img">
+                                <img src={dummy} alt="tradies-img" />
+                            </figure>
+                            <span className="name">John Oldman</span>
+                            <span className="post">Electrician</span>
+                        </li>
+                        <li>
+                            <figure className="tradies_img">
+                                <img src={dummy} alt="tradies-img" />
+                            </figure>
+                            <span className="name">John Oldman</span>
+                            <span className="post">Electrician</span>
+                        </li>
+                        <li>
+                            <figure className="tradies_img">
+                                <img src={dummy} alt="tradies-img" />
+                            </figure>
+                            <span className="name">John Oldman</span>
+                            <span className="post">Electrician</span>
+                        </li>
+                    </ul>
+                    <button className="fill_grey_btn full_btn">View all</button>
+                </div>
+            </div>
+            {/* Popular Tradies close*/}
+
+
+            {/* Reccomended tradies */}
+            <div className="section_wrapper bg_gray">
+                <div className="custom_container">
+                    <span className="title">Reccomended tradies</span>
+                    <div className="flex_row">
+                        <div className="flex_col_sm_4">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">John Oldman</span>
+                                        <span className="rating">4.9, 36 reviews </span>
+                                    </div>
+                                </div>
+                                <div className="tags_wrap">
+                                    <ul>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Plumber
+                                    </li>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Electrician
+                                    </li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>More</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex_col_sm_4">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">John Oldman</span>
+                                        <span className="rating">4.9, 36 reviews </span>
+                                    </div>
+                                </div>
+                                <div className="tags_wrap">
+                                    <ul>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Plumber
+                                    </li>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Electrician
+                                    </li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>More</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex_col_sm_4">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">John Oldman</span>
+                                        <span className="rating">4.9, 36 reviews </span>
+                                    </div>
+                                </div>
+                                <div className="tags_wrap">
+                                    <ul>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Plumber
+                                    </li>
+                                        <li className="main">
+                                            <img src={Location} alt="icon" />Electrician
+                                    </li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>Electrical Instrumentation</li>
+                                        <li>Security and Fire Alarm Installation</li>
+                                        <li>More</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+
+                    </div>
+                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
+                </div>
+            </div>
+            {/* Reccomended tradies close*/}
+
 
         </div>
     )

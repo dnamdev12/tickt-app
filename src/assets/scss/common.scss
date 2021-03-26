@@ -31,6 +31,13 @@ body {
 }
 
 @font-face {
+  font-family: 'Neue Haas Grotesk Text Pro Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Neue Haas Grotesk Text Pro Medium'), url('../fonts/NHaasGroteskTXPro-65Md.woff') format('woff');
+}
+
+@font-face {
   font-family: 'Neue Haas Grotesk Text Pro Bold';
   font-style: normal;
   font-weight: normal;
@@ -61,7 +68,7 @@ body{
   }
 }
 .custom_container {
-  max-width: 1140px;
+  max-width: 1216px;
   margin: 0 auto;
   position: relative;
   @media (max-width: 1200px) {
@@ -105,7 +112,7 @@ body{
   font-family: 'Neue Haas Grotesk Text Pro Bold';
   line-height: 1.16;
   color: var(--blue);
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   display: block;
   @media (max-width: 812px) {
     font-size: 20px;
@@ -155,7 +162,8 @@ body{
   flex-wrap: wrap;
   margin: 0 0 40px;
   li {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     margin: 0 8px 16px;
     padding: 8px;
     @include border-radius(6px);
@@ -172,6 +180,15 @@ body{
       margin: 0 10px 10px 0;
       padding: 5px;
       font-size: 11px;
+    }
+    &.main{
+      background-color: #dfe5ef;
+      img{
+        width: 10px;
+        height: 16px;
+        margin-right: 7px;
+        object-fit: cover;
+      }
     }
   }
  }
@@ -395,11 +412,10 @@ body{
   }
 }
 .rating {
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 1.29;
+  font-size: 14px;
+  line-height: 1.43;
   display: block;
-  color: var(--black-four);
+  color: var(--greyish-brown);
   padding-left: 25px;
   position: relative;
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
@@ -410,13 +426,13 @@ body{
     @include position(absolute, 50%, auto, auto, 0);
     transform: translateY(-50%);
     content: "";
-    width: 20px;
-    height: 20px;
-    background: url("../images//ic_rating_star.png") center no-repeat;
+    width: 16px;
+    height: 16px;
+    background: url("../images/ic_rating_star.png") center no-repeat;
     background-size: contain;
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      width: 16px;
-      height: 16px;
+      width: 13px;
+      height: 13px;
     }
   }
 }
@@ -2021,9 +2037,9 @@ body{
     line-height: 1;
     letter-spacing: 0.3px;
     color: var(--white);
-    margin-bottom: 5px;
+    margin: 0 auto 5px;
     white-space: nowrap;
-    // width: 0;
+    width: 0;
     overflow: hidden;
     @media (max-width: 650px) {
       font-size: 24px;
@@ -2180,3 +2196,178 @@ body{
   }
 }
 //-------------------Home close----------------//
+
+
+
+//-----------------Tradie card--------------------//
+.tradie_card{
+  min-height: 274px;
+  width: 384px;
+  padding: 16px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+  background-color: var(--white);
+  position: relative;
+  .more_detail{
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: url('../images/more.png') center no-repeat;
+    background-size: contain;
+    width: 40px;
+    height: 40px;
+  }
+  .user_wrap{
+    display: flex;
+    align-items: center;
+    margin: 0 0 24px;
+    .u_img{
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+      border-radius: 50%;
+      margin-right: 16px;
+      img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+      }
+    }
+    .details{
+      width: 80%;
+      .name{
+        font-size: 16px;
+        display: block;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        color: var(--blue);
+        margin-bottom: 2px;
+      }
+      
+    }
+  }
+  .tags_wrap {
+    ul{
+      margin: 0;
+    }
+  }
+}
+//-----------------Tradie card close--------------------//
+
+
+
+//---------------------Categories--------------------------//
+.categories {
+  display: flex;
+  margin-bottom: 40px;
+  li {
+    margin: 0;
+    display: inline-block;
+    width: 12%;
+    @media (max-width: 768px) {
+      margin: 0 15px 20px;
+      width: 16%;
+    }
+    @media(max-width:650px){
+      width: 20.3%;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      margin: 0 20px 20px 12px;
+      width: 16%;
+    }
+    .categ_card {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-flow: column;
+      &:hover, &.active {
+        .categ_img {
+          img{
+            transform: rotateY(360deg);
+          }   
+        }
+        .categ_name {
+          color: var(--blue-two);
+        }
+      }
+      .categ_img {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        overflow: hidden;
+        background-color: #dfe5ef;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @media (max-width: 768px) {
+          width: 80px;
+          height: 80px;
+        }
+        img {
+          width: 30px;
+          height: 30px;
+          object-fit: contain;
+          transition: all ease-in .5s;
+          -moz-transition: all ease-in .5s;
+          -ms-transition: all ease-in .5s;
+          -o-transition: all ease-in .5s;
+          -webkit-transition: all ease-in .5s;
+        }
+      }
+      .categ_name {
+        font-size: 12px;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        line-height: 1.29;
+        text-align: center;
+        color: var(--greyish-brown);
+      }
+    }
+  }
+}
+//------------------Categories close-----------------------//
+
+//-----------------Popular Tradies----------------------//
+.popular_tradies{
+  display: flex;
+  margin: 0 -10px 40px;
+  flex-wrap: wrap;
+  li{
+    display: inline-block;
+    width: 16.66666667%;
+    padding: 0 10px;
+    text-align: center;
+    padding: 10px;
+    border-radius: 3px;
+    &:last-child{
+      margin-right: 0;
+    }
+    &:hover{
+      box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+      background-color: var(--white);
+    }
+    .tradies_img{
+      width: 102px;
+      height: 102px;
+      border-radius: 50%;
+      overflow: hidden;
+      margin: 0 auto 16px;
+      img{
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .name{
+      font-size: 20px;
+      color: var(--bue);
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      display: block;
+      margin-bottom: 8px;
+    }
+    .post{
+      font-size: 14px;
+      line-height: 1.29;
+      color: var(--blue);
+    }
+  }
+}
+//-------------Popular Tradies close-----------------//
