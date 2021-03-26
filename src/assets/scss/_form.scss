@@ -472,13 +472,17 @@ a.fill_grey_btn {
   .m-l-30 {
     display: inline-block;
     @media (max-width: 650px) {
-      margin-left: 0;
+      margin-left: 0px;
     }
   }
 }
 
 .m-l-30 {
   margin-left: 30px;
+}
+
+.m-tb40{
+  margin: 40px 0px;
 }
 
 .agree_check {

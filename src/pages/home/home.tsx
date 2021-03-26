@@ -333,7 +333,7 @@ const Home = () => {
 
 
                     </div>
-                    <button className="fill_grey_btn full_btn">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
                 </div>
             </div>
             {/* Saved Tradies close*/}
@@ -490,7 +490,7 @@ const Home = () => {
 
 
                     </div>
-                    <button className="fill_grey_btn full_btn">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
                 </div>
             </div>
             {/* Reccomended tradies close*/}

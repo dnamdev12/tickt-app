@@ -31,6 +31,13 @@ body {
 }
 
 @font-face {
+  font-family: 'Neue Haas Grotesk Text Pro Medium';
+  font-style: normal;
+  font-weight: normal;
+  src: local('Neue Haas Grotesk Text Pro Medium'), url('../fonts/NHaasGroteskTXPro-65Md.woff') format('woff');
+}
+
+@font-face {
   font-family: 'Neue Haas Grotesk Text Pro Bold';
   font-style: normal;
   font-weight: normal;
@@ -61,7 +68,7 @@ body{
   }
 }
 .custom_container {
-  max-width: 1190px;
+  max-width: 1216px;
   margin: 0 auto;
   position: relative;
   @media (max-width: 1200px) {
@@ -2195,10 +2202,10 @@ body{
 //-----------------Tradie card--------------------//
 .tradie_card{
   min-height: 274px;
+  width: 384px;
   padding: 16px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
   background-color: var(--white);
-  margin-bottom: 40px;
   position: relative;
   .more_detail{
     position: absolute;
@@ -2235,6 +2242,11 @@ body{
         margin-bottom: 2px;
       }
       
+    }
+  }
+  .tags_wrap {
+    ul{
+      margin: 0;
     }
   }
 }
