@@ -1,4 +1,6 @@
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import storageService from '../../../utils/storageService';
+
 
 interface Propstype {
     history: any
@@ -7,6 +9,9 @@ interface Propstype {
 const LetsGo = (props: Propstype) => {
 
     const goToLogin = () => {
+        if (storageService.getItem('jwtToken')) {
+            props.history.push('/')
+        }
         props.history.push('/login')
     }
 

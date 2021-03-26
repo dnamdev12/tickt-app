@@ -7,7 +7,7 @@ import eyeIconOpen from '../../assets/images/icon-eye-open.png';
 import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
-import { socialSignupLogin } from '../../redux/auth/actions';
+import { gmailSignupLogin } from '../../redux/auth/actions';
 import SocialAuth from "../../common/auth/socialAuth";
 
 const LoginPage = (props: any) => {
@@ -51,7 +51,7 @@ const LoginPage = (props: any) => {
         return !Object.keys(newErrors).length;
     }
 
-    const onAuthSocial = async (profileData: any, authType: string) => {
+    const onAuthSocial = async (profileData: any, authType: string, isProfileCompleted?: boolean) => {
         // {
         //     "firstName": "tesst tk",
         //         "email": "ddfcz@gail.com",
@@ -60,17 +60,21 @@ const LoginPage = (props: any) => {
         //                     "accountType": "google",
         //                         "user_type": 2
         // }
+        if (!isProfileCompleted) {
+            props.history.push('/signup')
+        }
+
         const data = {
-            firstName: profileData.name,
+            //firstName: profileData.name,
             email: profileData.email,
             socialId: profileData.googleId,
             deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
-            accountType: authType,
+            //accountType: authType,
             user_type: Constants.USER_TYPE,
         }
         //setLoginData((prevData: any) => ({ ...prevData, ...newProfileData }))
-        const res = await socialSignupLogin(data)
-        if (res) {
+        const res = await gmailSignupLogin(data)
+        if (res.success) {
             props.history.push('/')
         }
     }

@@ -11,9 +11,10 @@ import AlmostDone from './components/almostDone';
 import ChooseQualification from './components/chooseQualification';
 import AddQualification from './components/addQualification';
 import AddABN from './components/addABN';
-import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
+import { postSignup, gmailSignupLogin } from '../../redux/auth/actions';
 import Constants from '../../utils/constants';
 import AuthParent from '../../common/auth/authParent';
+import storageService from '../../utils/storageService';
 
 const DATA = [
     { title: 'Welcome to Tickt', subTitle: 'Australia\'s fastest growing network for builders and tradesmen' },
@@ -61,7 +62,7 @@ const Signup = (props: any) => {
         }
     }
 
-    const onAuthSocial = (profileData: any, authType: string) => {
+    const onAuthSocial = (profileData: any, authType: string, isProfileCompleted?: boolean) => {
         setSteps(steps + 1);
         const newProfileData = {
             firstName: profileData.name,
@@ -74,7 +75,7 @@ const Signup = (props: any) => {
 
     const onSubmitSignup = async (almostData: any) => {
         var res;
-        const newData = {...signupData, ...almostData};
+        const newData = { ...signupData, ...almostData };
         const data = {
             ...newData,
             company_name: newData.companyName,
@@ -83,14 +84,15 @@ const Signup = (props: any) => {
             deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
         }
         delete data.companyName;
-        if(!signupData.accountType){
+        if (!signupData.accountType) {
             delete data.socialId;
             delete data.accountType;
             res = await postSignup(data);
         } else {
-            res = await socialSignupLogin(data);
+            res = await gmailSignupLogin(data);
+            res.success && storageService.setItem("jwtToken", res.successToken);
         }
-        if(res.success) {
+        if (res.success) {
             setSteps(8);
         }
     }
@@ -100,7 +102,7 @@ const Signup = (props: any) => {
             case 0:
                 return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} />
             case 1:
-                return <CreateAccount updateSteps={updateSteps} step={steps} data={signupData} onAuthSocial={onAuthSocial}/>
+                return <CreateAccount updateSteps={updateSteps} step={steps} data={signupData} onAuthSocial={onAuthSocial} />
             case 2:
                 return <PhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
             case 3:

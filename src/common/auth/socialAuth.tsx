@@ -33,11 +33,12 @@ const linkedinData = {
 }
 
 const SocialAuth = (props: Propstype) => {
-    const [userDetails, setUserDetails] = useState({
-        isAuthenticated: false,
-        user: null,
-        token: ''
-    })
+    // const [userDetails, setUserDetails] = useState({
+    //     isAuthenticated: false,
+    //     user: null,
+    //     token: ''
+    // })
+    const [userDetails, setUserDetails] = useState('')
 
     const onFailure = (error: any) => {
         console.log(error);
@@ -47,17 +48,40 @@ const SocialAuth = (props: Propstype) => {
     const googleResponse = async (response: any) => {
         console.log(response, "g-oauth response");
         const res = await checkSocialId(response.googleId)
-        if (res.success) {
-            props.onSuccess(response.profileObj, 'google')
+        if (res.success ) {
+            props.onSuccess(response.profileObj, 'google', res.isProfileCompleted)
         }
     };
 
     const linkedinResponse = async (response: any) => {
         console.log(response, "linkedin-oauth response")
-        linkedinData.authorizationCode = response.code
-        const url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${linkedinData.CLIENT_ID}&scope=r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/`
-        const res = await callSocialLinkedin(url)
-        console.log(res, "okk")
+        console.log(response.code, "linkedin-oauth code")
+        //linkedinData.authorizationCode = response.code
+        //const url = `https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=${linkedinData.CLIENT_ID}&scope=r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/`
+        //const res = await callSocialLinkedin(url)
+        if (response.code) {
+            const url = `https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&redirect_uri=http://localhost:3000/linkedin&client_id=${linkedinData.CLIENT_ID}&client_secret=${linkedinData.CLIENT_SECRET}&code=${response.code}`
+            //const res = await callSocialLinkedin(url)
+            console.log(url, 'okk')
+            var tempToken = ''
+            fetch(url)
+                .then(res => res.json())
+                .then((data) => {
+                    console.log(data);
+                    console.log(data.access_token);
+                    setUserDetails(data.access_token)
+                })
+                .catch(err => { throw err });
+        }
+    }
+
+    const appleClicked = async () => {
+        console.log(userDetails)
+        const res2 = await fetch('https://api.linkedin.com/v2/me', {
+            headers: { Authorization: `Bearer ${userDetails}` }
+        })
+        const response2 = res2.json()
+        console.log(response2)
     }
 
     return (
@@ -74,7 +98,7 @@ const SocialAuth = (props: Propstype) => {
                 clientId="77vhhfg24hx1s2"
                 onSuccess={linkedinResponse}
                 onFailure={onFailure}
-                scope="r_emailaddress"
+                scope="r_liteprofile r_emailaddress"
                 state="34232423"
                 redirectUri={`${window.location.origin}/linkedin`}
                 renderElement={(renderProps: any) => (<a href="javascript:void(0)" onClick={renderProps.onClick} >
@@ -89,9 +113,9 @@ const SocialAuth = (props: Propstype) => {
             {/* <a href="javascript:void(0)" >
                 <img src={linkedin} alt="linkedin" />
             </a> */}
-            {/* <a href="javascript:void(0)" >
+            <a href="javascript:void(0)" onClick={appleClicked}>
                 <img src={apple} alt="apple" />
-            </a> */}
+            </a>
         </div>
     )
 }
