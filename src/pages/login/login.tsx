@@ -9,10 +9,13 @@ import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import { gmailSignupLogin } from '../../redux/auth/actions';
 import SocialAuth from "../../common/auth/socialAuth";
+import Signup from '../signup/signup';
 
+interface Propstype {
+    history?: any
+}
 
-
-const LoginPage = (props: any) => {
+const LoginPage = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
     const [loginData, setLoginData] = useState<any>({
         email: '',
@@ -53,32 +56,8 @@ const LoginPage = (props: any) => {
         return !Object.keys(newErrors).length;
     }
 
-    const onAuthSocial = async (profileData: any, authType: string, isProfileCompleted?: boolean) => {
-        // {
-        //     "firstName": "tesst tk",
-        //         "email": "ddfcz@gail.com",
-        //             "socialId": "109876548142472750902",
-        //                 "deviceToken": "323245356tergdfgrtuy68u566452354dfwe",
-        //                     "accountType": "google",
-        //                         "user_type": 2
-        // }
-        if (!isProfileCompleted) {
-            props.history.push('/signup')
-        }
-
-        const data = {
-            //firstName: profileData.name,
-            email: profileData.email,
-            socialId: profileData.googleId,
-            deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
-            //accountType: authType,
-            user_type: Constants.USER_TYPE,
-        }
-        //setLoginData((prevData: any) => ({ ...prevData, ...newProfileData }))
-        const res = await gmailSignupLogin(data)
-        if (res.success) {
-            props.history.push('/')
-        }
+    const onNewAccount = () => {
+        props.history.push('/signup')
     }
 
     const onSubmit = async (e: any) => {
@@ -119,7 +98,8 @@ const LoginPage = (props: any) => {
                     </div>
                 </form>
                 <span className="show_label text-center">or continue with</span>
-                <SocialAuth onSuccess={onAuthSocial} />
+                <SocialAuth onNewAccount={onNewAccount}
+                    history={props.history} />
                 <div className="form_field hide text-center">
                     <span className="reg">No account? <Link to="/signup" className="link">Signup</Link></span>
                 </div>

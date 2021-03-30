@@ -1,23 +1,45 @@
+import { useState } from 'react';
+import Constants from '../../../utils/constants';
+import regex from '../../../utils/regex';
+import { validateABN } from '../../../utils/common';
+
 interface Propstype {
-    updateSteps: (num: number) => void
-    step: number
-    signupStepNine: (data: any, step: number) => void,
+    onSubmitSignup: (data: any) => void,
 }
 
 const AddABN = (props: Propstype) => {
-
-    const backButtonHandler = () => {
-        props.updateSteps(props.step - 1)
-    }
+    const [errors, setErrors] = useState<any>({});
+    const [abn, setAbn] = useState<any>('')
 
     const changeHandler = (e: any) => {
-        //setTrade((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+        if (e.target.value.length > 11) {
+            return;
+        }
+        setAbn(e.target.value)
     }
 
-    const onSubmit = async (e: any) => {
-        e.preventDefault();
-        props.signupStepNine('addABN', props.step + 1)
+    const validateForm = () => {
+        const newErrors: any = {};
+        if (!abn) {
+            newErrors.abn = Constants.errorStrings.abnEmpty;
+        } else {
+            const abnRegex = new RegExp(regex.abn);
+            if (!abnRegex.test(abn)) {
+                newErrors.abn = Constants.errorStrings.abnErr
+            }
+            if (!validateABN(abn)) {
+                newErrors.abn = Constants.errorStrings.abnErr
+            }
+        }
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
+    }
 
+    const onSubmit = (e: any) => {
+        e.preventDefault();
+        if (validateForm()) {
+            props.onSubmitSignup({ abn })
+        }
     }
 
     return (
@@ -26,13 +48,13 @@ const AddABN = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Australian business number</label>
                     <div className="text_field">
-                        <input type="text" placeholder="Enter Australian business number" />
+                        <input type="number" placeholder="Enter Australian business number" value={abn} name="abn" onChange={changeHandler} />
                     </div>
-                    <span className="error_msg"></span>
+                    {!!errors.abn && <span className="error_msg">{errors.abn}</span>}
                 </div>
 
                 <div className="form_field">
-                    <button className="fill_btn">Create account</button>
+                    <button className="fill_btn">Next</button>
                 </div>
             </form>
         </div>

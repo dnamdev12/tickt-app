@@ -13,7 +13,7 @@ export class NetworkOps {
 
     async getRequest(type: string, options?: object): Promise<any> {
         const headerOverrides = get(options, 'headerOverrides', {});
-        let request = {
+        const request = {
             method: type,
             headers: {
                 'Content-Type': 'application/json',
@@ -21,6 +21,12 @@ export class NetworkOps {
                 ...headerOverrides
             },
         };
+
+        //if giving multipart/form-data in Content-Type: giving boundary error
+        //if also adding boundary: loader continues from server end 
+        if(headerOverrides['Content-Type'] === 'multipart/form-data') {
+            delete request.headers['Content-Type'];
+        }
         const token = storageService.getItem('jwtToken');
         if (token) {
             request.headers = {
@@ -77,7 +83,7 @@ export class NetworkOps {
         }
     }
 
-    postRaw = async (service: string, data: any, options?: any): Promise<any> => {
+    postRaw = async (service: string, data: any, options?: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('POST', options);
             request.body = data;

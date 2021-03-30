@@ -12,7 +12,7 @@ interface Propstype {
     step: number,
     history?: any,
     data: any,
-    onAuthSocial: (data: object, authType: string) => void,
+    onNewAccount: Function,
 }
 
 const CreateAccount = (props: Propstype) => {
@@ -33,13 +33,11 @@ const CreateAccount = (props: Propstype) => {
 
     const validateForm = () => {
         const newErrors: any = {};
-        if (!signupData.firstName) {
+        if (!signupData.firstName.trim()) {
             newErrors.firstName = Constants.errorStrings.fullNameEmpty;
         } else {
             const nameRegex = new RegExp(regex.fullname);
-            if (signupData.firstName.length < 3) {
-                newErrors.firstName = Constants.errorStrings.fullNameShortErr
-            } else if (!nameRegex.test(signupData.firstName)) {
+            if (signupData.firstName.length < 3 || !nameRegex.test(signupData.firstName.trim())) {
                 newErrors.firstName = Constants.errorStrings.fullNameErr
             }
         }
@@ -106,7 +104,8 @@ const CreateAccount = (props: Propstype) => {
                     <button type="submit" className="fill_btn">Sign up</button>
                 </div>
                 <span className="show_label text-center">or continue with</span>
-                <SocialAuth onSuccess={props.onAuthSocial} />
+                <SocialAuth onNewAccount={props.onNewAccount}
+                    history={props.history} />
                 <div className="form_field hide text-center">
                     <span className="reg">Have an account? <Link to="/login" className="link">Sign in</Link></span>
                 </div>

@@ -8,7 +8,6 @@ import VerifyPhoneNumber from './components/verifyPhoneNumber';
 import CreatePassword from './components/createPassword';
 import Specialization from './components/specialization';
 import AlmostDone from './components/almostDone';
-import ChooseQualification from './components/chooseQualification';
 import AddQualification from './components/addQualification';
 import AddABN from './components/addABN';
 import { postSignup, gmailSignupLogin } from '../../redux/auth/actions';
@@ -24,7 +23,8 @@ const DATA = [
     { title: 'Create password' },
     { title: 'What is your sphere?' },
     { title: 'What Specialisation?' },
-    { title: 'Almost done' },
+    { title: 'Almost done', tradieTitle: 'Add qualification' },
+    { title: 'Add ABN' }
 ]
 
 const Signup = (props: any) => {
@@ -38,6 +38,8 @@ const Signup = (props: any) => {
         accountType: '',
         trade: '',
         specialization: [],
+        qualification: [],
+        user_type: 0,
         // companyName: '',
         // position: '',
         // abn: '',
@@ -61,8 +63,9 @@ const Signup = (props: any) => {
             setSignupData((prevData: any) => ({ ...prevData, ...newData }))
         }
     }
+    console.log(signupData, '-->  signupData')
 
-    const onAuthSocial = (profileData: any, authType: string, isProfileCompleted?: boolean) => {
+    const onNewAccount = (profileData: any, authType: string) => {
         setSteps(steps + 1);
         const newProfileData = {
             firstName: profileData.name,
@@ -73,27 +76,34 @@ const Signup = (props: any) => {
         setSignupData((prevData: any) => ({ ...prevData, ...newProfileData }))
     }
 
-    const onSubmitSignup = async (almostData: any) => {
+    const onSubmitSignup = async (lastStepFields: any) => {
         var res;
-        const newData = { ...signupData, ...almostData };
+        const newData = { ...signupData, ...lastStepFields };
         const data = {
             ...newData,
-            company_name: newData.companyName,
+            //company_name: newData.companyName,
             trade: [newData.trade],
-            user_type: Constants.USER_TYPE,
+            user_type: signupData.user_type,
             deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
         }
-        delete data.companyName;
-        if (!signupData.accountType) {
+        //delete data.companyName;
+        if (data.user_type === 2) {
+            delete data.qualification
+        }
+        if (signupData.accountType) {
+            res = await gmailSignupLogin(data);
+            res.success && storageService.setItem("jwtToken", res.successToken);
+        } else {
             delete data.socialId;
             delete data.accountType;
             res = await postSignup(data);
-        } else {
-            res = await gmailSignupLogin(data);
-            res.success && storageService.setItem("jwtToken", res.successToken);
         }
         if (res.success) {
-            setSteps(8);
+            if (signupData.user_type === 2) {
+                setSteps(8);
+            } else {
+                setSteps(9)
+            }
         }
     }
 
@@ -102,7 +112,7 @@ const Signup = (props: any) => {
             case 0:
                 return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} />
             case 1:
-                return <CreateAccount updateSteps={updateSteps} step={steps} data={signupData} onAuthSocial={onAuthSocial} />
+                return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} />
             case 2:
                 return <PhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
             case 3:
@@ -113,15 +123,19 @@ const Signup = (props: any) => {
                 return <SelectYourSphere updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} />
             case 6:
                 return <Specialization updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} specialization={signupData.specialization} />
-            // case 7:
-            //     return <ChooseQualification updateSteps={updateSteps} step={steps}/>
-            // case 8:
-            //     return <AddQualification updateSteps={updateSteps} step={steps}/>
-            // case 9:
-            //     return <AddABN updateSteps={updateSteps} step={steps}/>
             case 7:
-                return <AlmostDone onSubmitSignup={onSubmitSignup} />
+                if (signupData.user_type === 2) {
+                    return <AlmostDone onSubmitSignup={onSubmitSignup} />
+                } else {
+                    return <AddQualification updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} qualification={signupData.qualification} />
+                }
             case 8:
+                if (signupData.user_type === 2) {
+                    return <LetsGo history={props.history} />
+                } else {
+                    return <AddABN onSubmitSignup={onSubmitSignup} />
+                }
+            case 9:
                 return <LetsGo history={props.history} />
             default:
                 return null
@@ -129,9 +143,10 @@ const Signup = (props: any) => {
     }
 
     const header = DATA[steps];
+    const isSuccess = signupData.user_type === 2 ? steps === 8 : steps === 9;
 
-    return header ? (
-        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} steps={steps}>{renderPages()}</AuthParent>
+    return !isSuccess ? (
+        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps}>{renderPages()}</AuthParent>
     ) : renderPages()
 }
 

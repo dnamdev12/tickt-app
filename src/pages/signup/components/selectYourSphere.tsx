@@ -14,6 +14,9 @@ const SelectCategories = (props: Propstype) => {
     const [trade, setTrade] = useState(props.trade);
 
     const onClick = (item: string) => {
+        if(item == trade) {
+            return setTrade('')
+        }
         setTrade(item)
     }
 

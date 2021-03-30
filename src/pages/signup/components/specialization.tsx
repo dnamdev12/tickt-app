@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { setShowToast } from '../../../redux/common/actions'
+import { setShowToast } from '../../../redux/common/actions';
 import Constants from '../../../utils/constants';
 
 interface Propstype {

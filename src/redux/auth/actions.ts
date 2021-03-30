@@ -4,8 +4,10 @@ import * as actionTypes from './constants';
 import { setShowToast, setLoading } from './../common/actions';
 import storageService from '../../utils/storageService';
 
-//signup
+export const callTradeList = () => ({ type: actionTypes.CALL_TRADE_LIST })
+
 export const postSignup = async (data: any) => {
+  console.log(data);
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
   setLoading(false);
@@ -20,8 +22,8 @@ export const checkEmailId = async (email: string) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkEmailId + `?email=${email}`);
   setLoading(false);
-  if (response.status_code === 200) {
-    return { success: true };
+  if (response.status_code === 200 && !response.result.isProfileCompleted) {
+    return { success: true};
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -60,9 +62,7 @@ export const createPassword = async (passwordInfo: object) => {
   return { success: false, message: response.message };
 };
 
-export const callTradeList = () => ({ type: actionTypes.CALL_TRADE_LIST })
 
-//login
 export const callLogin = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.login, data);
@@ -93,16 +93,12 @@ export const checkSocialId = async (socialID: string) => {
   if (response.status_code === 200) {
     return { success: true, isProfileCompleted: response.result.isProfileCompleted };
   }
-  // in case of existing user - return success
-  // if (response.status_code === 409) {
-  //   return { success: true };
-  // }
   setShowToast(true, response.message);
   return { success: false };
 };
 
-//social signup
 export const gmailSignupLogin = async (data: any) => {
+  console.log(data);
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.SocialAuth, data);
   setLoading(false);
@@ -125,6 +121,22 @@ export const callSocialLinkedin = async (data: string) => {
   if (response.status === 200) {
     //return { success: true, code: response.code };
     return response;
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+};
+
+export const onFileUpload = async (data: any) => {
+  setLoading(true);
+  const options = {
+    headerOverrides: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  const response: FetchResponse = await NetworkOps.postRaw(Urls.upload, data, options);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, imgUrl: response.result.url[0] };
   }
   setShowToast(true, response.message);
   return { success: false };
