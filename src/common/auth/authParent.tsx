@@ -8,6 +8,7 @@ interface Props {
     children: any,
     sliderType: string,
     hideProgres?: boolean
+    userType?: number
 }
 
 const AuthParent = (props: Props) => {
@@ -23,11 +24,11 @@ const AuthParent = (props: Props) => {
                     </figure>
                     <div className="onboarding_head">
                         {(!!props.steps || props.sliderType === 'signup') && <button className="back_btn" onClick={props.backButtonHandler} />}
-                        <h1>{props.header.title}</h1>
+                        <h1>{props.userType === 1 && props.header.tradieTitle ? props.header.tradieTitle : props.header.title}</h1>
                         {props.header.subTitle && <span className="show_label">{props.header.subTitle}</span>}
                         {!!props.steps && !props.hideProgres && <ul className="custom_steppr">
                             {
-                                Array.from(Array(8).keys()).map((i) => {
+                                Array.from(Array(props.userType === 1 ? 9 : 8).keys()).map((i) => {
                                     return <li key={i} className={props.steps !== undefined && i < props.steps ? 'active' : ''} />
                                 })
                             }

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
+import Modal from '@material-ui/core/Modal';
 import storageService from '../../utils/storageService';
+import Login from '../login/login'
 
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
@@ -16,11 +18,11 @@ import search from "../../assets/images/ic-search.png";
 import Location from "../../assets/images/ic-location.png";
 import bannerimg from '../../assets/images/home-banner.png'
 
+const Home = (props: any) => {
+    const [anchorEl, setAnchorEl] = useState(null);
+    const [openModal, setOpenModal] = useState<boolean>(false);
 
-const Home = () => {
-    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
     };
 
@@ -97,7 +99,15 @@ const Home = () => {
                                     </Menu>
                                 </div>
                             </div>
-                            {!storageService.getItem("jwtToken") && <li> <Link to="/login" className="active">Log in</Link></li>}
+                            {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setOpenModal(!openModal)}>Log in</a></li>}
+                            <Modal
+                                open={openModal}
+                                onClose={() => setOpenModal(!openModal)}
+                                aria-labelledby="simple-modal-title"
+                                aria-describedby="simple-modal-description"
+                            >
+                                <Login history={props.history}/>
+                            </Modal>
                         </ul>
                     </div>
 

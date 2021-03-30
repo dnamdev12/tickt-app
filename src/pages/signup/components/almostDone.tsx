@@ -1,36 +1,38 @@
 import { useState } from 'react';
 import Constants from '../../../utils/constants';
-import regex from '../../../utils/regex'
+import regex from '../../../utils/regex';
+import { validateABN } from '../../../utils/common';
 
 interface Propstype {
-    onSubmitSignup: (data: any) => void
+    onSubmitSignup: (data: any) => void,
 }
 
 const AlmostDone = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
     const [almostDoneData, setAlmostDoneData] = useState<any>({
-        companyName: '',
+        company_name: '',
         position: '',
         abn: '',
     })
 
     const changeHandler = (e: any) => {
-        if (e.target.name === 'abn' && e.target.value.length > 12) {
+        if (e.target.name === 'abn' && e.target.value.length > 11) {
             return;
         }
         setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
     }
 
+
     const validateForm = () => {
         const newErrors: any = {};
-        if (!almostDoneData.companyName) {
-            newErrors.companyName = Constants.errorStrings.companyNameEmpty;
+        if (!almostDoneData.company_name) {
+            newErrors.company_name = Constants.errorStrings.companyNameEmpty;
         } else {
             const nameRegex = new RegExp(regex.fullname);
-            if (almostDoneData.companyName.length < 3) {
-                newErrors.companyName = Constants.errorStrings.companyNameShortErr
-            } else if (!nameRegex.test(almostDoneData.companyName)) {
-                newErrors.companyName = Constants.errorStrings.companyNameErr
+            if (almostDoneData.company_name.length < 3) {
+                newErrors.company_name = Constants.errorStrings.companyNameShortErr
+            } else if (!nameRegex.test(almostDoneData.company_name)) {
+                newErrors.company_name = Constants.errorStrings.companyNameErr
             }
         }
         if (!almostDoneData.position) {
@@ -47,8 +49,11 @@ const AlmostDone = (props: Propstype) => {
         if (!almostDoneData.abn) {
             newErrors.abn = Constants.errorStrings.abnEmpty;
         } else {
-            const nameRegex = new RegExp(regex.abn);
-            if (!nameRegex.test(almostDoneData.abn)) {
+            const abnRegex = new RegExp(regex.abn);
+            if (!abnRegex.test(almostDoneData.abn)) {
+                newErrors.abn = Constants.errorStrings.abnErr
+            }
+            if (!validateABN(almostDoneData.abn)) {
                 newErrors.abn = Constants.errorStrings.abnErr
             }
         }
@@ -69,9 +74,9 @@ const AlmostDone = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Company Name</label>
                     <div className="text_field">
-                        <input type="text" placeholder="Enter company name" value={almostDoneData.companyName} name="companyName" onChange={changeHandler} />
+                        <input type="text" placeholder="Enter company name" value={almostDoneData.company_name} name="company_name" onChange={changeHandler} />
                     </div>
-                    {!!errors.companyName && <span className="error_msg">{errors.companyName}</span>}
+                    {!!errors.company_name && <span className="error_msg">{errors.company_name}</span>}
                 </div>
 
                 <div className="form_field">

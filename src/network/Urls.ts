@@ -20,6 +20,7 @@ const ServiceEnum = {
     forgotPassword: `${versions.v1}${ServiceEnum.auth}forgot_password`,
     checkSocialId: `${versions.v1}${ServiceEnum.auth}checkSocialId`,
     SocialAuth: `${versions.v1}${ServiceEnum.auth}socialAuth`,
+    upload: `${versions.v1}upload`,
 }
 
 export const urlFor = (service: String): string => {

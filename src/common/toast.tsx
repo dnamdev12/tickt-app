@@ -6,7 +6,7 @@ import {setShowToast} from '../redux/common/actions';
 export const TYPES = {
     success: 'success',
     error: 'failed',
-    warning: 'warining',
+    warning: 'warning',
     info: 'info'
 }
 
