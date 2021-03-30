@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import Modal from '@material-ui/core/Modal';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import storageService from '../../utils/storageService';
 import Login from '../login/login'
 
@@ -36,6 +37,23 @@ const Home = (props: any) => {
     const logoutHandler = () => {
         storageService.removeItem("jwtToken")
     }
+
+    const useStyles = makeStyles((theme: Theme) =>
+        createStyles({
+            paper: {
+                position: 'absolute',
+                width: 400,
+                backgroundColor: '#fff',
+                border: '2px solid #000',
+                boxShadow: theme.shadows[5],
+                padding: theme.spacing(2, 4, 3),
+            },
+        }),
+    );
+
+    const classes = useStyles();
+    // getModalStyle is not a pure function, we roll the style only on the first render
+    const [open, setOpen] = React.useState(false);
 
     return (
         <div className="app_wrapper">
@@ -103,7 +121,7 @@ const Home = (props: any) => {
                                 </div>
                             </div>
                             {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setOpenModal(!openModal)}>Log in</a></li>}
-                            <Modal
+                            <Modal className="onboard_modal"
                                 open={openModal}
                                 onClose={() => setOpenModal(!openModal)}
                                 aria-labelledby="simple-modal-title"
@@ -160,7 +178,7 @@ const Home = (props: any) => {
                                                     <img src={Location} alt="location" />
                                                 </span>
                                                 <span className="detect_icon" >
-                                                <img src={cross} alt="cross" />
+                                                    <img src={cross} alt="cross" />
                                                 </span>
                                             </div>
                                         </div>
