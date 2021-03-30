@@ -1,23 +1,21 @@
 
 header {
-    position: absolute;
+    position: fixed;
     width: 100%;
     padding: 20px 0;
     -webkit-transition: 0.5s all;
     transition: 0.5s all;
     background-color: var(--blue);
-    z-index: 99;
+    z-index: 999;
     top: 0;
     left: 0;
     transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
-    @media (max-width: 650px) {
-      position: fixed;
-      // background: #5854547a;
-      z-index: 999;
-    }
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      z-index: 999;
-    }
+    // @media (max-width: 650px) {
+    //   // background: #5854547a;
+    // }
+    // @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+     
+    // }
     &.active {
       position: fixed;
       z-index: 9999;

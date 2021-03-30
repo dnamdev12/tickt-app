@@ -16,7 +16,10 @@ import uc from '../../assets/images/uc.png';
 import Searchicon from "../../assets/images/main-search.png";
 import search from "../../assets/images/ic-search.png";
 import Location from "../../assets/images/ic-location.png";
+import cross from "../../assets/images/close-black.png";
 import bannerimg from '../../assets/images/home-banner.png'
+import icgps from "../../assets/images/ic-gps.png";
+
 
 const Home = (props: any) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -106,7 +109,7 @@ const Home = (props: any) => {
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
-                                <Login history={props.history}/>
+                                <Login history={props.history} />
                             </Modal>
                         </ul>
                     </div>
@@ -157,6 +160,7 @@ const Home = (props: any) => {
                                                     <img src={Location} alt="location" />
                                                 </span>
                                                 <span className="detect_icon" >
+                                                <img src={cross} alt="cross" />
                                                 </span>
                                             </div>
                                         </div>
@@ -176,6 +180,120 @@ const Home = (props: any) => {
                                     </div>
                                 </ul>
                             </form>
+
+                            {/* Category recent search */}
+                            {/* <div className="custom_autosuggestion">
+                                <span className="sub_title">Recent searches</span>
+
+                                <div className="flex_row recent_search">
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card history">
+                                            <span>Campervans</span>
+                                            <span className="name">Vehicles</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card history">
+                                            <span>sparknotes1</span>
+                                            <span className="name">sparknotes</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card history">
+                                            <span>Cabins</span>
+                                            <span className="name">Accomodation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="sub_title">Categories</span>
+                                <div className="searched_categories">
+                                    <ul className="categories">
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div> */}
+                            {/* Category recent search close*/}
+
+                            {/* Location recent search */}
+                            {/* <div className="custom_autosuggestion location">
+                                <button className="location-btn">
+                                    <span className="gps_icon">
+                                        <img src={icgps} />
+                                    </span> Use my current location
+                                </button>
+                                <span className="sub_title ">Recent searches</span>
+                                 <span className="blocked_note">
+                              You have blocked your location.
+                              To use this, change your location settings in browser.
+                              </span> 
+                                <div className="flex_row recent_search auto_loc">
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card loc">
+                                            <span >Dummy location</span>
+                                            <span className="name">Noida, Uttar Pradesh, India</span></div></div>
+
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card loc">
+                                            <span >Unnamed Road</span>
+                                            <span className="name"> Bichua, Madhya Pradesh 487001, India</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card loc">
+                                            <span >4 shantanu banlows rajpath club ni same</span>
+                                            <span className="name"> Narolgam, Ellisbridge, Ahmedabad, Gujarat 380006, India</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> */}
+                            {/* Location recent search close*/}
+
                         </div>
                         <div className="text-center">
                             <h1 className="heading text_effect">Your local network</h1>
@@ -240,6 +358,14 @@ const Home = (props: any) => {
                                 <span className="categ_name">Electrician </span>
                             </a>
                         </li>
+                        <li>
+                            <a href="javascript:void(0)" className="categ_card">
+                                <figure className="categ_img">
+                                    <img src={colorLogo} alt="icon" />
+                                </figure>
+                                <span className="categ_name">Electrician </span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -250,10 +376,10 @@ const Home = (props: any) => {
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
                     <span className="title">Saved tradies</span>
-                    <div className="flex_row">
+                    <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -283,7 +409,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -313,7 +439,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -343,7 +469,7 @@ const Home = (props: any) => {
 
 
                     </div>
-                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>
             </div>
             {/* Saved Tradies close*/}
@@ -397,7 +523,7 @@ const Home = (props: any) => {
                             <span className="post">Electrician</span>
                         </li>
                     </ul>
-                    <button className="fill_grey_btn full_btn">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>
             </div>
             {/* Popular Tradies close*/}
@@ -407,10 +533,10 @@ const Home = (props: any) => {
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
                     <span className="title">Reccomended tradies</span>
-                    <div className="flex_row">
+                    <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -440,7 +566,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -470,7 +596,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -500,7 +626,7 @@ const Home = (props: any) => {
 
 
                     </div>
-                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>
             </div>
             {/* Reccomended tradies close*/}

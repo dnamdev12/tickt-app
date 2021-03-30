@@ -165,9 +165,11 @@ a.fill_grey_btn {
   color: var(--blue);
   margin-bottom: 25px;
   @media (max-width: 812px) {
-    width: 100%;
     padding: 12px 18px;
     margin-bottom: 18px;
+  }
+  @media (max-width: 650px){
+    width: 100%;
   }
 }
 
@@ -483,6 +485,12 @@ a.fill_grey_btn {
 
 .m-tb40{
   margin: 40px 0px;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    margin: 15px 0px 30px;
+  }
+  @media (max-width: 768px){
+    margin: 25px 0px;
+  }
 }
 
 .agree_check {

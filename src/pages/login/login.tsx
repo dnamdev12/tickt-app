@@ -104,6 +104,7 @@ const LoginPage = (props: Propstype) => {
                     <span className="reg">No account? <Link to="/signup" className="link">Signup</Link></span>
                 </div>
             </div>
+
         </AuthParent>
     )
 }
