@@ -1,6 +1,10 @@
 import removeFile from '../../../assets/images/icon-close-1.png';
 import fileIcon from '../../../assets/images/file.png';
 import AuthParent from '../../../common/auth/authParent';
+import pngIcon from '../../assets/images/png.png';
+import jpegIcon from '../../assets/images/jpeg.png';
+import pdfIcon from '../../assets/images/pdf.png';
+import docIcon from '../../assets/images/doc.png';
 
 interface Propstype {
     updateSteps: (num: number) => void
@@ -43,7 +47,7 @@ const ChooseQualification = (props: Propstype) => {
                                         <img src={removeFile} />
                                     </span>
                                     <span className="file_icon">
-                                        <img src={fileIcon} />
+                                        <img src={pngIcon} />
                                     </span>
                                     <div className="file_details">
                                         <span className="name">Image</span>
@@ -58,7 +62,7 @@ const ChooseQualification = (props: Propstype) => {
                                 <label htmlFor="qf2">First Aid</label>
                             </div>
                             <div className="upload_img_video">
-                                <label className="upload_btn" htmlFor="upload_img_video">Upload</label>
+                                <label className="upload_btn" htmlFor="upload_img_video disable_btn">Upload</label>
                                 <input type="file" className="none" id="upload_img_video" />
                             </div>
                         </div>

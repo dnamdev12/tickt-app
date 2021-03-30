@@ -10,6 +10,8 @@ import regex from '../../utils/regex'
 import { gmailSignupLogin } from '../../redux/auth/actions';
 import SocialAuth from "../../common/auth/socialAuth";
 
+
+
 const LoginPage = (props: any) => {
     const [errors, setErrors] = useState<any>({});
     const [loginData, setLoginData] = useState<any>({
@@ -122,6 +124,7 @@ const LoginPage = (props: any) => {
                     <span className="reg">No account? <Link to="/signup" className="link">Signup</Link></span>
                 </div>
             </div>
+
         </AuthParent>
     )
 }
