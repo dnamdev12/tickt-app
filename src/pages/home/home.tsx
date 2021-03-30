@@ -341,7 +341,7 @@ const Home = () => {
 
 
                     </div>
-                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>
             </div>
             {/* Saved Tradies close*/}
@@ -395,7 +395,7 @@ const Home = () => {
                             <span className="post">Electrician</span>
                         </li>
                     </ul>
-                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>
             </div>
             {/* Popular Tradies close*/}
@@ -408,7 +408,7 @@ const Home = () => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -498,7 +498,7 @@ const Home = () => {
 
 
                     </div>
-                    <button className="fill_grey_btn full_btn m-tb40">View all</button>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>
             </div>
             {/* Reccomended tradies close*/}

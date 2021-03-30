@@ -192,47 +192,30 @@
 /*--------------------Bell effect close--------------------------*/
 
 /*--------------------btn effect--------------------------*/
-.buttonfx {
-  overflow: hidden;
-  transition: all .5s;
+.view_more{
   position: relative;
-  &:before, &:after {
+  &:after {
+    // content: '»';
     content: '';
     position: absolute;
-    left: 0;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    height: 100%;
-    background: var(--white);
-    z-index: -1;
-    transform: translate3D(0, -100%, 0);
-    transition: all .5s;
+    opacity: 0;  
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0px;
+    font-size: 30px;
+    transition: 0.5s;
+    background: url('../images/icon-direction.png') center no-repeat;
+    background-size: contain;
+    width: 20px;
+    height: 20px;
   }
-  &:before {
-    background: #fafcd6;
-    z-index: -2;
-    transform: translate3D(0, 0, 0);
-  }
-  &:hover {
+  &:hover{
     &:after {
-      transform: translate3D(0, 0, 0);
-      transition: all .5s;
+      opacity: 1;
+      right: 60px;
     }
   }
-}
-.curtainup {
-  transform-style: preserve-3d;
-  &:before, &:after {
-    transform-origin: center center;
-    transform: scale(1, 0);
-  }
-  &:hover {
-    &:before, &:after {
-      transform: scale(1);
-      border-radius: 0;
-    }
-  }
+  
 }
 /*--------------------btn effect close--------------------------*/
 
