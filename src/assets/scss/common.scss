@@ -2070,6 +2070,10 @@ body{
   .modal_srch_close {
     display: none;
   }
+  .detect_icon{
+    display: flex;
+    align-items: center;
+  }
   &.top_search {
     background-color: var(--white);
     margin: auto;
@@ -2205,6 +2209,118 @@ body{
     }
   }
 }
+
+
+//---suggestions---//
+.custom_autosuggestion {
+  width: 100%;
+  background-color: var(--white);
+  border-radius: 3px;
+  border-top: 1px solid #d9d9d9;
+  box-shadow: 0 20px 20px 0 rgba(163, 163, 164, 0.2);
+  position: absolute;
+  top: 64px;
+  left: auto;
+  right: 0;
+  padding: 30px 20px;
+  max-height: 387px;
+  min-height: 120px;
+  overflow-y: auto;
+  z-index: 99;
+  @media (max-width: 768px) {
+    top: 120px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    top: 69px;
+  }
+
+  &.location {
+    width: 597px;
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 100%;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      top: 120px;
+    }
+    .sub_title {
+      margin: 20px 0 0;
+    }
+  }
+  .sub_title {
+    font-size: 18px;
+    margin-bottom: 18px;
+  }
+  .location-btn {
+    width: 327px;
+    height: 56px;
+    padding: 16px 32px;
+    border-radius: 3px;
+    background-color: #dfe5ef;
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    line-height: 1.43;
+    text-align: center;
+    color: #120e24;
+    .gps_icon {
+      margin-right: 20px;
+    }
+    @media (max-width: 768px) {
+      width: 100%;
+    }
+  }
+
+  transform: translateY(0%);
+  -webkit-transform: translateY(0%);
+  animation: slide-out 0.5s forwards;
+  -webkit-animation: slide-out 0.5s forwards;
+
+  @-webkit-keyframes slide-out {
+    0% {
+      opacity: 0;
+      -webkit-transform: scale3d(0, 1, 0);
+    }
+    100% {
+      opacity: 1;
+      -webkit-transform: scale3d(1, 1, 1);
+    }
+  }
+  @keyframes slide-out {
+    0% {
+      opacity: 0;
+      transform: scale3d(0, 1, 0);
+    }
+    100% {
+      opacity: 1;
+      transform: scale3d(1, 1, 1);
+    }
+  }
+}
+
+.blocked_note {
+  background-color: var(--info);
+  color: var(--white);
+  padding: 15px;
+  display: block;
+  position: relative;
+  &::before {
+    content: "";
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background: #fd9e69;
+    transform: rotate(45deg);
+    top: -5px;
+    left: 35px;
+  }
+}
+//---suggestions close---//
+
+
 //-------------------Home close----------------//
 
 
@@ -2357,6 +2473,31 @@ body{
   }
 }
 //------------------Categories close-----------------------//
+
+// ----------Recent Search Categories-------------//
+.searched_categories{
+  padding: 0;
+  position: relative;
+  .categories{
+    li{
+      .categ_card{
+        .categ_img {
+          width: 80px;
+          height: 80px;
+          margin-bottom: 10px;
+          img{
+            width: 28px;
+            height: 28px;
+          }
+        }
+        .categ_name{
+          font-size: 12px;
+        }
+      }
+    }
+  }
+}
+// ----------Recent Search Categories-------------//
 
 //-----------------Popular Tradies----------------------//
 .popular_tradies{

@@ -16,7 +16,10 @@ import uc from '../../assets/images/uc.png';
 import Searchicon from "../../assets/images/main-search.png";
 import search from "../../assets/images/ic-search.png";
 import Location from "../../assets/images/ic-location.png";
+import cross from "../../assets/images/close-black.png";
 import bannerimg from '../../assets/images/home-banner.png'
+import icgps from "../../assets/images/ic-gps.png";
+
 
 const Home = (props: any) => {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -106,7 +109,7 @@ const Home = (props: any) => {
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
-                                <Login history={props.history}/>
+                                <Login history={props.history} />
                             </Modal>
                         </ul>
                     </div>
@@ -157,6 +160,7 @@ const Home = (props: any) => {
                                                     <img src={Location} alt="location" />
                                                 </span>
                                                 <span className="detect_icon" >
+                                                <img src={cross} alt="cross" />
                                                 </span>
                                             </div>
                                         </div>
@@ -176,6 +180,120 @@ const Home = (props: any) => {
                                     </div>
                                 </ul>
                             </form>
+
+                            {/* Category recent search */}
+                            {/* <div className="custom_autosuggestion">
+                                <span className="sub_title">Recent searches</span>
+
+                                <div className="flex_row recent_search">
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card history">
+                                            <span>Campervans</span>
+                                            <span className="name">Vehicles</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card history">
+                                            <span>sparknotes1</span>
+                                            <span className="name">sparknotes</span>
+                                        </div>
+                                    </div>
+
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card history">
+                                            <span>Cabins</span>
+                                            <span className="name">Accomodation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <span className="sub_title">Categories</span>
+                                <div className="searched_categories">
+                                    <ul className="categories">
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span>
+                                            </a>
+                                        </li>
+
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                        <li>
+                                            <a className="categ_card">
+                                                <figure className="categ_img">
+                                                    <img alt="categories" src={colorLogo} />
+                                                </figure>
+                                                <span className="categ_name"> Fishing </span></a>
+                                        </li>
+                                    </ul>
+
+                                </div>
+                            </div> */}
+                            {/* Category recent search close*/}
+
+                            {/* Location recent search */}
+                            {/* <div className="custom_autosuggestion location">
+                                <button className="location-btn">
+                                    <span className="gps_icon">
+                                        <img src={icgps} />
+                                    </span> Use my current location
+                                </button>
+                                <span className="sub_title ">Recent searches</span>
+                                 <span className="blocked_note">
+                              You have blocked your location.
+                              To use this, change your location settings in browser.
+                              </span> 
+                                <div className="flex_row recent_search auto_loc">
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card loc">
+                                            <span >Dummy location</span>
+                                            <span className="name">Noida, Uttar Pradesh, India</span></div></div>
+
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card loc">
+                                            <span >Unnamed Road</span>
+                                            <span className="name"> Bichua, Madhya Pradesh 487001, India</span>
+                                        </div>
+                                    </div>
+                                    <div className="flex_col_sm_4">
+                                        <div className="autosuggestion_icon card loc">
+                                            <span >4 shantanu banlows rajpath club ni same</span>
+                                            <span className="name"> Narolgam, Ellisbridge, Ahmedabad, Gujarat 380006, India</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div> */}
+                            {/* Location recent search close*/}
+
                         </div>
                         <div className="text-center">
                             <h1 className="heading text_effect">Your local network</h1>
