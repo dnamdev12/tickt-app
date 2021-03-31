@@ -18,6 +18,7 @@ import Searchicon from "../../assets/images/main-search.png";
 import search from "../../assets/images/ic-search.png";
 import Location from "../../assets/images/ic-location.png";
 import cross from "../../assets/images/close-black.png";
+import cancel from "../../assets/images/ic-cancel.png";
 import bannerimg from '../../assets/images/home-banner.png'
 import icgps from "../../assets/images/ic-gps.png";
 
@@ -41,12 +42,12 @@ const Home = (props: any) => {
     const useStyles = makeStyles((theme: Theme) =>
         createStyles({
             paper: {
-                position: 'absolute',
-                width: 400,
-                backgroundColor: '#fff',
-                border: '2px solid #000',
-                boxShadow: theme.shadows[5],
-                padding: theme.spacing(2, 4, 3),
+                // position: 'absolute',
+                // width: 400,
+                // backgroundColor: '#fff',
+                // border: '2px solid #000',
+                // boxShadow: theme.shadows[5],
+                // padding: theme.spacing(2, 4, 3),
             },
         }),
     );
@@ -121,13 +122,18 @@ const Home = (props: any) => {
                                 </div>
                             </div>
                             {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setOpenModal(!openModal)}>Log in</a></li>}
-                            <Modal className="onboard_modal"
+                            <Modal className="custom_modal "
                                 open={openModal}
                                 onClose={() => setOpenModal(!openModal)}
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
-                                <Login history={props.history} />
+                                <div className="onboard_modal">
+                                    <button className="close">
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                    <Login history={props.history} />
+                                </div>
                             </Modal>
                         </ul>
                     </div>
@@ -650,7 +656,7 @@ const Home = (props: any) => {
             {/* Reccomended tradies close*/}
 
 
-        </div>
+        </div >
     )
 }
 

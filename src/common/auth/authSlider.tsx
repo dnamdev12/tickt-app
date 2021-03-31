@@ -7,6 +7,10 @@ import bannerimage1 from '../../assets/images/onboarding-banner-1.jpg';
 import bannerimage2 from '../../assets/images/onboarding-banner-2.jpg';
 import bannerimage3 from '../../assets/images/onboarding-banner-3.jpg';
 
+import bannerimage11 from '../../assets/images/modal-slider-bg-1.png';
+import bannerimage22 from '../../assets/images/modal-slider-bg-2.png';
+import bannerimage33 from '../../assets/images/modal-slider-bg-3.png';
+
 interface Props {
     type: string
 }
@@ -24,15 +28,27 @@ const DATA: any = {
     }
 }
 
+// const SLIDER_DATA = [
+//     {
+//         image: bannerimage1,
+//     },
+//     {
+//         image: bannerimage2,
+//     },
+//     {
+//         image: bannerimage3,
+//     }
+// ]
+
 const SLIDER_DATA = [
     {
-        image: bannerimage1,
+        image: bannerimage11,
     },
     {
-        image: bannerimage2,
+        image: bannerimage22,
     },
     {
-        image: bannerimage3,
+        image: bannerimage33,
     }
 ]
 
