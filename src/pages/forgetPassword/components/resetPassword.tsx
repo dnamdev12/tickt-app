@@ -14,7 +14,7 @@ const ResetPassword = (props: Propstype) => {
     const [mobileNumber, setMobileNumber] = useState<any>(props.mobileNumber)
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.length <= 10) {
+        if (e.target.value.length < 10) {
             setMobileNumber(e.target.value)
         }
     }

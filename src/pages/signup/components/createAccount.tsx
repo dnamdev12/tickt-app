@@ -37,7 +37,7 @@ const CreateAccount = (props: Propstype) => {
             newErrors.firstName = Constants.errorStrings.fullNameEmpty;
         } else {
             const nameRegex = new RegExp(regex.fullname);
-            if (signupData.firstName.length < 3 || !nameRegex.test(signupData.firstName.trim())) {
+            if (!nameRegex.test(signupData.firstName.trim())) {
                 newErrors.firstName = Constants.errorStrings.fullNameErr
             }
         }
@@ -94,9 +94,9 @@ const CreateAccount = (props: Propstype) => {
                         <input className="filter-type filled-in" type="checkbox" name="tnc" id="tnc"
                             checked={signupData.tnc} onChange={tncHandler} />
                         <label htmlFor="tnc">I agree to </label>
-                        <a className="link">Privacy Policy</a>
+                        <a href="https://ticktdevapi.appskeeper.in/privacyPolicy" target="_blank" rel="noopener" className="link">Privacy Policy</a>
                         <label className="and">&nbsp;and&nbsp;</label>
-                        <a className="link m-l-30">Terms &amp; Conditions</a>
+                        <a href="https://ticktdevapi.appskeeper.in/tnc" target="_blank" rel="noopener" className="link m-l-30">Terms &amp; Conditions</a>
                     </div>
                     {!!errors.tnc && <span className="error_msg">{errors.tnc}</span>}
                 </div>

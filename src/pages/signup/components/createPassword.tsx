@@ -26,9 +26,9 @@ const CreatePassword = (props: Propstype) => {
         if (!password) {
             newErrors.password = Constants.errorStrings.password;
         } else {
-            const nameRegex = new RegExp(regex.password);
-            if (!nameRegex.test(password)) {
-                newErrors.password = Constants.errorStrings.passwordInValid
+            const passwordRegex = new RegExp(regex.password);
+            if (!passwordRegex.test(password.trim())) {
+                newErrors.password = Constants.errorStrings.passwordError;
             }
         }
         setErrors(newErrors);
@@ -38,7 +38,7 @@ const CreatePassword = (props: Propstype) => {
     const onSubmit = async (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            props.updateSteps(props.step + 1, {password})
+            props.updateSteps(props.step + 1, { password })
         }
     }
 

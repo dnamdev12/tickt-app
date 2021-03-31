@@ -42,12 +42,12 @@ const Specialization = (props: Propstype) => {
         <div className="form_wrapper tags_wrap">
             <form onSubmit={onSubmit}>
                 <ul>
-                    {specializationList?.map((item: any) => {
+                    {specializationList?.length ? specializationList.map((item: any) => {
                         const active = specialization.indexOf(item._id) >= 0;
                         return (
                             <li className={active ? 'active' : ''} onClick={() => changeHandler(item._id)}>{item.name}</li>
                         )
-                    })}
+                    }) : 'No Data Found!'}
                 </ul>
                 <div className="form_field">
                     <button className="fill_btn">Next</button>

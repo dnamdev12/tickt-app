@@ -29,19 +29,15 @@ const AlmostDone = (props: Propstype) => {
             newErrors.company_name = Constants.errorStrings.companyNameEmpty;
         } else {
             const nameRegex = new RegExp(regex.fullname);
-            if (almostDoneData.company_name.length < 3) {
-                newErrors.company_name = Constants.errorStrings.companyNameShortErr
-            } else if (!nameRegex.test(almostDoneData.company_name)) {
-                newErrors.company_name = Constants.errorStrings.companyNameErr
+            if (!nameRegex.test(almostDoneData.company_name.trim())) {
+                newErrors.company_name = Constants.errorStrings.companyNameErr;
             }
         }
         if (!almostDoneData.position) {
             newErrors.position = Constants.errorStrings.positionNameEmpty;
         } else {
             const positionRegex = new RegExp(regex.fullname);
-            if (almostDoneData.position.length < 3) {
-                newErrors.position = Constants.errorStrings.positionNameShortErr
-            } else if (!positionRegex.test(almostDoneData.position)) {
+            if (!positionRegex.test(almostDoneData.position.trim())) {
                 newErrors.position = Constants.errorStrings.positionNameErr;
             }
         }

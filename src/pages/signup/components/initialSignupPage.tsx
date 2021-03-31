@@ -19,7 +19,7 @@ const InitialSignupPage = (props: Propstype) => {
             <div className="form_field"><button className="fill_btn" onClick={() => nextPageHandler('builder')}>I’m builder</button></div>
             <div className="form_field text-center"><span className="show_label text-center">or</span></div>
             <div className="form_field"><button className="fill_grey_btn" onClick={() => nextPageHandler('tradie')}>I’m tradie</button></div>
-            <div className="text-center"><a className="link">Login as Guest</a></div>
+            {/* <div className="text-center"><a className="link">Login as Guest</a></div> */}
         </div>
     )
 }

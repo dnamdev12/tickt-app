@@ -46,9 +46,9 @@ const LoginPage = (props: Propstype) => {
         if (!loginData.password) {
             newErrors.password = Constants.errorStrings.password;
         } else {
-            const nameRegex = new RegExp(regex.password);
-            if (!nameRegex.test(loginData.password)) {
-                newErrors.password = Constants.errorStrings.passwordInValid
+            const passwordRegex = new RegExp(regex.password);
+            if (!passwordRegex.test(loginData.password.trim())) {
+                newErrors.password = Constants.errorStrings.passwordError;
             }
         }
 
@@ -62,7 +62,7 @@ const LoginPage = (props: Propstype) => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
-        const newData = { ...loginData, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
+        const newData = { email: loginData.email, password: loginData.password.trim(), deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
         if (validateForm()) {
             const res: any = await callLogin(newData)
             if (res.success) {

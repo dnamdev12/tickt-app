@@ -39,7 +39,7 @@ const Signup = (props: any) => {
         trade: '',
         specialization: [],
         qualification: [],
-        user_type: 0,
+        user_type: 0
         // companyName: '',
         // position: '',
         // abn: '',

@@ -3,7 +3,6 @@ import Login from '../pages/login/login';
 import NotFound from '../pages/notFound/notFound';
 import Signup from '../pages/signup';
 import ForgerPassword from '../pages/forgetPassword/forgetPassword';
-import GoogleAuth from '../common/auth/socialAuth';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -32,11 +31,6 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
         path: '/reset-password',
         component: ForgerPassword,
         authRoute: true,
-    },
-    {
-        name: 'google-oauth',
-        path: '/google-oauth',
-        component: GoogleAuth
     },
     {
         name: 'linkedin-oauth',

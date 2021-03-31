@@ -28,29 +28,29 @@ const DATA: any = {
     }
 }
 
-// const SLIDER_DATA = [
-//     {
-//         image: bannerimage1,
-//     },
-//     {
-//         image: bannerimage2,
-//     },
-//     {
-//         image: bannerimage3,
-//     }
-// ]
-
 const SLIDER_DATA = [
     {
-        image: bannerimage11,
+        image: bannerimage1,
     },
     {
-        image: bannerimage22,
+        image: bannerimage2,
     },
     {
-        image: bannerimage33,
+        image: bannerimage3,
     }
 ]
+
+// const SLIDER_DATA = [
+//     {
+//         image: bannerimage11,
+//     },
+//     {
+//         image: bannerimage22,
+//     },
+//     {
+//         image: bannerimage33,
+//     }
+// ]
 
 class AuthSlider extends Component<Props> {
     render() {

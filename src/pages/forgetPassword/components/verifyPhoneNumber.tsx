@@ -30,11 +30,9 @@ const VerifyPhoneNumber = (props: Propstype) => {
         if (!otp) {
             newErrors.otp = Constants.errorStrings.otpEmpty;
         } else {
-            const nameRegex = new RegExp(regex.otp);
-            if (!nameRegex.test(otp)) {
-                newErrors.otp = Constants.errorStrings.otpErr
-            } else if (nameRegex.test(otp) && otp.length < 5) {
-                newErrors.otp = Constants.errorStrings.otpIncorrect
+            const otpregex = new RegExp(regex.otp);
+            if (!otpregex.test(otp)) {
+                newErrors.otp = Constants.errorStrings.otpIncorrect;
             }
         }
         setErrors(newErrors);

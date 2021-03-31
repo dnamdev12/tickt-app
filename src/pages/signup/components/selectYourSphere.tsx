@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Constants from '../../../utils/constants';
 import { setShowToast } from '../../../redux/common/actions';
-import  spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
+import spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void
@@ -14,7 +14,7 @@ const SelectCategories = (props: Propstype) => {
     const [trade, setTrade] = useState(props.trade);
 
     const onClick = (item: string) => {
-        if(item == trade) {
+        if (item == trade) {
             return setTrade('')
         }
         setTrade(item)
@@ -32,18 +32,19 @@ const SelectCategories = (props: Propstype) => {
     return (
         <div className="select_sphere form_wrapper">
             <ul>
-                {props.tradeListData.map((item) => {
+                {props.tradeListData.length ? props.tradeListData.map((item) => {
                     const active = trade === item._id;
+                    console.log(item.selected_url, "item")
                     return (
                         <li className={active ? 'active' : ''} onClick={() => onClick(item._id)}>
                             <figure>
                                 {/* <img src={item[active ? 'selected_url' : 'unselected_url']} alt={item.trade_name} /> */}
-                                <img src= {spherePlaceholder} />
+                                <img src={item.selected_url ? item.selected_url : spherePlaceholder} />
                             </figure>
                             <span className="name">{item.trade_name}</span>
                         </li>
                     )
-                })}
+                }) : 'No Data Found!'}
             </ul>
             <button className="fill_btn" onClick={onSubmit}>Next</button>
         </div>

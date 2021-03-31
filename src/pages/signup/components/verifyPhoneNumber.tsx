@@ -30,10 +30,8 @@ const VerifyPhoneNumber = (props: Propstype) => {
         if (!otp) {
             newErrors.otp = Constants.errorStrings.otpEmpty;
         } else {
-            const nameRegex = new RegExp(regex.otp);
-            if (!nameRegex.test(otp)) {
-                newErrors.otp = Constants.errorStrings.otpErr
-            } else if (nameRegex.test(otp) && otp.length < 5) {
+            const otpRegex = new RegExp(regex.otp);
+            if (!otpRegex.test(otp)) {
                 newErrors.otp = Constants.errorStrings.otpIncorrect
             }
         }
@@ -57,7 +55,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
     const resendHandler = async (e: any) => {
         e.preventDefault()
         const res: any = await checkMobileNumber(props.mobileNumber)
-        if(res.success) {
+        if (res.success) {
             setCounter(Constants.OTP_TIMER)
         }
     }
@@ -69,19 +67,19 @@ const VerifyPhoneNumber = (props: Propstype) => {
                 {/* <div className="otp_input_wrapper">
                                 <input type="number" className="sms-no-box" name="ssn-1" maxLength={1} onChange={changeHandler} />
                             </div> */}
-                             <div className="form_field">
-                <div className="otp_input_wrapper">
-                    <OtpInput
-                        className="sms-no-box"
-                        inputStyle={{ "width": "48px" }}
-                        value={otp}
-                        onChange={changeHandler}
-                        numInputs={5}
-                        isInputNum
-                    //separator={<span>-</span>}
-                    />
-                </div>
-                {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
+                <div className="form_field">
+                    <div className="otp_input_wrapper">
+                        <OtpInput
+                            className="sms-no-box"
+                            inputStyle={{ "width": "48px" }}
+                            value={otp}
+                            onChange={changeHandler}
+                            numInputs={5}
+                            isInputNum
+                        //separator={<span>-</span>}
+                        />
+                    </div>
+                    {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
                 </div>
                 <div className="form_field">
                     <span className="show_label">We have sent a verification code to your phone.

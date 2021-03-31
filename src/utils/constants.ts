@@ -24,10 +24,10 @@ abnEmpty: 'ABN cannot be empty',
 abnErr: 'Please enter correct ABN',
 abnExist: 'Phone number already in use',
 password: 'Please enter password',
-passwordInValid: 'Password must be 8 charaters longs and should contain atleast one alphabet, one numeric and one special character',
+passwordInvalid: 'Invalid password',
+passwordError: 'Password must be 8 charaters longs and should contain atleast one alphabet, one numeric and one special character',
 otpEmpty: 'OTP cannot be empty',
-otpErr: 'Please enter a valid OTP',
-otpIncorrect: 'Incorrect OTP',
+otpIncorrect: 'Please enter a valid OTP',
 sphereEmpty: 'Please select your sphere',
 specializationEmpty: 'Please select your specialization'
 }
