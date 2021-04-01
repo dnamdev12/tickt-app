@@ -327,6 +327,9 @@ body.loader_show .full_loader {
 .onboard_wrapper{
     .react-multi-carousel-dot-list{
         bottom: 295px;
+        @media (max-width: 1366px){
+            bottom: 255px;
+        }
     }
     .react-multi-carousel-dot {
         button{
