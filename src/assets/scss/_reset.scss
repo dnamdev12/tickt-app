@@ -309,22 +309,37 @@ body.loader_show .full_loader {
 
 
 //----------------Onboarding carowsel--------------------//
-.react-multi-carousel-dot-list{
-    bottom: 295px;
-}
 .react-multi-carousel-dot {
     button{
-        background-color: rgba(255, 255, 255, 0.4);
+        background-color: var(--grey);
         width: 8px;
         height: 8px;
         border: none;
     }
     &.react-multi-carousel-dot--active {
         button{
-            background-color: var(--white);
+            background-color: var(--blue-two) !important;
         }
     }
 }
+
+
+.onboard_wrapper{
+    .react-multi-carousel-dot-list{
+        bottom: 295px;
+    }
+    .react-multi-carousel-dot {
+        button{
+            background-color: rgba(255, 255, 255, 0.4);
+        }
+        &.react-multi-carousel-dot--active {
+            button{
+                background-color: var(--white) !important;
+            }
+        }
+    }
+}
+
 
 //----------------Onboarding carowsel--------------------//
 
