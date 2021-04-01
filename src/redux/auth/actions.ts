@@ -106,7 +106,7 @@ export const gmailSignupLogin = async (data: any) => {
     storageService.setItem("jwtToken", response.result.token);
     return { success: true, successToken: response.result.token };
   }
-  //setShowToast(true, response.message);
+  setShowToast(true, response.message);
   return { success: false };
 };
 

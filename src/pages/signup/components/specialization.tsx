@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { setShowToast } from '../../../redux/common/actions';
-import Constants from '../../../utils/constants';
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void
@@ -47,7 +46,7 @@ const Specialization = (props: Propstype) => {
                         return (
                             <li className={active ? 'active' : ''} onClick={() => changeHandler(item._id)}>{item.name}</li>
                         )
-                    }) : 'No Data Found!'}
+                    }) : <li className='active'>No Data Found</li>}
                 </ul>
                 <div className="form_field">
                     <button className="fill_btn">Next</button>

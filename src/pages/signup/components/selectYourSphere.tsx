@@ -34,7 +34,6 @@ const SelectCategories = (props: Propstype) => {
             <ul>
                 {props.tradeListData.length ? props.tradeListData.map((item) => {
                     const active = trade === item._id;
-                    console.log(item.selected_url, "item")
                     return (
                         <li className={active ? 'active' : ''} onClick={() => onClick(item._id)}>
                             <figure>
@@ -44,7 +43,7 @@ const SelectCategories = (props: Propstype) => {
                             <span className="name">{item.trade_name}</span>
                         </li>
                     )
-                }) : 'No Data Found!'}
+                }) : <li className='active'>No Data Found</li>}
             </ul>
             <button className="fill_btn" onClick={onSubmit}>Next</button>
         </div>

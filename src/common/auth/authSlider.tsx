@@ -31,12 +31,15 @@ const DATA: any = {
 const SLIDER_DATA = [
     {
         image: bannerimage1,
+        imageText: 'Find quality work and grow your reputation'
     },
     {
         image: bannerimage2,
+        imageText: 'Choose work that suits your location, price, schedule'
     },
     {
         image: bannerimage3,
+        imageText: 'Make yourself on what you do best'
     }
 ]
 
@@ -73,7 +76,7 @@ class AuthSlider extends Component<Props> {
                                 </figure>
                                 <img src={item.image} alt="banner-img" />
                                 <div className="slider_txt">
-                                    <span>Make yourself on what you do best</span>
+                                    <span>{item.imageText}</span>
                                 </div>
                                 <div className="bottom_txt">
                                     <span className="reg">{data.title}

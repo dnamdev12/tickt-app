@@ -48,7 +48,7 @@ const LoginPage = (props: Propstype) => {
         } else {
             const passwordRegex = new RegExp(regex.password);
             if (!passwordRegex.test(loginData.password.trim())) {
-                newErrors.password = Constants.errorStrings.passwordError;
+                newErrors.password = Constants.errorStrings.passwordInvalid;
             }
         }
 

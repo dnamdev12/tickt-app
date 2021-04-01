@@ -15,6 +15,7 @@ import { LinkedIn } from 'react-linkedin-login-oauth2';
 interface Propstype {
     onNewAccount: Function,
     history: any,
+    userType?: number,
 }
 
 const linkedinData = {
@@ -50,13 +51,13 @@ const SocialAuth = (props: Propstype) => {
         if (res.success) {
             if(res.isProfileCompleted) {
                 //in case of existing social account
-                const data = {
+                const data: any = {
                     //firstName: profileData.name,
                     email: response.profileObj.email,
                     socialId: response.profileObj.googleId,
                     deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
-                    //accountType: authType,
-                    //user_type: Constants.USER_TYPE,
+                    accountType: "google",
+                    ...(props.userType && {user_type: props.userType})
                 }
                 const res = await gmailSignupLogin(data)
                 if (res.success) {
@@ -88,15 +89,6 @@ const SocialAuth = (props: Propstype) => {
         }
     }
 
-    // const appleClicked = async () => {
-    //     console.log(userDetails)
-    //     const res2 = await fetch('https://api.linkedin.com/v2/me', {
-    //         headers: { Authorization: `Bearer ${userDetails}` }
-    //     })
-    //     const response2 = res2.json()
-    //     console.log(response2)
-    // }
-
     return (
         <div className="continue_with">
             <GoogleLogin
@@ -107,7 +99,7 @@ const SocialAuth = (props: Propstype) => {
                     <img src={gmail} alt="google" />
                 </a>)}
             />
-            <LinkedIn
+            {/* <LinkedIn
                 clientId="77vhhfg24hx1s2"
                 onSuccess={linkedinResponse}
                 onFailure={onFailure}
@@ -118,14 +110,14 @@ const SocialAuth = (props: Propstype) => {
                     <img src={linkedin} alt="linkedin" />
                 </a>
                 )}
-            />
+            /> */}
             {/* <AppleLogin
                 clientId="com.react.apple.login"
                 redirectURI="https://redirectUrl.com"
             /> */}
-            {/* <a href="javascript:void(0)" >
+            <a href="javascript:void(0)" >
                 <img src={linkedin} alt="linkedin" />
-            </a> */}
+            </a>
             {/* <a href="javascript:void(0)">
                 <img src={apple} alt="apple" />
             </a> */}
