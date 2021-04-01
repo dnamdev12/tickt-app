@@ -26,6 +26,7 @@ const linkedinData = {
     //1.
     //https://www.linkedin.com/uas/oauth2/authorization?response_type=code&client_id=77vhhfg24hx1s2&scope=r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/
     //https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77vhhfg24hx1s2&scope=r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/
+    //https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77vhhfg24hx1s2&scope=r_liteprofile r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/
 
     //2
     //https://www.linkedin.com/uas/oauth2/accessToken?grant_type=authorization_code&redirect_uri=http://localhost:3000/&client_id=77vhhfg24hx1s2&client_secret=83ODjX9bN2GIjCoj&code=AQSdeaJsO1qXWgna4dYRAZawQs4MCiB9foRUKqtmiuR2egEsWYXFP7M6iaRXSOO13GaOnQS8t5sAHJgCE1Gd63Bt0HNthIP0yDW4nbDsRTOKdHBHe72ayfH2MtDvFx77nSOwQMaN7zzeqaRxbGRqivyK10FHpY4wX5AZ2tmsDT-KYXgDXOtigV7HRhEwdm4I_OzbqenhxatGVN7rMVk&state=gjhcbf355ESDE

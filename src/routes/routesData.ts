@@ -3,6 +3,7 @@ import Login from '../pages/login/login';
 import NotFound from '../pages/notFound/notFound';
 import Signup from '../pages/signup';
 import ForgerPassword from '../pages/forgetPassword/forgetPassword';
+import PostJob from '../pages/postJob'
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -30,6 +31,12 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
         name: 'forgetpassword',
         path: '/reset-password',
         component: ForgerPassword,
+        authRoute: true,
+    },
+    {
+        name: 'postnewjob',
+        path: '/post-new-job',
+        component: PostJob,
         authRoute: true,
     },
     {
