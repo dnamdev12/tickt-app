@@ -397,6 +397,33 @@ const Home = (props: any) => {
             </div>
             {/* Categories close*/}
 
+            {/* Saved jobs */}
+            {/* <div className="section_wrapper bg_gray">
+                <div className="custom_container">
+                    <span className="title">Saved jobs</span>
+                    <div className="flex_row tradies_row">
+                        <div className="flex_col_sm_6">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">John Oldman</span>
+                                    </div>
+                                </div>
+                                <div className="job_info">
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
+                </div>
+            </div> */}
+            {/* Saved jobs close*/}
+
 
             {/* Saved Tradies */}
             <div className="section_wrapper bg_gray">
