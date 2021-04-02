@@ -7,9 +7,7 @@ import eyeIconOpen from '../../assets/images/icon-eye-open.png';
 import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
-import { gmailSignupLogin } from '../../redux/auth/actions';
 import SocialAuth from "../../common/auth/socialAuth";
-import Signup from '../signup/signup';
 
 interface Propstype {
     history?: any

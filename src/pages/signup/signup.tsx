@@ -10,7 +10,7 @@ import Specialization from './components/specialization';
 import AlmostDone from './components/almostDone';
 import AddQualification from './components/addQualification';
 import AddABN from './components/addABN';
-import { postSignup, gmailSignupLogin } from '../../redux/auth/actions';
+import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
 import Constants from '../../utils/constants';
 import AuthParent from '../../common/auth/authParent';
 import storageService from '../../utils/storageService';
@@ -91,7 +91,7 @@ const Signup = (props: any) => {
             delete data.qualification
         }
         if (signupData.accountType) {
-            res = await gmailSignupLogin(data);
+            res = await socialSignupLogin(data);
             res.success && storageService.setItem("jwtToken", res.successToken);
         } else {
             delete data.socialId;
