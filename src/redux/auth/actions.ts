@@ -22,8 +22,8 @@ export const checkEmailId = async (email: string) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkEmailId + `?email=${email}`);
   setLoading(false);
-  if (response.status_code === 200 && !response.result.isProfileCompleted) {
-    return { success: true};
+  if (response.status_code === 200) {
+    return { success: true, isProfileCompleted: response.result.isProfileCompleted, message: response.message };
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -97,7 +97,7 @@ export const checkSocialId = async (socialID: string) => {
   return { success: false };
 };
 
-export const gmailSignupLogin = async (data: any) => {
+export const socialSignupLogin = async (data: any) => {
   console.log(data);
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.SocialAuth, data);
@@ -110,17 +110,13 @@ export const gmailSignupLogin = async (data: any) => {
   return { success: false };
 };
 
-export const callSocialLinkedin = async (data: string) => {
+export const getLinkedinProfile = async (data: any) => {
   setLoading(true);
-  //const response: FetchResponse = await NetworkOps.get(data);
-  const response: any = await fetch(data, {
-    mode: 'no-cors',
-  })
-  console.log(response, 'okk')
+  const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data}`);
+  //const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data.code}&redirect_uri=${data.redirect_uri}`);
   setLoading(false);
   if (response.status === 200) {
-    //return { success: true, code: response.code };
-    return response;
+    return { success: true, result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };

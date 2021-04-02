@@ -4,6 +4,7 @@ import { checkEmailId } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import SocialAuth from "../../../common/auth/socialAuth";
+import { setShowToast } from '../../../redux/common/actions';
 interface Propstype {
     updateSteps: (num: number, data: any) => void,
     step: number,
@@ -59,7 +60,8 @@ const CreateAccount = (props: Propstype) => {
         e.preventDefault();
         if (validateForm()) {
             const res: any = await checkEmailId(signupData.email)
-            if (res.success) {
+            res?.isProfileCompleted && setShowToast(true, res.message);
+            if (!res.isProfileCompleted) {
                 props.updateSteps(props.step + 1, data)
             }
         }
@@ -102,8 +104,8 @@ const CreateAccount = (props: Propstype) => {
                 </div>
                 <span className="show_label text-center">or continue with</span>
                 <SocialAuth onNewAccount={props.onNewAccount}
-                    history={props.history} 
-                    userType={props.data.user_type}/>
+                    history={props.history}
+                    userType={props.data.user_type} />
                 <div className="form_field hide text-center">
                     <span className="reg">Have an account? <Link to="/login" className="link">Sign in</Link></span>
                 </div>

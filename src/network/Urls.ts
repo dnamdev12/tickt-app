@@ -21,6 +21,7 @@ const ServiceEnum = {
     checkSocialId: `${versions.v1}${ServiceEnum.auth}checkSocialId`,
     SocialAuth: `${versions.v1}${ServiceEnum.auth}socialAuth`,
     upload: `${versions.v1}upload`,
+    linkedInAuth: `${versions.v1}${ServiceEnum.auth}linkedInAuth`,
 }
 
 export const urlFor = (service: String): string => {
