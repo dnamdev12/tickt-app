@@ -7,7 +7,7 @@ import Modal from '@material-ui/core/Modal';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import storageService from '../../utils/storageService';
 import Login from '../login/login'
-
+import Carousel from 'react-multi-carousel';
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
 import bell from '../../assets/images/ic-notification.png';
@@ -21,6 +21,14 @@ import cross from "../../assets/images/close-black.png";
 import cancel from "../../assets/images/ic-cancel.png";
 import bannerimg from '../../assets/images/home-banner.png'
 import icgps from "../../assets/images/ic-gps.png";
+import residential from "../../assets/images/ic-residential.png";
+import industrial from "../../assets/images/ic-money.png";
+import contracted from "../../assets/images/ic-contracted.png";
+import commercial from "../../assets/images/ic-commercial.png";
+import hourlyRate from "../../assets/images/ic-clock.png";
+
+
+
 
 
 const Home = (props: any) => {
@@ -56,6 +64,23 @@ const Home = (props: any) => {
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
     const [open, setOpen] = React.useState(false);
+
+    const categorieshome = {
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 1,
+            slidesToSlide: 1, // optional, default to 1.
+        },
+    };
+
+    const categoriesjob = {
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 1,
+            slidesToSlide: 1, // optional, default to 1.
+        },
+    };
+
 
     return (
         <div className="app_wrapper">
@@ -333,72 +358,187 @@ const Home = (props: any) => {
 
 
             {/* Categories */}
-            <div className="section_wrapper">
+            <div className="home_categories">
                 <div className="custom_container">
-                    <ul className="categories">
-                        <li>
-                            <a href="javascript:void(0)" className="categ_card">
-                                <figure className="categ_img">
-                                    <img src={colorLogo} alt="icon" />
-                                </figure>
-                                <span className="categ_name">Electrician</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" className="categ_card">
-                                <figure className="categ_img">
-                                    <img src={colorLogo} alt="icon" />
-                                </figure>
-                                <span className="categ_name">Electrician </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" className="categ_card">
-                                <figure className="categ_img">
-                                    <img src={colorLogo} alt="icon" />
-                                </figure>
-                                <span className="categ_name">Electrician</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" className="categ_card">
-                                <figure className="categ_img">
-                                    <img src={colorLogo} alt="icon" />
-                                </figure>
-                                <span className="categ_name">Electrician </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" className="categ_card">
-                                <figure className="categ_img">
-                                    <img src={colorLogo} alt="icon" />
-                                </figure>
-                                <span className="categ_name">Electrician</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" className="categ_card">
-                                <figure className="categ_img">
-                                    <img src={colorLogo} alt="icon" />
-                                </figure>
-                                <span className="categ_name">Electrician </span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" className="categ_card">
-                                <figure className="categ_img">
-                                    <img src={colorLogo} alt="icon" />
-                                </figure>
-                                <span className="categ_name">Electrician </span>
-                            </a>
-                        </li>
-                    </ul>
+                    <Carousel className="item_slider" responsive={categorieshome} autoPlay={false} arrows={false} showDots={true}>
+                        <div>
+                            <ul className="categories">
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div>
+                            <ul className="categories">
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician</span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" className="categ_card">
+                                        <figure className="categ_img">
+                                            <img src={colorLogo} alt="icon" />
+                                        </figure>
+                                        <span className="categ_name">Electrician </span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+
+                    </Carousel>
                 </div>
             </div>
             {/* Categories close*/}
 
+
+            {/* Job types */}
+            <div className="home_job_categories">
+                <div className="custom_container">
+                    <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={true}  infinite={false}>
+                        <div>
+                            <ul className="job_categories">
+                                <li>
+                                    <figure className="type_icon">
+                                        <img src={residential} alt="icon" />
+                                    </figure>
+                                    <span className="name">Residential</span>
+                                </li>
+                                <li>
+                                    <figure className="type_icon">
+                                        <img src={commercial} alt="icon" />
+                                    </figure>
+                                    <span className="name">Commercial</span>
+                                </li>
+                                <li>
+                                    <figure className="type_icon">
+                                        <img src={industrial} alt="icon" />
+                                    </figure>
+                                    <span className="name">Industrial</span>
+                                </li>
+                                <li>
+                                    <figure className="type_icon">
+                                        <img src={hourlyRate} alt="icon" />
+                                    </figure>
+                                    <span className="name">Hourly Rate</span>
+                                </li>
+                                <li>
+                                    <figure className="type_icon">
+                                        <img src={contracted} alt="icon" />
+                                    </figure>
+                                    <span className="name">Contracted</span>
+                                </li>
+                            </ul>
+                        </div>
+
+
+
+                    </Carousel>
+                </div>
+            </div>
+            {/* Job types close*/}
+
+
             {/* Saved jobs */}
-            {/* <div className="section_wrapper bg_gray">
+            <div className="section_wrapper bg_gray">
                 <div className="custom_container">
                     <span className="title">Saved jobs</span>
                     <div className="flex_row tradies_row">
@@ -410,18 +550,54 @@ const Home = (props: any) => {
                                         <img src={dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
-                                        <span className="name">John Oldman</span>
+                                        <span className="name">Wire up circuit box</span>
                                     </div>
                                 </div>
                                 <div className="job_info">
-
+                                    <ul>
+                                        <li className="icon clock">32 minutes ago</li>
+                                        <li className="icon dollar">$250 p/h</li>
+                                        <li className="icon location">Melbourne CBD</li>
+                                        <li className="icon calendar">4 days </li>
+                                    </ul>
                                 </div>
+                                <p className="commn_para">Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness. Sparky wanted for a quick job to hook up two floodlights...</p>
+                                <ul className="count_wrap">
+                                    <li className="icon view">127</li>
+                                    <li className="icon comment">32</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="flex_col_sm_6">
+                            <div className="tradie_card">
+                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <div className="user_wrap">
+                                    <figure className="u_img">
+                                        <img src={dummy} alt="traide-img" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">Wire up circuit box</span>
+                                    </div>
+                                </div>
+                                <div className="job_info">
+                                    <ul>
+                                        <li className="icon clock">32 minutes ago</li>
+                                        <li className="icon dollar">$250 p/h</li>
+                                        <li className="icon location">Melbourne CBD</li>
+                                        <li className="icon calendar">4 days </li>
+                                    </ul>
+                                </div>
+                                <p className="commn_para">Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness. Sparky wanted for a quick job to hook up two floodlights...</p>
+                                <ul className="count_wrap">
+                                    <li className="icon view">127</li>
+                                    <li className="icon comment">32</li>
+                                </ul>
                             </div>
                         </div>
                     </div>
                     <button className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>
-            </div> */}
+            </div>
             {/* Saved jobs close*/}
 
 
