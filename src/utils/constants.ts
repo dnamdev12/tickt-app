@@ -28,7 +28,7 @@ passwordInvalid: 'Invalid password',
 passwordError: 'Password must be 8 charaters longs and should contain atleast one alphabet, one numeric and one special character',
 otpEmpty: 'OTP cannot be empty',
 otpIncorrect: 'Please enter a valid OTP',
-sphereEmpty: 'Please select your sphere',
+sphereEmpty: 'Please select your trade',
 specializationEmpty: 'Please select your specialization'
 }
 

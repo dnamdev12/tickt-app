@@ -21,7 +21,7 @@ const DATA = [
     { title: 'Phone number' },
     { title: 'Verify your number' },
     { title: 'Create password' },
-    { title: 'What is your sphere?' },
+    { title: 'What is your trade?' },
     { title: 'What Specialisation?' },
     { title: 'Almost done', tradieTitle: 'Add qualification' },
     { title: 'Add ABN' }
