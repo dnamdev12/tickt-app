@@ -544,7 +544,7 @@ const Home = (props: any) => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_6">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -570,7 +570,7 @@ const Home = (props: any) => {
                         </div>
                         <div className="flex_col_sm_6">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -608,7 +608,7 @@ const Home = (props: any) => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -638,7 +638,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -668,7 +668,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -765,7 +765,7 @@ const Home = (props: any) => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -795,7 +795,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -825,7 +825,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
