@@ -328,11 +328,11 @@ body.loader_show .full_loader {
     .react-multi-carousel-dot-list{
         bottom: 295px;
         @media (max-width: 1366px){
-            bottom: 255px;
+            bottom: 100px;
         }
-        @media (max-width: 1332px){
-            bottom: 225px;
-        }
+        // @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+		// 	bottom: 100px;
+		// }
     }
     .react-multi-carousel-dot {
         button{

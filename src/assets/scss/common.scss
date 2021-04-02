@@ -414,7 +414,7 @@ body {
 		content: "";
 		width: 24px;
 		height: 24px;
-		background: url("../images//ic-share.png") center no-repeat;
+		background: url("../images/ic-share.png") center no-repeat;
 		background-size: contain;
 		@media (max-width: 812px) {
 			width: 18px;
@@ -476,7 +476,7 @@ body {
 		content: "";
 		width: 12px;
 		height: 12px;
-		background: url("../images//ic-rating.png") center no-repeat;
+		background: url("../images/ic_rating_star.png") center no-repeat;
 		background-size: contain;
 		@media (max-width: 812px) {
 			width: 10px;
@@ -498,12 +498,6 @@ body {
 			transform: translateY(-50%);
 			background-color: var(--greyish-brown);
 			@include border-radius(50%);
-		}
-	}
-	&.clean {
-		&::before {
-			background: url("../images//ic-clean.png") center no-repeat;
-			background-size: contain;
 		}
 	}
 }
@@ -529,12 +523,12 @@ body {
 	}
 	&.history {
 		&::before {
-			background: url("../images//ic-history.png") center no-repeat;
+			background: url("../images/ic-history.png") center no-repeat;
 		}
 	}
 	&.loc {
 		&::before {
-			background: url("../images//map-pin.png") center no-repeat;
+			background: url("../images/map-pin.png") center no-repeat;
 		}
 	}
 }
@@ -855,6 +849,12 @@ body {
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 9;
+	@media(max-width: 1366px){
+		bottom: 10%;
+	}
+	@media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+		bottom: 10%;
+	}
 	.reg {
 		font-size: 14px;
 		font-family: 'Neue Haas Grotesk Text Pro Bold';
@@ -1516,7 +1516,7 @@ body {
 			content: "";
 			width: 20px;
 			height: 20px;
-			background: url("../images//ic-question.png") center no-repeat;
+			background: url("../images/ic-question.png") center no-repeat;
 			background-size: contain;
 		}
 	}
@@ -1697,15 +1697,15 @@ body {
 					width: 24px;
 					height: 24px;
 				}
-				&.edit {
-					&::before {
-						background: url('../images//ic-edit.png') center no-repeat;
-					}
-				}
+				// &.edit {
+				// 	&::before {
+				// 		background: url('../images/ic-edit.png') center no-repeat;
+				// 	}
+				// }
 				&.delete {
 					color: #ed1c24;
 					&::before {
-						background: url('../images//ic-delete.png') center no-repeat;
+						background: url('../images/ic-delete.png') center no-repeat;
 					}
 				}
 			}
@@ -2581,11 +2581,6 @@ body {
 			flex-flow: column;
 			&:hover,
 			&.active {
-				.categ_img {
-					img {
-						transform: rotateY(360deg);
-					}
-				}
 				.categ_name {
 					color: var(--blue-two);
 				}
@@ -2639,6 +2634,10 @@ body {
     background-color: #dfe5ef;
     border-radius: 3px;
     margin: 0 15px;
+	border: 2px solid #dfe5ef;
+	&.active{
+		border-color: var(--blue-two);
+	}
     .type_icon{
       width: 16px;
       height: 16px;
