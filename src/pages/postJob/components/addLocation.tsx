@@ -3,10 +3,9 @@ import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
-import profile from '../../assets/images/ic-profile.png';
-import cancel from "../../assets/images/ic-cancel.png";
+import icgps from "../../../assets/images/ic-gps.png";
 
-const PostNewJob = () => {
+const AddLocation = () => {
     return (
         <div className="app_wrapper">
 
@@ -65,30 +64,28 @@ const PostNewJob = () => {
                     <div className="form_field">
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
-                                <span className="title">Post new job</span>
-                                <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
+                                <div className="relate">
+                                    <button className="back"></button>
+                                    <span className="title">Location</span>
+                                </div>
+                                <p className="commn_para">Type the place for your job</p>
                             </div>
                         </div>
                     </div>
-
                     <div className="flex_row">
                         <div className="flex_col_sm_5">
                             <div className="form_field">
-                                <span className="xs_sub_title">Job</span>
-                            </div>
-                            <div className="form_field">
-                                <label className="form_label">Job name</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="Enter job name" name="name" />
+                                    <input type="text" placeholder="Type a State, city or suburb" name="location" />
                                 </div>
                                 <span className="error_msg"></span>
                             </div>
                             <div className="form_field">
-                                <label className="form_label">Job details</label>
-                                <div className="text_field">
-                                    <textarea placeholder="This job..." name="details" ></textarea>
-                                </div>
-                                <span className="error_msg"></span>
+                                <button className="location-btn">
+                                    <span className="gps_icon">
+                                        <img src={icgps} />
+                                    </span> Use my current location
+                                </button>
                             </div>
                             <div className="form_field">
                                 <button className="fill_btn full_btn">Continue</button>
@@ -102,4 +99,4 @@ const PostNewJob = () => {
     )
 }
 
-export default PostNewJob
+export default AddLocation
