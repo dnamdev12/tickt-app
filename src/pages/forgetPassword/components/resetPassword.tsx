@@ -52,7 +52,8 @@ const ResetPassword = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Phone number</label>
                     <div className="text_field">
-                        <input type="number" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={9} />
+                        <input type="number" className="detect_input_ltr" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={9} />
+                        <span className="detect_icon_ltr">+61</span>
                     </div>
                     {!!errors.mobileNumber && <span className="error_msg">{errors.mobileNumber}</span>}
                 </div>
