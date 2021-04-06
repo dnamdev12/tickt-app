@@ -367,7 +367,7 @@ const Home = (props: any) => {
                             <ul className="categories">
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician</span>
@@ -375,7 +375,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -383,7 +383,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician</span>
@@ -391,7 +391,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -399,7 +399,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician</span>
@@ -407,7 +407,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -415,7 +415,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -428,7 +428,7 @@ const Home = (props: any) => {
                             <ul className="categories">
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician</span>
@@ -436,7 +436,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -444,7 +444,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician</span>
@@ -452,7 +452,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -460,7 +460,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician</span>
@@ -468,7 +468,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -476,7 +476,7 @@ const Home = (props: any) => {
                                 </li>
                                 <li>
                                     <a href="javascript:void(0)" className="categ_card">
-                                        <figure className="categ_img">
+                                        <figure className="categ_img circle">
                                             <img src={colorLogo} alt="icon" />
                                         </figure>
                                         <span className="categ_name">Electrician </span>
@@ -498,31 +498,31 @@ const Home = (props: any) => {
                     <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={true} infinite={false}>
                         <div>
                             <ul className="job_categories">
-                                <li>
+                                <li className="draw active">
                                     <figure className="type_icon">
                                         <img src={residential} alt="icon" />
                                     </figure>
                                     <span className="name">Residential</span>
                                 </li>
-                                <li>
+                                <li className="draw">
                                     <figure className="type_icon">
                                         <img src={commercial} alt="icon" />
                                     </figure>
                                     <span className="name">Commercial</span>
                                 </li>
-                                <li>
+                                <li className="draw">
                                     <figure className="type_icon">
                                         <img src={industrial} alt="icon" />
                                     </figure>
                                     <span className="name">Industrial</span>
                                 </li>
-                                <li>
+                                <li className="draw">
                                     <figure className="type_icon">
                                         <img src={hourlyRate} alt="icon" />
                                     </figure>
                                     <span className="name">Hourly Rate</span>
                                 </li>
-                                <li>
+                                <li className="draw">
                                     <figure className="type_icon">
                                         <img src={contracted} alt="icon" />
                                     </figure>
@@ -546,7 +546,7 @@ const Home = (props: any) => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_6">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -572,7 +572,7 @@ const Home = (props: any) => {
                         </div>
                         <div className="flex_col_sm_6">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -610,7 +610,7 @@ const Home = (props: any) => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -640,7 +640,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -670,7 +670,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -767,7 +767,7 @@ const Home = (props: any) => {
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -797,7 +797,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />
@@ -827,7 +827,7 @@ const Home = (props: any) => {
 
                         <div className="flex_col_sm_4">
                             <div className="tradie_card">
-                                <a href="javascript:void(0)" className="more_detail bounce"></a>
+                                <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
                                         <img src={dummy} alt="traide-img" />

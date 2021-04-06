@@ -33,7 +33,8 @@ const DATA = [
     { title: 'What is your trade?' },
     { title: 'What Specialisation?' },
     { title: 'Almost done', tradieTitle: 'Add qualification' },
-    { title: 'Add ABN' }
+    // { title: 'Add ABN' }
+    { title: 'Almost done' } //https://appinventivtech.atlassian.net/browse/TIC-409
 ]
 
 const Signup = (props: Propstype) => {

@@ -9,6 +9,9 @@
 }
 .relate {
   position: relative;
+  .title{
+    padding-left: 40px;
+  }
 }
 .form_label {
   font-size: 14px;
@@ -64,6 +67,9 @@ textarea {
     padding: 0;
     pointer-events: none;
   }
+}
+.sm_box{
+  width: 158px;
 }
 textarea {
   min-height: 120px;
@@ -163,10 +169,8 @@ a.fill_grey_btn {
   width: 280px;
   padding: 19px 20px;
   color: var(--blue);
-  margin-bottom: 25px;
   @media (max-width: 812px) {
     padding: 12px 18px;
-    margin-bottom: 18px;
   }
   @media (max-width: 650px){
     width: 100%;
@@ -446,7 +450,7 @@ a.fill_grey_btn {
 
 [type="radio"]:checked + label:after,
 [type="radio"]:checked + label:after {
-  background-color: #f05038;
+  background-color: var(--blue-two);
 }
 
 [type="radio"]:not(:checked) + label:before,
@@ -459,7 +463,21 @@ a.fill_grey_btn {
 [type="radio"]:checked + label:after {
   border: 1px solid #c1c1c1;
 }
-
+.radio_wrap {
+  margin-bottom: 16px;
+  label {
+    font-size: 16px !important;
+    padding-left: 45px !important;
+    color: var(--blue) !important;
+    line-height: 35px !important;
+    height: 30px !important;
+  }
+  [type="radio"] + label:before,
+  [type="radio"] + label:after {
+    width: 24px;
+    height: 24px;
+  }
+}
 .checkbox_wrap {
   label {
     font-size: 14px;

@@ -1,13 +1,26 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
-import profile from '../../assets/images/ic-profile.png';
-import cancel from "../../assets/images/ic-cancel.png";
 
-const PostNewJob = () => {
+function valuetext(value: number) {
+    return `${value}°C`;
+}
+
+
+const Payment = () => {
+   
+    const [value, setValue] = React.useState<number[]>([20, 37]);
+
+    const handleChange = (event: any, newValue: number | number[]) => {
+        setValue(newValue as number[]);
+    };
     return (
+
         <div className="app_wrapper">
 
             {/* Header */}
@@ -65,31 +78,46 @@ const PostNewJob = () => {
                     <div className="form_field">
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
-                                <span className="title">Post new job</span>
-                                <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
+                                <div className="relate">
+                                    <button className="back"></button>
+                                    <span className="title">Payment</span>
+                                </div>
+                                <p className="commn_para">How mach will you pay for a job</p>
                             </div>
                         </div>
                     </div>
-
                     <div className="flex_row">
                         <div className="flex_col_sm_5">
                             <div className="form_field">
-                                <span className="xs_sub_title">Job</span>
+                                <div className="radio_wrap agree_check">
+                                    <input className="filter-type filled-in" type="radio" id="perHour" />
+                                    <label htmlFor="perHour">Per hour</label>
+                                </div>
+                                <div className="radio_wrap agree_check">
+                                    <input className="filter-type filled-in" type="radio" id="fixed" />
+                                    <label htmlFor="fixed">Fixed price</label>
+                                </div>
                             </div>
+
                             <div className="form_field">
-                                <label className="form_label">Job name</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="Enter job name" name="name" />
+                                    <input type="number" placeholder="Price" name="Price" className="sm_box" />
                                 </div>
                                 <span className="error_msg"></span>
                             </div>
+
                             <div className="form_field">
-                                <label className="form_label">Job details</label>
-                                <div className="text_field">
-                                    <textarea placeholder="This job..." name="details" ></textarea>
-                                </div>
-                                <span className="error_msg"></span>
+                            {/* <Typography id="range-slider" gutterBottom></Typography> */}
+
+                            <Slider
+                                value={value}
+                                onChange={handleChange}
+                                valueLabelDisplay="auto"
+                                aria-labelledby="range-slider"
+                                getAriaValueText={valuetext}
+                            />
                             </div>
+
                             <div className="form_field">
                                 <button className="fill_btn full_btn">Continue</button>
                             </div>
@@ -102,4 +130,4 @@ const PostNewJob = () => {
     )
 }
 
-export default PostNewJob
+export default Payment
