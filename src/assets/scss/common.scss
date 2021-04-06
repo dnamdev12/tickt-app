@@ -868,6 +868,9 @@ body {
 					}
 				}
 			}
+			&.tags_wrap{
+				max-width: 515px;
+			}
 		}
 	}
 	.onboard_wrapper {
@@ -1450,7 +1453,7 @@ body {
 			font-size: 16px;
 		}
 	}
-	.close {
+	.close_btn {
 		width: 40px;
 		height: 40px;
 		display: flex;
