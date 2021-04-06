@@ -873,13 +873,14 @@ body {
 	.onboard_wrapper {
 		background: var(--white);
 		.onboarding_head {
-			margin: 40px 0 40px 50px;
+			margin: 40px 0 40px 30px;
 			@media (max-width: 768px){
 				margin: 40px auto 30px
 			}
 			.back_btn {
 				left: -45px;
 				background: url('../images/icon-direction-left.png') center no-repeat;
+				display: none;
 				@media (max-width: 768px){
 					left: 160px;
 					z-index: 9;
