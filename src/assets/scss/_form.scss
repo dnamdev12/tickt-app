@@ -84,7 +84,7 @@ textarea {
   justify-content: space-between;
   align-items: center;
   max-width: 330px;
-  margin: 0 auto 0 0;
+  margin: 0 auto 12px 0;
   .sms-no-box {
     width: 48px;
     height: 48px;
@@ -494,7 +494,7 @@ a.fill_grey_btn {
   }
   .m-l-30 {
     display: inline-block;
-    @media (max-width: 650px) {
+    @media (max-width: 768px) {
       margin-left: 0px;
     }
   }
