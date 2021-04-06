@@ -57,6 +57,15 @@ const CreateAccount = (props: Propstype) => {
         return !Object.keys(newErrors).length;
     }
 
+    const phoneViewHandler = (e: any) => {
+        e.preventDefault();
+        if(props.showModal){
+            props.modalUpdateSteps(0)
+            return;
+        }
+        props.history.push('/login')
+    }
+
     const onSubmit = async (e: any) => {
         const data = { ...signupData };
         delete data.tnc;
@@ -114,7 +123,7 @@ const CreateAccount = (props: Propstype) => {
                     modalUpdateSteps={props.modalUpdateSteps}
                 />
                 <div className="form_field hide text-center">
-                    <span className="reg">Have an account? <Link to="/login" className="link">Sign in</Link></span>
+                    <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Sign in</a></span>
                 </div>
 
             </form>

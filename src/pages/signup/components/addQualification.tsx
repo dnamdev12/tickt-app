@@ -43,8 +43,8 @@ const AddQualification = (props: Propstype) => {
         formData.append('file', newFile);
         var fileType = newFile.type.split('/')[1]
         const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf"]
-        console.log(newFile, 'ok', newFile.type,'ok', fileType)
-        if(docTypes.indexOf(fileType) < 0){
+        console.log(newFile, 'ok', newFile.type, 'ok', fileType)
+        if (docTypes.indexOf(fileType) < 0) {
             alert('Please choose correct file type.')
             return;
         }
@@ -124,7 +124,7 @@ const AddQualification = (props: Propstype) => {
                             </div>
                         </div>
                     </div> */}
-                    {qualificationList?.map((item: any) => {
+                    {qualificationList ? qualificationList?.map((item: any) => {
                         const isChecked = qualification.find((i: any) => i.qualification_id === item._id);
                         const docDetails = isChecked?.url && fileDetails(isChecked);
                         return (
@@ -155,7 +155,7 @@ const AddQualification = (props: Propstype) => {
                                     </div>)}
                             </div>
                         )
-                    })}
+                    }) : <li className='active'>No Data Found</li>}
                 </div>
 
                 <div className="form_field">

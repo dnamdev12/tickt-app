@@ -49,6 +49,8 @@ const Home = (props: any) => {
 
     const logoutHandler = () => {
         storageService.removeItem("jwtToken")
+        storageService.removeItem("guestToken")
+        props.history.push('/signup')
     }
 
     const useStyles = makeStyles((theme: Theme) =>
@@ -150,19 +152,6 @@ const Home = (props: any) => {
                                 </div>
                             </div>
                             {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setShowModal(!showModal)}>Log in</a></li>}
-                            {/* {!storageService.getItem("jwtToken") && showModal && <Modal className="custom_modal "
-                                open={showModal}
-                                onClose={() => setShowModal(!showModal)}
-                                aria-labelledby="simple-modal-title"
-                                aria-describedby="simple-modal-description"
-                            >
-                                <div className="onboard_modal">
-                                    <button className="close" onClick={() => setShowModal(!showModal)}>
-                                        <img src={cancel} alt="cancel" />
-                                    </button>
-                                    <Login history={props.history} />
-                                </div>
-                            </Modal>} */}
                             <AuthModal showModal={showModal} setShowModal={setShowModal} history={props.history} firstTimePopup>{props.children}</AuthModal>
                         </ul>
                     </div>

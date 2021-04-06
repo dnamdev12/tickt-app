@@ -64,8 +64,6 @@ const SocialAuth = (props: Propstype) => {
     const linkedInResponse = async (response: any) => {
         const resSocial = await getLinkedinProfile({ code: response.code, redirect_uri: linkedInData.REDIRECT_URI })
         const resCheckId = await checkSocialId(resSocial.result.id)
-        console.log(resCheckId, "check social id")
-        console.log(resSocial, "resSocial")
         if (resCheckId.success) {
             if (resCheckId.isProfileCompleted) {
                 //in case of existing social account
@@ -74,6 +72,7 @@ const SocialAuth = (props: Propstype) => {
                     email: resSocial.result.email,
                     deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "linkedin",
+                    socialId: resSocial.result.id,
                     ...(props.userType && { user_type: props.userType })
                 }
                 const resAuth = await socialSignupLogin(data)

@@ -30,7 +30,7 @@ const DATA = [
     { title: 'Phone number' },
     { title: 'Verify your number' },
     { title: 'Create password' },
-    { title: 'What is your trade?' },
+    { title: 'Select trades you require', tradeTitle: 'What is your trade?' },
     { title: 'What Specialisation?' },
     { title: 'Almost done', tradieTitle: 'Add qualification' },
     // { title: 'Add ABN' }
@@ -55,8 +55,6 @@ const Signup = (props: Propstype) => {
         // abn: '',
     })
 
-    console.log(props, "props signup component")
-
     useEffect(() => {
         props.callTradeList();
     }, [])
@@ -75,14 +73,13 @@ const Signup = (props: Propstype) => {
             setSignupData((prevData: any) => ({ ...prevData, ...newData }))
         }
     }
-    console.log(signupData, '-->  signupData')
 
     const onNewAccount = (profileData: any, authType: string) => {
         setSteps(steps + 1);
         const newProfileData = {
             firstName: profileData.name,
             email: profileData.email,
-            //socialId: profileData.googleId,
+            socialId: profileData.googleId,
             accountType: authType,
             ...(authType === 'google' && { socialId: profileData.googleId }),
             ...(authType === 'linkedin' && { socialId: profileData.socialId })
@@ -124,7 +121,7 @@ const Signup = (props: Propstype) => {
     const renderPages = () => {
         switch (steps) {
             case 0:
-                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} />
+                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal}/>
             case 1:
                 return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:
