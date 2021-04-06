@@ -34,7 +34,7 @@ export const checkMobileNumber = async (mobile: string | number) => {
   const response: FetchResponse = await NetworkOps.get(Urls.checkMobileNumber + `?mobileNumber=${mobile}`);
   setLoading(false);
   if (response.status_code === 200) {
-    return { success: true };
+    return { success: true, isProfileCompleted: response.result.isProfileCompleted, message: response.message };
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -86,9 +86,9 @@ export const callForgotPassword = async (data: any) => {
   return { success: false };
 };
 
-export const checkSocialId = async (socialID: string) => {
+export const checkSocialId = async (socialId: string) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.get(Urls.checkSocialId + `?socialId=${socialID}`);
+  const response: FetchResponse = await NetworkOps.get(Urls.checkSocialId + `?socialId=${socialId}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, isProfileCompleted: response.result.isProfileCompleted };
@@ -112,10 +112,10 @@ export const socialSignupLogin = async (data: any) => {
 
 export const getLinkedinProfile = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data}`);
-  //const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data.code}&redirect_uri=${data.redirect_uri}`);
+  //const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data}`);
+  const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data.code}&redirect_uri=${data.redirect_uri}`);
   setLoading(false);
-  if (response.status === 200) {
+  if (response.status_code === 200) {
     return { success: true, result: response.result };
   }
   setShowToast(true, response.message);

@@ -8,7 +8,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action: any) => {
-    switch (action.type) { 
+    switch (action.type) {
         case actionTypes.SET_LOADING:
             return {
                 ...state,

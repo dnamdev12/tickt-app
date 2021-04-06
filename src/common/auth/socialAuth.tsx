@@ -1,9 +1,8 @@
-import { useState } from 'react';
 import Constants from '../../utils/constants';
 import gmail from '../../assets/images/ic-google.png';
 import linkedin from '../../assets/images/ic-linkedin.png';
 import apple from '../../assets/images/ic-apple.png';
-import { checkSocialId, getLinkedinProfile, socialSignupLogin, checkEmailId } from '../../redux/auth/actions';
+import { checkSocialId, getLinkedinProfile, socialSignupLogin } from '../../redux/auth/actions';
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 // @ts-ignore
 import { GoogleLogin } from 'react-google-login';
@@ -16,6 +15,9 @@ interface Propstype {
     onNewAccount: Function,
     history: any,
     userType?: number,
+    showModal?: boolean,
+    modalUpdateSteps: (data: any) => void,
+    setShowModal: (data: any) => void,
 }
 
 const linkedInData = {
@@ -24,20 +26,7 @@ const linkedInData = {
     CLIENT_SECRET: '83ODjX9bN2GIjCoj',
 }
 
-//1.
-//https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77vhhfg24hx1s2&scope=r_liteprofile r_emailaddress&state=gjhcbf355ESDE&redirect_uri=http://localhost:3000/linkedin
-
-//2
-//https://www.linkedin.com/oauth/v2/accessToken?grant_type=authorization_code&redirect_uri=http://localhost:3000/linkedin&client_id=77vhhfg24hx1s2&client_secret=83ODjX9bN2GIjCoj&code=AQSmVVpQz0hq65r5aD2Tv2IkpM75IqCkLLKR2cpgv_zWUfSKClhpATa_4UVVkxivWAs6qgzIPwdfZLix5zVWIEw_v_Hiz0C1hZcq3uaj8GweTz_yXU8c2fP_PWFriV-264VjPk_Qfy7s-WJ0x6a9w-zanbaZ-SKcJN_ic4BD74fUVoNoxHHeH2Zrt84TFp5wRBApR9ER_EmkPnLR1QU&state=abhj57rfyged2
-
-
 const SocialAuth = (props: Propstype) => {
-    // const [userDetails, setUserDetails] = useState({
-    //     isAuthenticated: false,
-    //     user: null,
-    //     token: ''
-    // })
-    //const [userDetails, setUserDetails] = useState('')
 
     const onFailure = (error: any) => {
         console.log(error);
@@ -59,6 +48,10 @@ const SocialAuth = (props: Propstype) => {
                 }
                 const res = await socialSignupLogin(data)
                 if (res.success) {
+                    if (props.showModal) {
+                        props.setShowModal(!props.showModal)
+                        return
+                    }
                     props.history.push('/')
                 }
             } else {
@@ -69,11 +62,12 @@ const SocialAuth = (props: Propstype) => {
     };
 
     const linkedInResponse = async (response: any) => {
-        console.log(response, "linkedin-oauth response")
-        const resSocial = await getLinkedinProfile(response.code)
-        if (resSocial.success) {
-            const linkedInData = await checkEmailId(resSocial.result.email)
-            if (linkedInData.isProfileCompleted) {
+        const resSocial = await getLinkedinProfile({ code: response.code, redirect_uri: linkedInData.REDIRECT_URI })
+        const resCheckId = await checkSocialId(resSocial.result.id)
+        console.log(resCheckId, "check social id")
+        console.log(resSocial, "resSocial")
+        if (resCheckId.success) {
+            if (resCheckId.isProfileCompleted) {
                 //in case of existing social account
                 const data: any = {
                     //firstName: profileData.name,
@@ -84,11 +78,15 @@ const SocialAuth = (props: Propstype) => {
                 }
                 const resAuth = await socialSignupLogin(data)
                 if (resAuth.success) {
+                    if (props.showModal) {
+                        props.setShowModal(!props.showModal)
+                        return
+                    }
                     props.history.push('/')
                 }
             } else {
                 //in case of new social account
-                props.onNewAccount({ firstName: resSocial.result.firstName, email: resSocial.result.email }, 'linkedin');
+                props.onNewAccount({ name: resSocial.result.firstName, email: resSocial.result.email, socialId: resSocial.result.id }, 'linkedin');
             }
         }
     }
@@ -109,7 +107,7 @@ const SocialAuth = (props: Propstype) => {
                 onFailure={onFailure}
                 scope="r_liteprofile r_emailaddress"
                 state="gjhcbf355ESDE"
-                redirectUri= {linkedInData.REDIRECT_URI}
+                redirectUri={linkedInData.REDIRECT_URI}
                 renderElement={(renderProps: any) => (<a onClick={renderProps.onClick} >
                     <img src={linkedin} alt="linkedin" />
                 </a>

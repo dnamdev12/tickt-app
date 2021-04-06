@@ -4,7 +4,7 @@ import PrivateRoute from './privateRoute';
 
 const Routes = () => {
   return (
-    <Router>
+    <Router basename="/home">
         <Switch>
           {routes.map((route: any) => {
             if(route.redirectTO) {

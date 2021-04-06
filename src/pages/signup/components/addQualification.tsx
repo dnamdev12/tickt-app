@@ -1,8 +1,6 @@
 import { useState } from 'react';
-import Constants from '../../../utils/constants';
 import { setShowToast } from '../../../redux/common/actions';
 import { onFileUpload } from '../../../redux/auth/actions';
-import AuthParent from '../../../common/auth/authParent';
 
 import removeFile from '../../../assets/images/icon-close-1.png';
 import jpegFile from '../../../assets/images/jpeg.png';

@@ -3,7 +3,9 @@ import storageService from '../../../utils/storageService';
 
 
 interface Propstype {
-    history: any
+    history: any,
+    showModal: boolean,
+    modalUpdateSteps: (data: any) => void,
 }
 
 const LetsGo = (props: Propstype) => {
@@ -11,6 +13,10 @@ const LetsGo = (props: Propstype) => {
     const goToLogin = () => {
         if (storageService.getItem('jwtToken')) {
             props.history.push('/')
+        }
+        if(props.showModal){
+            props.modalUpdateSteps(0)
+            return;
         }
         props.history.push('/login')
     }

@@ -8,6 +8,9 @@ import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import storageService from '../../utils/storageService';
 import Login from '../login/login'
 import Carousel from 'react-multi-carousel';
+import AuthModal from './components/authModal';
+
+
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
 import bell from '../../assets/images/ic-notification.png';
@@ -26,6 +29,7 @@ import industrial from "../../assets/images/ic-money.png";
 import contracted from "../../assets/images/ic-contracted.png";
 import commercial from "../../assets/images/ic-commercial.png";
 import hourlyRate from "../../assets/images/ic-clock.png";
+import { setShowToast } from '../../redux/common/actions';
 
 
 
@@ -33,7 +37,7 @@ import hourlyRate from "../../assets/images/ic-clock.png";
 
 const Home = (props: any) => {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [openModal, setOpenModal] = useState<boolean>(false);
+    const [showModal, setShowModal] = useState<boolean>(false);
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -45,7 +49,6 @@ const Home = (props: any) => {
 
     const logoutHandler = () => {
         storageService.removeItem("jwtToken")
-        setOpenModal(!openModal)
     }
 
     const useStyles = makeStyles((theme: Theme) =>
@@ -63,7 +66,6 @@ const Home = (props: any) => {
 
     const classes = useStyles();
     // getModalStyle is not a pure function, we roll the style only on the first render
-    const [open, setOpen] = React.useState(false);
 
     const categorieshome = {
         desktop: {
@@ -147,21 +149,21 @@ const Home = (props: any) => {
                                     </Menu>
                                 </div>
                             </div>
-                            {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setOpenModal(!openModal)}>Log in</a></li>}
-                            {!storageService.getItem("jwtToken") && openModal && <Modal className="custom_modal "
-                                open={openModal}
-                                onClose={() => setOpenModal(!openModal)}
+                            {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setShowModal(!showModal)}>Log in</a></li>}
+                            {/* {!storageService.getItem("jwtToken") && showModal && <Modal className="custom_modal "
+                                open={showModal}
+                                onClose={() => setShowModal(!showModal)}
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
                                 <div className="onboard_modal">
-                                    <button className="close" onClick={() => setOpenModal(!openModal)}>
+                                    <button className="close" onClick={() => setShowModal(!showModal)}>
                                         <img src={cancel} alt="cancel" />
                                     </button>
                                     <Login history={props.history} />
                                 </div>
-                            </Modal>}
-                            {/* <AuthModal /> */}
+                            </Modal>} */}
+                            <AuthModal showModal={showModal} setShowModal={setShowModal} history={props.history} firstTimePopup>{props.children}</AuthModal>
                         </ul>
                     </div>
 
@@ -493,7 +495,7 @@ const Home = (props: any) => {
             {/* Job types */}
             <div className="home_job_categories">
                 <div className="custom_container">
-                    <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={true}  infinite={false}>
+                    <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={true} infinite={false}>
                         <div>
                             <ul className="job_categories">
                                 <li>

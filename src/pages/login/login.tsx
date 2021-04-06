@@ -8,9 +8,13 @@ import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
+import ForgetPassword from '../forgetPassword/forgetPassword';
 
 interface Propstype {
-    history?: any
+    history: any,
+    showModal?: boolean,
+    modalUpdateSteps: (data: any) => void,
+    setShowModal: (data: any) => void,
 }
 
 const LoginPage = (props: Propstype) => {
@@ -55,22 +59,38 @@ const LoginPage = (props: Propstype) => {
     }
 
     const onNewAccount = () => {
+        if (props.showModal) {
+            props.modalUpdateSteps(2)
+            return;
+        }
         props.history.push('/signup')
+    }
+
+    const forgetPasswordClicked = (e: any) => {
+        e.preventDefault();
+        console.log(props.showModal, "popup forget clicked")
+        if (props.showModal) {
+            // <ForgetPassword />
+            props.modalUpdateSteps(1)
+            return;
+        }
+        props.history.push('/reset-password')
     }
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
-        const newData = { email: loginData.email, password: loginData.password.trim(), deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
+        const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
         if (validateForm()) {
             const res: any = await callLogin(newData)
             if (res.success) {
+                props.setShowModal(!props.showModal)
                 props.history.push('/')
             }
         }
     }
 
     return (
-        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }}>
+        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }} history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps}>
             <div className="form_wrapper">
                 <form onSubmit={onSubmit}>
                     <div className="form_field">
@@ -89,7 +109,7 @@ const LoginPage = (props: Propstype) => {
                         {!!errors.password && <span className="error_msg">{errors.password}</span>}
                     </div>
                     <div className="form_field">
-                        <Link to="/reset-password" className="link">Forgotten your password?</Link>
+                        <a className="link" onClick={forgetPasswordClicked}>Forgotten your password?</a>
                     </div>
                     <div className="form_field">
                         <button className="fill_btn">Log in</button>
@@ -97,13 +117,16 @@ const LoginPage = (props: Propstype) => {
                 </form>
                 <span className="show_label text-center">or continue with</span>
                 <SocialAuth onNewAccount={onNewAccount}
-                    history={props.history} />
+                    history={props.history}
+                    showModal={props.showModal}
+                    setShowModal={props.setShowModal}
+                    modalUpdateSteps={props.modalUpdateSteps} />
                 <div className="form_field hide text-center">
                     <span className="reg">No account? <Link to="/signup" className="link">Signup</Link></span>
                 </div>
             </div>
 
-        </AuthParent>
+        </AuthParent >
     )
 }
 

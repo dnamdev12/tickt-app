@@ -7,9 +7,10 @@ const versions = {
 
 const ServiceEnum = {
     auth: 'auth/',
+    admin: 'admin/',
 }
 
- const Urls = {
+const Urls = {
     signup: `${versions.v1}${ServiceEnum.auth}signup`,
     login: `${versions.v1}${ServiceEnum.auth}login`,
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
@@ -26,6 +27,6 @@ const ServiceEnum = {
 
 export const urlFor = (service: String): string => {
     return `${ACTIVE_HOST}/${service}`;
-  };
+};
 
 export default Urls;

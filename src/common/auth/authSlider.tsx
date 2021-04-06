@@ -1,6 +1,4 @@
-import { Component } from 'react';
 import 'react-multi-carousel/lib/styles.css';
-import { Link } from 'react-router-dom';
 import Carousel from 'react-multi-carousel';
 import logoyellow from '../../assets/images/ic-logo-yellow.png';
 import bannerimage1 from '../../assets/images/onboarding-banner-1.jpg';
@@ -12,7 +10,11 @@ import bannerimage22 from '../../assets/images/modal-slider-bg-2.png';
 import bannerimage33 from '../../assets/images/modal-slider-bg-3.png';
 
 interface Props {
-    type: string
+    type: string,
+    history: any,
+    showModal: boolean | undefined,
+    modalUpdateSteps: (data: any) => void,
+    setShowModal: (data: any) => void,
 }
 
 const DATA: any = {
@@ -28,68 +30,68 @@ const DATA: any = {
     }
 }
 
-const SLIDER_DATA = [
-    {
-        image: bannerimage1,
-        imageText: 'Find quality work and grow your reputation'
-    },
-    {
-        image: bannerimage2,
-        imageText: 'Choose work that suits your location, price, schedule'
-    },
-    {
-        image: bannerimage3,
-        imageText: 'Make yourself on what you do best'
+const AuthSlider = (props: Props) => {
+    const SLIDER_DATA = [
+        {
+            image: props.showModal ? bannerimage11 : bannerimage1,
+            imageText: 'Find quality work and grow your reputation'
+        },
+        {
+            image: props.showModal ? bannerimage22 : bannerimage2,
+            imageText: 'Choose work that suits your location, price, schedule'
+        },
+        {
+            image: props.showModal ? bannerimage33 : bannerimage3,
+            imageText: 'Make yourself on what you do best'
+        }
+    ]
+
+    const responsive = {
+        desktop: {
+            breakpoint: { max: 3000, min: 1024 },
+            items: 1,
+            slidesToSlide: 1, // optional, default to 1.
+        },
+    };
+    const data = DATA[props.type];
+
+    const onLoginSignupClicked = (e: any) => {
+        e.preventDefault();
+        if (props.showModal) {
+            if (data.nav === 'login') {
+                props.modalUpdateSteps(0)
+                return;
+            } else {
+                props.modalUpdateSteps(2)
+                return;
+            }
+        }
+        props.history.push(`/${data.nav}`)
     }
-]
 
-// const SLIDER_DATA = [
-//     {
-//         image: bannerimage11,
-//     },
-//     {
-//         image: bannerimage22,
-//     },
-//     {
-//         image: bannerimage33,
-//     }
-// ]
-
-class AuthSlider extends Component<Props> {
-    render() {
-        const responsive = {
-            desktop: {
-                breakpoint: { max: 3000, min: 1024 },
-                items: 1,
-                slidesToSlide: 1, // optional, default to 1.
-            },
-        };
-        const data = DATA[this.props.type];
-        return (
-            <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false} infinite={true}>
-                {SLIDER_DATA.map((item) => {
-                    return (
-                        <div>
-                            <figure className="banner_img">
-                                <figure className="logo">
-                                    <img src={logoyellow} alt="logo" />
-                                </figure>
-                                <img src={item.image} alt="banner-img" />
-                                <div className="slider_txt">
-                                    <span>{item.imageText}</span>
-                                </div>
-                                <div className="bottom_txt">
-                                    <span className="reg">{data.title}
-                                        <Link to={data.nav} className="link"> {data.button}</Link>
-                                    </span>
-                                </div>
-
+    return (
+        <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false} infinite={true}>
+            {SLIDER_DATA.map((item: any) => {
+                return (
+                    <div>
+                        <figure className="banner_img">
+                            <figure className="logo">
+                                <img src={logoyellow} alt="logo" />
                             </figure>
-                        </div>)
-                })}
-            </Carousel>
-        )
-    }
+                            <img src={item.image} alt="banner-img" />
+                            <div className="slider_txt">
+                                <span>{item.imageText}</span>
+                            </div>
+                            <div className="bottom_txt">
+                                <span className="reg">{data.title}
+                                    <a className="link" onClick={onLoginSignupClicked}>{data.button}</a>
+                                </span>
+                            </div>
+                        </figure>
+                    </div>)
+            })}
+        </Carousel>
+    )
 }
 
 export default AuthSlider;

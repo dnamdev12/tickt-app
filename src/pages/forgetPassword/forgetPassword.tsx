@@ -1,10 +1,18 @@
 import React, { useState, useEffect } from 'react';
-import{ createPassword } from '../../redux/auth/actions';
+import { createPassword } from '../../redux/auth/actions';
 import CreatePassword from './components/createPassword';
 import SuccessPage from './components/successPage';
 import ResetPassword from './components/resetPassword';
 import VerifyPhoneNumber from './components/verifyPhoneNumber';
 import AuthParent from '../../common/auth/authParent';
+
+interface Propstype {
+    history: any,
+    showModal?: boolean,
+    setShowModal: (data: any) => void,
+    updateSteps?: (data: any) => void,
+    modalUpdateSteps: (data: any) => void,
+}
 
 const DATA = [
     { title: 'Reset Password' },
@@ -12,10 +20,10 @@ const DATA = [
     { title: 'Create password' },
 ]
 
-const ForgetPassword = (props: any) => {
+const ForgetPassword = (props: Propstype) => {
     const [steps, setSteps] = useState(1);
     const [loginData, setLoginData] = useState({
-        mobileNumber:'',
+        mobileNumber: '',
     })
 
     const updateSteps = (step: number, newData?: any) => {
@@ -30,16 +38,16 @@ const ForgetPassword = (props: any) => {
         if (steps === 1) {
             return props.history.push('/login')
         }
-        if(steps === 3){
+        if (steps === 3) {
             minStep = 2
         }
         setSteps(steps - minStep)
     }
 
     const onResetPassword = async (password: any) => {
-        const data = {...loginData, ...password}
+        const data = { ...loginData, ...password }
         const res = await createPassword(data);
-        if(res.success) {
+        if (res.success) {
             setSteps(4);
         }
     }
@@ -49,19 +57,19 @@ const ForgetPassword = (props: any) => {
             case 1:
                 return <ResetPassword updateSteps={updateSteps} history={props.history} step={steps} mobileNumber={loginData.mobileNumber} />
             case 2:
-                return <VerifyPhoneNumber updateSteps={updateSteps} history={props.history} step={steps} mobileNumber={loginData.mobileNumber}/>
+                return <VerifyPhoneNumber updateSteps={updateSteps} history={props.history} step={steps} mobileNumber={loginData.mobileNumber} />
             case 3:
                 return <CreatePassword onResetPassword={onResetPassword} />
             case 4:
-                return <SuccessPage history={props.history}/>
+                return <SuccessPage history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             default: return null
         }
     }
 
-    const header = DATA[steps-1];
+    const header = DATA[steps - 1];
 
     return header ? (
-        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} hideProgres header={header} steps={steps}>{renderPages()}</AuthParent>
+        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} hideProgres header={header} steps={steps} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps}>{renderPages()}</AuthParent>
     ) : renderPages()
 }
 

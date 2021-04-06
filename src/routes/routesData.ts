@@ -1,31 +1,30 @@
-import Home from '../pages/home';
+import Home from '../pages/home/home';
 import Login from '../pages/login/login';
 import NotFound from '../pages/notFound/notFound';
 import Signup from '../pages/signup';
 import ForgerPassword from '../pages/forgetPassword/forgetPassword';
-import PostJob from '../pages/postJob'
+import PostJob from '../pages/postJob';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
- const routes = [
+const routes = [
     {
-        name: 'home',
+        name: 'main',
         path: '/',
         exact: true,
-        component: Home,
+        component: Home
     },
     {
         name: 'login',
         path: '/login',
         component: Login,
-        authRoute: true,
+        authRoute: true
     },
     {
         name: 'signup',
         path: '/signup',
         component: Signup,
         authRoute: true,
-        // privateRoute: true
     },
     {
         name: 'forgetpassword',
@@ -52,7 +51,7 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
     {
         name: '404',
         path: '/*',
-        redirectTO:'/404'
+        redirectTO: '/404'
     }
 ]
 

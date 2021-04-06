@@ -36,7 +36,6 @@ const ResetPassword = (props: Propstype) => {
     const onSubmit = async (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('ok 68')
             const data: any = {
                 mobileNumber: mobileNumber
             }
@@ -53,7 +52,7 @@ const ResetPassword = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Phone number</label>
                     <div className="text_field">
-                        <input type="text" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={10} />
+                        <input type="number" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={9} />
                     </div>
                     {!!errors.mobileNumber && <span className="error_msg">{errors.mobileNumber}</span>}
                 </div>

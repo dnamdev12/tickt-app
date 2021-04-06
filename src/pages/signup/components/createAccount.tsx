@@ -11,6 +11,9 @@ interface Propstype {
     history?: any,
     data: any,
     onNewAccount: Function,
+    showModal?: boolean,
+    modalUpdateSteps: (data: any) => void,
+    setShowModal: (data: any) => void,
 }
 
 const CreateAccount = (props: Propstype) => {
@@ -105,7 +108,11 @@ const CreateAccount = (props: Propstype) => {
                 <span className="show_label text-center">or continue with</span>
                 <SocialAuth onNewAccount={props.onNewAccount}
                     history={props.history}
-                    userType={props.data.user_type} />
+                    userType={props.data.user_type}
+                    showModal={props.showModal}
+                    setShowModal={props.setShowModal}
+                    modalUpdateSteps={props.modalUpdateSteps}
+                />
                 <div className="form_field hide text-center">
                     <span className="reg">Have an account? <Link to="/login" className="link">Sign in</Link></span>
                 </div>

@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { checkMobileNumber } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
-import regex from '../../../utils/regex'
+import regex from '../../../utils/regex';
+import { setShowToast } from '../../../redux/common/actions';
 interface Propstype {
     updateSteps: (num: number, data: any) => void
     step: number
@@ -14,7 +15,7 @@ const PhoneNumber = (props: Propstype) => {
     const [mobileNumber, setMobileNumber] = useState<any>(props.mobileNumber)
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if(e.target.value.length < 10) {
+        if (e.target.value.length < 10) {
             setMobileNumber(e.target.value)
         }
     }
@@ -36,10 +37,10 @@ const PhoneNumber = (props: Propstype) => {
     const onSubmit = async (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            console.log('ok 68')
             const res: any = await checkMobileNumber(mobileNumber)
-            if (res.success) {
-                props.updateSteps(props.step + 1, {mobileNumber})
+            res?.isProfileCompleted && setShowToast(true, res.message);
+            if (!res.isProfileCompleted) {
+                props.updateSteps(props.step + 1, { mobileNumber })
             }
         }
     }
@@ -50,7 +51,7 @@ const PhoneNumber = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Phone number</label>
                     <div className="text_field">
-                        <input type="number" className="detect_input_ltr" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={10}/>
+                        <input type="number" className="detect_input_ltr" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={10} />
                         <span className="detect_icon_ltr">+61</span>
                     </div>
                     {!!errors.mobileNumber && <span className="error_msg">{errors.mobileNumber}</span>}

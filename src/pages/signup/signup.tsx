@@ -15,6 +15,15 @@ import Constants from '../../utils/constants';
 import AuthParent from '../../common/auth/authParent';
 import storageService from '../../utils/storageService';
 
+interface Propstype {
+    history?: any,
+    showModal: boolean,
+    callTradeList: () => void,
+    tradeListData: Array<any>,
+    modalUpdateSteps: (data: any) => void,
+    setShowModal: (data: any) => void,
+}
+
 const DATA = [
     { title: 'Welcome to Tickt', subTitle: 'Australia\'s fastest growing network for builders and tradesmen' },
     { title: 'Create account' },
@@ -27,7 +36,7 @@ const DATA = [
     { title: 'Add ABN' }
 ]
 
-const Signup = (props: any) => {
+const Signup = (props: Propstype) => {
     const [steps, setSteps] = useState(0);
     const [signupData, setSignupData] = useState({
         firstName: '',
@@ -44,6 +53,8 @@ const Signup = (props: any) => {
         // position: '',
         // abn: '',
     })
+
+    console.log(props, "props signup component")
 
     useEffect(() => {
         props.callTradeList();
@@ -70,8 +81,10 @@ const Signup = (props: any) => {
         const newProfileData = {
             firstName: profileData.name,
             email: profileData.email,
-            socialId: profileData.googleId,
-            accountType: authType
+            //socialId: profileData.googleId,
+            accountType: authType,
+            ...(authType === 'google' && { socialId: profileData.googleId }),
+            ...(authType === 'linkedin' && { socialId: profileData.socialId })
         }
         setSignupData((prevData: any) => ({ ...prevData, ...newProfileData }))
     }
@@ -92,7 +105,7 @@ const Signup = (props: any) => {
         }
         if (signupData.accountType) {
             res = await socialSignupLogin(data);
-            res.success && storageService.setItem("jwtToken", res.successToken);
+            //res.success && storageService.setItem("jwtToken", res.successToken);
         } else {
             delete data.socialId;
             delete data.accountType;
@@ -112,7 +125,7 @@ const Signup = (props: any) => {
             case 0:
                 return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} />
             case 1:
-                return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} />
+                return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:
                 return <PhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
             case 3:
@@ -131,12 +144,12 @@ const Signup = (props: any) => {
                 }
             case 8:
                 if (signupData.user_type === 2) {
-                    return <LetsGo history={props.history} />
+                    return <LetsGo history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} />
                 } else {
                     return <AddABN onSubmitSignup={onSubmitSignup} />
                 }
             case 9:
-                return <LetsGo history={props.history} />
+                return <LetsGo history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} />
             default:
                 return null
         }
@@ -146,7 +159,7 @@ const Signup = (props: any) => {
     const isSuccess = signupData.user_type === 2 ? steps === 8 : steps === 9;
 
     return !isSuccess ? (
-        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps}>{renderPages()}</AuthParent>
+        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps}>{renderPages()}</AuthParent>
     ) : renderPages()
 }
 

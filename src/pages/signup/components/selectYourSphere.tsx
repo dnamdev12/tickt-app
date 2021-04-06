@@ -32,7 +32,7 @@ const SelectCategories = (props: Propstype) => {
     return (
         <div className="select_sphere form_wrapper">
             <ul>
-                {props.tradeListData.length ? props.tradeListData.map((item) => {
+                {props.tradeListData?.length ? props.tradeListData.map((item) => {
                     const active = trade === item._id;
                     return (
                         <li className={active ? 'active' : ''} onClick={() => onClick(item._id)}>
