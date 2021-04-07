@@ -12,19 +12,23 @@ const routes = [
         name: 'main',
         path: '/',
         exact: true,
-        component: Home
+        component: Home,
+        authRoute: false,
+        privateRoute: true,
     },
     {
         name: 'login',
         path: '/login',
         component: Login,
-        authRoute: true
+        authRoute: true,
+        privateRoute: false,
     },
     {
         name: 'signup',
         path: '/signup',
         component: Signup,
         authRoute: true,
+        privateRoute: false,
     },
     {
         name: 'forgetpassword',

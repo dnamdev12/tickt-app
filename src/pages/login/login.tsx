@@ -26,7 +26,7 @@ const LoginPage = (props: Propstype) => {
     const [showPassword, setShowPassword] = useState(false)
 
     const backButtonHandler = () => {
-        props.history.push('/')
+        props.history.push('/signup')
     }
 
     const changeHandler = (e: any) => {
@@ -77,6 +77,15 @@ const LoginPage = (props: Propstype) => {
         props.history.push('/reset-password')
     }
 
+    const phoneViewHandler = (e: any) => {
+        e.preventDefault();
+        if(props.showModal){
+            props.modalUpdateSteps(2)
+            return;
+        }
+        props.history.push('/signup')
+    }
+
     const onSubmit = async (e: any) => {
         e.preventDefault();
         const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
@@ -122,7 +131,7 @@ const LoginPage = (props: Propstype) => {
                     setShowModal={props.setShowModal}
                     modalUpdateSteps={props.modalUpdateSteps} />
                 <div className="form_field hide text-center">
-                    <span className="reg">No account? <Link to="/signup" className="link">Signup</Link></span>
+                    <span className="reg">No account? <a className="link" onClick={phoneViewHandler}>Signup</a></span>
                 </div>
             </div>
 

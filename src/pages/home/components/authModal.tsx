@@ -43,7 +43,7 @@ const AuthModal = (props: any) => {
                 aria-describedby="simple-modal-description"
             >
                 <div className="onboard_modal">
-                    <button className="close_btn" onClick={() => props.setShowModal(!props.showModal)}>
+                    <button className="close" onClick={onCloseModal}>
                         <img src={cancel} alt="cancel" />
                     </button>
                     {renderGuestPopup()}
