@@ -40,7 +40,7 @@ const routes = [
         name: 'postnewjob',
         path: '/post-new-job',
         component: PostJob,
-        authRoute: true,
+        // authRoute: true,
     },
     {
         name: 'linkedin-oauth',

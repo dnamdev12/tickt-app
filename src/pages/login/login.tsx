@@ -15,6 +15,7 @@ interface Propstype {
     showModal?: boolean,
     modalUpdateSteps: (data: any) => void,
     setShowModal: (data: any) => void,
+    setSocialData: (data: any) => void,
 }
 
 const LoginPage = (props: Propstype) => {
@@ -58,17 +59,31 @@ const LoginPage = (props: Propstype) => {
         return !Object.keys(newErrors).length;
     }
 
-    const onNewAccount = () => {
+    const onNewAccount = (profileData: any, authType: string) => {
+        console.log(profileData, "profileData", authType, "authType")
+        const newProfileData = {
+            firstName: profileData.name,
+            email: profileData.email,
+            accountType: authType,
+            ...(authType === 'google' && { socialId: profileData.googleId }),
+            ...(authType === 'linkedin' && { socialId: profileData.socialId })
+        }
         if (props.showModal) {
             props.modalUpdateSteps(2)
+            console.log(newProfileData, "newProfileData")
+            props.setSocialData(newProfileData)
             return;
         }
-        props.history.push('/signup')
+        // props.history.push('/signup')
+        props.history.push({
+            pathname: '/signup',
+            redirect: 'socialRedirectFromLogin',
+            state: { profileData: newProfileData }
+        })
     }
 
     const forgetPasswordClicked = (e: any) => {
         e.preventDefault();
-        console.log(props.showModal, "popup forget clicked")
         if (props.showModal) {
             // <ForgetPassword />
             props.modalUpdateSteps(1)
@@ -79,7 +94,7 @@ const LoginPage = (props: Propstype) => {
 
     const phoneViewHandler = (e: any) => {
         e.preventDefault();
-        if(props.showModal){
+        if (props.showModal) {
             props.modalUpdateSteps(2)
             return;
         }
