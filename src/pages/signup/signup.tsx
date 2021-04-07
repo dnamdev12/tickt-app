@@ -22,6 +22,7 @@ interface Propstype {
     tradeListData: Array<any>,
     modalUpdateSteps: (data: any) => void,
     setShowModal: (data: any) => void,
+    socialData: any,
 }
 
 const DATA = [
@@ -30,11 +31,11 @@ const DATA = [
     { title: 'Phone number' },
     { title: 'Verify your number' },
     { title: 'Create password' },
-    { title: 'Select trades you require', tradeTitle: 'What is your trade?' },
+    { title: 'Select trades you require', tradieTitle: 'What is your trade?' },
     { title: 'What Specialisation?' },
     { title: 'Almost done', tradieTitle: 'Add qualification' },
     // { title: 'Add ABN' }
-    { title: 'Almost done' } //https://appinventivtech.atlassian.net/browse/TIC-409
+    { title: 'Almost done' }
 ]
 
 const Signup = (props: Propstype) => {
@@ -64,11 +65,26 @@ const Signup = (props: Propstype) => {
         if (steps === 4) {
             minStep = 2;
         }
+        if (steps === 2 && (props.socialData || props.history.location.redirect === "socialRedirectFromLogin")) {
+            minStep = 2
+        }
         setSteps(steps - minStep);
     }
 
     const updateSteps = (step: number, newData?: any) => {
-        setSteps(step);
+        var newStep = step;
+        if (!signupData.socialId && (props.socialData || props.history.location.redirect === "socialRedirectFromLogin")) {
+            const profile = props.socialData ? props.socialData : props.history.location.state.profileData;
+            console.log(profile, "profile updateSteps", props.history)
+            if (props.socialData) {
+                setSignupData((prevData: any) => ({ ...prevData, ...profile }))
+            }
+            if (props.history.location.state?.profileData) {
+                setSignupData((prevData: any) => ({ ...prevData, ...profile }))
+            }
+            newStep += 1
+        }
+        setSteps(newStep);
         if (newData) {
             setSignupData((prevData: any) => ({ ...prevData, ...newData }))
         }
@@ -79,7 +95,7 @@ const Signup = (props: Propstype) => {
         const newProfileData = {
             firstName: profileData.name,
             email: profileData.email,
-            socialId: profileData.googleId,
+            // socialId: profileData.googleId,
             accountType: authType,
             ...(authType === 'google' && { socialId: profileData.googleId }),
             ...(authType === 'linkedin' && { socialId: profileData.socialId })
@@ -103,7 +119,6 @@ const Signup = (props: Propstype) => {
         }
         if (signupData.accountType) {
             res = await socialSignupLogin(data);
-            //res.success && storageService.setItem("jwtToken", res.successToken);
         } else {
             delete data.socialId;
             delete data.accountType;
@@ -118,10 +133,12 @@ const Signup = (props: Propstype) => {
         }
     }
 
+    console.log("signupData ==>", signupData)
+
     const renderPages = () => {
         switch (steps) {
             case 0:
-                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal}/>
+                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} />
             case 1:
                 return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:

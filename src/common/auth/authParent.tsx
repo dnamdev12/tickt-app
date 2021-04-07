@@ -30,10 +30,10 @@ const AuthParent = (props: any) => {
                         {(!!props.steps || props.sliderType === 'signup') && <button className="back_btn" onClick={props.backButtonHandler} />}
                         <h1>{props.userType === 1 && props.header.tradieTitle ? props.header.tradieTitle : props.header.title}</h1>
                         {props.header.subTitle && <span className="show_label">{props.header.subTitle}</span>}
-                        {!!props.steps && !props.hideProgres && <ul className="custom_steppr">
+                        {!!props.steps && props.steps > 1 && !props.hideProgres && <ul className="custom_steppr">
                             {
-                                Array.from(Array(props.userType === 1 ? 9 : 8).keys()).map((i) => {
-                                    return <li key={i} className={props.steps !== undefined && i < props.steps ? 'active' : ''} />
+                                Array.from(Array(props.userType === 1 ? 8 : 7).keys()).map((i) => {
+                                    return <li key={i} className={props.steps !== undefined && i+1 < props.steps ? 'active' : ''} />
                                 })
                             }
                         </ul>}

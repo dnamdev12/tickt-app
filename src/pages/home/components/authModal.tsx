@@ -6,9 +6,9 @@ import Signup from '../../signup/index';
 
 import cancel from "../../../assets/images/ic-cancel.png";
 
-
 const AuthModal = (props: any) => {
     const [modalSteps, setModalSteps] = useState(0);
+    const [socialData, setSocialData] = useState<any>('')
 
     const modalUpdateSteps = (step: any) => {
         setModalSteps(step);
@@ -24,11 +24,11 @@ const AuthModal = (props: any) => {
     const renderGuestPopup = () => {
         switch (modalSteps) {
             case 0:
-                return <Login history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={modalUpdateSteps} />
+                return <Login history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={modalUpdateSteps} setSocialData={setSocialData} />
             case 1:
                 return <ForgetPassword history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={modalUpdateSteps} />
             case 2:
-                return <Signup history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={modalUpdateSteps} />
+                return <Signup history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={modalUpdateSteps} socialData={socialData} />
             default:
                 return null;
         }
