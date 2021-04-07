@@ -7,6 +7,7 @@ import rootReducer from './redux/rootReducer';
 import rootSaga from './redux/rootSaga';
 import Loader from './common/loader';
 import Toast from './common/toast';
+
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -27,13 +28,11 @@ sagaMiddleware.run(rootSaga)
 
 const App = () => {
   return (
-    <div className="app_wrapper">
       <Provider store={store}>
         <Routes />
         <Loader />
         <Toast />
       </Provider>
-    </div>
   );
 }
 

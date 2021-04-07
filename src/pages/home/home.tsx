@@ -87,7 +87,7 @@ const Home = (props: any) => {
 
 
     return (
-        <>
+        <div className="app_wrapper" >
             {/* Header */}
             <header id="header">
                 <div className="custom_container">
@@ -849,7 +849,7 @@ const Home = (props: any) => {
                 </div>
             </div>
             {/* Reccomended tradies close*/}
-        </>
+        </div>
     )
 }
 
