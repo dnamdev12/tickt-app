@@ -27,11 +27,13 @@ sagaMiddleware.run(rootSaga)
 
 const App = () => {
   return (
-    <Provider store={store}>
-      <Routes />
-      <Loader />
-      <Toast />
-    </Provider>
+    <div className="app_wrapper">
+      <Provider store={store}>
+        <Routes />
+        <Loader />
+        <Toast />
+      </Provider>
+    </div>
   );
 }
 

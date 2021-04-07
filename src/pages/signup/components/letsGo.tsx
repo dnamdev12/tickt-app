@@ -6,6 +6,7 @@ interface Propstype {
     history: any,
     showModal: boolean,
     modalUpdateSteps: (data: any) => void,
+    setShowModal: (data: any) => void,
 }
 
 const LetsGo = (props: Propstype) => {
@@ -14,7 +15,8 @@ const LetsGo = (props: Propstype) => {
         if (storageService.getItem('jwtToken')) {
             props.history.push('/')
         }
-        if(props.showModal){
+        if (props.showModal) {
+            props.setShowModal(!props.showModal)
             props.modalUpdateSteps(0)
             return;
         }

@@ -142,12 +142,12 @@ const Signup = (props: Propstype) => {
                 }
             case 8:
                 if (signupData.user_type === 2) {
-                    return <LetsGo history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} />
+                    return <LetsGo history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
                 } else {
                     return <AddABN onSubmitSignup={onSubmitSignup} />
                 }
             case 9:
-                return <LetsGo history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} />
+                return <LetsGo history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             default:
                 return null
         }
