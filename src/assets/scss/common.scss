@@ -179,6 +179,12 @@ body {
 	&.form_wrapper {
 		width: 100%;
 		max-width: 655px;
+		@media(max-width: 1366px){
+			max-width: 575px;
+		}
+		@media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+			max-width: 575px;
+		}
 		.fill_btn {
 			max-width: 327px;
 			width: 100%;
@@ -809,6 +815,11 @@ body {
 	max-height: 666px;
 	overflow-y: auto;
 	border-radius: 3px;
+	@media (max-width: 1500px) {
+		margin: 16px auto 0;
+		height: 550px;
+		max-height: 550px;
+	}
 	@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
 		width: 90%;
 		margin: 30px auto;
@@ -836,6 +847,9 @@ body {
 			display: none;
 		}
 		.banner_img {
+			@media (max-width: 1500px) {
+				height: 550px;
+			}
 			@media (max-width: 1024px) {
 				height: 667px;
 			}
@@ -1908,6 +1922,12 @@ body {
 	&.form_wrapper {
 		width: 100%;
 		max-width: 640px;
+		@media(max-width: 1366px){
+			max-width: 560px;
+		}
+		@media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+			max-width: 560px;
+		}
 		.fill_btn {
 			width: 327px;
 		}
@@ -2112,14 +2132,13 @@ body {
 	.banner_container {
 		position: absolute;
 		top: 150px;
-		left: 380px;
+		left: 50%;
+    	transform: translateX(-50%);
 		width: 864px;
 		@media (max-width: 1024px) {
-			left: 60px;
 			width: 864px;
 		}
 		@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-			left: 80px;
 			top: 90px;
 			width: 580px;
 		}
@@ -2129,7 +2148,6 @@ body {
 		}
 		@media (max-width: 650px) {
 			width: 95%;
-			left: 10px;
 		}
 		@media only screen and (min-device-width: 375px) and (max-device-width: 667px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
 			width: 560px;
