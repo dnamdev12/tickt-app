@@ -180,6 +180,10 @@
       padding: 10px 15px;
       display: inline-block;
       cursor: pointer;
+      &.disable{
+        background-color: #dfe5ef6e;
+        pointer-events: none;
+      }
     }
   }
 
