@@ -82,7 +82,10 @@ const Signup = (props: Propstype) => {
             if (props.history.location.state?.profileData) {
                 setSignupData((prevData: any) => ({ ...prevData, ...profile }))
             }
-            newStep += 1
+            newStep += 1;
+        }
+        if(newStep == 1 && signupData.socialId){
+            newStep +=1;
         }
         setSteps(newStep);
         if (newData) {
