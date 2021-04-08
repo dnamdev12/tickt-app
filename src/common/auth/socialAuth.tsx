@@ -40,7 +40,7 @@ const SocialAuth = (props: Propstype) => {
                 //in case of existing social account
                 const data: any = {
                     //firstName: profileData.name,
-                    email: response.profileObj.email,
+                    //email: response.profileObj.email,
                     socialId: response.profileObj.googleId,
                     deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "google",
@@ -69,7 +69,7 @@ const SocialAuth = (props: Propstype) => {
                 //in case of existing social account
                 const data: any = {
                     //firstName: profileData.name,
-                    email: resSocial.result.email,
+                    //email: resSocial.result.email,
                     deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "linkedin",
                     socialId: resSocial.result.id,

@@ -15,7 +15,7 @@ const LetsGo = (props: Propstype) => {
 
     const goToLogin = () => {
         if (storageService.getItem('jwtToken')) {
-            props.history.push('/')
+            props.history?.push('/')
         }
         if (props.showModal) {
             props.setShowModal(!props.showModal)
