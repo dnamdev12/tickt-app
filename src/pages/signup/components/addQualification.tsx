@@ -45,7 +45,7 @@ const AddQualification = (props: Propstype) => {
         const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf"]
         console.log(newFile, 'ok', newFile.type, 'ok', fileType)
         if (docTypes.indexOf(fileType) < 0) {
-            alert('Please choose correct file type.')
+            alert('The file must be in proper format or size')
             return;
         }
         const res = await onFileUpload(formData)
@@ -169,4 +169,5 @@ const AddQualification = (props: Propstype) => {
 export default AddQualification
 
 
+{/* <label className={`upload_btn ${!isChecked ? "disable" : ""}`} htmlFor={item.name + 'upload'}>Upload</label> */ }
 
