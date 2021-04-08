@@ -2716,7 +2716,10 @@ body {
     padding: 14px;
     background-color: #dfe5ef;
     border-radius: 3px;
-    margin-right: 24px;
+    margin: 0px 20px 20px 0;
+	@media(max-width: 650px){
+		margin: 0px 12px 12px 0;
+	}
 	border: 2px solid #dfe5ef;
 	&.active{
 		border-color: var(--blue-two);

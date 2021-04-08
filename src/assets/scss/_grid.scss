@@ -29,6 +29,9 @@
 .flex_col_sm_5 {
   width: 41.666667%;
   padding: 0 10px;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    width: 75%;
+  }
   @media (max-width: 650px) {
     width: 100%;
   }
