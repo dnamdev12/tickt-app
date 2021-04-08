@@ -1806,21 +1806,37 @@ body {
 
 //---------------Success-img-text---------------//
 .img_text_wrap {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-flow: column;
-	background: url('../images/lets-go-bg.jpg') top no-repeat;
-	width: 100%;
-	height: 100vh;
-	background-size: cover;
-	position: relative;
-	&.success {
-		background: url('../images/thanks-bg.jpg') top no-repeat;
-		background-size: cover;
+	.full_image{
+		position: relative;
+		width: 100%;
+		height: 100vh;
+		@media(max-width: 1366px){
+			height: 100%;
+		}
+		@media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+			height: 100%;
+		}
+		img{
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+			object-position: 0px 0px;
+		}
+		.short_info{
+			position: absolute;
+			top: 50%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
 	}
-	.logo {
-		top: 15%;
+	.logo_img {
+		width: 68px;
+		height: 34px;
+		margin: auto;
+		img{
+			width: 68px;
+			height: 34px;
+		}
 	}
 	.content {
 		padding-top: 250px;
@@ -2813,3 +2829,61 @@ body {
 }
 
 //-------------Popular Tradies close-----------------//
+
+//----------------Post job----------------------//
+.milestones{
+	margin-bottom: 30px;
+	li{
+		border-radius: 3px;
+		border: solid 1px #dfe5ef;
+		min-height: 95px;
+		position: relative;
+		padding: 11px 8px;
+		margin-bottom: 16px;
+		&:hover{
+			box-shadow: 0 5px 30px 0 rgba(79, 79, 118, 0.15);
+		}
+		.edit_delete{
+			position: absolute;
+			top: 12px;
+			right: 12px;
+			display: flex;
+			align-items: center;
+			span{
+				margin-left: 10px;
+				width: 24px;
+				height: 24px;
+				display: inline-block;
+				cursor: pointer;
+			}
+			.edit{
+				background: url('../images/ic-edit-blue.png') center no-repeat;
+				background-size: contain;
+			}
+			.delete{
+				background: url('../images/ic-cancel-blue.png') center no-repeat;
+				background-size: contain;
+			}
+		}
+		&:last-child{
+			margin-bottom: 0;
+		}
+		label{
+			font-size: 16px;
+			color: var(--blue);
+			font-family: 'Neue Haas Grotesk Text Pro Medium';
+			width: 100%;
+			max-width: 400px;
+		}
+		.info{
+			display: flex;
+			flex-flow: column;
+			padding-left: 32px;
+			font-size: 14px;
+			color: #313d48;
+			span{
+				margin: 3px 0;
+			}
+		}
+	}
+}

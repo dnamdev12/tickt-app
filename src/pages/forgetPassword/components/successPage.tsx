@@ -1,5 +1,6 @@
 import React from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+import templateImage from '../../../assets/images/thanks-bg.jpg';
 
 interface Propstype {
     history: any,
@@ -19,15 +20,21 @@ const SuccessPage = (props: Propstype) => {
     }
 
     return (
-        <div className="img_text_wrap success">
-            <figure className="logo">
-                <img src={colorLogo} alt="Tickt-logo" />
+        <div className="img_text_wrap">
+            <figure className="full_image">
+                <img src={templateImage} alt="template-image" />
+
+                <div className="short_info">
+                    <figure className="logo_img">
+                        <img src={colorLogo} alt="Tickt-logo" />
+                    </figure>
+                    <div className="content">
+                        <h1 className="title">Thanks!</h1>
+                        <span className="show_label msg">You have created new password for your account.</span>
+                        <button className="fill_btn full_btn" onClick={goToLogin}>Login</button>
+                    </div>
+                </div>
             </figure>
-            <div className="content">
-                <h1 className="title">Thanks!</h1>
-                <span className="show_label msg">You have created new password for your account.</span>
-                <button className="fill_btn full_btn" onClick={goToLogin}>Login</button>
-            </div>
         </div>
     )
 }
