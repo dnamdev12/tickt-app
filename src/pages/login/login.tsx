@@ -107,7 +107,10 @@ const LoginPage = (props: Propstype) => {
         if (validateForm()) {
             const res: any = await callLogin(newData)
             if (res.success) {
-                props.setShowModal(!props.showModal)
+                if (props.showModal) {
+                    props.setShowModal(!props.showModal);
+                    return;
+                }
                 props.history.push('/')
             }
         }

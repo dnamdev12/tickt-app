@@ -79,6 +79,12 @@ const AddQualification = (props: Propstype) => {
         }
     }
 
+    const onSkipQualification = (e: any) => {
+        e.preventDefault();
+        const qualification: Array<any> = []
+        props.updateSteps(props.step + 1, { qualification });
+    }
+
     const qualificationList = props.tradeListData.find(i => i._id === props.trade)?.qualifications
 
     const fileDetails = (item: any) => {
@@ -148,7 +154,7 @@ const AddQualification = (props: Propstype) => {
                                         </div>
                                     </div>) :
                                     (<div className="upload_img_video">
-                                        <label className="upload_btn" htmlFor={item.name + 'upload'}>Upload</label>  {/*Use disable class*/}
+                                        <label className={`upload_btn ${!isChecked ? "disable" : ""}`} htmlFor={item.name + 'upload'}>Upload</label>
                                         <input type="file" className="none" id={item.name + 'upload'}
                                             accept="image/jpeg,image/jpg,image/png,application/pdf"
                                             disabled={!!isChecked ? false : true} onChange={(e) => onFileChange(e, item._id)} />
@@ -162,7 +168,7 @@ const AddQualification = (props: Propstype) => {
                     <button className="fill_btn">Next</button>
                 </div>
                 <div className="form_field text-center">
-                    <a className="link">Skip</a>
+                    <a className="link" onClick={onSkipQualification}>Skip</a>
                 </div>
             </form>
         </div>
@@ -170,7 +176,3 @@ const AddQualification = (props: Propstype) => {
 }
 
 export default AddQualification
-
-
-{/* <label className={`upload_btn ${!isChecked ? "disable" : ""}`} htmlFor={item.name + 'upload'}>Upload</label> */ }
-
