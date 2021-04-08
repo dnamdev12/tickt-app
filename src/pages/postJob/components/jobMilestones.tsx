@@ -61,7 +61,7 @@ const JobMilestones = () => {
             <div className="section_wrapper">
                 <div className="custom_container">
                     <div className="form_field">
-                        <div className="flex_row">
+                        <div className="flex_row f_reverse">
                             <div className="flex_col_sm_5">
                                 <div className="relate">
                                     <button className="back"></button>

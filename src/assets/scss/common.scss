@@ -112,7 +112,7 @@ body {
 	}
 	@media (max-width: 768px) {
 		font-size: 26px;
-		margin-bottom: 28px;
+		margin-bottom: 14px;
 		max-width: 85%;
 	}
 	@media (max-width: 650px) {
@@ -2881,6 +2881,9 @@ body {
 			font-family: 'Neue Haas Grotesk Text Pro Medium';
 			width: 100%;
 			max-width: 400px;
+			@media(max-width: 650px){
+				max-width: 270px;
+			}
 		}
 		.info{
 			display: flex;

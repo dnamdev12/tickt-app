@@ -14,7 +14,7 @@ import UploadMedia from './components/uploadMedia';
 const PostJob = () => {
     return (
         <div>
-            {/* <PostNewJob /> */}
+            <PostNewJob />
             {/* <JobType /> */}
             {/* <AddLocation /> */}
             {/* <Payment /> */}
@@ -24,7 +24,7 @@ const PostJob = () => {
             {/* <SaveTemplate /> */}
             {/* <TemplateSavedSuccess /> */}
             {/* <JobPostedSuccess /> */}
-            <UploadMedia />
+            {/* <UploadMedia /> */}
 
         </div>
     )

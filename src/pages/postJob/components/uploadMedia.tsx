@@ -74,7 +74,7 @@ const UploadMedia = () => {
                         </div>
                     </div>
                     <div className="flex_row">
-                        <div className="flex_col_sm_5">
+                        <div className="flex_col_sm_6">
 
                             <div className="upload_img_video">
                                 <figure className="img_video">
