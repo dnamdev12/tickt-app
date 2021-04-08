@@ -148,7 +148,7 @@ const AddQualification = (props: Propstype) => {
                                         </div>
                                     </div>) :
                                     (<div className="upload_img_video">
-                                        <label className="upload_btn" htmlFor={item.name + 'upload'}>Upload</label>
+                                        <label className="upload_btn" htmlFor={item.name + 'upload'}>Upload</label>  {/*Use disable class*/}
                                         <input type="file" className="none" id={item.name + 'upload'}
                                             accept="image/jpeg,image/jpg,image/png,application/pdf"
                                             disabled={!!isChecked ? false : true} onChange={(e) => onFileChange(e, item._id)} />
@@ -160,6 +160,9 @@ const AddQualification = (props: Propstype) => {
 
                 <div className="form_field">
                     <button className="fill_btn">Next</button>
+                </div>
+                <div className="form_field text-center">
+                    <a className="link">Skip</a>
                 </div>
             </form>
         </div>
