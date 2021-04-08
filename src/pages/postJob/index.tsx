@@ -9,6 +9,7 @@ import JobMilestones from './components/jobMilestones';
 import SaveTemplate from './components/saveTemplate';
 import TemplateSavedSuccess from './components/templateSavedSucess';
 import JobPostedSuccess from './components/jobPostedSuccess';
+import UploadMedia from './components/uploadMedia';
 
 const PostJob = () => {
     return (
@@ -22,7 +23,8 @@ const PostJob = () => {
             {/* <JobMilestones /> */}
             {/* <SaveTemplate /> */}
             {/* <TemplateSavedSuccess /> */}
-            <JobPostedSuccess />
+            {/* <JobPostedSuccess /> */}
+            <UploadMedia />
 
         </div>
     )
