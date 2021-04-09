@@ -29,6 +29,12 @@
 .flex_col_sm_5 {
   width: 41.666667%;
   padding: 0 10px;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    width: 75%;
+  }
+  @media (max-width: 650px) {
+    width: 100%;
+  }
 }
 
 
@@ -38,9 +44,6 @@
   @media (max-width: 768px) {
     width: 100%;
   }
-  @media (max-width: 650px) {
-    width: 50%;
-  }
 }
 .flex_col_xs_6{
   width: 50%;
@@ -49,6 +52,9 @@
 .flex_col_sm_7 {
   width: 58.333333%;
   padding: 0 10px;
+  @media (max-width: 650px) {
+    width: 100%;
+  }
 }
 .flex_col_sm_8 {
   width: 66.666667%;
@@ -72,6 +78,12 @@
 
 .right_flex {
   align-items: flex-end;
+}
+
+.f_reverse{
+  @media (max-width: 650px) {
+    flex-flow: column-reverse;
+  }
 }
 
 .center_flex{

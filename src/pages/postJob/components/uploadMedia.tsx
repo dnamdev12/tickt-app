@@ -3,8 +3,10 @@ import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
+import remove from "../../../assets/images/icon-close-1.png";
+import addMedia from "../../../assets/images/add-image.png";
 
-const JobMilestones = () => {
+const UploadMedia = () => {
     return (
         <div className="app_wrapper">
 
@@ -61,59 +63,40 @@ const JobMilestones = () => {
             <div className="section_wrapper">
                 <div className="custom_container">
                     <div className="form_field">
-                        <div className="flex_row f_reverse">
-                            <div className="flex_col_sm_5">
+                        <div className="flex_row">
+                            <div className="flex_col_sm_6">
                                 <div className="relate">
                                     <button className="back"></button>
-                                    <span className="title">Job milestones</span>
+                                    <span className="title">Video upload or add photos</span>
                                 </div>
+                                <p className="commn_para">Record a short video or add photos to demonstrate your job and any unique requirements. </p>
                             </div>
-                            <div className="flex_col_sm_7 text-right">
-                                <a href="javascript:void(0)" className="link">Save as template</a>
-                                </div>
                         </div>
                     </div>
                     <div className="flex_row">
-                        <div className="flex_col_sm_5">
-                            <ul className="milestones">
-                                <li>
-                                    <div className="edit_delete">
-                                        <span className="edit"></span>
-                                        <span className="delete"></span>
-                                    </div>
-                                    <div className="checkbox_wrap agree_check">
-                                        <input className="filter-type filled-in" type="checkbox" id="milestone" />
-                                        <label htmlFor="milestone">Electrician’s certificate created</label>
-                                        <div className="info">
-                                            <span>Photo evidence required</span>
-                                            <span>May 24 - 26</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="checkbox_wrap agree_check">
-                                        <input className="filter-type filled-in" type="checkbox" id="milestone" />
-                                        <label htmlFor="milestone">Electrician’s certificate created</label>
-                                        <div className="info">
-                                            <span>Photo evidence required</span>
-                                            <span>May 24 - 26</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                            <div className="form_field">
-                                <button className="fill_btn fill_grey_btn full_btn">+ Add milestone</button>
+                        <div className="flex_col_sm_6">
+
+                            <div className="upload_img_video">
+                                <figure className="img_video">
+                                    <img src={dummy} alt="media" />
+                                    <img src={remove} alt="remove" className="remove" />
+                                </figure>
+                                <label className="upload_media" htmlFor="upload_img_video">
+                                    <img src={addMedia} />
+                                </label>
+                                <input type="file" style={{ display: "none" }} id="upload_img_video" />
                             </div>
+
                             <div className="form_field">
-                                <button className="fill_btn full_btn">Continue</button>
+                                <button className="fill_btn full_btn disable_btn">Submit</button>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-        </div>
+        </div >
     )
 }
 
-export default JobMilestones
+export default UploadMedia
