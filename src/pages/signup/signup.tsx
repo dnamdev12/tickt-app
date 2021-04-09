@@ -73,7 +73,7 @@ const Signup = (props: Propstype) => {
 
     const updateSteps = (step: number, newData?: any) => {
         var newStep = step;
-        if (!signupData.socialId && (props.socialData || props.history.location.redirect === "socialRedirectFromLogin")) {
+        if (!signupData.socialId && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
             const profile = props.socialData ? props.socialData : props.history.location.state.profileData;
             console.log(profile, "profile updateSteps", props.history)
             if (props.socialData) {
