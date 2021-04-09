@@ -1,73 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom'
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
-import Modal from '@material-ui/core/Modal';
-import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import storageService from '../../utils/storageService';
-import Login from '../login/login'
 import Carousel from 'react-multi-carousel';
-import AuthModal from './components/authModal';
-
 
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
-import menu from '../../assets/images/menu-line-white.svg';
-import bell from '../../assets/images/ic-notification.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
-import profile from '../../assets/images/ic-profile.png';
-import uc from '../../assets/images/uc.png';
 import Searchicon from "../../assets/images/main-search.png";
 import search from "../../assets/images/ic-search.png";
 import Location from "../../assets/images/ic-location.png";
 import cross from "../../assets/images/close-black.png";
-import cancel from "../../assets/images/ic-cancel.png";
 import bannerimg from '../../assets/images/home-banner.png'
-import icgps from "../../assets/images/ic-gps.png";
 import residential from "../../assets/images/ic-residential.png";
 import industrial from "../../assets/images/ic-money.png";
 import contracted from "../../assets/images/ic-contracted.png";
 import commercial from "../../assets/images/ic-commercial.png";
 import hourlyRate from "../../assets/images/ic-clock.png";
-import { setShowToast } from '../../redux/common/actions';
-
-
-
 
 
 const Home = (props: any) => {
-    const [anchorEl, setAnchorEl] = useState(null);
-    const [showModal, setShowModal] = useState<boolean>(false);
-
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handleClose = () => {
-        setAnchorEl(null);
-    };
-
-    const logoutHandler = () => {
-        storageService.removeItem("jwtToken")
-        storageService.removeItem("guestToken")
-        props.history.push('/signup')
-    }
-
-    const useStyles = makeStyles((theme: Theme) =>
-        createStyles({
-            paper: {
-                // position: 'absolute',
-                // width: 400,
-                // backgroundColor: '#fff',
-                // border: '2px solid #000',
-                // boxShadow: theme.shadows[5],
-                // padding: theme.spacing(2, 4, 3),
-            },
-        }),
-    );
-
-    const classes = useStyles();
-    // getModalStyle is not a pure function, we roll the style only on the first render
 
     const categorieshome = {
         desktop: {
@@ -88,78 +36,6 @@ const Home = (props: any) => {
 
     return (
         <div className="app_wrapper" >
-            {/* Header */}
-            <header id="header">
-                <div className="custom_container">
-                    <div className="flex_headrow">
-                        <div className="brand_wrap">
-                            <figure>
-                                <img src={colorLogo}
-                                    alt="logo-white" />
-                            </figure>
-                        </div>
-                        <ul className="center_nav">
-                            <li>
-                                <a className="active">Discover</a>
-                            </li>
-                            <li>
-                                <a >Jobs</a>
-                            </li>
-                            <li>
-                                <a >Post</a>
-                            </li>
-                            <li>
-                                <a >Chat</a>
-                            </li>
-                        </ul>
-
-
-                        <ul className="side_nav">
-                            <li className="mob_nav">
-                                <img src={menu} alt="menu" />
-                            </li>
-                            <div className="profile_notification">
-                                {storageService.getItem("jwtToken") && <div className="notification_bell">
-                                    <figure className="bell">
-                                        <span className="badge">4 </span>
-                                        <img src={bell} alt="notify" />
-                                    </figure>
-                                </div>}
-                                <div className="user_profile">
-                                    {storageService.getItem("jwtToken") &&
-                                        <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                            <img src={dummy} alt="profile-img" />
-                                        </figure>}
-                                    <Menu className="sub_menu"
-                                        id="simple-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleClose}
-                                    >
-                                        <span className="sub_title">John Oldman</span>
-                                        <MenuItem onClick={handleClose}>
-                                            <span className="setting_icon">
-                                                <img src={profile} />
-                                            My Profile
-                                        </span>
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <span className="setting_icon logout" onClick={logoutHandler}>Logout</span>
-                                        </MenuItem>
-                                    </Menu>
-                                </div>
-                            </div>
-                            {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setShowModal(!showModal)}>Log in</a></li>}
-                            <AuthModal showModal={showModal} setShowModal={setShowModal} history={props.history} firstTimePopup>{props.children}</AuthModal>
-                        </ul>
-                    </div>
-
-                </div>
-            </header>
-            {/* Header close */}
-
-
             {/* Under construction */}
             {/* <div className="custom_container">
                 <div className="under_construction_wrap">
@@ -170,8 +46,6 @@ const Home = (props: any) => {
                 </div>
             </div> */}
             {/* Under construction */}
-
-
             {/* Banner */}
             <div className="home_banner">
                 <figure className="banner_img">

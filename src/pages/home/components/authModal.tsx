@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Modal from '@material-ui/core/Modal';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 import Login from '../../login/login';
 import ForgetPassword from '../../forgetPassword/forgetPassword';
 import Signup from '../../signup/index';
@@ -19,7 +20,21 @@ const AuthModal = (props: any) => {
         setModalSteps(0)
     }
 
-    console.log(props, "authModal props")
+    // const useStyles = makeStyles((theme: Theme) =>
+    //     createStyles({
+    //         paper: {
+    //             position: 'absolute',
+    //             width: 400,
+    //             backgroundColor: '#fff',
+    //             border: '2px solid #000',
+    //             boxShadow: theme.shadows[5],
+    //             padding: theme.spacing(2, 4, 3),
+    //         },
+    //     }),
+    // );
+
+    // const classes = useStyles();
+    // getModalStyle is not a pure function, we roll the style only on the first render
 
     const renderGuestPopup = () => {
         switch (modalSteps) {

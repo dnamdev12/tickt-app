@@ -1,10 +1,12 @@
 import routes from './routesData';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import PrivateRoute from './privateRoute';
+import Header from '../common/header';
 
 const Routes = () => {
   return (
     <Router>
+      <Header />
       <Switch>
         {routes.map((route: any) => {
           if (route.redirectTO) {
@@ -16,7 +18,7 @@ const Routes = () => {
           }
           if (route.authRoute) {
             // return <PrivateRoute path={route.path} Component={route.component} authRoute />
-            return <PrivateRoute {...route}/>
+            return <PrivateRoute {...route} />
           }
           return <Route path={route.path} component={route.component} exact={route.exact} />
         }
