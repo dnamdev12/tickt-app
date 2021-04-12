@@ -108,28 +108,6 @@ const AddQualification = (props: Propstype) => {
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
                 <div className="choose_qf">
-                    {/* <div className="f_spacebw">
-                        <div className="checkbox_wrap agree_check">
-                            <input className="filter-type filled-in" type="checkbox" name="qualification" id="qf1" />
-                            <label htmlFor="qf1">White Card</label>
-                        </div>
-                        <div className="upload_img_video">
-                            <label className="upload_btn" htmlFor="upload_img_video">Upload</label>
-                                <input type="file" className="none" id="upload_img_video" />
-
-                            <div className="file_upload_box">
-                                <span className="close">
-                                    <img src={removeFile} />
-                                </span>
-                                <span className="file_icon">
-                                    <img src={fileIcon} />
-                                </span>
-                                <div className="file_details">
-                                    <span className="name">Image</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div> */}
                     {qualificationList ? qualificationList?.map((item: any) => {
                         const isChecked = qualification.find((i: any) => i.qualification_id === item._id);
                         const docDetails = isChecked?.url && fileDetails(isChecked);
@@ -153,7 +131,7 @@ const AddQualification = (props: Propstype) => {
                                             <span className="name">{docDetails?.fileName}</span>
                                         </div>
                                     </div>) :
-                                    (<div className="upload_img_video">
+                                    (<div className="upload_doc">
                                         <label className={`upload_btn ${!isChecked ? "disable" : ""}`} htmlFor={item.name + 'upload'}>Upload</label>
                                         <input type="file" className="none" id={item.name + 'upload'}
                                             accept="image/jpeg,image/jpg,image/png,application/pdf"
