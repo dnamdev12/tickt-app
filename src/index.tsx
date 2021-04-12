@@ -4,12 +4,16 @@ import ReactDOM from 'react-dom';
 import reportWebVitals from './reportWebVitals';
 
 import App from './App';
+import ErrorBoundary from '../src/hoc/errorBoundary';
+
 import '../src/assets/scss/common.scss'
 
 
 const app = (
   <React.StrictMode>
-    <App />
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
   </React.StrictMode>
 )
 

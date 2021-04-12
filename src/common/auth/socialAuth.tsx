@@ -34,13 +34,14 @@ const SocialAuth = (props: Propstype) => {
 
     const googleResponse = async (response: any) => {
         console.log(response, "g-oauth response");
-        const res = await checkSocialId(response.googleId)
+        const res = await checkSocialId({socialId: response.googleId, email: response.profileObj.email})
         if (res.success) {
             if (res.isProfileCompleted) {
                 //in case of existing social account
                 const data: any = {
                     //firstName: profileData.name,
-                    //email: response.profileObj.email,
+                    authType: "login",
+                    email: response.profileObj.email,
                     socialId: response.profileObj.googleId,
                     deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "google",
@@ -63,15 +64,16 @@ const SocialAuth = (props: Propstype) => {
 
     const linkedInResponse = async (response: any) => {
         const resSocial = await getLinkedinProfile({ code: response.code, redirect_uri: linkedInData.REDIRECT_URI })
-        const resCheckId = await checkSocialId(resSocial.result.id)
+        const resCheckId = await checkSocialId({socialId: resSocial.result.id, email: resSocial.result.email})
         if (resCheckId.success) {
             if (resCheckId.isProfileCompleted) {
                 //in case of existing social account
                 const data: any = {
                     //firstName: profileData.name,
-                    //email: resSocial.result.email,
+                    authType: "login",
+                    email: resSocial.result.email,
                     deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
-                    accountType: "linkedin",
+                    accountType: "linkedIn",
                     socialId: resSocial.result.id,
                     ...(props.userType && { user_type: props.userType })
                 }
@@ -85,7 +87,7 @@ const SocialAuth = (props: Propstype) => {
                 }
             } else {
                 //in case of new social account
-                props.onNewAccount({ name: resSocial.result.firstName, email: resSocial.result.email, socialId: resSocial.result.id }, 'linkedin');
+                props.onNewAccount({ name: resSocial.result.firstName, email: resSocial.result.email, socialId: resSocial.result.id }, 'linkedIn');
             }
         }
     }

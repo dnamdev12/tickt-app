@@ -7,6 +7,8 @@ import jpegFile from '../../../assets/images/jpeg.png';
 import jpgFile from '../../../assets/images/jpg.png';
 import pngFile from '../../../assets/images/png.png';
 import pdfFile from '../../../assets/images/pdf.png';
+import docFile from '../../../assets/images/doc.png';
+
 interface Propstype {
     updateSteps: (num: number, data: any) => void,
     step: number,
@@ -42,9 +44,8 @@ const AddQualification = (props: Propstype) => {
         const newFile = e.target.files[0]
         formData.append('file', newFile);
         var fileType = newFile.type.split('/')[1]
-        const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf"]
-        console.log(newFile, 'ok', newFile.type, 'ok', fileType)
-        if (docTypes.indexOf(fileType) < 0) {
+        const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf", "msword", "doc", "docx"]
+        if (docTypes.indexOf(fileType) < 0 || newFile.size > 1280000) {
             alert('The file must be in proper format or size')
             return;
         }
@@ -99,6 +100,10 @@ const AddQualification = (props: Propstype) => {
                 return { fileName: fileArray[0], fileType: pngFile };
             case "pdf":
                 return { fileName: fileArray[0], fileType: pdfFile };
+            case "doc":
+                return { fileName: fileArray[0], fileType: docFile };
+            case "docx":
+                return { fileName: fileArray[0], fileType: docFile };
             default:
                 return null;
         }
@@ -156,7 +161,7 @@ const AddQualification = (props: Propstype) => {
                                     (<div className="upload_img_video">
                                         <label className={`upload_btn ${!isChecked ? "disable" : ""}`} htmlFor={item.name + 'upload'}>Upload</label>
                                         <input type="file" className="none" id={item.name + 'upload'}
-                                            accept="image/jpeg,image/jpg,image/png,application/pdf"
+                                            accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
                                             disabled={!!isChecked ? false : true} onChange={(e) => onFileChange(e, item._id)} />
                                     </div>)}
                             </div>

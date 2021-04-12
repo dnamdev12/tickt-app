@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import Modal from '@material-ui/core/Modal';
 import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
-import Login from '../../login/login';
-import ForgetPassword from '../../forgetPassword/forgetPassword';
-import Signup from '../../signup/index';
+import Login from '../../pages/login/login';
+import ForgetPassword from '../../pages/forgetPassword/forgetPassword';
+import Signup from '../../pages/signup/index';
 
-import cancel from "../../../assets/images/ic-cancel.png";
+import cancel from "../../assets/images/ic-cancel.png";
 
 const AuthModal = (props: any) => {
     const [modalSteps, setModalSteps] = useState(0);

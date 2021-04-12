@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import storageService from '../utils//storageService';
-import AuthModal from '../pages/home/components/authModal';
+import AuthModal from './auth/authModal';
 import { useLocation } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 

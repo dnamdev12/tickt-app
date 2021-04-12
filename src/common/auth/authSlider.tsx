@@ -15,6 +15,7 @@ interface Props {
     showModal: boolean | undefined,
     modalUpdateSteps: (data: any) => void,
     setShowModal: (data: any) => void,
+    setSocialData: (data: any) => void,
 }
 
 const DATA: any = {
@@ -63,6 +64,7 @@ const AuthSlider = (props: Props) => {
                 return;
             } else {
                 props.modalUpdateSteps(2)
+                props.setSocialData('')
                 return;
             }
         }

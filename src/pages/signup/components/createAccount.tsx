@@ -73,7 +73,7 @@ const CreateAccount = (props: Propstype) => {
         if (validateForm()) {
             const res: any = await checkEmailId(signupData.email)
             res?.isProfileCompleted && setShowToast(true, res.message);
-            if (!res.isProfileCompleted) {
+            if (!res.isProfileCompleted && res.success) {
                 props.updateSteps(props.step + 1, data)
             }
         }

@@ -13,6 +13,7 @@ interface Props {
     history?: any;
     setShowModal: (data: any) => void,
     modalUpdateSteps: (data: any) => void,
+    setSocialData: (data: any) => void,
 }
 
 const AuthParent = (props: any) => {
@@ -20,7 +21,7 @@ const AuthParent = (props: any) => {
         <div className="onboard_wrapper">
             <div className="f_row">
                 <div className="left_col">
-                    <AuthSlider type={props.sliderType} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
+                    <AuthSlider type={props.sliderType} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} setSocialData={props.setSocialData}/>
                 </div>
                 <div className="right_col">
                     <figure className="mob_logo hide">

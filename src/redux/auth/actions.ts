@@ -86,9 +86,9 @@ export const callForgotPassword = async (data: any) => {
   return { success: false };
 };
 
-export const checkSocialId = async (socialId: string) => {
+export const checkSocialId = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.get(Urls.checkSocialId + `?socialId=${socialId}`);
+  const response: FetchResponse = await NetworkOps.get(Urls.checkSocialId + `?socialId=${data.socialId}` + `&email=${data.email}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, isProfileCompleted: response.result.isProfileCompleted };

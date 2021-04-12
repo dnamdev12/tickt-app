@@ -12,6 +12,7 @@ interface Propstype {
 
 const SelectCategories = (props: Propstype) => {
     const [trade, setTrade] = useState(props.trade);
+    const [imgPath, setimagePath] = useState<any>([]);
 
     const onClick = (item: string) => {
         if (item == trade) {
@@ -29,16 +30,26 @@ const SelectCategories = (props: Propstype) => {
         }
     }
 
+    const onImageError = (index: number) => {
+        let tmp = [...imgPath]
+        tmp[index] = true
+        setimagePath(tmp)
+    }
+
     return (
         <div className="select_sphere form_wrapper">
             <ul>
-                {props.tradeListData?.length ? props.tradeListData.map((item) => {
+                {props.tradeListData?.length ? props.tradeListData.map((item, index) => {
                     const active = trade === item._id;
+                    const imgSrc = (item.selected_url && !imgPath[index]) ? item.selected_url : spherePlaceholder
+                    // console.log(index,imgSrc, "imgSrc")
                     return (
                         <li className={active ? 'active' : ''} onClick={() => onClick(item._id)}>
                             <figure>
                                 {/* <img src={item[active ? 'selected_url' : 'unselected_url']} alt={item.trade_name} /> */}
-                                <img src={item.selected_url ? item.selected_url : spherePlaceholder} />
+                                {/* <img onError={() => onImageError(index)} src={(item.selected_url && !imgPath[index]) ? item.selected_url : spherePlaceholder} /> */}
+                                <img onError={() => onImageError(index)} src={ imgSrc} />
+                                {/* {item.selected_url && console.log(item.selected_url, "selected url")} */}
                             </figure>
                             <span className="name">{item.trade_name}</span>
                         </li>

@@ -29,7 +29,7 @@ const Toast = (props: any) => {
                 <img src={close} alt="close"  onClick={hideToast}/>
             </span>
             <div className="wrapppr">
-            <p className="commn_para">{props.toastMessage}</p>
+            <p className="commn_para">{props.toastMessage === "Failed to fetch" ? "Please check you internet connection" : props.toastMessage}</p>
             <button className="fill_btn"  onClick={hideToast}>Close</button>
             </div>
         </div>

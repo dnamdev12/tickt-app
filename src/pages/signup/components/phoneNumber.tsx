@@ -39,7 +39,7 @@ const PhoneNumber = (props: Propstype) => {
         if (validateForm()) {
             const res: any = await checkMobileNumber(mobileNumber)
             res?.isProfileCompleted && setShowToast(true, res.message);
-            if (!res.isProfileCompleted) {
+            if (!res.isProfileCompleted && res.success) {
                 props.updateSteps(props.step + 1, { mobileNumber })
             }
         }

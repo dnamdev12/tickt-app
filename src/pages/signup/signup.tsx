@@ -74,7 +74,7 @@ const Signup = (props: Propstype) => {
     const updateSteps = (step: number, newData?: any) => {
         var newStep = step;
         if (!signupData.socialId && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
-            const profile = props.socialData ? props.socialData : props.history.location.state.profileData;
+            const profile = props.socialData ? props.socialData : props.history?.location?.state?.profileData;
             console.log(profile, "profile updateSteps", props.history)
             if (props.socialData) {
                 setSignupData((prevData: any) => ({ ...prevData, ...profile }))
@@ -84,8 +84,8 @@ const Signup = (props: Propstype) => {
             }
             newStep += 1;
         }
-        if(newStep == 1 && signupData.socialId){
-            newStep +=1;
+        if (newStep == 1 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
+            newStep += 1;
         }
         setSteps(newStep);
         if (newData) {
@@ -93,15 +93,15 @@ const Signup = (props: Propstype) => {
         }
     }
 
-    const onNewAccount = (profileData: any, authType: string) => {
+    const onNewAccount = (profileData: any, socialType: string) => {
         setSteps(steps + 1);
         const newProfileData = {
             firstName: profileData.name,
+            authType: "signup",
             email: profileData.email,
-            // socialId: profileData.googleId,
-            accountType: authType,
-            ...(authType === 'google' && { socialId: profileData.googleId }),
-            ...(authType === 'linkedin' && { socialId: profileData.socialId })
+            accountType: socialType,
+            ...(socialType === 'google' && { socialId: profileData.googleId }),
+            ...(socialType === 'linkedIn' && { socialId: profileData.socialId })
         }
         setSignupData((prevData: any) => ({ ...prevData, ...newProfileData }))
     }

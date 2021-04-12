@@ -59,18 +59,17 @@ const LoginPage = (props: Propstype) => {
         return !Object.keys(newErrors).length;
     }
 
-    const onNewAccount = (profileData: any, authType: string) => {
-        console.log(profileData, "profileData", authType, "authType")
+    const onNewAccount = (profileData: any, socialType: string) => {
         const newProfileData = {
             firstName: profileData.name,
+            authType: "signup",
             email: profileData.email,
-            accountType: authType,
-            ...(authType === 'google' && { socialId: profileData.googleId }),
-            ...(authType === 'linkedin' && { socialId: profileData.socialId })
+            accountType: socialType,
+            ...(socialType === 'google' && { socialId: profileData.googleId }),
+            ...(socialType === 'linkedIn' && { socialId: profileData.socialId })
         }
         if (props.showModal) {
             props.modalUpdateSteps(2)
-            console.log(newProfileData, "newProfileData")
             props.setSocialData(newProfileData)
             return;
         }
@@ -117,7 +116,7 @@ const LoginPage = (props: Propstype) => {
     }
 
     return (
-        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }} history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps}>
+        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }} history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} setSocialData={props.setSocialData}>
             <div className="form_wrapper">
                 <form onSubmit={onSubmit}>
                     <div className="form_field">
