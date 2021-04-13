@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
@@ -6,19 +6,94 @@ import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
+import Constants from '../../../utils/constants';
 
 function valuetext(value: number) {
     return `${value}°C`;
 }
 
+interface Proptypes {
+  data: any;
+  stepCompleted: Boolean;
+  handleStepComplete: (data: any) => void;
+  handleStepBack: () => void;
+}
 
-const Payment = () => {
-   
-    const [value, setValue] = React.useState<number[]>([20, 37]);
+const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+  const { errorStrings } = Constants;
 
-    const handleChange = (event: any, newValue: number | number[]) => {
-        setValue(newValue as number[]);
-    };
+  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: '', amount: '' });
+  const [errors, setErrors] = useState({ pay_type: '', amount: '' });
+  const [continueClicked, setContinueClicked] = useState(false);
+  const [value, setValue] = React.useState<number[]>([20, 37]);
+
+  useEffect(() => {
+    if (stepCompleted) {
+      setPaymentDetails(data);
+    }
+  }, [stepCompleted, data]);
+
+  // for error messages
+  const label: { [index: string]: string } = {
+    pay_type: 'pay type',
+    amount: 'amount',
+  }
+
+  const isEmpty = (name: string, value: string) => !value ? errorStrings.pleaseEnter + label[name] : '';
+
+  const isInvalid = (name: string, value: string) => {
+    switch (name) {
+      case 'pay_type':
+        return isEmpty(name, value);
+      case 'amount':
+        return isEmpty(name, value);
+    }
+  }
+
+  const handleChange = (value: string, name: string) => {
+    if (stepCompleted || continueClicked) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isInvalid(name, value),
+      }));
+    }
+
+    setPaymentDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
+  const handleSliderChange = (event: any, newValue: number | any) => {
+      setValue(newValue as number[]);
+      handleChange(newValue[1], 'amount');
+  };
+
+  const handleContinue = () => {
+    let hasErrors;
+
+    if (!continueClicked) {
+      setContinueClicked(true);
+
+      hasErrors = Object.keys(paymentDetails).reduce((prevError, name) => {
+        const hasError = !!isInvalid(name, paymentDetails[name]);
+
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: isInvalid(name, paymentDetails[name]),
+        }));
+
+        return hasError || prevError;
+      }, false);
+    }
+
+    if (!hasErrors) {
+      handleStepComplete(paymentDetails);
+    }
+  };
+
+  const { pay_type, amount } = paymentDetails;
+
     return (
 
         <div className="app_wrapper">
@@ -79,7 +154,7 @@ const Payment = () => {
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
                                 <div className="relate">
-                                    <button className="back"></button>
+                                    <button className="back" onClick={handleStepBack}></button>
                                     <span className="title">Payment</span>
                                 </div>
                                 <p className="commn_para">How mach will you pay for a job</p>
@@ -90,18 +165,18 @@ const Payment = () => {
                         <div className="flex_col_sm_5">
                             <div className="form_field">
                                 <div className="radio_wrap agree_check">
-                                    <input className="filter-type filled-in" type="radio" id="perHour" />
+                                    <input className="filter-type filled-in" name="pay_type" type="radio" id="perHour" />
                                     <label htmlFor="perHour">Per hour</label>
                                 </div>
                                 <div className="radio_wrap agree_check">
-                                    <input className="filter-type filled-in" type="radio" id="fixed" />
+                                    <input className="filter-type filled-in" name="pay_type" type="radio" id="fixed" />
                                     <label htmlFor="fixed">Fixed price</label>
                                 </div>
                             </div>
 
                             <div className="form_field">
                                 <div className="text_field">
-                                    <input type="number" placeholder="Price" name="Price" className="sm_box" />
+                                    <input type="number" placeholder="Price" name="Price" className="sm_box" value={amount} onChange={({ target: { value }}) => handleChange(value, 'amount')} />
                                 </div>
                                 <span className="error_msg"></span>
                             </div>
@@ -111,7 +186,7 @@ const Payment = () => {
 
                             <Slider
                                 value={value}
-                                onChange={handleChange}
+                                onChange={handleSliderChange}
                                 valueLabelDisplay="auto"
                                 aria-labelledby="range-slider"
                                 getAriaValueText={valuetext}
@@ -119,7 +194,7 @@ const Payment = () => {
                             </div>
 
                             <div className="form_field">
-                                <button className="fill_btn full_btn">Continue</button>
+                                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
                             </div>
                         </div>
                     </div>

@@ -1,10 +1,30 @@
-import React from 'react';
+import { useState } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
+// @ts-ignore
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
-const ChooseTiming = () => {
+interface Proptypes {
+  data: any;
+  stepCompleted: Boolean;
+  handleStepComplete: (data: any) => void;
+  handleStepBack: () => void;
+}
+
+const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+  const [range, setRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+  });
+
+  const handleChange = ({ selection }: { selection: { startDate: Date, endDate: Date }}) => {
+    setRange(range);
+  };
+
     return (
         <div className="app_wrapper">
 
@@ -64,7 +84,7 @@ const ChooseTiming = () => {
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
                                 <div className="relate">
-                                    <button className="back"></button>
+                                    <button className="back" onClick={handleStepBack}></button>
                                     <span className="title">Timing</span>
                                 </div>
                                 <p className="commn_para">Choose the start and finish day of your job</p>
@@ -74,10 +94,15 @@ const ChooseTiming = () => {
                     <div className="flex_row">
                         <div className="flex_col_sm_5">
                             <div className="form_field">
-                                Show calendar here
+                            <DateRangePicker
+                              ranges={[range]}
+                              onChange={handleChange}
+                              months={2}
+                              direction="horizontal"
+                            />
                             </div>
                             <div className="form_field">
-                                <button className="fill_btn full_btn">Continue</button>
+                                <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>Continue</button>
                             </div>
                         </div>
                     </div>

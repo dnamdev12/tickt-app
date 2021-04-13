@@ -2876,9 +2876,9 @@ body {
 				background-size: contain;
 			}
 		}
-		&:last-child{
-			margin-bottom: 0;
-		}
+		// &:last-child{
+		// 	margin-bottom: 0;
+		// }
 		label{
 			font-size: 16px;
 			color: var(--blue);

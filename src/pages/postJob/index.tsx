@@ -1,33 +1,22 @@
-import React from 'react'
-import PostNewJob from './components/postNewJob';
-import JobType from './components/jobType';
-import AddLocation from './components/addLocation';
-import Payment from './components/payment'
-import ChooseTiming from './components/chooseTiming';
-import AddMilestone from './components/addMilestone';
-import JobMilestones from './components/jobMilestones';
-import SaveTemplate from './components/saveTemplate';
-import TemplateSavedSuccess from './components/templateSavedSucess';
-import JobPostedSuccess from './components/jobPostedSuccess';
-import UploadMedia from './components/uploadMedia';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import PostJobComponent from './postJob';
+import { callTradeList } from '../../redux/auth/actions';
+import { callCategories } from '../../redux/postJob/actions';
 
-const PostJob = () => {
-    return (
-        <div>
-            <PostNewJob />
-            {/* <JobType /> */}
-            {/* <AddLocation /> */}
-            {/* <Payment /> */}
-            {/* <ChooseTiming /> */}
-            {/* <AddMilestone /> */}
-            {/* <JobMilestones /> */}
-            {/* <SaveTemplate /> */}
-            {/* <TemplateSavedSuccess /> */}
-            {/* <JobPostedSuccess /> */}
-            {/* <UploadMedia /> */}
-
-        </div>
-    )
+const mapStateToProps = (state: any) => {
+  return {
+    tradeListData: state.auth.tradeListData,
+  }
 }
 
-export default PostJob
+const mapDispatchToProps = (dispatch: any) => {
+  return bindActionCreators({callTradeList, callCategories}, dispatch);
+}
+
+const PostJob = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(PostJobComponent)
+
+export default PostJob;
