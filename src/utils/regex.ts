@@ -7,6 +7,7 @@ const regex = {
         cin: /^([L|U]{1})([0-9]{5})([A-Za-z]{2})([0-9]{4})([A-Za-z]{3})([0-9]{6})$/,
         abn: "[0-9]{11}",
         alpha: /^[a-zA-Z\s.]*$/,
+        alphaSpecial: /^[ A-Za-z&]*$/,
         numeric: /^[0-9]*$/,
         alphaNumeric: /^[a-zA-Z0-9]*$/,
         fullname: /^[a-zA-Z ]{3,50}$/,

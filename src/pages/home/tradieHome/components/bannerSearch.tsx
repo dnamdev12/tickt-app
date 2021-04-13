@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
+import regex from '../../../../utils/regex';
 
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+
+import colorLogo from '../../../../assets/images/ic-logo-yellow.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import Searchicon from "../../../../assets/images/main-search.png";
 import search from "../../../../assets/images/ic-search.png";
@@ -14,8 +16,74 @@ import contracted from "../../../assets/images/ic-contracted.png";
 import commercial from "../../../assets/images/ic-commercial.png";
 import hourlyRate from "../../../assets/images/ic-clock.png";
 
-const BannerSearch = () => {
-    const [searchJob, setSearchJob] = useState<string>('');
+const BannerSearch = (props: any) => {
+    const [stateData, setStateData] = useState<any>({
+        city: '',
+        cityId: null,
+        location: '',
+    });
+    const [inputFocus, setInputFocus] = useState<boolean>(false)
+
+    const checkInputValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let valid = true;
+        const alphaRegex = new RegExp(regex.alphaSpecial)
+        return valid = alphaRegex.test(e.target.value)
+    }
+
+    const handleCityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (checkInputValidation(e)) {
+            e.target.value.length > 0 && props.getSearchJobList(e.target.value)
+            setStateData((prevData: any) => ({ ...prevData, city: e.target.value }))
+        }
+    }
+
+    const cleanInputData = (item: string) => {
+        console.log(item, "clean INput")
+        setStateData((prevData: any) => ({ ...prevData, [item]: '' }))
+    }
+
+    const recentJobSearches = () => {
+        return (
+            <div className="custom_autosuggestion">
+                <span className="sub_title">Recent searches</span>
+                <div className="flex_row recent_search">
+                    <div className="flex_col_sm_4">
+                        <div className="autosuggestion_icon card history">
+                            <span>Campervans</span>
+                            <span className="name">Vehicles</span>
+                        </div>
+                    </div>
+
+                    <div className="flex_col_sm_4">
+                        <div className="autosuggestion_icon card history">
+                            <span>sparknotes1</span>
+                            <span className="name">sparknotes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    }
+
+    const renderJobResult = () => {
+        console.log(props.searchJobListData, "props.searchJobListData")
+        return (
+            props.searchJobListData?.length ? <div className="custom_autosuggestion">
+                <div className="flex_row recent_search">
+                    {props.searchJobListData?.map((item: any) => {
+                        return (
+                            <div className="flex_col_sm_4">
+                                <div className="autosuggestion_icon card history">
+                                    <span>{item.name}</span>
+                                    <span className="name">{item.trade_name}</span>
+                                </div>
+                            </div>
+                        )
+                    })}
+                </div>
+            </div> : <p>No Result Found!</p>
+        )
+    }
 
     return (
         <div className="home_banner">
@@ -30,12 +98,15 @@ const BannerSearch = () => {
                             <ul>
                                 <li className="categ_box">
                                     <div className="text_field">
-                                        <input type="text" placeholder="What jobs are you after?" />
+                                        <input type="text" placeholder="What jobs are you after?" value={stateData.city} onChange={handleCityChange} onFocus={() => setInputFocus(true)} onBlur={() => setInputFocus(false)} />
                                         <div className="border_eff"></div>
-                                        <span className="detect_icon"> </span>
                                         <span className="detect_icon_ltr">
                                             <img src={Searchicon} alt="search" />
                                         </span>
+                                        {stateData.city.length > 0 &&
+                                            <span className="detect_icon" >
+                                                <img src={cross} alt="cross" onClick={() => cleanInputData('city')} />
+                                            </span>}
                                     </div>
                                 </li>
                                 <li className="loc_box">
@@ -67,84 +138,8 @@ const BannerSearch = () => {
                             </ul>
                         </form>
 
-                        {/* Category recent search */}
-                        {/* <div className="custom_autosuggestion">
-                                <span className="sub_title">Recent searches</span>
-
-                                <div className="flex_row recent_search">
-                                    <div className="flex_col_sm_4">
-                                        <div className="autosuggestion_icon card history">
-                                            <span>Campervans</span>
-                                            <span className="name">Vehicles</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex_col_sm_4">
-                                        <div className="autosuggestion_icon card history">
-                                            <span>sparknotes1</span>
-                                            <span className="name">sparknotes</span>
-                                        </div>
-                                    </div>
-
-                                    <div className="flex_col_sm_4">
-                                        <div className="autosuggestion_icon card history">
-                                            <span>Cabins</span>
-                                            <span className="name">Accomodation</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <span className="sub_title">Categories</span>
-                                <div className="searched_categories">
-                                    <ul className="categories">
-                                        <li>
-                                            <a className="categ_card">
-                                                <figure className="categ_img">
-                                                    <img alt="categories" src={colorLogo} />
-                                                </figure>
-                                                <span className="categ_name"> Fishing </span>
-                                            </a>
-                                        </li>
-
-                                        <li>
-                                            <a className="categ_card">
-                                                <figure className="categ_img">
-                                                    <img alt="categories" src={colorLogo} />
-                                                </figure>
-                                                <span className="categ_name"> Fishing </span></a>
-                                        </li>
-                                        <li>
-                                            <a className="categ_card">
-                                                <figure className="categ_img">
-                                                    <img alt="categories" src={colorLogo} />
-                                                </figure>
-                                                <span className="categ_name"> Fishing </span></a>
-                                        </li>
-                                        <li>
-                                            <a className="categ_card">
-                                                <figure className="categ_img">
-                                                    <img alt="categories" src={colorLogo} />
-                                                </figure>
-                                                <span className="categ_name"> Fishing </span></a>
-                                        </li>
-                                        <li>
-                                            <a className="categ_card">
-                                                <figure className="categ_img">
-                                                    <img alt="categories" src={colorLogo} />
-                                                </figure>
-                                                <span className="categ_name"> Fishing </span></a>
-                                        </li>
-                                        <li>
-                                            <a className="categ_card">
-                                                <figure className="categ_img">
-                                                    <img alt="categories" src={colorLogo} />
-                                                </figure>
-                                                <span className="categ_name"> Fishing </span></a>
-                                        </li>
-                                    </ul>
-
-                                </div>
-                            </div> */}
-                        {/* Category recent search close*/}
+                        {stateData.city.length === 0 && inputFocus && recentJobSearches()}
+                        {stateData.city.length > 0 && renderJobResult()}
 
                         {/* Location recent search */}
                         {/* <div className="custom_autosuggestion location">

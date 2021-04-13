@@ -6,7 +6,12 @@ const GuestLogin = () => {
     }
     return (
         <div>
-            Guest Login
+            <p>Guest Login</p>
+            <p>Guest Login</p>
+            <p>Guest Login</p>
+            <p>Guest Login</p>
+            <p>Guest Login</p>
+            <p>Guest Login</p>
             <button onClick={onClick}>Guest Button</button>
             {/* Under construction */}
             {/* <div className="custom_container">

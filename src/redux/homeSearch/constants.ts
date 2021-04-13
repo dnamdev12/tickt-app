@@ -1,0 +1,4 @@
+export const GET_SEARCH_JOB_LIST = 'GET_SEARCH_JOB_LIST';
+export const SET_SEARCH_JOB_LIST = 'SET_SEARCH_JOB_LIST';
+
+export const FETCH_FAILED = 'FETCH_FAILED';
