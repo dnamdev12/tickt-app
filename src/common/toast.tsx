@@ -11,7 +11,7 @@ export const TYPES = {
 }
 
 // handles the auto hinding of toast
-// const TOAST_TIMEOUT = 2000;
+const TOAST_TIMEOUT = 2000;
 
 const Toast = (props: any) => {
 
@@ -20,7 +20,7 @@ const Toast = (props: any) => {
     }
 
     useEffect(() => {
-        // setTimeout(() => hideToast(), TOAST_TIMEOUT)
+        setTimeout(() => hideToast(), TOAST_TIMEOUT)
     }, [props.showToast]);
 
     return !!props.showToast ? (
