@@ -29,6 +29,10 @@
 .error_msg {
   color: red;
   font-size: 12px;
+  &.m-t{
+    margin-top: 20px;
+    display: block;
+  }
 }
 
 .list_box {
