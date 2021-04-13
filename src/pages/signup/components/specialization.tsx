@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { setShowToast } from '../../../redux/common/actions';
+import noData from '../../../assets/images/no-results.png'
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void
@@ -46,8 +47,11 @@ const Specialization = (props: Propstype) => {
                         return (
                             <li className={active ? 'active' : ''} onClick={() => changeHandler(item._id)}>{item.name}</li>
                         )
-                    }) : <li className='active'>No Data Found</li>}
+                    }) : <li className='no_data'>
+                            <img src={noData} alt="no-data" />
+                        </li>}
                 </ul>
+
                 <div className="form_field">
                     <button className="fill_btn">Next</button>
                 </div>
