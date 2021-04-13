@@ -4,7 +4,7 @@ const SocialAuth = {
 }
 
 const errorStrings = {
-fullNameEmpty: 'Full Name cannnot be empty',
+fullNameEmpty: 'Full Name is required',
 fullNameErr: 'Please enter a valid name',
 fullNameShortErr: 'Name must have minimum 3 letters',
 companyNameEmpty: 'Company Name cannnot be empty',
@@ -13,10 +13,10 @@ companyNameShortErr: 'Company Name must have minimum 3 letters',
 positionNameEmpty: 'Position cannnot be empty',
 positionNameErr: 'Please enter a valid position',
 positionNameShortErr: 'Position must have minimum 3 letters',
-emailEmpty: 'Email cannot be empty',
+emailEmpty: 'Email is required',
 emailExist: 'Email id already in use',
 emailErr: 'Invalid email id',
-tncEmpty: 'Please accept privacy policy and terms & conditons',
+tncEmpty: 'Please accept privacy policy and terms & conditions',
 phoneNumberEmpty: 'Phone Number cannot be empty',
 phoneNumberErr: 'Please enter correct Phone Number',
 phoneNumberExist: 'Phone number already in use',
@@ -25,14 +25,14 @@ abnErr: 'Please enter correct ABN',
 abnExist: 'Phone number already in use',
 password: 'Please enter password',
 passwordInvalid: 'Invalid password',
-passwordError: 'Password must be 8 charaters longs and should contain atleast one alphabet, one numeric and one special character',
+passwordError: 'Password must be 8 characters long and must include atleast one alphabet, one numeric and one special character',
 otpEmpty: 'OTP cannot be empty',
 otpIncorrect: 'Please enter a valid OTP',
 sphereEmpty: 'Please select your trade',
 specializationEmpty: 'Please select your specialization'
 }
 
-const OTP_TIMER = 60;
+const OTP_TIMER = 59;
 
 // 1 --> tradie | 2 --> builder
 const USER_TYPE = 2;  
