@@ -1,10 +1,62 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
+import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
+import { callMilestones } from '../../../redux/postJob/actions';
 
-const JobMilestones = () => {
+interface Proptypes {
+  data: any;
+  stepCompleted: Boolean;
+  handleStepComplete: (data: any) => void;
+  handleStepBack: () => void;
+}
+
+const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+  const [milestones, setMilestones] = useState<Array<any>>([]);
+
+  const getMilestones = async () => {
+    const { success, milestones } = await callMilestones();
+
+    if (success) {
+      setMilestones(milestones);
+    } else {
+      setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
+    }
+  }
+
+  useEffect(() => {
+    getMilestones();
+  }, []);
+
+  const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
+    const result = Array.from(list);
+    const [removed] = result.splice(startIndex, 1);
+    result.splice(endIndex, 0, removed);
+
+    return result;
+  };
+
+  const onDragEnd = (result: DropResult) => {
+    const { source, destination } = result;
+
+    // dropped outside the list
+    if (!destination) {
+      return;
+    }
+
+    if (source.droppableId === destination.droppableId) {
+      const reOrderedMilestones = reorder(
+        milestones,
+        source.index,
+        destination.index
+      );
+
+      setMilestones(reOrderedMilestones);
+    }
+  };
+
     return (
         <div className="app_wrapper">
 
@@ -64,7 +116,7 @@ const JobMilestones = () => {
                         <div className="flex_row f_reverse">
                             <div className="flex_col_sm_5">
                                 <div className="relate">
-                                    <button className="back"></button>
+                                    <button className="back" onClick={handleStepBack}></button>
                                     <span className="title">Job milestones</span>
                                 </div>
                             </div>
@@ -75,37 +127,55 @@ const JobMilestones = () => {
                     </div>
                     <div className="flex_row">
                         <div className="flex_col_sm_5">
-                            <ul className="milestones">
-                                <li>
-                                    <div className="edit_delete">
-                                        <span className="edit"></span>
-                                        <span className="delete"></span>
-                                    </div>
-                                    <div className="checkbox_wrap agree_check">
-                                        <input className="filter-type filled-in" type="checkbox" id="milestone" />
-                                        <label htmlFor="milestone">Electrician’s certificate created</label>
-                                        <div className="info">
-                                            <span>Photo evidence required</span>
-                                            <span>May 24 - 26</span>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li>
-                                    <div className="checkbox_wrap agree_check">
-                                        <input className="filter-type filled-in" type="checkbox" id="milestone" />
-                                        <label htmlFor="milestone">Electrician’s certificate created</label>
-                                        <div className="info">
-                                            <span>Photo evidence required</span>
-                                            <span>May 24 - 26</span>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                            <DragDropContext onDragEnd={onDragEnd}>
+                                <Droppable droppableId="milestones">
+                                    {(provided, snapshot) => (
+                                        <ul
+                                          ref={provided.innerRef}
+                                          className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}
+                                        >
+                                            {milestones.map(({ _id, name }: { _id: string, name: string }, index) => (
+                                                <Draggable
+                                                    key={_id}
+                                                    draggableId={_id}
+                                                    index={index}
+                                                >
+                                                    {(provided, snapshot) => (
+                                                        <li
+                                                          key={_id}
+                                                          ref={provided.innerRef}
+                                                          {...provided.draggableProps}
+                                                          {...provided.dragHandleProps}
+                                                          style={{
+                                                            ...provided.draggableProps.style,
+                                                          }}
+                                                        >
+                                                            <div className="edit_delete">
+                                                                <span className="edit"></span>
+                                                                <span className="delete"></span>
+                                                            </div>
+                                                            <div className="checkbox_wrap agree_check">
+                                                                <input className="filter-type filled-in" type="checkbox" id={`milestone${_id}`} />
+                                                                <label htmlFor={`milestone${_id}`}>{name}</label>
+                                                                <div className="info">
+                                                                    <span>Photo evidence required</span>
+                                                                    <span>May 24 - 26</span>
+                                                                </div>
+                                                            </div>
+                                                        </li>
+                                                    )}
+                                                </Draggable>
+                                            ))}
+                                            {provided.placeholder}
+                                        </ul>
+                                    )}
+                                </Droppable>
+                            </DragDropContext>
                             <div className="form_field">
                                 <button className="fill_btn fill_grey_btn full_btn">+ Add milestone</button>
                             </div>
                             <div className="form_field">
-                                <button className="fill_btn full_btn">Continue</button>
+                                <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>Continue</button>
                             </div>
                         </div>
                     </div>
