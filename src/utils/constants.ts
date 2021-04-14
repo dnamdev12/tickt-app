@@ -32,7 +32,7 @@ sphereEmpty: 'Please select your trade',
 specializationEmpty: 'Please select your specialization'
 }
 
-const OTP_TIMER = 59;
+const OTP_TIMER = 60;
 
 // 1 --> tradie | 2 --> builder
 const USER_TYPE = 2;  
