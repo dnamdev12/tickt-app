@@ -29,7 +29,9 @@ passwordError: 'Password must be 8 charaters longs and should contain atleast on
 otpEmpty: 'OTP cannot be empty',
 otpIncorrect: 'Please enter a valid OTP',
 sphereEmpty: 'Please select your trade',
-specializationEmpty: 'Please select your specialization'
+specializationEmpty: 'Please select your specialization',
+pleaseEnter: 'Please enter ',
+pleaseSelect: 'Please select',
 }
 
 const OTP_TIMER = 60;
