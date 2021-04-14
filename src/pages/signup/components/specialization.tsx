@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { setShowToast } from '../../../redux/common/actions';
-import noData from '../../../assets/images/no-results.png'
+import noData from '../../../assets/images/no-data.png'
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void
