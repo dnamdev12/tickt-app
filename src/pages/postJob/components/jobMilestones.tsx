@@ -113,7 +113,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
             </header>
             {/* Header close */}
 
-            <div className="section_wrapper">
+            {/* <div className="section_wrapper">
                 <div className="custom_container">
                     <div className="form_field">
                         <div className="flex_row f_reverse">
@@ -183,11 +183,11 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
 
             {/* Job detail */}
-            {/* <div className="section_wrapper top_wrap">
+            <div className="section_wrapper top_wrap">
                 <div className="custom_container">
                     <div className="vid_img_wrapper">
                         <div className="flex_row">
@@ -294,7 +294,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                         </div>
                     </div>
                 </div>
-            </div> */}
+            </div>
             {/* Job detail close*/}
 
         </div>

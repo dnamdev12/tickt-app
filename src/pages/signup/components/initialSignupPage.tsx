@@ -43,7 +43,7 @@ const InitialSignupPage = (props: Propstype) => {
             {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>}
 
             <div className="form_field hide text-center">
-                    <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Sign in</a></span>
+                    <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Login</a></span>
                 </div>
         </div>
     )
