@@ -8,7 +8,7 @@ import jpgFile from '../../../assets/images/jpg.png';
 import pngFile from '../../../assets/images/png.png';
 import pdfFile from '../../../assets/images/pdf.png';
 import docFile from '../../../assets/images/doc.png';
-import noData from '../../../assets/images/no-results.png';
+import noData from '../../../assets/images/no-data.png';
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void,
