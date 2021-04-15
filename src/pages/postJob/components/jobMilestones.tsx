@@ -144,7 +144,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                                                     draggableId={_id}
                                                     index={index}
                                                 >
-                                                    {(provided, snapshot) => (
+                                                    {(provided: any, snapshot: any) => (
                                                         <li
                                                             key={_id}
                                                             ref={provided.innerRef}
