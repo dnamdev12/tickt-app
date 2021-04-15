@@ -8,6 +8,7 @@ import jpgFile from '../../../assets/images/jpg.png';
 import pngFile from '../../../assets/images/png.png';
 import pdfFile from '../../../assets/images/pdf.png';
 import docFile from '../../../assets/images/doc.png';
+import noData from '../../../assets/images/no-results.png';
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void,
@@ -144,7 +145,9 @@ const AddQualification = (props: Propstype) => {
                                     </div>)}
                             </div>
                         )
-                    }) : <li className='active'>No Data Found</li>}
+                    }) : <li className='no_data'>
+                        <img src={noData} alt="no-data" />
+                    </li>}
                 </div>
 
                 <div className="form_field">

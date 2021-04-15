@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Constants from '../../../utils/constants';
 import { setShowToast } from '../../../redux/common/actions';
 import spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
+import noData from '../../../assets/images/no-results.png';
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void
@@ -48,13 +49,15 @@ const SelectCategories = (props: Propstype) => {
                             <figure>
                                 {/* <img src={item[active ? 'selected_url' : 'unselected_url']} alt={item.trade_name} /> */}
                                 {/* <img onError={() => onImageError(index)} src={(item.selected_url && !imgPath[index]) ? item.selected_url : spherePlaceholder} /> */}
-                                <img onError={() => onImageError(index)} src={ imgSrc} />
+                                <img onError={() => onImageError(index)} src={imgSrc} />
                                 {/* {item.selected_url && console.log(item.selected_url, "selected url")} */}
                             </figure>
                             <span className="name">{item.trade_name}</span>
                         </li>
                     )
-                }) : <li className='active'>No Data Found</li>}
+                }) : <li className='no_data'>
+                    <img src={noData} alt="no-data" />
+                </li>}
             </ul>
             <button className="fill_btn" onClick={onSubmit}>Next</button>
         </div>
