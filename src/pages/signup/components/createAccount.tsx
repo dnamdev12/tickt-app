@@ -109,7 +109,7 @@ const CreateAccount = (props: Propstype) => {
                         <label className="and">&nbsp;and&nbsp;</label>
                         <a href="https://ticktdevapi.appskeeper.in/tncWeb" target="_blank" rel="noopener" className="link m-l-30">Terms &amp; Conditions</a>
                     </div>
-                    {!!errors.tnc && <span className="error_msg">{errors.tnc}</span>}
+                    {!!errors.tnc && <span className="error_msg m-t">{errors.tnc}</span>}
                 </div>
                 <div className="form_field">
                     <button type="submit" className="fill_btn">Sign up</button>

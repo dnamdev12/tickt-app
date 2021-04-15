@@ -26,12 +26,25 @@ const InitialSignupPage = (props: Propstype) => {
         props.history.push('/')
     }
 
+    const phoneViewHandler = (e: any) => {
+        e.preventDefault();
+        // if(props.showModal){
+        //     props.modalUpdateSteps(0)
+        //     return;
+        // }
+        props.history.push('/login')
+    }
+
     return (
         <div className="form_wrapper">
             <div className="form_field"><button className="fill_btn" onClick={() => nextPageHandler('builder')}>I’m builder</button></div>
             <div className="form_field text-center"><span className="show_label text-center">or</span></div>
             <div className="form_field"><button className="fill_grey_btn" onClick={() => nextPageHandler('tradie')}>I’m tradie</button></div>
-            {!props.showModal && <div className="text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>}
+            {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>}
+
+            <div className="form_field hide text-center">
+                    <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Sign in</a></span>
+                </div>
         </div>
     )
 }

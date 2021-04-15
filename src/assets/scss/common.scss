@@ -72,6 +72,9 @@ body {
 	@media (max-width: 650px) {
 		padding: 20px 0 0 0;
 	}
+	&.top_wrap{
+		padding: 60px 0 0 0;
+	}
 }
 
 .commn_para {
@@ -207,7 +210,12 @@ body {
 			color: var(--blue);
 			cursor: pointer;
 			&.active {
-				background-color: #161d4a17;
+				background-color: #161d4a33;
+			}
+			&.no_data{
+				background-color: transparent;
+				margin: 0;
+				padding: 0;
 			}
 			&.selected {
 				background-color: var(--blue-two);
@@ -1127,7 +1135,7 @@ body {
 }
 
 //------------------------Stories close---------------------//
-//----------------------Item/Story/Profile Detail-------------------//
+//----------------------Job/Story/Profile Detail-------------------//
 .vid_img_wrapper {
 	.flex_col_sm_3 {
 		@media (max-width: 1024px) {
@@ -1140,9 +1148,13 @@ body {
 			width: 100%;
 		}
 	}
+	.back{
+		top: -30px;
+		cursor: pointer;	
+	}
 	.vid_img_thumb {
 		position: relative;
-		@include border-radius(12px);
+		@include border-radius(3px);
 		background-color: rgba(18, 14, 36, 0.3);
 		height: 400px;
 		overflow: hidden;
@@ -1173,6 +1185,18 @@ body {
 	}
 	.detail_card {
 		padding: 0 0 0 10px;
+		position: absolute;
+		bottom: 0;
+		.job_info{
+			ul{
+				justify-content: initial;
+				li{
+					width: 50%;
+					margin-bottom: 10px;
+
+				}
+			}
+		}
 		.rate_action_wrap {
 			margin-bottom: 15px;
 			display: flex;
@@ -2032,8 +2056,8 @@ body {
 //-------------Toast-----------------//
 .body-message {
 	position: fixed;
-	width: 350px;
-	min-height: 120px;
+	width: 305px;
+	min-height: 80px;
 	right: 50px;
 	top: 0;
 	margin: 15px 0;
@@ -2053,55 +2077,55 @@ body {
 		visibility: visible;
 	}
 	&.success {
-		background: var(--white) url('../images/check.png') no-repeat;
-		background-size: 45%;
-		background-position: -18% 70%;
+		// background: var(--white) url('../images/check.png') no-repeat;
+		// background-size: 45%;
+		// background-position: -18% 70%;
 		.fill_btn {
 			background-color: var(--green);
 		}
 	}
 	&.failed {
-		background: var(--white) url('../images/close.png') no-repeat;
-		background-size: 45%;
-		background-position: -18% 70%;
+		// background: var(--white) url('../images/close.png') no-repeat;
+		// background-size: 35%;
+    	// background-position: -15% 50%;
 		.fill_btn {
 			background-color: #ed1c24;
 		}
 	}
 	&.warning {
-		background: var(--white) url('../images/warning.png') no-repeat;
-		background-size: 45%;
-		background-position: -18% 70%;
+		// background: var(--white) url('../images/warning.png') no-repeat;
+		// background-size: 45%;
+		// background-position: -18% 70%;
 		.fill_btn {
 			background-color: #e0d861;
 		}
 	}
 	&.info {
-		background: var(--white) url('../images/info-button.png') no-repeat;
-		background-size: 45%;
-		background-position: -18% 70%;
+		// background: var(--white) url('../images/info-button.png') no-repeat;
+		// background-size: 45%;
+		// background-position: -18% 70%;
 		.fill_btn {
 			background-color: var(--blue-two);
 		}
 	}
 	.wrapppr {
-		display: flex;
-		justify-content: flex-end;
-		align-items: flex-end;
-		flex-flow: column;
-		width: 98%;
+		width: 100%;
 	}
 	.commn_para {
-		max-width: 75%;
-		text-align: right;
 		margin: 0 0 7px 0;
 	}
 	.cross-icon {
 		display: inline-block;
 		position: absolute;
-		right: 3px;
-		top: 4px;
+		right: 5px;
+		top: 5px;
 		cursor: pointer;
+		width: 18px;
+		height: 18px;
+		img{
+			width: 18px;
+			height: 18px;
+		}
 	}
 	.fill_btn {
 		padding: 8px 20px;
@@ -2159,6 +2183,7 @@ body {
 		left: 50%;
     	transform: translateX(-50%);
 		width: 864px;
+		z-index: 9;
 		@media (max-width: 1024px) {
 			width: 864px;
 		}
@@ -2438,6 +2463,47 @@ body {
 			transform: scale3d(1, 1, 1);
 		}
 	}
+
+	.drop_data{
+		display: flex;
+    	align-items: center;
+		flex-wrap: wrap;
+		li{
+			display: flex;
+    		width: 100%;
+			margin-bottom: 30px;
+			.category {
+				width: 40px;
+				height: 40px;
+				border-radius: 50%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				background-color: #dfe5ef;
+				margin-right: 15px;
+				img {
+					width: 20px;
+					height: 20px;
+					object-fit: contain;
+				}
+			}
+			.details{
+				width: 80%;
+				.name{
+					font-size: 14px;
+					line-height: 1.43;
+					color: #313d48;
+					font-family: 'Neue Haas Grotesk Text Pro Medium';
+					display: block;
+				}
+				.prof{
+					font-size: 12px;
+					line-height: 1.67;
+					color: #313d48;
+				}
+			}
+		}
+	}
 }
 
 .location-btn {
@@ -2545,6 +2611,11 @@ body {
 				color: var(--blue);
 				margin-bottom: 2px;
 			}
+			.prof{
+				font-size: 14px;
+				line-height: 1;
+				color: #313d48;
+			}
 		}
 	}
 	.tags_wrap {
@@ -2552,46 +2623,7 @@ body {
 			margin: 0;
 		}
 	}
-	.job_info {
-		background-color: #f7f8fa;
-		padding: 22px 16px;
-		margin-bottom: 15px;
-		ul {
-			display: flex;
-			justify-content: space-between;
-			align-items: center;
-			li {
-				display: inline-block;
-				&.icon {
-					padding-left: 20px;
-					&:before {
-						width: 12px;
-						height: 12px;
-					}
-					&.clock {
-						&::before {
-							background: url('../images/ic-clock.png') center no-repeat;
-						}
-					}
-					&.dollar {
-						&::before {
-							background: url('../images/ic-dollar.png') center no-repeat;
-						}
-					}
-					&.location {
-						&::before {
-							background: url('../images/ic-location.png') center no-repeat;
-						}
-					}
-					&.calendar {
-						&::before {
-							background: url('../images/ic-calendar.png') center no-repeat;
-						}
-					}
-				}
-			}
-		}
-	}
+	
   .count_wrap{
     display: flex;
     justify-content: flex-end;
@@ -2617,6 +2649,77 @@ body {
       }
     }
   }
+  &.posted_by{
+	min-height: 40px;
+	background-color: transparent;
+	box-shadow: none;
+	.chat{
+		position: absolute;
+		top: 16px;
+		right: 16px;
+		width: 40px;
+		height: 40px;
+		background: url('../images/chat.png') center no-repeat;
+		background-size: contain;
+		overflow: hidden;
+	}
+	&.view_more {
+		position: relative;
+		&:after {
+			right: 0;
+			top: 40%;
+		}
+		&:hover {
+			&:after {
+				right: -20px;
+				left: auto;
+				top: 40%;
+			}
+		}
+	}
+  }
+}
+
+.job_info {
+	background-color: #f7f8fa;
+	padding: 22px 16px;
+	margin-bottom: 15px;
+	ul {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		flex-wrap: wrap;
+		li {
+			display: inline-block;
+			&.icon {
+				padding-left: 20px;
+				&:before {
+					width: 12px;
+					height: 12px;
+				}
+				&.clock {
+					&::before {
+						background: url('../images/ic-clock.png') center no-repeat;
+					}
+				}
+				&.dollar {
+					&::before {
+						background: url('../images/ic-dollar.png') center no-repeat;
+					}
+				}
+				&.location {
+					&::before {
+						background: url('../images/ic-location.png') center no-repeat;
+					}
+				}
+				&.calendar {
+					&::before {
+						background: url('../images/ic-calendar.png') center no-repeat;
+					}
+				}
+			}
+		}
+	}
 }
 
 //-----------------Tradie card close--------------------//
@@ -2841,7 +2944,7 @@ body {
 
 //-------------Popular Tradies close-----------------//
 
-//----------------Post job----------------------//
+//----------------Post job and detail----------------------//
 .milestones{
 	margin-bottom: 30px;
 	li{
@@ -2901,3 +3004,29 @@ body {
 		}
 	}
 }
+
+
+.job_milestone{
+    display: flex;
+    flex-flow: column;
+    max-width: 345px;
+	margin-bottom: 20px;
+    li{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+}
+.ques_btn{
+	max-width: 345px;
+	width: 100%;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+	img{
+		margin-right: 15px;
+	}
+}
+

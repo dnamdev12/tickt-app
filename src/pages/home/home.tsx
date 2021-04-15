@@ -86,7 +86,7 @@ const Home = (props: any) => {
                             </form>
 
                             {/* Category recent search */}
-                            {/* <div className="custom_autosuggestion">
+                            <div className="custom_autosuggestion">
                                 <span className="sub_title">Recent searches</span>
 
                                 <div className="flex_row recent_search">
@@ -111,7 +111,32 @@ const Home = (props: any) => {
                                         </div>
                                     </div>
                                 </div>
-                                <span className="sub_title">Categories</span>
+
+
+                                <ul className="drop_data">
+                                    <li>
+                                        <figure className="category">
+                                            <img src={industrial} alt="category"/>
+                                        </figure>
+                                        <div className="details">
+                                            <span className="name">Machine Maintenance</span>
+                                            <span className="prof">Plumber</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <figure className="category">
+                                            <img src={industrial} alt="category"/>
+                                        </figure>
+                                        <div className="details">
+                                            <span className="name">Machine Maintenance</span>
+                                            <span className="prof">Plumber</span>
+                                        </div>
+                                    </li>
+                                </ul>
+
+
+
+                                {/* <span className="sub_title">Categories</span>
                                 <div className="searched_categories">
                                     <ul className="categories">
                                         <li>
@@ -160,8 +185,8 @@ const Home = (props: any) => {
                                         </li>
                                     </ul>
 
-                                </div>
-                            </div> */}
+                                </div> */}
+                            </div>
                             {/* Category recent search close*/}
 
                             {/* Location recent search */}
