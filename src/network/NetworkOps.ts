@@ -24,14 +24,15 @@ export class NetworkOps {
 
         //if giving multipart/form-data in Content-Type: giving boundary error
         //if also adding boundary: loader continues from server end 
-        if(headerOverrides['Content-Type'] === 'multipart/form-data') {
+        const token = storageService.getItem('jwtToken');
+        if (headerOverrides['Content-Type'] === 'multipart/form-data') {
             delete request.headers['Content-Type'];
         }
-        const token = storageService.getItem('jwtToken');
         if (token) {
             request.headers = {
                 ...request.headers,
-                Authorization: `Bearer ${token}`,
+                Authorization: token,
+                // Authorization: `Bearer ${token}`,
             }
         }
         return request;
@@ -43,8 +44,7 @@ export class NetworkOps {
             const response = await fetch(url, request);
             if (!response.ok) {
                 if (response.status === 401) {
-                    if (storageService.getItem('jwtToken'))
-                    {
+                    if (storageService.getItem('jwtToken')) {
                         storageService.clearAll();
                         alert('Token Expired')
                     }
@@ -53,7 +53,7 @@ export class NetworkOps {
                     console.log('Got 401, now calling logout', response);
                 }
                 const err = await response.json();
-                console.log('Error -> ',err)
+                console.log('Error -> ', err)
                 throw err;
             }
             else {

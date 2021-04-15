@@ -1,12 +1,85 @@
-import React from 'react';
+import { useEffect, useState } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
-import profile from '../../assets/images/ic-profile.png';
-import cancel from "../../assets/images/ic-cancel.png";
+import Constants from '../../../utils/constants';
 
-const PostNewJob = () => {
+interface Proptypes {
+  data: any,
+  stepCompleted: Boolean,
+  handleStepComplete: (data: any) => void,
+}
+
+const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
+  const { errorStrings } = Constants;
+
+  const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>({ jobName: '', job_description: '' });
+  const [errors, setErrors] = useState({ jobName: '', job_description: '' });
+  const [continueClicked, setContinueClicked] = useState(false);
+
+  useEffect(() => {
+    if (stepCompleted) {
+      setBasicDetails(data);
+    }
+  }, [stepCompleted, data]);
+
+  // for error messages
+  const label: { [index: string]: string } = {
+    jobName: 'job name',
+    job_description: 'job description',
+  }
+
+  const isEmpty = (name: string, value: string) => !value ? errorStrings.pleaseEnter + label[name] : '';
+
+  const isInvalid = (name: string, value: string) => {
+    switch (name) {
+      case 'jobName':
+        return isEmpty(name, value);
+      case 'job_description':
+        return isEmpty(name, value);
+    }
+  }
+
+  const handleChange = ({ target: { value, name }}: { target: { value: string, name: string }}) => {
+    if (stepCompleted || continueClicked) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: isInvalid(name, value),
+      }));
+    }
+
+    setBasicDetails((prevDetails) => ({
+      ...prevDetails,
+      [name]: value,
+    }));
+  };
+
+  const handleContinue = () => {
+    let hasErrors;
+
+    if (!continueClicked) {
+      setContinueClicked(true);
+
+      hasErrors = Object.keys(basicDetails).reduce((prevError, name) => {
+        const hasError = !!isInvalid(name, basicDetails[name]);
+
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          [name]: isInvalid(name, basicDetails[name]),
+        }));
+
+        return hasError || prevError;
+      }, false);
+    }
+
+    if (!hasErrors) {
+      handleStepComplete(basicDetails);
+    }
+  };
+
+  const { jobName, job_description } = basicDetails;
+
     return (
         <div className="app_wrapper">
 
@@ -79,19 +152,19 @@ const PostNewJob = () => {
                             <div className="form_field">
                                 <label className="form_label">Job name</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="Enter job name" name="name" />
+                                    <input type="text" placeholder="Enter job name" name="jobName" value={jobName} onChange={handleChange} />
                                 </div>
-                                <span className="error_msg"></span>
+                                <span className="error_msg">{errors.jobName}</span>
                             </div>
                             <div className="form_field">
                                 <label className="form_label">Job details</label>
                                 <div className="text_field">
-                                    <textarea placeholder="This job..." name="details" ></textarea>
+                                    <textarea placeholder="This job..." name="job_description" value={job_description} onChange={handleChange} />
                                 </div>
-                                <span className="error_msg"></span>
+                                <span className="error_msg">{errors.job_description}</span>
                             </div>
                             <div className="form_field">
-                                <button className="fill_btn full_btn">Continue</button>
+                                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
                             </div>
                         </div>
                     </div>

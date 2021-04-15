@@ -8,6 +8,7 @@ const versions = {
 const ServiceEnum = {
     auth: 'auth/',
     admin: 'admin/',
+    job: 'job/',
 }
 
 const Urls = {
@@ -17,12 +18,15 @@ const Urls = {
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
     createPassword: `${versions.v1}${ServiceEnum.auth}createPassword`,
-    tradeList: `${versions.v1}${ServiceEnum.auth}tradeList`,
+    tradeList: `${versions.v1}${ServiceEnum.auth}tradeList`, //Admin
     forgotPassword: `${versions.v1}${ServiceEnum.auth}forgot_password`,
     checkSocialId: `${versions.v1}${ServiceEnum.auth}checkSocialId`,
     SocialAuth: `${versions.v1}${ServiceEnum.auth}socialAuth`,
     upload: `${versions.v1}upload`,
     linkedInAuth: `${versions.v1}${ServiceEnum.auth}linkedInAuth`,
+    jobCategories: `${versions.v1}${ServiceEnum.auth}jobType`,
+    milestones: `${versions.v1}${ServiceEnum.job}tempMilestoneList`,
+    getSearchData: `${versions.v1}${ServiceEnum.admin}getSearchData`,
 }
 
 export const urlFor = (service: String): string => {
