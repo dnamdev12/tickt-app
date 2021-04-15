@@ -45,7 +45,7 @@ const AddQualification = (props: Propstype) => {
         const newFile = e.target.files[0]
         var fileType = newFile?.type?.split('/')[1]
         const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf", "msword", "doc", "docx"]
-        var selectedFileSize = newFile.size / 1024 / 1024;
+        var selectedFileSize = newFile?.size / 1024 / 1024;
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
             alert('The file must be in proper format or size')
             return;
