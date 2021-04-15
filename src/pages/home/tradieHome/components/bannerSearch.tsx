@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { addDays, subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
 import Carousel from 'react-multi-carousel';
 import regex from '../../../../utils/regex';
+// @ts-ignore
+import { addDays, subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
 // @ts-ignore
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
