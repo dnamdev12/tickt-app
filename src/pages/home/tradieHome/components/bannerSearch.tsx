@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
+import { addDays, subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
 import Carousel from 'react-multi-carousel';
 import regex from '../../../../utils/regex';
+// @ts-ignore
+import { DateRange } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import colorLogo from '../../../../assets/images/ic-logo-yellow.png';
 import dummy from '../../../../assets/images/u_placeholder.jpg';
@@ -22,11 +27,22 @@ const BannerSearch = (props: any) => {
         tradeId: '',
         specializationId: '',
         searchedJobId: null,
-        location: '',
+        location: {
+            coordinates: [
+            ]
+        },
+        locationName: '',
+        from_date: '',
+        to_date: '', //2021-05-02
     });
     const [inputFocus1, setInputFocus1] = useState<boolean>(false)
     const [inputFocus2, setInputFocus2] = useState<boolean>(false)
     const [inputFocus3, setInputFocus3] = useState<boolean>(false)
+
+    // const [calenderRange1, setCalenderRange1] = useState({selection1: { startDate: new Date(), endDate: new Date(), key: 'selection1'}, selection2: { startDate: addDays(new Date(),1), endDate: subDays(new Date(), 1), key: 'selection2'}});
+    const [calenderRange1, setCalenderRange1] = useState<any>({ startDate: new Date(), endDate: new Date(), key: 'selection1' });
+    const [calenderRange2, setCalenderRange2] = useState<any>({ startDate: new Date(), endDate: null, key: 'selection2' });
+
 
     useEffect(() => {
         window.addEventListener('mousedown', handleClicked)
@@ -41,6 +57,14 @@ const BannerSearch = (props: any) => {
         }
     }, [])
 
+    useEffect(() => {
+        if (calenderRange1 && inputFocus3) {
+            const startDate = format(new Date(calenderRange1.startDate), 'MMM dd')
+            const endDate = format(new Date(calenderRange1.endDate), 'MMM dd')
+            setStateData((prevData: any) => ({ ...prevData, from_date: startDate, end_date: endDate }))
+        }
+    }, [calenderRange1])
+
     const handleClicked = (event: any) => {
         if (document.getElementById("recent-job-search-div") && (!document.getElementById("text-field-div")?.contains(event.target) && !document.getElementById("recent-job-search-div")?.contains(event.target))) {
             console.log("handleClicked1")
@@ -50,7 +74,26 @@ const BannerSearch = (props: any) => {
             console.log("handleClicked2")
             setInputFocus2(false)
         }
+
+        if (document.getElementById("custom-date-range-div") && (!document.getElementById("date-range-div")?.contains(event.target) && !document.getElementById("custom-date-range-div")?.contains(event.target))) {
+            console.log("handleClicked3")
+            setInputFocus3(false)
+        }
     }
+
+    const handleCalenderRange = (item: any) => {
+        if (!isEqual(item.selection1?.startDate, item.selection1?.endDate) && isBefore(item.selection1?.startDate, item.selection1?.endDate)) {
+            var hours = differenceInHours(new Date(item.selection1?.endDate), new Date(item.selection1?.startDate));
+            if (hours >= 25) {
+                setCalenderRange2((prevData: any) => ({ ...prevData, startDate: addDays(item.selection1?.startDate, 1), endDate: subDays(item.selection1?.endDate, 1) }))
+            }
+        } else {
+            setCalenderRange2((prevData: any) => ({ ...prevData, startDate: null, endDate: null }))
+        }
+        setCalenderRange1(item.selection1)
+    };
+
+    console.log(calenderRange1, "calemderRange", calenderRange2)
 
     const checkInputValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
         const alphaRegex = new RegExp(regex.alphaSpecial)
@@ -65,7 +108,7 @@ const BannerSearch = (props: any) => {
     }
 
     const cleanInputData = (item: string) => {
-        setStateData((prevData: any) => ({ ...prevData, [item]: '', tradeId: '' }))
+        setStateData((prevData: any) => ({ ...prevData, [item]: '' }))
         // setInputFocus1(false)
     }
 
@@ -118,7 +161,7 @@ const BannerSearch = (props: any) => {
         )
     }
 
-    console.log("bannerSearch ==> ", stateData, inputFocus1)
+    console.log("bannerSearch ==> ", stateData, inputFocus1, inputFocus2, inputFocus3)
 
     return (
         <div className="home_banner">
@@ -149,11 +192,11 @@ const BannerSearch = (props: any) => {
                                 <li className="loc_box">
                                     <div className="text_field" id="location-text-field-div">
                                         <div>
-                                            <input type="text" placeholder="Where?" className="line-1" value={stateData.location} onChange={handleJobChange} onFocus={() => setInputFocus2(true)} />
+                                            <input type="text" placeholder="Where?" className="line-1" onFocus={() => setInputFocus2(true)} />
                                             <span className="detect_icon_ltr">
                                                 <img src={Location} alt="location" />
                                             </span>
-                                            {stateData.location && inputFocus2 && <span className="detect_icon" >
+                                            {stateData.locationName && inputFocus2 && <span className="detect_icon" >
                                                 <img src={cross} alt="cross" />
                                             </span>}
                                         </div>
@@ -166,12 +209,12 @@ const BannerSearch = (props: any) => {
                                                 <img src={icgps} />
                                             </span> Use my current location
                                         </button>
-                                        <span className="sub_title ">Recent searches</span>
+                                        {/* <span className="sub_title ">Recent searches</span> */}
                                         {/* <span className="blocked_note">
                                             You have blocked your location.
                                             To use this, change your location settings in browser.
                                         </span> */}
-                                        <div className="flex_row recent_search auto_loc">
+                                        {/* <div className="flex_row recent_search auto_loc">
                                             <div className="flex_col_sm_4">
                                                 <div className="autosuggestion_icon card loc">
                                                     <span >Dummy location</span>
@@ -189,14 +232,38 @@ const BannerSearch = (props: any) => {
                                                     <span className="name"> Narolgam, Ellisbridge, Ahmedabad, Gujarat 380006, India</span>
                                                 </div>
                                             </div>
-                                        </div>
+                                        </div> */}
                                     </div>
                                 }
                                 <li>
-                                    <div className="custom_date_range">
+                                    <div className="custom_date_range" id="date-range-div">
                                         <div className="text_field">
                                             <span className="detect_icon_ltr calendar"></span>
-                                            <input type="text" placeholder="When?" />
+                                            <input type="text" placeholder={stateData.from_date ? `${stateData.from_date} - ${stateData.end_date}` : "When?"} onFocus={() => setInputFocus3(true)} />
+                                            {!stateData.from_date && inputFocus3 &&
+                                                <span className="detect_icon" >
+                                                    <img src={cross} alt="cross" onClick={() => cleanInputData('searchedJob')} />
+                                                </span>}
+                                            {inputFocus3 &&
+                                                <div id="custom-date-range-div">
+                                                    <DateRange
+                                                        // onChange={(item: any) => setCalenderRange1({ ...calenderRange1, ...item})}
+                                                        // ranges={[calenderRange1]}
+                                                        // initialFocusedRange={[0,2]}
+                                                        // color="red"
+                                                        onChange={handleCalenderRange}
+                                                        ranges={calenderRange2.endDate ? [calenderRange1, calenderRange2] : [calenderRange1]}
+                                                        moveRangeOnFirstSelection={false}
+                                                        rangeColors={["#ffcd42", "#b5b5b5"]}
+                                                        showDateDisplay={false}
+                                                        showSelectionPreview={true}
+                                                        months={2}
+                                                        showPreview={true}
+                                                        minDate={new Date()}
+                                                        direction="horizontal"
+                                                        fixedHeight={true}
+                                                    />
+                                                </div>}
                                         </div>
                                     </div>
                                 </li>
