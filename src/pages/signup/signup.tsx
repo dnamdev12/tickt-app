@@ -148,7 +148,7 @@ const Signup = (props: Propstype) => {
     const renderPages = () => {
         switch (steps) {
             case 0:
-                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} />
+                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 1:
                 return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:

@@ -43,13 +43,14 @@ const AddQualification = (props: Propstype) => {
         }
         const formData = new FormData();
         const newFile = e.target.files[0]
-        formData.append('file', newFile);
-        var fileType = newFile.type.split('/')[1]
+        var fileType = newFile?.type?.split('/')[1]
         const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf", "msword", "doc", "docx"]
-        if (docTypes.indexOf(fileType) < 0 || newFile.size > 1280000) {
+        var selectedFileSize = newFile.size / 1024 / 1024;
+        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
             alert('The file must be in proper format or size')
             return;
         }
+        formData.append('file', newFile);
         const res = await onFileUpload(formData)
         if (res.success) {
             const item = newData.find(i => i.qualification_id === id)
