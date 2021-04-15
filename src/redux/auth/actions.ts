@@ -12,6 +12,7 @@ export const postSignup = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
   setLoading(false);
   if (response.status_code === 200) {
+    storageService.setItem("jwtToken", response.result.token);
     return { success: true };
   }
   setShowToast(true, response.message);
