@@ -38,17 +38,17 @@ const routes = [
         component: ForgerPassword,
         authRoute: true,
     },
-    // {
-    //     name: 'postnewjob',
-    //     path: '/post-new-job',
-    //     component: PostJob,
-    //     // authRoute: true,
-    // },
-    // {
-    //     name: 'tradiehome',
-    //     path: '/tradie',
-    //     component: TradieHome,
-    // },
+    {
+        name: 'postnewjob',
+        path: '/post-new-job',
+        component: PostJob,
+        // authRoute: true,
+    },
+    {
+        name: 'tradiehome',
+        path: '/tradie',
+        component: TradieHome,
+    },
     {
         name: 'guest',
         path: '/guest-guest',

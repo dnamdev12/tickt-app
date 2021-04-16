@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import Carousel from 'react-multi-carousel';
+import Constants from '../../../../utils/constants';
+// @ts-ignore
+import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
 import regex from '../../../../utils/regex';
 // @ts-ignore
 import { addDays, subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
@@ -25,22 +27,26 @@ import hourlyRate from "../../../assets/images/ic-clock.png";
 const BannerSearch = (props: any) => {
     const [stateData, setStateData] = useState<any>({
         searchedJob: '',
+        isSearchedJobSelected: false,
         tradeId: '',
         specializationId: '',
         searchedJobId: null,
         location: {
-            coordinates: [
-            ]
+            coordinates: []
         },
         locationName: '',
         from_date: '',
-        to_date: '', //2021-05-02
+        startDate: '',
+        to_date: '',
+        endDate: '',
     });
+    const [errors, setErrors] = useState<any>({});
     const [inputFocus1, setInputFocus1] = useState<boolean>(false)
     const [inputFocus2, setInputFocus2] = useState<boolean>(false)
     const [inputFocus3, setInputFocus3] = useState<boolean>(false)
 
-    // const [calenderRange1, setCalenderRange1] = useState({selection1: { startDate: new Date(), endDate: new Date(), key: 'selection1'}, selection2: { startDate: addDays(new Date(),1), endDate: subDays(new Date(), 1), key: 'selection2'}});
+    const [selectedMapLocation, setSelectedMapLocation] = useState<any>('')
+
     const [calenderRange1, setCalenderRange1] = useState<any>({ startDate: new Date(), endDate: new Date(), key: 'selection1' });
     const [calenderRange2, setCalenderRange2] = useState<any>({ startDate: new Date(), endDate: null, key: 'selection2' });
 
@@ -62,60 +68,65 @@ const BannerSearch = (props: any) => {
         if (calenderRange1 && inputFocus3) {
             const startDate = format(new Date(calenderRange1.startDate), 'MMM dd')
             const endDate = format(new Date(calenderRange1.endDate), 'MMM dd')
-            setStateData((prevData: any) => ({ ...prevData, from_date: startDate, end_date: endDate }))
+            const start_date = format(new Date(calenderRange1.startDate), 'yyyy-MM-dd')
+            const end_date = format(new Date(calenderRange1.endDate), 'yyyy-MM-dd')
+            setStateData((prevData: any) => ({ ...prevData, startDate: startDate, endDate: endDate }))
+            setStateData((prevData: any) => ({ ...prevData, start_date: start_date, end_date: end_date }))
         }
     }, [calenderRange1])
 
     const handleClicked = (event: any) => {
-        if (document.getElementById("recent-job-search-div") && (!document.getElementById("text-field-div")?.contains(event.target) && !document.getElementById("recent-job-search-div")?.contains(event.target))) {
-            console.log("handleClicked1")
+        if ((document.getElementById("recent-job-search-div") || document.getElementById("fetched-custom-job-category-div")) && (!document.getElementById("text-field-div")?.contains(event.target) && !document.getElementById("recent-job-search-div")?.contains(event.target))) {
             setInputFocus1(false)
         }
-        if (document.getElementById("custom-location-search-div") && (!document.getElementById("location-text-field-div")?.contains(event.target) && !document.getElementById("custom-location-search-div")?.contains(event.target))) {
-            console.log("handleClicked2")
+
+        if ((document.getElementById("current-location-search-div") || document.getElementById("autocomplete-dropdown-container")) && !document.getElementById("location-text-field-div")?.contains(event.target)) {
             setInputFocus2(false)
         }
 
         if (document.getElementById("custom-date-range-div") && (!document.getElementById("date-range-div")?.contains(event.target) && !document.getElementById("custom-date-range-div")?.contains(event.target))) {
-            console.log("handleClicked3")
             setInputFocus3(false)
         }
     }
 
     const handleCalenderRange = (item: any) => {
-        if (!isEqual(item.selection1?.startDate, item.selection1?.endDate) && isBefore(item.selection1?.startDate, item.selection1?.endDate)) {
-            var hours = differenceInHours(new Date(item.selection1?.endDate), new Date(item.selection1?.startDate));
-            if (hours >= 25) {
-                setCalenderRange2((prevData: any) => ({ ...prevData, startDate: addDays(item.selection1?.startDate, 1), endDate: subDays(item.selection1?.endDate, 1) }))
-            }
-        } else {
-            setCalenderRange2((prevData: any) => ({ ...prevData, startDate: null, endDate: null }))
-        }
+        // if (!isEqual(item.selection1?.startDate, item.selection1?.endDate) && isBefore(item.selection1?.startDate, item.selection1?.endDate)) {
+        //     var hours = differenceInHours(new Date(item.selection1?.endDate), new Date(item.selection1?.startDate));
+        //     if (hours >= 25) {
+        //         setCalenderRange2((prevData: any) => ({ ...prevData, startDate: addDays(item.selection1?.startDate, 1), endDate: subDays(item.selection1?.endDate, 1) }))
+        //     }
+        // } else {
+        //     setCalenderRange2((prevData: any) => ({ ...prevData, startDate: null, endDate: null }))
+        // }
         setCalenderRange1(item.selection1)
     };
 
-    console.log(calenderRange1, "calemderRange", calenderRange2)
+    console.log(calenderRange1, "calemderRange", stateData, "stateData")
 
-    const checkInputValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const checkInputValidation = (e: any) => {
         const alphaRegex = new RegExp(regex.alphaSpecial)
         return alphaRegex.test(e.target.value)
     }
 
-    const handleJobChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleJobChange = (e: any) => {
         if (checkInputValidation(e)) {
-            e.target.value.length > 0 && props.getSearchJobList(e.target.value)
+            e.target.value.length >= 1 && props.getSearchJobList(e.target.value)
             setStateData((prevData: any) => ({ ...prevData, searchedJob: e.target.value }))
         }
     }
 
     const cleanInputData = (item: string) => {
+        if (item === "calender") {
+            setStateData((prevData: any) => ({ ...prevData, start_date: '', end_date: '', startDate: '', endDate: '' }))
+            return;
+        }
         setStateData((prevData: any) => ({ ...prevData, [item]: '' }))
-        // setInputFocus1(false)
+        console.log("clean handler")
     }
 
     const searchedJobClicked = (item: any) => {
         console.log(item, "item recent")
-        setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: item._id, specializationId: item.specializationsId }));
+        setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: item._id, specializationId: item.specializationsId, isSearchedJobSelected: true }));
         setInputFocus1(false);
     }
 
@@ -145,7 +156,7 @@ const BannerSearch = (props: any) => {
     const renderJobResult = () => {
         console.log(props.searchJobListData, "props.searchJobListData")
         return (
-            props.searchJobListData?.length ? <div className="custom_autosuggestion">
+            props.searchJobListData?.length ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
                 <div className="flex_col recent_search">
                     {props.searchJobListData?.map((item: any) => {
                         return (
@@ -158,11 +169,54 @@ const BannerSearch = (props: any) => {
                         )
                     })}
                 </div>
-            </div> : <p>No Result Found!</p>
+            </div> : <div className="custom_autosuggestion">
+                <span>No Result Found!</span>
+            </div>
         )
     }
 
     console.log("bannerSearch ==> ", stateData, inputFocus1, inputFocus2, inputFocus3)
+    console.log("locationSelectHandler", selectedMapLocation)
+
+    const locationSelectedHandler = (address: string) => {
+        console.log("locationSelectedHandler", address, typeof address)
+        setSelectedMapLocation(address);
+        setInputFocus2(false);
+        document.getElementById("location-input-tag")?.blur();
+        geocodeByAddress(address)
+            .then((results: any) => getLatLng(results[0]))
+            .then((latLng: any) => console.log('Success', latLng))
+            .catch((error: any) => console.error('Error', error));
+    }
+
+    const getCurrentLocation = (e: any) => {
+        e.preventDefault();
+        navigator.geolocation.getCurrentPosition(function (position) {
+            console.log("Latitude is :", position.coords.latitude);
+            console.log("Longitude is :", position.coords.longitude);
+        });
+    }
+
+    const onError = (status: string, clearSuggestions: Function) => {
+        console.log('Google Maps API returned error with status: ', status)
+        clearSuggestions();
+    }
+
+    const validateForm = () => {
+        const newErrors: any = {};
+        if (stateData.isSearchedJobSelected) {
+            return true;
+        } else if (!stateData.searchedJob) {
+            newErrors.searchedJob = Constants.errorStrings.bannerSearchJobEmpty;
+        } else {
+            const searchJobRegex = new RegExp(regex.alphaSpecial);
+            if (!searchJobRegex.test(stateData.searchedJob.trim())) {
+                newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
+            }
+        }
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
+    }
 
     return (
         <div className="home_banner">
@@ -177,7 +231,7 @@ const BannerSearch = (props: any) => {
                             <ul>
                                 <li className="categ_box">
                                     <div className="text_field" id="text-field-div">
-                                        <input type="text" placeholder="What jobs are you after?" value={stateData.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} />
+                                        <input type="text" placeholder="What jobs are you after?" value={stateData.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} onBlur={validateForm} />
                                         <div className="border_eff"></div>
                                         <span className="detect_icon_ltr">
                                             <img src={Searchicon} alt="search" />
@@ -187,63 +241,88 @@ const BannerSearch = (props: any) => {
                                                 <img src={cross} alt="cross" onClick={() => cleanInputData('searchedJob')} />
                                             </span>}
                                     </div>
+                                    {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>}
                                 </li>
                                 {!stateData.searchedJob && inputFocus1 && recentJobSearches()}
-                                {stateData.searchedJob && inputFocus1 && renderJobResult()}
+                                {stateData.searchedJob.length >= 1 && inputFocus1 && renderJobResult()}
                                 <li className="loc_box">
                                     <div className="text_field" id="location-text-field-div">
-                                        <div>
-                                            <input type="text" placeholder="Where?" className="line-1" onFocus={() => setInputFocus2(true)} />
-                                            <span className="detect_icon_ltr">
-                                                <img src={Location} alt="location" />
-                                            </span>
-                                            {stateData.locationName && inputFocus2 && <span className="detect_icon" >
-                                                <img src={cross} alt="cross" />
-                                            </span>}
-                                        </div>
+                                        {/* <input type="text" placeholder="Where?" className="line-1" onFocus={() => setInputFocus2(true)} /> */}
+                                        <PlacesAutocomplete
+                                            value={selectedMapLocation}
+                                            onChange={(city: any) => setSelectedMapLocation(city)}
+                                            onSelect={locationSelectedHandler}
+                                            highlightFirstSuggestion={true}
+                                            // searchOptions={{ types: ['(cities)'] }}
+                                            onError={onError}
+                                            debounce={400}
+                                        >
+                                            {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
+                                                <div>
+                                                    <input
+                                                        {...getInputProps({
+                                                            placeholder: 'Where?',
+                                                            className: 'line-1',
+                                                        })}
+                                                        onFocus={() => setInputFocus2(true)}
+                                                        id="location-input-tag"
+                                                    />
+                                                    <span className="detect_icon_ltr">
+                                                        <img src={Location} alt="location" />
+                                                    </span>
+                                                    {selectedMapLocation && inputFocus2 && <span className="detect_icon" >
+                                                        <img src={cross} alt="cross" onClick={() => setSelectedMapLocation('')} />
+                                                    </span>}
+                                                    {/* <div className="autocomplete-dropdown-container" id="autocomplete-dropdown-container"> */}
+                                                    <div className="flex_row recent_search auto_loc" id="autocomplete-dropdown-container">
+                                                        {loading && <div>Loading...</div>}
+                                                        {suggestions.map((suggestion: any) => {
+                                                            // const className = suggestion.active
+                                                            //     ? 'suggestion-item--active'
+                                                            //     : 'autosuggestion_icon card loc';
+                                                            const className = 'autosuggestion_icon card loc';
+                                                            // inline style
+                                                            const style = suggestion.active
+                                                                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                                : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                            return (
+                                                                <div
+                                                                    {...getSuggestionItemProps(suggestion, {
+                                                                        className,
+                                                                        style,
+                                                                    })}
+                                                                >
+                                                                    <span>{suggestion.description}</span>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </PlacesAutocomplete>
                                     </div>
                                 </li>
-                                {inputFocus2 &&
-                                    <div className="custom_autosuggestion location" id="custom-location-search-div">
-                                        <button className="location-btn">
+                                {!selectedMapLocation && inputFocus2 &&
+                                    <div className="custom_autosuggestion location" id="current-location-search-div">
+                                        <a className="location-btn" onClick={getCurrentLocation}>
                                             <span className="gps_icon">
                                                 <img src={icgps} />
                                             </span> Use my current location
-                                        </button>
-                                        {/* <span className="sub_title ">Recent searches</span> */}
+                                        </a>
                                         {/* <span className="blocked_note">
                                             You have blocked your location.
                                             To use this, change your location settings in browser.
                                         </span> */}
-                                        {/* <div className="flex_row recent_search auto_loc">
-                                            <div className="flex_col_sm_4">
-                                                <div className="autosuggestion_icon card loc">
-                                                    <span >Dummy location</span>
-                                                    <span className="name">Noida, Uttar Pradesh, India</span></div></div>
-
-                                            <div className="flex_col_sm_4">
-                                                <div className="autosuggestion_icon card loc">
-                                                    <span >Unnamed Road</span>
-                                                    <span className="name"> Bichua, Madhya Pradesh 487001, India</span>
-                                                </div>
-                                            </div>
-                                            <div className="flex_col_sm_4">
-                                                <div className="autosuggestion_icon card loc">
-                                                    <span >4 shantanu banlows rajpath club ni same</span>
-                                                    <span className="name"> Narolgam, Ellisbridge, Ahmedabad, Gujarat 380006, India</span>
-                                                </div>
-                                            </div>
-                                        </div> */}
                                     </div>
                                 }
                                 <li>
                                     <div className="custom_date_range" id="date-range-div">
                                         <div className="text_field">
                                             <span className="detect_icon_ltr calendar"></span>
-                                            <input type="text" placeholder={stateData.from_date ? `${stateData.from_date} - ${stateData.end_date}` : "When?"} onFocus={() => setInputFocus3(true)} />
-                                            {!stateData.from_date && inputFocus3 &&
+                                            <input type="text" placeholder={stateData.startDate ? `${stateData.startDate} - ${stateData.endDate}` : "When?"} onFocus={() => setInputFocus3(true)} />
+                                            {stateData.startDate && inputFocus3 &&
                                                 <span className="detect_icon" >
-                                                    <img src={cross} alt="cross" onClick={() => cleanInputData('searchedJob')} />
+                                                    <img src={cross} alt="cross" onClick={() => cleanInputData('calender')} />
                                                 </span>}
                                             {inputFocus3 &&
                                                 <div id="custom-date-range-div">
@@ -253,7 +332,8 @@ const BannerSearch = (props: any) => {
                                                         // initialFocusedRange={[0,2]}
                                                         // color="red"
                                                         onChange={handleCalenderRange}
-                                                        ranges={calenderRange2.endDate ? [calenderRange1, calenderRange2] : [calenderRange1]}
+                                                        // ranges={calenderRange2.endDate ? [calenderRange1, calenderRange2] : [calenderRange1]}
+                                                        ranges={[calenderRange1]}
                                                         moveRangeOnFirstSelection={false}
                                                         rangeColors={["#ffcd42", "#b5b5b5"]}
                                                         showDateDisplay={false}
@@ -283,7 +363,7 @@ const BannerSearch = (props: any) => {
                     </div>
                 </div>
             </figure>
-        </div>
+        </div >
     )
 }
 
