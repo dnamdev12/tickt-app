@@ -4,7 +4,7 @@ import NotFound from '../pages/notFound/notFound';
 import Signup from '../pages/signup';
 import ForgerPassword from '../pages/forgetPassword/forgetPassword';
 import PostJob from '../pages/postJob';
-import TradieHome from '../pages/home/tradieHome/tradieHome';
+import TradieHome from '../pages/home/tradieHome';
 import Guest from '../pages/home/guestLogin';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
@@ -38,20 +38,20 @@ const routes = [
         component: ForgerPassword,
         authRoute: true,
     },
-    {
-        name: 'postnewjob',
-        path: '/post-new-job',
-        component: PostJob,
-        // authRoute: true,
-    },
-    {
-        name: 'tradiehome',
-        path: '/tradie',
-        component: TradieHome,
-    },
+    // {
+    //     name: 'postnewjob',
+    //     path: '/post-new-job',
+    //     component: PostJob,
+    //     // authRoute: true,
+    // },
+    // {
+    //     name: 'tradiehome',
+    //     path: '/tradie',
+    //     component: TradieHome,
+    // },
     {
         name: 'guest',
-        path: '/guest',
+        path: '/guest-guest',
         component: Guest,
     },
     {

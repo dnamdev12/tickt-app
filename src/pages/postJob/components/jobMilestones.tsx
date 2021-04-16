@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+// @ts-ignore
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
@@ -113,7 +114,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
             </header>
             {/* Header close */}
 
-            <div className="section_wrapper">
+            {/* <div className="section_wrapper">
                 <div className="custom_container">
                     <div className="form_field">
                         <div className="flex_row f_reverse">
@@ -125,7 +126,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                             </div>
                             <div className="flex_col_sm_7 text-right">
                                 <a href="javascript:void(0)" className="link">Save as template</a>
-                                </div>
+                            </div>
                         </div>
                     </div>
                     <div className="flex_row">
@@ -134,8 +135,8 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                                 <Droppable droppableId="milestones">
                                     {(provided, snapshot) => (
                                         <ul
-                                          ref={provided.innerRef}
-                                          className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}
+                                            ref={provided.innerRef}
+                                            className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}
                                         >
                                             {milestones.map(({ _id, name }: { _id: string, name: string }, index) => (
                                                 <Draggable
@@ -143,15 +144,15 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                                                     draggableId={_id}
                                                     index={index}
                                                 >
-                                                    {(provided, snapshot) => (
+                                                    {(provided: any, snapshot: any) => (
                                                         <li
-                                                          key={_id}
-                                                          ref={provided.innerRef}
-                                                          {...provided.draggableProps}
-                                                          {...provided.dragHandleProps}
-                                                          style={{
-                                                            ...provided.draggableProps.style,
-                                                          }}
+                                                            key={_id}
+                                                            ref={provided.innerRef}
+                                                            {...provided.draggableProps}
+                                                            {...provided.dragHandleProps}
+                                                            style={{
+                                                                ...provided.draggableProps.style,
+                                                            }}
                                                         >
                                                             <div className="edit_delete">
                                                                 <span className="edit"></span>
@@ -183,7 +184,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
 
 
             {/* Job detail */}

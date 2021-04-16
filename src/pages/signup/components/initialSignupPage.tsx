@@ -1,10 +1,11 @@
 import storageService from '../../../utils/storageService';
 
 interface Propstype {
-    updateSteps: (num: number, data: any) => void
-    step: number
-    history: any
-    showModal: boolean
+    updateSteps: (num: number, data: any) => void,
+    step: number,
+    history: any,
+    showModal: boolean,
+    modalUpdateSteps: (data: any) => void,
 }
 
 const InitialSignupPage = (props: Propstype) => {
@@ -28,10 +29,10 @@ const InitialSignupPage = (props: Propstype) => {
 
     const phoneViewHandler = (e: any) => {
         e.preventDefault();
-        // if(props.showModal){
-        //     props.modalUpdateSteps(0)
-        //     return;
-        // }
+        if (props.showModal) {
+            props.modalUpdateSteps(0)
+            return;
+        }
         props.history.push('/login')
     }
 
@@ -43,8 +44,8 @@ const InitialSignupPage = (props: Propstype) => {
             {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>}
 
             <div className="form_field hide text-center">
-                    <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Login</a></span>
-                </div>
+                <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Login</a></span>
+            </div>
         </div>
     )
 }

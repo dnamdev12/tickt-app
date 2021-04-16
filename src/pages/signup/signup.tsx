@@ -68,6 +68,9 @@ const Signup = (props: Propstype) => {
         if (steps === 2 && (props.socialData || props.history.location.redirect === "socialRedirectFromLogin")) {
             minStep = 2
         }
+        if (steps === 5 && signupData.socialId) {
+            minStep = 3
+        }
         setSteps(steps - minStep);
     }
 
@@ -85,6 +88,9 @@ const Signup = (props: Propstype) => {
             newStep += 1;
         }
         if (newStep == 1 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
+            newStep += 1;
+        }
+        if (newStep === 4 && signupData.socialId) {
             newStep += 1;
         }
         setSteps(newStep);
@@ -121,6 +127,7 @@ const Signup = (props: Propstype) => {
             delete data.qualification
         }
         if (signupData.accountType) {
+            delete data.password;
             res = await socialSignupLogin(data);
         } else {
             delete data.socialId;
@@ -141,7 +148,7 @@ const Signup = (props: Propstype) => {
     const renderPages = () => {
         switch (steps) {
             case 0:
-                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} />
+                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 1:
                 return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:
@@ -177,7 +184,7 @@ const Signup = (props: Propstype) => {
     const isSuccess = signupData.user_type === 2 ? steps === 8 : steps === 9;
 
     return !isSuccess ? (
-        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps}>{renderPages()}</AuthParent>
+        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} >{renderPages()}</AuthParent>
     ) : renderPages()
 }
 

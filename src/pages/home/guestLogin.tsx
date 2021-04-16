@@ -5,8 +5,7 @@ const GuestLogin = () => {
         throw new Error("Guest error")
     }
     return (
-        <div>
-            Guest Login
+        <div className="app_wrapper">
             <button onClick={onClick}>Guest Button</button>
             {/* Under construction */}
             {/* <div className="custom_container">

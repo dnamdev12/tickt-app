@@ -35,7 +35,7 @@ interface Proptypes {
 
 const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
   const [categoriesData, setCategoriesData] = useState([]);
-  const [step, setStep] = useState(6);
+  const [step, setStep] = useState(5);
   const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
   const [data, setData] = useState({});
 
