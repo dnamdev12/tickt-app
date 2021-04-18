@@ -9,7 +9,6 @@ function* getSearchJobList(action: any) {
     // commonActions.setLoading(true);
     const response: FetchResponse = yield NetworkOps.get(Urls.getSearchData + `?search_text=${action.searchJob}`);
     // commonActions.setLoading(false);
-    console.log(response)
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_SEARCH_JOB_LIST, payload: response.result });
     } else {
@@ -17,8 +16,18 @@ function* getSearchJobList(action: any) {
     }
 }
 
+function* getJobTypeList() {
+    const response: FetchResponse = yield NetworkOps.get(Urls.jobTypeList)
+    if (response.status_code === 200) {
+        yield put({ type: actionTypes.SET_JOB_TYPE_LIST, payload: response.result.resultData });
+    } else {
+        yield put({ type: actionTypes.SET_JOB_TYPE_LIST, payload: [] });
+    }
+}
+
 function* authWatcher() {
     yield takeLatest(actionTypes.GET_SEARCH_JOB_LIST, getSearchJobList);
+    yield takeLatest(actionTypes.GET_JOB_TYPE_LIST, getJobTypeList);
 }
 
 export default authWatcher;

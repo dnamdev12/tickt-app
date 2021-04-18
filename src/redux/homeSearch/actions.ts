@@ -6,3 +6,4 @@ import storageService from '../../utils/storageService';
 
 
 export const getSearchJobList = (searchJob: string) => ({ type: actionTypes.GET_SEARCH_JOB_LIST, searchJob })
+export const getJobTypeList = () => ({ type: actionTypes.GET_JOB_TYPE_LIST})

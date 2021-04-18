@@ -83,6 +83,39 @@ const Home = (props: any) => {
                                                 </span>
                                             </div>
                                         </div>
+                                        {<div className="custom_autosuggestion location">
+                                            <button className="location-btn">
+                                                <span className="gps_icon">
+                                                    {/* <img src={icgps} /> */}
+                                                </span> Use my current location
+                                             </button>
+                                            <span className="sub_title ">Recent searches</span>
+                                            <span className="blocked_note">
+                                                You have blocked your location.
+                                                To use this, change your location settings in browser.
+                                              </span>
+                                            <div className="flex_row recent_search auto_loc">
+                                                <div className="flex_col_sm_4">
+                                                    <div className="autosuggestion_icon card loc">
+                                                        <span >Dummy location</span>
+                                                        <span className="name">Noida, Uttar Pradesh, India</span>
+                                                    </div>
+                                                </div>
+
+                                                <div className="flex_col_sm_4">
+                                                    <div className="autosuggestion_icon card loc">
+                                                        <span >Unnamed Road</span>
+                                                        <span className="name"> Bichua, Madhya Pradesh 487001, India</span>
+                                                    </div>
+                                                </div>
+                                                <div className="flex_col_sm_4">
+                                                    <div className="autosuggestion_icon card loc">
+                                                        <span >4 shantanu banlows rajpath club ni same</span>
+                                                        <span className="name"> Narolgam, Ellisbridge, Ahmedabad, Gujarat 380006, India</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>}
                                     </li>
                                     <li>
                                         <div className="custom_date_range">
@@ -101,7 +134,7 @@ const Home = (props: any) => {
                             </form>
 
                             {/* Category recent search */}
-                            <div className="custom_autosuggestion">
+                            {/* <div className="custom_autosuggestion">
                                 <span className="sub_title">Recent searches</span>
 
                                 <div className="flex_row recent_search">
@@ -148,10 +181,8 @@ const Home = (props: any) => {
                                         </div>
                                     </li>
                                 </ul>
-
-
-
-                                {/* <span className="sub_title">Categories</span>
+                            </div> */}
+                            {/* <span className="sub_title">Categories</span>
                                 <div className="searched_categories">
                                     <ul className="categories">
                                         <li>
@@ -201,7 +232,6 @@ const Home = (props: any) => {
                                     </ul>
 
                                 </div> */}
-                            </div>
                             {/* Category recent search close*/}
 
                             {/* Location recent search */}

@@ -169,9 +169,12 @@ const BannerSearch = (props: any) => {
                         )
                     })}
                 </div>
-            </div> : <div className="custom_autosuggestion">
-                <span>No Result Found!</span>
-            </div>
+            </div> : (<div className="custom_autosuggestion">
+                <span className="error_msg">Please select job type from the list</span>
+            </div>)
+            // (inputFocus1 ? <div className="custom_autosuggestion">
+            //     <span>No Result Found!</span>
+            // </div> : null)
         )
     }
 
@@ -204,8 +207,8 @@ const BannerSearch = (props: any) => {
 
     const validateForm = () => {
         const newErrors: any = {};
-        if (stateData.isSearchedJobSelected) {
-            return true;
+        if (!stateData.isSearchedJobSelected) {
+            newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
         } else if (!stateData.searchedJob) {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJobEmpty;
         } else {
@@ -231,7 +234,7 @@ const BannerSearch = (props: any) => {
                             <ul>
                                 <li className="categ_box">
                                     <div className="text_field" id="text-field-div">
-                                        <input type="text" placeholder="What jobs are you after?" value={stateData.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} onBlur={validateForm} />
+                                        <input type="text" placeholder="What jobs are you after?" value={stateData.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} />
                                         <div className="border_eff"></div>
                                         <span className="detect_icon_ltr">
                                             <img src={Searchicon} alt="search" />
@@ -246,11 +249,11 @@ const BannerSearch = (props: any) => {
                                 {!stateData.searchedJob && inputFocus1 && recentJobSearches()}
                                 {stateData.searchedJob.length >= 1 && inputFocus1 && renderJobResult()}
                                 <li className="loc_box">
-                                    <div className="text_field" id="location-text-field-div">
-                                        {/* <input type="text" placeholder="Where?" className="line-1" onFocus={() => setInputFocus2(true)} /> */}
+                                    <div id="location-text-field-div">
                                         <PlacesAutocomplete
                                             value={selectedMapLocation}
-                                            onChange={(city: any) => setSelectedMapLocation(city)}
+                                            onChange={(city: string) => setSelectedMapLocation(city)}
+                                            shouldFetchSuggestions={true}
                                             onSelect={locationSelectedHandler}
                                             highlightFirstSuggestion={true}
                                             // searchOptions={{ types: ['(cities)'] }}
@@ -259,44 +262,41 @@ const BannerSearch = (props: any) => {
                                         >
                                             {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
                                                 <div>
-                                                    <input
-                                                        {...getInputProps({
-                                                            placeholder: 'Where?',
-                                                            className: 'line-1',
-                                                        })}
-                                                        onFocus={() => setInputFocus2(true)}
-                                                        id="location-input-tag"
-                                                    />
-                                                    <span className="detect_icon_ltr">
-                                                        <img src={Location} alt="location" />
-                                                    </span>
-                                                    {selectedMapLocation && inputFocus2 && <span className="detect_icon" >
-                                                        <img src={cross} alt="cross" onClick={() => setSelectedMapLocation('')} />
-                                                    </span>}
-                                                    {/* <div className="autocomplete-dropdown-container" id="autocomplete-dropdown-container"> */}
-                                                    <div className="flex_row recent_search auto_loc" id="autocomplete-dropdown-container">
-                                                        {loading && <div>Loading...</div>}
-                                                        {suggestions.map((suggestion: any) => {
-                                                            // const className = suggestion.active
-                                                            //     ? 'suggestion-item--active'
-                                                            //     : 'autosuggestion_icon card loc';
-                                                            const className = 'autosuggestion_icon card loc';
-                                                            // inline style
-                                                            const style = suggestion.active
-                                                                ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                                                                : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                                                            return (
-                                                                <div
-                                                                    {...getSuggestionItemProps(suggestion, {
-                                                                        className,
-                                                                        style,
-                                                                    })}
-                                                                >
-                                                                    <span>{suggestion.description}</span>
-                                                                </div>
-                                                            );
-                                                        })}
+                                                    <div className="text_field">
+                                                        <input {...getInputProps({ placeholder: 'Where?', className: 'line-1' })} id="location-input-tag" onFocus={() => setInputFocus2(true)} />
+                                                        <span className="detect_icon_ltr">
+                                                            <img src={Location} alt="location" />
+                                                        </span>
+                                                        {selectedMapLocation && inputFocus2 && <span className="detect_icon" >
+                                                            <img src={cross} alt="cross" onClick={() => setSelectedMapLocation('')} />
+                                                        </span>}
                                                     </div>
+                                                    {suggestions.length > 0 && selectedMapLocation && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                        <div className="flex_row recent_search auto_loc">
+                                                            <div className="flex_col_sm_4">
+                                                                {loading && <div>Loading...</div>}
+                                                                {suggestions.map((suggestion: any) => {
+                                                                    const className = 'autosuggestion_icon card loc name';
+                                                                    const style = suggestion.active
+                                                                        ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                                                                        : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                                                                    return (
+                                                                        <div
+                                                                            {...getSuggestionItemProps(suggestion, {
+                                                                                className,
+                                                                                style,
+                                                                            })}
+                                                                        >
+                                                                            {/* <span>{suggestion.description}</span> */}
+                                                                            <span>{suggestion.formattedSuggestion.mainText}</span>
+                                                                            <span className="name">{suggestion.formattedSuggestion.secondaryText}</span>
+                                                                            {console.log(suggestion, "map suggestion")}
+                                                                        </div>
+                                                                    );
+                                                                })}
+                                                            </div>
+                                                        </div>
+                                                    </div>}
                                                 </div>
                                             )}
                                         </PlacesAutocomplete>
@@ -309,10 +309,6 @@ const BannerSearch = (props: any) => {
                                                 <img src={icgps} />
                                             </span> Use my current location
                                         </a>
-                                        {/* <span className="blocked_note">
-                                            You have blocked your location.
-                                            To use this, change your location settings in browser.
-                                        </span> */}
                                     </div>
                                 }
                                 <li>
@@ -324,32 +320,32 @@ const BannerSearch = (props: any) => {
                                                 <span className="detect_icon" >
                                                     <img src={cross} alt="cross" onClick={() => cleanInputData('calender')} />
                                                 </span>}
-                                            {inputFocus3 &&
-                                                <div id="custom-date-range-div">
-                                                    <DateRange
-                                                        // onChange={(item: any) => setCalenderRange1({ ...calenderRange1, ...item})}
-                                                        // ranges={[calenderRange1]}
-                                                        // initialFocusedRange={[0,2]}
-                                                        // color="red"
-                                                        onChange={handleCalenderRange}
-                                                        // ranges={calenderRange2.endDate ? [calenderRange1, calenderRange2] : [calenderRange1]}
-                                                        ranges={[calenderRange1]}
-                                                        moveRangeOnFirstSelection={false}
-                                                        rangeColors={["#ffcd42", "#b5b5b5"]}
-                                                        showDateDisplay={false}
-                                                        showSelectionPreview={true}
-                                                        months={2}
-                                                        showPreview={true}
-                                                        minDate={new Date()}
-                                                        direction="horizontal"
-                                                        fixedHeight={true}
-                                                    />
-                                                </div>}
                                         </div>
+                                        {inputFocus3 &&
+                                            <div className="custom_autosuggestion" id="custom-date-range-div">
+                                                <DateRange
+                                                    // onChange={(item: any) => setCalenderRange1({ ...calenderRange1, ...item})}
+                                                    // ranges={[calenderRange1]}
+                                                    // initialFocusedRange={[0,2]}
+                                                    // color="red"
+                                                    onChange={handleCalenderRange}
+                                                    // ranges={calenderRange2.endDate ? [calenderRange1, calenderRange2] : [calenderRange1]}
+                                                    ranges={[calenderRange1]}
+                                                    moveRangeOnFirstSelection={false}
+                                                    rangeColors={["#ffcd42", "#b5b5b5"]}
+                                                    showDateDisplay={false}
+                                                    showSelectionPreview={true}
+                                                    months={2}
+                                                    showPreview={true}
+                                                    minDate={new Date()}
+                                                    direction="horizontal"
+                                                    fixedHeight={true}
+                                                />
+                                            </div>}
                                     </div>
                                 </li>
                                 <div className="search_btn">
-                                    <button type="button" className="fill_btn">
+                                    <button type="button" className="fill_btn" onClick={validateForm}>
                                         <img src={search} alt="search" />
                                     </button>
                                 </div>
