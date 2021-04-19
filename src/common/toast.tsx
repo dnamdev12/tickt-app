@@ -1,7 +1,7 @@
-import {useEffect} from 'react';
+import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import close from '../assets/images/cancel.png';
-import {setShowToast} from '../redux/common/actions';
+import { setShowToast } from '../redux/common/actions';
 
 export const TYPES = {
     success: 'success',
@@ -14,23 +14,64 @@ export const TYPES = {
 const TOAST_TIMEOUT = 2000;
 
 const Toast = (props: any) => {
+    const [isOnline, setNetwork] = useState(window.navigator.onLine);
 
-    const hideToast = () => {
-        setShowToast(false);
-    }
+    useEffect(() => {
+        window.addEventListener("offline", handleConnectionChange);
+        window.addEventListener("online", handleConnectionChange);
+        return () => {
+            window.removeEventListener("offline", handleConnectionChange);
+            window.removeEventListener("online", handleConnectionChange);
+        };
+    }, []);
+
+
 
     useEffect(() => {
         setTimeout(() => hideToast(), TOAST_TIMEOUT)
     }, [props.showToast]);
 
+
+    const handleConnectionChange = () => {
+        const condition = navigator.onLine ? 'online' : 'offline';
+        if (condition === 'online') {
+            const webPing = setInterval(
+                () => {
+                    fetch('//google.com', {
+                        mode: 'no-cors',
+                    })
+                        .then(() => {
+                            setNetwork(true);
+                            (() => {
+                                return clearInterval(webPing)
+                            })();
+                        }).catch(() => setNetwork(false))
+                }, 2000);
+            return;
+        }
+        // setShowToast(true, "Please check you internet connection");
+        return setNetwork(false);
+    }
+
+    const hideToast = () => {
+        setShowToast(false);
+    }
+
+    const renderToast = () => {
+        if (!isOnline) {
+            return "Please check you internet connection";
+        }
+        return props.toastMessage;
+    }
+
     return !!props.showToast ? (
-        <div className={`body-message active ${props.toastType}`}> 
+        <div className={`body-message active ${props.toastType}`}>
             <span className="cross-icon" >
-                <img src={close} alt="close"  onClick={hideToast}/>
+                <img src={close} alt="close" onClick={hideToast} />
             </span>
             <div className="wrapppr">
-            <p className="commn_para">{props.toastMessage === "Failed to fetch" ? "Please check you internet connection" : props.toastMessage}</p>
-            <button className="fill_btn"  onClick={hideToast}>Close</button>
+                <p className="commn_para">{renderToast()}</p>
+                <button className="fill_btn" onClick={hideToast}>Close</button>
             </div>
         </div>
     ) : null;
@@ -48,5 +89,5 @@ const mapStateToProps = (state: any) => {
         toastMessage: state.common.toastMessage,
     }
 }
-  
+
 export default connect(mapStateToProps)(Toast);
