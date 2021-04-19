@@ -15,7 +15,14 @@ const PhoneNumber = (props: Propstype) => {
     const [mobileNumber, setMobileNumber] = useState<any>(props.mobileNumber)
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.value.length < 10) {
+        const inputVal = e.target.value;
+        const key = inputVal.charCodeAt(inputVal.length - 1)
+        if ((key == NaN || inputVal == "") && mobileNumber.length === 1) {
+            setMobileNumber('');
+            return;
+        }
+        if ((key > 47 && key < 58) || key === 8) {
+            e.preventDefault();
             setMobileNumber(e.target.value)
         }
     }
@@ -25,8 +32,8 @@ const PhoneNumber = (props: Propstype) => {
         if (!mobileNumber) {
             newErrors.mobileNumber = Constants.errorStrings.phoneNumberEmpty;
         } else {
-            const nameRegex = new RegExp(regex.mobile);
-            if (!nameRegex.test(mobileNumber)) {
+            const phoneRegex = new RegExp(regex.mobile);
+            if (!phoneRegex.test(mobileNumber)) {
                 newErrors.mobileNumber = Constants.errorStrings.phoneNumberErr
             }
         }
@@ -51,7 +58,7 @@ const PhoneNumber = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Phone number</label>
                     <div className="text_field">
-                        <input type="number" className="detect_input_ltr" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={10} />
+                        <input type="text" className="detect_input_ltr" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={9} />
                         <span className="detect_icon_ltr">+61</span>
                     </div>
                     {!!errors.mobileNumber && <span className="error_msg">{errors.mobileNumber}</span>}
