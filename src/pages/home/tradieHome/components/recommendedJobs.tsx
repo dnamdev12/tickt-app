@@ -15,7 +15,7 @@ const RecommendedJobs = () => {
                                 </figure>
                                 <div className="details">
                                     <span className="name">Electrician</span>
-                                    <span className="name">Wire up circuit box</span>
+                                    <span className="prof">Wire up circuit box</span>
                                 </div>
                             </div>
                             <div className="job_info">
@@ -42,7 +42,7 @@ const RecommendedJobs = () => {
                                 </figure>
                                 <div className="details">
                                     <span className="name">Electrician</span>
-                                    <span className="name">Wire up circuit box</span>
+                                    <span className="prof">Wire up circuit box</span>
                                 </div>
                             </div>
                             <div className="job_info">

@@ -158,29 +158,23 @@ const BannerSearch = (props: any) => {
         return (
             props.searchJobListData?.length ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
                 <div className="recent_search">
-                <ul className="drop_data">
-                    {props.searchJobListData?.map((item: any) => {
-                        return (
-                           
+                    <ul className="drop_data">
+                        {props.searchJobListData?.map((item: any) => {
+                            return (
 
-                               
-                                    <li  onClick={() => searchedJobClicked(item)}>
-                                        <figure className="category">
-                                            <img src={ residential } alt="icon" />
-                                        </figure>
-                                        <div className="details">
-                                            <span className="name">{item.name}</span>
-                                            <span className="prof">{item.trade_name}</span>
-                                        </div>
-                                    </li>
-                               
+                                <li onClick={() => searchedJobClicked(item)}>
+                                    <figure className="category">
+                                        <img src={residential} alt="icon" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">{item.name}</span>
+                                        <span className="prof">{item.trade_name}</span>
+                                    </div>
+                                </li>
 
-
-
-                              
-                        )
-                    })}
-                     </ul>
+                            )
+                        })}
+                    </ul>
                 </div>
             </div> : (<div className="custom_autosuggestion">
                 <span className="error_msg">Please select job type from the list</span>
