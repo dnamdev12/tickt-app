@@ -1148,9 +1148,21 @@ body {
 			width: 100%;
 		}
 	}
+	.flex_col_sm_4 {
+		@media (max-width: 768px) {
+			width: 100%;
+		}
+	}
 	.back{
 		top: -30px;
 		cursor: pointer;	
+	}
+	.tags_wrap{
+		ul{
+			@media (max-width: 768px) {
+				margin: 0 0 15px;
+			}
+		}
 	}
 	.vid_img_thumb {
 		position: relative;
@@ -1187,6 +1199,9 @@ body {
 		padding: 0 0 0 10px;
 		position: absolute;
 		bottom: 0;
+		@media(max-width: 768px){
+			position: initial;
+		}
 		.job_info{
 			ul{
 				justify-content: initial;
@@ -1887,6 +1902,9 @@ body {
 				font-size: 18px;
 				text-align: center;
 				line-height: 1.33;
+				@media (max-width: 650px) {
+					font-size: 14px;
+				}
 			}
 		}
 		.full_btn {
@@ -2576,6 +2594,9 @@ body {
 		width: 100%;
 		margin-bottom: 20px;
 	}
+	@media (max-width: 650px) {
+		margin-bottom: 10px;
+	}
 	.more_detail {
 		position: absolute;
 		top: 16px;
@@ -2662,6 +2683,9 @@ body {
 		background: url('../images/chat.png') center no-repeat;
 		background-size: contain;
 		overflow: hidden;
+		@media (max-width: 650px) {
+			right: 30px;
+		}
 	}
 	&.view_more {
 		position: relative;
@@ -2674,6 +2698,9 @@ body {
 				right: -20px;
 				left: auto;
 				top: 40%;
+				@media (max-width: 650px) {
+					right: -4px;
+				}
 			}
 		}
 	}
@@ -3011,6 +3038,9 @@ body {
     flex-flow: column;
     max-width: 345px;
 	margin-bottom: 20px;
+	@media(mx-width: 650px){
+		max-width: 100%;
+	}
     li{
         display: flex;
         justify-content: space-between;
@@ -3025,6 +3055,9 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
+	@media (max-width: 768px) {
+		margin-bottom: 20px;
+	}
 	img{
 		margin-right: 15px;
 	}
