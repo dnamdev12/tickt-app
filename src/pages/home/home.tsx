@@ -8,6 +8,7 @@ import search from "../../assets/images/ic-search.png";
 import Location from "../../assets/images/ic-location.png";
 import cross from "../../assets/images/close-black.png";
 import uc from '../../assets/images/uc.png';
+import icgps from "../../assets/images/ic-gps.png";
 import bannerimg from '../../assets/images/home-banner.png'
 import residential from "../../assets/images/ic-residential.png";
 import industrial from "../../assets/images/ic-money.png";
@@ -86,7 +87,7 @@ const Home = (props: any) => {
                                         {<div className="custom_autosuggestion location">
                                             <button className="location-btn">
                                                 <span className="gps_icon">
-                                                    {/* <img src={icgps} /> */}
+                                                    <img src={icgps} />
                                                 </span> Use my current location
                                              </button>
                                             <span className="sub_title ">Recent searches</span>
