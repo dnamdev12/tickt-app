@@ -68,6 +68,10 @@ const JobsData = (props: any) => {
         <div className="app_wrapper" >
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
+                     {/* <div className="relate">
+                    <button className="back"></button>
+                    <span className="title">{jobsData.heading}</span>
+                </div> */}
                     <span className="title">{jobsData.heading}</span>
                     <div className="flex_row tradies_row">
                         {renderJobsData()?.length > 0 ?

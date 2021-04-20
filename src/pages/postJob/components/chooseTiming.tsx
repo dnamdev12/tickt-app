@@ -99,6 +99,13 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
                               onChange={handleChange}
                               months={2}
                               direction="horizontal"
+                                moveRangeOnFirstSelection={false}
+                                rangeColors={["#fee600", "#b5b5b5"]}
+                                showDateDisplay={false}
+                                showSelectionPreview={true}
+                                showPreview={true}
+                                minDate={new Date()}
+                                fixedHeight={true}
                             />
                             </div>
                             <div className="form_field">
