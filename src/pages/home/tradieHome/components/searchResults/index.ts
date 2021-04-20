@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import JobPostsComponent from './jobPosts';
+import SearchResultsComponent from '../searchResults/searchResults';
 import { getJobWithJobTypeLatLong } from '../../../../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
@@ -13,9 +13,9 @@ const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({ getJobWithJobTypeLatLong }, dispatch);
 }
 
-const JobPosts = connect(
+const SearchResult = connect(
     mapStateToProps,
     mapDispatchToProps
-)(JobPostsComponent)
+)(SearchResultsComponent)
 
-export default JobPosts
+export default SearchResult;

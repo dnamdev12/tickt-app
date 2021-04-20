@@ -45,6 +45,10 @@ const BannerSearch = (props: any) => {
 
 
     useEffect(() => {
+        console.log(props, "bannerSearch props")
+        if (props.location?.state?.selectedMapLocation) {
+            setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: props.location?.state?.selectedMapLocation }))
+        }
         window.addEventListener('mousedown', handleClicked)
 
         // navigator.geolocation.getCurrentPosition(function (position) {
@@ -183,6 +187,11 @@ const BannerSearch = (props: any) => {
             console.log("Latitude is :", position.coords.latitude);
             console.log("Longitude is :", position.coords.longitude);
         });
+
+        // geocodeByAddress(address)
+        //     .then((results: any) => getLatLng(results[0]))
+        //     .then((latLng: any) => console.log('Success', latLng))
+        //     .catch((error: any) => console.error('Error', error));
     }
 
     const onError = (status: string, clearSuggestions: Function) => {
@@ -208,6 +217,16 @@ const BannerSearch = (props: any) => {
         }
         setErrors(newErrors);
         return !Object.keys(newErrors).length;
+    }
+
+    const bannerSearchClicked = () => {
+        if (validateForm()) {
+            // props.history.push({
+            //     pathname: '/search-results',
+            //     state: { redirectStatedata: stateData }
+            // })
+            alert("banner search clicked!")
+        }
     }
 
     return (
@@ -276,7 +295,7 @@ const BannerSearch = (props: any) => {
                                                                 {/* <span>{suggestion.description}</span> */}
                                                                 <span>{suggestion.formattedSuggestion.mainText}</span>
                                                                 <span className="name">{suggestion.formattedSuggestion.secondaryText}</span>
-                                                                {console.log(suggestion, "map suggestion")}
+                                                                {/* {console.log(suggestion, "map suggestion")} */}
                                                             </div>
                                                         );
                                                     })}
@@ -330,7 +349,7 @@ const BannerSearch = (props: any) => {
                         </div>
                     </li>
                     <div className="search_btn">
-                        <button type="button" className="fill_btn" onClick={validateForm}>
+                        <button type="button" className="fill_btn" onClick={bannerSearchClicked}>
                             <img src={search} alt="search" />
                         </button>
                     </div>
