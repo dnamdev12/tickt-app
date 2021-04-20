@@ -4,30 +4,19 @@ import regex from '../../../../utils/regex';
 import BannerSearch from './bannerSearch';
 
 import bannerimg from '../../../../assets/images/home-banner.png';
-import residential from "../../../../assets/images/ic-residential.png";
 
 const HomeBanner = (props: any) => {
-    const [stateData, setStateData] = useState<any>({
-        searchedJob: '',
-        isSearchedJobSelected: false,
-        tradeId: '',
-        specializationId: '',
-        searchedJobId: null,
-        location: {
-            coordinates: []
-        },
-        locationName: '',
-        from_date: '',
-        startDate: '',
-        to_date: '',
-        endDate: '',
-    });
 
     const viewMoreClicked = () => {
+        var jobData = {
+            lat: '21.17021',
+            long: '72.831062',
+            jobType: '',
+        }
+        props.getJobWithJobTypeLatLong(jobData);
         props.history.push({
-            pathname: '/jobs-in-your-area',
-            heading: "Jobs in your area",
-            viewAllClicked: true,
+            pathname: '/search-results',
+            state: { selectedMapLocation: "Gurgaon", location: { coordinates: [21.17021, 72.831062] } }
         })
     }
 
