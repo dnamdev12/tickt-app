@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
-import StorageService from '../../../../utils/storageService';
-
-import residential from "../../../../assets/images/ic-residential.png";
-import industrial from "../../../../assets/images/ic-money.png";
-import contracted from "../../../../assets/images/ic-contracted.png";
-import commercial from "../../../../assets/images/ic-commercial.png";
-import hourlyRate from "../../../../assets/images/ic-clock.png";
 
 const categoriesjob = {
     desktop: {
@@ -27,7 +20,7 @@ const JobTypeList = (props: any) => {
             long: '72.831062',
             jobType: jobId,
         }
-        props.getJobWithJobTypeLatLong(jobData);
+        // props.getJobWithJobTypeLatLong(jobData); pending
     }
 
     console.log(props.jobTypeListData, "jobTypeListData  type==>", props.jobTypeData);
