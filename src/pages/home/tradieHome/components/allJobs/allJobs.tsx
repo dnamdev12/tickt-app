@@ -81,7 +81,7 @@ const AllJobs = (props: any) => {
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{item.tradeName}</span>
-                                                <span className="name">{item.jobName}</span>
+                                                <span className="prof">{item.jobName}</span>
                                             </div>
                                         </div>
                                         <div className="job_info">
