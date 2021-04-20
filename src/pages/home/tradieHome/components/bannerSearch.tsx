@@ -76,7 +76,7 @@ const BannerSearch = (props: any) => {
     }, [calenderRange1])
 
     const handleClicked = (event: any) => {
-        if ((document.getElementById("recent-job-search-div") || document.getElementById("fetched-custom-job-category-div")) && (!document.getElementById("text-field-div")?.contains(event.target) && !document.getElementById("recent-job-search-div")?.contains(event.target))) {
+        if ((document.getElementById("recent-job-search-div") || document.getElementById("fetched-custom-job-category-div")) && (!document.getElementById("text-field-div")?.contains(event.target) && !document.getElementById("recent-job-search-div")?.contains(event.target)) && (!document.getElementById("fetched-custom-job-category-div")?.contains(event.target))) {
             setInputFocus1(false)
         }
 
@@ -221,6 +221,14 @@ const BannerSearch = (props: any) => {
         return !Object.keys(newErrors).length;
     }
 
+    const viewMoreClicked = () => {
+        props.history.push({
+            pathname: '/jobs-in-your-area',
+            heading: "Jobs in your area",
+            viewAllClicked: true,
+        })
+    }
+
     return (
         <div className="home_banner">
             <figure className="banner_img">
@@ -355,7 +363,7 @@ const BannerSearch = (props: any) => {
                     <div className="text-center">
                         <h1 className="heading text_effect">See all around me</h1>
                         <p className="commn_para">Get the job in your area</p>
-                        <a className="fill_btn view-btn">View More</a>
+                        <button className="fill_btn view-btn" onClick={viewMoreClicked}>View More</button>
                     </div>
                 </div>
             </figure>

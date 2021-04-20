@@ -6,6 +6,7 @@ import ForgerPassword from '../pages/forgetPassword/forgetPassword';
 import PostJob from '../pages/postJob';
 import TradieHome from '../pages/home/tradieHome';
 import Guest from '../pages/home/guestLogin';
+import AllJobs from '../pages/home/tradieHome/components/allJobs/index';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -48,6 +49,16 @@ const routes = [
         name: 'tradiehome',
         path: '/tradie',
         component: TradieHome,
+    },
+    {
+        name: 'recommendedjobs',
+        path: '/recommended-jobs',
+        component: AllJobs,
+    },
+    {
+        name: 'viewmorejobs',
+        path: '/jobs-in-your-area',
+        component: AllJobs,
     },
     {
         name: 'guest',

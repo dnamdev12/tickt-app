@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
+import StorageService from '../../../../utils/storageService';
 
 import residential from "../../../../assets/images/ic-residential.png";
 import industrial from "../../../../assets/images/ic-money.png";
@@ -19,7 +20,18 @@ const JobTypeList = (props: any) => {
     useEffect(() => {
         props.getJobTypeList();
     }, [])
-    console.log(props.jobTypeListData, "jobTypeListData");
+
+    const jobTypeListClicked = (jobId: string) => {
+        const jobData = {
+            lat: '21.17021',
+            long: '72.831062',
+            jobType: jobId,
+        }
+        props.getJobWithJobTypeLatLong(jobData);
+    }
+
+    console.log(props.jobTypeListData, "jobTypeListData  type==>", props.jobTypeData);
+
     return (
         <div className="home_job_categories">
             <div className="custom_container">
@@ -28,7 +40,7 @@ const JobTypeList = (props: any) => {
                         <ul className="job_categories">
                             {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
                                 return (
-                                    < li className="draw" >
+                                    < li className="draw" onClick={() => jobTypeListClicked(item._id)}>
                                         <figure className="type_icon">
                                             <img src={item.image} alt="icon" />
                                         </figure>

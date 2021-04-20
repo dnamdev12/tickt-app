@@ -28,6 +28,8 @@ const Urls = {
     milestones: `${versions.v1}${ServiceEnum.job}tempMilestoneList`,
     getSearchData: `${versions.v1}${ServiceEnum.admin}getSearchData`, //admin
     jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
+    jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
+    home: `${versions.v1}home`,
 }
 
 export const urlFor = (service: String): string => {
