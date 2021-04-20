@@ -1949,9 +1949,8 @@ body {
 	position: relative;
 	text-align: center;
 	.constrction_img {
-		width: 720px;
 		margin: 0 auto 15px;
-		height: 450px;
+		height: 390px;
 		@media (max-width: 812px) {
 			width: 100%;
 		}
@@ -2348,6 +2347,10 @@ body {
 		border: solid 1px var(--light-gray);
 		background-color: var(--white);
 		position: relative;
+		.error_msg{
+			position: absolute;
+			top: 0;
+		}
 		ul {
 			display: flex;
 			flex: 1;
@@ -2427,7 +2430,7 @@ body {
 	top: 64px;
 	left: auto;
 	right: 0;
-	padding: 30px 20px;
+	padding: 10px 20px;
 	max-height: 387px;
 	min-height: 120px;
 	overflow-y: auto;
@@ -2488,7 +2491,7 @@ body {
 		flex-wrap: wrap;
 		li{
 			display: flex;
-    		width: 100%;
+    		width: 100% !important;
 			margin-bottom: 30px;
 			.category {
 				width: 40px;
@@ -2522,6 +2525,90 @@ body {
 			}
 		}
 	}
+	.rdrCalendarWrapper{
+		width: 100%;
+		.rdrMonths{
+			margin: 0 -10px;
+			flex-wrap: wrap;
+			.rdrMonth{
+				width: 50%;
+				padding: 0 10px;
+				@media(max-width: 650px){
+					width: 100%;
+				}
+				.rdrMonthName{
+					font-size: 24px;
+					font-weight: normal;
+					line-height: 1.33;
+					letter-spacing: 0.1px;
+					color: var(--blue);
+					padding: 1px;
+				}
+			}
+		}
+		.rdrWeekDay{
+			color: var(--blue);
+			font-family: 'Neue Haas Grotesk Text Pro Bold';
+			font-size: 14px;
+		}
+		.rdrPprevButton {
+			background-color: transparent;
+			i{
+				border-width: inherit;
+				background: url('../images/ic-prev-blue.png') center no-repeat;
+				background-size: contain;
+				width: 24px;
+    			height: 24px;		
+			}
+		}
+		.rdrNextButton{
+			background-color: transparent;
+			i{
+				border-width: inherit;
+				background: url('../images/ic-next-blue.png') center no-repeat;
+				background-size: contain;
+				width: 24px;
+    			height: 24px;		
+			}
+		}
+		.rdrDay:not(.rdrDayPassive) .rdrInRange ~ .rdrDayNumber span, .rdrDay:not(.rdrDayPassive) .rdrStartEdge ~ .rdrDayNumber span, .rdrDay:not(.rdrDayPassive) .rdrEndEdge ~ .rdrDayNumber span, .rdrDay:not(.rdrDayPassive) .rdrSelected ~ .rdrDayNumber span{
+			color: var(--blue) !important;
+			
+		}
+		.rdrCalendarWrapper:not(.rdrDateRangeWrapper) .rdrDayHovered .rdrDayNumber:after, .rdrDayToday .rdrDayNumber span:after,
+		.rdrSelected, .rdrMonthAndYearPickers select, .rdrInputRangeInput, .rdrDateDisplayItem.rdrDayEndPreview, .rdrDayStartPreview{
+			border-radius: 3px !important;
+		}
+		.rdrDay{
+			height: 43px;
+		}
+		.rdrMonthAndYearWrapper{
+			height: 37px;
+		}
+		 .rdrEndEdge, .rdrStartEdge{
+			height: 40px;
+			top: 50%;
+    		transform: translateY(-50%);
+		}
+		.rdrDayToday .rdrDayNumber span:after{
+			background: var(--blue);
+		}
+
+		.rdrInRange{
+			background-color: #a09fa726 !important;
+			top: 50%;
+    		transform: translateY(-50%);
+			height: 40px;
+			&:first-child, &:last-child{
+				background-color: var(--yellow);
+				font-family: 'Neue Haas Grotesk Text Pro Bold';
+			}
+		}
+		.rdrStartEdge, .rdrEndEdge{
+			border-radius: 3px;
+
+		}
+	}
 }
 
 .location-btn {
@@ -2546,7 +2633,7 @@ body {
 }
 
 .blocked_note {
-	background-color: var(--info);
+	background-color: #0b41a8b5;
 	color: var(--white);
 	padding: 15px;
 	display: block;
@@ -2556,7 +2643,7 @@ body {
 		position: absolute;
 		width: 20px;
 		height: 20px;
-		background: #fd9e69;
+		background: #5278c1;
 		transform: rotate(45deg);
 		top: -5px;
 		left: 35px;
@@ -2825,6 +2912,9 @@ body {
 .home_job_categories{
 	padding: 40px 0;
 	position: relative;  
+	.react-multi-carousel-list{
+		justify-content: center;
+	}
 	.job_categories{
 		justify-content: center;
 		li{

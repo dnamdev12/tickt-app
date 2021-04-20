@@ -18,7 +18,7 @@ import Location from "../../../../assets/images/ic-location.png";
 import cross from "../../../../assets/images/close-black.png";
 import bannerimg from '../../../../assets/images/home-banner.png';
 import icgps from "../../../../assets/images/ic-gps.png";
-import residential from "../../../assets/images/ic-residential.png";
+import residential from "../../../../assets/images/ic-residential.png";
 import industrial from "../../../assets/images/ic-money.png";
 import contracted from "../../../assets/images/ic-contracted.png";
 import commercial from "../../../assets/images/ic-commercial.png";
@@ -157,17 +157,24 @@ const BannerSearch = (props: any) => {
         console.log(props.searchJobListData, "props.searchJobListData")
         return (
             props.searchJobListData?.length ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
-                <div className="flex_col recent_search">
-                    {props.searchJobListData?.map((item: any) => {
-                        return (
-                            <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item)}>
-                                <div className="autosuggestion_icon card history">
-                                    <span>{item.name}</span>
-                                    <span className="name">{item.trade_name}</span>
-                                </div>
-                            </div>
-                        )
-                    })}
+                <div className="recent_search">
+                    <ul className="drop_data">
+                        {props.searchJobListData?.map((item: any) => {
+                            return (
+
+                                <li onClick={() => searchedJobClicked(item)}>
+                                    <figure className="category">
+                                        <img src={residential} alt="icon" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">{item.name}</span>
+                                        <span className="prof">{item.trade_name}</span>
+                                    </div>
+                                </li>
+
+                            )
+                        })}
+                    </ul>
                 </div>
             </div> : (<div className="custom_autosuggestion">
                 <span className="error_msg">Please select job type from the list</span>
@@ -340,7 +347,7 @@ const BannerSearch = (props: any) => {
                                                     // ranges={calenderRange2.endDate ? [calenderRange1, calenderRange2] : [calenderRange1]}
                                                     ranges={[calenderRange1]}
                                                     moveRangeOnFirstSelection={false}
-                                                    rangeColors={["#ffcd42", "#b5b5b5"]}
+                                                    rangeColors={["#fee600", "#b5b5b5"]}
                                                     showDateDisplay={false}
                                                     showSelectionPreview={true}
                                                     months={2}
