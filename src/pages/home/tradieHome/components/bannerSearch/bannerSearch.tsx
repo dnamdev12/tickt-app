@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import Constants from '../../../../utils/constants';
+import Constants from '../../../../../utils/constants';
 // @ts-ignore
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
-import regex from '../../../../utils/regex';
+import regex from '../../../../../utils/regex';
 // @ts-ignore
 import { addDays, subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
 // @ts-ignore
@@ -10,15 +10,16 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
-import Searchicon from "../../../../assets/images/main-search.png";
-import search from "../../../../assets/images/ic-search.png";
-import Location from "../../../../assets/images/ic-location.png";
-import cross from "../../../../assets/images/close-black.png";
-import icgps from "../../../../assets/images/ic-gps.png";
-import residential from "../../../../assets/images/ic-residential.png";
+import Searchicon from "../../../../../assets/images/main-search.png";
+import search from "../../../../../assets/images/ic-search.png";
+import Location from "../../../../../assets/images/ic-location.png";
+import cross from "../../../../../assets/images/close-black.png";
+import icgps from "../../../../../assets/images/ic-gps.png";
+import residential from "../../../../../assets/images/ic-residential.png";
 
 const BannerSearch = (props: any) => {
     const [stateData, setStateData] = useState<any>({
+        page: 1,
         searchedJob: '',
         isSearchedJobSelected: false,
         tradeId: '',
@@ -77,7 +78,7 @@ const BannerSearch = (props: any) => {
             setInputFocus1(false)
         }
 
-        if ((document.getElementById("current-location-search-div") || document.getElementById("autocomplete-dropdown-container")) && !document.getElementById("location-text-field-div")?.contains(event.target)) {
+        if ((document.getElementById("current-location-search-div") || document.getElementById("autocomplete-dropdown-container")) && !document.getElementById("location-text-field-div")?.contains(event.target) && !document.getElementById("current-location-search-div")?.contains(event.target)) {
             setInputFocus2(false)
         }
 
@@ -150,23 +151,24 @@ const BannerSearch = (props: any) => {
 
     const renderJobResult = () => {
         return (
-            props.searchJobListData?.length ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
-                <div className="recent_search">
-                    <ul className="drop_data">
-                        {props.searchJobListData?.map((item: any) => {
-                            return (<li onClick={() => searchedJobClicked(item)}>
-                                <figure className="category">
-                                    <img src={residential} alt="icon" />
-                                </figure>
-                                <div className="details">
-                                    <span className="name">{item.name}</span>
-                                    <span className="prof">{item.trade_name}</span>
-                                </div>
-                            </li>)
-                        })}
-                    </ul>
-                </div>
-            </div> : (<span className="error_msg">Please select job type from the list</span>)
+            (stateData.searchedJob.length > 0 && props.searchJobListData?.length) ?
+                (props.searchJobListData?.length ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
+                    <div className="recent_search">
+                        <ul className="drop_data">
+                            {props.searchJobListData?.map((item: any) => {
+                                return (<li onClick={() => searchedJobClicked(item)}>
+                                    <figure className="category">
+                                        <img src={residential} alt="icon" />
+                                    </figure>
+                                    <div className="details">
+                                        <span className="name">{item.name}</span>
+                                        <span className="prof">{item.trade_name}</span>
+                                    </div>
+                                </li>)
+                            })}
+                        </ul>
+                    </div>
+                </div> : <span className="error_msg">Please select job type from the list</span>) : <span className="error_msg">Loading...</span>
         )
     }
 
@@ -183,9 +185,11 @@ const BannerSearch = (props: any) => {
 
     const getCurrentLocation = (e: any) => {
         e.preventDefault();
+        console.log("use my current location clicked")
         navigator.geolocation.getCurrentPosition(function (position) {
             console.log("Latitude is :", position.coords.latitude);
             console.log("Longitude is :", position.coords.longitude);
+            setInputFocus2(false);
         });
 
         // geocodeByAddress(address)
@@ -225,9 +229,21 @@ const BannerSearch = (props: any) => {
             //     pathname: '/search-results',
             //     state: { redirectStatedata: stateData }
             // })
-            alert("banner search clicked!")
+            const data = {
+                page: stateData.page,
+                tradeId: stateData.tradeId,
+                // location: stateData.location,
+                specializationId: stateData.specializationId,
+                // from_date: stateData.from_date,
+                // to_date: stateData.to_date,
+                // sortBy: 2,
+            }
+            props.postHomeSearchData(data)
+            // alert("banner search clicked!")
         }
     }
+
+    console.log(props.homeSearchJobData, " props homeSearchJobData");
 
     return (
         <div className="home_search">

@@ -48,7 +48,16 @@ function* getJobWithJobTypeLatLong(action: any) {
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_JOB_WITH_JOB_TYPE_AND_LATLONG, payload: response.result });
     } else {
-        yield put({ type: actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, payload: {} });
+        yield put({ type: actionTypes.SET_JOB_WITH_JOB_TYPE_AND_LATLONG, payload: {} });
+    }
+}
+
+function* postHomeSearchData(action: any) {
+    const response: FetchResponse = yield NetworkOps.postToJson(Urls.homeSearch, action.jobData)
+    if (response.status_code === 200) {
+        yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: response.result });
+    } else {
+        yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
     }
 }
 
@@ -57,6 +66,7 @@ function* authWatcher() {
     yield takeLatest(actionTypes.GET_JOB_TYPE_LIST, getJobTypeList);
     // yield takeLatest(actionTypes.GET_JOB_TYPE, getJobType);
     yield takeLatest(actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, getJobWithJobTypeLatLong);
+    yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
 }
 
 export default authWatcher;

@@ -15,7 +15,7 @@ const JobsData = (props: any) => {
         if (props.history?.location?.viewAllClicked) {
             setJobsData((prevData: any) => ({ ...prevData, pathname: props?.history?.location?.pathname, viewAllClicked: props?.history?.location?.viewAllClicked, heading: props.history?.location?.heading }))
         } else if (props.heading) {
-            setJobsData((prevData: any) => ({ ...prevData, heading: props.heading, noOfShownJobs: props.noOfShownJobs, pathname: props.pathname }))
+            setJobsData((prevData: any) => ({ ...prevData, heading: props.heading, noOfShownJobs: props.noOfShownJobs, pathname: props.pathname, viewAllClicked: props.viewAllClicked ? props.viewAllClicked : false }))
         }
 
         var jobData = {
@@ -26,6 +26,10 @@ const JobsData = (props: any) => {
         props.getJobWithJobTypeLatLong(jobData);
     }, [])
 
+    const backButtonClicked = () => {
+        props.history?.goBack();
+    }
+
     const viewAllJobs = () => {
         props.history.push({
             pathname: jobsData.pathname,
@@ -33,46 +37,49 @@ const JobsData = (props: any) => {
             heading: jobsData.heading,
         })
     }
+
     const renderJobsData = () => {
         var jobListData = null;
         if (jobsData.heading == 'Recommended Jobs' && jobsData.noOfShownJobs) {
             jobListData = props.jobDataWithJobTypeLatLong?.recomended_jobs?.length > 0 ? props.jobDataWithJobTypeLatLong?.recomended_jobs?.slice(0, jobsData.noOfShownJobs) : null;
-            console.log(jobsData, "jobs data", props.history);
             return jobListData;
         } else if (jobsData.heading == 'Recommended Jobs') {
             jobListData = props.jobDataWithJobTypeLatLong?.recomended_jobs?.length > 0 ? props.jobDataWithJobTypeLatLong?.recomended_jobs : null;
-            console.log(jobsData, "jobs data", props.history);
             return jobListData;
         }
 
         if (jobsData.heading == 'Jobs in your area') {
             jobListData = props.jobDataWithJobTypeLatLong?.recomended_jobs?.length > 0 ? props.jobDataWithJobTypeLatLong?.recomended_jobs : null;
-            console.log(jobsData, "jobs data", props.history)
+            return jobListData;
+        }
+        if (jobsData.heading == 'Saved Jobs' && jobsData.noOfShownJobs) {
+            jobListData = props.jobDataWithJobTypeLatLong?.saved_jobs?.length > 0 ? props.jobDataWithJobTypeLatLong?.saved_jobs?.slice(0, jobsData.noOfShownJobs) : null;
+            return jobListData;
+        } else if (jobsData.heading == 'Saved Jobs') {
+            jobListData = props.jobDataWithJobTypeLatLong?.saved_jobs?.length > 0 ? props.jobDataWithJobTypeLatLong?.saved_jobs : null;
+            return jobListData;
+        }
+        if (jobsData.heading == 'Most viewed jobs' && jobsData.noOfShownJobs) {
+            jobListData = props.jobDataWithJobTypeLatLong?.most_viewed_jobs?.length > 0 ? props.jobDataWithJobTypeLatLong?.most_viewed_jobs?.slice(0, jobsData.noOfShownJobs) : null;
+            return jobListData;
+        } else if (jobsData.heading == 'Most viewed jobs') {
+            jobListData = props.jobDataWithJobTypeLatLong?.most_viewed_jobs?.length > 0 ? props.jobDataWithJobTypeLatLong?.most_viewed_jobs : null;
             return jobListData;
         }
         return null;
-        // if(jobsData.heading == 'Saved Jobs' && jobsData.noOfShownJobs){
-
-        // } else if(jobsData.heading == 'Saved Jobs'){
-
-        // }
-
-        // if(jobsData.heading == 'Most viewed Jobs' && jobsData.noOfShownJobs){
-
-        // } else if(jobsData.heading == 'Most viewed Jobs'){
-
-        // }
     }
 
+    console.log(props, "props jobs Data")
+
     return (
-        <div className="app_wrapper" >
+        <div className={props.location?.viewAllClicked ? 'app_wrapper' : ''} >
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
-                     {/* <div className="relate">
-                    <button className="back"></button>
-                    <span className="title">{jobsData.heading}</span>
-                </div> */}
-                    <span className="title">{jobsData.heading}</span>
+                    {props.location?.viewAllClicked ? <div className="relate">
+                        <button className="back" onClick={backButtonClicked}></button>
+                        <span className="title">{jobsData.heading}</span>
+                    </div> : <span className="title">{jobsData.heading}</span>}
+                    {/* <span className="title">{jobsData.heading}</span> */}
                     <div className="flex_row tradies_row">
                         {renderJobsData()?.length > 0 ?
                             (renderJobsData()?.map((item: any) => {
@@ -105,7 +112,7 @@ const JobsData = (props: any) => {
                                         </div>
                                     </div>
                                 )
-                            })) : <span>Loading...</span>}
+                            })) : <span>No data Found</span>}
                     </div>
                     {!jobsData.viewAllClicked && <button className="fill_grey_btn full_btn m-tb40 view_more"
                         onClick={viewAllJobs}>View all</button>}

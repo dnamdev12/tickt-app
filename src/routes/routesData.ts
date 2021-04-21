@@ -8,6 +8,7 @@ import TradieHome from '../pages/home/tradieHome';
 import Guest from '../pages/home/guestLogin';
 import JobsData from '../pages/home/tradieHome/components/jobsData/index';
 import SearchResults from '../pages/home/tradieHome/components/searchResults/index';
+import PopularBuilders from '../pages/home/tradieHome/components/popularBuilders/index';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -57,9 +58,24 @@ const routes = [
         component: JobsData,
     },
     {
-        name: 'viewmorejobs',
+        name: 'bannerviewmore',
         path: '/jobs-in-your-area',
         component: JobsData,
+    },
+    {
+        name: 'savedjobs',
+        path: '/saved-jobs',
+        component: JobsData,
+    },
+    {
+        name: 'mostviewedjobs',
+        path: '/most-viewed-jobs',
+        component: JobsData,
+    },
+    {
+        name: 'popularbuilders',
+        path: '/popular-builders',
+        component: PopularBuilders,
     },
     {
         name: 'searchresults',

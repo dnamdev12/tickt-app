@@ -1,11 +1,29 @@
 import React, { useState, useEffect } from 'react';
 import Constants from '../../../../utils/constants';
 import regex from '../../../../utils/regex';
-import BannerSearch from './bannerSearch';
+import BannerSearch from './bannerSearch/index';
 
 import bannerimg from '../../../../assets/images/home-banner.png';
 
 const HomeBanner = (props: any) => {
+    const [stateData, setStateData] = useState<any>({
+        page: 1,
+        searchedJob: '',
+        isSearchedJobSelected: false,
+        tradeId: '',
+        specializationId: '',
+        searchedJobId: null,
+        location: {
+            coordinates: []
+        },
+        locationName: '',
+        selectedMapLocation: '',
+        isMapLocationSelected: false,
+        from_date: '',
+        startDate: '',
+        to_date: '',
+        endDate: '',
+    });
 
     const viewMoreClicked = () => {
         var jobData = {

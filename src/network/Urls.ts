@@ -30,6 +30,7 @@ const Urls = {
     jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
     jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
     home: `${versions.v1}home`,
+    homeSearch: `${versions.v1}home/search`, 
 }
 
 export const urlFor = (service: String): string => {

@@ -1,5 +1,5 @@
 import React from 'react'
-import BannerSearch from '../bannerSearch';
+import BannerSearch from '../bannerSearch/bannerSearch';
 import JobsData from '../jobsData/jobsData';
 
 
