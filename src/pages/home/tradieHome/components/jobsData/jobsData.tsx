@@ -1,5 +1,9 @@
 import { useState, useEffect } from 'react';
 import dummy from '../../../../../assets/images/u_placeholder.jpg';
+import filterUnselected from '../../../../../assets/images/ic-filter-unselected.png';
+import filterSelected from '../../../../../assets/images/ic-filter-selected.png';
+import mapIcon from '../../../../../assets/images/map.png';
+
 
 const JobsData = (props: any) => {
     const [jobsData, setJobsData] = useState<any>({
@@ -65,53 +69,98 @@ const JobsData = (props: any) => {
     }
 
     return (
-        <div className="app_wrapper" >
-            <div className="section_wrapper bg_gray">
-                <div className="custom_container">
-                     {/* <div className="relate">
+        <div className="section_wrapper bg_gray">
+            <div className="custom_container">
+                {/* <div className="relate">
                     <button className="back"></button>
                     <span className="title">{jobsData.heading}</span>
                 </div> */}
-                    <span className="title">{jobsData.heading}</span>
-                    <div className="flex_row tradies_row">
-                        {renderJobsData()?.length > 0 ?
-                            (renderJobsData()?.map((item: any) => {
-                                return (
-                                    <div className="flex_col_sm_6">
-                                        <div className="tradie_card">
-                                            <a href="javascript:void(0)" className="more_detail circle"></a>
-                                            <div className="user_wrap">
-                                                <figure className="u_img">
-                                                    <img src={item.userImage ? item.userImage : dummy} alt="traide-img" />
-                                                </figure>
-                                                <div className="details">
-                                                    <span className="name">{item.tradeName}</span>
-                                                    <span className="prof">{item.jobName}</span>
-                                                </div>
+
+
+                <span className="title">{jobsData.heading}</span>
+
+                {/* <div className="result_heading">
+                    <div className="flex_row">
+                        <div className="flex_col_sm_8">
+                            <span className="title"> {jobsData.heading}
+                                <span className="count">45 results</span>
+                            </span>
+                            <div className="filters_wrapr">
+                                <ul className="filters_row">
+                                    <li>
+                                        <a>
+                                            <img src={filterUnselected} alt="filter" />Filter
+                                            //  <img src={filterSelected} alt="filter" />Filter 
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a className="active">Price</a>
+                                    </li>
+                                    <li>
+                                        <a >Sorting</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="flex_col_sm_4 text-right">
+                            <a className="map_btn">
+                                <img src={mapIcon} alt="map" /> Map
+                                </a>
+                        </div>
+                    </div>
+                </div> */}
+
+
+
+                <div className="flex_row tradies_row">
+                    {/* If the map does not come, then this div not only class (card_col) will be hidden */}
+                    {/* <div className="card_col"> */}
+                    {renderJobsData()?.length > 0 ?
+                        (renderJobsData()?.map((item: any) => {
+                            return (
+
+                                <div className="flex_col_sm_6">
+                                    <div className="tradie_card">
+                                        <a href="javascript:void(0)" className="more_detail circle"></a>
+                                        <div className="user_wrap">
+                                            <figure className="u_img">
+                                                <img src={item.userImage ? item.userImage : dummy} alt="traide-img" />
+                                            </figure>
+                                            <div className="details">
+                                                <span className="name">{item.tradeName}</span>
+                                                <span className="prof">{item.jobName}</span>
                                             </div>
-                                            <div className="job_info">
-                                                <ul>
-                                                    <li className="icon clock">{item.time}</li>
-                                                    <li className="icon dollar">{item.amount}</li>
-                                                    <li className="icon location">{item.locationName}</li>
-                                                    <li className="icon calendar">{item.durations}</li>
-                                                </ul>
-                                            </div>
-                                            <p className="commn_para">{item.jobDescription}</p>
-                                            <ul className="count_wrap">
-                                                <li className="icon view">{item.viewersCount}</li>
-                                                <li className="icon comment">{item.questionsCount}</li>
+                                        </div>
+                                        <div className="job_info">
+                                            <ul>
+                                                <li className="icon clock">{item.time}</li>
+                                                <li className="icon dollar">{item.amount}</li>
+                                                <li className="icon location">{item.locationName}</li>
+                                                <li className="icon calendar">{item.durations}</li>
                                             </ul>
                                         </div>
+                                        <p className="commn_para line-3">{item.jobDescription}</p>
+                                        <ul className="count_wrap">
+                                            <li className="icon view">{item.viewersCount}</li>
+                                            <li className="icon comment">{item.questionsCount}</li>
+                                        </ul>
                                     </div>
-                                )
-                            })) : <span>Loading...</span>}
-                    </div>
-                    {!jobsData.viewAllClicked && <button className="fill_grey_btn full_btn m-tb40 view_more"
-                        onClick={viewAllJobs}>View all</button>}
+
+                                </div>
+                            )
+                        })) : <span>Loading...</span>}
+                    {/* </div> */}
+
+                    {/* <div className="map_col">
+                        <div className="map_stick">
+                            map here
+                        </div>
+                    </div> */}
                 </div>
-            </div >
-        </div>
+                {!jobsData.viewAllClicked && <button className="fill_grey_btn full_btn m-tb40 view_more"
+                    onClick={viewAllJobs}>View all</button>}
+            </div>
+        </div >
     )
 }
 
