@@ -65,38 +65,27 @@ const Signup = (props: Propstype) => {
 
     useEffect(() => {
         props.callTradeList();
-        // var locationNew: any = {
-        //     location: {
-        //         type: "Point",
-        //     coordinates: [
-        //         144.946457, //long
-        //         -37.840935 //lat
-        //     ]
-        //     }
+        var locationNew: any = {
+            location: {
+                type: "Point",
+                coordinates: [
+                    144.946457, //long
+                    -37.840935 //lat
+                ]
+            }
+        }
 
-        // }
+        const showPosition = (position: any) => {
+            const lat = position.coords.latitude;
+            const long = position.coords.longitude;
+            locationNew.location.coordinates[0] = long;
+            locationNew.location.coordinates[1] = lat;
+            setSignupData((prevData: any) => ({ ...prevData, ...locationNew }));
+        }
 
-        // const showPosition = (position: any) => {
-        //     const lat = position.coords.latitude;
-        //     const long = position.coords.longitude;
-        //     locationNew.coordinates[0] = long;
-        //     locationNew.coordinates[1] = lat;
-        //     setSignupData((prevData: any) => ({ ...prevData, ...locationNew }));
-        // }
-
-        // if (navigator.geolocation) {
-        //     navigator.geolocation.getCurrentPosition(showPosition);
-        //     // navigator.geolocation.getCurrentPosition((position) => {
-        //     //     const lat = position.coords.latitude;
-        //     //     const long = position.coords.longitude;
-        //     //     locationNew.coordinates[0] = long;
-        //     //     locationNew.coordinates[1] = lat;
-        //     //     setSignupData((prevData: any) => ({ ...prevData, ...locationNew }));
-        //     //   }
-        // } else {
-        //     setSignupData((prevData: any) => ({ ...prevData, ...locationNew }))
-        // }
-
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
     }, [])
 
     const backButtonHandler = () => {
