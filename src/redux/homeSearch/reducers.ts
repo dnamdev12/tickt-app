@@ -5,6 +5,7 @@ const initialState = {
     jobTypeListData: [],
     jobTypeList: [],
     jobDataWithJobTypeLatLong: {},
+    homeSearchJobData: [],
     error: '',
 }
 
@@ -35,6 +36,11 @@ const reducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 jobDataWithJobTypeLatLong: action.payload
+            }
+        case actionTypes.SET_HOME_SEARCH_DATA:
+            return {
+                ...state,
+                homeSearchJobData: action.payload
             }
         default: return state
     }

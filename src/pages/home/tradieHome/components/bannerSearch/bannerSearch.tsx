@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
-import Constants from '../../../../utils/constants';
+import Constants from '../../../../../utils/constants';
 // @ts-ignore
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
-import regex from '../../../../utils/regex';
+import regex from '../../../../../utils/regex';
 // @ts-ignore
 import { addDays, subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
 // @ts-ignore
@@ -10,15 +10,16 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
-import Searchicon from "../../../../assets/images/main-search.png";
-import search from "../../../../assets/images/ic-search.png";
-import Location from "../../../../assets/images/ic-location.png";
-import cross from "../../../../assets/images/close-black.png";
-import icgps from "../../../../assets/images/ic-gps.png";
-import residential from "../../../../assets/images/ic-residential.png";
+import Searchicon from "../../../../../assets/images/main-search.png";
+import search from "../../../../../assets/images/ic-search.png";
+import Location from "../../../../../assets/images/ic-location.png";
+import cross from "../../../../../assets/images/close-black.png";
+import icgps from "../../../../../assets/images/ic-gps.png";
+import residential from "../../../../../assets/images/ic-residential.png";
 
 const BannerSearch = (props: any) => {
     const [stateData, setStateData] = useState<any>({
+        page: 1,
         searchedJob: '',
         isSearchedJobSelected: false,
         tradeId: '',
@@ -41,7 +42,6 @@ const BannerSearch = (props: any) => {
     const [inputFocus3, setInputFocus3] = useState<boolean>(false)
 
     const [calenderRange1, setCalenderRange1] = useState<any>({ startDate: new Date(), endDate: new Date(), key: 'selection1' });
-    const [calenderRange2, setCalenderRange2] = useState<any>({ startDate: new Date(), endDate: null, key: 'selection2' });
 
 
     useEffect(() => {
@@ -50,11 +50,6 @@ const BannerSearch = (props: any) => {
             setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: props.location?.state?.selectedMapLocation }))
         }
         window.addEventListener('mousedown', handleClicked)
-
-        // navigator.geolocation.getCurrentPosition(function (position) {
-        //     console.log("Latitude is :", position.coords.latitude);
-        //     console.log("Longitude is :", position.coords.longitude);
-        // });
 
         return () => {
             window.removeEventListener('mousedown', handleClicked)
@@ -77,7 +72,7 @@ const BannerSearch = (props: any) => {
             setInputFocus1(false)
         }
 
-        if ((document.getElementById("current-location-search-div") || document.getElementById("autocomplete-dropdown-container")) && !document.getElementById("location-text-field-div")?.contains(event.target)) {
+        if ((document.getElementById("current-location-search-div") || document.getElementById("autocomplete-dropdown-container")) && !document.getElementById("location-text-field-div")?.contains(event.target) && !document.getElementById("current-location-search-div")?.contains(event.target)) {
             setInputFocus2(false)
         }
 
@@ -156,7 +151,7 @@ const BannerSearch = (props: any) => {
                         {props.searchJobListData?.map((item: any) => {
                             return (<li onClick={() => searchedJobClicked(item)}>
                                 <figure className="category">
-                                    <img src={residential} alt="icon" />
+                                    <img src={item.image ? item.image : residential} alt="icon" />
                                 </figure>
                                 <div className="details">
                                     <span className="name">{item.name}</span>
@@ -166,7 +161,7 @@ const BannerSearch = (props: any) => {
                         })}
                     </ul>
                 </div>
-            </div> : (<span className="error_msg">Please select job type from the list</span>)
+            </div> : <span className="error_msg">Please select job type from the list</span>
         )
     }
 
@@ -183,9 +178,11 @@ const BannerSearch = (props: any) => {
 
     const getCurrentLocation = (e: any) => {
         e.preventDefault();
+        console.log("use my current location clicked")
         navigator.geolocation.getCurrentPosition(function (position) {
             console.log("Latitude is :", position.coords.latitude);
             console.log("Longitude is :", position.coords.longitude);
+            setInputFocus2(false);
         });
 
         // geocodeByAddress(address)
@@ -221,13 +218,21 @@ const BannerSearch = (props: any) => {
 
     const bannerSearchClicked = () => {
         if (validateForm()) {
-            // props.history.push({
-            //     pathname: '/search-results',
-            //     state: { redirectStatedata: stateData }
-            // })
-            alert("banner search clicked!")
+            const data = {
+                page: stateData.page,
+                tradeId: stateData.tradeId,
+                // location: stateData.location,
+                specializationId: stateData.specializationId,
+                // from_date: stateData.from_date,
+                // to_date: stateData.to_date,
+                // sortBy: 2,
+            }
+            props.postHomeSearchData(data)
+            // alert("banner search clicked!")
         }
     }
+
+    console.log(props.homeSearchJobData, " props homeSearchJobData");
 
     return (
         <div className="home_search">
@@ -359,4 +364,4 @@ const BannerSearch = (props: any) => {
     )
 }
 
-export default BannerSearch
+export default BannerSearch;
