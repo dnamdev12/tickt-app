@@ -42,7 +42,6 @@ const BannerSearch = (props: any) => {
     const [inputFocus3, setInputFocus3] = useState<boolean>(false)
 
     const [calenderRange1, setCalenderRange1] = useState<any>({ startDate: new Date(), endDate: new Date(), key: 'selection1' });
-    const [calenderRange2, setCalenderRange2] = useState<any>({ startDate: new Date(), endDate: null, key: 'selection2' });
 
 
     useEffect(() => {
@@ -51,11 +50,6 @@ const BannerSearch = (props: any) => {
             setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: props.location?.state?.selectedMapLocation }))
         }
         window.addEventListener('mousedown', handleClicked)
-
-        // navigator.geolocation.getCurrentPosition(function (position) {
-        //     console.log("Latitude is :", position.coords.latitude);
-        //     console.log("Longitude is :", position.coords.longitude);
-        // });
 
         return () => {
             window.removeEventListener('mousedown', handleClicked)
@@ -151,24 +145,23 @@ const BannerSearch = (props: any) => {
 
     const renderJobResult = () => {
         return (
-            (stateData.searchedJob.length > 0 && props.searchJobListData?.length) ?
-                (props.searchJobListData?.length ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
-                    <div className="recent_search">
-                        <ul className="drop_data">
-                            {props.searchJobListData?.map((item: any) => {
-                                return (<li onClick={() => searchedJobClicked(item)}>
-                                    <figure className="category">
-                                        <img src={residential} alt="icon" />
-                                    </figure>
-                                    <div className="details">
-                                        <span className="name">{item.name}</span>
-                                        <span className="prof">{item.trade_name}</span>
-                                    </div>
-                                </li>)
-                            })}
-                        </ul>
-                    </div>
-                </div> : <span className="error_msg">Please select job type from the list</span>) : <span className="error_msg">Loading...</span>
+            props.searchJobListData?.length ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
+                <div className="recent_search">
+                    <ul className="drop_data">
+                        {props.searchJobListData?.map((item: any) => {
+                            return (<li onClick={() => searchedJobClicked(item)}>
+                                <figure className="category">
+                                    <img src={item.image ? item.image : residential} alt="icon" />
+                                </figure>
+                                <div className="details">
+                                    <span className="name">{item.name}</span>
+                                    <span className="prof">{item.trade_name}</span>
+                                </div>
+                            </li>)
+                        })}
+                    </ul>
+                </div>
+            </div> : <span className="error_msg">Please select job type from the list</span>
         )
     }
 
@@ -225,10 +218,6 @@ const BannerSearch = (props: any) => {
 
     const bannerSearchClicked = () => {
         if (validateForm()) {
-            // props.history.push({
-            //     pathname: '/search-results',
-            //     state: { redirectStatedata: stateData }
-            // })
             const data = {
                 page: stateData.page,
                 tradeId: stateData.tradeId,
@@ -375,4 +364,4 @@ const BannerSearch = (props: any) => {
     )
 }
 
-export default BannerSearch
+export default BannerSearch;

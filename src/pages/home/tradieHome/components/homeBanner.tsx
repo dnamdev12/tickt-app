@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Constants from '../../../../utils/constants';
-import regex from '../../../../utils/regex';
+import { useState } from 'react';
 import BannerSearch from './bannerSearch/index';
 
 import bannerimg from '../../../../assets/images/home-banner.png';
@@ -33,7 +31,7 @@ const HomeBanner = (props: any) => {
         }
         props.getJobWithJobTypeLatLong(jobData);
         props.history.push({
-            pathname: '/search-results',
+            pathname: '/search-job-results',
             state: { selectedMapLocation: "Gurgaon", location: { coordinates: [21.17021, 72.831062] } }
         })
     }

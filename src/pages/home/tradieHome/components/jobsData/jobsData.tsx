@@ -83,39 +83,37 @@ const JobsData = (props: any) => {
                         <button className="back" onClick={backButtonClicked}></button>
                         <span className="title">{jobsData.heading}</span>
                     </div> : <span className="title">{jobsData.heading}</span>}
-                    {/* <span className="title">{jobsData.heading}</span> */}
-                    {/*
-                     <div className="result_heading">
-                    <div className="flex_row">
-                        <div className="flex_col_sm_8">
-                            <span className="title"> {jobsData.heading}
-                                <span className="count">45 results</span>
-                            </span>
-                            <div className="filters_wrapr">
-                                <ul className="filters_row">
-                                    <li>
-                                        <a>
-                                            <img src={filterUnselected} alt="filter" />Filter
-                                            //  <img src={filterSelected} alt="filter" />Filter 
+                    {props.location?.viewAllClicked &&
+                        <div className="result_heading">
+                            <div className="flex_row">
+                                <div className="flex_col_sm_8">
+                                    <span className="title"> {jobsData.heading}
+                                        <span className="count">45 results</span>
+                                    </span>
+                                    <div className="filters_wrapr">
+                                        <ul className="filters_row">
+                                            <li>
+                                                <a>
+                                                    <img src={filterUnselected} alt="filter" />Filter
+                                            {/* //  <img src={filterSelected} alt="filter" />Filter */}
                                         </a>
-                                    </li>
-                                    <li>
-                                        <a className="active">Price</a>
-                                    </li>
-                                    <li>
-                                        <a >Sorting</a>
-                                    </li>
-                                </ul>
+                                            </li>
+                                            <li>
+                                                <a className="active">Price</a>
+                                            </li>
+                                            <li>
+                                                <a >Sorting</a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="flex_col_sm_4 text-right">
+                                    <a className="map_btn">
+                                        <img src={mapIcon} alt="map" /> Map
+                                    </a>
+                                </div>
                             </div>
-                        </div>
-                        <div className="flex_col_sm_4 text-right">
-                            <a className="map_btn">
-                                <img src={mapIcon} alt="map" /> Map
-                                </a>
-                        </div>
-                        </div>
-                    </div>
-                     */}
+                        </div>}
                     <div className="flex_row tradies_row">
                         {/* If the map does not come, then this div not only class (card_col) will be hidden */}
                         {/* <div className="card_col"> */}
@@ -153,10 +151,10 @@ const JobsData = (props: any) => {
                             })) : <span>No data Found</span>}
                     </div>
                     {/* <div className="map_col">
-                                        <div className="map_stick">
-                                        map here
-                                        </div>
-                                        </div> */}
+                        <div className="map_stick">
+                            map here
+                        </div>
+                    </div> */}
                     {!jobsData.viewAllClicked && <button className="fill_grey_btn full_btn m-tb40 view_more"
                         onClick={viewAllJobs}>View all</button>}
                 </div>

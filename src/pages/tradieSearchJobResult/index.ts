@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import PopularBuildersComponent from '../popularBuilders/popularBuilders';
-import { getJobWithJobTypeLatLong } from '../../../../../redux/homeSearch/actions';
+import SearchResultsComponent from './tradieSearchJobResult';
+import { getJobWithJobTypeLatLong } from '../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
     return {
@@ -13,9 +13,9 @@ const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({ getJobWithJobTypeLatLong }, dispatch);
 }
 
-const PopularBuilder = connect(
+const TradieSearchJobResult = connect(
     mapStateToProps,
     mapDispatchToProps
-)(PopularBuildersComponent)
+)(SearchResultsComponent)
 
-export default PopularBuilder;
+export default TradieSearchJobResult;

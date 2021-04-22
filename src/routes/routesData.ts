@@ -6,9 +6,12 @@ import ForgerPassword from '../pages/forgetPassword/forgetPassword';
 import PostJob from '../pages/postJob';
 import TradieHome from '../pages/home/tradieHome';
 import Guest from '../pages/home/guestLogin';
+import SavedJobs from '../pages/savedJobs/index';
+import RecommendedJobs from '../pages/recommendedJobs/index';
+import MostViewedJobs from '../pages/mostViewedJobs/index';
 import JobsData from '../pages/home/tradieHome/components/jobsData/index';
-import SearchResults from '../pages/home/tradieHome/components/searchResults/index';
-import PopularBuilders from '../pages/home/tradieHome/components/popularBuilders/index';
+import TradieSearchJobResult from '../pages/tradieSearchJobResult/index';
+import PopularBuilders from '../pages/popularBuilders/index';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -55,7 +58,7 @@ const routes = [
     {
         name: 'recommendedjobs',
         path: '/recommended-jobs',
-        component: JobsData,
+        component: RecommendedJobs,
     },
     {
         name: 'bannerviewmore',
@@ -65,12 +68,12 @@ const routes = [
     {
         name: 'savedjobs',
         path: '/saved-jobs',
-        component: JobsData,
+        component: SavedJobs,
     },
     {
         name: 'mostviewedjobs',
         path: '/most-viewed-jobs',
-        component: JobsData,
+        component: MostViewedJobs,
     },
     {
         name: 'popularbuilders',
@@ -78,9 +81,9 @@ const routes = [
         component: PopularBuilders,
     },
     {
-        name: 'searchresults',
-        path: '/search-results',
-        component: SearchResults,
+        name: 'searchjobresults',
+        path: '/search-job-results',
+        component: TradieSearchJobResult,
     },
     {
         name: 'guest',

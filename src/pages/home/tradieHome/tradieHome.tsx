@@ -1,30 +1,29 @@
+import { useEffect } from 'react';
 import HomeBanner from './components/homeBanner';
 import JobTypeList from './components/jobTypeList';
-import JobsData from './components/jobsData/index';
-import PopularBuilders from './components/popularBuilders/index';
+import SavedJobs from './components/savedJobs';
+import PopularBuilders from './components/popularBuilders';
+import RecommendedJobs from './components/recommendedJobs';
+import MostViewedJobs from './components/mostViewedJobs';
 
 const TradieHome = (props: any) => {
+    useEffect(() => {
+        var jobData = {
+            lat: '21.17021',
+            long: '72.831062',
+            jobType: '',
+        }
+        props.getJobWithJobTypeLatLong(jobData);
+    }, [])
+
     return (
         <div className="app_wrapper" >
             <HomeBanner {...props} />
             <JobTypeList {...props} />
-            {/* saved jobs */}
-            <JobsData {...props}
-                heading='Saved jobs'
-                pathname='saved-jobs'
-                noOfShownJobs={2} />
-            {/* popular builders */}
+            <SavedJobs {...props} />
             <PopularBuilders {...props} />
-            {/* recommended jobs */}
-            <JobsData {...props}
-                heading='Recommended jobs'
-                pathname='recommended-jobs'
-                noOfShownJobs={6} />
-            {/* most viewed jobs */}
-            <JobsData {...props}
-                heading='Most viewed jobs'
-                pathname='most-viewed-jobs'
-                noOfShownJobs={6} />
+            <RecommendedJobs {...props} />
+            <MostViewedJobs {...props} />
         </div>
     )
 }
