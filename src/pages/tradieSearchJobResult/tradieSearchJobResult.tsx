@@ -4,6 +4,9 @@ import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import mapIcon from '../../assets/images/map.png';
+import noData from '../../assets/images/no-data.png';
+
+
 
 const TradieSearchJobResult = (props: any) => {
 
@@ -53,7 +56,13 @@ const TradieSearchJobResult = (props: any) => {
                             {mostViewJobsData?.length > 0 ?
                                 (mostViewJobsData?.map((jobData: any) => {
                                     return <TradieJobInfoBox item={jobData} />
-                                })) : <span>No data Found</span>}
+                                })) :
+                                <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                </div>
+                            }
                         </div>
                         {/* <div className="map_col">
                                 <div className="map_stick">

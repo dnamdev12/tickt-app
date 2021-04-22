@@ -1,4 +1,6 @@
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
+import noData from '../../assets/images/no-data.png';
+
 
 const SavedJobs = (props: any) => {
 
@@ -20,7 +22,13 @@ const SavedJobs = (props: any) => {
                         {savedJobsData?.length > 0 ?
                             (savedJobsData?.map((jobData: any) => {
                                 return <TradieJobInfoBox item={jobData} />
-                            })) : <span>No data Found</span>}
+                            })) : 
+                            <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                </div>
+                                }
                     </div>
                 </div>
             </div>
