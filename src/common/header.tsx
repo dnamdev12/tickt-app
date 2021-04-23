@@ -41,7 +41,7 @@ const Header = (props: any) => {
     const logoutHandler = () => {
         storageService.removeItem("jwtToken")
         storageService.removeItem("guestToken")
-        history.push('/signup')
+        history.push('/login')
     }
 
     return (
