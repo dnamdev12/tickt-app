@@ -67,7 +67,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
       ...prevErrors,
       [name]: isInvalid(name, value),
     }));
-    
+
     setPaymentDetails((prevDetails) => {
       console.log({ prevDetails, name, value });
       if (name === "pay_type" && prevDetails.pay_type !== value) {
@@ -129,36 +129,45 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
           </div>
 
           <div className="flex_row">
-            <div className="flex_col_sm_5">
+            <div className="flex_col_sm_3">
               <div className="form_field">
-                <input
-                  type="number"
-                  placeholder="Price"
-                  name="Price"
-                  className="sm_box"
-                  min="0"
-                  step=".01"
-                  required
-                  value={amount}
-                  onChange={({ target: { value } }) => handleChange(value, 'amount')}
-                />
-
-                <select
-                  value={pay_type}
-                  onChange={({ target: { value } }) => handleChange(value, 'pay_type')}
-                  style={{ padding: '15px', border: '1px solid #ddd' }}>
-                  <option value="fixed">{'Fixed Price'}</option>
-                  <option value="perHour">{'Per Hour'}</option>
-                </select>
-              </div>
-              <div className="error_msg mtb-10">{errors?.amount}</div>
-
-              <div className="form_field">
-                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
+                <div className="text_field">
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    name="Price"
+                    className="detect_input_ltr"
+                    min="0"
+                    step=".01"
+                    required
+                    value={amount}
+                    onChange={({ target: { value } }) => handleChange(value, 'amount')}
+                  />
+                  <span className="detect_icon_ltr dollar">$</span>
+                </div>
               </div>
             </div>
-
+            <div className="flex_col_sm_2">
+              <div className="form_field">
+                <div className="text_field">
+                  <select
+                    value={pay_type}
+                    onChange={({ target: { value } }) => handleChange(value, 'pay_type')}
+                    className="select_input"
+                    >
+                    <option value="fixed">{'Fixed Price'}</option>
+                    <option value="perHour">{'Per Hour'}</option>
+                  </select>
+                </div>
+                <span className="error_msg">{errors?.amount}</span>
+              </div>
+            </div>
           </div>
+
+          <div className="form_field">
+            <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
+          </div>
+
 
           {/* <div className="flex_row">
                         <div className="flex_col_sm_5">
@@ -197,10 +206,10 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         </div>
                     </div> */}
           {/* <Typography id="range-slider" gutterBottom></Typography> */}
-        </div>
-      </div>
+        </div >
+      </div >
 
-    </div>
+    </div >
   )
 }
 
