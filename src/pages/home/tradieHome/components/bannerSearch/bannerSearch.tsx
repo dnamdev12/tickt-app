@@ -4,7 +4,7 @@ import Constants from '../../../../../utils/constants';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
 import regex from '../../../../../utils/regex';
 // @ts-ignore
-import { addDays, subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
+import { subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
 // @ts-ignore
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
