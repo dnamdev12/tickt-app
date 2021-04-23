@@ -14,7 +14,6 @@ interface Props {
     setShowModal: (data: any) => void,
     modalUpdateSteps: (data: any) => void,
     setSocialData: (data: any) => void,
-    modalLoginBackBtn?: string,
     // socialId?: string,
 }
 
@@ -33,7 +32,7 @@ const AuthParent = (props: any) => {
                         <img src={colorLogo} alt="Tickt-logo" />
                     </figure>
                     <div className="onboarding_head">
-                        {(!!props.steps || props.sliderType === 'signup') && (props.modalLoginBackBtn ? false : true) && <button className="back_btn" onClick={props.backButtonHandler} />}
+                        {(!!props.steps || props.sliderType === 'signup') && <button className="back_btn" onClick={props.backButtonHandler} />}
                         <h1>{props.userType === 1 && props.header.tradieTitle ? props.header.tradieTitle : props.header.title}</h1>
                         {props.header.subTitle && <span className="show_label">{props.header.subTitle}</span>}
                         {!!props.steps && props.steps > 1 && !props.hideProgres && <ul className="custom_steppr">

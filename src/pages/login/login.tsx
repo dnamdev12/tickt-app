@@ -16,7 +16,6 @@ interface Propstype {
     modalUpdateSteps: (data: any) => void,
     setShowModal: (data: any) => void,
     setSocialData: (data: any) => void,
-    modalLoginBackBtn?: string,
 }
 
 const LoginPage = (props: Propstype) => {
@@ -117,7 +116,7 @@ const LoginPage = (props: Propstype) => {
     }
 
     return (
-        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }} history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} setSocialData={props.setSocialData} modalLoginBackBtn={props.modalLoginBackBtn}>
+        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }} history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} setSocialData={props.setSocialData}>
             <div className="form_wrapper">
                 <form onSubmit={onSubmit}>
                     <div className="form_field">

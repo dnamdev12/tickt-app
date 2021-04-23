@@ -11,22 +11,11 @@ const AddABN = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
     const [abn, setAbn] = useState<any>('')
 
-    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputVal = e.target.value;
-        const key = inputVal.charCodeAt(inputVal.length - 1)
-        if ((key == NaN || inputVal == "") && abn.length === 1) {
-            setAbn('');
+    const changeHandler = (e: any) => {
+        if (e.target.value.length > 11) {
             return;
         }
-        if ((key > 47 && key < 58) || key === 8) {
-            e.preventDefault();
-            setAbn(e.target.value)
-        }
-
-        // if (e.target.value.length > 11) { previous dual msg 
-        //     return;
-        // }
-        // setAbn(e.target.value)
+        setAbn(e.target.value)
     }
 
     const validateForm = () => {
@@ -59,8 +48,7 @@ const AddABN = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Australian business number</label>
                     <div className="text_field">
-                        {/* <input type="number" placeholder="Enter Australian business number" value={abn} name="abn" onChange={changeHandler} /> */}
-                        <input type="text" placeholder="Enter Australian business number" value={abn} onChange={changeHandler} maxLength={11} />
+                        <input type="number" placeholder="Enter Australian business number" value={abn} name="abn" onChange={changeHandler} />
                     </div>
                     {!!errors.abn && <span className="error_msg">{errors.abn}</span>}
                 </div>

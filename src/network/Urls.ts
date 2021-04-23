@@ -1,5 +1,5 @@
-//const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
-const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
+const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
+// const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
 
 const versions = {
     v1: 'v1/',
@@ -18,7 +18,7 @@ const Urls = {
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
     createPassword: `${versions.v1}${ServiceEnum.auth}createPassword`,
-    tradeList: `${versions.v1}${ServiceEnum.auth}tradeList`, //Admin
+    tradeList: `${versions.v1}${ServiceEnum.auth}tradeList`, //admin
     forgotPassword: `${versions.v1}${ServiceEnum.auth}forgot_password`,
     checkSocialId: `${versions.v1}${ServiceEnum.auth}checkSocialId`,
     SocialAuth: `${versions.v1}${ServiceEnum.auth}socialAuth`,
@@ -26,7 +26,11 @@ const Urls = {
     linkedInAuth: `${versions.v1}${ServiceEnum.auth}linkedInAuth`,
     jobCategories: `${versions.v1}${ServiceEnum.auth}jobType`,
     milestones: `${versions.v1}${ServiceEnum.job}tempMilestoneList`,
-    getSearchData: `${versions.v1}${ServiceEnum.admin}getSearchData`,
+    getSearchData: `${versions.v1}${ServiceEnum.admin}getSearchData`, //admin
+    jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
+    jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
+    home: `${versions.v1}home`,
+    homeSearch: `${versions.v1}home/search`, 
 }
 
 export const urlFor = (service: String): string => {

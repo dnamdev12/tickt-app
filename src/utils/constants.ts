@@ -32,6 +32,10 @@ sphereEmpty: 'Please select your trade',
 specializationEmpty: 'Please select your specialization',
 pleaseEnter: 'Please enter ',
 pleaseSelect: 'Please select',
+bannerSearchJob: 'Please select job type from the list',
+bannerSearchJobError: 'Please search valid job name',
+bannerSearchJobEmpty: 'Job Type is required',
+bannerSearchLocation: 'Please select location from the list',
 }
 
 const OTP_TIMER = 60;
