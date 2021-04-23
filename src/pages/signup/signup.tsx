@@ -40,7 +40,7 @@ const DATA = [
 
 const Signup = (props: Propstype) => {
     const [steps, setSteps] = useState(0);
-    const [signupData, setSignupData] = useState({
+    const [signupData, setSignupData] = useState<any>({
         firstName: '',
         mobileNumber: '',
         email: '',
@@ -50,7 +50,14 @@ const Signup = (props: Propstype) => {
         trade: '',
         specialization: [],
         qualification: [],
-        user_type: 0
+        user_type: 0,
+        location: {
+            type: "Point",
+            coordinates: [
+                144.946457, //long
+                -37.840935 //lat
+            ]
+        }
         // companyName: '',
         // position: '',
         // abn: '',
@@ -58,6 +65,27 @@ const Signup = (props: Propstype) => {
 
     useEffect(() => {
         props.callTradeList();
+        var locationNew: any = {
+            location: {
+                type: "Point",
+                coordinates: [
+                    144.946457, //long
+                    -37.840935 //lat
+                ]
+            }
+        }
+
+        const showPosition = (position: any) => {
+            const lat = position.coords.latitude;
+            const long = position.coords.longitude;
+            locationNew.location.coordinates[0] = long;
+            locationNew.location.coordinates[1] = lat;
+            setSignupData((prevData: any) => ({ ...prevData, ...locationNew }));
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition);
+        }
     }, [])
 
     const backButtonHandler = () => {
@@ -65,7 +93,7 @@ const Signup = (props: Propstype) => {
         if (steps === 4) {
             minStep = 2;
         }
-        if (steps === 2 && (props.socialData || props.history.location.redirect === "socialRedirectFromLogin")) {
+        if (steps === 2 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
             minStep = 2
         }
         if (steps === 5 && signupData.socialId) {
