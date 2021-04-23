@@ -16,6 +16,7 @@ interface Proptypes {
     handleStepBack: () => void;
 }
 
+const default_format = 'YYYY-MM-DD';
 const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
     const [range, setRange] = useState({
         startDate: new Date(),
@@ -26,17 +27,16 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
     const [error, setError] = useState('');
 
     const handleChange = (item: any) => {
-        console.log({item},'---in-change')
+        console.log({ item }, '---in-change')
         setRange(item.selection);
-        handleCheck();
+        handleCheck(item.selection);
     };
 
-    const handleCheck = () => {
-        let default_format = 'YYYY-MM-DD';
-        let from_date = moment(range.startDate).format(default_format);
-        let to_date = moment(range.endDate).format(default_format);
-        setFormattedDates({from_date, to_date});
-        if(moment(to_date, default_format).isAfter(moment(from_date, default_format))){ // isAfter
+    const handleCheck = (item: any) => {
+        let from_date = moment(item.startDate).format(default_format);
+        let to_date = moment(item.endDate).format(default_format);
+        setFormattedDates({ from_date, to_date });
+        if (moment(from_date, default_format).isAfter(moment(to_date, default_format))) { // isAfter
             setError('finish date is greater then the start date.');
         } else {
             setError('');
@@ -44,10 +44,19 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
     }
 
     const handleContinue = () => {
-        console.log({formattedDates})
+        handleStepComplete(formattedDates);
     }
 
-    console.log({range});
+    const checkDisable = () => {
+        // let from_date = moment(range.startDate).format(default_format);
+        let to_date = moment(range.endDate).format(default_format);
+        let current_date = moment().format(default_format);
+        if (moment(to_date, default_format).isAfter(moment(current_date, default_format))) {
+            return false; // changes
+        } else {
+            return true; // still same
+        }
+    }
 
     return (
         <div className="app_wrapper">
@@ -79,12 +88,17 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
                                     showSelectionPreview={true}
                                     showPreview={true}
                                     minDate={new Date()}
+                                    maxDate={moment().add(2, 'years').toDate()}
                                     fixedHeight={true}
                                 />
                             </div>
                             <span className="error_msg mtb-10">{error}</span>
                             <div className="form_field">
-                                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
+                                <button
+                                    className={`fill_btn full_btn ${checkDisable() ? 'disable_btn' : ''}`}
+                                    onClick={handleContinue}>
+                                    {'Continue'}
+                                </button>
                             </div>
                         </div>
                     </div>

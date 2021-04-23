@@ -127,6 +127,13 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
     );
   });
 
+  const checkErrors = () => {
+    if (!errors.job_type.length && !errors.specialization.length && !errors.categories.length) {
+      return false
+    }
+    return true;
+  }
+
   return (
     <div className="app_wrapper">
 
@@ -180,7 +187,9 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
             <span className="error_msg">{errors.specialization}</span>
           </div>
           <div className="form_field">
-            <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
+            <button
+              className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
+              onClick={handleContinue}>Continue</button>
           </div>
         </div>
       </div>

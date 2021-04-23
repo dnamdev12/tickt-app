@@ -83,6 +83,13 @@ const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
     }
   };
 
+  const checkErrors = () => {
+    if (!errors.jobName.length && !errors.job_description.length) {
+      return false
+    }
+    return true;
+  }
+
   const { jobName, job_description } = basicDetails;
 
   return (
@@ -128,7 +135,9 @@ const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
                   : ''}
               </div>
               <div className="form_field">
-                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
+                <button
+                  className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
+                  onClick={handleContinue}>{'Continue'}</button>
               </div>
             </div>
           </div>
