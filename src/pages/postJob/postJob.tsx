@@ -35,7 +35,7 @@ interface Proptypes {
 
 const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
   const [categoriesData, setCategoriesData] = useState([]);
-  const [step, setStep] = useState(3);
+  const [step, setStep] = useState(4);
   const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
   const [data, setData] = useState({});
 
@@ -59,6 +59,7 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
   };
 
   const handleStepBack = () => setStep((prevStep) => prevStep - 1);
+
   let page;
   switch (step) {
     case 1:
@@ -71,6 +72,7 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
       );
       break;
     case 2:
+      {console.log({tradeListData, categoriesData})}
       page = (
         <JobType
           categories={tradeListData}

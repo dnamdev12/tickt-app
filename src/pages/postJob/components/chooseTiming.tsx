@@ -1,83 +1,57 @@
-import { useState } from 'react';
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import menu from '../../../assets/images/menu-line-white.svg';
-import bell from '../../../assets/images/ic-notification.png';
-import dummy from '../../../assets/images/u_placeholder.jpg';
+import React, { useState, useEffect } from 'react';
+// import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+// import menu from '../../../assets/images/menu-line-white.svg';
+// import bell from '../../../assets/images/ic-notification.png';
+// import dummy from '../../../assets/images/u_placeholder.jpg';
 // @ts-ignore
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-
+import CommonHeader from './commonHeader';
+import moment from 'moment';
 interface Proptypes {
-  data: any;
-  stepCompleted: Boolean;
-  handleStepComplete: (data: any) => void;
-  handleStepBack: () => void;
+    data: any;
+    stepCompleted: Boolean;
+    handleStepComplete: (data: any) => void;
+    handleStepBack: () => void;
 }
 
 const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
-  const [range, setRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-  });
+    const [range, setRange] = useState({
+        startDate: new Date(),
+        endDate: new Date(),
+        key: 'selection',
+    });
+    const [formattedDates, setFormattedDates] = useState({});
+    const [error, setError] = useState('');
 
-  const handleChange = ({ selection }: { selection: { startDate: Date, endDate: Date }}) => {
-    setRange(range);
-  };
+    const handleChange = (item: any) => {
+        console.log({item},'---in-change')
+        setRange(item.selection);
+        handleCheck();
+    };
+
+    const handleCheck = () => {
+        let default_format = 'YYYY-MM-DD';
+        let from_date = moment(range.startDate).format(default_format);
+        let to_date = moment(range.endDate).format(default_format);
+        setFormattedDates({from_date, to_date});
+        if(moment(to_date, default_format).isAfter(moment(from_date, default_format))){ // isAfter
+            setError('finish date is greater then the start date.');
+        } else {
+            setError('');
+        }
+    }
+
+    const handleContinue = () => {
+        console.log({formattedDates})
+    }
+
+    console.log({range});
 
     return (
         <div className="app_wrapper">
-
-            {/* Header */}
-            <header id="header">
-                <div className="custom_container">
-                    <div className="flex_headrow">
-                        <div className="brand_wrap">
-                            <figure>
-                                <img src={colorLogo}
-                                    alt="logo-white" />
-                            </figure>
-                        </div>
-                        <ul className="center_nav">
-                            <li>
-                                <a>Discover</a>
-                            </li>
-                            <li>
-                                <a>Jobs</a>
-                            </li>
-                            <li>
-                                <a className="active">Post</a>
-                            </li>
-                            <li>
-                                <a>Chat</a>
-                            </li>
-                        </ul>
-
-
-                        <ul className="side_nav">
-                            <li className="mob_nav">
-                                <img src={menu} alt="menu" />
-                            </li>
-                            <div className="profile_notification">
-                                <div className="notification_bell">
-                                    <figure className="bell">
-                                        <span className="badge">4 </span>
-                                        <img src={bell} alt="notify" />
-                                    </figure>
-                                </div>
-                                <div className="user_profile">
-                                    <figure aria-controls="simple-menu" aria-haspopup="true">
-                                        <img src={dummy} alt="profile-img" />
-                                    </figure>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
-
-                </div>
-            </header>
-            {/* Header close */}
-
+            <CommonHeader />
             <div className="section_wrapper">
                 <div className="custom_container">
                     <div className="form_field">
@@ -94,22 +68,23 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
                     <div className="flex_row">
                         <div className="flex_col_sm_5">
                             <div className="form_field">
-                            <DateRangePicker
-                              ranges={[range]}
-                              onChange={handleChange}
-                              months={2}
-                              direction="horizontal"
-                                moveRangeOnFirstSelection={false}
-                                rangeColors={["#fee600", "#b5b5b5"]}
-                                showDateDisplay={false}
-                                showSelectionPreview={true}
-                                showPreview={true}
-                                minDate={new Date()}
-                                fixedHeight={true}
-                            />
+                                <DateRangePicker
+                                    ranges={[range]}
+                                    onChange={handleChange}
+                                    months={2}
+                                    direction="horizontal"
+                                    moveRangeOnFirstSelection={false}
+                                    rangeColors={["#fee600", "#b5b5b5"]}
+                                    showDateDisplay={false}
+                                    showSelectionPreview={true}
+                                    showPreview={true}
+                                    minDate={new Date()}
+                                    fixedHeight={true}
+                                />
                             </div>
+                            <span className="error_msg mtb-10">{error}</span>
                             <div className="form_field">
-                                <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>Continue</button>
+                                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
                             </div>
                         </div>
                     </div>

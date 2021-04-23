@@ -171,8 +171,14 @@ const BannerSearch = (props: any) => {
         setInputFocus2(false);
         document.getElementById("location-input-tag")?.blur();
         geocodeByAddress(address)
-            .then((results: any) => getLatLng(results[0]))
-            .then((latLng: any) => console.log('Success', latLng))
+            .then((results: any) => {
+                console.log({ item: results })
+                return getLatLng(results[0])
+            })
+            .then((latLng: any) => {
+                console.log('Success', latLng)
+                return latLng;
+            })
             .catch((error: any) => console.error('Error', error));
     }
 
