@@ -108,10 +108,11 @@ body {
 	font-family: 'Neue Haas Grotesk Text Pro Bold';
 	line-height: 1.16;
 	color: var(--blue);
-	margin-bottom: 16px;
+	margin-bottom: 32px;
 	display: block;
 	@media (max-width: 812px) {
 		font-size: 20px;
+		margin-bottom: 20px;
 	}
 	@media (max-width: 768px) {
 		font-size: 26px;
@@ -2521,9 +2522,6 @@ body {
 		width: 100%;
 		margin-bottom: 20px;
 	}
-	@media (max-width: 650px) {
-		margin-bottom: 10px;
-	}
 	.more_detail {
 		position: absolute;
 		top: 16px;
@@ -3000,6 +2998,22 @@ body {
 //----------------Search result----------------------//
 .search_result{
 	padding-top: 80px;
+	@media (max-width: 812px) {
+		padding-top: 0;
+	}
+	.flex_col_sm_8{
+		@media (max-width: 812px) {
+			width: 50%;
+		}
+		@media (max-width: 650px) {
+			width: 70%;
+		}
+	}
+	.flex_col_sm_4{
+		@media (max-width: 650px) {
+			width: 30%;
+		}
+	}
 	.result_heading{
 		margin-bottom: 40px;
 		.flex_row{
@@ -3008,6 +3022,9 @@ body {
 	}
 	.title {
 		margin-bottom: 24px;
+		@media (max-width: 650px) {
+			margin-bottom: 20px;
+		}
 		.count {
 		  margin: 8px 0 0;
 		  font-size: 16px;
@@ -3015,6 +3032,9 @@ body {
 		  line-height: 1.13;
 		  display: block;
 		  font-family: 'Neue Haas Grotesk Text Pro Roman';
+		  @media (max-width: 650px) {
+			font-size: 14px;
+			}
 		}
 	}
 	.filters_wrapr {
@@ -3025,6 +3045,9 @@ body {
 			display: inline-block;
 			margin-right: 24px;
 			position: relative;
+			@media (max-width: 650px) {
+				margin-right: 12px;
+			}
 			a {
 			  font-size: 14px;
 			  font-family: 'Neue Haas Grotesk Text Pro Medium';
@@ -3036,6 +3059,11 @@ body {
 			  background-color: #dfe5ef;
 			  display: flex;
 			  align-items: center;
+			  @media (max-width: 650px) {
+				font-size: 12px;
+				padding: 7px 10px;
+				border-radius: 4px;
+				}
 			  &:hover{
 				border-color: var(--blue-two);
 			  }
@@ -3050,6 +3078,10 @@ body {
 				width: 24px;
 				height: 24px;
 				margin-right: 5px;
+				@media (max-width: 650px){
+					width: 15px;
+    				height: 15px;
+				}
 			  }
 			}
 		  }
@@ -3067,6 +3099,11 @@ body {
 		display: inline-flex;
 		align-items: center;
 		cursor: pointer;
+		@media (max-width: 650px) {
+			font-size: 12px;
+			padding: 7px 10px;
+			border-radius: 4px;
+		}
 		&:hover, &.active{
 		  border-color: var(--blue-two);
 		}
@@ -3074,6 +3111,10 @@ body {
 			width: 24px;
 			height: 24px;
 			margin-right: 5px;
+			@media (max-width: 650px){
+				width: 15px;
+				height: 15px;
+			}
 		}
 	}
 	.tradies_row{
@@ -3087,6 +3128,18 @@ body {
 			flex: 1 1 50%;
 		}
 	}
+	.mob_srch_option {
+		display: none;
+		@media (max-width: 812px) {
+		  display: flex;
+		  margin-bottom: 15px;
+		}
+		.flex_col_sm_6{
+		  @media (max-width: 768px) {
+			width: 50%;
+		  }
+		}
+	  }
 }
 .map_stick {
 	height: 100vh;

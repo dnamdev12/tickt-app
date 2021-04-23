@@ -16,6 +16,8 @@ import Location from "../../../../../assets/images/ic-location.png";
 import cross from "../../../../../assets/images/close-black.png";
 import icgps from "../../../../../assets/images/ic-gps.png";
 import residential from "../../../../../assets/images/ic-residential.png";
+import close from "../../../../../assets/images/icon-close-1.png";
+
 
 const BannerSearch = (props: any) => {
     const [stateData, setStateData] = useState<any>({
@@ -237,7 +239,7 @@ const BannerSearch = (props: any) => {
     return (
         <div className="home_search">
             <button className="modal_srch_close">
-                <img src="assets/images/close 1.png" alt="close" />
+                <img src={close} alt="close" />
             </button>
             <form className="search_wrapr">
                 <ul>
