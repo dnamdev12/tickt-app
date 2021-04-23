@@ -72,6 +72,24 @@ textarea {
     pointer-events: none;
   }
 }
+
+.select_input{
+  @include border-radius(3px);
+  padding: 15px 18px;
+  width: 100%;
+  color: var(--blue);
+  background-color: var(--white);
+  border: solid 1px var(--warm-gray);
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  option{
+    height: 100%;
+    color: var(--blue);
+    background-color: #dfe5ef;
+    font-size: 14px;
+    padding: 10px;
+  }
+}
 .sm_box{
   width: 158px;
 }
@@ -276,6 +294,10 @@ a.fill_grey_btn {
     width: 17px;
     height: 17px;
     object-fit: contain;
+  }
+  &.dollar{
+    left: 18px;
+    color: var(--greyish-brown);
   }
 }
 
