@@ -14,6 +14,7 @@ interface Props {
     setShowModal: (data: any) => void,
     modalUpdateSteps: (data: any) => void,
     setSocialData: (data: any) => void,
+    modalLoginBackBtn?: string,
     // socialId?: string,
 }
 

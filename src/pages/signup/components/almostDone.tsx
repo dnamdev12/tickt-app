@@ -15,13 +15,22 @@ const AlmostDone = (props: Propstype) => {
         abn: '',
     })
 
-    const changeHandler = (e: any) => {
-        if (e.target.name === 'abn' && e.target.value.length > 11) {
+    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.name === 'abn') {
+            const inputVal = e.target.value;
+            const key = inputVal.charCodeAt(inputVal.length - 1)
+            if ((key == NaN || inputVal == "") && almostDoneData.abn.length === 1) {
+                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: '' }))
+                return;
+            }
+            if ((key > 47 && key < 58) || key === 8) {
+                e.preventDefault();
+                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+            }
             return;
         }
         setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
     }
-
 
     const validateForm = () => {
         const newErrors: any = {};
@@ -86,7 +95,8 @@ const AlmostDone = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Australian Business Number</label>
                     <div className="text_field">
-                        <input type="number" placeholder="Enter australian business number" value={almostDoneData.abn} name="abn" onChange={changeHandler} />
+                        {/* <input type="number" placeholder="Enter australian business number" value={almostDoneData.abn} name="abn" onChange={changeHandler} /> */}
+                        <input type="text" placeholder="Enter Australian business number" value={almostDoneData.abn} name="abn" onChange={changeHandler} maxLength={11} />
                     </div>
                     {!!errors.abn && <span className="error_msg">{errors.abn}</span>}
                 </div>
