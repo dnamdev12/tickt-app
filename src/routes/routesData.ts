@@ -12,6 +12,7 @@ import MostViewedJobs from '../pages/mostViewedJobs/index';
 import JobsData from '../pages/home/tradieHome/components/jobsData/index';
 import TradieSearchJobResult from '../pages/tradieSearchJobResult/index';
 import PopularBuilders from '../pages/popularBuilders/index';
+import RenderMap from '../pages/tradieSearchJobResult/renderMap';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -86,6 +87,11 @@ const routes = [
         component: TradieSearchJobResult,
     },
     {
+        name: 'map',
+        path: '/map',
+        component: RenderMap,
+    },
+    {
         name: 'guest',
         path: '/guest-guest',
         component: Guest,
@@ -104,7 +110,8 @@ const routes = [
         name: '404',
         path: '/*',
         redirectTO: '/404'
-    }
+    },
+    
 ]
 
 export default routes

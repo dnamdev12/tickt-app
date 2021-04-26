@@ -27,10 +27,12 @@ const Urls = {
     jobCategories: `${versions.v1}${ServiceEnum.auth}jobType`,
     milestones: `${versions.v1}${ServiceEnum.job}tempMilestoneList`,
     getSearchData: `${versions.v1}${ServiceEnum.admin}getSearchData`, //admin
+    getRecentSearch: `${versions.v1}${ServiceEnum.admin}getRecentSearch`, //admin
     jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
     jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
     home: `${versions.v1}home`,
-    homeSearch: `${versions.v1}home/search`, 
+    homeSearch: `${versions.v1}home/search`,
+    viewNearByJob: `${versions.v1}home/viewNearByJob`,
 }
 
 export const urlFor = (service: String): string => {

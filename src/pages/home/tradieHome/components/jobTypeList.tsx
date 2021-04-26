@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
+import "react-multi-carousel/lib/styles.css";
 
 const categoriesjob = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
         items: 1,
         slidesToSlide: 1, // optional, default to 1.
-    },
+    }
 };
 
 const JobTypeList = (props: any) => {

@@ -17,25 +17,41 @@ import cross from "../../../../../assets/images/close-black.png";
 import icgps from "../../../../../assets/images/ic-gps.png";
 import residential from "../../../../../assets/images/ic-residential.png";
 
-const BannerSearch = (props: any) => {
-    const [stateData, setStateData] = useState<any>({
-        page: 1,
-        searchedJob: '',
-        isSearchedJobSelected: false,
-        tradeId: '',
-        specializationId: '',
-        searchedJobId: null,
-        location: {
-            coordinates: []
-        },
-        locationName: '',
-        selectedMapLocation: '',
-        isMapLocationSelected: false,
-        from_date: '',
-        startDate: '',
-        to_date: '',
-        endDate: '',
-    });
+interface PropsType {
+    history: any,
+    location?: any,
+    bannerData: any,
+    searchJobListData: Array<object>,
+    recentSearchJobData: Array<object>,
+    homeSearchJobData: Array<object>,
+    setBannerData: (data: any) => void,
+    getSearchJobList: (data: any) => void,
+    postHomeSearchData: (data: any) => void,
+}
+
+const BannerSearch = (props: PropsType) => {
+    const [stateData, setStateData] = useState<any>(props.bannerData)
+    // const [stateData, setStateData] = useState<any>({
+    //     page: 1,
+    //     searchedJob: '',
+    //     isSearchedJobSelected: false,
+    //     tradeId: '',
+    //     specializationId: '',
+    //     searchedJobId: null,
+    //     location: {
+    //         coordinates: [
+    //             144.946457, //long
+    //             -37.840935 //lat
+    //         ]
+    //     },
+    //     bannerLocation: '',
+    //     selectedMapLocation: '',
+    //     isMapLocationSelected: false,
+    //     from_date: '',
+    //     startDate: '',
+    //     to_date: '',
+    //     endDate: '',
+    // });
     const [errors, setErrors] = useState<any>({});
     const [inputFocus1, setInputFocus1] = useState<boolean>(false)
     const [inputFocus2, setInputFocus2] = useState<boolean>(false)
@@ -46,9 +62,6 @@ const BannerSearch = (props: any) => {
 
     useEffect(() => {
         console.log(props, "bannerSearch props")
-        if (props.location?.state?.selectedMapLocation) {
-            setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: props.location?.state?.selectedMapLocation }))
-        }
         window.addEventListener('mousedown', handleClicked)
 
         return () => {
@@ -60,12 +73,18 @@ const BannerSearch = (props: any) => {
         if (calenderRange1 && inputFocus3) {
             const startDate = format(new Date(calenderRange1.startDate), 'MMM dd')
             const endDate = format(new Date(calenderRange1.endDate), 'MMM dd')
-            const start_date = format(new Date(calenderRange1.startDate), 'yyyy-MM-dd')
-            const end_date = format(new Date(calenderRange1.endDate), 'yyyy-MM-dd')
+            const from_date = format(new Date(calenderRange1.startDate), 'yyyy-MM-dd')
+            const to_date = format(new Date(calenderRange1.endDate), 'yyyy-MM-dd')
             setStateData((prevData: any) => ({ ...prevData, startDate: startDate, endDate: endDate }))
-            setStateData((prevData: any) => ({ ...prevData, start_date: start_date, end_date: end_date }))
+            setStateData((prevData: any) => ({ ...prevData, from_date: from_date, to_date: to_date }))
         }
     }, [calenderRange1])
+
+    useEffect(() => {
+        if (props.bannerData !== stateData) {
+            setStateData(props.bannerData);
+        }
+    }, [props.bannerData])
 
     const handleClicked = (event: any) => {
         if ((document.getElementById("recent-job-search-div") || document.getElementById("fetched-custom-job-category-div")) && (!document.getElementById("text-field-div")?.contains(event.target) && !document.getElementById("recent-job-search-div")?.contains(event.target)) && (!document.getElementById("fetched-custom-job-category-div")?.contains(event.target))) {
@@ -93,7 +112,7 @@ const BannerSearch = (props: any) => {
         setCalenderRange1(item.selection1)
     };
 
-    console.log(stateData, "stateData")
+    console.log(stateData, "stateData diff", props.bannerData)
 
     const checkInputValidation = (e: any) => {
         const alphaRegex = new RegExp(regex.alphaSpecial)
@@ -125,21 +144,17 @@ const BannerSearch = (props: any) => {
             <div className="custom_autosuggestion" id="recent-job-search-div">
                 <span className="sub_title">Recent searches</span>
                 <div className="flex_row recent_search">
-                    <div className="flex_col_sm_4" onClick={() => searchedJobClicked({ name: 'Campervans', _id: 'dhc78hi237hiu', specializationId: 'jey89ehe997yyh' })}>
-                        <div className="autosuggestion_icon card history">
-                            <span>Campervans</span>
-                            <span className="name">Vehicles</span>
-                        </div>
-                    </div>
-
-                    <div className="flex_col_sm_4">
-                        <div className="autosuggestion_icon card history">
-                            <span>sparknotes1</span>
-                            <span className="name">sparknotes</span>
-                        </div>
-                    </div>
+                    {props.recentSearchJobData?.length && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
+                        return (
+                            <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item)}>
+                                <div className="autosuggestion_icon card history">
+                                    <span>{item.name}</span>
+                                    <span className="name">{item.trade_name}</span>
+                                </div>
+                            </div>)
+                    })}
                 </div>
-            </div>
+            </div >
         )
     }
 
@@ -171,19 +186,44 @@ const BannerSearch = (props: any) => {
         setInputFocus2(false);
         document.getElementById("location-input-tag")?.blur();
         geocodeByAddress(address)
-            .then((results: any) => getLatLng(results[0]))
+            .then((results: any) => {
+                console.log(results, "result geocodeByAddress")
+                return getLatLng(results[0])
+            })
             .then((latLng: any) => console.log('Success', latLng))
             .catch((error: any) => console.error('Error', error));
+
+        // const geocoder = new google.maps.Geocoder();
+
     }
 
     const getCurrentLocation = (e: any) => {
         e.preventDefault();
         console.log("use my current location clicked")
-        navigator.geolocation.getCurrentPosition(function (position) {
-            console.log("Latitude is :", position.coords.latitude);
-            console.log("Longitude is :", position.coords.longitude);
-            setInputFocus2(false);
-        });
+        var locationNew: any = {
+            bannerLocation: {
+                coordinates: []
+            }
+        }
+
+        const showPosition = (position: any) => {
+            const lat = position.coords.latitude;
+            const long = position.coords.longitude;
+            locationNew.bannerLocation.coordinates[0] = long;
+            locationNew.bannerLocation.coordinates[1] = lat;
+            setStateData((prevData: any) => ({ ...prevData, ...locationNew }));
+        }
+
+        const showError = (error: any) => {
+            if (error.code == error.PERMISSION_DENIED) {
+                setStateData((prevData: any) => ({ ...prevData, locationDenied: true }));
+                console.log("PERMISSION DENIED", error, "okok", error.code)
+            }
+        }
+
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, showError);
+        }
 
         // geocodeByAddress(address)
         //     .then((results: any) => getLatLng(results[0]))
@@ -198,9 +238,9 @@ const BannerSearch = (props: any) => {
 
     const validateForm = () => {
         const newErrors: any = {};
-        if (!stateData.isSearchedJobSelected) {
+        if (!stateData?.isSearchedJobSelected) {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
-        } else if (!stateData.searchedJob) {
+        } else if (!stateData?.searchedJob) {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJobEmpty;
         } else {
             const searchJobRegex = new RegExp(regex.alphaSpecial);
@@ -209,7 +249,7 @@ const BannerSearch = (props: any) => {
             }
         }
 
-        if (!stateData.isMapLocationSelected && stateData.selectedMapLocation) {
+        if (!stateData?.isMapLocationSelected && stateData?.selectedMapLocation) {
             newErrors.selectedMapLocation = Constants.errorStrings.bannerSearchLocation;
         }
         setErrors(newErrors);
@@ -217,12 +257,13 @@ const BannerSearch = (props: any) => {
     }
 
     const bannerSearchClicked = () => {
+        console.log(stateData, "okok banner")
         if (validateForm()) {
             const data = {
-                page: stateData.page,
-                tradeId: stateData.tradeId,
-                // location: stateData.location,
-                specializationId: stateData.specializationId,
+                page: stateData?.page,
+                tradeId: stateData?.tradeId,
+                // location: stateData?.location,
+                specializationId: stateData?.specializationId,
                 // from_date: stateData.from_date,
                 // to_date: stateData.to_date,
                 // sortBy: 2,
@@ -243,24 +284,24 @@ const BannerSearch = (props: any) => {
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
-                            <input type="text" placeholder="What jobs are you after?" value={stateData.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} />
+                            <input type="text" placeholder="What jobs are you after?" value={stateData?.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} />
                             <div className="border_eff"></div>
                             <span className="detect_icon_ltr">
                                 <img src={Searchicon} alt="search" />
                             </span>
-                            {stateData.searchedJob && inputFocus1 &&
+                            {!!stateData?.searchedJob && inputFocus1 &&
                                 <span className="detect_icon" >
                                     <img src={cross} alt="cross" onClick={() => cleanInputData('searchedJob')} />
                                 </span>}
                         </div>
                         {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>}
                     </li>
-                    {!stateData.searchedJob && inputFocus1 && recentJobSearches()}
-                    {stateData.searchedJob.length >= 1 && inputFocus1 && renderJobResult()}
+                    {!stateData?.searchedJob && inputFocus1 && recentJobSearches()}
+                    {stateData?.searchedJob.length >= 1 && inputFocus1 && renderJobResult()}
                     <li className="loc_box">
                         <div id="location-text-field-div">
                             <PlacesAutocomplete
-                                value={stateData.selectedMapLocation}
+                                value={stateData?.selectedMapLocation}
                                 onChange={(city: string) => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: city, isMapLocationSelected: false }))}
                                 shouldFetchSuggestions={true}
                                 onSelect={locationSelectedHandler}
@@ -276,11 +317,11 @@ const BannerSearch = (props: any) => {
                                             <span className="detect_icon_ltr">
                                                 <img src={Location} alt="location" />
                                             </span>
-                                            {stateData.selectedMapLocation && inputFocus2 && <span className="detect_icon" >
+                                            {stateData?.selectedMapLocation && inputFocus2 && <span className="detect_icon" >
                                                 <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '' }))} />
                                             </span>}
                                         </div>
-                                        {suggestions.length > 0 && stateData.selectedMapLocation && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                        {suggestions.length > 0 && stateData?.selectedMapLocation && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                             <div className="flex_row recent_search auto_loc">
                                                 <div className="flex_col_sm_4">
                                                     {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>}
@@ -313,21 +354,25 @@ const BannerSearch = (props: any) => {
                         </div>
                         {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>}
                     </li>
-                    {!stateData.selectedMapLocation && inputFocus2 &&
+                    {!stateData?.selectedMapLocation && inputFocus2 &&
                         <div className="custom_autosuggestion location" id="current-location-search-div">
                             <a className="location-btn" onClick={getCurrentLocation}>
                                 <span className="gps_icon">
                                     <img src={icgps} />
                                 </span> Use my current location
                             </a>
+                            {stateData?.locationDenied && <span className="blocked_note">
+                                You have blocked your location.
+                                To use this, change your location settings in browser.
+                              </span>}
                         </div>
                     }
                     <li>
                         <div className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>
-                                <input type="text" placeholder={stateData.startDate ? `${stateData.startDate} - ${stateData.endDate}` : "When?"} onFocus={() => setInputFocus3(true)} />
-                                {stateData.startDate && inputFocus3 &&
+                                <input type="text" placeholder={stateData?.startDate ? `${stateData?.startDate} - ${stateData?.endDate}` : "When?"} onFocus={() => setInputFocus3(true)} />
+                                {stateData?.startDate && inputFocus3 &&
                                     <span className="detect_icon" >
                                         <img src={cross} alt="cross" onClick={() => cleanInputData('calender')} />
                                     </span>}
