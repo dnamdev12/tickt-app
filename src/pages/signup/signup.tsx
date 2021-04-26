@@ -31,7 +31,7 @@ const DATA = [
     { title: 'Phone number' },
     { title: 'Verify your number' },
     { title: 'Create password' },
-    { title: 'Select trades you require', tradieTitle: 'What is your trade?' },
+    { title: 'Trades you used most', tradieTitle: 'What is your trade?' },
     { title: 'What Specialisation?' },
     { title: 'Almost done', tradieTitle: 'Add qualification' },
     // { title: 'Add ABN' }
