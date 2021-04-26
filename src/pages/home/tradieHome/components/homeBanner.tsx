@@ -21,7 +21,8 @@ const HomeBanner = (props: PropsType) => {
         // props.getViewNearByJob(data);
         props.history.push({
             pathname: '/search-job-results',
-            search: '?type=viewNearByJob'
+            search: '?type=viewNearByJob',
+            state: { bannerData: props.bannerData }
         })
     }
 

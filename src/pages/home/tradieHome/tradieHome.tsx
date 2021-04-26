@@ -16,8 +16,8 @@ const TradieHome = (props: any) => {
         searchedJobId: null,
         location: {
             coordinates: [
-                144.946457, //long
-                -37.840935 //lat
+                72.831062,  //144.946457, //long
+                21.17021 //-37.840935 //lat
             ]
         },
         bannerLocation: '',

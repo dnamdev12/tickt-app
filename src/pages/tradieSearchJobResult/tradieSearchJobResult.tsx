@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useLocation } from 'react-router-dom';
 import {
     GoogleMap,
     useLoadScript,
@@ -24,36 +25,37 @@ const mapContainerStyle = {
     height: "100vh"
 }
 
-const queryParams = new URLSearchParams(window.location.search).get('type');
 
 const TradieSearchJobResult = (props: any) => {
     const [mapData, setMapData] = useState<any>({
         showMap: false,
     })
-
-    // useEffect(() => {
-    //     // if(queryParams == 'viewNearByJob'){
-    //     //     const data = {
-    //     //     lat: props.bannerData.location.coordinates[1],
-    //     //     long: props.bannerData.location.coordinates[0],
-    //     //     page : 1
-    //     // }
-    //     // props.getViewNearByJob(data);
-    //     }
-    // }, [])
     
-    console.log(queryParams, "queryParam",)
+    const location = useLocation();
+    const queryParams = new URLSearchParams(location?.search).get('type');
 
+    useEffect(() => {
+        if(queryParams == 'viewNearByJob'){
+            const data = {
+                lat: props.location?.state?.bannerData?.location?.coordinates[1],
+                long: props.location?.state?.bannerData?.location?.coordinates[0],
+                page : 1
+            }
+            props.getViewNearByJob(data);
+        }
+    }, [])
     
+    console.log(queryParams, "queryParam", props)
+
     const renderJobsData = () => {
-        const jobsData = props.jobDataWithJobTypeLatLong?.most_viewed_jobs;
-        return jobsData;
-        // var jobsData;
-        // if(queryParams == 'viewNearByJob'){
-        //     jobsData = props.viewNearByJobData
-        //     return jobsData;
-        // }
-        // return null;
+        // const jobsData = props.jobDataWithJobTypeLatLong?.most_viewed_jobs;
+        // return jobsData;
+        var jobsData;
+        if(queryParams == 'viewNearByJob'){
+            jobsData = props.viewNearByJobData
+            return jobsData;
+        }
+        return null;
     }
 
     return (
@@ -67,7 +69,7 @@ const TradieSearchJobResult = (props: any) => {
                         <div className="result_heading">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
-                                    <span className="title"> Search result heading
+                                    <span className="title">{queryParams == 'viewNearByJob' ? "Jobs in your area" : ''}
                                         <span className="count">45 results</span>
                                     </span>
                                     <SearchResultFilters />
