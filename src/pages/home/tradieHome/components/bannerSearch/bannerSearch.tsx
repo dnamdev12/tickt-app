@@ -35,9 +35,10 @@ const BannerSearch = (props: PropsType) => {
     //     page: 1,
     //     searchedJob: '',
     //     isSearchedJobSelected: false,
-    //     tradeId: '',
-    //     specializationId: '',
-    //     searchedJobId: null,
+    //     tradeId: [],
+    //     specializationId: [],
+    //     specializati[...onId: [],
+    //     s]earchedJobId: null,
     //     location: {
     //         coordinates: [
     //             144.946457, //long
@@ -135,7 +136,8 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const searchedJobClicked = (item: any) => {
-        setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: item._id, specializationId: item.specializationsId, isSearchedJobSelected: true }));
+        // setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: item._id, specializationId: item.specializationsId, isSearchedJobSelected: true }));
+        setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: [item._id], specializationId: [item.specializationsId], isSearchedJobSelected: true }));
         setInputFocus1(false);
     }
 
@@ -261,15 +263,16 @@ const BannerSearch = (props: PropsType) => {
         if (validateForm()) {
             const data = {
                 page: stateData?.page,
+                isFiltered: false,
                 tradeId: stateData?.tradeId,
-                // location: stateData?.location,
+                location: stateData?.location,
                 specializationId: stateData?.specializationId,
-                // from_date: stateData.from_date,
-                // to_date: stateData.to_date,
+                from_date: stateData.from_date,
+                to_date: stateData.to_date,
                 // sortBy: 2,
             }
             props.postHomeSearchData(data)
-            // alert("banner search clicked!")
+            alert("banner search clicked!")
         }
     }
 

@@ -43,6 +43,16 @@ const TradieSearchJobResult = (props: any) => {
             }
             props.getViewNearByJob(data);
         }
+
+        if(queryParams == 'jobTypeList'){
+            const data = {
+                page: 1,
+                isFiltered: false,
+                // tradeId: location?.tradeId
+                tradeId: ["605c8bccb777553e6b057b8a"]
+            }
+            props.postHomeSearchData(data)
+        }
     }, [])
     
     console.log(queryParams, "queryParam", props)
@@ -53,6 +63,10 @@ const TradieSearchJobResult = (props: any) => {
         var jobsData;
         if(queryParams == 'viewNearByJob'){
             jobsData = props.viewNearByJobData
+            return jobsData;
+        }
+        if(queryParams == 'jobTypeList'){
+            jobsData = props.homeSearchJobData
             return jobsData;
         }
         return null;
@@ -69,7 +83,7 @@ const TradieSearchJobResult = (props: any) => {
                         <div className="result_heading">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
-                                    <span className="title">{queryParams == 'viewNearByJob' ? "Jobs in your area" : ''}
+                                    <span className="title">{queryParams == 'viewNearByJob' ? "Jobs in your area" : queryParams == 'jobTypeList' ? "Residential Jobs" : ""}
                                         <span className="count">45 results</span>
                                     </span>
                                     <SearchResultFilters />

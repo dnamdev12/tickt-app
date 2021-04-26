@@ -3,20 +3,23 @@ import { bindActionCreators } from 'redux';
 import SearchResultsComponent from './tradieSearchJobResult';
 import {
     getJobWithJobTypeLatLong,
-    getViewNearByJob
+    getViewNearByJob,
+    postHomeSearchData
 } from '../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
     return {
         jobDataWithJobTypeLatLong: state.homeSearch.jobDataWithJobTypeLatLong,
         viewNearByJobData: state.homeSearch.viewNearByJobData,
+        homeSearchJobData: state.homeSearch.homeSearchJobData,
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         getJobWithJobTypeLatLong,
-        getViewNearByJob
+        getViewNearByJob,
+        postHomeSearchData
     }, dispatch);
 }
 

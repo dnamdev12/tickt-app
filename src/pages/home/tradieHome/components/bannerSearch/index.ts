@@ -12,7 +12,11 @@ const mapStateToProps = (state: any) => {
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-    return bindActionCreators({ getSearchJobList, getRecentSearchList, postHomeSearchData }, dispatch);
+    return bindActionCreators({
+        getSearchJobList,
+        getRecentSearchList,
+        postHomeSearchData
+    }, dispatch);
 }
 
 const BannerSearch = connect(

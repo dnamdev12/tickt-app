@@ -15,13 +15,13 @@ const JobTypeList = (props: any) => {
         props.getJobTypeList();
     }, [])
 
-    const jobTypeListClicked = (jobId: string) => {
-        const jobData = {
-            lat: '21.17021',
-            long: '72.831062',
-            jobType: jobId,
-        }
-        // props.getJobWithJobTypeLatLong(jobData); pending
+    const jobTypeListClicked = (tradeId: string) => {
+        props.history.push({
+            pathname: '/search-job-results',
+            search: '?type=jobTypeList',
+            tradeId: tradeId,
+            state: { bannerData: props.bannerData }
+        })
     }
 
     console.log(props.jobTypeListData, "jobTypeListData  type==>", props.jobTypeData);

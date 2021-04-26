@@ -11,8 +11,8 @@ const TradieHome = (props: any) => {
         page: 1,
         searchedJob: '',
         isSearchedJobSelected: false,
-        tradeId: '',
-        specializationId: '',
+        tradeId: [],
+        specializationId: [],
         searchedJobId: null,
         location: {
             coordinates: [
