@@ -16,20 +16,65 @@ const AlmostDone = (props: Propstype) => {
     })
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.name === 'abn') {
-            const inputVal = e.target.value;
-            const key = inputVal.charCodeAt(inputVal.length - 1)
-            if ((key == NaN || inputVal == "") && almostDoneData.abn.length === 1) {
-                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: '' }))
+        setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+    }
+
+    const abnHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        let inputVal = e.target.value.replaceAll(' ', '');
+        if (regex.numeric.test(inputVal) || !inputVal) {
+            if (inputVal.length === 2) {
+                if (inputVal.length < almostDoneData.abn.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 2);
+                    setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
+                    return;
+                } else if (inputVal.length == almostDoneData.abn.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 1);
+                    setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
+                    return;
+                }
+            }
+
+            if (inputVal.length >= 2 && inputVal.length < 5) {
+                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, inputVal.length);
+                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
                 return;
             }
-            if ((key > 47 && key < 58) || key === 8) {
-                e.preventDefault();
-                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
+
+            if (inputVal.length === 5) {
+                if (inputVal.length == almostDoneData.abn.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 4);
+                } else if (inputVal.length < almostDoneData.abn.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5);
+                } else {
+                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " ";
+                }
+                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
+                return;
             }
-            return;
+
+            if (inputVal.length === 8) {
+                if (inputVal.length == almostDoneData.abn.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 7);
+                } else if (inputVal.length < almostDoneData.abn.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8);
+                } else {
+                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8) + " ";
+                }
+                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
+                return;
+            }
+
+            if (inputVal.length > 5 && inputVal.length < 8) {
+                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, inputVal.length);
+                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
+                return;
+            }
+
+            if (inputVal.length > 8) {
+                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8) + " " + inputVal.slice(8, inputVal.length);
+            }
+            setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
         }
-        setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
     }
 
     const validateForm = () => {
@@ -55,10 +100,10 @@ const AlmostDone = (props: Propstype) => {
             newErrors.abn = Constants.errorStrings.abnEmpty;
         } else {
             const abnRegex = new RegExp(regex.abn);
-            if (!abnRegex.test(almostDoneData.abn)) {
+            if (!abnRegex.test(almostDoneData.abn.replaceAll(' ', ''))) {
                 newErrors.abn = Constants.errorStrings.abnErr
             }
-            if (!validateABN(almostDoneData.abn)) {
+            if (!validateABN(almostDoneData.abn.replaceAll(' ', ''))) {
                 newErrors.abn = Constants.errorStrings.abnErr
             }
         }
@@ -69,7 +114,10 @@ const AlmostDone = (props: Propstype) => {
     const onSubmit = (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            props.onSubmitSignup(almostDoneData)
+            const newAlmostData = almostDoneData;
+            newAlmostData.abn = almostDoneData.abn.replaceAll(' ', '');
+            console.log(newAlmostData, "newAlmostData");
+            props.onSubmitSignup(newAlmostData)
         }
     }
 
@@ -79,7 +127,7 @@ const AlmostDone = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Company Name</label>
                     <div className="text_field">
-                        <input type="text" placeholder="Enter company name" value={almostDoneData.company_name} name="company_name" onChange={changeHandler} />
+                        <input type="text" placeholder="Enter Company Name" value={almostDoneData.company_name} name="company_name" onChange={changeHandler} />
                     </div>
                     {!!errors.company_name && <span className="error_msg">{errors.company_name}</span>}
                 </div>
@@ -87,7 +135,7 @@ const AlmostDone = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Your Position</label>
                     <div className="text_field">
-                        <input type="text" placeholder="Enter your position" value={almostDoneData.position} name="position" onChange={changeHandler} />
+                        <input type="text" placeholder="Enter Position" value={almostDoneData.position} name="position" onChange={changeHandler} />
                     </div>
                     {!!errors.position && <span className="error_msg">{errors.position}</span>}
                 </div>
@@ -96,7 +144,7 @@ const AlmostDone = (props: Propstype) => {
                     <label className="form_label">Australian Business Number</label>
                     <div className="text_field">
                         {/* <input type="number" placeholder="Enter australian business number" value={almostDoneData.abn} name="abn" onChange={changeHandler} /> */}
-                        <input type="text" placeholder="Enter Australian business number" value={almostDoneData.abn} name="abn" onChange={changeHandler} maxLength={11} />
+                        <input type="text" placeholder="51 824 753 556" value={almostDoneData.abn} name="abn" onChange={abnHandler} maxLength={14} />
                     </div>
                     {!!errors.abn && <span className="error_msg">{errors.abn}</span>}
                 </div>

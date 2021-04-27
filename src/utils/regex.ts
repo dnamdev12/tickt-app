@@ -8,7 +8,7 @@ const regex = {
         abn: "[0-9]{11}",
         alpha: /^[a-zA-Z\s.]*$/,
         alphaSpecial: /^[ A-Za-z&]*$/,
-        numeric: /^[0-9]*$/,
+        numeric: /^\d+$/,
         alphaNumeric: /^[a-zA-Z0-9]*$/,
         fullname: /^[a-zA-Z ]{3,50}$/,
 };
