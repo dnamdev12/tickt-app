@@ -6,7 +6,16 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import remove from "../../../assets/images/icon-close-1.png";
 import addMedia from "../../../assets/images/add-image.png";
 
-const UploadMedia = () => {
+
+interface Proptypes {
+    data: any;
+    stepCompleted: Boolean;
+    handleStepComplete: (data: any) => void;
+    handleStepBack: () => void;
+}
+//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+
+const UploadMedia = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
     return (
         <div className="app_wrapper">
 

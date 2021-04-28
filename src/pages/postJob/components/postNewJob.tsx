@@ -1,11 +1,6 @@
+import { isError } from 'lodash';
 import { useEffect, useState } from 'react';
-// import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-// import menu from '../../../assets/images/menu-line-white.svg';
-// import bell from '../../../assets/images/ic-notification.png';
-// import dummy from '../../../assets/images/u_placeholder.jpg';
 import Constants from '../../../utils/constants';
-import CommonHeader from './commonHeader';
-import CommmonHeader from './commonHeader';
 
 interface Proptypes {
   data: any,
@@ -84,8 +79,10 @@ const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
   };
 
   const checkErrors = () => {
-    if (!errors.jobName.length && !errors.job_description.length) {
-      return false
+    let error_1 = isInvalid('jobName', basicDetails['jobName']);
+    let error_2 = isInvalid('job_description', basicDetails['job_description']);
+    if (!error_1?.length && !error_2?.length) {
+      return false;
     }
     return true;
   }
@@ -94,11 +91,6 @@ const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
 
   return (
     <div className="app_wrapper">
-
-      {/* Header */}
-      <CommonHeader />
-      {/* Header close */}
-
       <div className="section_wrapper">
         <div className="custom_container">
           <div className="form_field">

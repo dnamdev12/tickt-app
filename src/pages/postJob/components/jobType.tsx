@@ -1,17 +1,5 @@
 import { useEffect, useState } from 'react';
 import Constants from '../../../utils/constants';
-// import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-// import menu from '../../../assets/images/menu-line-white.svg';
-// import bell from '../../../assets/images/ic-notification.png';
-// import dummy from '../../../assets/images/u_placeholder.jpg';
-// import profile from '../../../assets/images/ic-profile.png';
-// import spherePlaceholder from "../../../assets/images/ic_categories_placeholder.svg";
-// import residential from "../../../assets/images/ic-residential.png";
-// import industrial from "../../../assets/images/ic-money.png";
-// import contracted from "../../../assets/images/ic-contracted.png";
-// import commercial from "../../../assets/images/ic-commercial.png";
-// import hourlyRate from "../../../assets/images/ic-clock.png";
-import CommonHeader from './commonHeader';
 
 interface Proptypes {
   categories: any;
@@ -127,20 +115,25 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
     );
   });
 
+  // const checkErrors = () => {
+  //   if (!errors.job_type.length && !errors.specialization.length && !errors.categories.length) {
+  //     return false
+  //   }
+  //   return true;
+  // }
+
   const checkErrors = () => {
-    if (!errors.job_type.length && !errors.specialization.length && !errors.categories.length) {
-      return false
+    let error_1 = isInvalid('categories', jobTypeDetails['categories']);
+    let error_2 = isInvalid('job_type', jobTypeDetails['job_type']);
+    let error_3 = isInvalid('specialization', jobTypeDetails['specialization']);
+    if (!error_1?.length && !error_2?.length && !error_3?.length) {
+      return false;
     }
     return true;
   }
 
   return (
     <div className="app_wrapper">
-
-      {/* Header */}
-      <CommonHeader />
-      {/* Header close */}
-
       <div className="section_wrapper">
         <div className="custom_container">
           <div className="form_field">

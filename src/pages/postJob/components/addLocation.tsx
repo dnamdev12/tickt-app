@@ -7,194 +7,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from 'react-places-autocomplete';
-
-// import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-// import menu from '../../../assets/images/menu-line-white.svg';
-// import bell from '../../../assets/images/ic-notification.png';
-// import dummy from '../../../assets/images/u_placeholder.jpg';
 import icgps from "../../../assets/images/ic-gps.png";
-import CommonHeader from './commonHeader';
-
-
-const static_locations = [
-  {
-    "description": "Jakarta, Indonesia",
-    "matched_substrings": [
-      {
-        "length": 1,
-        "offset": 0
-      }
-    ],
-    "place_id": "ChIJnUvjRenzaS4RoobX2g-_cVM",
-    "reference": "ChIJnUvjRenzaS4RoobX2g-_cVM",
-    "structured_formatting": {
-      "main_text": "Jakarta",
-      "main_text_matched_substrings": [
-        {
-          "length": 1,
-          "offset": 0
-        }
-      ],
-      "secondary_text": "Indonesia"
-    },
-    "terms": [
-      {
-        "offset": 0,
-        "value": "Jakarta"
-      },
-      {
-        "offset": 9,
-        "value": "Indonesia"
-      }
-    ],
-    "types": ["colloquial_area", "locality", "political", "geocode"]
-  },
-  {
-    "description": "Jaipur, Rajasthan, India",
-    "matched_substrings": [
-      {
-        "length": 1,
-        "offset": 0
-      }
-    ],
-    "place_id": "ChIJgeJXTN9KbDkRCS7yDDrG4Qw",
-    "reference": "ChIJgeJXTN9KbDkRCS7yDDrG4Qw",
-    "structured_formatting": {
-      "main_text": "Jaipur",
-      "main_text_matched_substrings": [
-        {
-          "length": 1,
-          "offset": 0
-        }
-      ],
-      "secondary_text": "Rajasthan, India"
-    },
-    "terms": [
-      {
-        "offset": 0,
-        "value": "Jaipur"
-      },
-      {
-        "offset": 8,
-        "value": "Rajasthan"
-      },
-      {
-        "offset": 19,
-        "value": "India"
-      }
-    ],
-    "types": ["locality", "political", "geocode"]
-  },
-  {
-    "description": "Jacksonville, FL, USA",
-    "matched_substrings": [
-      {
-        "length": 1,
-        "offset": 0
-      }
-    ],
-    "place_id": "ChIJ66_O8Ra35YgR4sf8ljh9zcQ",
-    "reference": "ChIJ66_O8Ra35YgR4sf8ljh9zcQ",
-    "structured_formatting": {
-      "main_text": "Jacksonville",
-      "main_text_matched_substrings": [
-        {
-          "length": 1,
-          "offset": 0
-        }
-      ],
-      "secondary_text": "FL, USA"
-    },
-    "terms": [
-      {
-        "offset": 0,
-        "value": "Jacksonville"
-      },
-      {
-        "offset": 14,
-        "value": "FL"
-      },
-      {
-        "offset": 18,
-        "value": "USA"
-      }
-    ],
-    "types": ["locality", "political", "geocode"]
-  },
-  {
-    "description": "Joshua Tree National Park, California, USA",
-    "matched_substrings": [
-      {
-        "length": 1,
-        "offset": 0
-      }
-    ],
-    "place_id": "ChIJe6hluYWP2oAR4p3rOqftdxk",
-    "reference": "ChIJe6hluYWP2oAR4p3rOqftdxk",
-    "structured_formatting": {
-      "main_text": "Joshua Tree National Park",
-      "main_text_matched_substrings": [
-        {
-          "length": 1,
-          "offset": 0
-        }
-      ],
-      "secondary_text": "California, USA"
-    },
-    "terms": [
-      {
-        "offset": 0,
-        "value": "Joshua Tree National Park"
-      },
-      {
-        "offset": 27,
-        "value": "California"
-      },
-      {
-        "offset": 39,
-        "value": "USA"
-      }
-    ],
-    "types": ["tourist_attraction", "park", "point_of_interest", "establishment"]
-  },
-  {
-    "description": "Jodhpur, Rajasthan, India",
-    "matched_substrings": [
-      {
-        "length": 1,
-        "offset": 0
-      }
-    ],
-    "place_id": "ChIJucwGqk6MQTkRuKvhClvqFIE",
-    "reference": "ChIJucwGqk6MQTkRuKvhClvqFIE",
-    "structured_formatting": {
-      "main_text": "Jodhpur",
-      "main_text_matched_substrings": [
-        {
-          "length": 1,
-          "offset": 0
-        }
-      ],
-      "secondary_text": "Rajasthan, India"
-    },
-    "terms": [
-      {
-        "offset": 0,
-        "value": "Jodhpur"
-      },
-      {
-        "offset": 9,
-        "value": "Rajasthan"
-      },
-      {
-        "offset": 20,
-        "value": "India"
-      }
-    ],
-    "types": ["locality", "political", "geocode"]
-  }
-];
-
 interface Proptypes {
   data: any;
   stepCompleted: Boolean;
@@ -204,23 +17,33 @@ interface Proptypes {
 
 const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const [address, setAddress] = useState('');
-  const [locationDetails, setLocationDetails] = useState({});
+  const [locationDetails, setLocationDetails] = useState<{ [index: string]: any }>({ location: {}, location_name: '' });
   const [error, setError] = useState('');
+  const [localChanges, setLocationChanges] = useState(false);
+  const [activeCurrent, setActiveCurrent] = useState(false);
 
   useEffect(() => {
-    console.log({ address: address.length })
+    if (stepCompleted && !localChanges) {
+      setLocationDetails(data);
+      setAddress(data?.location_name);
+      setLocationChanges(true);
+    }
+
     if (address.length > 2) {
+      setActiveCurrent(false);
       document.getElementById('location_search_dynamic')?.focus();
     } else {
+      setActiveCurrent(false);
       document.getElementById('location_search_static')?.focus();
     }
     return () => {
       // cleanup
     }
-  }, [address])
+  }, [address, stepCompleted, data])
 
   const getCurrentLocation = async (e: any) => {
     e.preventDefault();
+    setActiveCurrent(true);
     let permission_web = await navigator.permissions.query({ name: 'geolocation' });
     if (permission_web.state !== 'denied') {
       let coordinates_values: Array<number> = [];
@@ -240,6 +63,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     e.preventDefault();
     let locationAddress: any = locationDetails;
     if (locationAddress?.location?.coordinates?.length) {
+      console.log({ locationDetails })
       handleStepComplete(locationDetails);
       return
     }
@@ -277,15 +101,18 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
         console.log('Error', error)
       });
   };
-  console.log({
-    locationDetails,
-    address
-  })
-  // const locationItem: any = locationDetails;
+
+  const checkErrors = () => {
+    let location_details: any = locationDetails;
+    if (!location_details?.location?.length && !location_details?.location_name?.length && !address?.length) {
+      return true;
+    }
+    return false;
+  }
+
   // Please enable the location permission from the settings so that Tickt app can access your location
   return (
     <div className="app_wrapper">
-      <CommonHeader />
       <div className="section_wrapper">
         <div className="custom_container">
           <div className="form_field">
@@ -366,7 +193,9 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                 </div>
               </div>
               <div className="form_field">
-                <button className="location-btn" onClick={getCurrentLocation}>
+                <button
+                  className={activeCurrent ? 'location-btn location-btn-active' : "location-btn"}
+                  onClick={getCurrentLocation}>
                   <span className="gps_icon">
                     <img src={icgps} alt="gps-icon" />
                   </span>
@@ -375,14 +204,16 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
               </div>
 
               <div className="form_field">
-                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
+                <button
+                  className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
+                  onClick={handleContinue}>Continue</button>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-    </div>
+    </div >
   )
 }
 

@@ -1,7 +1,15 @@
 import React from 'react';
 import templateImage from '../../../assets/images/teplate-saved-bg.jpg';
 
-const TemplateSavedSuccess = () => {
+interface Proptypes {
+    data: any;
+    stepCompleted: Boolean;
+    handleStepComplete: (data: any) => void;
+    handleStepBack: () => void;
+}
+//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+
+const TemplateSavedSuccess = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
     return (
         <div className="img_text_wrap">
         <figure className="full_image">

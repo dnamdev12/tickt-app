@@ -1,7 +1,16 @@
 import React from 'react';
 import templateImage from '../../../assets/images/job-posted-bg.jpg';
 
-const JobPostedSuccess = () => {
+
+interface Proptypes {
+    data: any;
+    stepCompleted: Boolean;
+    handleStepComplete: (data: any) => void;
+    handleStepBack: () => void;
+}
+//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+
+const JobPostedSuccess = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
     return (
         <div className="img_text_wrap">
         <figure className="full_image">

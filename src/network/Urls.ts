@@ -9,6 +9,7 @@ const ServiceEnum = {
     auth: 'auth/',
     admin: 'admin/',
     job: 'job/',
+    profile:'profile/'
 }
 
 const Urls = {
@@ -31,6 +32,7 @@ const Urls = {
     jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
     home: `${versions.v1}home`,
     homeSearch: `${versions.v1}home/search`, 
+    profileTemplateList:`${versions.v1}${ServiceEnum.profile}templatesList`,
 }
 
 export const urlFor = (service: String): string => {

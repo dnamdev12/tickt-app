@@ -1,50 +1,50 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 // @ts-ignore
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
+// import colorLogo from '../../../assets/images/ic-logo-yellow.png';
+// import menu from '../../../assets/images/menu-line-white.svg';
+// import bell from '../../../assets/images/ic-notification.png';
+// import dummy from '../../../assets/images/u_placeholder.jpg';
+// import thumb from '../../../assets/images/job-posted-bg.jpg';
+// import question from '../../../assets/images/ic-question.png';
+
 import { callMilestones, profileTemplateList } from '../../../redux/postJob/actions';
-import moment from 'moment';
 
 interface Proptypes {
     data: any;
-    milestones: any;
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
-    handleStepForward: (data: any) => void;
     handleStepBack: () => void;
 }
 
-const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
-    const [localMilestones, setLocalMilestones] = useState<Array<any>>([]);
+const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+    const [milestones, setMilestones] = useState<Array<any>>([]);
 
-    // const getMilestones = async () => {
-    // const { success, milestones } = await callMilestones();
+    const getMilestones = async () => {
+        // const { success, milestones } = await callMilestones();
 
-    // if (success) {
-    //     setMilestones(milestones);
-    // } else {
-    // }
-    // setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
-    // }
+        // if (success) {
+        //     setMilestones(milestones);
+        // } else {
+        // }
+        setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
+    }
 
-    // const getTemplateList = async () => {
-    // const { success, data } = await profileTemplateList();
+    const getTemplateList = async () => {
+        const { success, data } = await profileTemplateList();
 
-    // if (success) {
-    //     console.log({ data }, '--- template-list');
-    // setMilestones(milestones);
-    //     } else {
-    //         setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
-    //     }
-    // }
+        if (success) {
+            console.log({data});;
+            // setMilestones(milestones);
+        } else {
+            setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
+        }
+    }
 
     useEffect(() => {
-        if (!localMilestones?.length) {
-            let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
-            console.log({ filter_milestones });
-            // setLocalMilestones(filter_milestones);
-        }
-        console.log({ milestones })
-    }, [milestones]);
+        getMilestones();
+        getTemplateList();
+    }, []);
 
     const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
         const result = Array.from(list);
@@ -69,7 +69,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                 destination.index
             );
 
-            setLocalMilestones(reOrderedMilestones);
+            setMilestones(reOrderedMilestones);
         }
     };
 
@@ -80,20 +80,15 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                 <div className="custom_container">
                     <div className="form_field">
                         <div className="flex_row f_reverse">
-                            <div className="flex_col_sm_7">
+                            <div className="flex_col_sm_5">
                                 <div className="relate">
                                     <button className="back" onClick={handleStepBack}></button>
                                     <span className="title">Job milestones</span>
                                 </div>
-                                <p className="commn_para">
-                                    {'Put the milestones in so you can be notified when the tradersperson completes them '}
-                                </p>
                             </div>
-                            {localMilestones?.length ? (
-                                <div className="flex_col_sm_5 text-right">
-                                    <a href="javascript:void(0)" className="link">Save as template</a>
-                                </div>
-                            ) : null}
+                            <div className="flex_col_sm_7 text-right">
+                                <a href="javascript:void(0)" className="link">Save as template</a>
+                            </div>
                         </div>
                     </div>
                     <div className="flex_row">
@@ -101,21 +96,19 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                             <DragDropContext onDragEnd={onDragEnd}>
                                 <Droppable droppableId="milestones">
                                     {(provided, snapshot) => (
-                                        <ul ref={provided.innerRef}
-                                            className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}>
-                                            {localMilestones.map(({
-                                                milestone_name, isPhotoevidence, from_date, to_date
-                                            }: {
-                                                milestone_name: string, isPhotoevidence: boolean, from_date: string, to_date: string
-                                            }, index) => (
+                                        <ul
+                                            ref={provided.innerRef}
+                                            className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}
+                                        >
+                                            {milestones.map(({ _id, name }: { _id: string, name: string }, index) => (
                                                 <Draggable
-                                                    key={milestone_name}
-                                                    draggableId={milestone_name}
+                                                    key={_id}
+                                                    draggableId={_id}
                                                     index={index}
                                                 >
                                                     {(provided: any, snapshot: any) => (
                                                         <li
-                                                            key={index}
+                                                            key={_id}
                                                             ref={provided.innerRef}
                                                             {...provided.draggableProps}
                                                             {...provided.dragHandleProps}
@@ -128,19 +121,11 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                                                                 <span className="delete"></span>
                                                             </div>
                                                             <div className="checkbox_wrap agree_check">
-                                                                <input
-                                                                    // checked={isPhotoevidence}
-                                                                    className="filter-type filled-in"
-                                                                    type="checkbox"
-                                                                    id={`milestone${index}`} />
-                                                                <label htmlFor={`milestone${index}`}>{milestone_name}</label>
+                                                                <input className="filter-type filled-in" type="checkbox" id={`milestone${_id}`} />
+                                                                <label htmlFor={`milestone${_id}`}>{name}</label>
                                                                 <div className="info">
                                                                     <span>Photo evidence required</span>
-                                                                    <span>
-                                                                        {from_date?.length && !to_date?.length ? `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
-                                                                            : from_date?.length && to_date?.length ?
-                                                                                `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}` : ''}
-                                                                    </span>
+                                                                    <span>May 24 - 26</span>
                                                                 </div>
                                                             </div>
                                                         </li>
@@ -152,38 +137,16 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                                     )}
                                 </Droppable>
                             </DragDropContext>
-                            {!localMilestones?.length ? (
-                                <React.Fragment>
-                                    <div className="form_field">
-                                        <button onClick={() => { handleStepForward(9) }} className="fill_btn fill_grey_btn full_btn">
-                                            {'Use template'}
-                                        </button>
-                                    </div>
-                                    <div className="form_field">
-                                        <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>
-                                            {'+ Add milestone'}
-                                        </button>
-                                    </div>
-                                </React.Fragment>
-                            ) : (
-                                <React.Fragment>
-                                    <div className="form_field">
-                                        <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>
-                                            {'+ Add milestone'}
-                                        </button>
-                                    </div>
-                                    <div className="form_field">
-                                        <button className="fill_btn fill_grey_btn full_btn">
-                                            {'Continue'}
-                                        </button>
-                                    </div>
-                                </React.Fragment>
-                            )}
-
+                            <div className="form_field">
+                                <button className="fill_btn fill_grey_btn full_btn">+ Add milestone</button>
+                            </div>
+                            <div className="form_field">
+                                <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>Continue</button>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> 
 
             {/* Job detail */}
             {/* <div className="section_wrapper top_wrap">

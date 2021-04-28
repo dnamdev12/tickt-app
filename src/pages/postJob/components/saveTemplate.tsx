@@ -4,9 +4,15 @@ import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import icgps from "../../../assets/images/ic-gps.png";
+interface Proptypes {
+    data: any;
+    stepCompleted: Boolean;
+    handleStepComplete: (data: any) => void;
+    handleStepBack: () => void;
+}
+//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
-
-const SaveTemplate = () => {
+const SaveTemplate =  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
     return (
         <div className="app_wrapper">
 
