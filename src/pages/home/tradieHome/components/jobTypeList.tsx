@@ -15,12 +15,15 @@ const JobTypeList = (props: any) => {
         props.getJobTypeList();
     }, [])
 
-    const jobTypeListClicked = (tradeId: string) => {
+    const jobTypeListClicked = (tradeId: string, jobTypeHeadingName: string) => {
         props.history.push({
             pathname: '/search-job-results',
-            search: '?type=jobTypeList',
-            tradeId: tradeId,
-            state: { bannerData: props.bannerData }
+            state: {
+                queryParam: "jobTypeList",
+                bannerData: props.bannerData,
+                heading: jobTypeHeadingName,
+                tradeId: [tradeId],
+            }
         })
     }
 
@@ -34,7 +37,7 @@ const JobTypeList = (props: any) => {
                         <ul className="job_categories">
                             {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
                                 return (
-                                    < li className="draw" onClick={() => jobTypeListClicked(item._id)}>
+                                    < li className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
                                         <figure className="type_icon">
                                             <img src={item.image} alt="icon" />
                                         </figure>

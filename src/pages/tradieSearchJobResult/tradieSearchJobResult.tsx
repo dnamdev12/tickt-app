@@ -1,11 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
-import {
-    GoogleMap,
-    useLoadScript,
-    Marker,
-    InfoWindow
-} from '@react-google-maps/api';
+
 import BannerSearch from '../home/tradieHome/components/bannerSearch/index';
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import SearchResultFilters from '../searchResultFilters/index';
@@ -14,62 +9,72 @@ import RenderMap from './renderMap';
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import mapIcon from '../../assets/images/map.png';
-
-const libraries: any = ["places", "geometry"];
-const center = {
-    lat: -37.840935,
-    lng: 144.946457
-}
-const mapContainerStyle = {
-    width: "100vw",
-    height: "100vh"
-}
-
+import noData from '../../assets/images/no-data.png';
 
 const TradieSearchJobResult = (props: any) => {
+    const [filterState, setFilterState] = useState({
+        page: 1,
+    })
     const [mapData, setMapData] = useState<any>({
         showMap: false,
     })
-    
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location?.search).get('type');
+
+    const location: any = useLocation();
+
+    // <img src={noData} alt="data not found" />
 
     useEffect(() => {
-        if(queryParams == 'viewNearByJob'){
+        if (location?.state?.queryParam == 'viewNearByJob') {
             const data = {
+                page: 1,
                 lat: props.location?.state?.bannerData?.location?.coordinates[1],
-                long: props.location?.state?.bannerData?.location?.coordinates[0],
-                page : 1
+                long: props.location?.state?.bannerData?.location?.coordinates[0]
             }
             props.getViewNearByJob(data);
         }
 
-        if(queryParams == 'jobTypeList'){
+        if (location?.state?.queryParam == 'jobTypeList') {
             const data = {
                 page: 1,
                 isFiltered: false,
-                // tradeId: location?.tradeId
-                tradeId: ["605c8bccb777553e6b057b8a"]
+                tradeId: location?.state?.tradeId
             }
-            props.postHomeSearchData(data)
+            props.postHomeSearchData(data);
         }
     }, [])
-    
-    console.log(queryParams, "queryParam", props)
+
+    console.log(props, location);
+
 
     const renderJobsData = () => {
-        // const jobsData = props.jobDataWithJobTypeLatLong?.most_viewed_jobs;
+        // const jobsData = props.viewNearByJobData;
         // return jobsData;
         var jobsData;
-        if(queryParams == 'viewNearByJob'){
+        if (location?.state?.queryParam == 'viewNearByJob') {
             jobsData = props.viewNearByJobData
             return jobsData;
         }
-        if(queryParams == 'jobTypeList'){
+        if (location?.state?.queryParam == 'jobTypeList') {
             jobsData = props.homeSearchJobData
             return jobsData;
         }
         return null;
+    }
+
+    const showBudgetFilterResults = (budgetFilterData: any) => {
+        const data = {
+            page: filterState.page,
+            isFiltered: true,
+            tradeId: location?.state?.tradeId,
+            pay_type: budgetFilterData.pay_type,
+            max_budget: budgetFilterData.max_budget,
+            // location: stateData?.bannerLocation ? stateData?.bannerLocation : stateData?.location,
+            // specializationId: stateData?.specializationId,
+            // from_date: stateData?.from_date,
+            // to_date: stateData?.to_date,
+            // sortBy: 2,
+        }
+        props.postHomeSearchData(data);
     }
 
     return (
@@ -83,16 +88,16 @@ const TradieSearchJobResult = (props: any) => {
                         <div className="result_heading">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
-                                    <span className="title">{queryParams == 'viewNearByJob' ? "Jobs in your area" : queryParams == 'jobTypeList' ? "Residential Jobs" : ""}
+                                    <span className="title">{location?.state?.queryParam == 'viewNearByJob' ? location?.state?.heading : location?.state?.queryParam == 'jobTypeList' ? location?.state?.heading : ""}
                                         <span className="count">45 results</span>
                                     </span>
-                                    <SearchResultFilters />
+                                    <SearchResultFilters showBudgetFilterResults={showBudgetFilterResults} />
                                 </div>
-                                <div className="flex_col_sm_4 text-right">
+                                {renderJobsData()?.length > 0 && <div className="flex_col_sm_4 text-right">
                                     <a className="map_btn" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
                                         <img src={mapIcon} alt="map" /> Map
                                     </a>
-                                </div>
+                                </div>}
                             </div>
                         </div>
                         <div className="flex_row tradies_row">
@@ -109,7 +114,7 @@ const TradieSearchJobResult = (props: any) => {
                         </div>
                         {mapData.showMap && <div className="map_col">
                             <div className="map_stick">
-                                <RenderMap />
+                                <RenderMap {...props}/>
                             </div>
                         </div>}
                     </div>

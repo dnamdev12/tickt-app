@@ -7,15 +7,16 @@ import {
 } from '@react-google-maps/api';
 import { formatRelative } from 'date-fns';
 
-import residential from "../../assets/images/ic-residential.png";
-
+import jobIconDemo from "../../assets/images/jobicon.png";
 
 const libraries: any = ["places", "geometry"];
 
-const center = {
-    lat: -37.840935,
-    lng: 144.946457
-}
+// const center = {
+//     lat: -37.840935,
+//     lng: 144.946457
+//     // lat: 21.17021,
+//     // lng: 72.831062
+// }
 
 const mapContainerStyle = {
     width: "100vw",
@@ -28,11 +29,18 @@ const options = {
     zoomControl: true
 }
 
-const RenderMap = () => {
+const RenderMap = (props: any) => {
     const { isLoaded, loadError } = useLoadScript({
         googleMapsApiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
         libraries
     })
+    const mapCenterCoordinates = props.viewNearByJobData.slice(0, 1);
+    const center = {
+        lat: mapCenterCoordinates ? mapCenterCoordinates?.location?.coordinates[1] : -37.840935,
+        lng: mapCenterCoordinates ? mapCenterCoordinates?.location?.coordinates[1] : 144.946457
+        // lat: 21.17021,
+        // lng: 72.831062
+    }
     const [markers, setMarkers] = useState<Array<any>>([]);
     const [selected, setSelected] = useState<any>(null);
 
@@ -46,6 +54,8 @@ const RenderMap = () => {
             }])
     }, [])
 
+    console.log(props, "renderMap screen");
+
     const mapRef = useRef();
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
@@ -57,35 +67,56 @@ const RenderMap = () => {
     return (
         <div>
             <GoogleMap
-                mapContainerStyle={mapContainerStyle}
-                zoom={14}
+                // mapContainerStyle={mapContainerStyle}
+                zoom={6}
                 center={center}
                 options={options}
                 onClick={onMapClick}
                 onLoad={onMapLoad}
             >
-                {markers.map((marker: any) => (
+                {props.viewNearByJobData?.map((item: any) => (
                     <Marker
-                        key={marker.time.toISOString()}
-                        position={{ lat: marker.lat, lng: marker.lng }}
+                        key={new Date().toISOString()}
+                        // position={{ lat: 21.17021, lng: 72.831062 }}
+                        position={{ lat: item.location.coordinates[1], lng: item.location.coordinates[0] }}
                         icon={{
-                            // url: "/demo.png",
-                            url: residential,
-                            scaledSize: new window.google.maps.Size(20, 20),
+                            url: jobIconDemo,
+                            scaledSize: new window.google.maps.Size(30, 30),
                             origin: new window.google.maps.Point(0, 0),
-                            anchor: new window.google.maps.Point(10, 10)
+                            anchor: new window.google.maps.Point(20, 20)
                         }}
                         onClick={() => {
-                            setSelected(marker);
+                            const lat = item.location.coordinates[1];
+                            const lng = item.location.coordinates[0];
+                            // setSelected({ lat: lat, lng: lng });
+                            setSelected(item);
                         }}
                     />
                 ))}
-                {selected ? (<InfoWindow position={{ lat: selected.lat, lng: selected.lng }}
-                onCloseClick={() => setSelected(null)}
+                {selected ? (<InfoWindow position={{ lat: selected.location.coordinates[1], lng: selected.location.coordinates[0] }}
+                    onCloseClick={() => setSelected(null)}
                 >
-                    <div>
-                        <span>Job details</span>
-                        <p>Spotted at {formatRelative(selected.time, new Date())}</p>
+                    <div className="flex_col_sm_6">
+                        <div className="tradie_card">
+                            <a href="javascript:void(0)" className="more_detail circle"></a>
+                            <div className="user_wrap">
+                                <figure className="u_img">
+                                    <img src={selected.tradeSelectedUrl ? selected.tradeSelectedUrl : ""} alt="traide-img" />
+                                </figure>
+                                <div className="details">
+                                    <span className="name">{selected.tradeName}</span>
+                                    <span className="prof">{selected.jobName}</span>
+                                </div>
+                            </div>
+                            <div className="job_info">
+                                <ul>
+                                    <li className="icon clock">{selected.time}</li>
+                                    <li className="icon dollar">{selected.amount}</li>
+                                    <li className="icon location">{selected.locationName}</li>
+                                    <li className="icon calendar">{selected.durations}</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </InfoWindow>) : null}
             </GoogleMap>

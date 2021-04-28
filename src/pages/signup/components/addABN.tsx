@@ -106,7 +106,7 @@ const AddABN = (props: Propstype) => {
     const onSubmit = (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            const abn = ABN;
+            const abn = ABN.replaceAll(' ', '');
             props.onSubmitSignup({ abn })
         }
     }

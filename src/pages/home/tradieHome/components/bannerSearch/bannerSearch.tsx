@@ -4,7 +4,7 @@ import Constants from '../../../../../utils/constants';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
 import regex from '../../../../../utils/regex';
 // @ts-ignore
-import { subDays, isEqual, isBefore, differenceInHours, lightFormat, format } from 'date-fns';
+import { format } from 'date-fns';
 // @ts-ignore
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
@@ -62,7 +62,6 @@ const BannerSearch = (props: PropsType) => {
 
 
     useEffect(() => {
-        console.log(props, "bannerSearch props")
         window.addEventListener('mousedown', handleClicked)
 
         return () => {
@@ -136,27 +135,28 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const searchedJobClicked = (item: any) => {
-        // setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: item._id, specializationId: item.specializationsId, isSearchedJobSelected: true }));
         setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: [item._id], specializationId: [item.specializationsId], isSearchedJobSelected: true }));
         setInputFocus1(false);
     }
 
     const recentJobSearches = () => {
         return (
-            <div className="custom_autosuggestion" id="recent-job-search-div">
-                <span className="sub_title">Recent searches</span>
-                <div className="flex_row recent_search">
-                    {props.recentSearchJobData?.length && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
-                        return (
-                            <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item)}>
-                                <div className="autosuggestion_icon card history">
-                                    <span>{item.name}</span>
-                                    <span className="name">{item.trade_name}</span>
-                                </div>
-                            </div>)
-                    })}
-                </div>
-            </div >
+            <>
+                {props.recentSearchJobData?.length > 0 && <div className="custom_autosuggestion" id="recent-job-search-div">
+                    <span className="sub_title">Recent searches</span>
+                    <div className="flex_row recent_search">
+                        {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
+                            return (
+                                <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item)}>
+                                    <div className="autosuggestion_icon card history">
+                                        <span>{item.name}</span>
+                                        <span className="name">{item.trade_name}</span>
+                                    </div>
+                                </div>)
+                        })}
+                    </div>
+                </div >}
+            </>
         )
     }
 
@@ -183,54 +183,65 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const locationSelectedHandler = (address: string) => {
-        console.log("locationSelectedHandler", address, typeof address)
+        geocodeByAddress(address)
+            .then((results: any) => getLatLng(results[0]))
+            .then(({ lat, lng }: any) => {
+                const locationNew: any = {
+                    bannerLocation: {
+                        coordinates: [lng, lat]
+                    }
+                }
+                console.log('Successfully got latitude and longitude', locationNew)
+                setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: address, isMapLocationSelected: true }))
+            }
+            );
         setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: address, isMapLocationSelected: true }))
         setInputFocus2(false);
         document.getElementById("location-input-tag")?.blur();
-        geocodeByAddress(address)
-            .then((results: any) => {
-                console.log(results, "result geocodeByAddress")
-                return getLatLng(results[0])
-            })
-            .then((latLng: any) => console.log('Success', latLng))
-            .catch((error: any) => console.error('Error', error));
-
-        // const geocoder = new google.maps.Geocoder();
-
     }
 
     const getCurrentLocation = (e: any) => {
         e.preventDefault();
-        console.log("use my current location clicked")
-        var locationNew: any = {
-            bannerLocation: {
-                coordinates: []
-            }
-        }
 
         const showPosition = (position: any) => {
+            var address: string;
+            const locationNew: any = {
+                //use current location in input tag when selected
+                bannerLocation: {
+                    coordinates: []
+                }
+            }
             const lat = position.coords.latitude;
             const long = position.coords.longitude;
             locationNew.bannerLocation.coordinates[0] = long;
             locationNew.bannerLocation.coordinates[1] = lat;
-            setStateData((prevData: any) => ({ ...prevData, ...locationNew }));
+            // const gLat = locationNew.bannerLocation.coordinates[1] ? locationNew.bannerLocation.coordinates[1] : stateData.location.coordinates[1];
+            // const gLng = locationNew.bannerLocation.coordinates[0] ? locationNew.bannerLocation.coordinates[0] : stateData.location.coordinates[0];
+            var latlng = new google.maps.LatLng(lat, long);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: latlng }, function (results, status) {
+                if (status !== google.maps.GeocoderStatus.OK) {
+                    alert(status);
+                }
+                // This is checking to see if the Geoeode Status is OK before proceeding
+                if (status == google.maps.GeocoderStatus.OK) {
+                    setInputFocus2(false);
+                    document.getElementById("current-location-search-div")?.blur();
+                    address = (results[1].formatted_address);
+                    setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: address, isMapLocationSelected: true, locationDenied: false }));
+                }
+            });
         }
 
         const showError = (error: any) => {
             if (error.code == error.PERMISSION_DENIED) {
-                setStateData((prevData: any) => ({ ...prevData, locationDenied: true }));
-                console.log("PERMISSION DENIED", error, "okok", error.code)
+                setStateData((prevData: any) => ({ ...prevData, bannerLocation: '', locationDenied: true }));
             }
         }
 
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         }
-
-        // geocodeByAddress(address)
-        //     .then((results: any) => getLatLng(results[0]))
-        //     .then((latLng: any) => console.log('Success', latLng))
-        //     .catch((error: any) => console.error('Error', error));
     }
 
     const onError = (status: string, clearSuggestions: Function) => {
@@ -259,24 +270,22 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const bannerSearchClicked = () => {
-        console.log(stateData, "okok banner")
         if (validateForm()) {
             const data = {
                 page: stateData?.page,
                 isFiltered: false,
                 tradeId: stateData?.tradeId,
-                location: stateData?.location,
+                location: stateData?.bannerLocation ? stateData?.bannerLocation : stateData?.location,
                 specializationId: stateData?.specializationId,
-                from_date: stateData.from_date,
-                to_date: stateData.to_date,
+                ...(stateData?.from_date && { from_date: stateData?.from_date }),
+                ...(stateData?.to_date && { to_date: stateData?.to_date }),
+                // to_date: stateData?.to_date,
                 // sortBy: 2,
             }
             props.postHomeSearchData(data)
-            alert("banner search clicked!")
         }
+        alert("Under construction!!")
     }
-
-    console.log(props.homeSearchJobData, " props homeSearchJobData");
 
     return (
         <div className="home_search">
@@ -383,9 +392,6 @@ const BannerSearch = (props: PropsType) => {
                             {inputFocus3 &&
                                 <div className="custom_autosuggestion" id="custom-date-range-div">
                                     <DateRange
-                                        // ranges={calenderRange2.endDate ? [calenderRange1, calenderRange2] : [calenderRange1]}
-                                        // initialFocusedRange={[0,2]}
-                                        // color="red"
                                         onChange={handleCalenderRange}
                                         ranges={[calenderRange1]}
                                         moveRangeOnFirstSelection={false}

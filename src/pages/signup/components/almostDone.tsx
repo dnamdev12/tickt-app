@@ -114,8 +114,8 @@ const AlmostDone = (props: Propstype) => {
     const onSubmit = (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            const newAlmostData = almostDoneData;
-            newAlmostData.abn = almostDoneData.abn.replaceAll(' ', '');
+            var newAlmostData = almostDoneData;
+            newAlmostData.abn = newAlmostData.abn.replaceAll(' ', '');
             console.log(newAlmostData, "newAlmostData");
             props.onSubmitSignup(newAlmostData)
         }

@@ -12,12 +12,15 @@ import bell from '../assets/images/ic-notification.png';
 import dummy from '../assets/images/u_placeholder.jpg';
 import profile from '../assets/images/ic-profile.png';
 
-const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404']
+const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
 const Header = (props: any) => {
+    const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
+
+    // const USER_TYPE = storageService.getItem('userType');
 
     let location = useLocation();
     let history = useHistory();
@@ -28,7 +31,8 @@ const Header = (props: any) => {
         } else {
             setShowHeader(true)
         }
-    }, [location.pathname])
+        setUserType(storageService.getItem('userType'))
+    }, [location.pathname, storageService.getItem('userType')])
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -41,6 +45,7 @@ const Header = (props: any) => {
     const logoutHandler = () => {
         storageService.removeItem("jwtToken")
         storageService.removeItem("guestToken")
+        storageService.removeItem("userType")
         history.push('/login')
     }
 
@@ -58,7 +63,7 @@ const Header = (props: any) => {
                         <ul className="center_nav">
                             <li><a className="active">Discover</a></li>
                             <li><a >Jobs</a></li>
-                            <li><a >Post</a></li>
+                            {userType === 2 && <li><a >Post</a></li>}
                             <li><a >Chat</a></li>
                         </ul>
                         <ul className="side_nav">

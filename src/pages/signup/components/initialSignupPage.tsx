@@ -23,7 +23,7 @@ const InitialSignupPage = (props: Propstype) => {
         var today = new Date();
         var date = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
         storageService.setItem("guestToken", date)
-        // storageService.setItem("user_type", "GUEST")
+        storageService.setItem("userType", 0)
         props.history.push('/')
     }
 
