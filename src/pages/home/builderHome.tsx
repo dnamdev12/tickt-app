@@ -15,6 +15,7 @@ import industrial from "../../assets/images/ic-money.png";
 import contracted from "../../assets/images/ic-contracted.png";
 import commercial from "../../assets/images/ic-commercial.png";
 import hourlyRate from "../../assets/images/ic-clock.png";
+import close from "../../../../../assets/images/icon-close-1.png";
 
 
 const BuilderHome = (props: any) => {
@@ -58,7 +59,7 @@ const BuilderHome = (props: any) => {
                     <div className="banner_container">
                         <div className="home_search">
                             <button className="modal_srch_close">
-                                <img src="assets/images/close 1.png" alt="close" />
+                                <img src={close} alt="close" />
                             </button>
                             <form className="search_wrapr">
                                 <ul>
