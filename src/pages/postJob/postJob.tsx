@@ -12,6 +12,7 @@ import TemplateSavedSuccess from './components/templateSavedSucess';
 import JobPostedSuccess from './components/jobPostedSuccess';
 import UploadMedia from './components/uploadMedia';
 import MileStoneTemplates from './components/milestoneTemplates';
+import JobDetails from './components/jobDetails';
 import { callCategories } from '../../redux/postJob/actions';
 
 interface Proptypes {
@@ -20,7 +21,7 @@ interface Proptypes {
 }
 const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
     const [categoriesData, setCategoriesData] = useState([]);
-    const [step, setStep] = useState(6);
+    const [step, setStep] = useState(5);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
     const [data, setData] = useState({});
     const [milestones, setMileStones] = useState([
@@ -242,6 +243,16 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
                 />)
+            break;
+        case 14:
+            page = (
+                <JobDetails
+                    data={data}
+                    stepCompleted={stepsCompleted.includes(8)}
+                    handleStepComplete={handleStepComplete}
+                    handleStepBack={handleStepBack}
+                />
+            )
             break;
         default:
             page = null;

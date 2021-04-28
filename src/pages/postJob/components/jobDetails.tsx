@@ -11,11 +11,10 @@ interface Proptypes {
     data: any;
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
-    handleStepForward: (data: any) => void;
     handleStepBack: () => void;
 }
 
-const JobDetails = ({ data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+const JobDetails = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
