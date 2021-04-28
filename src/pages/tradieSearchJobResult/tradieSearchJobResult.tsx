@@ -85,6 +85,14 @@ const TradieSearchJobResult = (props: any) => {
             <div className="search_result">
                 <div className="section_wrapper bg_gray">
                     <div className="custom_container">
+
+                        <div className="flex_row mob_srch_option">
+                            <div className="flex_col_sm_6"></div>
+                            <div className="flex_col_sm_6 text-right">
+                                <button className="fill_grey_btn">Modify Search</button>
+                            </div>
+                        </div>
+
                         <div className="result_heading">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
