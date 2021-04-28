@@ -30,6 +30,30 @@ const MileStoneTemplates = ({ data, stepCompleted, handleStepForward, handleStep
                                 {/* <p className="commn_para">How mach will you pay for a job</p> */}
                             </div>
                         </div>
+                        <div className="flex_row">
+                            <div className="flex_col_sm_6">
+                                <ul className="milestone_templates">
+                                    <li>
+                                        <span className="name">Template 1  </span>
+                                        <div className="count">4
+                                            <span>milestones</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span className="name">Template 2  </span>
+                                        <div className="count">2
+                                            <span>milestones</span>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <span className="name">Template 3 </span>
+                                        <div className="count">5
+                                            <span>milestones</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
