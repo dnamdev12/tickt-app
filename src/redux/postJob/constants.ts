@@ -1,1 +1,2 @@
-export {};
+
+export const EDIT_MILESTONE_ID = 'EDIT_MILESTONE_ID'

@@ -4,47 +4,29 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { callMilestones, profileTemplateList } from '../../../redux/postJob/actions';
 import moment from 'moment';
 
+
 interface Proptypes {
     data: any;
     milestones: any;
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
-    handleStepForward: (data: any) => void;
+    handleStepForward: (data: any, index?: number) => void;
     handleStepBack: () => void;
+    updateMileStoneIndex: (data: number) => void;
 }
 
-const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
+const JobMilestones = ({ data, stepCompleted, handleStepForward, updateMileStoneIndex, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localMilestones, setLocalMilestones] = useState<Array<any>>([]);
-
-    // const getMilestones = async () => {
-    // const { success, milestones } = await callMilestones();
-
-    // if (success) {
-    //     setMilestones(milestones);
-    // } else {
-    // }
-    // setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
-    // }
-
-    // const getTemplateList = async () => {
-    // const { success, data } = await profileTemplateList();
-
-    // if (success) {
-    //     console.log({ data }, '--- template-list');
-    // setMilestones(milestones);
-    //     } else {
-    //         setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
-    //     }
-    // }
+    const [editItem, setEditItems] = useState({});
 
     useEffect(() => {
         if (!localMilestones?.length) {
             let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
             console.log({ filter_milestones });
-            // setLocalMilestones(filter_milestones);
+            setLocalMilestones(filter_milestones);
         }
         console.log({ milestones })
-    }, [milestones]);
+    }, [milestones, localMilestones]);
 
     const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
         const result = Array.from(list);
@@ -90,7 +72,9 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                                 </p>
                             </div>
                             {localMilestones?.length ? (
-                                <div className="flex_col_sm_5 text-right">
+                                <div
+                                    onClick={() => { handleStepForward(10) }}
+                                    className="flex_col_sm_5 text-right">
                                     <a href="javascript:void(0)" className="link">Save as template</a>
                                 </div>
                             ) : null}
@@ -104,9 +88,15 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                                         <ul ref={provided.innerRef}
                                             className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}>
                                             {localMilestones.map(({
-                                                milestone_name, isPhotoevidence, from_date, to_date
+                                                milestone_name,
+                                                isPhotoevidence,
+                                                from_date,
+                                                to_date
                                             }: {
-                                                milestone_name: string, isPhotoevidence: boolean, from_date: string, to_date: string
+                                                milestone_name: string,
+                                                isPhotoevidence: boolean,
+                                                from_date: string,
+                                                to_date: string
                                             }, index) => (
                                                 <Draggable
                                                     key={milestone_name}
@@ -124,7 +114,15 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                                                             }}
                                                         >
                                                             <div className="edit_delete">
-                                                                <span className="edit"></span>
+                                                                <span
+                                                                    onClick={(e) => {
+                                                                        e.stopPropagation();
+                                                                        handleStepForward(15);
+                                                                        updateMileStoneIndex(index);
+                                                                        console.log({ index, });
+                                                                    }}
+                                                                    className="edit">
+                                                                </span>
                                                                 <span className="delete"></span>
                                                             </div>
                                                             <div className="checkbox_wrap agree_check">
@@ -173,7 +171,9 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
                                         </button>
                                     </div>
                                     <div className="form_field">
-                                        <button className="fill_btn fill_grey_btn full_btn">
+                                        <button
+                                            onClick={() => { handleStepForward(13) }}
+                                            className="fill_btn fill_grey_btn full_btn">
                                             {'Continue'}
                                         </button>
                                     </div>
@@ -300,4 +300,4 @@ const JobMilestones = ({ data, stepCompleted, handleStepForward, milestones, han
     )
 }
 
-export default JobMilestones
+export default JobMilestones;

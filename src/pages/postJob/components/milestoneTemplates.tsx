@@ -5,7 +5,7 @@ import Slider from '@material-ui/core/Slider';
 import Constants from '../../../utils/constants';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-
+import { profileTemplateList } from '../../../redux/postJob/actions'
 
 interface Proptypes {
     data: any;
@@ -16,6 +16,19 @@ interface Proptypes {
 }
 
 const MileStoneTemplates = ({ data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+    const [list, setList] = useState([]);
+
+    const preFetch = async () => {
+        let { success, data } = await profileTemplateList();
+        if (success && data?.length) {
+            setList(data)
+        }
+    }
+
+    useEffect(() => {
+        preFetch();
+    }, [data, list])
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">

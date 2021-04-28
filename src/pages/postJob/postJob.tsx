@@ -13,17 +13,21 @@ import JobPostedSuccess from './components/jobPostedSuccess';
 import UploadMedia from './components/uploadMedia';
 import MileStoneTemplates from './components/milestoneTemplates';
 import JobDetails from './components/jobDetails';
+import EditMilestone from './components/editMileStone';
 import { callCategories } from '../../redux/postJob/actions';
 
 interface Proptypes {
     callTradeList: () => void;
     tradeListData: Array<any>;
+    editMilestoneId: number;
+    updateMileStoneIndex: (data: number) => void;
 }
-const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
+const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMilestoneId }: Proptypes) => {
     const [categoriesData, setCategoriesData] = useState([]);
     const [step, setStep] = useState(5);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
     const [data, setData] = useState({});
+    const [editMileStone, setEditMileStone] = useState(0 as number);
     const [milestones, setMileStones] = useState([
         { milestone_name: "Here! - 1", isPhotoevidence: true, recommended_hours: "34", from_date: "04-30-2021", to_date: "" },
         { from_date: "04-29-2021", isPhotoevidence: true, milestone_name: "Here! - 2", recommended_hours: "344", to_date: "04-30-2021" },
@@ -97,15 +101,21 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
     }
 
     const handleStepBack = () => setStep((prevStep) => prevStep - 1);
-    const handleStepForward = (step: any) => {
+    const handleStepForward = (step: any, edit_item?: number) => {
         if (!step) {
             setStep((prevStep) => prevStep + 1)
+            setEditMileStone(0);
         } else {
+            console.log({ edit_item, step, forceupdate, force: Array.isArray(forceupdate) }, '-------- 107')
+            if (edit_item) {
+                setEditMileStone(edit_item);
+                setForceUpdate([]);
+                // Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
+            }
             setStep(step);
         }
     };
 
-    console.log({ data, stepsCompleted, milestones }, '---- parent --- post');
     let page;
     switch (step) {
         case 1:
@@ -166,6 +176,7 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
                     milestones={milestones}
                     handleStepForward={handleStepForward}
                     stepCompleted={stepsCompleted.includes(6)}
+                    updateMileStoneIndex={updateMileStoneIndex}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
                 />
@@ -214,6 +225,7 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
                     data={data}
                     stepCompleted={stepsCompleted.includes(8)}
                     handleStepComplete={handleStepComplete}
+                    handleStepForward={handleStepForward}
                     handleStepBack={handleStepBack}
                 />)
             break;
@@ -241,6 +253,7 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
                     data={data}
                     stepCompleted={stepsCompleted.includes(8)}
                     handleStepComplete={handleStepComplete}
+                    handleStepForward={handleStepForward}
                     handleStepBack={handleStepBack}
                 />)
             break;
@@ -250,7 +263,23 @@ const PostJob = ({ callTradeList, tradeListData }: Proptypes) => {
                     data={data}
                     stepCompleted={stepsCompleted.includes(8)}
                     handleStepComplete={handleStepComplete}
+                    handleStepForward={handleStepForward}
                     handleStepBack={handleStepBack}
+                />
+            )
+            break;
+        case 15:
+            page = (
+                <EditMilestone
+                    data={data}
+                    milestones={milestones}
+                    editMileStone={editMilestoneId}
+                    newMileStoneScreen={newMileStoneScreen}
+                    handleStepForward={handleStepForward}
+                    stepCompleted={stepsCompleted.includes(7)}
+                    handleStepComplete={handleStepComplete}
+                    handleStepBack={handleStepBack}
+                    handleStepMileStone={handleStepMileStone}
                 />
             )
             break;
