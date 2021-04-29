@@ -58,29 +58,21 @@ const routes = [
         name: 'recommendedjobs',
         path: '/recommended-jobs',
         component: RecommendedJobs,
-        authRoute: true,
-        privateRoute: false,
     },
     {
         name: 'savedjobs',
         path: '/saved-jobs',
         component: SavedJobs,
-        authRoute: true,
-        privateRoute: false,
     },
     {
         name: 'mostviewedjobs',
         path: '/most-viewed-jobs',
         component: MostViewedJobs,
-        authRoute: true,
-        privateRoute: false,
     },
     {
         name: 'popularbuilders',
         path: '/popular-builders',
         component: PopularBuilders,
-        authRoute: false,
-        privateRoute: true,
     },
     {
         name: 'searchjobresults',
@@ -93,8 +85,6 @@ const routes = [
         name: 'map',
         path: '/map',
         component: RenderMap,
-        authRoute: true,
-        privateRoute: false,
     },
     {
         name: 'linkedin-oauth',
