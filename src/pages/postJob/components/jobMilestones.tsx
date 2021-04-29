@@ -4,29 +4,36 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 import { callMilestones, profileTemplateList } from '../../../redux/postJob/actions';
 import moment from 'moment';
 
-
+// please arrange milestone date wise.
+// milestone start date should be doffent from another can not be.
 interface Proptypes {
     data: any;
     milestones: any;
+    editMileStone: any;
+    editMilestoneTiming: any;
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any, index?: number) => void;
     handleStepBack: () => void;
-    updateMileStoneIndex: (data: number) => void;
+    updateMileStoneIndex: (data: any) => void;
+    updateMileStoneTimings: (data: any) => void;
 }
 
-const JobMilestones = ({ data, stepCompleted, handleStepForward, updateMileStoneIndex, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
+const JobMilestones = ({ data, stepCompleted, editMileStone, editMilestoneTiming, handleStepForward, updateMileStoneIndex, updateMileStoneTimings, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localMilestones, setLocalMilestones] = useState<Array<any>>([]);
     const [editItem, setEditItems] = useState({});
 
     useEffect(() => {
         if (!localMilestones?.length) {
             let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
-            console.log({ filter_milestones });
-            setLocalMilestones(filter_milestones);
+            console.log({ filter_milestones, localMilestones });
+            setLocalMilestones(filter_milestones); // set milestoner here!
+
+            updateMileStoneIndex(null);
+            updateMileStoneTimings(null);
         }
         console.log({ milestones })
-    }, [milestones, localMilestones]);
+    }, [milestones]);
 
     const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
         const result = Array.from(list);

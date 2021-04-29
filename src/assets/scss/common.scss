@@ -2926,28 +2926,28 @@ body {
     margin-bottom: 15px;
   }
 }
-.milestone_templates{
+.milestone_templates {
   display: flex;
   flex-flow: column;
   padding: 12px 0px 0px;
-  li{
+  li {
     background-color: #f7f8fa;
     padding: 10px 16px 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-    .name{
+    .name {
       color: var(--blue);
       font-size: 14px;
       line-height: 1.43;
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      font-family: "Neue Haas Grotesk Text Pro Bold";
       max-width: 500px;
       display: block;
       width: 100%;
       position: relative;
       padding-left: 40px;
-      &:before{
+      &:before {
         @include position(absolute, 50%, auto, auto, 0px);
         transform: translateY(-50%);
         content: "";
@@ -2958,15 +2958,15 @@ body {
         @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
           width: 18px;
           height: 18px;
-        }        
+        }
       }
     }
-    .count{
+    .count {
       font-size: 12px;
       line-height: 1.4;
       text-align: right;
       color: #313d48;
-      span{
+      span {
         font-size: 10px;
         color: #748092;
         display: block;
@@ -3109,6 +3109,11 @@ body {
 .mtb-10 {
   margin: 15px 0px;
 }
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
 .char-length {
   float: right;
   font-size: 12px;
@@ -3125,7 +3130,7 @@ body {
 }
 
 .location-btn-active {
-	border:2px solid #0b41a8;
+  border: 2px solid #0b41a8;
 }
 
 //---------------- Extra styled close here (for post-a-job module) ----------------------//

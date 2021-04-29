@@ -19,19 +19,28 @@ import { callCategories } from '../../redux/postJob/actions';
 interface Proptypes {
     callTradeList: () => void;
     tradeListData: Array<any>;
-    editMilestoneId: number;
-    updateMileStoneIndex: (data: number) => void;
+    editMilestoneId: any;
+    editMilestoneTiming: any;
+    updateMileStoneIndex: (data: any) => void;
+    updateMileStoneTimings: (data: any) => void;
 }
-const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMilestoneId }: Proptypes) => {
+
+const PostJob = ({
+    callTradeList,
+    tradeListData,
+    updateMileStoneIndex,
+    updateMileStoneTimings,
+    editMilestoneTiming,
+    editMilestoneId }: Proptypes) => {
     const [categoriesData, setCategoriesData] = useState([]);
     const [step, setStep] = useState(5);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
     const [data, setData] = useState({});
     const [editMileStone, setEditMileStone] = useState(0 as number);
     const [milestones, setMileStones] = useState([
-        { milestone_name: "Here! - 1", isPhotoevidence: true, recommended_hours: "34", from_date: "04-30-2021", to_date: "" },
-        { from_date: "04-29-2021", isPhotoevidence: true, milestone_name: "Here! - 2", recommended_hours: "344", to_date: "04-30-2021" },
-        {}
+        // { milestone_name: "Here! - 1", isPhotoevidence: true, recommended_hours: "34:05", from_date: "04-30-2021", to_date: "05-01-2021" },
+        // { from_date: "04-29-2021", isPhotoevidence: true, milestone_name: "Here! - 2", recommended_hours: "344:00", to_date: "04-30-2021" },
+        // {}
     ]);
     const [forceupdate, setForceUpdate] = useState({});
 
@@ -56,22 +65,18 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
 
     const newMileStoneScreen = (index: any) => {
         let milestone_clone: any = milestones;
-        console.log({ index }, '------>><<')
         if (!milestone_clone[index]) {
             milestone_clone[index] = {}
         }
-        console.log({ milestone_clone })
         setMileStones(milestone_clone);
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
 
     const handleStepMileStone = (data: any, index: any) => {
         let milestone_clone: any = milestones;
-        console.log({ data, index })
         milestone_clone[index]['milestone_name'] = data.milestone_name;
         milestone_clone[index]['isPhotoevidence'] = data.isPhotoevidence;
         milestone_clone[index]['recommended_hours'] = data.recommended_hours;
-        console.log({ milestone_clone }, '---check In handleStepMileStone')
         setMileStones(milestone_clone);
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
@@ -80,24 +85,18 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
         let milestone_clone: any = milestones;
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
-        console.log({ milestone_clone }) // added milestones here!
+        // console.log({ milestone_clone }) // added milestones here!
         setMileStones(milestone_clone);
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
 
-    const handleCombineMileStones = () => {
-        let data_items: any = [];
-        data_items.milestones = milestones;
-        setMileStones(data_items);
-    }
-
-    const updateMileStoneTimings = (timings: any, index: number) => {
-        let data_items: any = [];
+    const handleCombineMileStones = (item: any) => {
         let milestone_clone: any = milestones;
-
-        if (milestone_clone) {
-            //
-        }
+        let data_clone: any = data;
+        milestone_clone = item;
+        data_clone['milestones'] = item;
+        setMileStones(milestone_clone);
+        setData(data_clone);
     }
 
     const handleStepBack = () => setStep((prevStep) => prevStep - 1);
@@ -106,16 +105,15 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
             setStep((prevStep) => prevStep + 1)
             setEditMileStone(0);
         } else {
-            console.log({ edit_item, step, forceupdate, force: Array.isArray(forceupdate) }, '-------- 107')
             if (edit_item) {
+                setStep(step)
                 setEditMileStone(edit_item);
-                setForceUpdate([]);
-                // Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
+                Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
             }
             setStep(step);
         }
     };
-
+    console.log({data},'---- post -- job -----')
     let page;
     switch (step) {
         case 1:
@@ -174,9 +172,12 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
                 <JobMilestones
                     data={data}
                     milestones={milestones}
+                    editMileStone={editMilestoneId}
+                    editMilestoneTiming={editMilestoneTiming}
                     handleStepForward={handleStepForward}
                     stepCompleted={stepsCompleted.includes(6)}
                     updateMileStoneIndex={updateMileStoneIndex}
+                    updateMileStoneTimings={updateMileStoneTimings}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
                 />
@@ -192,6 +193,7 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
                     stepCompleted={stepsCompleted.includes(7)}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
+                    updateMileStoneIndex={updateMileStoneIndex}
                     handleStepMileStone={handleStepMileStone}
                 />)
             break;
@@ -200,8 +202,12 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
                 <ChooseTimingMileStone
                     data={data}
                     addTimeToMileStone={addTimeToMileStone}
+                    editMileStone={editMilestoneId}
+                    editMilestoneTiming={editMilestoneTiming}
+                    updateMileStoneTimings={updateMileStoneTimings}
                     milestones={milestones}
                     handleStepMileStone={handleStepMileStone}
+                    handleStepForward={handleStepForward}
                     stepCompleted={stepsCompleted.includes(7.1)}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
@@ -212,6 +218,7 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
             page = (
                 <MileStoneTemplates
                     data={data}
+                    handleCombineMileStones={handleCombineMileStones}
                     stepCompleted={stepsCompleted.includes(9)}
                     handleStepComplete={handleStepComplete}
                     handleStepForward={handleStepForward}
@@ -223,6 +230,7 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
             page = (
                 <SaveTemplate
                     data={data}
+                    milestones={milestones}
                     stepCompleted={stepsCompleted.includes(8)}
                     handleStepComplete={handleStepComplete}
                     handleStepForward={handleStepForward}
@@ -233,6 +241,7 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
             page = (
                 <TemplateSavedSuccess
                     data={data}
+                    handleStepForward={handleStepForward}
                     stepCompleted={stepsCompleted.includes(8)}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
@@ -274,6 +283,8 @@ const PostJob = ({ callTradeList, tradeListData, updateMileStoneIndex, editMiles
                     data={data}
                     milestones={milestones}
                     editMileStone={editMilestoneId}
+                    editMilestoneTiming={editMilestoneTiming}
+                    addTimeToMileStone={addTimeToMileStone}
                     newMileStoneScreen={newMileStoneScreen}
                     handleStepForward={handleStepForward}
                     stepCompleted={stepsCompleted.includes(7)}

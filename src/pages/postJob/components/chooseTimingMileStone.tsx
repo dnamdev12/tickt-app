@@ -13,14 +13,28 @@ interface Proptypes {
     data: any;
     stepCompleted: Boolean;
     milestones: any,
+    editMilestoneTiming: any;
+    editMileStone: any;
+    handleStepForward: (data: any) => void;
     handleStepComplete: (data: any) => void;
     handleStepMileStone: (data: any, index: any) => void;
     handleStepBack: () => void;
     addTimeToMileStone: (time: any, index: number) => void;
+    updateMileStoneTimings: (data: any) => void;
 }
 
 const default_format = 'YYYY-MM-DD';
-const ChooseTimingMileStone = ({ data, stepCompleted, addTimeToMileStone, milestones, handleStepComplete, handleStepMileStone, handleStepBack }: Proptypes) => {
+const ChooseTimingMileStone = ({
+    data,
+    stepCompleted,
+    handleStepForward,
+    updateMileStoneTimings,
+    editMileStone,
+    addTimeToMileStone,
+    milestones,
+    handleStepComplete,
+    handleStepMileStone,
+    handleStepBack }: Proptypes) => {
     const [range, setRange] = useState<{ [index: string]: string | Date }>({
         startDate: '', //new Date(),
         endDate: '',//new Date(),
@@ -58,10 +72,17 @@ const ChooseTimingMileStone = ({ data, stepCompleted, addTimeToMileStone, milest
             from_date: range.startDate !== '' ? moment_start : '',
             to_date: (moment_start === moment_end || range.endDate === '') ? '' : moment_end
         }
-        let item_index = milestones.length ? milestones.length - 1 : 0;
-        console.log({timings, item_index});
-        addTimeToMileStone(timings, item_index);
-        handleStepBack();
+
+        let item_index = null;
+        if (editMileStone == null) {
+            item_index = milestones.length ? milestones.length - 1 : 0;
+            addTimeToMileStone(timings, item_index);
+            handleStepBack();
+        } else {
+            updateMileStoneTimings(timings);
+            handleStepForward(15);
+        }
+
         // handleStepComplete(formattedDates);
     }
 

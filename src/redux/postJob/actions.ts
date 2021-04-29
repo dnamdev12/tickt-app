@@ -17,9 +17,9 @@ export const callCategories = async () => {
 
 // profileTemplateList
 export const profileTemplateList = async () => {
-  // setLoading(true);
+  setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.profileTemplateList);
-  // setLoading(false);
+  setLoading(false);
 
   if (response.status_code === 200) {
     return { success: true, data: response.result };
@@ -44,4 +44,33 @@ export const callMilestones = async () => {
 }
 
 // Update Edit-MileStone
-export const updateMileStoneIndex = (index: number) => ({ type: actionTypes.EDIT_MILESTONE_ID, payload: index })
+export const updateMileStoneIndex = (index: any) => ({ type: actionTypes.EDIT_MILESTONE_ID, payload: index });
+export const updateMileStoneTimings = (timings: any) => ({ type: actionTypes.EDIT_MILESTONE_TIMINGS, payload: timings });
+
+
+// Save Template
+export const addTemplate = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.createTemplate, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+//Get milestone by template-id
+export const getMileStoneByTempId = async (id: any) => { 
+  setLoading(true); 
+  let url = `${Urls.milestones}?tempId=${id}`;
+  const response: FetchResponse = await NetworkOps.get(url);
+  setLoading(false); 
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+
+  setShowToast(true, response.message);
+  return { success: false };
+}

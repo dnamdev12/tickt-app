@@ -1,5 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import moment from 'moment';
+import { values } from 'lodash';
 
 
 interface Props {
@@ -10,6 +11,7 @@ interface Props {
     newMileStoneScreen: (data: any) => void;
     handleStepMileStone: (data: any, index: any) => void;
     handleStepBack: () => void;
+    updateMileStoneIndex: (data: any) => void;
     milestones: any;
 }
 interface State {
@@ -19,14 +21,6 @@ interface State {
     to_date: string,
     recommended_hours: any
     errors: any;
-}
-
-const defaultData = {
-    milestone_name: '',
-    isPhotoevidence: true,
-    from_date: '',
-    to_date: '',
-    recommended_hours: ''
 }
 export default class AddMilestone extends Component<Props, State> {
     constructor(props: any) {
@@ -40,7 +34,8 @@ export default class AddMilestone extends Component<Props, State> {
             errors: {
                 milestone_name: '',
                 from_date: '',
-                recommended_hours: ''
+                recommended_hours: '',
+                pattern_error: ''
             }
         }
     }
@@ -100,9 +95,10 @@ export default class AddMilestone extends Component<Props, State> {
     }
 
     componentDidMount() {
-        const { newMileStoneScreen, milestones } = this.props;
+        const { updateMileStoneIndex, newMileStoneScreen, milestones } = this.props;
         let milestone_index = !milestones?.length ? milestones?.length : 0;
         newMileStoneScreen(milestone_index);
+        updateMileStoneIndex(null);
     }
 
     handleChange = (name: string, value: any) => {
@@ -137,12 +133,12 @@ export default class AddMilestone extends Component<Props, State> {
         const { milestones } = this.props;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
         let from_date = milestones[milestone_index]?.from_date || '';
-        let { milestone_name, isPhotoevidence, recommended_hours } = this.state;
+        let { milestone_name, isPhotoevidence, recommended_hours, errors: { pattern_error } } = this.state;
         if (milestone_name?.length && recommended_hours?.length) {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-            if (!error_1?.length && !error_2?.length && !error_3?.length) {
+            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
         }
@@ -178,8 +174,9 @@ export default class AddMilestone extends Component<Props, State> {
     // }
 
     render() {
-        const { handleStepForward, handleStepBack, milestones } = this.props;
+        const { newMileStoneScreen, handleStepForward, handleStepBack, milestones } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, errors } = this.state;
+        let milestone_index = milestones.length ? milestones.length - 1 : 0;
         // let { dataItem, dataItem: { milestone_name, isPhotoevidence, recommended_hours }, errors } = this.state;
 
         let from_date_format = '';
@@ -187,7 +184,7 @@ export default class AddMilestone extends Component<Props, State> {
         if (milestones.length) {
             let date_from_moment = milestones[milestones.length - 1].from_date;
             let date_to_moment = milestones[milestones.length - 1].to_date;
-            console.log({ milestones, date_from_moment, date_to_moment })
+            // console.log({ milestones, date_from_moment, date_to_moment })
             if (date_from_moment?.length) {
                 from_date_format = moment(date_from_moment).format('MMM DD');
             }
@@ -197,7 +194,7 @@ export default class AddMilestone extends Component<Props, State> {
             }
         }
         let check_errors = this.checkErrors();
-        console.log({ milestone_name, isPhotoevidence, recommended_hours, check_errors }, 'in--render');
+        // console.log({ milestone_name, isPhotoevidence, recommended_hours, check_errors }, 'in--render');
         return (
             <div className="app_wrapper">
                 <div className="section_wrapper">
@@ -262,13 +259,28 @@ export default class AddMilestone extends Component<Props, State> {
                                     <label className="form_label">Recommended hours</label>
                                     <div className="text_field">
                                         <input
-                                            onChange={(e) => { this.handleChange('recommended_hours', e.target.value) }}
+                                            onChange={(e) => {
+                                                this.setState({ recommended_hours: e.target.value }, () => {
+                                                    this.setItems();
+                                                    let rh_value = this.state.recommended_hours;
+                                                    let error_item = this.state.errors;
+                                                    let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
+                                                    if (rh_value.match(pattern) !== null) {
+                                                        error_item['pattern_error'] = '';
+                                                    } else {
+                                                        error_item['pattern_error'] = 'please enter a valid pattern like : 04:03';
+                                                    }
+                                                    this.setState({ errors: error_item });
+                                                });
+                                            }}
+                                            // onChange={(e) => { this.handleChange('recommended_hours', e.target.value) }}
                                             value={recommended_hours}
-                                            type="number"
-                                            placeholder="Enter Recommended hours"
+                                            type="text"
+                                            placeholder="Enter Recommended hours like: 04:03"
                                             name="recommended_hours" />
                                     </div>
                                     <span className="error_msg">{errors.recommended_hours}</span>
+                                    <span className="error_msg">{errors.pattern_error}</span>
                                 </div>
 
                                 <div className="form_field">
@@ -281,6 +293,10 @@ export default class AddMilestone extends Component<Props, State> {
                                 </div>
                                 <div className="form_field">
                                     <button
+                                        onClick={() => {
+                                            newMileStoneScreen(milestone_index + 1);
+                                            handleStepForward(6)
+                                        }}
                                         // className="fill_btn full_btn">
                                         className={`fill_btn full_btn ${check_errors ? 'disable_btn' : ''}`}>
                                         {'Continue'}

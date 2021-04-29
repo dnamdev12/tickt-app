@@ -4,8 +4,10 @@ import moment from 'moment';
 interface Props {
     data: any;
     stepCompleted: Boolean;
-    editMileStone: number;
+    editMileStone: any;
+    editMilestoneTiming: any;
     handleStepComplete: (data: any) => void;
+    addTimeToMileStone: (data: any, index: any) => void;
     handleStepForward: (data: any) => void;
     newMileStoneScreen: (data: any) => void;
     handleStepMileStone: (data: any, index: any) => void;
@@ -39,27 +41,34 @@ export default class EditMilestone extends Component<Props, State> {
         }
     }
 
-    componentDidUpdate(prevProps: any) {
-        const { editMileStone } = this.props;
-        let nextProps = this.props;
-        if (prevProps?.editMileStone !== nextProps?.editMileStone) {
-            console.log('Here!!!! ------> updates!!!')
-        }
-        console.log({ nextProps: nextProps?.editMileStone, prevProps: prevProps?.editMileStone, editMileStone })
-    }
-
     componentDidMount() {
-        const { editMileStone, milestones } = this.props;
-        console.log({ editMileStone, milestones })
+        const { editMileStone, milestones, editMilestoneTiming } = this.props;
+        console.log({ editMileStone, milestones, editMilestoneTiming }, '--------------- componentDidMount')
         let item = milestones[editMileStone];
+
         if (Object.keys(item).length) {
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
+
+            if (editMilestoneTiming && Object.keys(editMilestoneTiming).length) {
+                if ('from_date' in editMilestoneTiming) {
+                    from_date = editMilestoneTiming?.from_date;
+                }
+                if ('to_date' in editMilestoneTiming) {
+                    to_date = editMilestoneTiming?.to_date;
+                }
+            }
+
             this.setState({
                 from_date: from_date,
                 isPhotoevidence: isPhotoevidence,
                 milestone_name: milestone_name,
                 recommended_hours: recommended_hours,
                 to_date: to_date,
+            }, () => {
+                this.props.addTimeToMileStone({
+                    from_date,
+                    to_date
+                }, editMileStone)
             })
         }
     }
@@ -70,30 +79,29 @@ export default class EditMilestone extends Component<Props, State> {
 
     handleContinue = () => {
         this.setItems();
-        this.props.handleStepForward(6);   
+        this.props.handleStepForward(6);
     }
 
 
     setItems = () => {
         const { milestones, handleStepMileStone, newMileStoneScreen, editMileStone } = this.props;
-        let { milestone_name, isPhotoevidence, recommended_hours, errors } = this.state;
+        let { milestone_name, from_date, to_date, isPhotoevidence, recommended_hours, errors } = this.state;
         let milestone_index = editMileStone;
         handleStepMileStone({
             "milestone_name": milestone_name,
             "isPhotoevidence": isPhotoevidence,
-            "from_date": milestones[milestone_index]?.from_date || '',
-            "to_date": milestones[milestone_index]?.to_date || '',
+            "from_date": from_date,// milestones[milestone_index]?.from_date || '',
+            "to_date": to_date,//milestones[milestone_index]?.to_date || '',
             "recommended_hours": recommended_hours
         }, milestone_index);
     }
 
     render() {
-        console.log({ props: this.props });
         const { handleStepForward, handleStepBack, milestones, editMileStone } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, from_date, to_date, errors } = this.state;
 
-        let to_date_format = from_date?.length ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
-        let from_date_format = to_date?.length ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
+        let from_date_format = from_date?.length ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
+        let to_date_format = to_date?.length ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
         let check_errors = false;
 
         return (
@@ -168,7 +176,7 @@ export default class EditMilestone extends Component<Props, State> {
                                     </div>
                                     <span className="error_msg">{errors.recommended_hours}</span>
                                 </div>
-                                
+
                                 <div className="form_field">
                                     <button
                                         onClick={this.handleContinue}
