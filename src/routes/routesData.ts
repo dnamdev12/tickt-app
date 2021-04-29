@@ -73,8 +73,6 @@ const routes = [
         name: 'popularbuilders',
         path: '/popular-builders',
         component: PopularBuilders,
-        authRoute: false,
-        privateRoute: true,
     },
     {
         name: 'searchjobresults',
