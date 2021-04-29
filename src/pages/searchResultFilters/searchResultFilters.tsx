@@ -89,7 +89,7 @@ const SearchResultFilters = (props: any) => {
                 </li>
             </ul>
             {sortByPrice.priceFilterClicked &&
-                <Menu
+                <Menu className="fsp_modal range"
                     id="simple-menu"
                     anchorEl={priceAnchorEl}
                     keepMounted
