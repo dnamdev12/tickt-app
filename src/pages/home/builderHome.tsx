@@ -15,7 +15,7 @@ import industrial from "../../assets/images/ic-money.png";
 import contracted from "../../assets/images/ic-contracted.png";
 import commercial from "../../assets/images/ic-commercial.png";
 import hourlyRate from "../../assets/images/ic-clock.png";
-import close from "../../../../../assets/images/icon-close-1.png";
+import close from "../../assets/images/icon-close-1.png";
 
 
 const BuilderHome = (props: any) => {
