@@ -3,7 +3,7 @@ const SocialAuth = {
     GOOGLE_SECRET_KEY: 'QZPArMrdjCvt7ODvnKRa1hhA',
 }
 
-const errorStrings = {
+const errorStrings: any = {
 fullNameEmpty: 'Full Name is required',
 fullNameErr: 'Please enter a valid name',
 fullNameShortErr: 'Name must have minimum 3 letters',
