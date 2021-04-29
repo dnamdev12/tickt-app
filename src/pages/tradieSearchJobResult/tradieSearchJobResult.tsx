@@ -27,8 +27,10 @@ const TradieSearchJobResult = (props: any) => {
         if (location?.state?.queryParam == 'viewNearByJob') {
             const data = {
                 page: 1,
-                lat: props.location?.state?.bannerData?.location?.coordinates[1],
-                long: props.location?.state?.bannerData?.location?.coordinates[0]
+                // lat: props.location?.state?.bannerData?.location?.coordinates[1],
+                // long: props.location?.state?.bannerData?.location?.coordinates[0]
+                lat: 21.17021,
+                long: 72.831062
             }
             props.getViewNearByJob(data);
         }
@@ -110,7 +112,7 @@ const TradieSearchJobResult = (props: any) => {
                         </div>
                         <div className="flex_row tradies_row">
                             {/* If the map does not come, then this div not only class (card_col) will be hidden */}
-                            {mapData.showMap ? <div className="card_loc">
+                            {mapData.showMap ? <div className="card_col">
                                 {renderJobsData()?.length > 0 ?
                                     (renderJobsData()?.map((jobData: any) => {
                                         return <TradieJobInfoBox item={jobData} />
@@ -119,12 +121,12 @@ const TradieSearchJobResult = (props: any) => {
                                 (renderJobsData()?.map((jobData: any) => {
                                     return <TradieJobInfoBox item={jobData} />
                                 })) : <span>No data Found</span>}
+                            {mapData.showMap && <div className="map_col">
+                                <div className="map_stick">
+                                    <RenderMap {...props} />
+                                </div>
+                            </div>}
                         </div>
-                        {mapData.showMap && <div className="map_col">
-                            <div className="map_stick">
-                                <RenderMap {...props}/>
-                            </div>
-                        </div>}
                     </div>
                 </div>
             </div>
