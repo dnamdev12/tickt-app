@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import storageService from '../utils//storageService';
 import AuthModal from './auth/authModal';
-import { useLocation } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 import colorLogo from '../assets/images/ic-logo-yellow.png';
 import menu from '../assets/images/menu-line-white.svg';
@@ -49,6 +49,10 @@ const Header = (props: any) => {
         history.push('/login')
     }
 
+    const postClicked = () => {
+        history.push('/post-new-job')
+    }
+
     return (
         <>
             {showHeader && <header id="header">
@@ -63,7 +67,7 @@ const Header = (props: any) => {
                         <ul className="center_nav">
                             <li><a className="active">Discover</a></li>
                             <li><a >Jobs</a></li>
-                            {userType === 2 && <li><a >Post</a></li>}
+                            {userType === 2 && <li><a onClick={postClicked}>Post</a></li>}
                             <li><a >Chat</a></li>
                         </ul>
                         <ul className="side_nav">

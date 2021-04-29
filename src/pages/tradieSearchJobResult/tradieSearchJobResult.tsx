@@ -125,7 +125,7 @@ const TradieSearchJobResult = (props: any) => {
                                 })) : <span>No data Found</span>}
                             {mapData.showMap && <div className="map_col">
                                 <div className="map_stick">
-                                    <span className="close_map">
+                                    <span className="close_map" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
                                         <img src={closeMap} alt="close-map" />
                                     </span>
                                     <RenderMap {...props} />
