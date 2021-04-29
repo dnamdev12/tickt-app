@@ -85,7 +85,7 @@ const SearchResultFilters = (props: any) => {
                     <a className={sortByPrice.priceFilterClicked ? "active" : ''} onClick={handleClick}>Price</a>
                 </li>
                 <li>
-                    <a >Highest rated</a>
+                    <a >Sorting</a>
                 </li>
             </ul>
             {sortByPrice.priceFilterClicked &&
@@ -96,27 +96,37 @@ const SearchResultFilters = (props: any) => {
                     open={Boolean(priceAnchorEl)}
                     onClose={handleClose}
                 >
-                    <button className="close_btn" onClick={handleClose}>
+                    <span className="close_btn" onClick={handleClose}>
                         <img src={cancel} alt="cancel" />
-                    </button>
+                    </span>
                     <span className="sub_title">Maximum budget</span>
-                    <span>$<input type="text" placeholder="$0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={6} /></span>
-                    {!!errors.maxBudget && <span className="error_msg">{errors.maxBudget}</span>}
-                    <button onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, payTypeClicked: !prevData.payTypeClicked }))}>
+
+                    <div className="form_field">
+                        <div className="text_field">
+                            <input type="text" placeholder="0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={6} className="detect_input_ltr" />
+                            <span className="detect_icon_ltr">$</span>
+                        </div>
+                        {!!errors.maxBudget && <span className="error_msg">{errors.maxBudget}</span>}
+                    </div>
+
+
+                    <span className={sortByPrice.payTypeClicked ? "price up" : 'price down'}  onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, payTypeClicked: !prevData.payTypeClicked }))}>
                         {sortByPrice.pay_type == "Fixed price" ? "Fixed price" : sortByPrice.pay_type == "Per hour" ? "Per hour" : ""}
-                    </button>
+                    </span>
+
                     {sortByPrice.payTypeClicked &&
                         <div>
                             <div onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Per hour", payTypeClicked: !prevData.payTypeClicked }))}>
-                                <span>Per hour</span>
+                                <span className="per_day">Per hour</span>
                             </div>
                             <div onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", payTypeClicked: !prevData.payTypeClicked }))}>
-                                <span>Fixed price</span>
+                                <span className="per_day">Fixed price</span>
                             </div>
-                        </div>}
-                    <div>
-                        <button onClick={showResultsByBudget}>Show results</button>
-                    </div>
+                        </div>
+                    }
+                    <a className="link" onClick={showResultsByBudget}>Show results</a>
+
+
                 </Menu>}
         </div >
     )

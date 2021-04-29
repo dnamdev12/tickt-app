@@ -10,6 +10,8 @@ import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import mapIcon from '../../assets/images/map.png';
 import noData from '../../assets/images/no-data.png';
+import closeMap from '../../assets/images/close-white.png';
+
 
 const TradieSearchJobResult = (props: any) => {
     const [filterState, setFilterState] = useState({
@@ -27,8 +29,11 @@ const TradieSearchJobResult = (props: any) => {
         if (location?.state?.queryParam == 'viewNearByJob') {
             const data = {
                 page: 1,
-                lat: props.location?.state?.bannerData?.location?.coordinates[1],
-                long: props.location?.state?.bannerData?.location?.coordinates[0]
+                // lat: props.location?.state?.bannerData?.location?.coordinates[1],
+                lat: 28.496183499999997,
+                // long: props.location?.state?.bannerData?.location?.coordinates[0]
+                long: 77.0267903
+
             }
             props.getViewNearByJob(data);
         }
@@ -110,7 +115,7 @@ const TradieSearchJobResult = (props: any) => {
                         </div>
                         <div className="flex_row tradies_row">
                             {/* If the map does not come, then this div not only class (card_col) will be hidden */}
-                            {mapData.showMap ? <div className="card_loc">
+                            {mapData.showMap ? <div className="card_col">
                                 {renderJobsData()?.length > 0 ?
                                     (renderJobsData()?.map((jobData: any) => {
                                         return <TradieJobInfoBox item={jobData} />
@@ -119,12 +124,16 @@ const TradieSearchJobResult = (props: any) => {
                                 (renderJobsData()?.map((jobData: any) => {
                                     return <TradieJobInfoBox item={jobData} />
                                 })) : <span>No data Found</span>}
+                            {mapData.showMap && <div className="map_col">
+                                <div className="map_stick">
+                                    <span className="close_map">
+                                        <img src={closeMap} alt="close-map" />
+                                    </span>
+                                    <RenderMap {...props} />
+                                </div>
+                            </div>}
                         </div>
-                        {mapData.showMap && <div className="map_col">
-                            <div className="map_stick">
-                                <RenderMap {...props}/>
-                            </div>
-                        </div>}
+
                     </div>
                 </div>
             </div>
