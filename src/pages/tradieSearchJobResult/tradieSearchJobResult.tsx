@@ -10,6 +10,8 @@ import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import mapIcon from '../../assets/images/map.png';
 import noData from '../../assets/images/no-data.png';
+import closeMap from '../../assets/images/close-white.png';
+
 
 const TradieSearchJobResult = (props: any) => {
     const [filterState, setFilterState] = useState({
@@ -123,6 +125,9 @@ const TradieSearchJobResult = (props: any) => {
                                 })) : <span>No data Found</span>}
                             {mapData.showMap && <div className="map_col">
                                 <div className="map_stick">
+                                    <span className="close_map">
+                                        <img src={closeMap} alt="close-map" />
+                                    </span>
                                     <RenderMap {...props} />
                                 </div>
                             </div>}

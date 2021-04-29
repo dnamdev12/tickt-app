@@ -9,14 +9,11 @@ const Home = () => {
 
     if (userType === 0) {
         return <GuestHome />
-    }
-     else if (userType === 1) {
+    } else if (userType === 1) {
         return <TradieHome />
-    }
-    // else if (userType === 2) {
-    //     return <BuilderHome />
-    // }
-    else {
+    } else if (userType === 2) {
+        return <BuilderHome />
+    } else {
         return <GuestHome />
     }
 }
