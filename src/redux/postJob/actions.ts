@@ -77,3 +77,16 @@ export const getMileStoneByTempId = async (id: any) => {
 
 // Detail Page {currentScreen:12, editItems: {}}
 export const updateDetailScreen = (data: any) => ({ type: actionTypes.EDIT_DETAIL_SCREEN, payload: data });
+
+// Job Post 
+export const createPostJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.createJob, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+
+  setShowToast(true, response.message);
+  return { success: false };
+}

@@ -34,7 +34,8 @@ const Urls = {
     home: `${versions.v1}home`,
     homeSearch: `${versions.v1}home/search`, 
     profileTemplateList:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}templatesList`,
-    createTemplate:`${versions.v1}${ServiceEnum.job}createTemplate`
+    createTemplate:`${versions.v1}${ServiceEnum.job}createTemplate`,
+    createJob:`${versions.v1}${ServiceEnum.job}create` // create job (post job)
 }
 
 export const urlFor = (service: String): string => {

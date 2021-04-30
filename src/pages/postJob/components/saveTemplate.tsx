@@ -33,14 +33,12 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                 return item
             }
         })
-        console.log({ filter_milestone });
-        // return
+        
         let { success, data } = await addTemplate({
             template_name: templateName,
             milestones: filter_milestone
         })
         if (success) {
-            console.log({ data });
             handleCombineMileStones([]);
             handleStepForward(11);
         }
@@ -78,8 +76,9 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                                 <div className="text_field">
                                     <input
                                         onChange={(e) => {
-                                            handleChange(e.target.name);
+                                            handleChange(e.target.value);
                                         }}
+                                        value={templateName}
                                         type="text" placeholder="This job..." name="name" />
                                 </div>
                                 <span className="error_msg"></span>

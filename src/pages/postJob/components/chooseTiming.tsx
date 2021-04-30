@@ -29,8 +29,7 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
 
 
     useEffect(() => {
-        if (data && !localChanges) {
-            console.log({data});
+        if (stepCompleted) {
             setRange({
                 startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
                 endDate:  data.to_date ? moment(data.to_date).toDate() : '',
@@ -38,10 +37,9 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
             });
             setLocalChanges(true);
         }
-    }, [data])
+    }, [data, stepCompleted])
 
     const handleChange = (item: any) => {
-        console.log({ item }, '---in-change')
         setRange(item.selection);
         handleCheck(item.selection);
     };
@@ -62,8 +60,6 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
     }
 
     const checkDisable = () => {
-        let from_date = moment(range.startDate).format(default_format);
-        console.log({moment:range.startDate, from_date})
         if (range?.startDate && range?.startDate !== 'Invalid date') {
             return false;
         }

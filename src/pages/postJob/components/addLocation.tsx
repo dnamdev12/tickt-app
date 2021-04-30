@@ -9,6 +9,7 @@ import PlacesAutocomplete, {
 } from 'react-places-autocomplete';
 import icgps from "../../../assets/images/ic-gps.png";
 import Geocode from "react-geocode";
+import { setShowToast, setLoading } from '../../../redux/common/actions';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -26,33 +27,6 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const [error, setError] = useState('');
   const [localChanges, setLocationChanges] = useState(false);
   const [activeCurrent, setActiveCurrent] = useState(false);
-
-
-  const setItemLocation = async (latitude: string, longitude: string) => {
-    if (Object.keys(locationDetails?.location).length && locationDetails?.location_name?.length) {
-      // let co_ord = locationDetails?.location?.coordinates;
-
-      let response = await Geocode.fromLatLng(latitude, longitude);
-      if (response) {
-        const address = response.results[0].formatted_address;
-        console.log({ address });
-      }
-
-      let coordinates_response = await Geocode.fromAddress('Calicut, Kerala, India');
-      if (coordinates_response) {
-        const { lat, lng } = coordinates_response.results[0].geometry.location;
-        console.log(lat, lng);
-      }
-    }
-  }
-
-  const getCurrentPostion = () => {
-    navigator.geolocation.getCurrentPosition(function (position) {
-      let { latitude, longitude } = position?.coords;
-      console.log({ latitude, longitude });
-      setItemLocation(latitude.toString(), longitude.toString());
-    });
-  }
 
   useEffect(() => {
     if (stepCompleted && !localChanges) {
@@ -74,38 +48,30 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
       setActiveCurrent(false);
       document.getElementById('location_search_static')?.focus();
     }
-
-    // getCurrentPostion(); Just for testing
-    return () => {
-      // cleanup
-    }
   }, [address, stepCompleted, data])
 
   const getCurrentLocation = async (e: any) => {
     e.preventDefault();
     setActiveCurrent(true);
     let permission_web = await navigator.permissions.query({ name: 'geolocation' });
+    console.log({ permission_web }, '56')
     if (permission_web.state !== 'denied') {
-      let coordinates_values: Array<number> = [];
-      navigator.geolocation.getCurrentPosition(async (position) => {
-
-        let { latitude, longitude } = position?.coords;
-
-        // if (position?.coords?.latitude && position?.coords?.longitude) {
-        //   coordinates_values.push(position.coords.latitude);
-        //   coordinates_values.push(position.coords.longitude);
-        // }
-
-        let response = await Geocode.fromLatLng(latitude.toString(), longitude.toString());
-        if (response) {
-          const address = response.results[0].formatted_address;
-          console.log({ address });
-        }
-
-        let coordinates_values = [latitude, longitude];
-        console.log({ coordinates: coordinates_values, address: address })
-        setLocation({ coordinates: coordinates_values, address: address })
+      setLoading(true)
+      console.log({ state: permission_web.state }, 'if')
+      const position: any = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
       });
+      console.log({position},'62')
+      let { latitude, longitude } = position.coords;
+      let response: any = await Geocode.fromLatLng(latitude.toString(), longitude.toString());
+      console.log({response},'65')
+      if (response) {
+        const address = response.results[0].formatted_address;
+        let coordinates_values = [latitude, longitude];
+        console.log('before set', {coordinates_values, address})
+        setLocation({ coordinates: coordinates_values, address: address })
+        setLoading(false);
+      }
     } else {
       setError('Please enable the location permission from the settings so that Tickt app can access your location');
     }
@@ -115,7 +81,6 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     e.preventDefault();
     let locationAddress: any = locationDetails;
     if (locationAddress?.location?.coordinates?.length) {
-      console.log({ locationDetails })
       handleStepComplete(locationDetails);
       return
     }
@@ -135,31 +100,12 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   }
 
   const handleSelect = async (address: any) => {
-
     let coordinates_response = await Geocode.fromAddress(address);
+    console.log('get-lat-long')
     if (coordinates_response) {
       const { lat, lng } = coordinates_response.results[0].geometry.location;
-      console.log(lat, lng);
       setLocation({ coordinates: [lat, lng], address })
     }
-
-    // geocodeByAddress(address)
-    //   .then((results: any) => {
-    //     console.log({ results });
-    //     return getLatLng(results[0]);
-    //   })
-    //   .then((latLng: any) => {
-    //     console.log('Success', { latLng });
-    //     let coordinates_values = [];
-    //     if (latLng?.lat && latLng?.lng) {
-    //       coordinates_values.push(latLng?.lat);
-    //       coordinates_values.push(latLng?.lng);
-    //     }
-    //     setLocation({ coordinates: coordinates_values, address })
-    //   }).catch((error: any) => {
-    //     setLocation({ coordinates: null, address })
-    //     console.log('Error', error)
-    //   });
   };
 
   const checkErrors = () => {
@@ -199,7 +145,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                     id="location_search_static"
                     onChange={(e) => setAddress(e.target.value)}
                     onFocus={(x) => {
-                      console.log('Input - 1')
+                      // console.log('Input - 1')
                     }}
                   />
 
@@ -214,7 +160,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                         <input
                           id="location_search_dynamic"
                           onFocus={(x) => {
-                            console.log('Input - 2')
+                            // console.log('Input - 2')
                           }}
                           style={{ display: address.length < 3 ? 'none' : '' }}
                           {...getInputProps({

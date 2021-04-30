@@ -19,7 +19,6 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
   const [continueClicked, setContinueClicked] = useState(false);
 
   useEffect(() => {
-    console.log({ stepCompleted })
     if (stepCompleted) {
       setBasicDetails({
         jobName: data?.jobName, 

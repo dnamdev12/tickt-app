@@ -6,7 +6,7 @@ import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../../assets/images/icon-direction-left.png'
 import rightIcon from '../../../assets/images/icon-direction-right.png'
-
+import { createPostJob } from '../../../redux/postJob/actions';
 import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -20,6 +20,7 @@ interface Proptypes {
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
     handleStepBack: () => void;
+    clearParentStates: () => void;
     updateDetailScreen: (data: any) => void;
 }
 
@@ -61,6 +62,7 @@ const JobDetails = ({
     updateDetailScreen,
     handleStepForward,
     handleStepComplete,
+    clearParentStates,
     handleStepBack }: Proptypes) => {
     const [categorySelected, setSelected] = useState<{ [index: string]: any }>({ category: {}, job_type: {} });
 
@@ -81,19 +83,15 @@ const JobDetails = ({
             preSelectedSpecialization = data?.specialization;
         }
 
-        console.log({ ct: categories?.length, preSelectedItem, preSelectedJobType })
-
         if (categories?.length && preSelectedItem && preSelectedJobType) {
             let filterItem = categories.find((item: any) => item._id === preSelectedItem);
             let filter_specialization = [];
             if (filterItem?.specialisations && filterItem?.specialisations?.length) {
-                console.log({ spec: filterItem?.specialization, preSelectedSpecialization })
                 filter_specialization = filterItem?.specialisations?.filter((item: any) => {
                     if (preSelectedSpecialization.includes(item._id)) {
                         return item;
                     }
                 })
-                console.log({ spec: filterItem?.specialization, preSelectedSpecialization, filter_specialization })
             }
 
             let filterJobType = jobTypes.find((item: any) => item._id === preSelectedJobType);
@@ -106,22 +104,18 @@ const JobDetails = ({
         }
     }
 
-    const handleClickEdit = () => {
-        console.log('Here!');
-    }
-
     useEffect(() => {
         updateDetailScreen(null);
         if ((categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.category).length) || (categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.job_type).length)) {
             findSelectedCategory();
         }
-        console.log('== on render');
+
         let element: any = document?.getElementById('edit-image')
         if (element) {
             element.addEventListener("click", (e: any) => {
                 e.preventDefault();
                 e.stopPropagation();
-                console.log('Here!');
+                console.log('Here!')
                 handleStepForward(13)
             });
         }
@@ -130,13 +124,13 @@ const JobDetails = ({
             if (element_) {
                 element_.removeEventListener("click", (e: any) => {
                     e.preventDefault();
+                    console.log('Here!')
                     e.stopPropagation();
-                    console.log('Here! remove~!');
                 });
             }
         }
 
-    }, [categories, jobTypes, handleClickEdit])
+    }, [categories, jobTypes])
 
     const forwardScreenStep = (id: any, data?: any) => {
         updateDetailScreen({ currentScreen: id, data });
@@ -150,7 +144,7 @@ const JobDetails = ({
                 let split_item_format = item.split('.');
                 let get_split_fromat = split_item_format[split_item_format.length - 1];
 
-                if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
+                if (imageFormats.includes(get_split_fromat)) { // || videoFormats.includes(get_split_fromat)
                     return { url: item, format: get_split_fromat };
                 }
             });
@@ -164,9 +158,9 @@ const JobDetails = ({
                         render_item = <img alt="" src={item?.url} style={{ height: '410px', width: '800px' }} />
                     }
 
-                    if (videoFormats.includes(item?.format)) {
-                        render_item = <video src={item?.url} style={{ height: '410px', width: '800px' }} />
-                    }
+                    // if (videoFormats.includes(item?.format)) {
+                    //     render_item = <video src={item?.url} style={{ height: '410px', width: '800px' }} />
+                    // }
 
                     return (
                         <div className='item'>
@@ -176,6 +170,36 @@ const JobDetails = ({
                 })
             }
         }
+    }
+
+
+    const handlePost = async (e: any) => {
+        e.preventDefault();
+        let data_clone: any = data;
+        let milestones_clone: any = milestones;
+        let filter_milestones = milestones_clone.filter((item: any) => {
+            if (Object.keys(item).length) {
+                if (!item?.to_date?.length) {
+                    delete item?.to_date;
+                }
+                return item;
+            }
+        })
+        data_clone['milestones'] = filter_milestones;
+        let from_date = data_clone?.from_date;
+        let to_date = data_clone?.to_date;
+
+        if(moment(from_date).isSame(moment(to_date))){
+            delete data_clone?.to_date;
+        }
+
+        let response: any = await createPostJob(data_clone);
+        if (response?.success) {
+            console.log({ data: response?.data });
+            clearParentStates();
+            handleStepForward(12);
+        }
+        // console.log({ data: data_clone, filter_milestones });
     }
 
     return (
@@ -199,9 +223,6 @@ const JobDetails = ({
                                                 <figure className="vid_img_thumb">
                                                     <OwlCarousel className='owl-theme' {...options}>
                                                         {renderByFileFormat(data)}
-                                                        {/* {data?.urls ?
-                                                            data?.urls.map((item: any) => (renderByFileFormat(item)))
-                                                            : null} */}
                                                     </OwlCarousel>
                                                 </figure>
                                             </div>
@@ -214,18 +235,20 @@ const JobDetails = ({
                                                     </span>
                                                     <div className="job_info">
                                                         <ul>
-                                                            <li className="icon clock">0 minutes ago</li>
-                                                            <li className="icon dollar">${data?.amount} p/h</li>
-                                                            <li className="icon location mtb-10">{data?.location_name}</li>
+                                                            {/* <li className="icon clock">0 minutes ago</li> */}
                                                             <li className="icon calendar">
                                                                 {data?.from_date?.length && !data?.to_date?.length ? `0 days` :
                                                                     data?.from_date?.length && data?.to_date?.length ?
                                                                         `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
                                                                         : '0 days'}
                                                             </li>
+                                                            <li className="icon dollar">${data?.amount} {data?.pay_type === "fixed" ? 'fixed' : 'p/h'} </li>
+                                                            <li className="icon location mtb-10">{data?.location_name}</li>
                                                         </ul>
                                                     </div>
-                                                    <button className="fill_btn full_btn">Post job</button>
+                                                    <button
+                                                        onClick={handlePost}
+                                                        className="fill_btn full_btn">Post job</button>
                                                 </div>
                                             </div>
                                         </div>

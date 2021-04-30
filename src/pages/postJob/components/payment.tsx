@@ -73,7 +73,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     }));
 
     setPaymentDetails((prevDetails) => {
-      console.log({ prevDetails, name, value });
       if (name === "pay_type" && prevDetails.pay_type !== value) {
         prevDetails.amount = '';
       }
@@ -83,11 +82,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
       })
     })
   };
-
-  // const handleSliderChange = (event: any, newValue: number | any) => {
-  //   setValue(newValue as number[]);
-  //   handleChange(newValue[1], 'amount');
-  // };
 
   const handleContinue = (e: any) => {
     e.preventDefault();
@@ -113,7 +107,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   };
 
   const checkErrors = () => {
-    console.log({ 1: paymentDetails['pay_type'], 2: paymentDetails['amount'], 3: paymentDetails })
     let value_1 = paymentDetails['pay_type'];
     let value_2 = paymentDetails['amount'];
     if (value_1 && value_2) {

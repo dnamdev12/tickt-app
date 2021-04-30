@@ -37,34 +37,11 @@ const PostJob = ({
     editDetailPage,
     editMilestoneId }: Proptypes) => {
     const [categoriesData, setCategoriesData] = useState([]);
-    const [step, setStep] = useState(13);
-    const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]);
-    const [data, setData] = useState({
-        amount: "45",
-        categories: ["605c8bccb777553e6b057b8a"],
-        from_date: "2021-05-23",
-        jobName: "Works Well",
-        job_description: "It's a startup job for the day to day life household works.",
-        job_type: ["605c5cf7cbfa486a461615f8"],
-        location: { type: "Point", coordinates: [22.1, 30.7] },
-        location_name: "Teasta Tea Shop, Arun Vihar, Sector 37, Noida, Uttar Pradesh, India",
-        pay_type: "fixed",
-        specialization: ["6066fca0cc682b18cd57a4c4", "6066fca0cc682b18cd57a4c5"],
-        to_date: "2021-05-28",
-        urls: [
-            "https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4",
-            "https://appinventiv-development.s3.amazonaws.com/sample_png_file.png",
-            "https://appinventiv-development.s3.amazonaws.com/sample_png_file.png",
-            "https://appinventiv-development.s3.amazonaws.com/sample_png_file.png",
-            "https://appinventiv-development.s3.amazonaws.com/sample_png_file.png"
-        ]
-    });
+    const [step, setStep] = useState(1);
+    const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
+    const [data, setData] = useState({});
     const [editMileStone, setEditMileStone] = useState(0 as number);
-    const [milestones, setMileStones] = useState([
-        { milestone_name: "Here! - 1", isPhotoevidence: true, recommended_hours: "34:05", from_date: "04-30-2021", to_date: "05-01-2021" },
-        { from_date: "04-29-2021", isPhotoevidence: true, milestone_name: "Here! - 2", recommended_hours: "344:00", to_date: "04-30-2021" },
-        {}
-    ]);
+    const [milestones, setMileStones] = useState([]);
     const [forceupdate, setForceUpdate] = useState({});
 
     const getCategories = useCallback(async () => {
@@ -76,6 +53,11 @@ const PostJob = ({
         getCategories();
         callTradeList();
     }, [getCategories, callTradeList, milestones]);
+
+    const clearParentStates = () => {
+        setData({});
+        setMileStones([]);
+    }
 
     const handleStepComplete = (stepData: any) => {
         setData((prevData) => ({
@@ -116,6 +98,7 @@ const PostJob = ({
         milestone_clone[index]['isPhotoevidence'] = data.isPhotoevidence;
         milestone_clone[index]['recommended_hours'] = data.recommended_hours;
         setMileStones(milestone_clone);
+        console.log({milestone_clone, data, index})
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
 
@@ -123,7 +106,6 @@ const PostJob = ({
         let milestone_clone: any = milestones;
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
-        // console.log({ milestone_clone }) // added milestones here!
         setMileStones(milestone_clone);
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
@@ -161,7 +143,7 @@ const PostJob = ({
             setStep(step);
         }
     };
-    console.log({data, milestones})
+    console.log({data, milestones});
     let page;
     switch (step) {
         case 1:
@@ -235,6 +217,7 @@ const PostJob = ({
                     stepCompleted={stepsCompleted.includes(6)}
                     handleCombineMileStones={handleCombineMileStones}
                     updateMileStoneIndex={updateMileStoneIndex}
+                    newMileStoneScreen={newMileStoneScreen}
                     updateMileStoneTimings={updateMileStoneTimings}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
@@ -251,6 +234,7 @@ const PostJob = ({
                     stepCompleted={stepsCompleted.includes(7)}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
+                    removeMilestoneByIndex={removeMilestoneByIndex}
                     updateMileStoneIndex={updateMileStoneIndex}
                     handleStepMileStone={handleStepMileStone}
                 />)
@@ -314,6 +298,7 @@ const PostJob = ({
                     stepCompleted={stepsCompleted.includes(12)}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
+                    handleStepForward={handleStepForward}
                 />)
             break;
         case 13:
@@ -333,6 +318,7 @@ const PostJob = ({
                     milestones={milestones}
                     categories={tradeListData}
                     jobTypes={categoriesData}
+                    clearParentStates={clearParentStates}
                     stepCompleted={stepsCompleted.includes(14)}
                     handleStepComplete={handleStepComplete}
                     handleStepForward={handleStepForward}

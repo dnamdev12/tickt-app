@@ -49,7 +49,6 @@ const ChooseTimingMileStone = ({
     }, [milestones])
 
     const handleChange = (item: any) => {
-        console.log({ item }, '---in-change')
         setRange(item.selection);
         handleCheck(item.selection);
     };
@@ -82,13 +81,11 @@ const ChooseTimingMileStone = ({
             updateMileStoneTimings(timings);
             handleStepForward(15);
         }
-
         // handleStepComplete(formattedDates);
     }
 
     const checkDisable = () => {
-        let from_date = moment(range.startDate).format(default_format);
-        console.log({ moment: range.startDate, from_date })
+        // let from_date = moment(range.startDate).format(default_format);
         if (range?.startDate && range?.startDate !== 'Invalid date') {
             return false;
         }

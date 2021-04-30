@@ -49,23 +49,12 @@ const AddMilestone = ({ data, stepCompleted, handleStepForward, handleStepComple
     }
 
     useEffect(() => {
-
-        console.log('before', { milestones: milestones?.length, localChanges })
         if (milestones?.length) {
             let get_items = milestones[milestones.length - 1];
-            console.log({ get_items })
             if (get_items) {
                 setDataItem(get_items);
             }
         }
-        // if (milestones?.length && !localChanges) {
-        //     let get_items = milestones[milestones.length - 1]
-        //     setDataItem(get_items);
-        //     setLocalChanges(true);
-        //     console.log('in-side')
-        // }
-        console.log({ milestones }, '---- add-mile. -- use-effect');
-
         return () => {
             console.log('Unmount Here!')
             if (localChanges)
@@ -85,7 +74,6 @@ const AddMilestone = ({ data, stepCompleted, handleStepForward, handleStepComple
 
     const setItems = () => {
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
-        console.log({ dataItem, milestones }, '------------- before-set item')
         handleStepMileStone({
             "milestone_name": dataItem?.milestone_name,
             "isPhotoevidence": dataItem?.isPhotoevidence,
@@ -122,14 +110,11 @@ const AddMilestone = ({ data, stepCompleted, handleStepForward, handleStepComple
         setItems();
     }
 
-    console.log({ dataItem });
-
     let from_date_format = '';
     let to_date_format = '';
     if (milestones.length) {
         let date_from_moment = milestones[milestones.length - 1].from_date;
         let date_to_moment = milestones[milestones.length - 1].to_date;
-        console.log({ milestones, date_from_moment, date_to_moment })
         if (date_from_moment?.length) {
             from_date_format = moment(date_from_moment).format('MMM DD');
         }
@@ -138,7 +123,7 @@ const AddMilestone = ({ data, stepCompleted, handleStepForward, handleStepComple
             to_date_format = moment(date_to_moment).format('DD');
         }
     }
-    console.log({ from_date_format, to_date_format, errors, dataItem })
+    
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">

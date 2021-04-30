@@ -65,16 +65,12 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ed
   };
 
   const handleChange = (value: string, name: string) => {
-    console.log({ jobTypeDetails, name, value }, '---outer');
     if (jobTypeDetails[name].includes(value)) {
-      console.log({ jobTypeDetails, name, value }, '---inner');
       updateDetails(jobTypeDetails[name].filter((val) => val !== value), name);
 
       // when category is deselected, remove it's specialization
       if (name === 'categories') {
-        console.log({ categoriesData, jobTypeDetails })
         const specializationsToBeRemoved = categoriesData.find(({ _id }: { _id: string }) => _id === value).specialisations?.map(({ _id }: { _id: string }) => _id) || [];
-        console.log({ specializationsToBeRemoved })
         updateDetails(jobTypeDetails.specialization.filter((value) => !specializationsToBeRemoved.includes(value)), 'specialization');
         updateDetails([], 'categories');
       }

@@ -31,7 +31,6 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
     const handleContinue = async (id: any) => {
         let { success, data } = await getMileStoneByTempId(id);
         if (success && data) {
-            console.log({ data }, '------!!')
             let filter_milestones = data?.milestones?.map((item: any) => ({
                 from_date: moment(item?.fromDate).format('MM-DD-YYYY'),
                 to_date: item?.toDate?.length ? moment(item?.toDate).format('MM-DD-YYYY') : '',
@@ -47,8 +46,6 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
         preFetch();
     }, []);
 
-    console.log({ list })
-    // templateName- milestoneCount
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">

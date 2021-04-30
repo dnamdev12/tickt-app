@@ -20,25 +20,22 @@ interface Proptypes {
 
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
-const docformats: Array<any> = ["pdf", "doc"];
 const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
+
+// const docformats: Array<any> = ["pdf", "doc"];
+// 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4'
+// 'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
 
 const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localFiles, setLocalFiles] = useState({});
     const [update, forceUpdate] = useState({});
-    const [filesUrl, setFilesUrl] = useState([
-        'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4',
-        'https://appinventiv-development.s3.amazonaws.com/sample_png_file.png',
-        // 'https://appinventiv-development.s3.amazonaws.com/sample_png_file.doc',
-        // 'https://appinventiv-development.s3.amazonaws.com/sample_png_file.pdf',
-        'https://appinventiv-development.s3.amazonaws.com/sample_png_file.png',
-        'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
-    ] as any);
-
+    const [filesUrl, setFilesUrl] = useState([] as any);
+    
     useEffect(() => {
-        // console.log({ localFiles }, '-in use effect');
-        // console.log({ filesUrl, localFiles });
-    }, []);
+        if(stepCompleted){
+            setFilesUrl(data?.urls)
+        }
+    }, [stepCompleted, data]);
 
     const checkErrors = () => {
         if (!filesUrl?.length) {
@@ -70,8 +67,6 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                 return format_split_items;
             }
         }).filter((item: any) => item !== undefined);
-
-        console.log({ countVideoFormats });
 
         var fileType = newFile?.type?.split('/')[1];
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
@@ -105,7 +100,6 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         formData.append('file', newFile);
         const res = await onFileUpload(formData)
         if (res.success) {
-            console.log({ res });
             let link: string = res.imgUrl;
             setFilesUrl((prev: Array<any>) => [...prev, link]);
             setLocalFiles((prev: any) => ({ ...prev, newFile }));

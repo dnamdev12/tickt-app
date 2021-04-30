@@ -34,7 +34,7 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
         const { success, data } = await profileTemplateList();
 
         if (success) {
-            console.log({data});;
+            // console.log({data});;
             // setMilestones(milestones);
         } else {
             setMilestones([{ _id: '1', name: 'A' }, { _id: '2', name: 'B' }]);
