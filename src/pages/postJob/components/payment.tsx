@@ -120,7 +120,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   }
 
   const priceOptions = [
-    { value: 'fixed', label: 'Fixed Prce' },
+    { value: 'fixed', label: 'Fixed Price' },
     { value: 'perHour', label: 'Per Hour' },
   ];
 
@@ -160,7 +160,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                   />
                   <span className="detect_icon_ltr dollar">$</span>
                 </div>
-                <span className="error_msg mtb-10">{errors?.amount}</span>
+                <span className="error_msg mtb-15">{errors?.amount}</span>
               </div>
             </div>
             <div className="flex_col_sm_2">
@@ -175,7 +175,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                     <option value="perHour">{'Per Hour'}</option>
                   </select> */}
 
-                  <Select
+                  <Select className="select_menu"
                     options={priceOptions}
                   />
                   

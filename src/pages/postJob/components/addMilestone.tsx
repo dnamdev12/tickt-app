@@ -311,7 +311,7 @@ export default class AddMilestone extends Component<Props, State> {
                                 <div className="form_field">
                                     <button
                                         onClick={this.addAnotherMilestone}
-                                        className={`fill_btn fill_grey_btn full_btn ${check_errors ? 'disable_btn' : ''}`}>
+                                        className={`fill_grey_btn full_btn ${check_errors ? 'disable_btn' : ''}`}>
                                         {'Add milestone'}
                                     </button>
                                 </div>

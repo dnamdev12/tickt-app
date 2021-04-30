@@ -4,8 +4,8 @@ import thumb from '../../../assets/images/job-posted-bg.jpg';
 import question from '../../../assets/images/ic-question.png';
 import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
-import leftIcon from '../../../assets/images/icon-direction-left.png'
-import rightIcon from '../../../assets/images/icon-direction-right.png'
+import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
+import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
 import { createPostJob } from '../../../redux/postJob/actions';
 import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
@@ -33,21 +33,18 @@ const options = {
     slideBy: 1,
     dots: true,
     dotsEach: true,
-    dotData: true
-    // loop: true,
-    // margin: 100,
-    // nav: true,
-    // responsive: {
-    //     0: {
-    //         items: 1,
-    //     },
-    //     600: {
-    //         items: 3,
-    //     },
-    //     1000: {
-    //         items: 5,
-    //     },
-    // },
+    dotData: true,
+    responsive: {
+        0: {
+            items: 1,
+        },
+        600: {
+            items: 1,
+        },
+        1000: {
+            items: 1,
+        },
+    },
 };
 
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
@@ -134,7 +131,7 @@ const JobDetails = ({
                     let render_item: any = null;
 
                     if (imageFormats.includes(item?.format)) {
-                        render_item = <img alt="" src={item?.url} style={{ height: '410px', width: '800px' }} />
+                        render_item = <img alt="" src={item?.url} style={{ height: '400px' }} />
                     }
 
                     // if (videoFormats.includes(item?.format)) {
@@ -148,8 +145,8 @@ const JobDetails = ({
                                     e.preventDefault();
                                     handleStepForward(13);
                                 }}
-                                className="edit-here">
-                                <img className="cursor-pointer" src={editIconBlue} alt="" />
+                                className="edit_icon" title="Edit">
+                                <img src={editIconBlue} alt="edit" />
                             </span>
                             {render_item}
                         </div>
@@ -193,167 +190,157 @@ const JobDetails = ({
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <div className="form_field">
+                    <div className="vid_img_wrapper">
                         <div className="flex_row">
-                            <div className="section_wrapper top_wrap">
-                                <div className="custom_container">
-                                    <div className="vid_img_wrapper">
-                                        <div className="flex_row">
-                                            <div className="flex_col_sm_8 relative">
-                                                <button
-                                                    onClick={handleStepBack}
-                                                    className="back"></button>
-                                            </div>
-                                        </div>
-                                        <div className="flex_row">
-                                            <div className="flex_col_sm_8">
-                                                <figure className="vid_img_thumb">
-                                                    <OwlCarousel className='owl-theme' {...options}>
-                                                        {renderByFileFormat(data)}
-                                                    </OwlCarousel>
+                            <div className="flex_col_sm_8 relative">
+                                <button
+                                    onClick={handleStepBack}
+                                    className="back"></button>
+                            </div>
+                        </div>
+                        <div className="flex_row">
+                            <div className="flex_col_sm_8">
+                                <figure className="vid_img_thumb">
+                                    <OwlCarousel className='owl-theme' {...options}>
+                                        {renderByFileFormat(data)}
+                                    </OwlCarousel>
+                                </figure>
+                            </div>
+                            <div className="flex_col_sm_4 relative">
+                                <div className="detail_card">
+                                    <span className="title">{data?.jobName}
+                                        <span onClick={() => { forwardScreenStep(1) }} className="edit_icon" title="Edit">
+                                            <img src={editIconBlue} alt="edit" />
+                                        </span>
+                                    </span>
+                                    <div className="job_info">
+                                        <ul>
+                                            {/* <li className="icon clock">0 minutes ago</li> */}
+                                            <li className="icon calendar">
+                                                {data?.from_date?.length && !data?.to_date?.length ? `0 days` :
+                                                    data?.from_date?.length && data?.to_date?.length ?
+                                                        `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
+                                                        : '0 days'}
+                                            </li>
+                                            <li className="icon dollar">${data?.amount} {data?.pay_type === "fixed" ? 'fixed' : 'p/h'} </li>
+                                            <li className="icon location line-1">{data?.location_name}</li>
+                                        </ul>
+                                    </div>
+                                    <button
+                                        onClick={handlePost}
+                                        className="fill_btn full_btn">Post job</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex_row">
+                            <div className="flex_col_sm_8">
+                                <div className="description">
+                                    <span className="sub_title">
+                                        {'Details'}
+                                        <span onClick={() => { forwardScreenStep(1) }} className="edit_icon" title="Edit">
+                                            <img src={editIconBlue} alt="edit" />
+                                        </span>
+                                    </span>
+                                    <p className="commn_para">
+                                        {data?.job_description}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="flex_row">
+                            <div className="flex_col_sm_4">
+                                <span className="sub_title">{'Job milestones'}
+                                    <span onClick={() => { forwardScreenStep(6) }} className="edit_icon" title="Edit">
+                                        <img src={editIconBlue} alt="edit" />
+                                    </span>
+                                </span>
+                                <ul className="job_milestone">
+                                    {milestones?.length ?
+                                        milestones.map((item: any, index: any) => item?.milestone_name && (
+                                            <li>
+                                                <span>{`${index + 1}. ${item?.milestone_name}`}</span>
+                                                <span>{item?.from_date?.length && !item?.to_date?.length ?
+                                                    `${moment(item?.from_date).format('MMM-DD')}` :
+                                                    item?.from_date?.length && item?.to_date?.length ?
+                                                        `${moment(item?.from_date).format('MMM-DD')}-${moment(item?.to_date).format('DD')}` : ''
+                                                }</span>
+                                            </li>
+                                        ))
+                                        : null}
+
+
+                                </ul>
+                                <button className="fill_grey_btn ques_btn">
+                                    <img src={question} alt="question" />
+                                    {'0 questions'}
+                                </button>
+                            </div>
+
+                            <div className="flex_col_sm_8">
+                                <div className="flex_row">
+                                    <div className="flex_col_sm_12">
+                                        <span className="sub_title">{'Job type'}
+                                            <span onClick={() => { forwardScreenStep(2) }} className="edit_icon" title="Edit">
+                                                <img src={editIconBlue} alt="edit" />
+                                            </span>
+                                        </span>
+                                        <ul className="job_categories">
+                                            <li className="draw">
+                                                <figure className="type_icon">
+                                                    <img src={categorySelected?.job_type?.image} alt="icon" />
                                                 </figure>
-                                            </div>
-                                            <div className="flex_col_sm_4 relative">
-                                                <div className="detail_card">
-                                                    <span className="title">{data?.jobName}
-                                                        <sup onClick={() => { forwardScreenStep(1) }} className="ml-10 cursor-pointer">
-                                                            <img src={editIconBlue} alt="" />
-                                                        </sup>
-                                                    </span>
-                                                    <div className="job_info">
-                                                        <ul>
-                                                            {/* <li className="icon clock">0 minutes ago</li> */}
-                                                            <li className="icon calendar">
-                                                                {data?.from_date?.length && !data?.to_date?.length ? `0 days` :
-                                                                    data?.from_date?.length && data?.to_date?.length ?
-                                                                        `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
-                                                                        : '0 days'}
-                                                            </li>
-                                                            <li className="icon dollar">${data?.amount} {data?.pay_type === "fixed" ? 'fixed' : 'p/h'} </li>
-                                                            <li className="icon location mtb-10">{data?.location_name}</li>
-                                                        </ul>
-                                                    </div>
-                                                    <button
-                                                        onClick={handlePost}
-                                                        className="fill_btn full_btn">Post job</button>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex_row">
-                                            <div className="flex_col_sm_8">
-                                                <div className="description">
-                                                    <span className="sub_title">
-                                                        {'Details'}
-                                                        <sup onClick={() => { forwardScreenStep(1) }} className="ml-10 cursor-pointer">
-                                                            <img src={editIconBlue} alt="" />
-                                                        </sup>
-                                                    </span>
-                                                    <p className="commn_para">
-                                                        {data?.job_description}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="flex_row">
-                                            <div className="flex_col_sm_4">
-                                                <span className="sub_title">{'Job milestones'}
-                                                    <sup onClick={() => { forwardScreenStep(6) }} className="ml-10 cursor-pointer">
-                                                        <img src={editIconBlue} alt="" />
-                                                    </sup>
-                                                </span>
-                                                <ul className="job_milestone">
-                                                    {milestones?.length ?
-                                                        milestones.map((item: any, index: any) => item?.milestone_name && (
-                                                            <li>
-                                                                <span>{`${index + 1}. ${item?.milestone_name}`}</span>
-                                                                <span>{item?.from_date?.length && !item?.to_date?.length ?
-                                                                    `${moment(item?.from_date).format('MMM-DD')}` :
-                                                                    item?.from_date?.length && item?.to_date?.length ?
-                                                                        `${moment(item?.from_date).format('MMM-DD')}-${moment(item?.to_date).format('DD')}` : ''
-                                                                }</span>
-                                                            </li>
-                                                        ))
-                                                        : null}
+                                                <span className="name">{categorySelected?.job_type?.name}</span>
+                                            </li>   
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div className="flex_row">
+                                    <div className="flex_col_sm_12">
+                                        <span className="sub_title">{'Specialisations needed'}
+                                            <span onClick={() => { forwardScreenStep(2) }} className="edit_icon" title="Edit">
+                                                <img src={editIconBlue} alt="edit" />
+                                            </span>
+                                        </span>
+                                        <div className="tags_wrap">
+                                            <ul>
+                                                {categorySelected?.category?.length ?
+                                                    categorySelected?.category?.map((item: any) => (
+                                                        <li>{item?.name}</li>
+                                                    ))
+                                                    : null}
 
-
-                                                </ul>
-                                                <button className="fill_grey_btn ques_btn">
-                                                    <img src={question} alt="question" />
-                                                    {'0 questions'}
-                                                </button>
-                                            </div>
-
-                                            <div className="flex_col_sm_8">
-                                                <div className="flex_row">
-                                                    <div className="flex_col_sm_12">
-                                                        <span className="sub_title">{'Job type'}
-                                                            <sup onClick={() => { forwardScreenStep(2) }} className="ml-10 cursor-pointer">
-                                                                <img src={editIconBlue} alt="" />
-                                                            </sup>
-                                                        </span>
-                                                        <div className="tags_wrap">
-                                                            <ul className="job_categories">
-                                                                <li className="draw">
-                                                                    <figure className="type_icon">
-                                                                        <img src={categorySelected?.job_type?.image} alt="icon" />
-                                                                    </figure>
-                                                                    <span className="name">{categorySelected?.job_type?.name}</span>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div className="flex_row">
-                                                    <div className="flex_col_sm_12">
-                                                        <span className="sub_title">{'Specialisations needed'}
-                                                            <sup onClick={() => { forwardScreenStep(2) }} className="ml-10 cursor-pointer">
-                                                                <img src={editIconBlue} alt="" />
-                                                            </sup>
-                                                        </span>
-                                                        <div className="tags_wrap">
-                                                            <ul>
-                                                                {categorySelected?.category?.length ?
-                                                                    categorySelected?.category?.map((item: any) => (
-                                                                        <li>{item?.name}</li>
-                                                                    ))
-                                                                    : null}
-
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <div className="section_wrapper">
-                                            <span className="sub_title">Posted by</span>
-                                            <div className="flex_row">
-
-                                                <div className="flex_col_sm_3">
-                                                    <div className="tradie_card posted_by view_more ">
-                                                        <a href="javascript:void(0)" className="chat circle"></a>
-                                                        <div className="user_wrap">
-                                                            <figure className="u_img">
-                                                                <img src={dummy} alt="traide-img" />
-                                                            </figure>
-                                                            <div className="details">
-                                                                <span className="name">John</span>
-                                                                <span className="prof">Project Manager</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
+                                            </ul>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
+                        <div className="section_wrapper">
+                            <span className="sub_title">Posted by</span>
+                            <div className="flex_row">
+
+                                <div className="flex_col_sm_3">
+                                    <div className="tradie_card posted_by view_more ">
+                                        <a href="javascript:void(0)" className="chat circle"></a>
+                                        <div className="user_wrap">
+                                            <figure className="u_img">
+                                                <img src={dummy} alt="traide-img" />
+                                            </figure>
+                                            <div className="details">
+                                                <span className="name">John</span>
+                                                <span className="prof">Project Manager</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     )
     // return (
     //     <div className="app_wrapper">

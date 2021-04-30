@@ -181,7 +181,7 @@ a.fill_grey_btn {
     padding: 12px 18px;
   }
   &.disable_btn {
-    background-color: rgba(254, 230, 0, 0.1);
+    background-color: #dfe5ef85;
     color: #99a4b6;
     pointer-events: none;
   }
@@ -532,6 +532,10 @@ a.fill_grey_btn {
   }
 }
 
+.mtb-15 {
+  margin: 15px 0px;
+}
+
 .m-l-30 {
   margin-left: 30px;
 }
@@ -753,6 +757,9 @@ a.fill_grey_btn {
   display: flex;
   align-items: center;
   margin-bottom: 40px;
+  .upload_media{
+    cursor: pointer;
+  }
   .img_video{
       width: 100px;
       height: 100px;
