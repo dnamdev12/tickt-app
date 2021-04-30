@@ -25,6 +25,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   const [errors, setErrors] = useState({ pay_type: '', amount: '' });
   const [continueClicked, setContinueClicked] = useState(false);
   const [localChanges, setLocationChanges] = useState(false);
+  const [reactSelect, setReactSelect] = useState({value: "fixed", label: "Fixed Price"});
 
   useEffect(() => {
     if (stepCompleted && !localChanges) {
@@ -175,10 +176,16 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                     <option value="perHour">{'Per Hour'}</option>
                   </select> */}
 
-                  <Select className="select_menu"
+                  <Select
+                    className="select_menu"
+                    value={reactSelect}
                     options={priceOptions}
+                    onChange={(item:any) => {
+                      setReactSelect(item);
+                      handleChange(item?.value, 'pay_type')
+                    }}
                   />
-                  
+
 
                 </div>
 
