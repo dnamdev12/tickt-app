@@ -458,3 +458,27 @@ body.loader_show .full_loader {
     }
 }
 //----------------Date-range picker close-------------------//
+
+
+//--------------------------------//
+.char_count{
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    padding: 5px 0px;
+    color: var(--greyish-brown);
+}
+
+.autocomplete-drop-down-map-container {
+    border: solid 1px var(--warm-gray);
+    border-top: 0;
+}
+
+.loc_suggestions {
+    border-bottom: solid 1px var(--warm-gray);
+    padding: 10px;
+    font-size: 14px;
+    color: var(--blue);
+}
+
+//--------------------------------//

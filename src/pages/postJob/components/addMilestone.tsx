@@ -251,7 +251,7 @@ export default class AddMilestone extends Component<Props, State> {
                                     </div>
                                     <span className="error_msg">{errors?.milestone_name}</span>
                                     {!milestone_name?.length ? null : (
-                                        <span className="char-length">{`character length : ${milestone_name?.length}`}</span>
+                                        <span className="char_count">{`character length : ${milestone_name?.length}`}</span>
                                     )}
                                 </div>
                                 <div className="form_field">

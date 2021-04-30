@@ -2727,6 +2727,7 @@ body {
     background-color: #dfe5ef;
     border-radius: 3px;
     margin: 0px 20px 20px 0;
+	cursor: pointer;
     @media (max-width: 650px) {
       margin: 0px 12px 12px 0;
     }
@@ -2937,6 +2938,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
+	cursor: pointer;
     .name {
       color: var(--blue);
       font-size: 14px;
@@ -3118,24 +3120,6 @@ body {
   cursor: pointer;
 }
 
-.char-length {
-  float: right;
-  font-size: 12px;
-  padding: 5px 0px;
-}
-
-.autocomplete-drop-down-map-container {
-  padding: 0px !important;
-}
-
-.suggestions-name {
-  border: 1px solid #ddd;
-  padding: 10px 10px;
-}
-
-.location-btn-active {
-  border: 2px solid #0b41a8;
-}
 
 .nav-btn.prev-slide {
   background: rgba(255, 255, 255, 0.4);

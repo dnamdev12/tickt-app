@@ -66,7 +66,7 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
                                         list.map(({ templateId, templateName, milestoneCount }: any) => (
                                             <li
                                                 onClick={() => { handleContinue(templateId) }}
-                                                className="cursor-pointer">
+                                                >
                                                 <span className="name">{templateName} </span>
                                                 <div className="count">{milestoneCount}
                                                     <span>milestones</span>

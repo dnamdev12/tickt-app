@@ -3,7 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
 import Constants from '../../../utils/constants';
-import Select from '@material-ui/core/Select';
+import Select from 'react-select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 
@@ -45,7 +45,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   const checkDecimal = (name: string, value: string) => {
     let split_values = value.split('.');
     if (split_values.length > 1) {
-      if (split_values[0].length > 6) { 
+      if (split_values[0].length > 6) {
         return 'price field must have 6 digits before decimal or less.'
       }
 
@@ -119,6 +119,12 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     return true;
   }
 
+  const priceOptions = [
+    { value: 'fixed', label: 'Fixed Prce' },
+    { value: 'perHour', label: 'Per Hour' },
+  ];
+
+
   const { pay_type, amount } = paymentDetails;
   return (
 
@@ -160,14 +166,20 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
             <div className="flex_col_sm_2">
               <div className="form_field">
                 <div className="text_field">
-                  <select
+                  {/* <select
                     value={pay_type}
                     onChange={({ target: { value } }) => handleChange(value, 'pay_type')}
                     className="select_input"
                   >
                     <option value="fixed">{'Fixed Price'}</option>
                     <option value="perHour">{'Per Hour'}</option>
-                  </select>
+                  </select> */}
+
+                  <Select
+                    options={priceOptions}
+                  />
+                  
+
                 </div>
 
               </div>

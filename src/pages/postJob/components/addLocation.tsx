@@ -185,7 +185,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                                   style,
                                 })}
                               >
-                                <div className="suggestions-name">{suggestion.description}</div>
+                                <div className="loc_suggestions">{suggestion.description}</div>
                               </div>
                             );
                           })}
@@ -200,7 +200,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
               </div>
               <div className="form_field">
                 <button
-                  className={activeCurrent ? 'location-btn location-btn-active' : "location-btn"}
+                  className={activeCurrent ? 'location-btn fill_btn' : "location-btn"}
                   onClick={getCurrentLocation}>
                   <span className="gps_icon">
                     <img src={icgps} alt="gps-icon" />
