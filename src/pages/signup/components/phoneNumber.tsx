@@ -12,28 +12,66 @@ interface Propstype {
 
 const PhoneNumber = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
-    const [mobileNumber, setMobileNumber] = useState<any>(props.mobileNumber)
+    const [mobileNumb, setMobileNumb] = useState<any>(props.mobileNumber)
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputVal = e.target.value;
-        const key = inputVal.charCodeAt(inputVal.length - 1)
-        if ((key == NaN || inputVal == "") && mobileNumber.length === 1) {
-            setMobileNumber('');
-            return;
+        let inputVal = e.target.value.replaceAll(' ', '');
+        console.log(inputVal, inputVal.length, mobileNumb, "okok")
+
+        if (regex.numeric.test(inputVal) || !inputVal) {
+            if (inputVal.length === 3) {
+                if (inputVal.length == mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 2);
+                    setMobileNumb(inputVal);
+                    return;
+                } else if (inputVal.length < mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 3);
+                    setMobileNumb(inputVal);
+                    return;
+                }
+            }
+
+            if (inputVal.length >= 3 && inputVal.length < 6) {
+                inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, inputVal.length);
+                setMobileNumb(inputVal);
+                return;
+            }
+
+            if (inputVal.length === 6) {
+                console.log("OK")
+                if (inputVal.length == mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 5);
+                } else if (inputVal.length < mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 6);
+                } else {
+                    inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 6) + " ";
+                }
+                setMobileNumb(inputVal);
+                return;
+            }
+            if (inputVal.length > 6) {
+                inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 6) + " " + inputVal.slice(6, inputVal.length);
+            }
+            setMobileNumb(inputVal)
         }
-        if ((key > 47 && key < 58) || key === 8) {
-            e.preventDefault();
-            setMobileNumber(e.target.value)
-        }
+        // const key = inputVal.charCodeAt(inputVal.length - 1)
+        // if ((key == NaN || inputVal == "") && mobileNumber.length === 1) {
+        //     setMobileNumber('');
+        //     return;
+        // }
+        // if ((key > 47 && key < 58) || key === 8) {
+        //     e.preventDefault();
+        //     setMobileNumber(e.target.value)
+        // }
     }
 
     const validateForm = () => {
         const newErrors: any = {};
-        if (!mobileNumber) {
+        if (!mobileNumb) {
             newErrors.mobileNumber = Constants.errorStrings.phoneNumberEmpty;
         } else {
             const phoneRegex = new RegExp(regex.mobile);
-            if (!phoneRegex.test(mobileNumber)) {
+            if (!phoneRegex.test(mobileNumb.replaceAll(' ', ''))) {
                 newErrors.mobileNumber = Constants.errorStrings.phoneNumberErr
             }
         }
@@ -44,9 +82,10 @@ const PhoneNumber = (props: Propstype) => {
     const onSubmit = async (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            const res: any = await checkMobileNumber(mobileNumber)
+            const res: any = await checkMobileNumber(mobileNumb.replaceAll(' ', ''))
             res?.isProfileCompleted && setShowToast(true, res.message);
             if (!res.isProfileCompleted && res.success) {
+                const mobileNumber = mobileNumb.replaceAll(' ', '');
                 props.updateSteps(props.step + 1, { mobileNumber })
             }
         }
@@ -58,7 +97,7 @@ const PhoneNumber = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Phone number</label>
                     <div className="text_field">
-                        <input type="text" className="detect_input_ltr" placeholder="Enter your Phone number" value={mobileNumber} onChange={changeHandler} maxLength={9} />
+                        <input type="text" className="detect_input_ltr" placeholder="400 123 456" value={mobileNumb} onChange={changeHandler} maxLength={11} />
                         <span className="detect_icon_ltr">+61</span>
                     </div>
                     {!!errors.mobileNumber && <span className="error_msg">{errors.mobileNumber}</span>}

@@ -3,7 +3,7 @@ const SocialAuth = {
     GOOGLE_SECRET_KEY: 'QZPArMrdjCvt7ODvnKRa1hhA',
 }
 
-const errorStrings = {
+const errorStrings: any = {
 fullNameEmpty: 'Full Name is required',
 fullNameErr: 'Please enter a valid name',
 fullNameShortErr: 'Name must have minimum 3 letters',
@@ -13,9 +13,9 @@ companyNameShortErr: 'Company Name must have minimum 3 letters',
 positionNameEmpty: 'Position is required',
 positionNameErr: 'Please enter a valid position',
 positionNameShortErr: 'Position must have minimum 3 letters',
-emailEmpty: 'Email is required',
-emailExist: 'Email id already in use',
-emailErr: 'Invalid email id',
+emailEmpty: 'Email Address is required',
+emailExist: 'Email address already in use',
+emailErr: 'Email Address is required',
 tncEmpty: 'Please accept privacy policy and terms & conditions',
 phoneNumberEmpty: 'Phone Number is required',
 phoneNumberErr: 'Please enter correct Phone Number',
@@ -36,6 +36,7 @@ bannerSearchJob: 'Please select job type from the list',
 bannerSearchJobError: 'Please search valid job name',
 bannerSearchJobEmpty: 'Job Type is required',
 bannerSearchLocation: 'Please select location from the list',
+priceFilterInput: 'Budget is required',
 }
 
 const OTP_TIMER = 60;

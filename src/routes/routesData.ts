@@ -5,13 +5,12 @@ import Signup from '../pages/signup';
 import ForgerPassword from '../pages/forgetPassword/forgetPassword';
 import PostJob from '../pages/postJob';
 import TradieHome from '../pages/home/tradieHome';
-import Guest from '../pages/home/guestLogin';
 import SavedJobs from '../pages/savedJobs/index';
 import RecommendedJobs from '../pages/recommendedJobs/index';
 import MostViewedJobs from '../pages/mostViewedJobs/index';
-import JobsData from '../pages/home/tradieHome/components/jobsData/index';
 import TradieSearchJobResult from '../pages/tradieSearchJobResult/index';
 import PopularBuilders from '../pages/popularBuilders/index';
+import RenderMap from '../pages/tradieSearchJobResult/renderMap';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -50,20 +49,15 @@ const routes = [
         component: PostJob,
         // authRoute: true,
     },
-    {
-        name: 'tradiehome',
-        path: '/tradie',
-        component: TradieHome,
-    },
+    // {
+    //     name: 'tradiehome',
+    //     path: '/tradie',
+    //     component: TradieHome,
+    // },
     {
         name: 'recommendedjobs',
         path: '/recommended-jobs',
         component: RecommendedJobs,
-    },
-    {
-        name: 'bannerviewmore',
-        path: '/jobs-in-your-area',
-        component: JobsData,
     },
     {
         name: 'savedjobs',
@@ -84,11 +78,13 @@ const routes = [
         name: 'searchjobresults',
         path: '/search-job-results',
         component: TradieSearchJobResult,
+        authRoute: false,
+        privateRoute: true,
     },
     {
-        name: 'guest',
-        path: '/guest-guest',
-        component: Guest,
+        name: 'map',
+        path: '/map',
+        component: RenderMap,
     },
     {
         name: 'linkedin-oauth',
@@ -104,7 +100,7 @@ const routes = [
         name: '404',
         path: '/*',
         redirectTO: '/404'
-    }
+    },
 ]
 
 export default routes

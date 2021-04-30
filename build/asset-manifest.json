@@ -1,0 +1,43 @@
+{
+  "files": {
+    "main.css": "/static/css/main.e1ccf28d.chunk.css",
+    "main.js": "/static/js/main.c1bde1ee.chunk.js",
+    "main.js.map": "/static/js/main.c1bde1ee.chunk.js.map",
+    "runtime-main.js": "/static/js/runtime-main.0dff9df0.js",
+    "runtime-main.js.map": "/static/js/runtime-main.0dff9df0.js.map",
+    "static/css/2.9a20df04.chunk.css": "/static/css/2.9a20df04.chunk.css",
+    "static/js/2.77e5e562.chunk.js": "/static/js/2.77e5e562.chunk.js",
+    "static/js/2.77e5e562.chunk.js.map": "/static/js/2.77e5e562.chunk.js.map",
+    "static/js/3.ffa3509c.chunk.js": "/static/js/3.ffa3509c.chunk.js",
+    "static/js/3.ffa3509c.chunk.js.map": "/static/js/3.ffa3509c.chunk.js.map",
+    "index.html": "/index.html",
+    "static/css/2.9a20df04.chunk.css.map": "/static/css/2.9a20df04.chunk.css.map",
+    "static/css/main.e1ccf28d.chunk.css.map": "/static/css/main.e1ccf28d.chunk.css.map",
+    "static/js/2.77e5e562.chunk.js.LICENSE.txt": "/static/js/2.77e5e562.chunk.js.LICENSE.txt",
+    "static/media/common.scss": "/static/media/clock.62b9d735.svg",
+    "static/media/ic_categories_placeholder.ccd08fdf.svg": "/static/media/ic_categories_placeholder.ccd08fdf.svg",
+    "static/media/job-posted-bg.08c9bb16.jpg": "/static/media/job-posted-bg.08c9bb16.jpg",
+    "static/media/lets-go-bg.df258ae5.jpg": "/static/media/lets-go-bg.df258ae5.jpg",
+    "static/media/loader.bb27ba0a.gif": "/static/media/loader.bb27ba0a.gif",
+    "static/media/menu-line-white.57f0133e.svg": "/static/media/menu-line-white.57f0133e.svg",
+    "static/media/modal-slider-bg-1.4746166c.png": "/static/media/modal-slider-bg-1.4746166c.png",
+    "static/media/modal-slider-bg-2.5e9c7a98.png": "/static/media/modal-slider-bg-2.5e9c7a98.png",
+    "static/media/modal-slider-bg-3.69f39917.png": "/static/media/modal-slider-bg-3.69f39917.png",
+    "static/media/no-data.701261b3.png": "/static/media/no-data.701261b3.png",
+    "static/media/not-found.c5fd5f1f.png": "/static/media/not-found.c5fd5f1f.png",
+    "static/media/onboarding-banner-1.2ab2bd26.jpg": "/static/media/onboarding-banner-1.2ab2bd26.jpg",
+    "static/media/onboarding-banner-2.64c6f030.jpg": "/static/media/onboarding-banner-2.64c6f030.jpg",
+    "static/media/onboarding-banner-3.b9fdbfb6.jpg": "/static/media/onboarding-banner-3.b9fdbfb6.jpg",
+    "static/media/styles.css": "/static/media/revicons.e8746a62.woff",
+    "static/media/teplate-saved-bg.fe55509c.jpg": "/static/media/teplate-saved-bg.fe55509c.jpg",
+    "static/media/thanks-bg.951af828.jpg": "/static/media/thanks-bg.951af828.jpg",
+    "static/media/uc.ee0b8062.png": "/static/media/uc.ee0b8062.png"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.0dff9df0.js",
+    "static/css/2.9a20df04.chunk.css",
+    "static/js/2.77e5e562.chunk.js",
+    "static/css/main.e1ccf28d.chunk.css",
+    "static/js/main.c1bde1ee.chunk.js"
+  ]
+}

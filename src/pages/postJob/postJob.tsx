@@ -57,6 +57,7 @@ const PostJob = ({
     const clearParentStates = () => {
         setData({});
         setMileStones([]);
+        setStepsCompleted([]);
     }
 
     const handleStepComplete = (stepData: any) => {
