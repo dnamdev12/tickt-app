@@ -5,7 +5,10 @@ import bell from '../../../assets/images/ic-notification.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import remove from "../../../assets/images/icon-close-1.png";
 import addMedia from "../../../assets/images/add-image.png";
+import videoThumbnail from '../../../assets/images/add-video.png';
+import docThumbnail from '../../../assets/images/add-document.png'
 import { onFileUpload } from '../../../redux/auth/actions';
+import { setShowToast } from '../../../redux/common/actions';
 
 interface Proptypes {
     data: any;
@@ -14,7 +17,11 @@ interface Proptypes {
     handleStepForward: (data: any) => void;
     handleStepBack: () => void;
 }
-//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+
+const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
+const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
+const docformats: Array<any> = ["pdf", "doc"];
+const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
 
 const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localFiles, setLocalFiles] = useState({});
@@ -22,21 +29,26 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
     const [filesUrl, setFilesUrl] = useState([
         'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4',
         'https://appinventiv-development.s3.amazonaws.com/sample_png_file.png',
-        'https://appinventiv-development.s3.amazonaws.com/sample_png_file.png',
-        'https://appinventiv-development.s3.amazonaws.com/sample_png_file.png',
+        // 'https://appinventiv-development.s3.amazonaws.com/sample_png_file.doc',
+        // 'https://appinventiv-development.s3.amazonaws.com/sample_png_file.pdf',
         'https://appinventiv-development.s3.amazonaws.com/sample_png_file.png',
         'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
     ] as any);
 
     useEffect(() => {
         // console.log({ localFiles }, '-in use effect');
-        console.log({ filesUrl, localFiles });
-    }, [localFiles, filesUrl]);
+        // console.log({ filesUrl, localFiles });
+    }, []);
+
+    const checkErrors = () => {
+        if (!filesUrl?.length) {
+            return true;
+        }
+        return false;
+    }
 
     const removeFromItem = (index: any) => {
-        console.log('before ---', { filesUrl, index });
         filesUrl.splice(index, 1);
-        console.log('after ---', { filesUrl, index });
         setFilesUrl(filesUrl);
         Array.isArray(update) ? forceUpdate([]) : forceUpdate({});
     }
@@ -44,16 +56,52 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
     const onFileChange = async (e: any) => {
         const formData = new FormData();
         const newFile = e.target.files[0];
-        console.log({ newFile });
-        var fileType = newFile?.type?.split('/')[1];
-        console.log({ fileType });
-        const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf", "doc", "mp4", "wmv", "avi"];
-        var selectedFileSize = newFile?.size / 1024 / 1024;
-        console.log({ docTypes, selectedFileSize });
-        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
-            alert('The file must be in proper format or size')
+
+        if (filesUrl?.length === 6) {
+            setShowToast(true, "Max files upload limit is 6.")
             return;
         }
+
+        let filesUrlClone: any = filesUrl;
+        let countVideoFormats = filesUrlClone.map((item: any) => {
+            let split_items = item.split('.');
+            let format_split_items = split_items[split_items?.length - 1];
+            if (videoFormats.includes(format_split_items)) {
+                return format_split_items;
+            }
+        }).filter((item: any) => item !== undefined);
+
+        console.log({ countVideoFormats });
+
+        var fileType = newFile?.type?.split('/')[1];
+        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
+
+        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+            setShowToast(true, "The file must be in proper format or size.")
+            return;
+        }
+
+        if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
+            setShowToast(true, "The image file size must be below 10 MB.")
+            return;
+        }
+
+        // if (docformats.includes(fileType) && selectedFileSize > 10) { // doc validations
+        //     setShowToast(true, "The file size must be below 10 MB.")
+        //     return;
+        // }
+
+        if (videoFormats.includes(fileType)) { // video validations
+            if (selectedFileSize > 10) {
+                setShowToast(true, "The video file size must be below 20 MB.")
+                return;
+            }
+            if (countVideoFormats?.length > 1) {
+                setShowToast(true, "Max video file upload limit is 2.")
+                return;
+            }
+        }
+
         formData.append('file', newFile);
         const res = await onFileUpload(formData)
         if (res.success) {
@@ -64,13 +112,37 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         }
     }
 
-    // - Image formats: Jpeg, jpg and png
-    // - File formats: pdf, doc (word documents)
-    // - Image/File Max size: 10 MB
-    // - Max Images/Files : 6
-    // - Video formats: MP4, WMV and AVI
-    // - Video Max Size: 20 MB
-    // - Max Video : 2
+    const renderbyFileFormat = (item: any, index: any) => {
+        let split_item_format = item.split('.');
+        let get_split_fromat = split_item_format[split_item_format.length - 1];
+
+        let split_item_name = item.split('/');
+        let get_split_name = split_item_name[split_item_name.length - 1];
+        let image_render: any = null;
+        if (get_split_fromat) {
+            if (imageFormats.includes(get_split_fromat)) {
+                image_render = <img title={get_split_name} src={item} alt="media" />
+            }
+
+            if (videoFormats.includes(get_split_fromat)) {
+                image_render = <img title={get_split_name} src={videoThumbnail} alt="media" style={{ padding: '17px' }} />
+            }
+
+            // if (docformats.includes(get_split_fromat)) {
+            //     image_render = <img title={get_split_name} src={docThumbnail} alt="media" />
+            // }
+
+            return (
+                <figure className="img_video">
+                    {image_render}
+                    <img
+                        onClick={() => { removeFromItem(index) }}
+                        src={remove} alt="remove" className="remove" />
+                    {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
+                </figure>
+            )
+        }
+    }
 
     return (
         <div className="app_wrapper">
@@ -95,14 +167,7 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                         <div className="flex_col_sm_12">
                             <div className="upload_img_video">
                                 {filesUrl?.length ?
-                                    filesUrl.map((item: any, index: number) => (
-                                        <figure className="img_video">
-                                            <img src={item} alt="media" />
-                                            <img
-                                                onClick={() => { removeFromItem(index) }}
-                                                src={remove} alt="remove" className="remove" />
-                                        </figure>
-                                    ))
+                                    filesUrl.map((item: any, index: number) => (renderbyFileFormat(item, index)))
                                     : null}
 
                                 {filesUrl?.length < 6 ? (
@@ -124,9 +189,14 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
 
                         <div className="form_field">
                             <button
-                                onClick={() => { handleStepForward(14) }}
-                                className="fill_btn full_btn">Submit</button>
-                            {/* className="fill_btn full_btn disable_btn">Submit</button> */}
+                                onClick={() => {
+                                    handleStepComplete({
+                                        urls: filesUrl
+                                    })
+                                }}
+                                className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}>
+                                {'Submit'}
+                            </button>
                         </div>
                     </div>
                 </div>

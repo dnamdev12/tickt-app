@@ -62,11 +62,11 @@ export const addTemplate = async (data: any) => {
 }
 
 //Get milestone by template-id
-export const getMileStoneByTempId = async (id: any) => { 
-  setLoading(true); 
+export const getMileStoneByTempId = async (id: any) => {
+  setLoading(true);
   let url = `${Urls.milestones}?tempId=${id}`;
   const response: FetchResponse = await NetworkOps.get(url);
-  setLoading(false); 
+  setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -74,3 +74,6 @@ export const getMileStoneByTempId = async (id: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+// Detail Page {currentScreen:12, editItems: {}}
+export const updateDetailScreen = (data: any) => ({ type: actionTypes.EDIT_DETAIL_SCREEN, payload: data });

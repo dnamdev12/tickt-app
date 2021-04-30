@@ -27,7 +27,7 @@ export default class AddMilestone extends Component<Props, State> {
         super(props)
         this.state = {
             milestone_name: '',
-            isPhotoevidence: true,
+            isPhotoevidence: false,
             from_date: '',
             to_date: '',
             recommended_hours: '',
@@ -120,7 +120,7 @@ export default class AddMilestone extends Component<Props, State> {
     isInvalid = (name: string, value: string) => {
         switch (name) {
             case 'milestone_name':
-                return !value.length ? `please enter ${name}` : '';
+                return !value.length ? `please enter ${name}` : value.length > 50 ? 'please check max length exceed from 50.' : '';
             case 'from_date':
                 return !value.length ? `please enter ${name}` : '';
             case 'recommended_hours':

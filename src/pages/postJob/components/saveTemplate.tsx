@@ -1,3 +1,4 @@
+import { te } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
 import { addTemplate } from '../../../redux/postJob/actions'
@@ -7,11 +8,12 @@ interface Proptypes {
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
+    handleCombineMileStones: (data: any) => void;
     handleStepBack: () => void;
 }
 //  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
-const SaveTemplate = ({ data, milestones, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
     const [templateName, setTemplateName] = useState('' as any);
     const [error, setError] = useState('' as any);
 
@@ -25,10 +27,12 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleStepForward, hand
     const handleContinue = async () => {
         let filter_milestone = milestones.filter((item: any) => {
             if (Object.keys(item).length) {
+                if (!item?.to_date?.length) {
+                    delete item.to_date;
+                }
                 return item
             }
         })
-        // let requestData = JSON.stringify()
         console.log({ filter_milestone });
         // return
         let { success, data } = await addTemplate({
@@ -37,7 +41,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleStepForward, hand
         })
         if (success) {
             console.log({ data });
-            // clear template here -- to-do|pending
+            handleCombineMileStones([]);
             handleStepForward(11);
         }
     }

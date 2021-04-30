@@ -5,7 +5,9 @@ import Slider from '@material-ui/core/Slider';
 import Constants from '../../../utils/constants';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { profileTemplateList, getMileStoneByTempId } from '../../../redux/postJob/actions'
+import { profileTemplateList, getMileStoneByTempId } from '../../../redux/postJob/actions';
+import moment from 'moment';
+
 
 interface Proptypes {
     data: any;
@@ -29,8 +31,15 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
     const handleContinue = async (id: any) => {
         let { success, data } = await getMileStoneByTempId(id);
         if (success && data) {
-            console.log({data},'------!!')
-            handleCombineMileStones(data.milestones)
+            console.log({ data }, '------!!')
+            let filter_milestones = data?.milestones?.map((item: any) => ({
+                from_date: moment(item?.fromDate).format('MM-DD-YYYY'),
+                to_date: item?.toDate?.length ? moment(item?.toDate).format('MM-DD-YYYY') : '',
+                milestone_name: item?.milestoneName,
+                recommended_hours: item?.recommendedHours
+            }))
+            handleCombineMileStones(filter_milestones);
+            handleStepForward(6);
         }
     }
 

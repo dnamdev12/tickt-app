@@ -36,16 +36,16 @@ export default class EditMilestone extends Component<Props, State> {
             errors: {
                 milestone_name: '',
                 from_date: '',
-                recommended_hours: ''
+                recommended_hours: '',
+                pattern_error:''
             }
         }
     }
 
     componentDidMount() {
         const { editMileStone, milestones, editMilestoneTiming } = this.props;
-        console.log({ editMileStone, milestones, editMilestoneTiming }, '--------------- componentDidMount')
         let item = milestones[editMileStone];
-
+        
         if (Object.keys(item).length) {
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
 
@@ -90,10 +90,37 @@ export default class EditMilestone extends Component<Props, State> {
         handleStepMileStone({
             "milestone_name": milestone_name,
             "isPhotoevidence": isPhotoevidence,
-            "from_date": from_date,// milestones[milestone_index]?.from_date || '',
-            "to_date": to_date,//milestones[milestone_index]?.to_date || '',
+            "from_date": from_date, // milestones[milestone_index]?.from_date || '',
+            "to_date": to_date, //milestones[milestone_index]?.to_date || '',
             "recommended_hours": recommended_hours
         }, milestone_index);
+    }
+
+    isInvalid = (name: string, value: string) => {
+        switch (name) {
+            case 'milestone_name':
+                return !value.length ? `please enter ${name}` : value.length > 50 ? 'please check max length exceed from 50.' : '';
+            case 'from_date':
+                return !value.length ? `please enter ${name}` : '';
+            case 'recommended_hours':
+                return !value.length ? `please enter ${name}` : '';
+        }
+    }
+
+    checkErrors = () => {
+        const { milestones } = this.props;
+        let milestone_index = milestones.length ? milestones.length - 1 : 0;
+        let from_date = milestones[milestone_index]?.from_date || '';
+        let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
+        if (milestone_name?.length && recommended_hours?.length) {
+            let error_1 = this.isInvalid('milestone_name', milestone_name);
+            let error_2 = this.isInvalid('from_date', from_date);
+            let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
+                return false;
+            }
+        }
+        return true;
     }
 
     render() {
@@ -102,7 +129,7 @@ export default class EditMilestone extends Component<Props, State> {
 
         let from_date_format = from_date?.length ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
         let to_date_format = to_date?.length ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
-        let check_errors = false;
+        let check_errors = this.checkErrors();
 
         return (
             <div className="app_wrapper">
@@ -168,13 +195,28 @@ export default class EditMilestone extends Component<Props, State> {
                                     <label className="form_label">Recommended hours</label>
                                     <div className="text_field">
                                         <input
-                                            onChange={(e) => { this.handleChange('recommended_hours', e.target.value) }}
+                                            onChange={(e) => {
+                                                this.setState({ recommended_hours: e.target.value }, () => {
+                                                    this.setItems();
+                                                    let rh_value = this.state.recommended_hours;
+                                                    let error_item = this.state.errors;
+                                                    let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
+                                                    if (rh_value.match(pattern) !== null) {
+                                                        error_item['pattern_error'] = '';
+                                                    } else {
+                                                        error_item['pattern_error'] = 'please enter a valid pattern like : 04:03';
+                                                    }
+                                                    this.setState({ errors: error_item });
+                                                });
+                                            }}
+                                            // onChange={(e) => { this.handleChange('recommended_hours', e.target.value) }}
                                             value={recommended_hours}
-                                            type="number"
+                                            type="text"
                                             placeholder="Enter Recommended hours"
                                             name="recommended_hours" />
                                     </div>
                                     <span className="error_msg">{errors.recommended_hours}</span>
+                                    <span className="error_msg">{errors.pattern_error}</span>
                                 </div>
 
                                 <div className="form_field">

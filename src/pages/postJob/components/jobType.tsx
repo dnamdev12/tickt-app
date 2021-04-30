@@ -5,12 +5,15 @@ interface Proptypes {
   categories: any;
   jobTypes: any;
   data: any;
+  editDetailPage: any;
   stepCompleted: Boolean;
   handleStepComplete: (data: any) => void;
   handleStepBack: () => void;
+  handleStepForward: (data: any) => void;
+  handleStepJustUpdate: (data: any, goto: any) => void;
 };
 
-const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, editDetailPage, handleStepForward, handleStepJustUpdate, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 
   const [jobTypeDetails, setJobTypeDetails] = useState<{ [index: string]: string[] }>({ categories: [], job_type: [], specialization: [] });
@@ -19,7 +22,11 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
 
   useEffect(() => {
     if (stepCompleted) {
-      setJobTypeDetails(data);
+      setJobTypeDetails({
+        categories: data.categories,
+        job_type: data.job_type,
+        specialization: data.specialization
+      });
     }
   }, [stepCompleted, data]);
 
@@ -58,16 +65,26 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
   };
 
   const handleChange = (value: string, name: string) => {
+    console.log({ jobTypeDetails, name, value }, '---outer');
     if (jobTypeDetails[name].includes(value)) {
+      console.log({ jobTypeDetails, name, value }, '---inner');
       updateDetails(jobTypeDetails[name].filter((val) => val !== value), name);
 
       // when category is deselected, remove it's specialization
       if (name === 'categories') {
+        console.log({ categoriesData, jobTypeDetails })
         const specializationsToBeRemoved = categoriesData.find(({ _id }: { _id: string }) => _id === value).specialisations?.map(({ _id }: { _id: string }) => _id) || [];
+        console.log({ specializationsToBeRemoved })
         updateDetails(jobTypeDetails.specialization.filter((value) => !specializationsToBeRemoved.includes(value)), 'specialization');
+        updateDetails([], 'categories');
       }
     } else {
-      updateDetails(jobTypeDetails[name].concat([value]), name);
+      if (name !== "specialization") {
+        jobTypeDetails[name] = [value]
+        updateDetails(jobTypeDetails[name], name);
+      } else {
+        updateDetails(jobTypeDetails[name].concat([value]), name);
+      }
     }
   };
 
@@ -90,7 +107,11 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
     }
 
     if (!hasErrors) {
-      handleStepComplete(jobTypeDetails);
+      if (editDetailPage?.currentScreen) {
+        handleStepJustUpdate(jobTypeDetails, true)
+      } else {
+        handleStepComplete(jobTypeDetails);
+      }
     } else {
       setContinueClicked(false);
     }
@@ -139,10 +160,19 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
           <div className="form_field">
             <div className="flex_row">
               <div className="flex_col_sm_5">
-                <div className="relate">
-                  <button className="back" onClick={handleStepBack}></button>
-                  <span className="title">Job type</span>
-                </div>
+
+                {editDetailPage?.currentScreen ? (
+                  <div className="relate">
+                    <button className="back" onClick={() => { handleStepForward(14) }}></button>
+                    <span className="title">Job type</span>
+                  </div>
+                ) : (
+                  <div className="relate">
+                    <button className="back" onClick={handleStepBack}></button>
+                    <span className="title">Job type</span>
+                  </div>
+                )}
+
                 <p className="commn_para">Select the category and the specialisations required</p>
               </div>
             </div>

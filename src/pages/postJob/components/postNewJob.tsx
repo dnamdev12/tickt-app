@@ -1,14 +1,17 @@
 import { isError } from 'lodash';
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Constants from '../../../utils/constants';
 
 interface Proptypes {
   data: any,
+  editDetailPage: any,
   stepCompleted: Boolean,
   handleStepComplete: (data: any) => void,
+  handleStepJustUpdate: (data: any, goto: any) => void,
+  handleStepForward: (data: any) => void,
 }
 
-const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
+const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate, handleStepForward, handleStepComplete }: Proptypes) => {
   const { errorStrings } = Constants;
 
   const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>({ jobName: '', job_description: '' });
@@ -16,8 +19,12 @@ const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
   const [continueClicked, setContinueClicked] = useState(false);
 
   useEffect(() => {
+    console.log({ stepCompleted })
     if (stepCompleted) {
-      setBasicDetails(data);
+      setBasicDetails({
+        jobName: data?.jobName, 
+        job_description: data?.job_description
+      });
     }
   }, [stepCompleted, data]);
 
@@ -72,7 +79,11 @@ const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
     }
 
     if (!hasErrors) {
-      handleStepComplete(basicDetails);
+      if (editDetailPage?.currentScreen) {
+        handleStepJustUpdate(basicDetails, true);
+      } else {
+        handleStepComplete(basicDetails);
+      }
     } else {
       setContinueClicked(false);
     }
@@ -96,8 +107,20 @@ const PostNewJob = ({ data, stepCompleted, handleStepComplete }: Proptypes) => {
           <div className="form_field">
             <div className="flex_row">
               <div className="flex_col_sm_5">
-                <span className="title">Post new job</span>
-                <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
+                {editDetailPage?.currentScreen ?
+                  <React.Fragment>
+                    <div className="relate">
+                      <button className="back" onClick={() => { handleStepForward(14) }}></button>
+                      <span className="title">Post new job</span>
+                    </div>
+                    <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
+                  </React.Fragment>
+                  : (
+                    <React.Fragment>
+                      <span className="title">Post new job</span>
+                      <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
+                    </React.Fragment>
+                  )}
               </div>
             </div>
           </div>

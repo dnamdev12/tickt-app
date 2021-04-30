@@ -4,6 +4,7 @@ import templateImage from '../../../assets/images/job-posted-bg.jpg';
 
 interface Proptypes {
     data: any;
+    editDetailPage:any;
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
     handleStepBack: () => void;

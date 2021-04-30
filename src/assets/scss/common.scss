@@ -3110,6 +3110,10 @@ body {
   margin: 15px 0px;
 }
 
+.ml-10 {
+  margin-left: 10px;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
@@ -3133,4 +3137,38 @@ body {
   border: 2px solid #0b41a8;
 }
 
+.nav-btn.prev-slide {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 5px !important;
+  color: #fff !important;
+  position: absolute;
+  top: 80%;
+  right: 12%;
+  border-radius: 0px;
+}
+
+.nav-btn.next-slide {
+  background: rgba(255, 255, 255, 0.4);
+  padding: 5px !important;
+  color: #fff !important;
+  position: absolute;
+  top: 80%;
+  right: 7%;
+  border-radius: 0px;
+}
+
+.owl-dots {
+  background: rgba(255, 255, 255, 0.4) !important;
+  position: absolute !important;
+  top: 80% !important;
+  left: 5% !important;
+}
+
+.nav-btn.next-slide .text-edit {
+  background: rgba(255, 255, 255, 0.4) !important;
+  padding: 1px;
+  position: absolute;
+  right: -40px;
+  top: 5%;
+}
 //---------------- Extra styled close here (for post-a-job module) ----------------------//

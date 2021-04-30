@@ -2,16 +2,182 @@ import React, { useEffect, useState } from 'react';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import thumb from '../../../assets/images/job-posted-bg.jpg';
 import question from '../../../assets/images/ic-question.png';
+import locations from '../../../assets/images/ic-location.png';
+import editIconBlue from '../../../assets/images/ic-edit-blue.png';
+import leftIcon from '../../../assets/images/icon-direction-left.png'
+import rightIcon from '../../../assets/images/icon-direction-right.png'
 
+import moment from 'moment';
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
 interface Proptypes {
     data: any;
+    milestones: any;
     stepCompleted: Boolean;
+    categories: any;
+    jobTypes: any;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
     handleStepBack: () => void;
+    updateDetailScreen: (data: any) => void;
 }
 
-const JobDetails = ({ data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+const options = {
+    items: 1,
+    nav: true,
+    navText: [`<div class='nav-btn prev-slide'> <img src="${leftIcon}"> </div>`, `<div class='nav-btn next-slide'><span id="edit-image" class="text-edit"> <img class="cursor-pointer" src="${editIconBlue}"> </span> <img src="${rightIcon}"> </div>`],
+    rewind: true,
+    autoplay: false,
+    slideBy: 1,
+    dots: true,
+    dotsEach: true,
+    dotData: true
+    // loop: true,
+    // margin: 100,
+    // nav: true,
+    // responsive: {
+    //     0: {
+    //         items: 1,
+    //     },
+    //     600: {
+    //         items: 3,
+    //     },
+    //     1000: {
+    //         items: 5,
+    //     },
+    // },
+};
+
+const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
+const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
+
+const JobDetails = ({
+    data,
+    milestones,
+    categories,
+    jobTypes,
+    stepCompleted,
+    updateDetailScreen,
+    handleStepForward,
+    handleStepComplete,
+    handleStepBack }: Proptypes) => {
+    const [categorySelected, setSelected] = useState<{ [index: string]: any }>({ category: {}, job_type: {} });
+
+    const findSelectedCategory = () => {
+        let preSelectedItem: any = null;
+        let preSelectedJobType: any = null;
+        let preSelectedSpecialization: any = null
+
+        if (data?.categories && data?.categories?.length) {
+            preSelectedItem = data?.categories[0];
+        }
+
+        if (data?.job_type && data?.job_type?.length) {
+            preSelectedJobType = data?.job_type[0];
+        }
+
+        if (data?.specialization && data?.specialization?.length) {
+            preSelectedSpecialization = data?.specialization;
+        }
+
+        console.log({ ct: categories?.length, preSelectedItem, preSelectedJobType })
+
+        if (categories?.length && preSelectedItem && preSelectedJobType) {
+            let filterItem = categories.find((item: any) => item._id === preSelectedItem);
+            let filter_specialization = [];
+            if (filterItem?.specialisations && filterItem?.specialisations?.length) {
+                console.log({ spec: filterItem?.specialization, preSelectedSpecialization })
+                filter_specialization = filterItem?.specialisations?.filter((item: any) => {
+                    if (preSelectedSpecialization.includes(item._id)) {
+                        return item;
+                    }
+                })
+                console.log({ spec: filterItem?.specialization, preSelectedSpecialization, filter_specialization })
+            }
+
+            let filterJobType = jobTypes.find((item: any) => item._id === preSelectedJobType);
+            if (filterJobType || filter_specialization) {
+                setSelected({
+                    category: filter_specialization, // specialisations
+                    job_type: filterJobType
+                })
+            }
+        }
+    }
+
+    const handleClickEdit = () => {
+        console.log('Here!');
+    }
+
+    useEffect(() => {
+        updateDetailScreen(null);
+        if ((categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.category).length) || (categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.job_type).length)) {
+            findSelectedCategory();
+        }
+        console.log('== on render');
+        let element: any = document?.getElementById('edit-image')
+        if (element) {
+            element.addEventListener("click", (e: any) => {
+                e.preventDefault();
+                e.stopPropagation();
+                console.log('Here!');
+                handleStepForward(13)
+            });
+        }
+        return () => {
+            let element_: any = document?.getElementById('edit-image')
+            if (element_) {
+                element_.removeEventListener("click", (e: any) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Here! remove~!');
+                });
+            }
+        }
+
+    }, [categories, jobTypes, handleClickEdit])
+
+    const forwardScreenStep = (id: any, data?: any) => {
+        updateDetailScreen({ currentScreen: id, data });
+        handleStepForward(id);
+    }
+
+    const renderByFileFormat = (data: any) => {
+        let data_clone: any = data;
+        if (data_clone?.urls?.length) {
+            let format_items = data_clone?.urls?.map((item: any) => {
+                let split_item_format = item.split('.');
+                let get_split_fromat = split_item_format[split_item_format.length - 1];
+
+                if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
+                    return { url: item, format: get_split_fromat };
+                }
+            });
+            console.log({ format_items })
+            if (format_items?.length) {
+
+                return format_items.map((item: any) => {
+                    let render_item: any = null;
+
+                    if (imageFormats.includes(item?.format)) {
+                        render_item = <img alt="" src={item?.url} style={{ height: '410px', width: '800px' }} />
+                    }
+
+                    if (videoFormats.includes(item?.format)) {
+                        render_item = <video src={item?.url} style={{ height: '410px', width: '800px' }} />
+                    }
+
+                    return (
+                        <div className='item'>
+                            {render_item}
+                        </div>
+                    )
+                })
+            }
+        }
+    }
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -31,50 +197,74 @@ const JobDetails = ({ data, stepCompleted, handleStepForward, handleStepComplete
                                         <div className="flex_row">
                                             <div className="flex_col_sm_8">
                                                 <figure className="vid_img_thumb">
-                                                    <img src={thumb} alt="" />
+                                                    <OwlCarousel className='owl-theme' {...options}>
+                                                        {renderByFileFormat(data)}
+                                                        {/* {data?.urls ?
+                                                            data?.urls.map((item: any) => (renderByFileFormat(item)))
+                                                            : null} */}
+                                                    </OwlCarousel>
                                                 </figure>
                                             </div>
                                             <div className="flex_col_sm_4 relative">
                                                 <div className="detail_card">
-                                                    <span className="title">Wire up circuit box</span>
+                                                    <span className="title">{data?.jobName}
+                                                        <sup onClick={() => { forwardScreenStep(1) }} className="ml-10 cursor-pointer">
+                                                            <img src={editIconBlue} alt="" />
+                                                        </sup>
+                                                    </span>
                                                     <div className="job_info">
                                                         <ul>
-                                                            <li className="icon clock">32 minutes ago</li>
-                                                            <li className="icon dollar">$250 p/h</li>
-                                                            <li className="icon location">Melbourne CBD</li>
-                                                            <li className="icon calendar">4 days </li>
+                                                            <li className="icon clock">0 minutes ago</li>
+                                                            <li className="icon dollar">${data?.amount} p/h</li>
+                                                            <li className="icon location mtb-10">{data?.location_name}</li>
+                                                            <li className="icon calendar">
+                                                                {data?.from_date?.length && !data?.to_date?.length ? `0 days` :
+                                                                    data?.from_date?.length && data?.to_date?.length ?
+                                                                        `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
+                                                                        : '0 days'}
+                                                            </li>
                                                         </ul>
                                                     </div>
-                                                    <button
-                                                        onClick={() => { handleStepForward(12) }}
-                                                        className="fill_btn full_btn">Post job</button>
+                                                    <button className="fill_btn full_btn">Post job</button>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex_row">
                                             <div className="flex_col_sm_8">
                                                 <div className="description">
-                                                    <span className="sub_title">Details</span>
-                                                    <p className="commn_para">Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request. Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
+                                                    <span className="sub_title">
+                                                        {'Details'}
+                                                        <sup onClick={() => { forwardScreenStep(1) }} className="ml-10 cursor-pointer">
+                                                            <img src={editIconBlue} alt="" />
+                                                        </sup>
+                                                    </span>
+                                                    <p className="commn_para">
+                                                        {data?.job_description}
+                                                    </p>
                                                 </div>
                                             </div>
                                         </div>
                                         <div className="flex_row">
                                             <div className="flex_col_sm_4">
-                                                <span className="sub_title">Job milestones</span>
+                                                <span className="sub_title">{'Job milestones'}
+                                                    <sup onClick={() => { forwardScreenStep(6) }} className="ml-10 cursor-pointer">
+                                                        <img src={editIconBlue} alt="" />
+                                                    </sup>
+                                                </span>
                                                 <ul className="job_milestone">
-                                                    <li>
-                                                        <span>1. Arrival on site</span>
-                                                        <span>May 23 - 25 </span>
-                                                    </li>
-                                                    <li>
-                                                        <span>2. Arrival on site</span>
-                                                        <span>May 23 - 25 </span>
-                                                    </li>
-                                                    <li>
-                                                        <span>3. Arrival on site</span>
-                                                        <span>May 23 - 25 </span>
-                                                    </li>
+                                                    {milestones?.length ?
+                                                        milestones.map((item: any, index: any) => item?.milestone_name && (
+                                                            <li>
+                                                                <span>{`${index + 1}. ${item?.milestone_name}`}</span>
+                                                                <span>{item?.from_date?.length && !item?.to_date?.length ?
+                                                                    `${moment(item?.from_date).format('MMM-DD')}` :
+                                                                    item?.from_date?.length && item?.to_date?.length ?
+                                                                        `${moment(item?.from_date).format('MMM-DD')}-${moment(item?.to_date).format('DD')}` : ''
+                                                                }</span>
+                                                            </li>
+                                                        ))
+                                                        : null}
+
 
                                                 </ul>
                                                 <button className="fill_grey_btn ques_btn">
@@ -82,14 +272,45 @@ const JobDetails = ({ data, stepCompleted, handleStepForward, handleStepComplete
                                                     {'0 questions'}
                                                 </button>
                                             </div>
+
                                             <div className="flex_col_sm_8">
-                                                <span className="sub_title">Specialisations needed</span>
-                                                <div className="tags_wrap">
-                                                    <ul>
-                                                        <li>Circuit Board Wiring</li>
-                                                        <li>Circuit Board Wiring</li>
-                                                        <li>Circuit Board Wiring</li>
-                                                    </ul>
+                                                <div className="flex_row">
+                                                    <div className="flex_col_sm_12">
+                                                        <span className="sub_title">{'Job type'}
+                                                            <sup onClick={() => { forwardScreenStep(2) }} className="ml-10 cursor-pointer">
+                                                                <img src={editIconBlue} alt="" />
+                                                            </sup>
+                                                        </span>
+                                                        <div className="tags_wrap">
+                                                            <ul className="job_categories">
+                                                                <li className="draw">
+                                                                    <figure className="type_icon">
+                                                                        <img src={categorySelected?.job_type?.image} alt="icon" />
+                                                                    </figure>
+                                                                    <span className="name">{categorySelected?.job_type?.name}</span>
+                                                                </li>
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div className="flex_row">
+                                                    <div className="flex_col_sm_12">
+                                                        <span className="sub_title">{'Specialisations needed'}
+                                                            <sup onClick={() => { forwardScreenStep(2) }} className="ml-10 cursor-pointer">
+                                                                <img src={editIconBlue} alt="" />
+                                                            </sup>
+                                                        </span>
+                                                        <div className="tags_wrap">
+                                                            <ul>
+                                                                {categorySelected?.category?.length ?
+                                                                    categorySelected?.category?.map((item: any) => (
+                                                                        <li>{item?.name}</li>
+                                                                    ))
+                                                                    : null}
+
+                                                            </ul>
+                                                        </div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -97,6 +318,7 @@ const JobDetails = ({ data, stepCompleted, handleStepForward, handleStepComplete
                                         <div className="section_wrapper">
                                             <span className="sub_title">Posted by</span>
                                             <div className="flex_row">
+
                                                 <div className="flex_col_sm_3">
                                                     <div className="tradie_card posted_by view_more ">
                                                         <a href="javascript:void(0)" className="chat circle"></a>
@@ -111,20 +333,7 @@ const JobDetails = ({ data, stepCompleted, handleStepForward, handleStepComplete
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div className="flex_col_sm_3">
-                                                    <div className="tradie_card posted_by view_more ">
-                                                        <a href="javascript:void(0)" className="chat circle"></a>
-                                                        <div className="user_wrap">
-                                                            <figure className="u_img">
-                                                                <img src={dummy} alt="traide-img" />
-                                                            </figure>
-                                                            <div className="details">
-                                                                <span className="name">John</span>
-                                                                <span className="prof">Project Manager</span>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+
                                             </div>
                                         </div>
                                     </div>
@@ -134,7 +343,7 @@ const JobDetails = ({ data, stepCompleted, handleStepForward, handleStepComplete
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
     // return (
     //     <div className="app_wrapper">

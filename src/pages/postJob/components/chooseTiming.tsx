@@ -18,9 +18,9 @@ interface Proptypes {
 
 const default_format = 'YYYY-MM-DD';
 const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
-    const [range, setRange] = useState<{ [index: string]: string | Date }>({
-        startDate: '', //new Date(),
-        endDate: '',//new Date(),
+    const [range, setRange] = useState<{ [index: string]: any }>({
+        startDate:'',//new Date(), // ''
+        endDate: '',// new Date(),
         key: 'selection',
     });
     const [formattedDates, setFormattedDates] = useState({});
@@ -32,7 +32,7 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
         if (data && !localChanges) {
             console.log({data});
             setRange({
-                startDate: data.from_date ? moment(data.from_date).toDate() : '',
+                startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
                 endDate:  data.to_date ? moment(data.to_date).toDate() : '',
                 key: 'selection',
             });
