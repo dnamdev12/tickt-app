@@ -27,7 +27,7 @@ interface Proptypes {
 const options = {
     items: 1,
     nav: true,
-    navText: [`<div class='nav-btn prev-slide'> <img src="${leftIcon}"> </div>`, `<div class='nav-btn next-slide'><span id="edit-image" class="text-edit"> <img class="cursor-pointer" src="${editIconBlue}"> </span> <img src="${rightIcon}"> </div>`],
+    navText: [`<div class='nav-btn prev-slide'> <img src="${leftIcon}"> </div>`, `<div class='nav-btn next-slide'> <img src="${rightIcon}"> </div>`],
     rewind: true,
     autoplay: false,
     slideBy: 1,
@@ -109,28 +109,7 @@ const JobDetails = ({
         if ((categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.category).length) || (categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.job_type).length)) {
             findSelectedCategory();
         }
-
-        let element: any = document?.getElementById('edit-image')
-        if (element) {
-            element.addEventListener("click", (e: any) => {
-                e.preventDefault();
-                e.stopPropagation();
-                console.log('Here!')
-                handleStepForward(13)
-            });
-        }
-        return () => {
-            let element_: any = document?.getElementById('edit-image')
-            if (element_) {
-                element_.removeEventListener("click", (e: any) => {
-                    e.preventDefault();
-                    console.log('Here!')
-                    e.stopPropagation();
-                });
-            }
-        }
-
-    }, [categories, jobTypes])
+    }, [categories, jobTypes, stepCompleted])
 
     const forwardScreenStep = (id: any, data?: any) => {
         updateDetailScreen({ currentScreen: id, data });
@@ -164,6 +143,14 @@ const JobDetails = ({
 
                     return (
                         <div className='item'>
+                            <span
+                                onClick={(e: any) => {
+                                    e.preventDefault();
+                                    handleStepForward(13);
+                                }}
+                                className="edit-here">
+                                <img className="cursor-pointer" src={editIconBlue} alt="" />
+                            </span>
                             {render_item}
                         </div>
                     )
@@ -189,7 +176,7 @@ const JobDetails = ({
         let from_date = data_clone?.from_date;
         let to_date = data_clone?.to_date;
 
-        if(moment(from_date).isSame(moment(to_date))){
+        if (moment(from_date).isSame(moment(to_date))) {
             delete data_clone?.to_date;
         }
 
@@ -199,7 +186,7 @@ const JobDetails = ({
             clearParentStates();
             handleStepForward(12);
         }
-        // console.log({ data: data_clone, filter_milestones });
+        // console.log({data: data_clone, filter_milestones });
     }
 
     return (

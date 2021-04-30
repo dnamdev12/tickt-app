@@ -29,6 +29,8 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const [activeCurrent, setActiveCurrent] = useState(false);
 
   useEffect(() => {
+    console.log({ stepCompleted, localChanges })
+
     if (stepCompleted && !localChanges) {
       setLocationDetails({
         location: {
@@ -61,14 +63,14 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
       const position: any = await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
-      console.log({position},'62')
+      console.log({ position }, '62')
       let { latitude, longitude } = position.coords;
       let response: any = await Geocode.fromLatLng(latitude.toString(), longitude.toString());
-      console.log({response},'65')
+      console.log({ response }, '65')
       if (response) {
         const address = response.results[0].formatted_address;
         let coordinates_values = [latitude, longitude];
-        console.log('before set', {coordinates_values, address})
+        console.log('before set', { coordinates_values, address })
         setLocation({ coordinates: coordinates_values, address: address })
         setLoading(false);
       }
@@ -101,7 +103,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
 
   const handleSelect = async (address: any) => {
     let coordinates_response = await Geocode.fromAddress(address);
-    console.log('get-lat-long')
+    console.log('get-l')
     if (coordinates_response) {
       const { lat, lng } = coordinates_response.results[0].geometry.location;
       setLocation({ coordinates: [lat, lng], address })
