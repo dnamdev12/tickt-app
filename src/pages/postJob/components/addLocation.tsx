@@ -28,17 +28,20 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const [localChanges, setLocationChanges] = useState(false);
   const [activeCurrent, setActiveCurrent] = useState(false);
 
-  useEffect(() => {
-    console.log({ stepCompleted, localChanges })
 
+  const updateLocalData = (data: any) => {
+    setLocationDetails({
+      location: {
+        type: 'Point',
+        coordinates: data?.coordinates
+      },
+      location_name: data?.location_name
+    });
+  }
+
+  useEffect(() => {
     if (stepCompleted && !localChanges) {
-      setLocationDetails({
-        location: {
-          type: 'Point',
-          coordinates: data?.coordinates
-        },
-        location_name: data?.location_name
-      });
+      updateLocalData(data);
       setAddress(data?.location_name);
       setLocationChanges(true);
     }
@@ -65,7 +68,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
       });
       console.log({ position }, '62')
       let { latitude, longitude } = position.coords;
-      let response: any = await Geocode.fromLatLng(latitude.toString(), longitude.toString());
+      let response: any = await Geocode.fromLatLng(longitude.toString(), latitude.toString());
       console.log({ response }, '65')
       if (response) {
         const address = response.results[0].formatted_address;
@@ -82,9 +85,15 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const handleContinue = (e: any) => {
     e.preventDefault();
     let locationAddress: any = locationDetails;
-    if (locationAddress?.location?.coordinates?.length) {
-      handleStepComplete(locationDetails);
+    if (data?.location?.coordinates?.length && data?.location_name === address) {
+      locationAddress.location['coordinates'] = data?.location?.coordinates;
+      handleStepComplete(locationAddress);
       return
+    } else {
+      if (locationAddress?.location?.coordinates?.length) {
+        handleStepComplete(locationDetails);
+        return
+      }
     }
     setError('please choose current location or search a location.');
   }
@@ -106,7 +115,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     console.log('get-l')
     if (coordinates_response) {
       const { lat, lng } = coordinates_response.results[0].geometry.location;
-      setLocation({ coordinates: [lat, lng], address })
+      setLocation({ coordinates: [lng, lat], address })
     }
   };
 

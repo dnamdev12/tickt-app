@@ -165,8 +165,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                     onChange={({ target: { value } }) => handleChange(value, 'pay_type')}
                     className="select_input"
                   >
-                    <option value="fixed">{'Fixed Price'}</option>
-                    <option value="perHour">{'Per Hour'}</option>
+                    <option value="Fixed Price">{'Fixed Price'}</option>
+                    <option value="Per Hour">{'Per Hour'}</option>
                   </select>
                 </div>
 
