@@ -85,7 +85,7 @@ const CreateAccount = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Full Name</label>
                     <div className="text_field">
-                        <input placeholder="Enter your Full Name" value={signupData.firstName} name="firstName" onChange={changeHandler} />
+                        <input placeholder="Enter Full Name" value={signupData.firstName} name="firstName" onChange={changeHandler} />
                     </div>
                     {!!errors.firstName && <span className="error_msg">{errors.firstName}</span>}
                 </div>
@@ -94,7 +94,7 @@ const CreateAccount = (props: Propstype) => {
                     <label className="form_label">Email</label>
                     <div className="text_field">
                         <input className="detect_input" name="email" value={signupData.email}
-                            placeholder="Enter your Email" onChange={changeHandler} />
+                            placeholder="Enter Email Address" onChange={changeHandler} />
                     </div>
                     {!!errors.email && <span className="error_msg">{errors.email}</span>}
                 </div>

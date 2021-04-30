@@ -1,25 +1,19 @@
-import React from 'react'
+import uc from '../../assets/images/uc.png';
 
-const GuestLogin = () => {
-    const onClick = () => {
-        throw new Error("Guest error")
-    }
+const GuestHome = () => {
     return (
         <div className="app_wrapper">
-            <button onClick={onClick}>Guest Button</button>
             {/* Under construction */}
-            {/* <div className="custom_container">
+            <div className="custom_container">
                 <div className="under_construction_wrap">
                     <figure className="constrction_img">
                         <img src={uc} alt="coming soon" />
                     </figure>
                     <h2>This Page is under construction. Please come back later.</h2>
                 </div>
-            </div> */}
-            {/* Under construction */}
-            {/* Banner */}
+            </div>
         </div>
     )
 }
 
-export default GuestLogin
+export default GuestHome;

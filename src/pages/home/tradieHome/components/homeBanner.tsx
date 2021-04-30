@@ -1,38 +1,24 @@
-import { useState } from 'react';
 import BannerSearch from './bannerSearch/index';
 
 import bannerimg from '../../../../assets/images/home-banner.png';
 
-const HomeBanner = (props: any) => {
-    const [stateData, setStateData] = useState<any>({
-        page: 1,
-        searchedJob: '',
-        isSearchedJobSelected: false,
-        tradeId: '',
-        specializationId: '',
-        searchedJobId: null,
-        location: {
-            coordinates: []
-        },
-        locationName: '',
-        selectedMapLocation: '',
-        isMapLocationSelected: false,
-        from_date: '',
-        startDate: '',
-        to_date: '',
-        endDate: '',
-    });
+interface PropsType {
+    history: any,
+    bannerData: any,
+    setBannerData: (data: any) => void,
+    getViewNearByJob: (data: any) => void,
+}
+
+const HomeBanner = (props: PropsType) => {
 
     const viewMoreClicked = () => {
-        var jobData = {
-            lat: '21.17021',
-            long: '72.831062',
-            jobType: '',
-        }
-        props.getJobWithJobTypeLatLong(jobData);
         props.history.push({
             pathname: '/search-job-results',
-            state: { selectedMapLocation: "Gurgaon", location: { coordinates: [21.17021, 72.831062] } }
+            state: {
+                queryParam: "viewNearByJob",
+                bannerData: props.bannerData,
+                heading: "Jobs in your area",
+            }
         })
     }
 
@@ -53,4 +39,4 @@ const HomeBanner = (props: any) => {
     )
 }
 
-export default HomeBanner
+export default HomeBanner;

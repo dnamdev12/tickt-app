@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
+import "react-multi-carousel/lib/styles.css";
 
 const categoriesjob = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
         items: 1,
         slidesToSlide: 1, // optional, default to 1.
-    },
+    }
 };
 
 const JobTypeList = (props: any) => {
@@ -14,13 +15,16 @@ const JobTypeList = (props: any) => {
         props.getJobTypeList();
     }, [])
 
-    const jobTypeListClicked = (jobId: string) => {
-        const jobData = {
-            lat: '21.17021',
-            long: '72.831062',
-            jobType: jobId,
-        }
-        // props.getJobWithJobTypeLatLong(jobData); pending
+    const jobTypeListClicked = (tradeId: string, jobTypeHeadingName: string) => {
+        props.history.push({
+            pathname: '/search-job-results',
+            state: {
+                queryParam: "jobTypeList",
+                bannerData: props.bannerData,
+                heading: jobTypeHeadingName,
+                tradeId: [tradeId],
+            }
+        })
     }
 
     console.log(props.jobTypeListData, "jobTypeListData  type==>", props.jobTypeData);
@@ -33,7 +37,7 @@ const JobTypeList = (props: any) => {
                         <ul className="job_categories">
                             {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
                                 return (
-                                    < li className="draw" onClick={() => jobTypeListClicked(item._id)}>
+                                    < li className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
                                         <figure className="type_icon">
                                             <img src={item.image} alt="icon" />
                                         </figure>

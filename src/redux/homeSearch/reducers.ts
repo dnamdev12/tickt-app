@@ -2,10 +2,12 @@ import * as actionTypes from './constants'
 
 const initialState = {
     searchJobListData: [],
+    recentSearchJobData: [],
     jobTypeListData: [],
     jobTypeList: [],
     jobDataWithJobTypeLatLong: {},
     homeSearchJobData: [],
+    viewNearByJobData: [],
     error: '',
 }
 
@@ -21,6 +23,11 @@ const reducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 searchJobListData: action.payload
+            }
+        case actionTypes.SET_RECENT_SEARCH_LIST:
+            return {
+                ...state,
+                recentSearchJobData: action.payload
             }
         case actionTypes.SET_JOB_TYPE_LIST:
             return {
@@ -41,6 +48,11 @@ const reducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 homeSearchJobData: action.payload
+            }
+        case actionTypes.SET_VIEW_NEARBY_JOBS:
+            return {
+                ...state,
+                viewNearByJobData: action.payload
             }
         default: return state
     }

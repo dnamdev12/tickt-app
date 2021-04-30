@@ -13,6 +13,7 @@ export const postSignup = async (data: any) => {
   setLoading(false);
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
+    storageService.setItem("userType", response.result.user_type);
     return { success: true };
   }
   setShowToast(true, response.message);
@@ -70,6 +71,7 @@ export const callLogin = async (data: any) => {
   setLoading(false);
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
+    storageService.setItem("userType", response.result.user_type);
     return { success: true };
   }
   setShowToast(true, response.message);
@@ -105,6 +107,7 @@ export const socialSignupLogin = async (data: any) => {
   setLoading(false);
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
+    storageService.setItem("userType", response.result.user_type);
     return { success: true, successToken: response.result.token };
   }
   setShowToast(true, response.message);

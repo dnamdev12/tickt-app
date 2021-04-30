@@ -27,7 +27,7 @@ const SelectCategories = (props: Propstype) => {
         if (trade) {
             props.updateSteps(props.step + 1, { trade })
         } else {
-            setShowToast(true, "Please select your trade")
+            setShowToast(true, "Please select a trade")
         }
     }
 

@@ -16,6 +16,7 @@ interface Propstype {
     modalUpdateSteps: (data: any) => void,
     setShowModal: (data: any) => void,
     setSocialData: (data: any) => void,
+    modalLoginBackBtn?: string,
 }
 
 const LoginPage = (props: Propstype) => {
@@ -116,20 +117,20 @@ const LoginPage = (props: Propstype) => {
     }
 
     return (
-        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }} history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} setSocialData={props.setSocialData}>
+        <AuthParent sliderType='signup' backButtonHandler={backButtonHandler} header={{ title: 'Log In' }} history={props.history} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} setSocialData={props.setSocialData} modalLoginBackBtn={props.modalLoginBackBtn}>
             <div className="form_wrapper">
                 <form onSubmit={onSubmit}>
                     <div className="form_field">
                         <label className="form_label">Email</label>
                         <div className="text_field">
-                            <input type="text" placeholder="Enter your email" name="email" onChange={changeHandler} />
+                            <input type="text" placeholder="Enter Email" name="email" onChange={changeHandler} />
                         </div>
                         {!!errors.email && <span className="error_msg">{errors.email}</span>}
                     </div>
                     <div className="form_field">
                         <label className="form_label">Password</label>
                         <div className="text_field">
-                            <input type={showPassword ? "text" : "password"} className="detect_input" placeholder="Enter your password" name="password" onChange={changeHandler} />
+                            <input type={showPassword ? "text" : "password"} className="detect_input" placeholder="Enter Password" name="password" onChange={changeHandler} />
                             <span className="detect_icon" onClick={() => setShowPassword(!showPassword)}><img src={showPassword ? eyeIconOpen : eyeIconClose} /></span>
                         </div>
                         {!!errors.password && <span className="error_msg">{errors.password}</span>}

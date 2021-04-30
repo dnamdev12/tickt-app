@@ -48,7 +48,7 @@ const CreatePassword = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Password</label>
                     <div className="text_field">
-                        <input type={showPassword ? 'text' : 'password'} className="detect_input" value={password} placeholder="Enter password" onChange={changeHandler} />
+                        <input type={showPassword ? 'text' : 'password'} className="detect_input" value={password} placeholder="Enter Password" onChange={changeHandler} />
                         <span className="detect_icon" onClick={() => setShowPassword(!showPassword)}><img src={showPassword ? eyeIconOpen : eyeIconClose} /></span>
                     </div>
                     {!!errors.password && <span className="error_msg">{errors.password}</span>}

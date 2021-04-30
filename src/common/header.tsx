@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import storageService from '../utils//storageService';
 import AuthModal from './auth/authModal';
-import { useLocation } from "react-router-dom";
-import { useHistory } from "react-router-dom";
 
 import colorLogo from '../assets/images/ic-logo-yellow.png';
 import menu from '../assets/images/menu-line-white.svg';
@@ -12,12 +12,15 @@ import bell from '../assets/images/ic-notification.png';
 import dummy from '../assets/images/u_placeholder.jpg';
 import profile from '../assets/images/ic-profile.png';
 
-const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404']
+const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
 const Header = (props: any) => {
+    const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
+
+    // const USER_TYPE = storageService.getItem('userType');
 
     let location = useLocation();
     let history = useHistory();
@@ -28,7 +31,8 @@ const Header = (props: any) => {
         } else {
             setShowHeader(true)
         }
-    }, [location.pathname])
+        setUserType(storageService.getItem('userType'))
+    }, [location.pathname, storageService.getItem('userType')])
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -41,7 +45,12 @@ const Header = (props: any) => {
     const logoutHandler = () => {
         storageService.removeItem("jwtToken")
         storageService.removeItem("guestToken")
-        history.push('/signup')
+        storageService.removeItem("userType")
+        history.push('/login')
+    }
+
+    const postClicked = () => {
+        history.push('/post-new-job')
     }
 
     return (
@@ -58,7 +67,7 @@ const Header = (props: any) => {
                         <ul className="center_nav">
                             <li><a className="active">Discover</a></li>
                             <li><a >Jobs</a></li>
-                            <li><a >Post</a></li>
+                            {userType === 2 && <li><a onClick={postClicked}>Post</a></li>}
                             <li><a >Chat</a></li>
                         </ul>
                         <ul className="side_nav">
