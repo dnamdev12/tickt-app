@@ -15,7 +15,7 @@ const libraries: any = ["places", "geometry"];
 // }
 
 const mapContainerStyle = {
-    width: "100vw",
+    width: "100%",
     height: "100vh"
 }
 
@@ -78,7 +78,7 @@ const RenderMap = (props: any) => {
                         position={{ lat: item.location.coordinates[1], lng: item.location.coordinates[0] }}
                         icon={{
                             url: jobIconDemo,
-                            scaledSize: new window.google.maps.Size(30, 30),
+                            scaledSize: new window.google.maps.Size(45, 45),
                             origin: new window.google.maps.Point(0, 0),
                             anchor: new window.google.maps.Point(20, 20)
                         }}
@@ -93,7 +93,7 @@ const RenderMap = (props: any) => {
                 {selected ? (<InfoWindow position={{ lat: selected.location.coordinates[1], lng: selected.location.coordinates[0] }}
                     onCloseClick={() => setSelected(null)}
                 >
-                    <div className="flex_col_sm_6">
+                    <div className="preview_card">
                         <div className="tradie_card">
                             <a href="javascript:void(0)" className="more_detail circle"></a>
                             <div className="user_wrap">
