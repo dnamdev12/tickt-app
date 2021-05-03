@@ -36,7 +36,7 @@ const ForgetPassword = (props: Propstype) => {
     const backButtonHandler = () => {
         let minStep = 1;
         if (steps === 1) {
-            return props.history.push('/login')
+            return props?.history?.push('/login')
         }
         if (steps === 3) {
             minStep = 2

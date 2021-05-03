@@ -311,7 +311,7 @@ const BannerSearch = (props: PropsType) => {
                         {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>}
                     </li>
                     {!stateData?.searchedJob && inputFocus1 && recentJobSearches()}
-                    {stateData?.searchedJob.length >= 1 && inputFocus1 && renderJobResult()}
+                    {stateData?.searchedJob?.length >= 1 && inputFocus1 && renderJobResult()}
                     <li className="loc_box">
                         <div id="location-text-field-div">
                             <PlacesAutocomplete
@@ -335,7 +335,7 @@ const BannerSearch = (props: PropsType) => {
                                                 <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '' }))} />
                                             </span>}
                                         </div>
-                                        {suggestions.length > 0 && stateData?.selectedMapLocation && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                        {suggestions?.length > 0 && stateData?.selectedMapLocation && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                             <div className="flex_row recent_search auto_loc">
                                                 <div className="flex_col_sm_4">
                                                     {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>}

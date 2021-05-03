@@ -115,7 +115,7 @@ const AddABN = (props: Propstype) => {
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
                 <div className="form_field">
-                    <label className="form_label">Australian business number</label>
+                    <label className="form_label">Australian Business Number</label>
                     <div className="text_field">
                         {/* <input type="number" placeholder="Enter Australian business number" value={abn} name="abn" onChange={changeHandler} /> */}
                         <input type="text" placeholder="51 824 753 556" value={ABN} onChange={changeHandler} maxLength={14} />

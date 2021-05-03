@@ -1,11 +1,6 @@
 import { useState, useCallback, useRef } from 'react';
 // @ts-ignore
-import {
-    GoogleMap,
-    useLoadScript,
-    Marker,
-    InfoWindow
-} from '@react-google-maps/api';
+import { GoogleMap, useLoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import { formatRelative } from 'date-fns';
 
 import jobIconDemo from "../../assets/images/jobicon.png";
@@ -20,7 +15,7 @@ const libraries: any = ["places", "geometry"];
 // }
 
 const mapContainerStyle = {
-    width: "100vw",
+    width: "100%",
     height: "100vh"
 }
 
@@ -31,14 +26,15 @@ const options = {
 }
 
 const RenderMap = (props: any) => {
-    const { isLoaded, loadError } = useLoadScript({
-        googleMapsApiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
-        libraries
-    })
-    const mapCenterCoordinates = props.viewNearByJobData.slice(0, 1);
+    // const { isLoaded, loadError } = useLoadScript({
+    //     // googleMapsApiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
+    //     libraries
+    // })
+    const mapCenterCoordinates = props.viewNearByJobData?.slice(0, 1);
+    console.log(mapCenterCoordinates, "mapCenterCoordinates");
     const center = {
-        lat: mapCenterCoordinates ? mapCenterCoordinates?.location?.coordinates[1] : -37.840935,
-        lng: mapCenterCoordinates ? mapCenterCoordinates?.location?.coordinates[1] : 144.946457
+        lat: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[1] : -37.840935,
+        lng: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[0] : 144.946457
         // lat: 21.17021,
         // lng: 72.831062
     }
@@ -55,21 +51,21 @@ const RenderMap = (props: any) => {
             }])
     }, [])
 
-    console.log(props, "renderMap screen");
+    // console.log(props, "renderMap screen", mapCenterCoordinates[0]?.location?.coordinates[1], mapCenterCoordinates[0]?.location?.coordinates[0]);
 
     const mapRef = useRef();
     const onMapLoad = useCallback((map) => {
         mapRef.current = map;
     }, [])
 
-    if (loadError) return <span>Error loading maps</span>;
-    if (!isLoaded) return <span>Loading maps</span>;
+    // if (loadError) return <span>Error loading maps</span>;
+    // if (!isLoaded) return <span>Loading maps</span>;
 
     return (
         <div>
             <GoogleMap
-                // mapContainerStyle={mapContainerStyle}
-                zoom={6}
+                mapContainerStyle={mapContainerStyle}
+                zoom={7}
                 center={center}
                 options={options}
                 onClick={onMapClick}
@@ -82,7 +78,7 @@ const RenderMap = (props: any) => {
                         position={{ lat: item.location.coordinates[1], lng: item.location.coordinates[0] }}
                         icon={{
                             url: jobIconDemo,
-                            scaledSize: new window.google.maps.Size(30, 30),
+                            scaledSize: new window.google.maps.Size(45, 45),
                             origin: new window.google.maps.Point(0, 0),
                             anchor: new window.google.maps.Point(20, 20)
                         }}
@@ -97,7 +93,7 @@ const RenderMap = (props: any) => {
                 {selected ? (<InfoWindow position={{ lat: selected.location.coordinates[1], lng: selected.location.coordinates[0] }}
                     onCloseClick={() => setSelected(null)}
                 >
-                    <div className="flex_col_sm_6">
+                    <div className="preview_card">
                         <div className="tradie_card">
                             <a href="javascript:void(0)" className="more_detail circle"></a>
                             <div className="user_wrap">

@@ -95,7 +95,7 @@ const PhoneNumber = (props: Propstype) => {
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
                 <div className="form_field">
-                    <label className="form_label">Phone number</label>
+                    <label className="form_label">Phone Number</label>
                     <div className="text_field">
                         <input type="text" className="detect_input_ltr" placeholder="400 123 456" value={mobileNumb} onChange={changeHandler} maxLength={11} />
                         <span className="detect_icon_ltr">+61</span>
