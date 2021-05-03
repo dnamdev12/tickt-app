@@ -1665,6 +1665,7 @@ body {
 		display: flex;
 		align-items: center;
 		cursor: pointer;
+    z-index: 9;
 		img {
 			width: 16px;
 			height: 16px;
@@ -1754,6 +1755,7 @@ body {
 }
 
 //----------------Filter/Sort/Range modal close---------------------//
+
 //----------------Setting mat menu---------------------//
 .setting_menu {
   ul {
@@ -1848,6 +1850,7 @@ body {
 }
 
 //------------Success-img-text close---------------//
+
 //------------Center-Image-Text---------------//
 .error_page_wrap {
   width: 100%;
@@ -2817,10 +2820,10 @@ body {
     background-color: #dfe5ef;
     border-radius: 3px;
     margin: 0px 20px 20px 0;
-	cursor: pointer;
-	&:last-child{
-		margin: 0;
-	}
+	  cursor: pointer;
+	// &:last-child{
+	// 	margin: 0;
+	// }
     @media (max-width: 650px) {
       margin: 0px 12px 12px 0;
     }
@@ -3128,6 +3131,25 @@ body {
   }
   img {
     margin-right: 15px;
+  }
+}
+
+.job_milestone{
+  max-width: 345px;
+  margin: 0 0 40px;
+  li{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+    &:last-child{
+      margin: 0;
+    }
+    span{
+      font-size: 18px;
+      color: var(--blue);
+      line-height: 1;
+    }
   }
 }
 //----------------Post job and detail close----------------------//
