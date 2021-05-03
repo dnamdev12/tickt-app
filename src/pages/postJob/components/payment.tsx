@@ -2,14 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Typography from '@material-ui/core/Typography';
 import Slider from '@material-ui/core/Slider';
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import menu from '../../../assets/images/menu-line-white.svg';
-import bell from '../../../assets/images/ic-notification.png';
-import dummy from '../../../assets/images/u_placeholder.jpg';
 import Constants from '../../../utils/constants';
+import Select from 'react-select';
+import MenuItem from '@material-ui/core/MenuItem';
+
 
 function valuetext(value: number) {
-    return `${value}°C`;
+  return `${value}°C`;
 }
 
 interface Proptypes {
@@ -22,146 +21,186 @@ interface Proptypes {
 const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 
-  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: '', amount: '' });
+  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: 'fixed', amount: '' });
   const [errors, setErrors] = useState({ pay_type: '', amount: '' });
   const [continueClicked, setContinueClicked] = useState(false);
-  const [value, setValue] = React.useState<number[]>([20, 37]);
+  const [localChanges, setLocationChanges] = useState(false);
+  const [reactSelect, setReactSelect] = useState({value: "fixed", label: "Fixed Price"});
 
   useEffect(() => {
-    if (stepCompleted) {
-      setPaymentDetails(data);
+    if (stepCompleted && !localChanges) {
+      setPaymentDetails({
+        pay_type: data.pay_type || 'fixed',
+        amount: data.amount
+      });
+      setLocationChanges(true);
     }
   }, [stepCompleted, data]);
 
   // for error messages
   const label: { [index: string]: string } = {
     pay_type: 'pay type',
-    amount: 'amount',
+    amount: 'price',
   }
 
-  const isEmpty = (name: string, value: string) => !value ? errorStrings.pleaseEnter + label[name] : '';
+  const checkDecimal = (name: string, value: string) => {
+    let split_values = value.split('.');
+    if (split_values.length > 1) {
+      if (split_values[0].length > 6) {
+        return 'price field must have 6 digits before decimal or less.'
+      }
 
+      if (split_values[1].length > 2) {
+        return 'price field must have 2 digits after decimal or less.'
+      }
+
+    } else {
+      return ''
+    }
+  }
   const isInvalid = (name: string, value: string) => {
     switch (name) {
       case 'pay_type':
-        return isEmpty(name, value);
+        return !value.length ? ` please enter ` + label[name] : '';
       case 'amount':
-        return isEmpty(name, value);
+        return !value.length ? ` please enter ` + label[name] : checkDecimal(name, value);
     }
   }
 
   const handleChange = (value: string, name: string) => {
-    if (stepCompleted || continueClicked) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        [name]: isInvalid(name, value),
-      }));
-    }
-
-    setPaymentDetails((prevDetails) => ({
-      ...prevDetails,
-      [name]: value,
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: isInvalid(name, value),
     }));
+
+    setPaymentDetails((prevDetails) => {
+      if (name === "pay_type" && prevDetails.pay_type !== value) {
+        prevDetails.amount = '';
+      }
+      return ({
+        ...prevDetails,
+        [name]: value,
+      })
+    })
   };
 
-  const handleSliderChange = (event: any, newValue: number | any) => {
-      setValue(newValue as number[]);
-      handleChange(newValue[1], 'amount');
-  };
-
-  const handleContinue = () => {
+  const handleContinue = (e: any) => {
+    e.preventDefault();
     let hasErrors;
 
     if (!continueClicked) {
       setContinueClicked(true);
-
       hasErrors = Object.keys(paymentDetails).reduce((prevError, name) => {
         const hasError = !!isInvalid(name, paymentDetails[name]);
-
         setErrors((prevErrors) => ({
           ...prevErrors,
           [name]: isInvalid(name, paymentDetails[name]),
         }));
-
         return hasError || prevError;
       }, false);
     }
 
     if (!hasErrors) {
       handleStepComplete(paymentDetails);
+    } else {
+      setContinueClicked(false);
     }
   };
 
+  const checkErrors = () => {
+    let value_1 = paymentDetails['pay_type'];
+    let value_2 = paymentDetails['amount'];
+    if (value_1 && value_2) {
+      let error_1 = isInvalid('pay_type', paymentDetails['pay_type']);
+      let error_2 = isInvalid('amount', paymentDetails['amount']);
+      if (!error_1?.length && !error_2?.length) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  const priceOptions = [
+    { value: 'fixed', label: 'Fixed Price' },
+    { value: 'perHour', label: 'Per Hour' },
+  ];
+
+
   const { pay_type, amount } = paymentDetails;
+  return (
 
-    return (
+    <div className="app_wrapper">
+      <div className="section_wrapper">
+        <div className="custom_container">
+          <div className="form_field">
+            <div className="flex_row">
+              <div className="flex_col_sm_5">
+                <div className="relate">
+                  <button className="back" onClick={handleStepBack}></button>
+                  <span className="title">Payment</span>
+                </div>
+                <p className="commn_para">How mach will you pay for a job</p>
+              </div>
+            </div>
+          </div>
 
-        <div className="app_wrapper">
+          <div className="flex_row">
+            <div className="flex_col_sm_3">
+              <div className="form_field">
+                <div className="text_field">
+                  <input
+                    type="number"
+                    placeholder="Price"
+                    name="Price"
+                    className="detect_input_ltr"
+                    min="0"
+                    step=".01"
+                    required
+                    value={amount}
+                    onChange={({ target: { value } }) => handleChange(value, 'amount')}
+                  />
+                  <span className="detect_icon_ltr dollar">$</span>
+                </div>
+                <span className="error_msg mtb-15">{errors?.amount}</span>
+              </div>
+            </div>
+            <div className="flex_col_sm_2">
+              <div className="form_field">
+                <div className="text_field">
+                  {/* <select
+                    value={pay_type}
+                    onChange={({ target: { value } }) => handleChange(value, 'pay_type')}
+                    className="select_input"
+                  >
+                    <option value="fixed">{'Fixed Price'}</option>
+                    <option value="perHour">{'Per Hour'}</option>
+                  </select> */}
 
-            {/* Header */}
-            <header id="header">
-                <div className="custom_container">
-                    <div className="flex_headrow">
-                        <div className="brand_wrap">
-                            <figure>
-                                <img src={colorLogo}
-                                    alt="logo-white" />
-                            </figure>
-                        </div>
-                        <ul className="center_nav">
-                            <li>
-                                <a>Discover</a>
-                            </li>
-                            <li>
-                                <a>Jobs</a>
-                            </li>
-                            <li>
-                                <a className="active">Post</a>
-                            </li>
-                            <li>
-                                <a>Chat</a>
-                            </li>
-                        </ul>
+                  <Select
+                    className="select_menu"
+                    value={reactSelect}
+                    options={priceOptions}
+                    onChange={(item:any) => {
+                      setReactSelect(item);
+                      handleChange(item?.value, 'pay_type')
+                    }}
+                  />
 
-
-                        <ul className="side_nav">
-                            <li className="mob_nav">
-                                <img src={menu} alt="menu" />
-                            </li>
-                            <div className="profile_notification">
-                                <div className="notification_bell">
-                                    <figure className="bell">
-                                        <span className="badge">4 </span>
-                                        <img src={bell} alt="notify" />
-                                    </figure>
-                                </div>
-                                <div className="user_profile">
-                                    <figure aria-controls="simple-menu" aria-haspopup="true">
-                                        <img src={dummy} alt="profile-img" />
-                                    </figure>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
 
                 </div>
-            </header>
-            {/* Header close */}
 
-            <div className="section_wrapper">
-                <div className="custom_container">
-                    <div className="form_field">
-                        <div className="flex_row">
-                            <div className="flex_col_sm_5">
-                                <div className="relate">
-                                    <button className="back" onClick={handleStepBack}></button>
-                                    <span className="title">Payment</span>
-                                </div>
-                                <p className="commn_para">How mach will you pay for a job</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="flex_row">
+              </div>
+            </div>
+          </div>
+
+          <div className="form_field">
+            <button
+              className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
+              onClick={handleContinue}>Continue</button>
+          </div>
+
+
+          {/* <div className="flex_row">
                         <div className="flex_col_sm_5">
                             <div className="form_field">
                                 <div className="radio_wrap agree_check">
@@ -182,7 +221,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                             </div>
 
                             <div className="form_field">
-                            {/* <Typography id="range-slider" gutterBottom></Typography> */}
 
                             <Slider
                                 value={value}
@@ -197,12 +235,13 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                                 <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </div> */}
+          {/* <Typography id="range-slider" gutterBottom></Typography> */}
+        </div >
+      </div >
 
-        </div>
-    )
+    </div >
+  )
 }
 
 export default Payment

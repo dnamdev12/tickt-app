@@ -1,27 +1,19 @@
 import { useEffect, useState } from 'react';
 import Constants from '../../../utils/constants';
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import menu from '../../../assets/images/menu-line-white.svg';
-import bell from '../../../assets/images/ic-notification.png';
-import dummy from '../../../assets/images/u_placeholder.jpg';
-import profile from '../../../assets/images/ic-profile.png';
-import spherePlaceholder from "../../../assets/images/ic_categories_placeholder.svg";
-import residential from "../../../assets/images/ic-residential.png";
-import industrial from "../../../assets/images/ic-money.png";
-import contracted from "../../../assets/images/ic-contracted.png";
-import commercial from "../../../assets/images/ic-commercial.png";
-import hourlyRate from "../../../assets/images/ic-clock.png";
 
 interface Proptypes {
   categories: any;
   jobTypes: any;
   data: any;
+  editDetailPage: any;
   stepCompleted: Boolean;
   handleStepComplete: (data: any) => void;
   handleStepBack: () => void;
+  handleStepForward: (data: any) => void;
+  handleStepJustUpdate: (data: any, goto: any) => void;
 };
 
-const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, editDetailPage, handleStepForward, handleStepJustUpdate, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 
   const [jobTypeDetails, setJobTypeDetails] = useState<{ [index: string]: string[] }>({ categories: [], job_type: [], specialization: [] });
@@ -30,7 +22,11 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
 
   useEffect(() => {
     if (stepCompleted) {
-      setJobTypeDetails(data);
+      setJobTypeDetails({
+        categories: data.categories,
+        job_type: data.job_type,
+        specialization: data.specialization
+      });
     }
   }, [stepCompleted, data]);
 
@@ -76,9 +72,15 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
       if (name === 'categories') {
         const specializationsToBeRemoved = categoriesData.find(({ _id }: { _id: string }) => _id === value).specialisations?.map(({ _id }: { _id: string }) => _id) || [];
         updateDetails(jobTypeDetails.specialization.filter((value) => !specializationsToBeRemoved.includes(value)), 'specialization');
+        updateDetails([], 'categories');
       }
     } else {
-      updateDetails(jobTypeDetails[name].concat([value]), name);
+      if (name !== "specialization") {
+        jobTypeDetails[name] = [value]
+        updateDetails(jobTypeDetails[name], name);
+      } else {
+        updateDetails(jobTypeDetails[name].concat([value]), name);
+      }
     }
   };
 
@@ -101,7 +103,13 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
     }
 
     if (!hasErrors) {
-      handleStepComplete(jobTypeDetails);
+      if (editDetailPage?.currentScreen) {
+        handleStepJustUpdate(jobTypeDetails, true)
+      } else {
+        handleStepComplete(jobTypeDetails);
+      }
+    } else {
+      setContinueClicked(false);
     }
   };
 
@@ -117,119 +125,96 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ha
     categoriesHTML.push(
       <li key={_id} className={categories.includes(_id) ? 'active' : undefined} onClick={() => handleChange(_id, 'categories')}>
         <figure>
-            <img src={selected_url} />
+          <img src={selected_url} />
         </figure>
         <span className="name">{trade_name}</span>
       </li>
     );
   });
 
-    return (
-        <div className="app_wrapper">
+  // const checkErrors = () => {
+  //   if (!errors.job_type.length && !errors.specialization.length && !errors.categories.length) {
+  //     return false
+  //   }
+  //   return true;
+  // }
 
-            {/* Header */}
-            <header id="header">
-                <div className="custom_container">
-                    <div className="flex_headrow">
-                        <div className="brand_wrap">
-                            <figure>
-                                <img src={colorLogo}
-                                    alt="logo-white" />
-                            </figure>
-                        </div>
-                        <ul className="center_nav">
-                            <li>
-                                <a>Discover</a>
-                            </li>
-                            <li>
-                                <a>Jobs</a>
-                            </li>
-                            <li>
-                                <a className="active">Post</a>
-                            </li>
-                            <li>
-                                <a>Chat</a>
-                            </li>
-                        </ul>
+  const checkErrors = () => {
+    let error_1 = isInvalid('categories', jobTypeDetails['categories']);
+    let error_2 = isInvalid('job_type', jobTypeDetails['job_type']);
+    let error_3 = isInvalid('specialization', jobTypeDetails['specialization']);
+    if (!error_1?.length && !error_2?.length && !error_3?.length) {
+      return false;
+    }
+    return true;
+  }
 
+  return (
+    <div className="app_wrapper">
+      <div className="section_wrapper">
+        <div className="custom_container">
+          <div className="form_field">
+            <div className="flex_row">
+              <div className="flex_col_sm_5">
 
-                        <ul className="side_nav">
-                            <li className="mob_nav">
-                                <img src={menu} alt="menu" />
-                            </li>
-                            <div className="profile_notification">
-                                <div className="notification_bell">
-                                    <figure className="bell">
-                                        <span className="badge">4 </span>
-                                        <img src={bell} alt="notify" />
-                                    </figure>
-                                </div>
-                                <div className="user_profile">
-                                    <figure aria-controls="simple-menu" aria-haspopup="true">
-                                        <img src={dummy} alt="profile-img" />
-                                    </figure>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
+                {editDetailPage?.currentScreen ? (
+                  <div className="relate">
+                    <button className="back" onClick={() => { handleStepForward(14) }}></button>
+                    <span className="title">Job type</span>
+                  </div>
+                ) : (
+                  <div className="relate">
+                    <button className="back" onClick={handleStepBack}></button>
+                    <span className="title">Job type</span>
+                  </div>
+                )}
 
-                </div>
-            </header>
-            {/* Header close */}
-
-            <div className="section_wrapper">
-                <div className="custom_container">
-                    <div className="form_field">
-                        <div className="flex_row">
-                            <div className="flex_col_sm_5">
-                                <div className="relate">
-                                    <button className="back" onClick={handleStepBack}></button>
-                                    <span className="title">Job type</span>
-                                </div>
-                                <p className="commn_para">Select the category and the specialisations required</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="form_field">
-                        <span className="xs_sub_title">Categories</span>
-                    </div>
-                    <div className="select_sphere">
-                        <ul>
-                            {categoriesHTML}
-                        </ul>
-                        <span className="error_msg">{errors.categories}</span>
-                    </div>
-                    <div className="form_field">
-                        <span className="xs_sub_title">Job types</span>
-                    </div>
-                    <ul className="job_categories">
-                        {jobTypes.map(({ _id, name, image }: { _id: string, name: string, image: string }) => (
-                            <li key={_id} className={`draw${job_type.includes(_id) ? ' active' : ''}`} onClick={() => handleChange(_id, 'job_type')}>
-                              <figure className="type_icon">
-                                  <img src={image} alt="icon" />
-                              </figure>
-                              <span className="name">{name}</span>
-                            </li>
-                        ))}
-                    </ul>
-                    <span className="error_msg">{errors.job_type}</span>
-                    <div className="form_field">
-                        <span className="xs_sub_title">Specialisation</span>
-                    </div>
-                    <div className="tags_wrap">
-                        <ul>
-                            {specializations.map(({ _id, name }: { _id: string, name: string }) => <li key={_id} className={specialization.includes(_id) ? 'selected' : undefined} onClick={() => handleChange(_id, 'specialization')}>{name}</li>)}
-                        </ul>
-                        <span className="error_msg">{errors.specialization}</span>
-                    </div>
-                    <div className="form_field">
-                        <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
-                    </div>
-                </div>
+                <p className="commn_para">Select the category and the specialisations required</p>
+              </div>
             </div>
-
+          </div>
+          <div className="form_field">
+            <span className="xs_sub_title">Categories</span>
+          </div>
+          <div className="select_sphere">
+            <ul>
+              {categoriesHTML}
+            </ul>
+            <span className="error_msg">{errors.categories}</span>
+          </div>
+          <div className="form_field">
+            <span className="xs_sub_title">Job types</span>
+          </div>
+          <ul className="job_categories">
+            {jobTypes.map(({ _id, name, image }: { _id: string, name: string, image: string }) => (
+              <li key={_id} className={`draw${job_type.includes(_id) ? ' active' : ''}`} onClick={() => handleChange(_id, 'job_type')}>
+                <figure className="type_icon">
+                  <img src={image} alt="icon" />
+                </figure>
+                <span className="name">{name}</span>
+              </li>
+            ))}
+          </ul>
+          <span className="error_msg">{errors.job_type}</span>
+          <div className="form_field">
+            <span className="xs_sub_title">Specialisation</span>
+          </div>
+          <div className="tags_wrap">
+            <ul>
+              {specializations.map(({ _id, name }: { _id: string, name: string }) => <li key={_id} className={specialization.includes(_id) ? 'selected' : undefined} onClick={() => handleChange(_id, 'specialization')}>{name}</li>)}
+            </ul>
+            <span className="error_msg">{errors.specialization}</span>
+          </div>
+          <div className="form_field">
+            <button
+              className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
+              onClick={handleContinue}>Continue</button>
+          </div>
         </div>
-    )
+      </div>
+
+    </div>
+  )
 }
 
 export default JobType

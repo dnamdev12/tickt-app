@@ -6,7 +6,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action: any) => {
-    console.log(action)
+    // console.log(action)
     switch (action.type) {
         case actionTypes.RECEIVE_API_DATA:
             return {
