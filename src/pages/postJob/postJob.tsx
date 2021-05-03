@@ -14,7 +14,7 @@ import UploadMedia from './components/uploadMedia';
 import MileStoneTemplates from './components/milestoneTemplates';
 import JobDetails from './components/jobDetails';
 import EditMilestone from './components/editMileStone';
-import { callCategories } from '../../redux/postJob/actions';
+import { callCategories } from '../../redux/jobs/actions';
 
 interface Proptypes {
     callTradeList: () => void;

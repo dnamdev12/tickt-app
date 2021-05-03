@@ -5,7 +5,7 @@ import Slider from '@material-ui/core/Slider';
 import Constants from '../../../utils/constants';
 import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
-import { profileTemplateList, getMileStoneByTempId } from '../../../redux/postJob/actions';
+import { profileTemplateList, getMileStoneByTempId } from '../../../redux/jobs/actions';
 import moment from 'moment';
 
 

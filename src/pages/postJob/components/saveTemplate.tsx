@@ -1,7 +1,7 @@
 import { te } from 'date-fns/locale';
 import React, { useEffect, useState } from 'react';
 import { useStore } from 'react-redux';
-import { addTemplate } from '../../../redux/postJob/actions'
+import { addTemplate } from '../../../redux/jobs/actions'
 interface Proptypes {
     data: any;
     milestones: any;

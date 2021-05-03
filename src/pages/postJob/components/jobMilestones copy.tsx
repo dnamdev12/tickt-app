@@ -8,7 +8,7 @@ import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautif
 // import thumb from '../../../assets/images/job-posted-bg.jpg';
 // import question from '../../../assets/images/ic-question.png';
 
-import { callMilestones, profileTemplateList } from '../../../redux/postJob/actions';
+import { callMilestones, profileTemplateList } from '../../../redux/jobs/actions';
 
 interface Proptypes {
     data: any;
