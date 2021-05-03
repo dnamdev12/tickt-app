@@ -1,64 +1,60 @@
-import React from 'react';
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import menu from '../../../assets/images/menu-line-white.svg';
-import bell from '../../../assets/images/ic-notification.png';
-import dummy from '../../../assets/images/u_placeholder.jpg';
-import icgps from "../../../assets/images/ic-gps.png";
+import { te } from 'date-fns/locale';
+import React, { useEffect, useState } from 'react';
+import { useStore } from 'react-redux';
+import { addTemplate } from '../../../redux/postJob/actions'
+interface Proptypes {
+    data: any;
+    milestones: any;
+    stepCompleted: Boolean;
+    handleStepComplete: (data: any) => void;
+    handleStepForward: (data: any) => void;
+    handleCombineMileStones: (data: any) => void;
+    handleStepBack: () => void;
+}
+//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
+const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+    const [templateName, setTemplateName] = useState('' as any);
+    const [error, setError] = useState('' as any);
 
-const SaveTemplate = () => {
+    const checkError = () => {
+        if (!templateName?.length) {
+            return true;
+        }
+        return false;
+    }
+
+    const handleContinue = async () => {
+        let filter_milestone = milestones.filter((item: any) => {
+            if (Object.keys(item).length) {
+                if (!item?.to_date?.length) {
+                    delete item.to_date;
+                }
+                return item
+            }
+        })
+        
+        let { success, data } = await addTemplate({
+            template_name: templateName,
+            milestones: filter_milestone
+        })
+        if (success) {
+            handleCombineMileStones([]);
+            handleStepForward(11);
+        }
+    }
+
+    const handleChange = (value: any) => {
+        if (!templateName?.length) {
+            setError('please enter template name.');
+        } else {
+            setError('');
+        }
+        setTemplateName(value)
+    }
+
     return (
         <div className="app_wrapper">
-
-            {/* Header */}
-            <header id="header">
-                <div className="custom_container">
-                    <div className="flex_headrow">
-                        <div className="brand_wrap">
-                            <figure>
-                                <img src={colorLogo}
-                                    alt="logo-white" />
-                            </figure>
-                        </div>
-                        <ul className="center_nav">
-                            <li>
-                                <a>Discover</a>
-                            </li>
-                            <li>
-                                <a>Jobs</a>
-                            </li>
-                            <li>
-                                <a className="active">Post</a>
-                            </li>
-                            <li>
-                                <a>Chat</a>
-                            </li>
-                        </ul>
-
-
-                        <ul className="side_nav">
-                            <li className="mob_nav">
-                                <img src={menu} alt="menu" />
-                            </li>
-                            <div className="profile_notification">
-                                <div className="notification_bell">
-                                    <figure className="bell">
-                                        <span className="badge">4 </span>
-                                        <img src={bell} alt="notify" />
-                                    </figure>
-                                </div>
-                                <div className="user_profile">
-                                    <figure aria-controls="simple-menu" aria-haspopup="true">
-                                        <img src={dummy} alt="profile-img" />
-                                    </figure>
-                                </div>
-                            </div>
-                        </ul>
-                    </div>
-
-                </div>
-            </header>
-            {/* Header close */}
 
             <div className="section_wrapper">
                 <div className="custom_container">
@@ -66,7 +62,7 @@ const SaveTemplate = () => {
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
                                 <div className="relate">
-                                    <button className="back"></button>
+                                    <button onClick={() => { handleStepForward(6) }} className="back"></button>
                                     <span className="title">Save as template</span>
                                 </div>
                                 <p className="commn_para">Add template name. It will be stored in your profile</p>
@@ -78,12 +74,21 @@ const SaveTemplate = () => {
                             <div className="form_field">
                                 <label className="form_label">Template name</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="This job..." name="name" />
+                                    <input
+                                        onChange={(e) => {
+                                            handleChange(e.target.value);
+                                        }}
+                                        value={templateName}
+                                        type="text" placeholder="This job..." name="name" />
                                 </div>
                                 <span className="error_msg"></span>
                             </div>
                             <div className="form_field">
-                                <button className="fill_btn full_btn">Save</button>
+                                <button
+                                    onClick={handleContinue}
+                                    className={`fill_btn full_btn ${checkError() ? 'disable_btn' : ''}`}>
+                                    {'Save'}
+                                </button>
                             </div>
                         </div>
                     </div>

@@ -458,3 +458,100 @@ body.loader_show .full_loader {
     }
 }
 //----------------Date-range picker close-------------------//
+
+
+
+//------------Custom Map---------------//
+.gm-style .gm-style-iw-c{
+    overflow: initial;
+}
+.gm-ui-hover-effect{
+    top: -12px !important;
+    right: -12px !important;
+    background-color: #ffffff !important;
+    border-radius: 50%;
+    box-shadow: 0 2px 7px 1px #0000004d;
+    opacity: 1;
+    -webkit-transition: all 1s cubic-bezier(.23,1,.32,1);
+    transition: all 1s cubic-bezier(.23,1,.32,1);
+    &:hover {
+      transform: rotate(180deg);
+    }
+   img{
+    pointer-events: initial !important;
+   }
+}
+
+.map_label{
+    background-color: var(--orange);
+    color: var(--white);
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 5px 30px 0 rgba(0, 0, 0, 0.15);
+    border: solid 1px rgba(160, 159, 167, 0.35);
+}
+.gmnoprint{
+    top: 10px !important;
+}
+.gm-style-cc { 
+    display:none; 
+}
+//------------Custom Map close---------------//
+
+
+//--------------------------------//
+.char_count{
+    display: block;
+    text-align: right;
+    font-size: 12px;
+    padding: 5px 0px;
+    color: var(--greyish-brown);
+}
+
+.autocomplete-drop-down-map-container {
+    border: solid 1px var(--warm-gray);
+    border-top: 0;
+}
+
+.loc_suggestions {
+    border-bottom: solid 1px var(--warm-gray);
+    padding: 10px;
+    font-size: 14px;
+    color: var(--blue);
+}
+
+.select_menu, .css-yk16xz-control{
+    min-height: 48px !important;
+    
+    border-radius: 3px !important;
+    font-size: 14px;
+    width: 100%;
+    color: var(--blue);
+    background-color: var(--white) !important;
+    letter-spacing: 0.5px;
+    .css-yk16xz-control{
+        border: solid 1px var(--warm-gray) !important;
+    }
+}
+.css-1pahdxg-control{
+    border: 1px solid var(--blue) !important;
+    min-height: 48px !important;
+    // svg{
+    //     transform: rotate(180deg);
+    // }
+}
+.react-select__option, .css-1uccc91-singleValue{
+    font-size: 14px;
+    color: var(--blue);
+    cursor: pointer;
+}
+.css-b8ldur-Input{
+    input{
+        &:focus, &:hover{
+            border: none !important;
+            box-shadow: none !important;
+        }
+    }
+}
+
+//--------------------------------//

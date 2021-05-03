@@ -7,37 +7,46 @@ import React, { useState, useEffect } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-
 import moment from 'moment';
+
 interface Proptypes {
     data: any;
     stepCompleted: Boolean;
+    milestones: any,
+    editMilestoneTiming: any;
+    editMileStone: any;
+    handleStepForward: (data: any) => void;
     handleStepComplete: (data: any) => void;
+    handleStepMileStone: (data: any, index: any) => void;
     handleStepBack: () => void;
+    addTimeToMileStone: (time: any, index: number) => void;
+    updateMileStoneTimings: (data: any) => void;
 }
 
 const default_format = 'YYYY-MM-DD';
-const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
-    const [range, setRange] = useState<{ [index: string]: any }>({
-        startDate:'',//new Date(), // ''
-        endDate: '',// new Date(),
+const ChooseTimingMileStone = ({
+    data,
+    stepCompleted,
+    handleStepForward,
+    updateMileStoneTimings,
+    editMileStone,
+    addTimeToMileStone,
+    milestones,
+    handleStepComplete,
+    handleStepMileStone,
+    handleStepBack }: Proptypes) => {
+    const [range, setRange] = useState<{ [index: string]: string | Date }>({
+        startDate: '', //new Date(),
+        endDate: '',//new Date(),
         key: 'selection',
     });
     const [formattedDates, setFormattedDates] = useState({});
     const [error, setError] = useState('');
     const [localChanges, setLocalChanges] = useState(false);
 
-
     useEffect(() => {
-        if (stepCompleted) {
-            setRange({
-                startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
-                endDate:  data.to_date ? moment(data.to_date).toDate() : '',
-                key: 'selection',
-            });
-            setLocalChanges(true);
-        }
-    }, [data, stepCompleted])
+        console.log({ milestones })
+    }, [milestones])
 
     const handleChange = (item: any) => {
         setRange(item.selection);
@@ -56,10 +65,27 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
     }
 
     const handleContinue = () => {
-        handleStepComplete(formattedDates);
+        let moment_start = moment(range.startDate).format('MM-DD-YYYY')
+        let moment_end = moment(range.endDate).format('MM-DD-YYYY')
+        let timings = {
+            from_date: range.startDate !== '' ? moment_start : '',
+            to_date: (moment_start === moment_end || range.endDate === '') ? '' : moment_end
+        }
+
+        let item_index = null;
+        if (editMileStone == null) {
+            item_index = milestones.length ? milestones.length - 1 : 0;
+            addTimeToMileStone(timings, item_index);
+            handleStepBack();
+        } else {
+            updateMileStoneTimings(timings);
+            handleStepForward(15);
+        }
+        // handleStepComplete(formattedDates);
     }
 
     const checkDisable = () => {
+        // let from_date = moment(range.startDate).format(default_format);
         if (range?.startDate && range?.startDate !== 'Invalid date') {
             return false;
         }
@@ -116,4 +142,4 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
     )
 }
 
-export default ChooseTiming
+export default ChooseTimingMileStone

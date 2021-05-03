@@ -29,10 +29,10 @@ const TradieSearchJobResult = (props: any) => {
         if (location?.state?.queryParam == 'viewNearByJob') {
             const data = {
                 page: 1,
-                // lat: props.location?.state?.bannerData?.location?.coordinates[1],
-                // long: props.location?.state?.bannerData?.location?.coordinates[0]
-                lat: 21.17021,
-                long: 72.831062
+                lat: props.location?.state?.bannerData?.location?.coordinates[1],
+                long: props.location?.state?.bannerData?.location?.coordinates[0]
+                // lat: 21.17021,
+                // long: 72.831062
             }
             props.getViewNearByJob(data);
         }
