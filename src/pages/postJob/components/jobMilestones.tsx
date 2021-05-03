@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { callMilestones, profileTemplateList } from '../../../redux/postJob/actions';
+import { callMilestones, profileTemplateList } from '../../../redux/jobs/actions';
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 
