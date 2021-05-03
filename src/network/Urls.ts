@@ -9,6 +9,8 @@ const ServiceEnum = {
     auth: 'auth/',
     admin: 'admin/',
     job: 'job/',
+    profile:'profile/',
+    builder:'builder/',
 }
 
 const Urls = {
@@ -31,7 +33,10 @@ const Urls = {
     jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
     jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
     home: `${versions.v1}home`,
-    homeSearch: `${versions.v1}home/search`,
+    homeSearch: `${versions.v1}home/search`, 
+    profileTemplateList:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}templatesList`,
+    createTemplate:`${versions.v1}${ServiceEnum.job}createTemplate`,
+    createJob:`${versions.v1}${ServiceEnum.job}create`, // create job (post job)
     viewNearByJob: `${versions.v1}home/viewNearByJob`,
 }
 

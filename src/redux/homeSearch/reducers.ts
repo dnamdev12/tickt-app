@@ -12,7 +12,7 @@ const initialState = {
 }
 
 const reducer = (state = initialState, action: any) => {
-    console.log(action)
+    // console.log(action)
     switch (action.type) {
         case actionTypes.FETCH_FAILED:
             return {
