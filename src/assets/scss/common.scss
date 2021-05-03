@@ -1665,6 +1665,7 @@ body {
 		display: flex;
 		align-items: center;
 		cursor: pointer;
+    z-index: 9;
 		img {
 			width: 16px;
 			height: 16px;
