@@ -28,7 +28,7 @@ const LoginPage = (props: Propstype) => {
     const [showPassword, setShowPassword] = useState(false)
 
     const backButtonHandler = () => {
-        props.history.push('/signup')
+        props?.history?.push('/signup')
     }
 
     const changeHandler = (e: any) => {

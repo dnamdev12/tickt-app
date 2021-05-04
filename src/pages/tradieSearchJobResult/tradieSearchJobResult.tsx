@@ -64,11 +64,14 @@ const TradieSearchJobResult = (props: any) => {
         if (location?.state?.queryParam == 'viewNearByJob') {
             jobsData = props.viewNearByJobData;
             return jobsData;
-        }
-        if (location?.state?.queryParam == 'jobTypeList') {
+        } else {
             jobsData = props.homeSearchJobData;
             return jobsData;
         }
+        // if (location?.state?.queryParam == 'jobTypeList') {
+        //     jobsData = props.homeSearchJobData;
+        //     return jobsData;
+        // }
         return null;
     }
 
@@ -136,7 +139,7 @@ const TradieSearchJobResult = (props: any) => {
                                     <span className="close_map" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
                                         <img src={closeMap} alt="close-map" />
                                     </span>
-                                    <RenderMap {...props} />
+                                    <RenderMap {...props} filterByPrice={filterState.filterByPrice} />
                                 </div>
                             </div>}
                         </div>
