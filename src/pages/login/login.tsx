@@ -108,10 +108,11 @@ const LoginPage = (props: Propstype) => {
             const res: any = await callLogin(newData)
             if (res.success) {
                 if (props.showModal) {
-                    props.setShowModal(!props.showModal);
+                    window.location.reload();
+                    // props.setShowModal(!props.showModal);
                     return;
                 }
-                props.history.push('/')
+                props?.history?.push('/')
             }
         }
     }
