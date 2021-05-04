@@ -6,7 +6,7 @@ import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
-import { createPostJob } from '../../../redux/postJob/actions';
+import { createPostJob } from '../../../redux/jobs/actions';
 import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
