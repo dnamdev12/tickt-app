@@ -30,7 +30,15 @@ const RenderMap = (props: any) => {
     //     // googleMapsApiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
     //     libraries
     // })
-    const mapCenterCoordinates = props.viewNearByJobData?.slice(0, 1);
+
+    var mapCenterCoordinates;
+    if (props.filterByPrice) {
+        mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
+    } else if (props?.location?.state?.queryParam == 'viewNearByJob') {
+        mapCenterCoordinates = props.viewNearByJobData?.slice(0, 1);
+    } else {
+        mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
+    }
     console.log(mapCenterCoordinates, "mapCenterCoordinates");
     const center = {
         lat: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[1] : -37.840935,
@@ -60,18 +68,38 @@ const RenderMap = (props: any) => {
 
     // if (loadError) return <span>Error loading maps</span>;
     // if (!isLoaded) return <span>Loading maps</span>;
+    console.log(props, "props renderMap");
+
+    const renderJobsData = () => {
+        // const jobsData = props.viewNearByJobData;
+        // return jobsData;
+        console.log(props.homeSearchJobData, "homeSearchJobData response")
+        var jobsData;
+        if (props.filterByPrice) {
+            jobsData = props.homeSearchJobData;
+            return jobsData;
+        } else if (props?.location?.state?.queryParam == 'viewNearByJob') {
+            jobsData = props.viewNearByJobData;
+            return jobsData;
+        } else {
+            jobsData = props.homeSearchJobData;
+            return jobsData;
+        }
+        return null;
+    }
 
     return (
         <div>
             <GoogleMap
                 mapContainerStyle={mapContainerStyle}
-                zoom={7}
+                zoom={11}
                 center={center}
                 options={options}
                 onClick={onMapClick}
                 onLoad={onMapLoad}
             >
-                {props.viewNearByJobData?.map((item: any) => (
+                {/* {props.viewNearByJobData?.map((item: any) => ( */}
+                {renderJobsData()?.map((item: any) => (
                     <Marker
                         key={new Date().toISOString()}
                         // position={{ lat: 21.17021, lng: 72.831062 }}

@@ -16,6 +16,7 @@ import closeMap from '../../assets/images/close-white.png';
 const TradieSearchJobResult = (props: any) => {
     const [filterState, setFilterState] = useState({
         page: 1,
+        filterByPrice: false,
     })
     const [mapData, setMapData] = useState<any>({
         showMap: false,
@@ -53,15 +54,24 @@ const TradieSearchJobResult = (props: any) => {
     const renderJobsData = () => {
         // const jobsData = props.viewNearByJobData;
         // return jobsData;
+        console.log(props.homeSearchJobData, "homeSearchJobData response")
         var jobsData;
+        if (filterState.filterByPrice) {
+            jobsData = props.homeSearchJobData;
+            // setFilterState((prevData: any) => ({ ...prevData, filterByPrice: !prevData.filterByPrice }));
+            return jobsData;
+        }
         if (location?.state?.queryParam == 'viewNearByJob') {
-            jobsData = props.viewNearByJobData
+            jobsData = props.viewNearByJobData;
+            return jobsData;
+        } else {
+            jobsData = props.homeSearchJobData;
             return jobsData;
         }
-        if (location?.state?.queryParam == 'jobTypeList') {
-            jobsData = props.homeSearchJobData
-            return jobsData;
-        }
+        // if (location?.state?.queryParam == 'jobTypeList') {
+        //     jobsData = props.homeSearchJobData;
+        //     return jobsData;
+        // }
         return null;
     }
 
@@ -79,6 +89,7 @@ const TradieSearchJobResult = (props: any) => {
             // sortBy: 2,
         }
         props.postHomeSearchData(data);
+        setFilterState((prevData: any) => ({ ...prevData, filterByPrice: true }))
     }
 
     return (
@@ -128,7 +139,7 @@ const TradieSearchJobResult = (props: any) => {
                                     <span className="close_map" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
                                         <img src={closeMap} alt="close-map" />
                                     </span>
-                                    <RenderMap {...props} />
+                                    <RenderMap {...props} filterByPrice={filterState.filterByPrice} />
                                 </div>
                             </div>}
                         </div>

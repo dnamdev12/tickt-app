@@ -34,7 +34,7 @@ const SocialAuth = (props: Propstype) => {
 
     const googleResponse = async (response: any) => {
         console.log(response, "g-oauth response");
-        const res = await checkSocialId({socialId: response.googleId, email: response.profileObj.email})
+        const res = await checkSocialId({ socialId: response.googleId, email: response.profileObj.email })
         if (res.success) {
             if (res.isProfileCompleted) {
                 //in case of existing social account
@@ -50,7 +50,8 @@ const SocialAuth = (props: Propstype) => {
                 const res = await socialSignupLogin(data)
                 if (res.success) {
                     if (props.showModal) {
-                        props.setShowModal(!props.showModal)
+                        window.location.reload();
+                        // props.setShowModal(!props.showModal)
                         return
                     }
                     props.history.push('/')
@@ -64,7 +65,7 @@ const SocialAuth = (props: Propstype) => {
 
     const linkedInResponse = async (response: any) => {
         const resSocial = await getLinkedinProfile({ code: response.code, redirect_uri: linkedInData.REDIRECT_URI })
-        const resCheckId = await checkSocialId({socialId: resSocial.result.id, email: resSocial.result.email})
+        const resCheckId = await checkSocialId({ socialId: resSocial.result.id, email: resSocial.result.email })
         if (resCheckId.success) {
             if (resCheckId.isProfileCompleted) {
                 //in case of existing social account
@@ -80,7 +81,8 @@ const SocialAuth = (props: Propstype) => {
                 const resAuth = await socialSignupLogin(data)
                 if (resAuth.success) {
                     if (props.showModal) {
-                        props.setShowModal(!props.showModal)
+                        window.location.reload();
+                        // props.setShowModal(!props.showModal)
                         return
                     }
                     props.history.push('/')
