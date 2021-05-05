@@ -3,6 +3,7 @@ import Constants from '../../utils/constants';
 import { setShowToast } from '../../redux/common/actions';
 import regex from '../../utils/regex';
 import Menu from '@material-ui/core/Menu';
+import Modal from '@material-ui/core/Modal';
 import MenuItem from '@material-ui/core/MenuItem';
 
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
@@ -203,76 +204,83 @@ const SearchResultFilters = (props: any) => {
                 </li>
             </ul>
             {sortByFilter.sortByFilterClicked &&
-                <Menu
-                    // id="simple-menu"
-                    anchorEl={filterAnchorEl}
-                    keepMounted
-                    open={Boolean(filterAnchorEl)}
+                <Modal
+                    // anchorEl={filterAnchorEl}
+                    // keepMounted
+                    // onClose={sortByFilterClose}
+                    // className="custom_modal "
+                    // open={Boolean(filterAnchorEl)}
+                    open={sortByFilter.sortByFilterClicked}
                     onClose={sortByFilterClose}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
                 >
-                    <span className="close_btn" onClick={sortByFilterClose}>
-                        <img src={cancel} alt="cancel" />
-                    </span>
-                    <span className="sub_title">Filter</span>
-                    <div className="form_field">
-                        <span className="xs_sub_title">Categories</span>
-                    </div>
-                    <div className="select_sphere">
-                        <ul>
-                            {/* {categoriesHTML} */}
-                            {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
-                                const active = sortByFilter.tradeId[0] === _id;
+                    <>
+                        <span className="close_btn" onClick={sortByFilterClose}>
+                            <img src={cancel} alt="cancel" />
+                        </span>
+                        <span className="sub_title">Filter</span>
+                        <div className="form_field">
+                            <span className="xs_sub_title">Categories</span>
+                        </div>
+                        <div className="select_sphere">
+                            <ul>
+                                {/* {categoriesHTML} */}
+                                {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
+                                    const active = sortByFilter.tradeId[0] === _id;
+                                    return (
+                                        <li key={_id} className={active ? 'active' : ''} onClick={() => filterChangeHandler(_id, 'categories')}>
+                                            <figure>
+                                                <img src={selected_url ? selected_url : spherePlaceholder} />
+                                            </figure>
+                                            <span className="name">{trade_name}</span>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                            {/* <span className="error_msg">{errors.categories}</span> */}
+                        </div>
+                        <div className="form_field">
+                            <span className="xs_sub_title">Job types</span>
+                        </div>
+                        <ul className="job_categories">
+                            {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
+                                const active = sortByFilter.jobTypes[0] == _id;
                                 return (
-                                    <li key={_id} className={active ? 'active' : ''} onClick={() => filterChangeHandler(_id, 'categories')}>
-                                        <figure>
-                                            <img src={selected_url ? selected_url : spherePlaceholder} />
+                                    <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
+                                        <figure className="type_icon">
+                                            <img src={image} alt="icon" />
                                         </figure>
-                                        <span className="name">{trade_name}</span>
+                                        <span className="name">{name}</span>
                                     </li>
                                 )
                             })}
                         </ul>
-                        {/* <span className="error_msg">{errors.categories}</span> */}
-                    </div>
-                    <div className="form_field">
-                        <span className="xs_sub_title">Job types</span>
-                    </div>
-                    <ul className="job_categories">
-                        {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
-                            const active = sortByFilter.jobTypes[0] == _id;
-                            return (
-                                <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
-                                    <figure className="type_icon">
-                                        <img src={image} alt="icon" />
-                                    </figure>
-                                    <span className="name">{name}</span>
-                                </li>
-                            )
-                        })}
-                    </ul>
-                    <div className="form_field">
-                        <span className="xs_sub_title">Specialisation</span>
-                    </div>
-                    <div className="tags_wrap">
-                        <ul>
-                            {specializationList?.length > 0 &&
-                                <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
-                                    onClick={() => filterChangeHandler(props.tradeListData?.slice(0, 1)[0]?.specialisations, 'All Clicked')}>All</li>}
-                            {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
-                                const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
-                                return (
-                                    <li key={_id} className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''} onClick={() => filterChangeHandler(_id, 'specializationId')}>{name}</li>)
-                            }
-                            )
-                            }
-                        </ul>
-                        {/* <span className="error_msg">{errors.specializationId}</span> */}
-                    </div>
-                    <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
-                    {/* <a className="link" >Show results</a> */}
-                    <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
-                    {/* <button className="fill_btn full_btn disable_btn">Show Results</button> */}
-                </Menu>}
+                        <div className="form_field">
+                            <span className="xs_sub_title">Specialisation</span>
+                        </div>
+                        <div className="tags_wrap">
+                            <ul>
+                                {specializationList?.length > 0 &&
+                                    <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                        onClick={() => filterChangeHandler(props.tradeListData?.slice(0, 1)[0]?.specialisations, 'All Clicked')}>All</li>}
+                                {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
+                                    const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
+                                    return (
+                                        <li key={_id} className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''} onClick={() => filterChangeHandler(_id, 'specializationId')}>{name}</li>)
+                                }
+                                )
+                                }
+                            </ul>
+                            {/* <span className="error_msg">{errors.specializationId}</span> */}
+                        </div>
+                        <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
+                        {/* <a className="link" >Show results</a> */}
+                        <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
+                        {/* <button className="fill_btn full_btn disable_btn">Show Results</button> */}
+                    </>
+                </Modal>
+            }
             {sortByPrice.priceFilterClicked &&
                 <Menu className="fsp_modal range"
                     id="simple-menu"

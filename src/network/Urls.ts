@@ -38,6 +38,7 @@ const Urls = {
     createTemplate:`${versions.v1}${ServiceEnum.job}createTemplate`,
     createJob:`${versions.v1}${ServiceEnum.job}create`, // create job (post job)
     viewNearByJob: `${versions.v1}home/viewNearByJob`,
+    homeJobDetails: `${versions.v1}home/jobDetails`,
 }
 
 export const urlFor = (service: String): string => {

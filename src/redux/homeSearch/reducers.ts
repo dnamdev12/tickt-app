@@ -8,6 +8,7 @@ const initialState = {
     jobDataWithJobTypeLatLong: {},
     homeSearchJobData: [],
     viewNearByJobData: [],
+    homeJobDetailsData: '',
     error: '',
 }
 
@@ -53,6 +54,11 @@ const reducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 viewNearByJobData: action.payload
+            }
+        case actionTypes.SET_HOME_JOB_DETAILS:
+            return {
+                ...state,
+                homeJobDetailsData: action.payload
             }
         default: return state
     }
