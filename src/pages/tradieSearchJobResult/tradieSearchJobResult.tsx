@@ -42,7 +42,7 @@ const TradieSearchJobResult = (props: any) => {
             const data = {
                 page: 1,
                 isFiltered: false,
-                tradeId: location?.state?.tradeId
+                jobTypes: location?.state?.jobTypes,
             }
             props.postHomeSearchData(data);
         }
@@ -128,11 +128,11 @@ const TradieSearchJobResult = (props: any) => {
                             {mapData.showMap ? <div className="card_col">
                                 {renderJobsData()?.length > 0 ?
                                     (renderJobsData()?.map((jobData: any) => {
-                                        return <TradieJobInfoBox item={jobData} />
+                                        return <TradieJobInfoBox item={jobData} {...props}/>
                                     })) : <span>No data Found</span>}
                             </div> : renderJobsData()?.length > 0 ?
                                 (renderJobsData()?.map((jobData: any) => {
-                                    return <TradieJobInfoBox item={jobData} />
+                                    return <TradieJobInfoBox item={jobData} {...props}/>
                                 })) : <span>No data Found</span>}
                             {mapData.showMap && <div className="map_col">
                                 <div className="map_stick">

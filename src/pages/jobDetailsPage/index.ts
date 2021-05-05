@@ -1,31 +1,26 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import SearchResultFiltersComponent from './searchResultFilters';
+import JobDetailsPageComponent from './jobDetailsPage';
 import { callTradeList } from './../../redux/auth/actions';
 import {
     getJobWithJobTypeLatLong,
-    getJobTypeList
 } from '../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
     return {
-        jobDataWithJobTypeLatLong: state.homeSearch.jobDataWithJobTypeLatLong,
-        jobTypeListData: state.homeSearch.jobTypeListData,
         tradeListData: state.auth.tradeListData,
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
-        getJobWithJobTypeLatLong,
-        getJobTypeList,
         callTradeList
     }, dispatch);
 }
 
-const SearchResultFilters = connect(
+const JobDetailsPage = connect(
     mapStateToProps,
     mapDispatchToProps
-)(SearchResultFiltersComponent)
+)(JobDetailsPageComponent)
 
-export default SearchResultFilters;
+export default JobDetailsPage;

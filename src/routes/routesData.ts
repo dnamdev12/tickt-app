@@ -10,7 +10,7 @@ import RecommendedJobs from '../pages/recommendedJobs/index';
 import MostViewedJobs from '../pages/mostViewedJobs/index';
 import TradieSearchJobResult from '../pages/tradieSearchJobResult/index';
 import PopularBuilders from '../pages/popularBuilders/index';
-import RenderMap from '../pages/tradieSearchJobResult/renderMap';
+import JobDetailsPage from '../pages/jobDetailsPage/index';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 
@@ -82,9 +82,11 @@ const routes = [
         privateRoute: true,
     },
     {
-        name: 'map',
-        path: '/map',
-        component: RenderMap,
+        name: 'jobdetailspage',
+        path: '/job-details-page',
+        component: JobDetailsPage,
+        authRoute: false,
+        privateRoute: true,
     },
     {
         name: 'linkedin-oauth',

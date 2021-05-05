@@ -274,7 +274,8 @@ const BannerSearch = (props: PropsType) => {
     const bannerSearchClicked = () => {
         if (validateForm()) {
             const data = {
-                page: stateData?.page,
+                // page: stateData?.page,
+                page: 1,
                 isFiltered: false,
                 tradeId: stateData?.tradeId,
                 location: stateData?.bannerLocation ? stateData?.bannerLocation : stateData?.location,
@@ -285,8 +286,9 @@ const BannerSearch = (props: PropsType) => {
                 // sortBy: 2,
             }
             props.postHomeSearchData(data)
+            props.history.push('search-job-results')
         }
-        alert("Under construction!!")
+        // alert("Under construction!!")
     }
 
     return (

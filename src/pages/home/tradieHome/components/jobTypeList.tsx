@@ -15,14 +15,15 @@ const JobTypeList = (props: any) => {
         props.getJobTypeList();
     }, [])
 
-    const jobTypeListClicked = (tradeId: string, jobTypeHeadingName: string) => {
+    const jobTypeListClicked = (id: string, jobTypeHeadingName: string) => {
         props.history.push({
             pathname: '/search-job-results',
             state: {
                 queryParam: "jobTypeList",
                 bannerData: props.bannerData,
                 heading: jobTypeHeadingName,
-                tradeId: [tradeId],
+                // tradeId: [tradeId],
+                jobTypes: [id],
             }
         })
     }
