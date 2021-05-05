@@ -183,7 +183,7 @@ const SearchResultFilters = (props: any) => {
 
     console.log(sortByFilter, "sortByFilter")
 
-    const specializationList = props.tradeListData.find(({_id}: {_id: string}) => _id === sortByFilter.tradeId[0])?.specialisations;
+    const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
 
 
     return (
@@ -312,6 +312,7 @@ const SearchResultFilters = (props: any) => {
             {sortBySorting.sortBySorting &&
                 <Menu
                     // id="simple-menu"
+                    className="fsp_modal range"
                     anchorEl={sortingAnchorEl}
                     keepMounted
                     open={Boolean(sortingAnchorEl)}
@@ -321,10 +322,25 @@ const SearchResultFilters = (props: any) => {
                         <img src={cancel} alt="cancel" />
                     </span>
                     <span className="sub_title">Sort by</span>
-                    <div><input type="radio" value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} /> Highest rated</div>
+                    {/* <div><input type="radio" value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} /> Highest rated</div>
                     <div><input type="radio" value="Closest to me" checked={sortBySorting.sortBy === 2} onChange={() => sortByButtonClicked(2)} /> Closest to me</div>
-                    <div><input type="radio" value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} /> Most jobs completed</div>
-                    {/* <a className="link" >Show results</a> */}
+                    <div><input type="radio" value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} /> Most jobs completed</div> */}
+
+                    <div className="radio_wrap agree_check">
+                        <input className="filter-type filled-in" type="radio" id="highestRated"
+                        value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} />
+                        <label htmlFor="highestRated">Highest rated</label>
+                    </div>
+                    <div className="radio_wrap agree_check">
+                        <input className="filter-type filled-in" type="radio" id="closest" 
+                        value="Closest to me" checked={sortBySorting.sortBy === 2} onChange={() => sortByButtonClicked(2)}/>
+                        <label htmlFor="closest">Closest to me</label>
+                    </div>
+                    <div className="radio_wrap agree_check">
+                        <input className="filter-type filled-in" type="radio" id="mostJob" 
+                        value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)}/>
+                        <label htmlFor="mostJob">Most jobs completed</label>
+                    </div>
                 </Menu>}
         </div >
     )
