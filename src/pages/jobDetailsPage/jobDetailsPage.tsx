@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import thumb from '../../../assets/images/job-posted-bg.jpg';
 import question from '../../assets/images/ic-question.png';
@@ -10,7 +11,12 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
-const JobDetailsPage = () => {
+const JobDetailsPage = (props: any) => {
+    console.log(props,"props")
+    useEffect(() => {
+        // props.getHomejobDetails("608ffeb4b8703c34986d0434");
+    }, [])
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
