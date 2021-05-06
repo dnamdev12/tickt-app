@@ -44,7 +44,19 @@ const JobDetailsPage = (props: any) => {
         // props.getHomeJobDetails("608ffeb4b8703c34986d0434");
     }, [])
 
+    const applyJobClicked = () => {
+        const data = {
+            jobId: props.homeJobDetailsData?.jobId,
+            builderId: props.homeJobDetailsData?.postedBy?.builderId
+        }
+        props.postHomeAppyJob(data);
+        const params = new URLSearchParams(props.location?.search);
+        const jobId = params.get('jobId')
+        props.getHomeJobDetails(jobId);
+    }
+
     const JobDetailsData = props.homeJobDetailsData;
+    console.log(props.homeApplyJobData, "console")
 
     return (
         <div className="app_wrapper">
@@ -79,7 +91,7 @@ const JobDetailsPage = (props: any) => {
                                             <li className="icon calendar">{JobDetailsData.duration}</li>
                                         </ul>
                                     </div>
-                                    <button className="fill_btn full_btn">Apply</button>
+                                    <button className="fill_btn full_btn" onClick={applyJobClicked} disabled={JobDetailsData?.appliedStatus == 'APPLIED'}>{JobDetailsData?.appliedStatus}</button>
                                 </div>
                             </div>
                         </div>

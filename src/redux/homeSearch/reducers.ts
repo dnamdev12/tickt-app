@@ -9,6 +9,7 @@ const initialState = {
     homeSearchJobData: [],
     viewNearByJobData: [],
     homeJobDetailsData: '',
+    homeApplyJobData: '',
     error: '',
 }
 
@@ -59,6 +60,11 @@ const reducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 homeJobDetailsData: action.payload
+            }
+        case actionTypes.SET_HOME_APPLY_JOB:
+            return {
+                ...state,
+                homeApplyJobData: action.payload
             }
         default: return state
     }

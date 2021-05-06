@@ -39,6 +39,8 @@ const Urls = {
     createJob:`${versions.v1}${ServiceEnum.job}create`, // create job (post job)
     viewNearByJob: `${versions.v1}home/viewNearByJob`,
     homeJobDetails: `${versions.v1}home/jobDetails`,
+    homeApplyJob: `${versions.v1}home/apply`,
+    homeSaveJob: `${versions.v1}home/saveJob`,
 }
 
 export const urlFor = (service: String): string => {

@@ -95,6 +95,27 @@ function* getHomeJobDetails(action: any) {
     }
 }
 
+function* postHomeAppyJob(action: any) {
+    commonActions.setLoading(true);
+    const response: FetchResponse = yield NetworkOps.postToJson(Urls.homeApplyJob, action.data)
+    commonActions.setLoading(false);
+    if (response.status_code === 200) {
+        yield put({ type: actionTypes.SET_HOME_APPLY_JOB, payload: response });
+    } else {
+        yield put({ type: actionTypes.SET_HOME_APPLY_JOB, payload: '' });
+    }
+}
+
+function* getHomeSaveJob(action: any) {
+    const { jobData } = action;
+    const response: FetchResponse = yield NetworkOps.get(Urls.homeSaveJob + `?jobId=${jobData.jobId}&isSave=${jobData.isSave}`);
+    if (response.status_code === 200) {
+        yield put({ type: actionTypes.SET_HOME_SAVE_JOB, payload: response });
+    } else {
+        yield put({ type: actionTypes.SET_HOME_SAVE_JOB, payload: '' });
+    }
+}
+
 function* authWatcher() {
     yield takeLatest(actionTypes.GET_SEARCH_JOB_LIST, getSearchJobList);
     yield takeLatest(actionTypes.GET_RECENT_SEARCH_LIST, getRecentSearchList);
@@ -102,8 +123,10 @@ function* authWatcher() {
     yield takeLatest(actionTypes.GET_VIEW_NEARBY_JOBS, getViewNearByJob);
     // yield takeLatest(actionTypes.GET_JOB_TYPE, getJobType);
     yield takeLatest(actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, getJobWithJobTypeLatLong);
-    yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
     yield takeLatest(actionTypes.GET_HOME_JOB_DETAILS, getHomeJobDetails);
+    yield takeLatest(actionTypes.GET_HOME_SAVE_JOB, getHomeSaveJob);
+    yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
+    yield takeLatest(actionTypes.POST_HOME_APPLY_JOB, postHomeAppyJob);
 }
 
 export default authWatcher;

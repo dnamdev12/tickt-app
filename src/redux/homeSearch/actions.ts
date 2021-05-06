@@ -12,4 +12,6 @@ export const getHomeJobDetails = (jobId: string) => ({ type: actionTypes.GET_HOM
 export const getViewNearByJob = (data: object) => ({ type: actionTypes.GET_VIEW_NEARBY_JOBS, data })
 // export const getJobType = () => ({ type: actionTypes.GET_JOB_TYPE})
 export const getJobWithJobTypeLatLong = (jobData: object) => ({ type: actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, jobData })
+export const getHomeSaveJob = (jobData: object) => ({ type: actionTypes.GET_HOME_SAVE_JOB, jobData })
+export const postHomeAppyJob = (data: object) => ({ type: actionTypes.POST_HOME_APPLY_JOB, data })
 export const postHomeSearchData = (jobData: object) => ({ type: actionTypes.POST_HOME_SEARCH_DATA, jobData })
