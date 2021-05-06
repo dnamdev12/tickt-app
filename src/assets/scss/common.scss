@@ -799,36 +799,10 @@ body {
 //-------------------Discover Items card close---------------//
 //------------------------Onboard Model-------------------------//
 .onboard_modal {
-	position: relative;
-	padding: 0;
-	width: 880px;
-	max-width: 880px;
-	margin: 80px auto;
-	background-color: var(--white);
-	height: 666px;
-	max-height: 666px;
-	overflow-y: auto;
-	border-radius: 3px;
-	@media (max-width: 1500px) {
-		margin: 16px auto 0;
-		height: 550px;
-		max-height: 550px;
-	}
-	@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-		width: 90%;
-		margin: 30px auto;
-		height: 100%;
-	}
-	@media (max-width: 768px) {
-		width: 95%;
-		height: 100%;
-		max-height: 85%;
-	}
-	@media (max-width: 650px) {
-		height: 100%;
-		max-height: 97%;
-		margin: 15px auto;
-	}
+  padding: 0 !important;
+  .close_btn{
+    top: 20px !important;
+  }
 	.react-multi-carousel-dot-list {
 		bottom: 135px;
 	}
@@ -1419,11 +1393,44 @@ body {
 }
 
 //-------------------Review Rating card close-----------------------//
-//-------------------Question Answer/ Custom model------------------------//
+//-------------------Question Answer/ Custom/ Filter model------------------------//
+.custom_wh{
+  position: relative;
+	padding: 30px;
+	width: 880px;
+	max-width: 880px;
+	margin: 80px auto;
+	background-color: var(--white);
+	height: 666px;
+	max-height: 666px;
+	overflow-y: auto;
+	border-radius: 3px;
+	@media (max-width: 1500px) {
+		margin: 16px auto 0;
+		height: 550px;
+		max-height: 550px;
+	}
+	@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+		width: 90%;
+		margin: 30px auto;
+		height: 100%;
+	}
+	@media (max-width: 768px) {
+		width: 95%;
+		height: 100%;
+		max-height: 85%;
+	}
+	@media (max-width: 650px) {
+		height: 100%;
+		max-height: 97%;
+		margin: 15px auto;
+	}
+}
 .ques_ans_modal,
 .custom_modal {
   position: relative;
   background-color: rgba(22, 29, 74, 0.7);
+
   [aria-hidden="true"] {
     background-color: transparent !important;
   }
@@ -1448,7 +1455,7 @@ body {
     align-items: center;
     background-color: transparent;
     z-index: 9;
-    @include position(absolute, 20px, 20px, auto, auto);
+    @include position(absolute, 0px, 20px, auto, auto);
     @media (max-width: 650px) {
       width: 30px;
       height: 30px;
@@ -1462,8 +1469,16 @@ body {
   .heading {
     @include position(sticky, 0, auto, auto, auto);
     background-color: var(--white);
-    padding: 10px 0;
     z-index: 9;
+  }
+
+  .inner_wrap {
+    max-height: 460px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    @media (max-width: 1500px){
+      max-height: 350px;
+    }
   }
   .fill_btn {
     margin-right: 32px;
@@ -1528,7 +1543,31 @@ body {
   }
 }
 
-//-------------------Question Answer/ Custom model close------------------------//
+.filter_modal {
+  overflow:  hidden;
+  .filter_btn {
+    height: 80px;
+    padding: 0 12px 0;
+    background-color: var(--white);
+    width: 100%;
+    margin: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 9;
+    position: relative;
+    bottom: -40px;
+    .fill_btn {
+      margin: 0;
+    }
+    .full_btn {
+      @media (max-width: 650px) {
+        width: 150px;
+      }
+    }
+  }
+}
+//-------------------Question Answer/ Custom/ Filter model close------------------------//
 //-------------------------Profile-----------------------//
 .ques_count {
   max-width: 328px;
@@ -1641,7 +1680,7 @@ body {
 //------home recent search------//
 // ----------------Recent Searches----------------- //
 
-//----------------Filter/Sort/Range modal---------------------//
+//----------------Sort/Range modal---------------------//
 .fsp_modal {
 	position: relative;
 	ul {
@@ -1737,24 +1776,9 @@ body {
 	}
 }
 
-.filter_btn {
-  .fill_btn {
-    margin: 0;
-  }
-  .full_btn {
-    @media (max-width: 768px) {
-      width: 327px;
-    }
-    @media (max-width: 650px) {
-      width: 150px;
-    }
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      width: 327px;
-    }
-  }
-}
 
-//----------------Filter/Sort/Range modal close---------------------//
+
+//----------------Sort/Range modal close---------------------//
 
 //----------------Setting mat menu---------------------//
 .setting_menu {
