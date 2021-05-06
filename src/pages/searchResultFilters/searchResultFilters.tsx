@@ -203,13 +203,10 @@ const SearchResultFilters = (props: any) => {
                     <a onClick={sortBySortingClick}>Sorting</a>
                 </li>
             </ul>
+            {/* filter 1 modal box */}
             {sortByFilter.sortByFilterClicked &&
                 <Modal
-                    // anchorEl={filterAnchorEl}
-                    // keepMounted
-                    // onClose={sortByFilterClose}
                     className="custom_modal"
-                    // open={Boolean(filterAnchorEl)}
                     open={sortByFilter.sortByFilterClicked}
                     onClose={sortByFilterClose}
                     aria-labelledby="simple-modal-title"
@@ -230,7 +227,6 @@ const SearchResultFilters = (props: any) => {
                                 </div>
                                 <div className="select_sphere">
                                     <ul>
-                                        {/* {categoriesHTML} */}
                                         {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
                                             const active = sortByFilter.tradeId[0] === _id;
                                             return (
@@ -278,7 +274,6 @@ const SearchResultFilters = (props: any) => {
                                         }
                                     </ul>
                                     {/* <span className="error_msg">{errors.specializationId}</span> */}
-
                                 </div>
                             </div>
                             <div className="filter_btn">
@@ -286,12 +281,10 @@ const SearchResultFilters = (props: any) => {
                                 <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
                             </div>
                         </div>
-
-
-
                     </>
                 </Modal>
             }
+            {/* price filter box */}
             {sortByPrice.priceFilterClicked &&
                 <Menu className="fsp_modal range"
                     id="simple-menu"
@@ -328,6 +321,7 @@ const SearchResultFilters = (props: any) => {
                     }
                     <a className="link" onClick={showResultsByBudget}>Show results</a>
                 </Menu>}
+            {/* sorting filter box */}
             {sortBySorting.sortBySorting &&
                 <Menu
                     // id="simple-menu"

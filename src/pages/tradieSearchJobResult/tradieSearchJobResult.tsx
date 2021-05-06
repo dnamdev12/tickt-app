@@ -89,6 +89,7 @@ const TradieSearchJobResult = (props: any) => {
             // sortBy: 2,
         }
         props.postHomeSearchData(data);
+        props.history.push('search-job-results?name=poooo')
         setFilterState((prevData: any) => ({ ...prevData, filterByPrice: true }))
     }
 
@@ -134,7 +135,7 @@ const TradieSearchJobResult = (props: any) => {
                                 (renderJobsData()?.map((jobData: any) => {
                                     return <TradieJobInfoBox item={jobData} {...props}/>
                                 })) : <span>No data Found</span>}
-                            {mapData.showMap && <div className="map_col">
+                            {<div className="map_col" style={ !mapData.showMap ? {display: "none"} : {}}>
                                 <div className="map_stick">
                                     <span className="close_map" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
                                         <img src={closeMap} alt="close-map" />

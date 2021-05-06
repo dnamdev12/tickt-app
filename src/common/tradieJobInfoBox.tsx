@@ -1,18 +1,17 @@
-import React from 'react';
 import dummy from '../assets/images/u_placeholder.jpg';
 
 
 const TradieJobInfoBox = (props: any) => {
-
-    const jobClickHandler = () => {
-        props.history.push('/job-details-page')
+    const jobClickHandler = (jobId: string) => {
+        props.history.push(`/job-details-page?jobId=${jobId}`);
+        // props.history.push('job-details-page')
     }
 
     const { item } = props;
     return (
         <div className="flex_col_sm_6">
             <div className="tradie_card">
-                <a href="javascript:void(0)" className="more_detail circle" onClick={jobClickHandler}/>
+                <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(item.jobId)} />
                 <div className="user_wrap">
                     <figure className="u_img">
                         <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="traide-img" />
