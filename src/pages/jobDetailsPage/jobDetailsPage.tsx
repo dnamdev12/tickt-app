@@ -50,7 +50,7 @@ const JobDetailsPage = (props: any) => {
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <div className="vid_img_wrapper">
+                    <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
                                 <button className="back"></button>
@@ -70,7 +70,8 @@ const JobDetailsPage = (props: any) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    <span className="title">{JobDetailsData.jobName}</span>
+                                    <span className="title line-3" title={JobDetailsData.jobName}>{JobDetailsData.jobName}</span>
+                                    <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
                                             <li className="icon clock">{JobDetailsData.time}</li>
@@ -79,7 +80,10 @@ const JobDetailsPage = (props: any) => {
                                             <li className="icon calendar">{JobDetailsData.duration}</li>
                                         </ul>
                                     </div>
-                                    <button className="fill_btn full_btn">Apply</button>
+                                    <div className="bottom_btn">
+                                        <span className="bookmark_icon active"></span>
+                                        <button className="fill_btn full_btn">Apply</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -158,7 +162,7 @@ const JobDetailsPage = (props: any) => {
                                             <div className="details">
                                                 <span className="name">{JobDetailsData?.postedBy?.builderName}</span>
                                                 {/* <span className="prof">Project Manager</span> */}
-                                                <span className="prof">{`${JobDetailsData?.postedBy?.ratings ? JobDetailsData?.postedBy?.ratings : '0'},${JobDetailsData?.postedBy?.reviews ? JobDetailsData?.postedBy?.reviews : '0'} reviews`}</span>
+                                                <span className="rating">{`${JobDetailsData?.postedBy?.ratings ? JobDetailsData?.postedBy?.ratings : '0'},${JobDetailsData?.postedBy?.reviews ? JobDetailsData?.postedBy?.reviews : '0'} reviews`}</span>
                                             </div>
                                         </div>
                                     </div>
