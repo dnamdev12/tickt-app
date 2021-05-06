@@ -57,7 +57,7 @@ const AuthModal = (props: any) => {
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
             >
-                <div className="onboard_modal">
+                <div className="custom_wh onboard_modal">
                     <button className="close_btn" onClick={onCloseModal}>
                         <img src={cancel} alt="cancel" />
                     </button>

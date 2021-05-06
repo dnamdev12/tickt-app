@@ -208,7 +208,7 @@ const SearchResultFilters = (props: any) => {
                     // anchorEl={filterAnchorEl}
                     // keepMounted
                     // onClose={sortByFilterClose}
-                    // className="custom_modal "
+                    className="custom_modal"
                     // open={Boolean(filterAnchorEl)}
                     open={sortByFilter.sortByFilterClicked}
                     onClose={sortByFilterClose}
@@ -216,68 +216,79 @@ const SearchResultFilters = (props: any) => {
                     aria-describedby="simple-modal-description"
                 >
                     <>
-                        <span className="close_btn" onClick={sortByFilterClose}>
-                            <img src={cancel} alt="cancel" />
-                        </span>
-                        <span className="sub_title">Filter</span>
-                        <div className="form_field">
-                            <span className="xs_sub_title">Categories</span>
+                        <div className="custom_wh filter_modal">
+                            <div className="heading">
+                                <span className="sub_title">Filter</span>
+                                <button className="close_btn" onClick={sortByFilterClose}>
+                                    <img src={cancel} alt="cancel" />
+                                </button>
+                            </div>
+
+                            <div className="inner_wrap">
+                                <div className="form_field">
+                                    <span className="xs_sub_title">Categories</span>
+                                </div>
+                                <div className="select_sphere">
+                                    <ul>
+                                        {/* {categoriesHTML} */}
+                                        {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
+                                            const active = sortByFilter.tradeId[0] === _id;
+                                            return (
+                                                <li key={_id} className={active ? 'active' : ''} onClick={() => filterChangeHandler(_id, 'categories')}>
+                                                    <figure>
+                                                        <img src={selected_url ? selected_url : spherePlaceholder} />
+                                                    </figure>
+                                                    <span className="name">{trade_name}</span>
+                                                </li>
+                                            )
+                                        })}
+                                    </ul>
+                                    {/* <span className="error_msg">{errors.categories}</span> */}
+                                </div>
+                                <div className="form_field">
+                                    <span className="xs_sub_title">Job types</span>
+                                </div>
+                                <ul className="job_categories">
+                                    {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
+                                        const active = sortByFilter.jobTypes[0] == _id;
+                                        return (
+                                            <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
+                                                <figure className="type_icon">
+                                                    <img src={image} alt="icon" />
+                                                </figure>
+                                                <span className="name">{name}</span>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                                <div className="form_field">
+                                    <span className="xs_sub_title">Specialisation</span>
+                                </div>
+                                <div className="tags_wrap">
+                                    <ul>
+                                        {specializationList?.length > 0 &&
+                                            <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                                onClick={() => filterChangeHandler(props.tradeListData?.slice(0, 1)[0]?.specialisations, 'All Clicked')}>All</li>}
+                                        {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
+                                            const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
+                                            return (
+                                                <li key={_id} className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''} onClick={() => filterChangeHandler(_id, 'specializationId')}>{name}</li>)
+                                        }
+                                        )
+                                        }
+                                    </ul>
+                                    {/* <span className="error_msg">{errors.specializationId}</span> */}
+
+                                </div>
+                            </div>
+                            <div className="filter_btn">
+                                <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
+                                <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
+                            </div>
                         </div>
-                        <div className="select_sphere">
-                            <ul>
-                                {/* {categoriesHTML} */}
-                                {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
-                                    const active = sortByFilter.tradeId[0] === _id;
-                                    return (
-                                        <li key={_id} className={active ? 'active' : ''} onClick={() => filterChangeHandler(_id, 'categories')}>
-                                            <figure>
-                                                <img src={selected_url ? selected_url : spherePlaceholder} />
-                                            </figure>
-                                            <span className="name">{trade_name}</span>
-                                        </li>
-                                    )
-                                })}
-                            </ul>
-                            {/* <span className="error_msg">{errors.categories}</span> */}
-                        </div>
-                        <div className="form_field">
-                            <span className="xs_sub_title">Job types</span>
-                        </div>
-                        <ul className="job_categories">
-                            {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
-                                const active = sortByFilter.jobTypes[0] == _id;
-                                return (
-                                    <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
-                                        <figure className="type_icon">
-                                            <img src={image} alt="icon" />
-                                        </figure>
-                                        <span className="name">{name}</span>
-                                    </li>
-                                )
-                            })}
-                        </ul>
-                        <div className="form_field">
-                            <span className="xs_sub_title">Specialisation</span>
-                        </div>
-                        <div className="tags_wrap">
-                            <ul>
-                                {specializationList?.length > 0 &&
-                                    <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
-                                        onClick={() => filterChangeHandler(props.tradeListData?.slice(0, 1)[0]?.specialisations, 'All Clicked')}>All</li>}
-                                {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
-                                    const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
-                                    return (
-                                        <li key={_id} className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''} onClick={() => filterChangeHandler(_id, 'specializationId')}>{name}</li>)
-                                }
-                                )
-                                }
-                            </ul>
-                            {/* <span className="error_msg">{errors.specializationId}</span> */}
-                        </div>
-                        <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
-                        {/* <a className="link" >Show results</a> */}
-                        <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
-                        {/* <button className="fill_btn full_btn disable_btn">Show Results</button> */}
+
+
+
                     </>
                 </Modal>
             }
@@ -320,6 +331,7 @@ const SearchResultFilters = (props: any) => {
             {sortBySorting.sortBySorting &&
                 <Menu
                     // id="simple-menu"
+                    className="fsp_modal range"
                     anchorEl={sortingAnchorEl}
                     keepMounted
                     open={Boolean(sortingAnchorEl)}
@@ -329,10 +341,25 @@ const SearchResultFilters = (props: any) => {
                         <img src={cancel} alt="cancel" />
                     </span>
                     <span className="sub_title">Sort by</span>
-                    <div><input type="radio" value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} /> Highest rated</div>
+                    {/* <div><input type="radio" value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} /> Highest rated</div>
                     <div><input type="radio" value="Closest to me" checked={sortBySorting.sortBy === 2} onChange={() => sortByButtonClicked(2)} /> Closest to me</div>
-                    <div><input type="radio" value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} /> Most jobs completed</div>
-                    {/* <a className="link" >Show results</a> */}
+                    <div><input type="radio" value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} /> Most jobs completed</div> */}
+
+                    <div className="radio_wrap agree_check">
+                        <input className="filter-type filled-in" type="radio" id="highestRated"
+                            value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} />
+                        <label htmlFor="highestRated">Highest rated</label>
+                    </div>
+                    <div className="radio_wrap agree_check">
+                        <input className="filter-type filled-in" type="radio" id="closest"
+                            value="Closest to me" checked={sortBySorting.sortBy === 2} onChange={() => sortByButtonClicked(2)} />
+                        <label htmlFor="closest">Closest to me</label>
+                    </div>
+                    <div className="radio_wrap agree_check">
+                        <input className="filter-type filled-in" type="radio" id="mostJob"
+                            value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} />
+                        <label htmlFor="mostJob">Most jobs completed</label>
+                    </div>
                 </Menu>}
         </div >
     )
