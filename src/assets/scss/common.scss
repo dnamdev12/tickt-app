@@ -2122,7 +2122,7 @@ body {
   .banner_img {
     position: relative;
     width: 100%;
-    height: 472px;
+    height: 410px;
     @media (max-width: 650px) {
       height: 390;
     }
@@ -2131,10 +2131,27 @@ body {
       height: 100%;
       object-fit: cover;
     }
+    &::before{
+      content: '';
+      background: url('../images/onboarding-clip.png') no-repeat;
+      background-size: cover;
+      background-position: bottom;
+      width: 100%;
+      height: 100px;
+      position: absolute;
+      top: 0px;
+      left: 0;
+      @media (max-width: 768px){
+        display: none;
+      }
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        display: none;
+      }
+    }
   }
   .banner_container {
     position: absolute;
-    top: 150px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     width: 864px;
@@ -2143,11 +2160,11 @@ body {
       width: 864px;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      top: 90px;
+      top: 22px;
       width: 580px;
     }
     @media (max-width: 768px) {
-      top: 100px;
+      top: 30px;
       width: 650px;
     }
     @media (max-width: 650px) {
@@ -2252,7 +2269,8 @@ body {
 		position: relative;
 		.error_msg{
 			position: absolute;
-			bottom: 0;
+			bottom: 2px;
+      left: 5px;
 		}
 		ul {
 			display: flex;
@@ -2797,14 +2815,38 @@ body {
   position: relative;
   .react-multi-carousel-list {
     justify-content: center;
+    @media(max-width: 1024px){
+      justify-content: flex-start;
+    }
+  }
+  .react-multi-carousel-item{
+    @media(max-width: 1024px){
+      width: 100% !important;
+    }
   }
   .job_categories {
     justify-content: center;
+    @media(max-width: 1024px){
+      justify-content: flex-start;
+    }
     li {
       padding: 20px;
       margin: 0 15px;
+      @media(max-width: 1024px){
+        width: 30%;
+        padding: 17px;
+        margin: 10px;
+      }
+      @media(max-width: 650px){
+        padding: 15px;
+        margin: 5px;
+        width: 47%;
+      }
       .name {
         font-size: 18px;
+        @media(max-width: 650px){
+          font-size: 16px;
+        }
       }
     }
   }
