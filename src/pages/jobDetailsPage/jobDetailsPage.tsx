@@ -1,5 +1,10 @@
 import { useState, useEffect } from 'react';
-import { getHomeJobDetails, getHomeSaveJob, postHomeApplyJob } from '../../redux/homeSearch/actions';
+import {
+    getHomeJobDetails,
+    getHomeSaveJob,
+    postHomeApplyJob
+} from '../../redux/homeSearch/actions';
+import { postAskQuestion } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
 
 import cancel from "../../assets/images/ic-cancel.png";
@@ -91,14 +96,29 @@ const JobDetailsPage = (props: any) => {
         setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false }))
     }
 
-    const submitQuestionHandler = () => {
+    const submitQuestionHandler = async (type: string) => {
         setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true }))
+        if (type == 'askQuestion') {
+            //api calling ask Question
+            const data = {
+                jobId: jobDetailsData?.jobId,
+                builderId: jobDetailsData?.postedBy?.builderId,
+                question: ""
+            }
+            const response = await postAskQuestion(data);
+            if (response.success) {
+                const res = await getHomeJobDetails(data?.jobId);
+                if (res.success) {
+                    setJobDetailsData(res.data);
+                }
+            }
+        }
     }
 
     const askNewQuestion = () => {
         setQuestionsData((prevData: any) => ({ ...prevData, askQuestionsClicked: true }))
     }
-    
+
 
     return (
         <div className="app_wrapper">
@@ -230,7 +250,7 @@ const JobDetailsPage = (props: any) => {
                                                 </button>
                                             </div>
                                             <div><span >Are you sure you want to ask a question?</span></div>
-                                            <button className="fill_btn full_btn" >Yes</button>
+                                            <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('askQuestion')}>Yes</button>
                                             <button className="full_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>No</button>
                                         </div>
                                     </>

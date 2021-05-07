@@ -90,3 +90,15 @@ export const createPostJob = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+//tradie ask a question
+export const postAskQuestion = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.askQuestion, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}

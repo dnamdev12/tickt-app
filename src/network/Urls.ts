@@ -9,8 +9,10 @@ const ServiceEnum = {
     auth: 'auth/',
     admin: 'admin/',
     job: 'job/',
-    profile:'profile/',
-    builder:'builder/',
+    home: 'home/',
+    profile: 'profile/',
+    builder: 'builder/',
+    tradie: 'tradie/',
 }
 
 const Urls = {
@@ -32,15 +34,18 @@ const Urls = {
     getRecentSearch: `${versions.v1}${ServiceEnum.admin}getRecentSearch`, //admin
     jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
     jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
-    home: `${versions.v1}home`,
-    homeSearch: `${versions.v1}home/search`, 
-    profileTemplateList:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}templatesList`,
-    createTemplate:`${versions.v1}${ServiceEnum.job}createTemplate`,
-    createJob:`${versions.v1}${ServiceEnum.job}create`, // create job (post job)
-    viewNearByJob: `${versions.v1}home/viewNearByJob`,
-    homeJobDetails: `${versions.v1}home/jobDetails`,
-    homeApplyJob: `${versions.v1}home/apply`,
-    homeSaveJob: `${versions.v1}home/saveJob`,
+    home: `${versions.v1}${ServiceEnum.home}`,
+    homeSearch: `${versions.v1}${ServiceEnum.home}search`,
+    profileTemplateList: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}templatesList`,
+    createTemplate: `${versions.v1}${ServiceEnum.job}createTemplate`,
+    createJob: `${versions.v1}${ServiceEnum.job}create`, // create job (post job)
+    viewNearByJob: `${versions.v1}${ServiceEnum.home}viewNearByJob`,
+    homeJobDetails: `${versions.v1}${ServiceEnum.home}jobDetails`,
+    homeApplyJob: `${versions.v1}${ServiceEnum.home}apply`,
+    homeSaveJob: `${versions.v1}${ServiceEnum.home}saveJob`,
+    profileTradie: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}`,
+    askQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}askQuestion`,
+    deleteQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}deleteQuestion`,
 }
 
 export const urlFor = (service: String): string => {
