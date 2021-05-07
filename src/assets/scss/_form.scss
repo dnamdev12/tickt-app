@@ -540,6 +540,13 @@ a.fill_grey_btn {
   margin-left: 30px;
 }
 
+.pt-20{
+  padding-top: 20px;
+  .back{
+    top: -30px !important;
+  }
+}
+
 .m-tb40{
   margin: 40px 0px;
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
@@ -611,16 +618,16 @@ a.fill_grey_btn {
   padding-right: 44px;
 }
 
-.bottom_btn {
-  position: absolute;
-  bottom: 0;
-  @media (max-width: 650px) {
-    width: 95%;
-  }
-  @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    position: relative;
- }
-}
+// .bottom_btn {
+//   position: absolute;
+//   bottom: 0;
+//   @media (max-width: 650px) {
+//     width: 95%;
+//   }
+//   @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+//     position: relative;
+//  }
+// }
 
 .pic_wrap {
   img {

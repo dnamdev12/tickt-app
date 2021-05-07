@@ -168,6 +168,14 @@ body {
   }
 }
 
+.tagg{
+  font-size: 16px;
+  line-height: 1.13;
+  color: #748092;
+  display: block;
+  margin-bottom: 15px;
+}
+
 
 .edit_icon{
 	position: absolute;
@@ -578,20 +586,22 @@ body {
   }
 }
 
-.setting,
 .bookmark_icon {
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   padding: 14px;
-  border-radius: 12px;
-  border: solid 1px rgba(160, 159, 167, 0.35);
+  border-radius: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-right: 24px;
-  &:active {
-    border-color: var(--orange);
+  margin-right: 10px;
+  box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.09);
+  background: #dfe5ef url('../images/bookmark.png') center no-repeat;
+  background-size: auto;
+  &.active{
+    background: #dfe5ef url('../images/bookmarked.png') center no-repeat;
+    background-size: auto;
   }
 }
 
@@ -3160,7 +3170,8 @@ body {
 
 .job_milestone{
   max-width: 345px;
-  margin: 0 0 40px;
+  margin: 0 0 20px;
+  min-height: 250px;
   li{
     display: flex;
     justify-content: space-between;

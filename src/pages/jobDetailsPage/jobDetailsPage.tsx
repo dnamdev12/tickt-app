@@ -1,4 +1,8 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+import { getHomeJobDetails, getHomeSaveJob, postHomeApplyJob } from '../../redux/homeSearch/actions';
+import Modal from '@material-ui/core/Modal';
+
+import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
 import thumb from '../../../assets/images/job-posted-bg.jpg';
 import question from '../../assets/images/ic-question.png';
@@ -35,44 +39,82 @@ const options = {
 };
 
 const JobDetailsPage = (props: any) => {
+    const [jobDetailsData, setJobDetailsData] = useState<any>('')
+    const [questionsData, setQuestionsData] = useState<any>({
+        askQuestionsClicked: false,
+        showAllQuestionsClicked: false,
+        submitQuestionsClicked: false,
+    })
     console.log(props, "props")
+
     useEffect(() => {
-        const params = new URLSearchParams(props.location?.search);
-        const jobId = params.get('jobId')
-        console.log(jobId);
-        props.getHomeJobDetails(jobId);
-        // props.getHomeJobDetails("608ffeb4b8703c34986d0434");
+        (async () => {
+            const params = new URLSearchParams(props.location?.search);
+            const jobId: any = params.get('jobId')
+            const res = await getHomeJobDetails(jobId);
+            if (res.success) {
+                setJobDetailsData(res.data);
+            }
+        })();
     }, [])
 
-    const applyJobClicked = () => {
+
+    const applyJobClicked = async () => {
         const data = {
-            jobId: props.homeJobDetailsData?.jobId,
-            builderId: props.homeJobDetailsData?.postedBy?.builderId
+            jobId: jobDetailsData?.jobId,
+            builderId: jobDetailsData?.postedBy?.builderId
         }
-        props.postHomeAppyJob(data);
-        const params = new URLSearchParams(props.location?.search);
-        const jobId = params.get('jobId')
-        props.getHomeJobDetails(jobId);
+        const res = await postHomeApplyJob(data);
+        if (res.success) {
+            setJobDetailsData((prevData: any) => ({ ...prevData, appliedStatus: 'APPLIED' }))
+        }
     }
 
-    const JobDetailsData = props.homeJobDetailsData;
-    console.log(props.homeApplyJobData, "console")
+    const saveJobClicked = () => {
+        const data = {
+            jobId: jobDetailsData?.jobId,
+            isSave: !jobDetailsData?.isSaved
+        }
+        getHomeSaveJob(data);
+        setJobDetailsData((prevData: any) => ({ ...prevData, isSaved: !prevData.isSaved }))
+    }
+
+    const viewAskQuestionsClicked = (questionsCount: number) => {
+        if (questionsCount == 0) {
+            setQuestionsData((prevData: any) => ({ ...prevData, askQuestionsClicked: true }))
+        } else if (questionsCount > 0) {
+            setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))
+        }
+    }
+
+    const modalCloseHandler = (modalType: string) => {
+        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false }))
+    }
+
+    const submitQuestionHandler = () => {
+        setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true }))
+    }
+
+    const askNewQuestion = () => {
+        setQuestionsData((prevData: any) => ({ ...prevData, askQuestionsClicked: true }))
+    }
+    
 
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <div className="vid_img_wrapper">
+                    <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
-                                <button className="back"></button>
+                                <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
                         </div>
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
                                     <OwlCarousel className='owl-theme' {...options}>
-                                        {JobDetailsData && JobDetailsData?.photos?.map((image: string) => {
+                                        {jobDetailsData && jobDetailsData?.photos?.map((image: string) => {
                                             return (
                                                 <img alt="" src={image} style={{ height: '400px' }} />
                                             )
@@ -82,16 +124,20 @@ const JobDetailsPage = (props: any) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    <span className="title">{JobDetailsData.jobName}</span>
+                                    <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
+                                    <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{JobDetailsData.time}</li>
-                                            <li className="icon dollar">{JobDetailsData.amount}</li>
-                                            <li className="icon location line-1">{JobDetailsData.locationName}</li>
-                                            <li className="icon calendar">{JobDetailsData.duration}</li>
+                                            <li className="icon clock">{jobDetailsData.time}</li>
+                                            <li className="icon dollar">{jobDetailsData.amount}</li>
+                                            <li className="icon location line-1">{jobDetailsData.locationName}</li>
+                                            <li className="icon calendar">{jobDetailsData.duration}</li>
                                         </ul>
                                     </div>
-                                    <button className="fill_btn full_btn" onClick={applyJobClicked} disabled={JobDetailsData?.appliedStatus == 'APPLIED'}>{JobDetailsData?.appliedStatus}</button>
+                                    <div className="bottom_btn">
+                                        <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
+                                        <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -99,7 +145,7 @@ const JobDetailsPage = (props: any) => {
                             <div className="flex_col_sm_8">
                                 <div className="description">
                                     <span className="sub_title">Details</span>
-                                    <p className="commn_para">{JobDetailsData.details}</p>
+                                    <p className="commn_para">{jobDetailsData.details}</p>
                                 </div>
                             </div>
                         </div>
@@ -107,7 +153,7 @@ const JobDetailsPage = (props: any) => {
                             <div className="flex_col_sm_4">
                                 <span className="sub_title">Job milestones</span>
                                 <ul className="job_milestone">
-                                    {JobDetailsData && JobDetailsData?.jobMilestonesData?.map((item: any, index: number) => {
+                                    {jobDetailsData && jobDetailsData?.jobMilestonesData?.map((item: any, index: number) => {
                                         return (
                                             <li>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
@@ -120,12 +166,76 @@ const JobDetailsPage = (props: any) => {
                                         )
                                     })}
                                 </ul>
-                                <button className="fill_grey_btn ques_btn">
+                                <button className="fill_grey_btn ques_btn" onClick={() => viewAskQuestionsClicked(2)}>
                                     <img src={question} alt="question" />
-                                    {`${JobDetailsData?.questionsCount} questions`}
+                                    {`${jobDetailsData?.questionsCount ? jobDetailsData?.questionsCount : '0'} questions`}
                                 </button>
                             </div>
-
+                            {questionsData.showAllQuestionsClicked &&
+                                <Modal
+                                    open={questionsData.showAllQuestionsClicked}
+                                    onClose={() => modalCloseHandler('showAllQuestionsClicked')}
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                >
+                                    <>
+                                        <div className="custom_wh filter_modal">
+                                            <div className="heading">
+                                                <span className="sub_title">10 question</span>
+                                                <button className="close_btn" onClick={() => modalCloseHandler('showAllQuestionsClicked')}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <span> the number of lines supported  This Question is about the testing the content and also the number of lines supported This Question is about the testing the content and also the number</span>
+                                            <button className="full_btn" onClick={askNewQuestion}>Ask question</button>
+                                        </div>
+                                    </>
+                                </Modal>
+                            }
+                            {questionsData.askQuestionsClicked &&
+                                <Modal
+                                    open={questionsData.askQuestionsClicked}
+                                    onClose={() => modalCloseHandler('askQuestionsClicked')}
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                >
+                                    <>
+                                        <div className="custom_wh filter_modal">
+                                            <div className="heading">
+                                                <span className="sub_title">{`Ask ${jobDetailsData?.postedBy?.builderName} a question`}</span>
+                                                <button className="close_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <input />
+                                            <button className="fill_btn full_btn" onClick={submitQuestionHandler}>Send</button>
+                                            <button className="full_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>Cancel</button>
+                                        </div>
+                                    </>
+                                </Modal>
+                            }
+                            {questionsData.submitQuestionsClicked &&
+                                <Modal
+                                    open={questionsData.submitQuestionsClicked}
+                                    onClose={() => modalCloseHandler('submitQuestionsClicked')}
+                                    aria-labelledby="simple-modal-title"
+                                    aria-describedby="simple-modal-description"
+                                >
+                                    <>
+                                        <div className="custom_wh filter_modal">
+                                            <div className="heading">
+                                                <span className="sub_title">Ask Question Confirmation</span>
+                                                <button className="close_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <div><span >Are you sure you want to ask a question?</span></div>
+                                            <button className="fill_btn full_btn" >Yes</button>
+                                            <button className="full_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>No</button>
+                                        </div>
+                                    </>
+                                </Modal>
+                            }
                             <div className="flex_col_sm_8">
                                 <div className="flex_row">
                                     <div className="flex_col_sm_12">
@@ -133,9 +243,9 @@ const JobDetailsPage = (props: any) => {
                                         <ul className="job_categories">
                                             <li className="draw">
                                                 <figure className="type_icon">
-                                                    <img alt="icon" src={JobDetailsData?.jobType?.jobTypeImage} />
+                                                    <img alt="icon" src={jobDetailsData?.jobType?.jobTypeImage} />
                                                 </figure>
-                                                <span className="name">{JobDetailsData?.jobType?.jobTypeName}</span>
+                                                <span className="name">{jobDetailsData?.jobType?.jobTypeName}</span>
                                             </li>
                                         </ul>
                                     </div>
@@ -146,7 +256,7 @@ const JobDetailsPage = (props: any) => {
                                         </span>
                                         <div className="tags_wrap">
                                             <ul>
-                                                {JobDetailsData?.specializationData?.map((item: any) => {
+                                                {jobDetailsData?.specializationData?.map((item: any) => {
                                                     return <li key={item.specializationId}>{item.specializationName}</li>
                                                 })}
                                             </ul>
@@ -165,17 +275,16 @@ const JobDetailsPage = (props: any) => {
                                         <a href="javascript:void(0)" className="chat circle"></a>
                                         <div className="user_wrap">
                                             <figure className="u_img">
-                                                <img src={JobDetailsData?.postedBy?.builderImage ? JobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
+                                                <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
                                             </figure>
                                             <div className="details">
-                                                <span className="name">{JobDetailsData?.postedBy?.builderName}</span>
+                                                <span className="name">{jobDetailsData?.postedBy?.builderName}</span>
                                                 {/* <span className="prof">Project Manager</span> */}
-                                                <span className="prof">{`${JobDetailsData?.postedBy?.ratings ? JobDetailsData?.postedBy?.ratings : '0'},${JobDetailsData?.postedBy?.reviews ? JobDetailsData?.postedBy?.reviews : '0'} reviews`}</span>
+                                                <span className="rating">{`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}</span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                     </div>
