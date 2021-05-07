@@ -98,7 +98,7 @@ const JobDetailsPage = (props: any) => {
     const askNewQuestion = () => {
         setQuestionsData((prevData: any) => ({ ...prevData, askQuestionsClicked: true }))
     }
-    
+
 
     return (
         <div className="app_wrapper">
@@ -173,65 +173,134 @@ const JobDetailsPage = (props: any) => {
                             </div>
                             {questionsData.showAllQuestionsClicked &&
                                 <Modal
+                                    className="ques_ans_modal"
                                     open={questionsData.showAllQuestionsClicked}
                                     onClose={() => modalCloseHandler('showAllQuestionsClicked')}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh filter_modal">
+                                        <div className="custom_wh">
                                             <div className="heading">
                                                 <span className="sub_title">10 question</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('showAllQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
-                                            <span> the number of lines supported  This Question is about the testing the content and also the number of lines supported This Question is about the testing the content and also the number</span>
-                                            <button className="full_btn" onClick={askNewQuestion}>Ask question</button>
+                                            <div className="inner_wrap">
+                                                <div className="question_ans_card">
+                                                    <div className="user_detail">
+                                                        <figure className="user_img">
+                                                            <img src={dummy} alt="user-img" />
+                                                        </figure>
+                                                        <div className="details">
+                                                            <span className="user_name">Cheryl</span>
+                                                            <span className="date">12 Aug 2020</span>
+                                                        </div>
+                                                    </div>
+                                                    <p>Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it.</p>
+                                                    <span className="show_hide_ans link">Show answer</span>
+                                                </div>
+
+                                                <div className="question_ans_card answer">
+                                                    <div className="user_detail">
+                                                        <figure className="user_img">
+                                                            <img src={dummy} alt="user-img" />
+                                                        </figure>
+                                                        <div className="details">
+                                                            <span className="user_name">Cheryl</span>
+                                                            <span className="date">12 Aug 2020</span>
+                                                        </div>
+                                                    </div>
+                                                    <p>Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it.</p>
+                                                    <span className="action link">Edit</span>
+                                                    <span className="action link">Delete</span>
+                                                </div>
+
+                                                <div className="question_ans_card">
+                                                    <div className="user_detail">
+                                                        <figure className="user_img">
+                                                            <img src={dummy} alt="user-img" />
+                                                        </figure>
+                                                        <div className="details">
+                                                            <span className="user_name">Cheryl</span>
+                                                            <span className="date">12 Aug 2020</span>
+                                                        </div>
+                                                    </div>
+                                                    <p>Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it.</p>
+                                                    <span className="action link">Answer</span>
+                                                </div>
+
+                                                <div className="text-center">
+                                                    <button className="fill_grey_btn load_more">Load more</button>
+                                                </div>
+                                            </div>
+                                            <div className="btn_wrap">
+                                                <div className="bottom_btn">
+                                                    <button className="fill_grey_btn full_btn" onClick={askNewQuestion}>Ask question</button>
+                                                </div>
+                                            </div>
+
                                         </div>
                                     </>
                                 </Modal>
                             }
                             {questionsData.askQuestionsClicked &&
                                 <Modal
+                                    className="ques_ans_modal"
                                     open={questionsData.askQuestionsClicked}
                                     onClose={() => modalCloseHandler('askQuestionsClicked')}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh filter_modal">
+                                        <div className="custom_wh ask_ques">
                                             <div className="heading">
                                                 <span className="sub_title">{`Ask ${jobDetailsData?.postedBy?.builderName} a question`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
-                                            <input />
-                                            <button className="fill_btn full_btn" onClick={submitQuestionHandler}>Send</button>
-                                            <button className="full_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>Cancel</button>
+                                            <div className="inner_wrap">
+                                                <div className="form_field">
+                                                    <label className="form_label">Your question</label>
+                                                    <div className="text_field">
+                                                        <textarea placeholder="Write here.."></textarea>
+                                                    </div>
+                                                    <span className="char_count">0/500</span>
+                                                </div>
+                                            </div>
+                                            <div className="bottom_btn custom_btn">
+                                                <button className="fill_btn full_btn" onClick={submitQuestionHandler}>Send</button>
+                                                <button className="fill_grey_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>Cancel</button>
+                                            </div>
                                         </div>
                                     </>
                                 </Modal>
                             }
                             {questionsData.submitQuestionsClicked &&
                                 <Modal
+                                    className="custom_modal"
                                     open={questionsData.submitQuestionsClicked}
                                     onClose={() => modalCloseHandler('submitQuestionsClicked')}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh filter_modal">
+                                        <div className="custom_wh confirmation">
                                             <div className="heading">
                                                 <span className="sub_title">Ask Question Confirmation</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
-                                            <div><span >Are you sure you want to ask a question?</span></div>
-                                            <button className="fill_btn full_btn" >Yes</button>
-                                            <button className="full_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>No</button>
+                                            <div className="modal_message">
+                                                <p>Are you sure you want to ask a question?</p>
+                                            </div>
+                                            <div className="dialog_actions">
+                                                <button className="fill_btn" >Yes</button>
+                                                <button className="fill_grey_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>No</button>
+                                            </div>
                                         </div>
                                     </>
                                 </Modal>
