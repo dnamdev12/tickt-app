@@ -185,6 +185,11 @@ a.fill_grey_btn {
     color: #99a4b6;
     pointer-events: none;
   }
+  &.load_more {
+    @include border-radius(8px);
+    font-size: 12px;
+    padding: 9px 13px;
+  }
 }
 
 
