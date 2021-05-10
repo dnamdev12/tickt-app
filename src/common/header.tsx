@@ -63,7 +63,7 @@ const Header = (props: any) => {
                                 <img
                                     onClick={() => { props.history.push('/') }}
                                     src={colorLogo}
-                                    alt="logo-white" />
+                                    alt="logo" />
                             </figure>
                         </div>
                         <ul className="center_nav">

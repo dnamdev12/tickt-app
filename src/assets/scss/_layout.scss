@@ -66,6 +66,7 @@ header {
   .brand_wrap {
     width: 176px;
     height: 34px;
+    cursor: pointer;
     @media (max-width: 650px) {
       width: 140px;
     }
