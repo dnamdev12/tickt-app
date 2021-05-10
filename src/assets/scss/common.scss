@@ -2716,7 +2716,7 @@ body {
 			}
 		}
 		.details {
-			width: 80%;
+			width: 70%;
 			.name {
 				font-size: 16px;
 				display: block;
@@ -3720,6 +3720,40 @@ body {
   .tradie_card {
     min-height: 264px;
   }
+  .job_info {
+    padding: 15px;
+    margin-bottom: 20px;
+    ul{
+      li{
+        margin: 5px 0;
+      }
+    }
+  }
+}
+.job_progress_wrap {
+  padding: 8px 0;
+    .progress_wrapper{
+        position: relative;
+    }
+    .approval_info{
+        position: absolute;
+        top: 2px;
+        right: 0;
+        font-size: 10px;
+        line-height: 1.8;
+        letter-spacing: 0.3px;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        display: flex;
+        align-items: center;
+        color: var(--blue-two);
+        text-transform: uppercase;
+        img{
+            margin-right: 5px;
+            width: 12px;
+            height: 12px;
+            object-fit: none;
+        }
+    }
 }
 //----------------Job Dashboard close-------------------//
 

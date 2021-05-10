@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 import menu from '../../assets/images/ic-filter-unselected.png';
 import remove from '../../assets/images/close 1.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
+import approved from '../../assets/images/approved.png';
+
 
 export default function NotFound() {
     return (
@@ -71,6 +73,16 @@ export default function NotFound() {
         //                                 <li className="icon calendar">4 days </li>
         //                             </ul>
         //                         </div>
+        //                         <div className="job_progress_wrap" id="scroll-progress-bar">
+        //                             <div className="progress_wrapper">
+        //                                 <span className="completed-digit" id="digit-progress"><b>Job Milestones 2</b> of 5</span>
+        //                                 <span className="approval_info">
+        //                                     <img src={approved} alt="icon" />Approved </span>
+        //                                 <span className="progress_bar">
+        //                                     <input className="done_progress" id="progress-bar" type="range" min="0" />
+        //                                 </span>
+        //                             </div>
+        //                         </div>
         //                     </div>
         //                 </div>
         //                 <div className="flex_col_sm_6">
@@ -92,6 +104,15 @@ export default function NotFound() {
         //                                 <li className="icon calendar">4 days </li>
         //                             </ul>
         //                         </div>
+        //                         <div className="job_progress_wrap" id="scroll-progress-bar">
+        //                             <div className="progress_wrapper">
+        //                                 <span className="completed-digit" id="digit-progress"><b>Job Milestones 2</b> of 5</span>
+        //                                 <span className="approval_info">Awating </span>
+        //                                 <span className="progress_bar">
+        //                                     <input className="done_progress" id="progress-bar" type="range" min="0" />
+        //                                 </span>
+        //                             </div>
+        //                         </div>
         //                     </div>
         //                 </div>
         //                 <div className="flex_col_sm_6">
@@ -112,12 +133,22 @@ export default function NotFound() {
         //                                 <li className="icon location">Melbourne CBD</li>
         //                                 <li className="icon calendar">4 days </li>
         //                             </ul>
+        //                         </div>
+        //                         <div className="job_progress_wrap" id="scroll-progress-bar">
+        //                             <div className="progress_wrapper">
+        //                                 <span className="completed-digit" id="digit-progress"><b>Job Milestones 2</b> of 5</span>
+        //                                 <span className="approval_info">
+        //                                     <img src={approved} alt="icon" />Approved </span>
+        //                                 <span className="progress_bar">
+        //                                     <input className="done_progress" id="progress-bar" type="range" min="0" />
+        //                                 </span>
+        //                             </div>
         //                         </div>
         //                     </div>
         //                 </div>
         //             </div>
         //         </div>
         //     </div>
-        // </div>
+        // </div >
     )
 }
