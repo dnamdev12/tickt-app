@@ -4,21 +4,27 @@ import {
     getHomeSaveJob,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
-import { postAskQuestion } from '../../redux/jobs/actions';
+import {
+    postAskQuestion,
+    deleteQuestion,
+    updateQuestion
+} from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
 
 import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
-import thumb from '../../../assets/images/job-posted-bg.jpg';
 import question from '../../assets/images/ic-question.png';
-import locations from '../../../assets/images/ic-location.png';
-import editIconBlue from '../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../assets/images/ic-next-arrow-line.png'
 import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+
+interface PropsType {
+    history: any,
+    location: any,
+}
 
 const options = {
     items: 1,
@@ -43,14 +49,20 @@ const options = {
     },
 };
 
-const JobDetailsPage = (props: any) => {
+const JobDetailsPage = (props: PropsType) => {
     const [jobDetailsData, setJobDetailsData] = useState<any>('')
     const [questionsData, setQuestionsData] = useState<any>({
         askQuestionsClicked: false,
         showAllQuestionsClicked: false,
         submitQuestionsClicked: false,
+        deleteQuestionsClicked: false,
+        updateQuestionsClicked: false,
+        questionsClickedType: '',
+        confirmationClicked: false,
+        questionId: '',
+        questionData: ''
     })
-    console.log(props, "props")
+    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData")
 
     useEffect(() => {
         (async () => {
@@ -93,30 +105,96 @@ const JobDetailsPage = (props: any) => {
     }
 
     const modalCloseHandler = (modalType: string) => {
-        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false }))
+        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false }))
     }
 
     const submitQuestionHandler = async (type: string) => {
-        setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true }))
-        if (type == 'askQuestion') {
-            //api calling ask Question
-            const data = {
-                jobId: jobDetailsData?.jobId,
-                builderId: jobDetailsData?.postedBy?.builderId,
-                question: ""
+        setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true, questionsClickedType: 'askQuestion', confirmationClicked: true }))
+        if (['askQuestion', 'deleteQuestion', 'updateQuestion'].includes(type)) {
+            var response;
+            if (type == 'askQuestion') {
+                console.log('ask inside if')
+                const data = {
+                    jobId: jobDetailsData?.jobId,
+                    builderId: jobDetailsData?.postedBy?.builderId,
+                    question: questionsData.questionData
+                }
+                //api calling ask Question
+                response = await postAskQuestion(data);
+            } else if (type == 'deleteQuestion') {
+                console.log('delete inside if')
+                const data = {
+                    jobId: jobDetailsData?.jobId,
+                    questionId: questionsData.questionId
+                }
+                //api calling delete Question
+                response = await deleteQuestion(data);
+            } else if (type == 'updateQuestion') {
+                const data = {
+                    questionId: questionsData.questionId,
+                    question: questionsData.questionData
+                }
+                //api calling update Question
+                response = await updateQuestion(data);
             }
-            const response = await postAskQuestion(data);
-            if (response.success) {
-                const res = await getHomeJobDetails(data?.jobId);
+            if (response?.success) {
+                const res = await getHomeJobDetails(jobDetailsData?.jobId);
                 if (res.success) {
                     setJobDetailsData(res.data);
                 }
             }
+            setQuestionsData((prevData: any) => ({
+                ...prevData,
+                submitQuestionsClicked: false,
+                askQuestionsClicked: false,
+                showAllQuestionsClicked: true,
+                confirmationClicked: false,
+                questionsClickedType: '',
+                deleteQuestionsClicked: false,
+                updateQuestionsClicked: false,
+                questionId: '',
+                questionData: '',
+                showQuestionAnswer: false
+            }))
         }
     }
 
-    const askNewQuestion = () => {
-        setQuestionsData((prevData: any) => ({ ...prevData, askQuestionsClicked: true }))
+    const questionHandler = (type: string, questionId?: string, question?: string) => {
+        if (type == 'askUpdateQuestionCancelled') {
+            setQuestionsData((prevData: any) => ({
+                ...prevData,
+                askQuestionsClicked: false,
+                updateQuestionsClicked: false,
+                deleteQuestionsClicked: false,
+                showAllQuestionsClicked: true,
+                questionData: '',
+                questionsClickedType: '',
+                questionId: '',
+            }));
+        } else if (type == 'askQuestion') {
+            setQuestionsData((prevData: any) => ({
+                ...prevData,
+                askQuestionsClicked: true,
+                showAllQuestionsClicked: false,
+                questionsClickedType: type,
+            }));
+        } else if (type == 'deleteQuestion') {
+            setQuestionsData((prevData: any) => ({ ...prevData, confirmationClicked: true, deleteQuestionsClicked: true, questionId: questionId, questionsClickedType: type }));
+        } else if (type == 'updateQuestion') {
+            setQuestionsData((prevData: any) => ({
+                ...prevData,
+                askQuestionsClicked: true,
+                updateQuestionsClicked: true,
+                questionId: questionId,
+                questionsClickedType: type,
+                showAllQuestionsClicked: false,
+                questionData: question
+            }));
+        }
+    }
+
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>, type: string) => {
+        setQuestionsData((prevData: any) => ({ ...prevData, [type]: e.target.value }))
     }
 
 
@@ -186,72 +264,129 @@ const JobDetailsPage = (props: any) => {
                                         )
                                     })}
                                 </ul>
-                                <button className="fill_grey_btn ques_btn" onClick={() => viewAskQuestionsClicked(2)}>
+                                <button className="fill_grey_btn ques_btn" onClick={() => viewAskQuestionsClicked(jobDetailsData?.questionsCount)}>
                                     <img src={question} alt="question" />
                                     {`${jobDetailsData?.questionsCount ? jobDetailsData?.questionsCount : '0'} questions`}
                                 </button>
                             </div>
-                            {questionsData.showAllQuestionsClicked &&
+                            {questionsData.showAllQuestionsClicked && jobDetailsData?.questionsCount > 0 &&
                                 <Modal
+                                    className="ques_ans_modal"
                                     open={questionsData.showAllQuestionsClicked}
                                     onClose={() => modalCloseHandler('showAllQuestionsClicked')}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh filter_modal">
+                                        <div className="custom_wh">
                                             <div className="heading">
-                                                <span className="sub_title">10 question</span>
+                                                <span className="sub_title">{`${jobDetailsData?.questionsCount} questions`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('showAllQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
-                                            <span> the number of lines supported  This Question is about the testing the content and also the number of lines supported This Question is about the testing the content and also the number</span>
-                                            <button className="full_btn" onClick={askNewQuestion}>Ask question</button>
+                                            {jobDetailsData?.questionsData?.map((item: any) => {
+                                                const { questionData } = item;
+                                                return (
+                                                    <div className="inner_wrap">
+                                                        <div className="question_ans_card">
+                                                            <div className="user_detail">
+                                                                <figure className="user_img">
+                                                                    <img src={questionData?.userImage ? questionData?.userImage : dummy} alt="user-img" />
+                                                                </figure>
+                                                                <div className="details">
+                                                                    <span className="user_name">{questionData?.userName}</span>
+                                                                    <span className="date">{questionData?.date}</span>
+                                                                </div>
+                                                            </div>
+                                                            <p>{questionData?.question}</p>
+                                                            {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
+                                                            {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId)}>Delete</span>}
+                                                            {Object.keys(questionData?.answerData).length > 0 &&
+                                                                <span className="show_hide_ans link"
+                                                                    onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showQuestionAnswer: true }))}>Show answer</span>}
+                                                        </div>
+                                                        {questionsData.showQuestionAnswer &&
+                                                            <div className="question_ans_card answer">
+                                                                <div className="user_detail">
+                                                                    <figure className="user_img">
+                                                                        <img src={dummy} alt="user-img" />
+                                                                    </figure>
+                                                                    <div className="details">
+                                                                        <span className="user_name">Cheryl</span>
+                                                                        <span className="date">12 Aug 2020</span>
+                                                                    </div>
+                                                                </div>
+                                                                <p>Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it.</p>
+                                                            </div>}
+                                                    </div>
+                                                )
+                                            })}
+                                            <div className="btn_wrap">
+                                                <div className="bottom_btn">
+                                                    <button className="fill_grey_btn full_btn" onClick={() => questionHandler('askQuestion')}>Ask question</button>
+                                                </div>
+                                            </div>
                                         </div>
                                     </>
                                 </Modal>
                             }
                             {questionsData.askQuestionsClicked &&
                                 <Modal
+                                    className="ques_ans_modal"
                                     open={questionsData.askQuestionsClicked}
                                     onClose={() => modalCloseHandler('askQuestionsClicked')}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh filter_modal">
+                                        <div className="custom_wh ask_ques">
                                             <div className="heading">
-                                                <span className="sub_title">{`Ask ${jobDetailsData?.postedBy?.builderName} a question`}</span>
+                                                <span className="sub_title">{`${questionsData.updateQuestionsClicked ? 'Edit a question' : `Ask ${jobDetailsData?.postedBy?.builderName} a question`}`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
-                                            <input />
-                                            <button className="fill_btn full_btn" onClick={submitQuestionHandler}>Send</button>
-                                            <button className="full_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>Cancel</button>
+                                            <div className="inner_wrap">
+                                                <div className="form_field">
+                                                    <label className="form_label">Your question</label>
+                                                    <div className="text_field">
+                                                        <textarea placeholder="Write here.." value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
+                                                    </div>
+                                                    <span className="char_count">{`${questionsData.questionData.length}/250`}</span>
+                                                </div>
+                                            </div>
+                                            <div className="bottom_btn custom_btn">
+                                                <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('')}>Send</button>
+                                                <button className="fill_grey_btn" onClick={() => questionHandler('askUpdateQuestionCancelled')}>Cancel</button>
+                                            </div>
                                         </div>
                                     </>
                                 </Modal>
                             }
-                            {questionsData.submitQuestionsClicked &&
+                            {(questionsData.confirmationClicked) &&
                                 <Modal
-                                    open={questionsData.submitQuestionsClicked}
-                                    onClose={() => modalCloseHandler('submitQuestionsClicked')}
+                                    className="custom_modal"
+                                    open={questionsData.confirmationClicked}
+                                    onClose={() => modalCloseHandler('confirmationClicked')}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh filter_modal">
+                                        <div className="custom_wh confirmation">
                                             <div className="heading">
-                                                <span className="sub_title">Ask Question Confirmation</span>
-                                                <button className="close_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>
+                                                <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
+                                                <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
-                                            <div><span >Are you sure you want to ask a question?</span></div>
-                                            <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('askQuestion')}>Yes</button>
-                                            <button className="full_btn" onClick={() => modalCloseHandler('submitQuestionsClicked')}>No</button>
+                                            <div className="modal_message">
+                                                <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'ask'} a question?`}</p>
+                                            </div>
+                                            <div className="dialog_actions">
+                                                <button className="fill_btn" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>
+                                                <button className="fill_grey_btn" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                                            </div>
                                         </div>
                                     </>
                                 </Modal>
@@ -289,7 +424,6 @@ const JobDetailsPage = (props: any) => {
                         <div className="section_wrapper">
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
-
                                 <div className="flex_col_sm_3">
                                     <div className="tradie_card posted_by view_more ">
                                         <a href="javascript:void(0)" className="chat circle"></a>

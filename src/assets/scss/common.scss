@@ -193,6 +193,9 @@ body {
   position: relative;
   font-size: 14px;
   color: var(--greyish-brown);
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    font-size: 12px;
+  }
   &:before {
     content: "";
     position: absolute;
@@ -1114,14 +1117,20 @@ body {
     }
   }
   .flex_col_sm_4 {
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 33%;
+    }
     @media (max-width: 768px) {
       width: 100%;
     }
   }
   .back {
     top: -20px;
-	left: 10px;
+	  left: 10px;
     cursor: pointer;
+    @media (max-width: 650px) {
+      top: -20px !important;
+    }
   }
   .tags_wrap {
     ul {
@@ -1135,6 +1144,9 @@ body {
     @include border-radius(3px);
     background-color: rgba(18, 14, 36, 0.3);
     height: 400px;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      height: 300px;
+    }
     @media (max-width: 768px) {
       margin-bottom: 20px;
     }
@@ -1317,7 +1329,7 @@ body {
       font-family: "Neue Haas Grotesk Text Pro Bold";
       line-height: 1.29;
       text-align: left;
-      color: #2d2d2d;
+      color: var(--black-two);
     }
     .rent {
       font-size: 14px;
@@ -1432,9 +1444,80 @@ body {
 	}
 	@media (max-width: 650px) {
 		height: 100%;
-		max-height: 97%;
+		max-height: 70%;
 		margin: 15px auto;
 	}
+  &.ask_ques{
+    width: 864px;
+	  max-width: 864px;
+    height: 503px;
+	  max-height: 503px;
+    @media (max-width: 1500px) {
+      margin: 16px auto 0;
+      height: 420px;
+      max-height: 420px;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 90%;
+      margin: 30px auto;
+      height: 100%;
+    }
+    @media (max-width: 768px) {
+      width: 95%;
+      height: 100%;
+      max-height: 85%;
+    }
+    @media (max-width: 650px) {
+      height: 100%;
+      max-height: 60%;
+      margin: 15px auto;
+    }
+  }
+  &.confirmation{
+    width: 480px;
+	  max-width: 480px;
+    height: 255px;
+	  max-height: 255px;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 90%;
+      margin: 30px auto;
+      height: 100%;
+    }
+    @media (max-width: 768px) {
+      width: 95%;
+      height: 100%;
+      max-height: 25%;
+    }
+    @media (max-width: 650px) {
+      height: 100%;
+      max-height: 35%;
+      margin: 15px auto;
+    }
+    .modal_message{
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px 0;
+      text-align: center;
+      p{
+        font-size: 18px;
+        @media (max-width: 650px){
+          font-size: 15px;
+        }
+      }
+    }
+    .dialog_actions{
+      padding: 8px 0;
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
+      .fill_btn, .fill_grey_btn{
+        padding: 12px 25px;
+      }
+    }
+  }
 }
 .ques_ans_modal,
 .custom_modal {
@@ -1469,6 +1552,8 @@ body {
     @media (max-width: 650px) {
       width: 30px;
       height: 30px;
+      top: -6px;
+      right: 10px;
     }
   }
   .inner_wrappr {
@@ -1489,6 +1574,12 @@ body {
     @media (max-width: 1500px){
       max-height: 350px;
     }
+    textarea {
+      min-height: 242px;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      min-height: 130px;
+    }
+    }
   }
   .fill_btn {
     margin-right: 32px;
@@ -1502,13 +1593,19 @@ body {
     }
   }
   .btn_wrap {
-    height: 100px;
+    height: 90px;
     position: relative;
     .bottom_btn {
+      position: absolute;
+      bottom: 0;
       @media (max-width: 1024px) {
         width: 100%;
         display: flex;
       }
+      @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        position: relative;
+      }
+      
       .full_btn {
         @media (max-width: 1024px) {
           width: 200px;
@@ -2101,6 +2198,7 @@ body {
   }
   .commn_para {
     margin: 0 0 7px 0;
+    max-width: 85%;
   }
   .cross-icon {
     display: inline-block;
@@ -3540,3 +3638,103 @@ body {
 //----------------Job Dashboard close-------------------//
 
 
+//------------Ques-Ans list modal--------------------//
+.question_ans_card {
+  max-width: 800px;
+  margin: 0 0 16px;
+  padding: 16px 64px 16px 16px;
+  border-radius: 3px;
+  background-color: #f6f6f6;
+  @media (max-width: 650px) {
+    max-width: 100%;
+    padding: 10px;
+  }
+  &.answer {
+    margin: 0 0 16px 49px;
+    background: var(--white);
+    transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+    animation: slide-out 0.5s forwards;
+    -webkit-animation: slide-out 0.5s forwards;
+    @media (max-width: 650px) {
+      margin: 0 0 16px 15px;
+    }
+    @keyframes slide-out {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
+    }
+    @-webkit-keyframes slide-out {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
+    }
+  }
+  .user_detail {
+    display: flex;
+    margin-bottom: 15px;
+    @media (max-width: 650px) {
+      margin-bottom: 10px;
+    }
+    .user_img {
+      width: 40px;
+      height: 40px;
+      margin: 0 8px 0 0;
+      overflow: hidden;
+      border-radius: 4px;
+      @media (max-width: 650px) {
+        width: 30px;
+        height: 30px;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .details {
+      width: 80%;
+      .user_name {
+        font-size: 14px;
+        font-family: "Neue Haas Grotesk Text Pro Bold";
+        line-height: 1.29;
+        color: var(--black-two);
+        display: block;
+      }
+      .date {
+        font-size: 14px;
+        line-height: 1.29;
+        color: #aeaeae;
+        @media (max-width: 650px) {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  p {
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.29;
+    color: var(--black-two);
+    @media (max-width: 650px) {
+      margin: 0 0 10px;
+    }
+  }
+  .show_hide_ans,
+  .action {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-family: "Neue Haas Grotesk Text Pro Bold";
+    line-height: 1.29;
+    color: var(--blue-two);
+    margin-right: 16px;
+  }
+}
+//------------Ques-Ans list modal close--------------------//

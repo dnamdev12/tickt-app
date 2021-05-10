@@ -46,6 +46,7 @@ const Urls = {
     profileTradie: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}`,
     askQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}askQuestion`,
     deleteQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}deleteQuestion`,
+    updateQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateQuestion`,
 }
 
 export const urlFor = (service: String): string => {

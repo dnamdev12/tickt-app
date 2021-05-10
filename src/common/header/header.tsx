@@ -97,7 +97,8 @@ const Header = (props: any) => {
                                         open={Boolean(anchorEl)}
                                         onClose={handleClose}
                                     >
-                                        <span className="sub_title">{props.tradieProfileData?.userName}</span>
+                                        {/* <span className="sub_title">{props.tradieProfileData?.userName}</span> */}
+                                        <span className="sub_title">John Oldman</span>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon">
                                                 <img src={profile} />

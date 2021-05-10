@@ -97,6 +97,33 @@ export const postAskQuestion = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.askQuestion, data)
   setLoading(false);
   if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+//tradie delete question
+export const deleteQuestion = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(Urls.deleteQuestion, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+//tradie update question
+export const updateQuestion = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateQuestion, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
     return { success: true };
   }
   setShowToast(true, response.message);
