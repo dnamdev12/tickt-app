@@ -148,13 +148,9 @@ const BannerSearch = (props: PropsType) => {
                         </React.Fragment>
                         : null}
 
-                    <div className="select_sphere">
+                    <div className="select_sphere recent_search">
                         <span className="sub_title">Categories</span>
-                        <ul style={{
-                            display: 'flex',
-                            flexDirection: 'row',
-                            flexWrap: 'wrap',
-                        }}>
+                        <ul>
                             {tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) =>
                                 <li
                                     onClick={() => {
