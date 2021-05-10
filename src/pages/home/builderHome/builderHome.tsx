@@ -19,19 +19,19 @@ const BuilderHome = (props: any) => {
     let { callTradeList, getRecentSearchList, setHomeBuilder, builderHome, tradeListData, tradieHomeData } = props;
     const [addressItem, setAddressItem] = useState();
 
-    const getBuilderData = useCallback(async (data: any) => {
-        let { status, response } = await getBuilderHomeData(data);
-        if (status) {
-            setHomeBuilder(response)
-        }
-    }, [])
+    // const getBuilderData = useCallback(async (data: any) => {
+    //     let { status, response } = await getBuilderHomeData(data);
+    //     if (status) {
+    //         setHomeBuilder(response)
+    //     }
+    // }, [])
 
     const checkPermission = async () => {
         const showPosition = (position: any) => {
             let { latitude, longitude } = position.coords;
             const jobType = { lat: latitude, long: longitude, jobType: '', tradie: true };
             console.log({ jobType }, '--------------!!!');
-            getBuilderData(jobType);
+            setHomeBuilder(jobType);
 
             // Get address from latitude & longitude.
             Geocode.fromLatLng(latitude.toString(), longitude.toString()).then(
@@ -47,7 +47,7 @@ const BuilderHome = (props: any) => {
 
         const postionError = (error: any) => {
             const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
-            getBuilderData(jobType);
+            setHomeBuilder(jobType);
             Geocode.fromLatLng('37.8136', '144.9631').then(
                 (response) => {
                     const address = response.results[0].formatted_address;
@@ -69,33 +69,36 @@ const BuilderHome = (props: any) => {
     useEffect(() => {
         getRecentSearchList();
         callTradeList();
-        let data = builderHome || null;
-        console.log({data},'-------------------------------->')
-        // if (!data || !Object.keys(data)?.length) {
-        //     checkPermission();
-        // }
-        const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
-        props.setHomeBuilder(jobType);
+        let data = props.testBuilderHome || null;
+        console.log({ data }, '-------------------------------->')
+        if (!data || !Object.keys(data)?.length) {
+            checkPermission();
+        }
+        // const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
+        // props.setHomeBuilder(jobType);
     }, []);
 
-    console.log({ builderHome }, 'home_data', props.testBuilderHome)
-    let home_data: any = builderHome || null;
+    // console.log({ builderHome }, 'home_data', props.testBuilderHome)
+    let home_data: any = props.testBuilderHome || null;
     // let recomended_tradespeople: any = home_data?.recomended_tradespeople || [];
     // let saved_tradespeople: any = home_data?.saved_tradespeople || [];
     return (
         <div className="app_wrapper" >
-            <Banner {...props} />
+            <Banner
+                {...props}
+                current_address={addressItem}
+            />
 
             <TradieHome
                 {...props}
-                data={builderHome?.saved_tradespeople}
+                data={home_data?.saved_tradespeople}
                 title={"Saved tradespeople"}
                 length={3} // redirectPath={"/saved-trade-people"}
             />
 
             <TradieHome
                 {...props}
-                data={builderHome?.recomended_tradespeople}
+                data={home_data?.recomended_tradespeople}
                 title={"Recommended tradespeople"} // redirectPath={'/recommended-trade-people'}
                 length={9}
             />
