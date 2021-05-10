@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Constants from '../../utils/constants';
 // @ts-ignore
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
@@ -37,7 +37,7 @@ interface PropsType {
 const BannerSearch = (props: PropsType) => {
     const [stateData, setStateData] = useState<any>(props.bannerData)
     const [errors, setErrors] = useState<any>({});
-
+    const [selectedTrade, setSelectedTrade] = useState({});
     const [inputFocus1, setInputFocus1] = useState<boolean>(false)
     const [inputFocus2, setInputFocus2] = useState<boolean>(false)
     const [inputFocus3, setInputFocus3] = useState<boolean>(false)
@@ -113,43 +113,63 @@ const BannerSearch = (props: PropsType) => {
         setInputFocus1(false);
     }
 
+    const checkIfExist = (_id: any) => {
+        let isLength = Object.keys(selectedTrade).length;
+        if (isLength) {
+            let item: any = selectedTrade;
+            if (item?._id === _id) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     const recentJobSearches = () => {
         let props_Clone: any = props;
         let tradeListData = props_Clone.tradeListData;
+        console.log({ selectedTrade }, '---------------->')
         return (
             <>
-                {props.recentSearchJobData?.length > 0 &&
-                    <div className="custom_autosuggestion" id="recent-job-search-div">
-                        <span className="sub_title">Recent searches</span>
-                        <div className="flex_row recent_search">
-                            {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
-                                return (
-                                    <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item)}>
-                                        <div className="autosuggestion_icon card history">
-                                            <span>{item.name}</span>
-                                            <span className="name">{item.trade_name}</span>
-                                        </div>
-                                    </div>)
-                            })}
-                        </div>
+                <div className="custom_autosuggestion" id="recent-job-search-div">
+                    {props?.recentSearchJobData?.length ?
+                        <React.Fragment>
+                            <span className="sub_title">Recent searches</span>
+                            <div className="flex_row recent_search">
+                                {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
+                                    return (
+                                        <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item)}>
+                                            <div className="autosuggestion_icon card history">
+                                                <span>{item.name}</span>
+                                                <span className="name">{item.trade_name}</span>
+                                            </div>
+                                        </div>)
+                                })}
+                            </div>
+                        </React.Fragment>
+                        : null}
 
-                        <div className="select_sphere">
-                            <ul style={{
-                                display: 'flex',
-                                flexDirection: 'row',
-                                flexWrap: 'wrap',
-                            }}>
-                                {tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => 
-                                    <li className={'active'}>
-                                        <figure>
-                                            <img src={selected_url} alt="" />
-                                        </figure>
-                                        <span className="name">{trade_name}</span>
-                                    </li>
-                                )}
-                            </ul>
-                        </div>
-                    </div >}
+                    <div className="select_sphere">
+                        <span className="sub_title">Categories</span>
+                        <ul style={{
+                            display: 'flex',
+                            flexDirection: 'row',
+                            flexWrap: 'wrap',
+                        }}>
+                            {tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) =>
+                                <li
+                                    onClick={() => {
+                                        setSelectedTrade({ _id, trade_name, selected_url, specialisations });
+                                    }}
+                                    className={checkIfExist(_id) ? 'active' : ''}>
+                                    <figure>
+                                        <img src={selected_url} alt="" />
+                                    </figure>
+                                    <span className="name">{trade_name}</span>
+                                </li>
+                            )}
+                        </ul>
+                    </div>
+                </div >
 
                 {/* <div className="custom_wh filter_modal">
                     <div className="inner_wrap">
