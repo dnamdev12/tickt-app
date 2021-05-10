@@ -35,6 +35,7 @@ interface PropsType {
 }
 
 const BannerSearch = (props: PropsType) => {
+    console.log({bannerData:props.bannerData});
     const [stateData, setStateData] = useState<any>(props.bannerData)
     const [errors, setErrors] = useState<any>({});
     const [selectedTrade, setSelectedTrade] = useState({});
@@ -118,6 +119,7 @@ const BannerSearch = (props: PropsType) => {
         if (isLength) {
             let item: any = selectedTrade;
             if (item?._id === _id) {
+                searchedJobClicked(item?.specialisations);
                 return true;
             }
         }
@@ -137,7 +139,13 @@ const BannerSearch = (props: PropsType) => {
                             <div className="flex_row recent_search">
                                 {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
                                     return (
-                                        <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item)}>
+                                        <div
+                                            className="flex_col_sm_4"
+                                            onClick={() => {
+                                                console.log({ item }, '------------>')
+                                                searchedJobClicked(item);
+                                                setSelectedTrade({});
+                                            }}>
                                             <div className="autosuggestion_icon card history">
                                                 <span>{item.name}</span>
                                                 <span className="name">{item.trade_name}</span>
