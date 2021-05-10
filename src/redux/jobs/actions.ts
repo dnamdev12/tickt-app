@@ -90,3 +90,15 @@ export const createPostJob = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+export const setHomeBuilder = (data: any) => ({ type: actionTypes.FETCH_HOME_BUILDER, payload: data })
+
+export const getBuilderHomeData = async (item: any) => {
+  let url = `${Urls.home}?lat=${item.lat}&long=${item.long}`
+  const response: FetchResponse = await NetworkOps.get(url);
+  console.log({response},'---------------!!!!!!!!')
+  if (response.status_code === 200) {
+    return { status: true, response: response.result };
+  }
+  return { status: false }
+}

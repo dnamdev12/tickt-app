@@ -30,7 +30,7 @@ export default class SavedTradies extends Component {
 
         let this_state: any = this.state;
         let isItemSpec = this_state.isItemSpec;
-        // console.log({ data })
+        console.log({ data })
         return (
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">

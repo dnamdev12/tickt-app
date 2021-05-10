@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -60,7 +60,9 @@ const Header = (props: any) => {
                     <div className="flex_headrow">
                         <div className="brand_wrap">
                             <figure>
-                                <img src={colorLogo}
+                                <img
+                                    onClick={() => { props.history.push('/') }}
+                                    src={colorLogo}
                                     alt="logo-white" />
                             </figure>
                         </div>
@@ -116,4 +118,4 @@ const Header = (props: any) => {
     )
 }
 
-export default Header
+export default withRouter(Header);

@@ -7,14 +7,15 @@ import close from "../../../../assets/images/icon-close-1.png";
 import Location from "../../../../assets/images/ic-location.png";
 import uc from '../../../../assets/images/uc.png';
 import icgps from "../../../../assets/images/ic-gps.png";
-import BannerSearch from '../../tradieHome/components/bannerSearch/index';
+import BannerSearch from '../../../shared/bannerSearch';
+// import BannerSearch from '../../tradieHome/components/bannerSearch/index';
 
 
 const Banner = (props: any) => {
 
     const viewMoreClicked = () => {
         props.history.push({
-            pathname: '/search-job-results',
+            pathname: 'search-tradie-results',
             state: {
                 queryParam: "viewNearByJob",
                 bannerData: props.bannerData,

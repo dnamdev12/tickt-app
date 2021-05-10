@@ -1,126 +1,81 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import Banner from './components/banner';
-import Categories from './components/categories';
-import JobTypes from './components/jobTypes';
-import PopularTradies from './components/popularTradies';
-import RecommendedTradies from './components/recommendedTradies';
-import SavedJobs from './components/savedJobs';
-import SavedTradies from './components/savedTradies';
-import Geocode from "react-geocode";
+// import Categories from './components/categories';
+// import JobTypes from './components/jobTypes';
+// import PopularTradies from './components/popularTradies';
+// import RecommendedTradies from './components/recommendedTradies';
+// import SavedJobs from './components/savedJobs';
+// import SavedTradies from './components/savedTradies';
+// import Geocode from "react-geocode";
 import { withRouter } from 'react-router'
+import { setShowToast, setLoading } from '../../../redux/common/actions';
+import { getBuilderHomeData } from '../../../redux/jobs/actions';
+
+import TradieHome from '../../shared/tradieHome';
 
 const BuilderHome = (props: any) => {
-    const { callTradeList, jobDataWithJobTypeLatLong, getRecentSearchList, getJobWithJobTypeLatLong, tradeListData } = props;
-    const [localCoods, setLocalCoods] = useState<any>([]);
-    const getCurrentLocation = async () => {
-        let permission_web = await navigator.permissions.query({ name: 'geolocation' });
-        console.log({ permission_web }, '56')
-        if (permission_web.state !== 'denied') {
-            //   setLoading(true)
-            console.log({ state: permission_web.state }, 'if')
-            const position: any = await new Promise((resolve, reject) => {
-                navigator.geolocation.getCurrentPosition(resolve, reject);
-            });
-            console.log({ position, coods: position?.coords, lat: position?.coords?.latitude }, '62')
-            if (position?.coords?.latitude) {
-                let { latitude, longitude } = position.coords;
-                console.log({ latitude, longitude }, '-------------');
+    let { callTradeList, getRecentSearchList, setHomeBuilder, builderHome, tradeListData, tradieHomeData } = props;
 
-                const jobData = {
-                    // lat: '21.17021',
-                    // long: '72.831062',
-                    lat: latitude,
-                    long: longitude,
-                    jobType: '',
-                }
-                // setLocalCoods([latitude, longitude]);
-                getJobWithJobTypeLatLong(jobData);
-
-                // let response: any = await Geocode.fromLatLng(longitude.toString(), latitude.toString());
-                // console.log({ response }, '65')
-                // if (response) {
-                //     const address = response.results[0].formatted_address;
-                //     let coordinates_values = [latitude, longitude];
-                //     console.log('before set', { coordinates_values, address })
-                //     // setLocation({ coordinates: coordinates_values, address: address })
-                //     // setLoading(false);
-                // }
-            }
-
-        } else {
-            console.log('Please enable the location permission from the settings so that Tickt app can access your location');
-            //   setError('Please enable the location permission from the settings so that Tickt app can access your location');
+    const getBuilderData = useCallback(async (data: any) => {
+        let { status, response } = await getBuilderHomeData(data);
+        if (status) {
+            setHomeBuilder(response)
         }
+
+    }, [])
+
+    const checkPermission = async () => {
+        const showPosition = (position: any) => {
+            let { latitude, longitude } = position.coords;
+            const jobType = { lat: latitude, long: longitude, jobType: '', tradie: true };
+            getBuilderData(jobType);
+        }
+
+        const postionError = (error: any) => {
+            const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
+            getBuilderData(jobType);
+        }
+
+        let permission: any = await navigator.permissions.query({ name: 'geolocation' });
+        if (permission.state === 'denied') {
+            setShowToast(true, 'Please enable the location permission from the settings so that Tickt app can access your location');
+        }
+        navigator.geolocation.getCurrentPosition(showPosition, postionError)
     }
 
     useEffect(() => {
         getRecentSearchList();
-        getCurrentLocation();
         callTradeList();
-        console.log({ props, home: props.jobDataWithJobTypeLatLong })
+        let data = builderHome || null;
+        console.log({data},'-------------------------------->')
+        if (!data || !Object.keys(data)?.length) {
+            checkPermission();
+        }
     }, []);
-    // recomended_tradespeople
-    // saved_tradespeople
-    let home_data: any = jobDataWithJobTypeLatLong;
-    let { recomended_tradespeople, saved_tradespeople } = home_data;
-    console.log({
-        recomended_tradespeople,
-        saved_tradespeople
-    })
+
+    console.log({ builderHome }, 'home_data')
+    let home_data: any = builderHome || null;
+    // let recomended_tradespeople: any = home_data?.recomended_tradespeople || [];
+    // let saved_tradespeople: any = home_data?.saved_tradespeople || [];
     return (
         <div className="app_wrapper" >
             <Banner {...props} />
-            {/* Banner close */}
 
-            {/* Categories */}
-            {/* <Categories {...props} /> */}
-            {/* Categories close*/}
-
-            {/* Job types */}
-            {/* <JobTypes {...props} /> */}
-            {/* Job types close*/}
-
-            {/* Saved jobs */}
-            {/* <SavedJobs {...props} /> */}
-            {/* Saved jobs close*/}
-
-            {/* Saved Tradies */}
-            <SavedTradies
+            <TradieHome
                 {...props}
-                data={saved_tradespeople}
-                tradeList={tradeListData}
+                data={builderHome?.saved_tradespeople}
+                title={"Saved tradespeople"}
+                length={3} // redirectPath={"/saved-trade-people"}
             />
-            {/* Saved Tradies close*/}
 
-            {/* Popular Tradies */}
-            {/* <PopularTradies {...props} /> */}
-            {/* Popular Tradies close*/}
-
-            {/* Reccomended tradies */}
-            <RecommendedTradies
+            <TradieHome
                 {...props}
-                data={recomended_tradespeople}
-                tradeList={tradeListData}
+                data={builderHome?.recomended_tradespeople}
+                title={"Recommended tradespeople"} // redirectPath={'/recommended-trade-people'}
+                length={9}
             />
-            {/* Reccomended tradies close*/}
         </div>
     )
 }
 
 export default withRouter(BuilderHome);
-
-
-/* Under construction */
-    // return (
-    //     <div className="app_wrapper" >
-    //         <div className="custom_container">
-    //             <div className="under_construction_wrap">
-    //                 <figure className="constrction_img">
-    //                     <img src={uc} alt="coming soon" />
-    //                 </figure>
-    //                 <h2>This Page is under construction. Please come back later.</h2>
-    //             </div>
-    //         </div>
-    //     </div>
-    // )
-/* Under construction */

@@ -3,7 +3,8 @@ import * as actionTypes from './constants'
 const initialState = {
     editMilestoneId: null,
     editMilestoneTiming: null,
-    editDetailPage: null
+    editDetailPage: null,
+    builderHome: null
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -20,6 +21,11 @@ const reducer = (state = initialState, action: any) => {
 
         case actionTypes.EDIT_DETAIL_SCREEN:
             state.editDetailPage = action.payload;
+            return { ...state }
+
+        case actionTypes.FETCH_HOME_BUILDER:
+            console.log({action},'------------- In actions')
+            state.builderHome = action.payload;
             return { ...state }
 
         default: return state

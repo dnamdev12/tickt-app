@@ -60,9 +60,11 @@ export class NetworkOps {
                 const res = await response.text();
                 console.log('res -->>', JSON.parse(res))
                 try {
+                    console.log('if',{res:JSON.parse(res)})
                     return JSON.parse(res);
                 }
                 catch {
+                    console.log('else',{res})
                     return res;
                 }
             }
@@ -108,7 +110,7 @@ export class NetworkOps {
     get = async (service: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('GET');
-            return this.wrapperWithOptions(urlFor(service), request)
+            return this.wrapperWithOptions(urlFor(service), request);
         }
         catch (err) {
             throw err;
