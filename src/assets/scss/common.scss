@@ -3630,9 +3630,95 @@ body {
   li {
     margin-bottom: 48px;
     .icon {
-      display: block;
-      padding-left: 12px;
+      padding-left: 35px;
+      color: var(--blue);
+      &.active{
+        font-family: "Neue Haas Grotesk Text Pro Bold";        
+      }
+      &:before {
+        width: 24px;
+        height: 24px;
+      }
+      &.star {
+        &::before {
+          background: url("../images/ic-star.png") center no-repeat;
+        }
+      }
+      &.applied {
+        &::before {
+          background: url("../images/checked-1.png") center no-repeat;
+        }
+      }
+      &.past {
+        &::before {
+          background: url("../images/date-1.png") center no-repeat;
+        }
+      }
+      &.new {
+        &::before {
+          background: url("../images/ic-job.png") center no-repeat;
+        }
+      }
+      &.approved {
+        &::before {
+          background: url("../images/ic-template.png") center no-repeat;
+        }
+      }
     }
+  }
+  .badge_count {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: var(--yellow);
+    position: absolute;
+    right: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--blue);
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+  }
+}
+.detail_col {
+  width: 860px;
+  padding: 32px 20px 0 50px;
+  margin-left: 260px;
+  @media(max-width: 768px){
+    width: 100%;
+    padding: 30px 20px 0;
+    margin-left: 0;
+    .flex_col_sm_2 {
+      width: 20%;
+    }
+    .flex_col_sm_3{
+      width: 50%;
+    }
+  }
+  @media(max-width: 650px){
+    padding: 30px 10px 0;
+    .flex_col_sm_6 {
+      width: 100%;
+    }
+    .flex_col_sm_2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    padding: 20px;
+    .flex_col_sm_6 {
+      width: 100%;
+      }
+    .flex_col_sm_2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .tradie_card {
+    min-height: 264px;
   }
 }
 //----------------Job Dashboard close-------------------//
