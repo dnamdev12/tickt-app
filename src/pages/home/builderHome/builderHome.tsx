@@ -70,13 +70,15 @@ const BuilderHome = (props: any) => {
         getRecentSearchList();
         callTradeList();
         let data = builderHome || null;
-        console.log({ data }, '-------------------------------->')
-        if (!data || !Object.keys(data)?.length) {
-            checkPermission();
-        }
+        console.log({data},'-------------------------------->')
+        // if (!data || !Object.keys(data)?.length) {
+        //     checkPermission();
+        // }
+        const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
+        props.setHomeBuilder(jobType);
     }, []);
 
-    console.log({ builderHome }, 'home_data')
+    console.log({ builderHome }, 'home_data', props.testBuilderHome)
     let home_data: any = builderHome || null;
     // let recomended_tradespeople: any = home_data?.recomended_tradespeople || [];
     // let saved_tradespeople: any = home_data?.saved_tradespeople || [];

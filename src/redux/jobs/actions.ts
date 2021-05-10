@@ -91,7 +91,7 @@ export const createPostJob = async (data: any) => {
   return { success: false };
 }
 
-export const setHomeBuilder = (data: any) => ({ type: actionTypes.FETCH_HOME_BUILDER, payload: data })
+export const setHomeBuilder = (data: any) => ({ type: actionTypes.FETCH_HOME_BUILDER, data })
 
 export const getBuilderHomeData = async (item: any) => {
   let url = `${Urls.home}?lat=${item.lat}&long=${item.long}`
