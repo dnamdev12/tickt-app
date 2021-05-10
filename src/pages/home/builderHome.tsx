@@ -26,6 +26,14 @@ const BuilderHome = (props: any) => {
             items: 1,
             slidesToSlide: 1, // optional, default to 1.
         },
+        tablet: {
+            breakpoint: { max: 1024, min: 768 },
+            items: 2
+        },
+        mobile: {
+            breakpoint: { max: 650, min: 0 },
+            items: 1
+        }
     };
 
     const categoriesjob = {
@@ -34,6 +42,14 @@ const BuilderHome = (props: any) => {
             items: 1,
             slidesToSlide: 1, // optional, default to 1.
         },
+        tablet: {
+            breakpoint: { max: 1024, min: 768 },
+            items: 2
+        },
+        mobile: {
+            breakpoint: { max: 650, min: 0 },
+            items: 1
+        }
     };
 
     return (
