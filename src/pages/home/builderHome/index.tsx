@@ -21,6 +21,7 @@ const mapStateToProps = (state: any) => {
         // jobTypeList: state.homeSearch.jobTypeList,
         jobDataWithJobTypeLatLong: state.homeSearch.jobDataWithJobTypeLatLong,
         viewNearByJobData: state.homeSearch.viewNearByJobData,
+        testBuilderHome: state.jobs.testBuilderHome,
     }
 }
 

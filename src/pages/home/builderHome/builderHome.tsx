@@ -17,10 +17,10 @@ const BuilderHome = (props: any) => {
     let { callTradeList, getRecentSearchList, setHomeBuilder, builderHome, tradeListData, tradieHomeData } = props;
 
     const getBuilderData = useCallback(async (data: any) => {
-        let { status, response } = await getBuilderHomeData(data);
-        if (status) {
-            setHomeBuilder(response)
-        }
+        // let { status, response } = await getBuilderHomeData(data);
+        // if (status) {
+        //     setHomeBuilder(response)
+        // }
 
     }, [])
 
@@ -48,12 +48,14 @@ const BuilderHome = (props: any) => {
         callTradeList();
         let data = builderHome || null;
         console.log({data},'-------------------------------->')
-        if (!data || !Object.keys(data)?.length) {
-            checkPermission();
-        }
+        // if (!data || !Object.keys(data)?.length) {
+        //     checkPermission();
+        // }
+        const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
+        props.setHomeBuilder(jobType);
     }, []);
 
-    console.log({ builderHome }, 'home_data')
+    console.log({ builderHome }, 'home_data', props.testBuilderHome)
     let home_data: any = builderHome || null;
     // let recomended_tradespeople: any = home_data?.recomended_tradespeople || [];
     // let saved_tradespeople: any = home_data?.saved_tradespeople || [];
