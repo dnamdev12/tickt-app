@@ -1977,6 +1977,18 @@ body {
     .full_btn {
       margin-bottom: 0;
     }
+    .btn_wrapr{
+      display: flex;
+      align-items: center;
+      .fill_btn{
+        width: 250px;
+        &.white_btn{
+          background-color: var(--white);
+          color: var(--blue);
+          margin-left: 60px;
+        }
+      }
+    }
   }
 }
 
@@ -3742,6 +3754,64 @@ body {
       }
     }
   }
+  .relate{
+    .back{
+      width: 20px;
+      height: 20px;
+    }
+    .edit_icon{
+      right: 0;
+    }
+    .xs_sub_title{
+      font-size: 16px;
+      padding-left: 30px;
+    }
+  }
+  hr{
+    width: 1px;
+    height: 100vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(95px);
+    background-color: #f7f8fa;
+    margin: 0;
+  }
+  .total_payment{
+    margin: 48px 0 32px;
+    max-width: 250px;
+    span{
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
+    }
+  }
+  .bank_btn{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 17px 20px;
+    border: 1px solid var(--blue-two);
+    margin-bottom: 40px;
+    img{
+      margin-right: 30px;
+    }
+  }
+}
+.payment_note{
+  font-size: 14px;
+  line-height: 1.43;
+  color: #313d48;
+  padding-left: 30px;
+  position: relative;
+  display: block;
+  margin-bottom: 30px;
+  &::before{
+    @include position(absolute, 0px, auto, auto, 0px);
+    content: "";
+    width: 24px;
+    height: 24px;
+    background: url("../images/ic-revenue.png") center no-repeat;
+    background-size: contain;
+  }
 }
 .job_progress_wrap {
   padding: 8px 0;
@@ -3767,6 +3837,103 @@ body {
             object-fit: none;
         }
     }
+}
+
+.milestones_check{
+  margin: 20px 0px;
+  li{
+    min-height: 64px;
+    position: relative;
+    margin-bottom: 30px;
+    &::before{
+      position: absolute;
+      left: 11px;
+      top: 32px;
+      border: 1px dashed #dfe5ef;
+      height: 80%;
+      width: 0px;
+      z-index: -1;
+      content: "";
+    }
+    &:last-child{
+      &::before{
+        display: none;
+      }
+    }
+    &.active{
+      .circle_stepper{
+        span{
+          opacity: 1;
+          visibility: visible;
+          width: 12px;
+          height: 12px;
+          background-color: var(--blue-two);
+          display: inline-block;
+          border-radius: 50%;
+         }
+      }
+    }
+    &.check{
+      &::before{
+        border-color: var(--blue-two);
+      }
+      .circle_stepper{
+        border: none;
+        span{
+          opacity: 1;
+          visibility: visible;
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--blue-two) url('../images/checked-2.png') center no-repeat;
+          background-size: contain;
+         }
+      }
+      .info{
+        label, span{
+          color: #748092;
+        }
+      }
+    }
+    .circle_stepper{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: solid 2px #dfe5ef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      span{
+        opacity: 0;
+        visibility: hidden;
+      }
+      
+    }
+    .info{
+      padding-left: 40px;
+      label {
+        font-size: 16px;
+        color: var(--blue);
+        font-family: "Neue Haas Grotesk Text Pro Medium";
+        width: 100%;
+        max-width: 400px;
+        display: block;
+      }
+      span{
+        margin: 3px 0;
+        display: block;
+        font-size: 14px;
+      }
+      .full_btn{
+        margin-top: 16px;
+      }
+    }
+  }
 }
 //----------------Job Dashboard close-------------------//
 

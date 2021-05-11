@@ -9,9 +9,13 @@
 }
 .relate {
   position: relative;
-  .title{
+  .title, .xs_sub_title{
     padding-left: 40px;
   }
+}
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 .form_label {
   font-size: 14px;
