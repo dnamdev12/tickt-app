@@ -5,7 +5,8 @@ const initialState = {
     editMilestoneTiming: null,
     editDetailPage: null,
     builderHome: null,
-    testBuilderHome: null
+    testBuilderHome: null,
+    localChanges: false
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -28,10 +29,18 @@ const reducer = (state = initialState, action: any) => {
             console.log({ action }, '------------- In actions')
             state.builderHome = action.payload;
             return { ...state }
+
         case actionTypes.SET_FETCH_HOME_BUILDER:
             return {
                 ...state,
                 testBuilderHome: action.payload
+            }
+
+        case actionTypes.SET_LOCAL_CHANGES:
+            console.log({action})
+            return {
+                ...state,
+                localChanges: action.payload.data
             }
 
         default: return state

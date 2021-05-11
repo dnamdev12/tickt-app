@@ -18,6 +18,7 @@ Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 const BuilderHome = (props: any) => {
     let { callTradeList, getRecentSearchList, setHomeBuilder, builderHome, tradeListData, tradieHomeData } = props;
     const [addressItem, setAddressItem] = useState();
+    const [position, setPosition] = useState<any>({});
 
     // const getBuilderData = useCallback(async (data: any) => {
     //     let { status, response } = await getBuilderHomeData(data);
@@ -30,7 +31,9 @@ const BuilderHome = (props: any) => {
         const showPosition = (position: any) => {
             let { latitude, longitude } = position.coords;
             const jobType = { lat: latitude, long: longitude, jobType: '', tradie: true };
-            console.log({ jobType }, '--------------!!!');
+            localStorage.setItem('postion', `[${longitude},${latitude}]`);
+            setPosition({ lat: latitude, long: longitude });
+            // console.log({ jobType }, '--------------!!!');
             setHomeBuilder(jobType);
 
             // Get address from latitude & longitude.
@@ -48,6 +51,8 @@ const BuilderHome = (props: any) => {
         const postionError = (error: any) => {
             const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
             setHomeBuilder(jobType);
+            setPosition({ lat: '37.8136', long: '144.9631' });
+            localStorage.setItem('postion', '[37.8136,144.9631]');
             Geocode.fromLatLng('37.8136', '144.9631').then(
                 (response) => {
                     const address = response.results[0].formatted_address;
@@ -70,8 +75,8 @@ const BuilderHome = (props: any) => {
         getRecentSearchList();
         callTradeList();
         let data = props.testBuilderHome || null;
-        console.log({ data }, '-------------------------------->')
-        if (!data || !Object.keys(data)?.length) {
+        
+        if (!data || !Object.keys(data)?.length || !data?.saved_tradespeople?.length) {
             checkPermission();
         }
         // const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
@@ -87,6 +92,7 @@ const BuilderHome = (props: any) => {
             <Banner
                 {...props}
                 current_address={addressItem}
+                position={position}
             />
 
             <TradieHome

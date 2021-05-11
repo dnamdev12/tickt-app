@@ -8,7 +8,7 @@ import SearchResultFilters from './searchFilters';
 // import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 // import filterSelected from '../../assets/images/ic-filter-selected.png';
 // import mapIcon from '../../assets/images/map.png';
-// import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
 import BannerSearch from '../shared/bannerSearch'
@@ -16,63 +16,19 @@ import TradieBox from '../shared/tradieBox'
 
 const SearchResultTradie = (props: any) => {
     const location: any = useLocation();
-    const { data, searchText, selectedAddress, selectedTrade, exta } = location?.state;
+    const { data, searchText, stateData, selectedAddress, selectedTrade, exta } = location?.state;
     const [filterState, setFilterState] = useState({
         page: 1,
         filterByPrice: false,
     });
     const [selectedItem, setSelectedItem] = useState(location?.state);
-
-    // <img src={noData} alt="data not found" />
+    const [forceupdate, setForceUpdate] = useState({});
 
     useEffect(() => {
-        if (location?.state?.queryParam === 'viewNearByJob') {
-            const data = {
-                page: 1,
-                lat: props.location?.state?.bannerData?.location?.coordinates[1],
-                long: props.location?.state?.bannerData?.location?.coordinates[0]
-            }
-            if (props?.getViewNearByJob) {
-                props.getViewNearByJob(data);
-            }
-        }
+        props.getRecentSearchList();
+    }, []);
 
-        if (location?.state?.queryParam === 'jobTypeList') {
-            const data = {
-                page: 1,
-                isFiltered: false,
-                jobTypes: location?.state?.jobTypes,
-            }
-            props.postHomeSearchData(data);
-        }
-    }, [])
-
-    console.log(props, location);
-
-
-    const renderJobsData = () => {
-        // const jobsData = props.viewNearByJobData;
-        // return jobsData;
-        console.log(props.homeSearchJobData, "homeSearchJobData response")
-        var jobsData;
-        if (filterState.filterByPrice) {
-            jobsData = props.homeSearchJobData;
-            // setFilterState((prevData: any) => ({ ...prevData, filterByPrice: !prevData.filterByPrice }));
-            return jobsData;
-        }
-        if (location?.state?.queryParam == 'viewNearByJob') {
-            jobsData = props.viewNearByJobData;
-            return jobsData;
-        } else {
-            jobsData = props.homeSearchJobData;
-            return jobsData;
-        }
-        // if (location?.state?.queryParam == 'jobTypeList') {
-        //     jobsData = props.homeSearchJobData;
-        //     return jobsData;
-        // }
-        return null;
-    }
+    // <img src={noData} alt="data not found" />
 
     const showBudgetFilterResults = (budgetFilterData: any) => {
         const data = {
@@ -91,11 +47,27 @@ const SearchResultTradie = (props: any) => {
         setFilterState((prevData: any) => ({ ...prevData, filterByPrice: true }))
     }
 
-    let filteredItems = renderJobsData();
+    const updateSearchName = (item: any) => {
+        let seleted_item: any = selectedItem;
+        if (item?.length) {
+            let item_ids = item.map((it: any) => it._id);
+            seleted_item['searchText'] = item[0].name;
+            seleted_item['data']['specializationId'] = item_ids;
+            seleted_item['data']['tradeId'] = item[0].tradeId;
+
+            seleted_item['selectedTrade']['specialisations'] = item_ids;
+            seleted_item['selectedTrade']['_id'] = item[0].tradeId;
+            setSelectedItem(seleted_item);
+            props.isHandleChanges(false);
+            if (Array.isArray(forceupdate)) {
+                setForceUpdate({});
+            } else {
+                setForceUpdate([]);
+            }
+        }
+    }
+
     let homeSearchJobData = props.homeSearchJobData;
-    console.log({
-        homeSearchJobData: props.homeSearchJobData
-    })
     return (
         <div className="app_wrapper" >
             <div className="top_search">
@@ -116,12 +88,16 @@ const SearchResultTradie = (props: any) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <span className="title">
-                                        {/* {location?.state?.queryParam == 'viewNearByJob' ? location?.state?.heading : location?.state?.queryParam == 'jobTypeList' ? location?.state?.heading : ""} */}
                                         <span className="count">
                                             {`${homeSearchJobData?.length} results`}
                                         </span>
                                     </span>
-                                    <SearchResultFilters showBudgetFilterResults={showBudgetFilterResults} />
+                                    <SearchResultFilters
+                                        {...props}
+                                        showBudgetFilterResults={showBudgetFilterResults}
+                                        selectedItem={selectedItem}
+                                        updateSearchName={updateSearchName}
+                                    />
                                 </div>
                             </div>
                         </div>
@@ -130,7 +106,7 @@ const SearchResultTradie = (props: any) => {
                                 homeSearchJobData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
                                 ))
-                                : null}
+                                : <img src={noData} alt="data not found" />}
                         </div>
                     </div>
                 </div>

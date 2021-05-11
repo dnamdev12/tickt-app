@@ -6,8 +6,9 @@ import {
     getJobWithJobTypeLatLong,
     getJobTypeList,
     getRecentSearchList,
-    postHomeSearchData
+    postHomeSearchData,
 } from '../../redux/homeSearch/actions';
+import { isHandleChanges } from '../../redux/jobs/actions';
 
 const mapStateToProps = (state: any) => {
     return {
@@ -15,6 +16,7 @@ const mapStateToProps = (state: any) => {
         jobTypeListData: state.homeSearch.jobTypeListData,
         tradeListData: state.auth.tradeListData,
         homeSearchJobData: state.homeSearch.homeSearchJobData,
+        localChanges:state.jobs.localChanges
     }
 }
 
@@ -24,7 +26,8 @@ const mapDispatchToProps = (dispatch: any) => {
         getJobTypeList,
         callTradeList,
         getRecentSearchList,
-    postHomeSearchData
+        postHomeSearchData,
+        isHandleChanges
     }, dispatch);
 }
 

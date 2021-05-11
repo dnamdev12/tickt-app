@@ -21,9 +21,11 @@ import close from "../../assets/images/icon-close-1.png";
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { getSearchJobList, getRecentSearchList, postHomeSearchData } from '../../redux/homeSearch/actions';
+import { isHandleChanges } from '../../redux/jobs/actions';
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import moment from 'moment';
 import Geocode from "react-geocode";
+import { setShowToast } from '../../redux/common/actions';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -32,7 +34,16 @@ interface PropsType {
     history: any,
     location?: any,
     bannerData: any,
+    selectedItem: any,
+    selectedTrade: any,
     current_address: any,
+
+    searchText: any,
+    stateData: any,
+    addressText: any,
+    selectedAddress: any,
+    isHandleChanges: (item: any) => void,
+    localChanges: boolean,
     searchJobListData: Array<object>,
     recentSearchJobData: Array<object>,
     homeSearchJobData: Array<object>,
@@ -44,22 +55,22 @@ interface PropsType {
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
 
 const BannerSearch = (props: PropsType) => {
-    let propsItem: any = props;
-    let props_selected = propsItem.selectedItem;
+    let props_selected = props.selectedItem;
+    const { selectedItem, isHandleChanges, localChanges, } = props;
 
-    const [stateData, setStateData] = useState<any>(props.bannerData)
-    const [searchText, setSearchText] = useState(props_selected?.searchText || '');
-    const [addressText, setAddressText] = useState<any>(props_selected?.addressText || null);
-    const [selectedAddress, setSelectedAddress] = useState(props_selected?.selectedAddress || {});
+    const [stateData, setStateData] = useState<any>(null)
+    const [searchText, setSearchText] = useState('');
+    const [addressText, setAddressText] = useState<any>(null);
+    const [selectedAddress, setSelectedAddress] = useState({});
     const [enableCurrentLocation, setCurrentLocations] = useState<boolean>(false);
     const [errors, setErrors] = useState<any>({});
-    const [selectedTrade, setSelectedTrade] = useState(props_selected?.selectedTrade || {});
+    const [selectedTrade, setSelectedTrade] = useState({});
 
     const [inputFocus1, setInputFocus1] = useState<boolean>(false);
     const [inputFocus2, setInputFocus2] = useState<boolean>(false);
     const [inputFocus3, setInputFocus3] = useState<boolean>(false);
 
-    const [calenderRange1, setCalenderRange1] = useState<any>(props_selected?.calenderRange1 || example_calender);
+    const [calenderRange1, setCalenderRange1] = useState<any>(example_calender);
 
     const handleOnOutsideSearch = () => setInputFocus1(false);
     const handleOnOutsideLocation = () => setInputFocus2(false);
@@ -69,22 +80,33 @@ const BannerSearch = (props: PropsType) => {
     const locationRef = useDetectClickOutside({ onTriggered: handleOnOutsideLocation });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
-    useEffect(() => {
-        if (props.bannerData !== stateData) {
-            setStateData(props.bannerData);
-        }
-    }, [props.bannerData]);
-
     const handleCalenderRange = (item: any) => {
         setCalenderRange1(item.selection1)
     };
 
+    useEffect(() => {
+        if (!localChanges) {
+            if (selectedItem?.searchText) {
+                if (selectedItem?.searchText !== searchText) {
+                    setSearchText(selectedItem?.searchText);
+                }
+            }
+        }
+
+        // if(props.location.pathname == '/search-tradie-results'){
+
+        // }
+
+    });
+
     const checkIfExist = (_id: any) => {
-        let isLength = Object.keys(selectedTrade).length;
-        if (isLength) {
-            let item: any = selectedTrade;
-            if (item?._id === _id) {
-                return true;
+        if (selectedTrade) {
+            let isLength = Object.keys(selectedTrade).length;
+            if (isLength) {
+                let item: any = selectedTrade;
+                if (item?._id === _id) {
+                    return true;
+                }
             }
         }
         return false;
@@ -188,26 +210,7 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const validateForm = () => {
-
-
         return true;
-        // const newErrors: any = {};
-        // if (!stateData?.isSearchedJobSelected) {
-        //     newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
-        // } else if (!stateData?.searchedJob) {
-        //     newErrors.searchedJob = Constants.errorStrings.bannerSearchJobEmpty;
-        // } else {
-        //     const searchJobRegex = new RegExp(regex.alphaSpecial);
-        //     if (!searchJobRegex.test(stateData.searchedJob.trim())) {
-        //         newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
-        //     }
-        // }
-
-        // if (!stateData?.isMapLocationSelected && stateData?.selectedMapLocation) {
-        //     newErrors.selectedMapLocation = Constants.errorStrings.bannerSearchLocation;
-        // }
-        // setErrors(newErrors);
-        // return !Object.keys(newErrors).length;
     }
 
     const setItemSearch = (item: any) => {
@@ -219,9 +222,22 @@ const BannerSearch = (props: PropsType) => {
     const bannerSearchClicked = () => {
         let selected_address: any = selectedAddress;
         let selected_trade: any = selectedTrade;
+        console.log({
+            selected_address,
+            selected_trade,
+            stateData,
+            selectedTrade,
+            searchText,
+            localChanges,
+            selectedItem
+        })
+
+        if (!stateData?._id && !props?.selectedItem?.selectedTrade?._id) {
+            setShowToast(true, 'please enter the valid search text.');
+            return;
+        }
 
         if (validateForm()) {
-            // console.log({ stateData, selectedTrade })
             let data: any = {
                 page: 1,
                 isFiltered: false,
@@ -252,19 +268,35 @@ const BannerSearch = (props: PropsType) => {
                 delete data.to_date;
             }
 
-            if (Object.keys(selectedTrade).length) {
-                data['tradeId'] = [selected_trade._id];
-                if (selected_trade?.specialisations?.map) {
-                    data['specializationId'] = selected_trade.specialisations.map((item: any) => item._id);
-                    console.log({ selectedTrade });
+            let props_trade: any = props?.selectedItem?.selectedTrade;
+            if (props_trade?._id) {
+                data['tradeId'] = [props_trade._id];
+                if (props_trade?.specialisations?.length) {
+                    data['specializationId'] = props_trade.specialisations.map((item: any) => {
+                        if(item?._id){
+                            return item?._id;
+                        } 
+                        return item;
+                    });
+                }
+            } else {
+                if (selectedTrade && Object.keys(selectedTrade).length) {
+                    if (Object.keys(selectedTrade).length) {
+                        data['tradeId'] = [selected_trade._id];
+                        if (selected_trade?.specialisations?.map) {
+                            data['specializationId'] = selected_trade.specialisations.map((item: any) => item._id);
+                        }
+                    }
                 }
             }
-            console.log({ data })
-            props.postHomeSearchData(data)
+        
+            props.postHomeSearchData(data);
+            isHandleChanges(false)
             props.history.push({
                 pathname: `search-tradie-results`,
                 state: {
                     data,
+                    stateData,
                     searchText,
                     selectedAddress,
                     addressText,
@@ -278,6 +310,17 @@ const BannerSearch = (props: PropsType) => {
 
     let selected_trade: any = selectedTrade;
     let length_spec = selected_trade?.specialisations?.length;
+    if (!length_spec) {
+        if (stateData?.specializationsId?.length) {
+            length_spec = 1;
+        }
+    }
+
+    if (!localChanges && props?.selectedItem) {
+        let selected_trade_props: any = props?.selectedItem?.selectedTrade;
+        length_spec = selected_trade_props?.specialisations?.length;
+    }
+
     return (
         <div className="home_search">
             <button className="modal_srch_close">
@@ -291,9 +334,10 @@ const BannerSearch = (props: PropsType) => {
                                 type="text"
                                 ref={searchRef}
                                 placeholder="What jobs are you after?"
-                                value={length_spec > 1 ? `${searchText} +${length_spec - 1}` : searchText}
+                                value={length_spec > 1 ? `${searchText} +${length_spec - 1}` : (searchText)}
+                                // value={length_spec > 1 ? `${props.selectedItem?.searchText || searchText} +${length_spec - 1}` : (props.selectedItem?.searchText || searchText)}
                                 onChange={(e) => {
-                                    console.log('callable-Here!')
+                                    isHandleChanges(true)
                                     setSearchText(e.target.value);
                                     props.getSearchJobList(e.target.value)
                                 }}
@@ -310,6 +354,7 @@ const BannerSearch = (props: PropsType) => {
                                         alt="cross"
                                         onClick={() => {
                                             // clear here
+                                            isHandleChanges(true)
                                             setItemSearch({});
                                         }} />
                                 </span>
@@ -365,7 +410,6 @@ const BannerSearch = (props: PropsType) => {
                                         let response = await Geocode.fromAddress(address);
                                         if (response?.results?.length) {
                                             const { lat, lng } = response.results[0].geometry.location;
-                                            console.log({ lat, lng })
                                             setSelectedAddress({ lat, lng });
                                             setInputFocus2(false);
                                         }
@@ -376,7 +420,6 @@ const BannerSearch = (props: PropsType) => {
                                 >
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
                                         <div>
-                                            {console.log({ getInputProps, suggestions, getSuggestionItemProps, loading })}
                                             <div className="text_field">
                                                 <input
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
@@ -508,6 +551,7 @@ const mapStateToProps = (state: any) => {
         recentSearchJobData: state.homeSearch.recentSearchJobData,
         homeSearchJobData: state.homeSearch.homeSearchJobData,
         tradeListData: state.auth.tradeListData,
+        localChanges: state.jobs.localChanges
     }
 }
 
@@ -515,7 +559,8 @@ const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         getSearchJobList,
         getRecentSearchList,
-        postHomeSearchData
+        postHomeSearchData,
+        isHandleChanges
     }, dispatch);
 }
 

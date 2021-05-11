@@ -14,12 +14,29 @@ import BannerSearch from '../../../shared/bannerSearch';
 const Banner = (props: any) => {
 
     const viewMoreClicked = () => {
+        let position: any = props.position;
+        console.log({ position });
+        props.postHomeSearchData({
+            page: 1,
+            isFiltered: false,
+            location: {
+                "coordinates": [
+                    position.long,
+                    position.lan
+                ]
+            }
+        })
         props.history.push({
-            pathname: 'search-tradie-results',
+            pathname: `search-tradie-results`,
             state: {
-                queryParam: "viewNearByJob",
-                bannerData: props.bannerData,
-                heading: "Jobs in your area",
+                data: null,
+                stateData: null,
+                searchText: null,
+                selectedAddress: null,
+                addressText: null,
+                selectedTrade: null,
+                calenderRange1: null,
+                exta: 0
             }
         })
     }

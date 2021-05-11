@@ -1,5 +1,3 @@
-/* eslint-disable eqeqeq */
-/* eslint-disable jsx-a11y/anchor-is-valid */
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { callTradeList } from './../../redux/auth/actions';
@@ -23,7 +21,7 @@ import spherePlaceholder from '../../assets/images/ic_categories_placeholder.svg
 
 
 const SearchFilter = (props: any) => {
-    const { data, searchText, selectedAddress, selectedTrade, exta } = props.selectedItem;
+
     const [errors, setErrors] = useState<any>({});
     const [priceAnchorEl, setPriceAnchorEl] = useState(null);
     const [filterAnchorEl, setFilterAnchorEl] = useState(null);
@@ -41,11 +39,11 @@ const SearchFilter = (props: any) => {
 
     const [sortByFilter, setSortByFilter] = useState<any>({
         sortByFilterClicked: false,
-        tradeId: data?.tradeId || [],
-        specializationId: data?.specializationId || [],
+        tradeId: [],
+        jobTypes: [],
+        specializationId: [],
         allSpecializationClicked: false,
     })
-    // jobTypes: [],
 
     const [sortBySorting, setSortBySorting] = useState<any>({
         sortBySorting: false,
@@ -56,13 +54,6 @@ const SearchFilter = (props: any) => {
         props.getJobTypeList();
         props.callTradeList();
     }, [])
-
-    useEffect(() => {
-        console.log({ data }, '------------------>');
-        sortByFilter.tradeId = data?.tradeId || [];
-        sortByFilter.specializationId = data?.specializationId || [];
-        setSortByFilter(sortByFilter);
-    }, [data])
 
     const sortByPriceClick = (event: any) => {
         setPriceAnchorEl(event.currentTarget);
@@ -123,36 +114,35 @@ const SearchFilter = (props: any) => {
         return !Object.keys(newErrors).length;
     }
 
-    // const showResultsByBudget = (e: any) => {
-    //     e.preventDefault();
-    //     if (validateForm()) {
-    //         const data = {
-    //             pay_type: sortByPrice.pay_type,
-    //             max_budget: parseInt(sortByPrice.max_budget)
-    //         }
-    //         props.showBudgetFilterResults(data);
-    //         sortByPriceClose();
-    //     }
-    // }
+    const showResultsByBudget = (e: any) => {
+        e.preventDefault();
+        if (validateForm()) {
+            const data = {
+                pay_type: sortByPrice.pay_type,
+                max_budget: parseInt(sortByPrice.max_budget)
+            }
+            props.showBudgetFilterResults(data);
+            sortByPriceClose();
+        }
+    }
 
-    // const showResultsByFilter1 = () => {
-    //     //sortByFilter.jobTypes.length && 
-    //     if (sortByFilter.specializationId.length && sortByFilter.tradeId.length) {
-    //         const data = {
-    //             pay_type: sortByPrice.pay_type,
-    //             max_budget: parseInt(sortByPrice.max_budget)
-    //         }
-    //         props.showBudgetFilterResults(data);
-    //         sortByFilterClose();
-    //     } else {
-    //         setShowToast(true, "Please select all required fields")
-    //     }
-    // }
+    const showResultsByFilter1 = () => {
+        //sortByFilter.jobTypes.length && 
+        if (sortByFilter.specializationId.length && sortByFilter.tradeId.length) {
+            const data = {
+                pay_type: sortByPrice.pay_type,
+                max_budget: parseInt(sortByPrice.max_budget)
+            }
+            props.showBudgetFilterResults(data);
+            sortByFilterClose();
+        } else {
+            setShowToast(true, "Please select all required fields")
+        }
+    }
 
     const sortByButtonClicked = (num: number) => {
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: num }));
         sortBySortingClose();
-        updateOnChange(num);
     }
 
     const filterChangeHandler = (id: any, name: string) => {
@@ -165,6 +155,7 @@ const SearchFilter = (props: any) => {
         } else if (name === 'specializationId') {
             setSortByFilter((prevData: any) => {
                 var newData = [...prevData.specializationId];
+                console.log(newData, "search Results")
                 if (sortByFilter.allSpecializationClicked) {
                     newData = []
                 }
@@ -174,6 +165,7 @@ const SearchFilter = (props: any) => {
                 } else {
                     newData.splice(itemIndex, 1);
                 }
+                console.log(newData, "search Results")
                 return {
                     ...prevData,
                     specializationId: newData,
@@ -181,11 +173,10 @@ const SearchFilter = (props: any) => {
                 }
             })
         } else if (name == 'categories') {
-
             if (sortByFilter.tradeId.length && sortByFilter.tradeId[0] == id) {
-                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], specializationId: [], allSpecializationClicked: false }))
+                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [] }))
             } else {
-                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [id], specializationId: [], allSpecializationClicked: false }))
+                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [id] }))
             }
         } else if (name == 'All Clicked') {
             if (sortByFilter.allSpecializationClicked) {
@@ -201,80 +192,41 @@ const SearchFilter = (props: any) => {
         }
     }
 
-    const renderFilterButtons = () => (
-        <ul className="filters_row">
-            {/* {'Filter buttons on top'} */}
-            <li>
-                <a onClick={sortByFilterClick}>
-                    <img
-                        src={sortByFilter.sortByFilterClicked ? filterSelected : filterUnselected}
-                        alt="filter" />
-                    {'Filter'}
-                </a>
-            </li>
-            <li>
-                <a onClick={sortBySortingClick}>{'Sorting'}</a>
-            </li>
-        </ul>
-    )
-
-    const showResultSearch = () => {
-        if (!sortByFilter?.specializationId?.length) {
-            setShowToast(true, 'Please select all fields.');
-            return;
-        }
-        updateOnChange();
-        sortByFilterClose();
-    }
-
-    const updateOnChange = (sort?: any) => {
-        const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
-        const { specializationId, tradeId } = sortByFilter;
-        if (specializationId?.length) {
-            let filteredItem: any = specializationList.filter((item: any) => {
-                if (specializationId.includes(item._id)) {
-                    return item;
-                }
-            });
-
-            let data: any = {
-                page: 1,
-                isFiltered: true,
-                sortBy: sort ? sort : 1,
-                tradeId: tradeId,
-                specializationId: specializationId,
-            }
-
-            let get_position: any = localStorage.getItem('postion');
-            if (sort === 2) {
-                data['location'] = {
-                    "coordinates": JSON.parse(get_position)
-                }
-            } else {
-                delete data.location;
-            }
-            props.postHomeSearchData(data)
-            props.updateSearchName(filteredItem);
-        }
-    }
+    console.log(sortByFilter, "sortByFilter")
 
     const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
-    let checkIfAllSelected = false;
-    if (specializationList) {
-        checkIfAllSelected = sortByFilter.specializationId?.length === specializationList?.length;
-    }
-    
+
+
     return (
         <div className="filters_wrapr">
-            {renderFilterButtons()}
-
+            <ul className="filters_row">
+                <li>
+                    <a  onClick={sortByFilterClick}>
+                        <img src={sortByFilter.sortByFilterClicked ? filterSelected : filterUnselected} alt="filter" />Filter
+                       {/* <img src={filterSelected} alt="filter" />Filter */}
+                    </a>
+                </li>
+                <li>
+                    <a className={sortByPrice.priceFilterClicked ? "active" : ''} onClick={sortByPriceClick}>Price</a>
+                </li>
+                <li>
+                    <a onClick={sortBySortingClick}>
+                        {'Sorting'}
+                    </a>
+                </li>
+            </ul>
             {sortByFilter.sortByFilterClicked &&
                 <Modal
+                    // anchorEl={filterAnchorEl}
+                    // keepMounted
+                    // onClose={sortByFilterClose}
                     className="custom_modal"
+                    // open={Boolean(filterAnchorEl)}
                     open={sortByFilter.sortByFilterClicked}
                     onClose={sortByFilterClose}
                     aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description">
+                    aria-describedby="simple-modal-description"
+                >
                     <>
                         <div className="custom_wh filter_modal">
                             <div className="heading">
@@ -286,34 +238,17 @@ const SearchFilter = (props: any) => {
 
                             <div className="inner_wrap">
                                 <div className="form_field">
-                                    <span className="xs_sub_title">
-                                        {'Categories'}
-                                    </span>
+                                    <span className="xs_sub_title">Categories</span>
                                 </div>
                                 <div className="select_sphere">
                                     <ul>
-                                        {props.tradeListData?.map((
-                                            { _id,
-                                                trade_name,
-                                                selected_url,
-                                                specialisations
-                                            }: {
-                                                _id: string,
-                                                trade_name: string,
-                                                selected_url: string,
-                                                specialisations: []
-                                            }) => {
+                                        {/* {categoriesHTML} */}
+                                        {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
                                             const active = sortByFilter.tradeId[0] === _id;
                                             return (
-                                                <li
-                                                    key={_id}
-                                                    className={active ? 'active' : ''}
-                                                    onClick={() => filterChangeHandler(_id, 'categories')}>
+                                                <li key={_id} className={active ? 'active' : ''} onClick={() => filterChangeHandler(_id, 'categories')}>
                                                     <figure>
-                                                        <img
-                                                            alt=""
-                                                            src={selected_url ? selected_url : spherePlaceholder}
-                                                        />
+                                                        <img src={selected_url ? selected_url : spherePlaceholder} />
                                                     </figure>
                                                     <span className="name">{trade_name}</span>
                                                 </li>
@@ -322,41 +257,37 @@ const SearchFilter = (props: any) => {
                                     </ul>
                                     {/* <span className="error_msg">{errors.categories}</span> */}
                                 </div>
-
+                                {/* <div className="form_field">
+                                    <span className="xs_sub_title">Job types</span>
+                                </div>
+                                <ul className="job_categories">
+                                    {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
+                                        const active = sortByFilter.jobTypes[0] == _id;
+                                        return (
+                                            <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
+                                                <figure className="type_icon">
+                                                    <img src={image} alt="icon" />
+                                                </figure>
+                                                <span className="name">{name}</span>
+                                            </li>
+                                        )
+                                    })}
+                                </ul> */}
                                 <div className="form_field">
                                     <span className="xs_sub_title">Specialisation</span>
                                 </div>
                                 <div className="tags_wrap">
                                     <ul>
                                         {specializationList?.length > 0 &&
-                                            <li
-                                                className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
-                                                onClick={() => {
-                                                    let items: any = props.tradeListData.find((dt: any) => dt._id == sortByFilter.tradeId);
-                                                    if (items) {
-                                                        filterChangeHandler(items?.specialisations, 'All Clicked');
-                                                    }
-                                                }}>
-                                                {'All'}
-                                            </li>}
+                                            <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                                onClick={() => filterChangeHandler(props.tradeListData?.slice(0, 1)[0]?.specialisations, 'All Clicked')}>All</li>}
                                         {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
-                                            // let active = sortByFilter.specializationId?.indexOf(_id) >= 0;
-                                            let active = sortByFilter.specializationId.includes(_id);
+                                            const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
                                             return (
-                                                <li
-                                                    key={_id}
-                                                    className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''}
-                                                    onClick={() => {
-                                                        if (checkIfAllSelected) {
-                                                            let sort_by_spec: any = sortByFilter;
-                                                            sort_by_spec['specializationId'] = [];
-                                                            setSortByFilter(sort_by_spec);
-                                                        }
-                                                        filterChangeHandler(_id, 'specializationId')
-                                                    }}>
-                                                    {name}
-                                                </li>)
-                                        })}
+                                                <li key={_id} className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''} onClick={() => filterChangeHandler(_id, 'specializationId')}>{name}</li>)
+                                        }
+                                        )
+                                        }
                                     </ul>
                                     {/* <span className="error_msg">{errors.specializationId}</span> */}
 
@@ -364,14 +295,48 @@ const SearchFilter = (props: any) => {
                             </div>
                             <div className="filter_btn">
                                 <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
-                                <button className="fill_btn full_btn" onClick={showResultSearch}>Show Results</button>
+                                <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
                             </div>
                         </div>
                     </>
                 </Modal>
             }
+            {sortByPrice.priceFilterClicked &&
+                <Menu className="fsp_modal range"
+                    id="simple-menu"
+                    anchorEl={priceAnchorEl}
+                    keepMounted
+                    open={Boolean(priceAnchorEl)}
+                    onClose={sortByPriceClose}
+                >
+                    <span className="close_btn" onClick={sortByPriceClose}>
+                        <img src={cancel} alt="cancel" />
+                    </span>
+                    <span className="sub_title">Maximum budget</span>
 
+                    <div className="form_field">
+                        <div className="text_field">
+                            <input type="text" placeholder="0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={6} className="detect_input_ltr" />
+                            <span className="detect_icon_ltr">$</span>
+                        </div>
+                        {!!errors.maxBudget && <span className="error_msg">{errors.maxBudget}</span>}
+                    </div>
+                    <span className={sortByPrice.payTypeClicked ? "price up" : 'price down'} onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, payTypeClicked: !prevData.payTypeClicked }))}>
+                        {sortByPrice.pay_type == "Fixed price" ? "Fixed price" : sortByPrice.pay_type == "Per hour" ? "Per hour" : ""}
+                    </span>
 
+                    {sortByPrice.payTypeClicked &&
+                        <div>
+                            <div onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Per hour", payTypeClicked: !prevData.payTypeClicked }))}>
+                                <span className="per_day">Per hour</span>
+                            </div>
+                            <div onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", payTypeClicked: !prevData.payTypeClicked }))}>
+                                <span className="per_day">Fixed price</span>
+                            </div>
+                        </div>
+                    }
+                    <a className="link" onClick={showResultsByBudget}>Show results</a>
+                </Menu>}
             {sortBySorting.sortBySorting &&
                 <Menu
                     // id="simple-menu"

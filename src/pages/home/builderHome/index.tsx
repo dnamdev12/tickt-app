@@ -6,7 +6,8 @@ import {
     getRecentSearchList,
     getJobTypeList,
     getJobWithJobTypeLatLong,
-    getViewNearByJob
+    getViewNearByJob,
+    postHomeSearchData
 } from '../../../redux/homeSearch/actions';
 import { callTradeList } from '../../../redux/auth/actions';
 import { setHomeBuilder } from '../../../redux/jobs/actions';
@@ -33,7 +34,8 @@ const mapDispatchToProps = (dispatch: any) => {
         getRecentSearchList,
         getJobTypeList,
         getJobWithJobTypeLatLong,
-        getViewNearByJob
+        getViewNearByJob,
+        postHomeSearchData
     }, dispatch);
 }
 

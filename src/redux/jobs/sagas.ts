@@ -16,8 +16,13 @@ function* setHomeBuilder(action: any) {
     }
 }
 
+function* setLocalChanges(action: any) {
+    yield put({ type: actionTypes.SET_LOCAL_CHANGES, payload: action });
+}
+
 function* postJobWatcher() {
     yield takeLatest(actionTypes.FETCH_HOME_BUILDER, setHomeBuilder);
+    yield takeLatest(actionTypes.GET_LOCAL_CHANGES, setLocalChanges)
 }
 
 export default postJobWatcher;
