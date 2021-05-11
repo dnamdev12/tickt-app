@@ -2688,6 +2688,15 @@ body {
 		width: 100%;
 		margin-bottom: 20px;
 	}
+  .full_btn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+      margin-right: 10px;
+    }
+  }
 	.more_detail {
 		position: absolute;
 		top: 16px;
@@ -3628,7 +3637,7 @@ body {
 
 .dashboard_menu {
   li {
-    margin-bottom: 48px;
+    margin-bottom: 35px;
     .icon {
       padding-left: 35px;
       color: var(--blue);
@@ -3718,7 +3727,11 @@ body {
     }
   }
   .tradie_card {
-    min-height: 264px;
+    // min-height: 264px;
+    .count_wrap{
+      justify-content: space-around;
+      width: 100%;
+    }
   }
   .job_info {
     padding: 15px;
