@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 
 // import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import SearchResultFilters from './searchFilters';
@@ -15,15 +15,13 @@ import BannerSearch from '../shared/bannerSearch'
 import TradieBox from '../shared/tradieBox'
 
 const SearchResultTradie = (props: any) => {
+    const location: any = useLocation();
+    const { data, searchText, selectedAddress, selectedTrade, exta } = location?.state;
     const [filterState, setFilterState] = useState({
         page: 1,
         filterByPrice: false,
-    })
-    const [mapData, setMapData] = useState<any>({
-        showMap: false,
-    })
-
-    const location: any = useLocation();
+    });
+    const [selectedItem, setSelectedItem] = useState(location?.state);
 
     // <img src={noData} alt="data not found" />
 
@@ -33,10 +31,8 @@ const SearchResultTradie = (props: any) => {
                 page: 1,
                 lat: props.location?.state?.bannerData?.location?.coordinates[1],
                 long: props.location?.state?.bannerData?.location?.coordinates[0]
-                // lat: 21.17021,
-                // long: 72.831062
-            }   
-            if(props?.getViewNearByJob){
+            }
+            if (props?.getViewNearByJob) {
                 props.getViewNearByJob(data);
             }
         }
@@ -103,7 +99,7 @@ const SearchResultTradie = (props: any) => {
     return (
         <div className="app_wrapper" >
             <div className="top_search">
-                <BannerSearch {...props} />
+                <BannerSearch {...props} selectedItem={selectedItem} />
             </div>
             <div className="search_result">
                 <div className="section_wrapper bg_gray">
@@ -119,7 +115,8 @@ const SearchResultTradie = (props: any) => {
                         <div className="result_heading">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
-                                    <span className="title">{location?.state?.queryParam == 'viewNearByJob' ? location?.state?.heading : location?.state?.queryParam == 'jobTypeList' ? location?.state?.heading : ""}
+                                    <span className="title">
+                                        {/* {location?.state?.queryParam == 'viewNearByJob' ? location?.state?.heading : location?.state?.queryParam == 'jobTypeList' ? location?.state?.heading : ""} */}
                                         <span className="count">
                                             {`${homeSearchJobData?.length} results`}
                                         </span>
@@ -129,33 +126,11 @@ const SearchResultTradie = (props: any) => {
                             </div>
                         </div>
                         <div className="flex_row tradies_row">
-                            {/* If the map does not come, then this div not only class (card_col) will be hidden */}
-                            {mapData.showMap ?
-                                <div className="card_col">
-                                    {filteredItems?.length
-                                        ?
-                                        (filteredItems?.map((item: any, index: any) => <TradieBox item={item} index={index} />))
-                                        :
-                                        <span>No data Found</span>}
-                                </div>
-                                :
-                                filteredItems?.length
-                                    ?
-                                    (filteredItems?.map((item: any, index: any) => <TradieBox item={item} index={index} />))
-                                    :
-                                    <span>No data Found</span>}
-
-                            {mapData.showMap &&
-                                <div className="map_col">
-                                    <div className="map_stick">
-                                        <span
-                                            className="close_map"
-                                            onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
-                                            <img src={closeMap} alt="close-map" />
-                                        </span>
-                                        {/* <RenderMap {...props} filterByPrice={filterState.filterByPrice} /> */}
-                                    </div>
-                                </div>}
+                            {homeSearchJobData?.length ?
+                                homeSearchJobData.map((item: any, index: number) => (
+                                    <TradieBox item={item} index={index} />
+                                ))
+                                : null}
                         </div>
                     </div>
                 </div>
