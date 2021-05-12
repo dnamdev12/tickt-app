@@ -155,31 +155,33 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
           <div className="flex_row">
             <div className="flex_col_sm_5">
               <div className="form_field">
-                <div className="text_field">
 
+                <div className="text_field none">
                   <input
                     placeholder='Type a State, city or suburb'
-                    className='location-search-input'
                     value={address}
-                    style={{ display: address.length > 2 ? 'none' : '' }}
+                    // style={{ display: address.length > 2 ? 'none' : '' }}
                     id="location_search_static"
                     onChange={(e) => setAddress(e.target.value)}
                     onFocus={(x) => {
                       // console.log('Input - 1')
                     }}
                   />
+                </div>
 
-                  <PlacesAutocomplete
-                    // debounce={400}
-                    value={address}
-                    onChange={(value) => {
-                      setLocationSelected(false);
-                      setAddress(value)
-                    }}
-                    onSelect={handleSelect}
-                  >
-                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
-                      <div>
+
+                <PlacesAutocomplete
+                  // debounce={400}
+                  value={address}
+                  onChange={(value) => {
+                    setLocationSelected(false);
+                    setAddress(value)
+                  }}
+                  onSelect={handleSelect}
+                >
+                  {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
+                    <div>
+                      <div className="text_field">
                         <input
                           id="location_search_dynamic"
                           onFocus={(x) => {
@@ -188,7 +190,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                           style={{ display: address.length < 3 ? 'none' : '' }}
                           {...getInputProps({
                             placeholder: 'Type a State, city or suburb',
-                            className: 'location-search-input',
+                            className: 'location-search-input detect_input',
                           })}
                         />
                         <span className="detect_icon" >
@@ -199,41 +201,42 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                               setAddress('');
                             }} />
                         </span>
-                        <div className="autocomplete-drop-down-map-container">
-                          {loading && <div>Loading...</div>}
-                          {!locationSelected && !loading && !suggestions?.length && address?.length > 3 ?
-                            <div className="loc_suggestions">
-                              {'No Result Found.'}
-                            </div>
-                            : ''}
-                          {suggestions.map((suggestion: any) => {
-                            const className = suggestion.active
-                              ? 'suggestion-item--active'
-                              : 'suggestion-item';
-                            // inline style for demonstration purpose
-                            const style = suggestion.active
-                              ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                              : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                            return (
-                              <div
-                                {...getSuggestionItemProps(suggestion, {
-                                  className,
-                                  style,
-                                })}
-                              >
-                                <div className="loc_suggestions">{suggestion.description}</div>
-                              </div>
-                            );
-                          })}
-
-                        </div>
                       </div>
-                    )}
-                  </PlacesAutocomplete>
+                      <div className="autocomplete-drop-down-map-container">
+                        {loading && <div>Loading...</div>}
+                        {!locationSelected && !loading && !suggestions?.length && address?.length > 3 ?
+                          <div className="loc_suggestions">
+                            {'No Result Found.'}
+                          </div>
+                          : ''}
+                        {suggestions.map((suggestion: any) => {
+                          const className = suggestion.active
+                            ? 'suggestion-item--active'
+                            : 'suggestion-item';
+                          // inline style for demonstration purpose
+                          const style = suggestion.active
+                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                          return (
+                            <div
+                              {...getSuggestionItemProps(suggestion, {
+                                className,
+                                style,
+                              })}
+                            >
+                              <div className="loc_suggestions">{suggestion.description}</div>
+                            </div>
+                          );
+                        })}
 
-                  <span className="error_msg">{error}</span>
-                </div>
+                      </div>
+                    </div>
+                  )}
+                </PlacesAutocomplete>
+
+                <span className="error_msg">{error}</span>
               </div>
+
               <div className="form_field">
                 <button
                   className={activeCurrent ? 'location-btn fill_btn' : "location-btn"}
