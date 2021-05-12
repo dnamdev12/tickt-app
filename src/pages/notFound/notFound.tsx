@@ -3,6 +3,16 @@ import { Link } from 'react-router-dom';
 
 import menu from '../../assets/images/ic-filter-unselected.png';
 import remove from '../../assets/images/close 1.png';
+import dummy from '../../assets/images/u_placeholder.jpg';
+import approved from '../../assets/images/approved.png';
+import waiting from '../../assets/images/exclamation.png';
+import rateStar from '../../assets/images/ic-star-fill.png';
+import editIconBlue from '../../assets/images/ic-edit-blue.png';
+import check from '../../assets/images/checked-2.png';
+import more from '../../assets/images/icon-direction-right.png';
+import templateImage from '../../assets/images/job-complete-bg.png';
+
+
 
 export default function NotFound() {
     return (
@@ -16,32 +26,5 @@ export default function NotFound() {
             </div>
         </div>
 
-
-        // <div className="custom_container">
-        //     <span className="mob_side_nav">
-        //         <img src={menu} alt="mob-side-nav" />
-        //     </span>
-        //     <div className="f_row">
-        //         <div className="side_nav_col">
-        //             <button className="close_nav">
-        //                 <img alt="close" />
-        //             </button>
-        //             <div className="stick">
-        //                 <span className="title">Job Dashboard</span>
-        //                 <ul className="dashboard_menu">
-        //                     <li>
-        //                         <a className="icon star active">Active Jobs</a>
-        //                     </li>
-        //                     <li>
-        //                         <a className="icon applied">Applied jobs</a>
-        //                     </li>
-        //                     <li>
-        //                         <a className="icon past">Past jobs</a>
-        //                     </li>
-        //                 </ul>
-        //             </div>
-        //         </div>
-        //     </div>
-        // </div>
     )
 }
