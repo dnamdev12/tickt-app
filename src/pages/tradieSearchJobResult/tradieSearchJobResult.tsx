@@ -12,7 +12,11 @@ import mapIcon from '../../assets/images/map.png';
 import noData from '../../assets/images/no-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
+//  <div className="no_record">
+// <figure className="no_img">
 // <img src={noData} alt="data not found" />
+// </figure>
+// </div>
 
 const TradieSearchJobResult = (props: any) => {
     const [searchResultData, setSearchResultData] = useState({

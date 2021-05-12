@@ -33,7 +33,12 @@ const SearchResultTradie = (props: any) => {
         props.getRecentSearchList();
     }, []);
 
+    //  <div className="no_record">
+    // <figure className="no_img">
     // <img src={noData} alt="data not found" />
+    // </figure>
+    // </div>
+
 
     const showBudgetFilterResults = (budgetFilterData: any) => {
         const data = {
@@ -129,7 +134,7 @@ const SearchResultTradie = (props: any) => {
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
-                <BannerSearch {...props} selectedItem={selectedItem} handleChangeToggle={handleChangeToggle}/>
+                <BannerSearch {...props} selectedItem={selectedItem} handleChangeToggle={handleChangeToggle} />
             </div>
             <div className="search_result">
                 <div className="section_wrapper bg_gray">
@@ -165,7 +170,11 @@ const SearchResultTradie = (props: any) => {
                                 homeSearchJobData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
                                 ))
-                                : <img src={noData} alt="data not found" />}
+                                : <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                </div>}
                         </div>
                     </div>
                 </div>
