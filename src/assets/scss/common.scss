@@ -202,7 +202,7 @@ body {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background-size: contain;
+    background-size: contain !important;
   }
 }
 
@@ -1939,6 +1939,7 @@ body {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      text-align: center;
     }
   }
   .logo_img {
@@ -3664,8 +3665,14 @@ body {
 .dashboard_menu {
   li {
     margin-bottom: 35px;
+    @media(max-width: 650px){
+      margin-bottom: 30px;
+    }
     .icon {
       padding-left: 35px;
+      @media(max-width: 650px){
+        padding-left: 30px;
+      }
       color: var(--blue);
       &.active{
         font-family: "Neue Haas Grotesk Text Pro Bold";        
@@ -3673,6 +3680,10 @@ body {
       &:before {
         width: 24px;
         height: 24px;
+        @media(max-width: 650px){
+          width: 20px;
+          height: 20px;
+        }
       }
       &.star {
         &::before {
@@ -3752,6 +3763,11 @@ body {
       text-align: center;
     }
   }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    .flex_col_sm_6 {
+      width: 100%;
+      }
+  }
   .flex_col_sm_9{
     @media(max-width: 650px){
       width: 100%;
@@ -3819,6 +3835,7 @@ body {
     max-width: 250px;
     @media(max-width: 650px){
       max-width: 100%;
+      margin: 30px 0 25px;
     }
     span{
       font-family: 'Neue Haas Grotesk Text Pro Bold';
@@ -3834,9 +3851,16 @@ body {
     margin-bottom: 40px;
     @media(max-width: 650px){
       width: 100%;
+      padding: 12px 20px;
+      margin-bottom: 30px;
     }
     img{
       margin-right: 30px;
+      @media(max-width: 650px){
+        width: 18px;
+        height: 18px;
+        margin-right: 20px;
+      }
     }
   }
 }
@@ -3855,6 +3879,10 @@ body {
     height: 24px;
     background: url("../images/ic-revenue.png") center no-repeat;
     background-size: contain;
+    @media(max-width: 650px){
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 .job_progress_wrap {
