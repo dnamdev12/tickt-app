@@ -52,11 +52,56 @@ const SearchResultTradie = (props: any) => {
         if (item?.length) {
             let item_ids = item.map((it: any) => it._id);
             seleted_item['searchText'] = item[0].name;
-            seleted_item['data']['specializationId'] = item_ids;
-            seleted_item['data']['tradeId'] = item[0].tradeId;
 
-            seleted_item['selectedTrade']['specialisations'] = item_ids;
-            seleted_item['selectedTrade']['_id'] = item[0].tradeId;
+            seleted_item['data'] = {
+                specializationId: item_ids,
+                tradeId: item[0].tradeId
+            }
+
+            seleted_item['selectedTrade'] = {
+                specialisations: item_ids,
+                _id: item[0].tradeId
+            }
+
+            // if (seleted_item?.data?.specializationId) {
+            //     seleted_item.data.specializationId = item_ids;
+            // } else {
+            //     seleted_item['data'] = {};
+            //     if(seleted_item.data){
+            //         seleted_item.data['specializationId'] = item_ids;
+            //     }
+            // }
+
+            // if (seleted_item?.data?.tradeId) {
+            //     seleted_item.data.tradeId = item[0].tradeId;
+            // } else {
+            //     seleted_item['data'] = {};
+            //     if(seleted_item.data){
+            //         seleted_item.data['tradeId'] = item[0].tradeId;
+            //     }
+            // }
+
+            // if (seleted_item?.selectedTrade?.specialisations) {
+            //     console.log('if---->')
+            //     seleted_item.selectedTrade.specialisations = item_ids
+            // } else {
+            //     console.log('else---->')
+            //     seleted_item['selectedTrade'] = {};
+            //     if (seleted_item.selectedTrade) {
+            //         console.log('else---2->')
+            //         seleted_item.selectedTrade['specialisations'] = item_ids
+            //     }
+            // }
+
+            // if (seleted_item?.selectedTrade?._id) {
+            //     seleted_item.selectedTrade._id = item[0].tradeId;
+            // } else {
+            //     seleted_item['selectedTrade'] = {};
+            //     if(seleted_item.selectedTrade){
+            //         seleted_item.selectedTrade['_id'] = item[0].tradeId;
+            //     }
+            // }
+            
             setSelectedItem(seleted_item);
             props.isHandleChanges(false);
             if (Array.isArray(forceupdate)) {
@@ -68,6 +113,14 @@ const SearchResultTradie = (props: any) => {
     }
 
     let homeSearchJobData = props.homeSearchJobData;
+    let seleted_item: any = selectedItem;
+    console.log({
+        seleted_item
+    })
+    let length_items = 0;
+    if(seleted_item?.data?.specializationId?.length){
+        length_items = seleted_item?.data?.specializationId?.length - 1;
+    }
     return (
         <div className="app_wrapper" >
             <div className="top_search">
@@ -88,6 +141,7 @@ const SearchResultTradie = (props: any) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <span className="title">
+                                        {`${seleted_item?.searchText || ''} ${length_items ? `+${length_items}` : ''}`}
                                         <span className="count">
                                             {`${homeSearchJobData?.length} results`}
                                         </span>

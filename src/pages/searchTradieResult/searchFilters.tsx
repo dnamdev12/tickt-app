@@ -49,7 +49,7 @@ const SearchFilter = (props: any) => {
 
     const [sortBySorting, setSortBySorting] = useState<any>({
         sortBySorting: false,
-        sortBy: 1,
+        sortBy: 0,
     })
 
     useEffect(() => {
@@ -58,7 +58,6 @@ const SearchFilter = (props: any) => {
     }, [])
 
     useEffect(() => {
-        console.log({ data }, '------------------>');
         sortByFilter.tradeId = data?.tradeId || [];
         sortByFilter.specializationId = data?.specializationId || [];
         setSortByFilter(sortByFilter);
@@ -213,7 +212,13 @@ const SearchFilter = (props: any) => {
                 </a>
             </li>
             <li>
-                <a onClick={sortBySortingClick}>{'Sorting'}</a>
+                <a onClick={sortBySortingClick}>
+                    {/* {'Sorting'} */}
+                    {sortBySorting.sortBy === 0 && 'Sort by'}
+                    {sortBySorting.sortBy === 1 && 'Highest rated'}
+                    {sortBySorting.sortBy === 2 && 'Closest to me'}
+                    {sortBySorting.sortBy === 3 && 'Most jobs completed'}
+                </a>
             </li>
         </ul>
     )
@@ -231,17 +236,20 @@ const SearchFilter = (props: any) => {
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
         const { specializationId, tradeId } = sortByFilter;
         if (specializationId?.length) {
-            let filteredItem: any = specializationList.filter((item: any) => {
-                if (specializationId.includes(item._id)) {
-                    return item;
-                }
-            });
+            let filteredItem: any = []
+            if (specializationList?.length) {
+                filteredItem = specializationList.filter((item: any) => {
+                    if (specializationId.includes(item._id)) {
+                        return item;
+                    }
+                });
+            }
 
             let data: any = {
                 page: 1,
                 isFiltered: true,
                 sortBy: sort ? sort : 1,
-                tradeId: tradeId,
+                tradeId: Array.isArray(tradeId) ? tradeId : [tradeId],
                 specializationId: specializationId,
             }
 
@@ -263,7 +271,7 @@ const SearchFilter = (props: any) => {
     if (specializationList) {
         checkIfAllSelected = sortByFilter.specializationId?.length === specializationList?.length;
     }
-    
+
     return (
         <div className="filters_wrapr">
             {renderFilterButtons()}
@@ -384,7 +392,9 @@ const SearchFilter = (props: any) => {
                     <span className="close_btn" onClick={sortBySortingClose}>
                         <img src={cancel} alt="cancel" />
                     </span>
-                    <span className="sub_title">Sort by</span>
+                    <span className="sub_title">
+                        {'Sort by'}
+                    </span>
                     {/* <div><input type="radio" value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} /> Highest rated</div>
                     <div><input type="radio" value="Closest to me" checked={sortBySorting.sortBy === 2} onChange={() => sortByButtonClicked(2)} /> Closest to me</div>
                     <div><input type="radio" value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} /> Most jobs completed</div> */}

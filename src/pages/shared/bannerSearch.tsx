@@ -85,18 +85,16 @@ const BannerSearch = (props: PropsType) => {
     };
 
     useEffect(() => {
+        let selected_trade: any = selectedTrade;
+        let selected_item: any = props?.selectedItem;
+
         if (!localChanges) {
-            if (selectedItem?.searchText) {
-                if (selectedItem?.searchText !== searchText) {
-                    setSearchText(selectedItem?.searchText);
+            if (selected_item?.searchText) {
+                if (selected_item?.searchText !== searchText) {
+                    setSearchText(selected_item?.searchText);
                 }
             }
         }
-
-        // if(props.location.pathname == '/search-tradie-results'){
-
-        // }
-
     });
 
     const checkIfExist = (_id: any) => {
@@ -222,17 +220,10 @@ const BannerSearch = (props: PropsType) => {
     const bannerSearchClicked = () => {
         let selected_address: any = selectedAddress;
         let selected_trade: any = selectedTrade;
-        console.log({
-            selected_address,
-            selected_trade,
-            stateData,
-            selectedTrade,
-            searchText,
-            localChanges,
-            selectedItem
-        })
+        let selected_item: any = props?.selectedItem;
+        let props_trade: any = selected_item?.selectedTrade;
 
-        if (!stateData?._id && !props?.selectedItem?.selectedTrade?._id) {
+        if (!stateData?._id && !props_trade?._id) {
             setShowToast(true, 'please enter the valid search text.');
             return;
         }
@@ -268,29 +259,32 @@ const BannerSearch = (props: PropsType) => {
                 delete data.to_date;
             }
 
-            let props_trade: any = props?.selectedItem?.selectedTrade;
+
             if (props_trade?._id) {
                 data['tradeId'] = [props_trade._id];
                 if (props_trade?.specialisations?.length) {
                     data['specializationId'] = props_trade.specialisations.map((item: any) => {
-                        if(item?._id){
+                        if (item?._id) {
                             return item?._id;
-                        } 
+                        }
                         return item;
                     });
                 }
             } else {
-                if (selectedTrade && Object.keys(selectedTrade).length) {
-                    if (Object.keys(selectedTrade).length) {
+                if (selected_trade) {
+                    if (Object.keys(selected_trade).length) {
                         data['tradeId'] = [selected_trade._id];
-                        if (selected_trade?.specialisations?.map) {
+                        if (selected_trade?.specialisations?.length) {
                             data['specializationId'] = selected_trade.specialisations.map((item: any) => item._id);
                         }
                     }
                 }
             }
-        
-            props.postHomeSearchData(data);
+
+            console.log({ data }, '----------------------->')
+            if (!localChanges) {
+                props.postHomeSearchData(data);
+            }
             isHandleChanges(false)
             props.history.push({
                 pathname: `search-tradie-results`,
@@ -308,19 +302,41 @@ const BannerSearch = (props: PropsType) => {
         }
     }
 
-    let selected_trade: any = selectedTrade;
-    let length_spec = selected_trade?.specialisations?.length;
-    if (!length_spec) {
-        if (stateData?.specializationsId?.length) {
-            length_spec = 1;
+    const getCurrentLocation = async () => {
+        let local_position: any = localStorage.getItem('position');
+        let position: any = JSON.parse(local_position);
+        if (position?.length) {
+            let long = (position[0]).toString();
+            let lat = (position[1]).toString();
+            let response: any = await Geocode.fromLatLng(lat, long);
+            if (response?.results && Array.isArray(response.results) && response?.results?.length) {
+                const address = response.results[0].formatted_address;
+                setSelectedAddress({ lat, long });
+                setAddressText(address);
+                setInputFocus2(true);
+                setCurrentLocations(true);
+                // this.setState({ currentAddressLatLng: { long, lat }, addressText: address, enableCurrentLocation: true, inputFocus2: true })
+            }
         }
     }
 
-    if (!localChanges && props?.selectedItem) {
-        let selected_trade_props: any = props?.selectedItem?.selectedTrade;
-        length_spec = selected_trade_props?.specialisations?.length;
+    let selected_trade: any = selectedTrade;
+
+    let length_spec = 0;
+
+    if (props?.selectedItem) {
+        let sProps = props?.selectedItem;
+        length_spec = sProps?.selectedTrade?.specialisations?.length
+    } else {
+        length_spec = selected_trade?.specialisations?.length;
+        if (!length_spec) {
+            if (stateData?.specializationsId?.length) {
+                length_spec = 1;
+            }
+        }
     }
 
+    let custom_name = searchText;
     return (
         <div className="home_search">
             <button className="modal_srch_close">
@@ -334,13 +350,13 @@ const BannerSearch = (props: PropsType) => {
                                 type="text"
                                 ref={searchRef}
                                 placeholder="What jobs are you after?"
-                                value={length_spec > 1 ? `${searchText} +${length_spec - 1}` : (searchText)}
-                                // value={length_spec > 1 ? `${props.selectedItem?.searchText || searchText} +${length_spec - 1}` : (props.selectedItem?.searchText || searchText)}
+                                value={length_spec > 1 ? `${custom_name} +${length_spec - 1}` : (custom_name)}
                                 onChange={(e) => {
                                     isHandleChanges(true)
                                     setSearchText(e.target.value);
                                     props.getSearchJobList(e.target.value)
                                 }}
+                                readOnly={props?.selectedItem ? true : false}
                                 onFocus={() => { setInputFocus1(true) }}
                             />
                             <div className="border_eff"></div>
@@ -355,7 +371,7 @@ const BannerSearch = (props: PropsType) => {
                                         onClick={() => {
                                             // clear here
                                             isHandleChanges(true)
-                                            setItemSearch({});
+                                            setSearchText('');
                                         }} />
                                 </span>
                             ) : null}
@@ -471,12 +487,12 @@ const BannerSearch = (props: PropsType) => {
                         <div className="custom_autosuggestion location" id="current-location-search-div">
                             <span
                                 className="location-btn"
-                                onClick={() => {
-                                    setAddressText(props.current_address);
-                                    setCurrentLocations(true);
-                                    setInputFocus2(false);
-                                }}>
-                                {/* // onClick={getCurrentLocation}> */}
+                                // onClick={() => {
+                                //     setAddressText(props.current_address);
+                                //     setCurrentLocations(true);
+                                //     setInputFocus2(false);
+                                // }}>
+                                onClick={getCurrentLocation}>
                                 <span className="gps_icon">
                                     <img src={icgps} alt="" />
                                 </span> Use my current location
