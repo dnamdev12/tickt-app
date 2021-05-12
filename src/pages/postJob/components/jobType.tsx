@@ -199,12 +199,16 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ed
           <div className="form_field">
             <span className="xs_sub_title">Specialisation</span>
           </div>
-          <div className="tags_wrap">
+         <div className="flex_row">
+           <div className="flex_col_sm_6">
+           <div className="tags_wrap">
             <ul>
               {specializations.map(({ _id, name }: { _id: string, name: string }) => <li key={_id} className={specialization.includes(_id) ? 'selected' : undefined} onClick={() => handleChange(_id, 'specialization')}>{name}</li>)}
             </ul>
             <span className="error_msg">{errors.specialization}</span>
           </div>
+           </div>
+         </div>
           <div className="form_field">
             <button
               className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
