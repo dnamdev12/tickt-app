@@ -1982,10 +1982,16 @@ body {
       align-items: center;
       .fill_btn{
         width: 250px;
+        @media (max-width: 650px) {
+          width: 120px;
+        }
         &.white_btn{
           background-color: var(--white);
           color: var(--blue);
           margin-left: 60px;
+          @media (max-width: 650px) {
+            margin-left: 20px;
+          }
         }
       }
     }
@@ -3625,9 +3631,14 @@ body {
     top: 18px;
     z-index: 999;
     display: none;
+    @media(max-width: 650px){
+      right: 7px;
+      top: 7px;
+      border: none;
+    }
     img{
-      width: 16px;
-      height: 16px;
+      width: 24px;
+      height: 24px;
     }
   }
   @media(max-width: 768px){
@@ -3643,6 +3654,9 @@ body {
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       margin-bottom: 55px;
+    }
+    @media(max-width: 650px){
+      margin-bottom: 45px;
     }
   }
 }  
@@ -3738,6 +3752,24 @@ body {
       text-align: center;
     }
   }
+  .flex_col_sm_9{
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+  .tradies_row{
+    .flex_col_sm_6{
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        width: 100%;
+      }
+      @media(max-width: 768px){
+        width: 50%;
+      }
+      @media(max-width: 650px){
+        width: 100%;
+      }
+    }
+  }
   .tradie_card {
     // min-height: 264px;
     .count_wrap{
@@ -3761,6 +3793,9 @@ body {
     }
     .edit_icon{
       right: 0;
+      @media(max-width: 768px){
+        right: 50px;
+      }
     }
     .xs_sub_title{
       font-size: 16px;
@@ -3775,10 +3810,16 @@ body {
     transform: translateX(95px);
     background-color: #f7f8fa;
     margin: 0;
+    @media(max-width: 1024px){
+      display: none;
+    }
   }
   .total_payment{
     margin: 48px 0 32px;
     max-width: 250px;
+    @media(max-width: 650px){
+      max-width: 100%;
+    }
     span{
       font-family: 'Neue Haas Grotesk Text Pro Bold';
     }
@@ -3791,6 +3832,9 @@ body {
     padding: 17px 20px;
     border: 1px solid var(--blue-two);
     margin-bottom: 40px;
+    @media(max-width: 650px){
+      width: 100%;
+    }
     img{
       margin-right: 30px;
     }

@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { NavLink, Route, Switch, useHistory } from 'react-router-dom';
 
-import menu from '../../assets/images/ic-filter-unselected.png';
+import menu from '../../assets/images/menu-line-blue.png';
+import close from '../../assets/images/ic-cancel-blue.png';
 import ActiveJobsPage from '../activeJobs';
 import AppliedJobsPage from '../appliedJobs';
 import PastJobsPage from '../pastJobs';
@@ -61,7 +62,7 @@ const JobDashboard = () => {
         <div className="f_row">
           <div className="side_nav_col">
             <button className="close_nav">
-              <img alt="close" />
+              <img src={close} alt="close" />
             </button>
             <div className="stick">
               <span className="title">Job Dashboard</span>
