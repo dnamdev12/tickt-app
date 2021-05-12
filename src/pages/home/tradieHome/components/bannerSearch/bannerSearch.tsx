@@ -31,7 +31,7 @@ interface PropsType {
     setTradieHomeData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
-    cleanFiltersHandler: (data: any) => void,
+    cleanFiltersHandler?: (data: any) => void,
 }
 
 const BannerSearch = (props: PropsType) => {
@@ -335,7 +335,9 @@ const BannerSearch = (props: PropsType) => {
                 props.history.push(newUrl);
             } else {
                 props.history.replace(newUrl);
-                props.cleanFiltersHandler(true);
+                if(props?.cleanFiltersHandler){
+                    props?.cleanFiltersHandler(true);
+                }
             }
         }
     }

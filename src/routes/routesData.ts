@@ -13,6 +13,9 @@ import PopularBuilders from '../pages/popularBuilders/index';
 import JobDetailsPage from '../pages/jobDetailsPage/index';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
+import JobDashboard from '../pages/jobDashboard';
+import TradieListData from '../pages/shared/tradieListData';
+import SearchResultTradie from '../pages/searchTradieResult/index';
 
 const routes = [
     {
@@ -89,9 +92,46 @@ const routes = [
         privateRoute: true,
     },
     {
+        name: 'jobdashboard',
+        path: [
+          '/active-jobs',
+          '/applied-jobs',
+          '/past-jobs',
+          '/new-jobs',
+          '/approved-milestones',
+          '/mark-milestone/:jobId',
+        ],
+        component: JobDashboard,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
         name: 'linkedin-oauth',
         path: '/linkedin',
         component: LinkedInPopUp
+    },
+    
+    {
+        name: 'recommended-trade-people',
+        path: '/recommended-trade-people',
+        component: TradieListData
+    },
+    {
+        name: 'saved-trade-people',
+        path: '/saved-trade-people',
+        component: TradieListData
+    },
+    {
+        name: 'search-builder-result',
+        path: '/search-builder-result',
+        component: TradieListData
+    },
+    {
+        name:'search-tradie-results',
+        path:'/search-tradie-results',
+        component: SearchResultTradie,
+        authRoute: false,
+        privateRoute: true,
     },
     {
         name: 'notFound',

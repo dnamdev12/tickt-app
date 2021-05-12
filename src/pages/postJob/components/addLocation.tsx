@@ -62,13 +62,18 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     console.log({ permission_web }, '56')
     if (permission_web.state !== 'denied') {
       setLoading(true)
-      console.log({ state: permission_web.state }, 'if')
-      const position: any = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
-      console.log({ position }, '62')
-      let { latitude, longitude } = position.coords;
-      let response: any = await Geocode.fromLatLng(longitude.toString(), latitude.toString());
+      // console.log({ state: permission_web.state }, 'if')
+      // const position: any = await new Promise((resolve, reject) => {
+      //   navigator.geolocation.getCurrentPosition(resolve, reject);
+      // });
+
+      // console.log({ position }, '62')
+      // let { latitude, longitude } = position.coords;
+      let item_position: any = localStorage.getItem('position');
+      let position = JSON.parse(item_position);
+      let longitude = (position[0])?.toString();
+      let latitude = (position[1])?.toString();
+      let response: any = await Geocode.fromLatLng(latitude, longitude);
       console.log({ response }, '65')
       if (response) {
         const address = response.results[0].formatted_address;
