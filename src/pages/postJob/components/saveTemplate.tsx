@@ -18,13 +18,18 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
     const [error, setError] = useState('' as any);
 
     const checkError = () => {
-        if (!templateName?.length) {
-            return true;
+        if(!error?.length && templateName?.length){
+            return false;
         }
-        return false;
+        return true;
     }
 
     const handleContinue = async () => {
+
+        if (!templateName?.length) {
+            setError('please enter template name.');
+            return
+        }
         let filter_milestone = milestones.filter((item: any) => {
             if (Object.keys(item).length) {
                 if (!item?.to_date?.length) {
@@ -33,7 +38,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                 return item
             }
         })
-        
+
         let { success, data } = await addTemplate({
             template_name: templateName,
             milestones: filter_milestone
@@ -45,14 +50,15 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
     }
 
     const handleChange = (value: any) => {
-        if (!templateName?.length) {
-            setError('please enter template name.');
+         if (templateName?.length && templateName?.length > 50) {
+            setError('limit exceed to 50 characters.');
         } else {
             setError('');
         }
         setTemplateName(value)
     }
 
+    console.log({error})
     return (
         <div className="app_wrapper">
 
@@ -81,7 +87,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                                         value={templateName}
                                         type="text" placeholder="This job..." name="name" />
                                 </div>
-                                <span className="error_msg"></span>
+                                <span className="error_msg">{error}</span>
                             </div>
                             <div className="form_field">
                                 <button

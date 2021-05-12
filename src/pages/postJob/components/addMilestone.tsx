@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import moment from 'moment';
 import { values } from 'lodash';
 
-
+// Please add a unique date
 interface Props {
     data: any;
     stepCompleted: Boolean;
@@ -250,9 +250,6 @@ export default class AddMilestone extends Component<Props, State> {
                                             name="milestone_name" />
                                     </div>
                                     <span className="error_msg">{errors?.milestone_name}</span>
-                                    {!milestone_name?.length ? null : (
-                                        <span className="char_count">{`character length : ${milestone_name?.length}`}</span>
-                                    )}
                                 </div>
                                 <div className="form_field">
 

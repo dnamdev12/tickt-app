@@ -38,7 +38,7 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
   const isInvalid = (name: string, value: string) => {
     switch (name) {
       case 'jobName':
-        return !value.length ? errorStrings.pleaseEnter + label[name] : '';
+        return !value.length ? errorStrings.pleaseEnter + label[name] : value.length > 100 ? 'length exceed to 100 characters.' : '';
       case 'job_description':
         return !value.length ? errorStrings.pleaseEnter + label[name] : value.length > 250 ? 'length exceed to 250 characters.' : '';
     }
@@ -141,11 +141,6 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                 <div className="text_field">
                   <textarea placeholder="This job..." name="job_description" value={job_description} onChange={handleChange} />
                 </div>
-                {job_description.length ?
-                  <span className="char_count">
-                    {`character length : ${job_description.length}`}
-                  </span>
-                  : ''}
                 <span className="error_msg">{errors.job_description}</span>
               </div>
               <div className="form_field">

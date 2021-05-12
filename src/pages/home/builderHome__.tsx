@@ -17,7 +17,6 @@ import commercial from "../../assets/images/ic-commercial.png";
 import hourlyRate from "../../assets/images/ic-clock.png";
 import close from "../../assets/images/icon-close-1.png";
 
-
 const BuilderHome = (props: any) => {
 
     const categorieshome = {
@@ -52,21 +51,21 @@ const BuilderHome = (props: any) => {
         }
     };
 
-    return (
-        <div className="app_wrapper" >
-            {/* Under construction */}
-            <div className="custom_container">
-                <div className="under_construction_wrap">
-                    <figure className="constrction_img">
-                        <img src={uc} alt="coming soon" />
-                    </figure>
-                    <h2>This Page is under construction. Please come back later.</h2>
-                </div>
-            </div>
-            {/* Under construction */}
-        </div>
-    )
-
+    {/* Under construction */}
+    // return (
+    //     <div className="app_wrapper" >
+    //         <div className="custom_container">
+    //             <div className="under_construction_wrap">
+    //                 <figure className="constrction_img">
+    //                     <img src={uc} alt="coming soon" />
+    //                 </figure>
+    //                 <h2>This Page is under construction. Please come back later.</h2>
+    //             </div>
+    //         </div>
+    //     </div>
+    // )
+    {/* Under construction */}  
+    
     return (
         <div className="app_wrapper" >
             <div className="home_banner">
@@ -101,7 +100,7 @@ const BuilderHome = (props: any) => {
                                                 </span>
                                             </div>
                                         </div>
-                                        {<div className="custom_autosuggestion location">
+                                        {/* {<div className="custom_autosuggestion location">
                                             <button className="location-btn">
                                                 <span className="gps_icon">
                                                     <img src={icgps} />
@@ -133,7 +132,7 @@ const BuilderHome = (props: any) => {
                                                     </div>
                                                 </div>
                                             </div>
-                                        </div>}
+                                        </div>} */}
                                     </li>
                                     <li>
                                         <div className="custom_date_range">

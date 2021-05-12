@@ -91,6 +91,19 @@ export const createPostJob = async (data: any) => {
   return { success: false };
 }
 
+export const setHomeBuilder = (data: any) => ({ type: actionTypes.FETCH_HOME_BUILDER, data })
+
+export const getBuilderHomeData = async (item: any) => {
+  let url = `${Urls.home}?lat=${item.lat}&long=${item.long}`
+  const response: FetchResponse = await NetworkOps.get(url);
+  console.log({ response }, '---------------!!!!!!!!')
+  if (response.status_code === 200) {
+    return { status: true, response: response.result };
+  }
+  return { status: false }
+}
+
+export const isHandleChanges = (data: any) => ({ type: actionTypes.GET_LOCAL_CHANGES, data });
 //tradie ask a question
 export const postAskQuestion = async (data: any) => {
   setLoading(true);

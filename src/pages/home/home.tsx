@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useLocation, useHistory } from 'react-router-dom';
 import GuestHome from './guestHome';
 import TradieHome from './tradieHome/index';
-import BuilderHome from './builderHome';
+import BuilderHome from './builderHome/index';
 import storageService from '../../utils//storageService';
 
 const Home = () => {
