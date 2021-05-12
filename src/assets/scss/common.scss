@@ -229,7 +229,7 @@ body {
     li {
       display: flex;
       align-items: center;
-      margin: 0 8px 16px;
+      margin: 0 8px 12px;
       padding: 8px;
       @include border-radius(6px);
       background-color: #f6f7f9;
@@ -810,6 +810,7 @@ body {
 }
 
 //-------------------Discover Items card close---------------//
+
 //------------------------Onboard Model-------------------------//
 .onboard_modal {
   padding: 0 !important;
@@ -1156,7 +1157,7 @@ body {
     img,
     video {
       width: 100%;
-      height: 100%;
+      height: 100% !important;
       object-fit: cover;
 	  @include border-radius(3px);
     }
@@ -1174,6 +1175,9 @@ body {
 			&:hover{
 				background-color: var(--blue-two);
 			}
+      @media (max-width: 650px) {
+        @include position(absolute, auto, 80px, 0px, auto);
+      }
 		}
 		.owl-next{
 			@include position(absolute, auto, 20px, 30px, auto);
@@ -1184,6 +1188,9 @@ body {
 			&:hover{
 				background-color: var(--blue-two);
 			}
+      @media (max-width: 650px) {
+        @include position(absolute, auto, 20px, 0px, auto);
+      }
 		}
 		img{
 			width: 18px;
@@ -1192,6 +1199,9 @@ body {
 	}
 	.owl-dots{
 		@include position(absolute, auto, auto, 40px, 30px);
+    @media (max-width: 650px) {
+      @include position(absolute, auto, auto, 10px, 10px);
+    }
 		.owl-dot span{
 			background: rgba(255, 255, 255, 0.4);
 		}
@@ -1771,6 +1781,38 @@ body {
       padding: 11px 10px 11px 65px;
     }
   }
+  &.select_sphere{
+    ul{
+      @media(max-width: 812px){
+        flex-flow: wrap !important;
+      }
+      li{
+        width: 12% !important;
+        margin: 0 12px 30px 12px;
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+          width: 20% !important;
+        }
+        @media(max-width: 650px){
+          width: 25% !important;
+        }
+        &::after{
+          right: 10px;
+          @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+            right: 20px;
+          }
+          @media(max-width: 768px){
+            right: -10px;
+          }
+          @media(max-width: 650px){
+            right: 0;
+          }
+          @media(max-width: 415px){
+            right: 8px;
+          }
+        }
+      }
+    }
+  }
 }
 
 //------home recent search------//
@@ -2093,6 +2135,9 @@ body {
       margin: 0 13px 44px 13px;
       position: relative;
       cursor: pointer;
+      @media (max-width: 650px) {
+        margin: 0 8px 20px 8px;
+      }
       &::after {
         width: 24px;
         height: 24px;
@@ -2136,8 +2181,8 @@ body {
           height: 70px;
         }
         img {
-          width: 32px;
-          height: 32px;
+          width: 32px !important;
+          height: 32px !important;
           object-fit: contain;
         }
       }
@@ -2272,7 +2317,7 @@ body {
   .banner_img {
     position: relative;
     width: 100%;
-    height: 472px;
+    height: 410px;
     @media (max-width: 650px) {
       height: 390;
     }
@@ -2281,10 +2326,27 @@ body {
       height: 100%;
       object-fit: cover;
     }
+    &::before{
+      content: '';
+      background: url('../images/onboarding-clip.png') no-repeat;
+      background-size: cover;
+      background-position: bottom;
+      width: 100%;
+      height: 100px;
+      position: absolute;
+      top: 0px;
+      left: 0;
+      @media (max-width: 768px){
+        display: none;
+      }
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        display: none;
+      }
+    }
   }
   .banner_container {
     position: absolute;
-    top: 150px;
+    top: 20px;
     left: 50%;
     transform: translateX(-50%);
     width: 864px;
@@ -2293,11 +2355,11 @@ body {
       width: 864px;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      top: 90px;
+      top: 22px;
       width: 580px;
     }
     @media (max-width: 768px) {
-      top: 100px;
+      top: 30px;
       width: 650px;
     }
     @media (max-width: 650px) {
@@ -2402,7 +2464,8 @@ body {
 		position: relative;
 		.error_msg{
 			position: absolute;
-			bottom: 0;
+			bottom: 2px;
+      left: 5px;
 		}
 		ul {
 			display: flex;
@@ -2620,17 +2683,22 @@ body {
       }
     }
   }
-  .rdrCalendarWrapper {
-    width: 100%;
-    .rdrMonths {
-      margin: 0 -10px;
-      flex-wrap: wrap;
-      .rdrMonth {
-        width: 50%;
-        padding: 0 10px;
-        @media (max-width: 650px) {
-          width: 100%;
-        }
+  
+}
+.rdrDateRangePickerWrapper{
+  width: 100%;
+}
+.rdrCalendarWrapper {
+  width: 100%;
+  .rdrMonths {
+    margin: 0 -10px;
+    flex-wrap: wrap;
+    .rdrMonth {
+      width: 50%;
+      padding: 0 10px;
+      @media (max-width: 650px) {
+        width: 100%;
+        margin-bottom: 20px;
       }
     }
   }
@@ -2956,14 +3024,38 @@ body {
   position: relative;
   .react-multi-carousel-list {
     justify-content: center;
+    @media(max-width: 1024px){
+      justify-content: flex-start;
+    }
+  }
+  .react-multi-carousel-item{
+    @media(max-width: 1024px){
+      width: 100% !important;
+    }
   }
   .job_categories {
     justify-content: center;
+    @media(max-width: 1024px){
+      justify-content: flex-start;
+    }
     li {
       padding: 20px;
       margin: 0 15px;
+      @media(max-width: 1024px){
+        width: 30%;
+        padding: 17px;
+        margin: 10px;
+      }
+      @media(max-width: 650px){
+        padding: 15px;
+        margin: 5px;
+        width: 47%;
+      }
       .name {
         font-size: 18px;
+        @media(max-width: 650px){
+          font-size: 16px;
+        }
       }
     }
   }
@@ -2985,7 +3077,8 @@ body {
 	// 	margin: 0;
 	// }
     @media (max-width: 650px) {
-      margin: 0px 12px 12px 0;
+      margin: 0px 10px 10px 0;
+      padding: 10px 5px;
     }
     border: 2px solid #dfe5ef;
     &.active {
@@ -3167,68 +3260,7 @@ body {
     }
   }
 }
-.milestone_templates{
-  display: flex;
-  flex-flow: column;
-  padding: 12px 0px 0px;
-  max-width: 345px;
-  margin: 0px 0px 40px;
-  @media (mx-width: 650px) {
-    max-width: 100%;
-  }
-  li{
-    background-color: #f7f8fa;
-    padding: 10px 16px 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 16px;
-    .name{
-      color: var(--blue);
-      font-size: 14px;
-      line-height: 1.43;
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
-      max-width: 500px;
-      display: block;
-      width: 100%;
-      position: relative;
-      padding-left: 40px;
-      &:before{
-        @include position(absolute, 50%, auto, auto, 0px);
-        transform: translateY(-50%);
-        content: "";
-        width: 24px;
-        height: 24px;
-        background: url("../images/ic-template.png") center no-repeat;
-        background-size: contain;
-        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-          width: 18px;
-          height: 18px;
-        }        
-      }
-    }
-    .count{
-      font-size: 12px;
-      line-height: 1.4;
-      text-align: right;
-      color: #313d48;
-      span{
-        font-size: 10px;
-        color: #748092;
-        display: block;
-      }
-    }
-  }
-}
-.ques_btn{
-	max-width: 345px;
-	width: 100%;
-    text-align: center;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-  }
+
 
 .milestone_templates {
   display: flex;

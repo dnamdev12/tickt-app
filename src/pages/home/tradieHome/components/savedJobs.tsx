@@ -7,7 +7,7 @@ const SavedJobs = (props: any) => {
     }
 
     const savedJobsData = props.jobDataWithJobTypeLatLong?.saved_jobs?.slice(0, 2);
-
+    console.log({savedJobsData})
     return (
         <>
             {savedJobsData?.length > 0 && (<div className="section_wrapper bg_gray">

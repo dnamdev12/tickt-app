@@ -13,19 +13,23 @@ import spherePlaceholder from '../../assets/images/ic_categories_placeholder.svg
 
 
 const SearchResultFilters = (props: any) => {
+    const { paramsData } = props;
+    console.log(paramsData, "paramsData");
     const [errors, setErrors] = useState<any>({});
     const [priceAnchorEl, setPriceAnchorEl] = useState(null);
     const [filterAnchorEl, setFilterAnchorEl] = useState(null);
     const [sortingAnchorEl, setSortingAnchorEl] = useState(null);
     const [filterState, setFilterState] = useState({
         page: 1,
+        paramData: false
     })
+
 
     const [sortByPrice, setSortByPrice] = useState<any>({
         priceFilterClicked: false,
         payTypeClicked: false,
         pay_type: "Fixed price",
-        max_budget: '',
+        max_budget: null,
     });
 
     const [sortByFilter, setSortByFilter] = useState<any>({
@@ -38,13 +42,78 @@ const SearchResultFilters = (props: any) => {
 
     const [sortBySorting, setSortBySorting] = useState<any>({
         sortBySorting: false,
-        sortBy: 1,
+        sortBy: 0,
     })
+
 
     useEffect(() => {
         props.getJobTypeList();
         props.callTradeList();
+        // if (paramsData && paramsData.isFiltered) {
+        //     if (paramsData.max_budget) {
+        //         setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsData.pay_type, max_budget: paramsData.max_budget }));
+        //     }
+        //     if (paramsData.specializationId?.length && paramsData.tradeId?.length && paramsData.jobTypes?.length) {
+        //         console.log("searchResultsFilters 1111 filter ran", paramsData);
+        //         setSortByFilter((prevData: any) => ({ ...prevData, tradeId: paramsData.tradeId, jobTypes: paramsData.jobTypes, specializationId: paramsData.specializationId }));
+        //     }
+        //     if (paramsData.sortBy) {
+        //         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: paramsData.sortBy }));
+        //     }
+        //     setFilterState((prevData: any) => ({ ...prevData, paramsData: true }));
+        //     console.log('searchResults CDM ran');
+        // }
+        // console.log('searchResults CDM ran', paramsData);
     }, [])
+
+    useEffect(() => {
+        if (filterState.paramData) {
+            if (sortBySorting.sortBy) {
+                const item = {
+                    sortBy: sortBySorting.sortBy
+                }
+                showResultsByAllFilter(item);
+                console.log("resultsFilters api call sortBy");
+            } else {
+                showResultsByAllFilter();
+                console.log("resultsFilters api call");
+            }
+            // setFilterState((prevData: any) => ({ ...prevData, paramsData: false }));
+        }
+    }, [filterState.paramData])
+
+    useEffect(() => {
+        if (props.cleanFiltersData) {
+            setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], jobTypes: [], specializationId: [], allSpecializationClicked: false }));
+            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Fixed price', max_budget: null }));
+            setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
+            // props.cleanFiltersHandler(false);
+            showResultsByAllFilter('searchedBySearchBannerClicked')
+        }
+    }, [props.cleanFiltersData])
+
+    useEffect(() => {
+        if (paramsData && !filterState.paramData) {
+            if (paramsData.max_budget && paramsData.pay_type) {
+                setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsData.pay_type, max_budget: paramsData.max_budget }));
+                setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
+                console.log("searchResultsFilters 0000 filter ran", paramsData);
+
+            }
+            if (paramsData.specializationId?.length && paramsData.tradeId?.length && paramsData.jobTypes?.length) {
+                console.log("searchResultsFilters 1111 filter ran", paramsData);
+                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: paramsData.tradeId, jobTypes: paramsData.jobTypes, specializationId: paramsData.specializationId }));
+                setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
+            }
+            if (paramsData.sortBy && paramsData.isFiltered) {
+                setSortBySorting((prevData: any) => ({ ...prevData, sortBy: paramsData.sortBy }));
+                setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
+                console.log("searchResultsFilters 2222 filter ran", paramsData);
+            }
+            // setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
+        }
+    }, [paramsData])
+
 
     const sortByPriceClick = (event: any) => {
         setPriceAnchorEl(event.currentTarget);
@@ -53,7 +122,8 @@ const SearchResultFilters = (props: any) => {
 
     const sortByPriceClose = () => {
         setPriceAnchorEl(null);
-        setSortByPrice((prevData: any) => ({ ...prevData, priceFilterClicked: false }))
+        setSortByPrice((prevData: any) => ({ ...prevData, priceFilterClicked: false }));
+        delete errors.maxBudget;
     };
 
     const sortByFilterClick = (event: any) => {
@@ -84,7 +154,6 @@ const SearchResultFilters = (props: any) => {
             return;
         }
         if ((key > 47 && key < 58) || key === 8) {
-            e.preventDefault();
             setSortByPrice((prevData: any) => ({ ...prevData, max_budget: e.target.value }))
         }
     }
@@ -105,34 +174,49 @@ const SearchResultFilters = (props: any) => {
         return !Object.keys(newErrors).length;
     }
 
-    const showResultsByBudget = (e: any) => {
-        e.preventDefault();
-        if (validateForm()) {
-            const data = {
-                pay_type: sortByPrice.pay_type,
-                max_budget: parseInt(sortByPrice.max_budget)
-            }
-            props.showBudgetFilterResults(data);
-            sortByPriceClose();
+
+    const showResultsByAllFilter = (item?: any) => {
+        if(item == 'searchedBySearchBannerClicked'){
+            props.showBudgetFilterResults('searchedBySearchBannerClicked');
+            return;
         }
+        const data = {
+            ...(sortByFilter.tradeId?.length && { tradeId: sortByFilter.tradeId }),
+            ...(sortByFilter.jobTypes?.length && { jobTypes: sortByFilter.jobTypes }),
+            ...(sortByFilter.specializationId?.length && { specializationId: sortByFilter.specializationId }),
+            ...(sortByPrice.max_budget && { pay_type: sortByPrice.pay_type }),
+            ...(sortByPrice.max_budget && { max_budget: sortByPrice.max_budget }),
+            ...(item?.sortBy && { sortBy: item?.sortBy }),
+        }
+        props.showBudgetFilterResults(data);
+
+        sortByFilterClose();
     }
 
     const showResultsByFilter1 = () => {
         if (sortByFilter.jobTypes.length && sortByFilter.specializationId.length && sortByFilter.tradeId.length) {
-            const data = {
-                pay_type: sortByPrice.pay_type,
-                max_budget: parseInt(sortByPrice.max_budget)
-            }
-            props.showBudgetFilterResults(data);
             sortByFilterClose();
+            showResultsByAllFilter();
         } else {
             setShowToast(true, "Please select all required fields")
         }
     }
 
+    const showResultsByBudget = (e: any) => {
+        e.preventDefault();
+        if (validateForm()) {
+            sortByPriceClose();
+            showResultsByAllFilter();
+        }
+    }
+
     const sortByButtonClicked = (num: number) => {
+        const item = {
+            sortBy: num
+        }
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: num }));
         sortBySortingClose();
+        showResultsByAllFilter(item);
     }
 
     const filterChangeHandler = (id: any, name: string) => {
@@ -164,28 +248,27 @@ const SearchResultFilters = (props: any) => {
             })
         } else if (name == 'categories') {
             if (sortByFilter.tradeId.length && sortByFilter.tradeId[0] == id) {
-                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [] }))
+                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], specializationId: [], allSpecializationClicked: false }))
             } else {
-                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [id] }))
+                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [id], specializationId: [], allSpecializationClicked: false }))
             }
         } else if (name == 'All Clicked') {
             if (sortByFilter.allSpecializationClicked) {
                 setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, specializationId: [] }))
             } else {
+                console.log(id, "array all clicked data");
                 const newSpecialization = id.map(({ _id }: { _id: string }) => {
                     return _id
                 })
                 setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: true, specializationId: newSpecialization }))
             }
         } else if (name == 'Clear All') {
-            setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, jobTypes: [], specializationId: [] }))
+            setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, tradeId: [], jobTypes: [], specializationId: [] }))
         }
     }
 
-    console.log(sortByFilter, "sortByFilter")
-
+    console.log(sortByFilter, "sortByFilter", errors)
     const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
-
 
     return (
         <div className="filters_wrapr">
@@ -264,7 +347,7 @@ const SearchResultFilters = (props: any) => {
                                     <ul>
                                         {specializationList?.length > 0 &&
                                             <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
-                                                onClick={() => filterChangeHandler(props.tradeListData?.slice(0, 1)[0]?.specialisations, 'All Clicked')}>All</li>}
+                                                onClick={() => filterChangeHandler(specializationList, 'All Clicked')}>All</li>}
                                         {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
                                             const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
                                             return (
@@ -359,4 +442,4 @@ const SearchResultFilters = (props: any) => {
     )
 }
 
-export default SearchResultFilters
+export default SearchResultFilters;
