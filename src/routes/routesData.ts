@@ -13,6 +13,7 @@ import PopularBuilders from '../pages/popularBuilders/index';
 import JobDetailsPage from '../pages/jobDetailsPage/index';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
+import JobDashboard from '../pages/jobDashboard';
 
 const routes = [
     {
@@ -85,6 +86,20 @@ const routes = [
         name: 'jobdetailspage',
         path: '/job-details-page',
         component: JobDetailsPage,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'jobdashboard',
+        path: [
+          '/active-jobs',
+          '/applied-jobs',
+          '/past-jobs',
+          '/new-jobs',
+          '/approved-milestones',
+          '/mark-milestone/:jobId',
+        ],
+        component: JobDashboard,
         authRoute: false,
         privateRoute: true,
     },
