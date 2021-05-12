@@ -365,7 +365,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <div className="text_field">
                                                         <textarea placeholder="Write here.." value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                                     </div>
-                                                    <span >Maximum length: 250</span>
                                                     <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                                 </div>
                                             </div>

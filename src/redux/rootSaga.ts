@@ -10,7 +10,7 @@ export default function* rootSaga(): any {
         call(auth),
         call(jobs),
         call(homeSearch),
-        call(jobDashboard)
         call(profile),
+        call(jobDashboard)
     ])
 }
