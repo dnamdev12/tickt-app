@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 
 // import TradieJobInfoBox from '../../common/tradieJobInfoBox';
-import SearchResultFilters from './searchFilters';
+import SearchFilters from './searchFilters';
 // import RenderMap from './renderMap';
 
 // import filterUnselected from '../../assets/images/ic-filter-unselected.png';
@@ -11,125 +11,68 @@ import SearchResultFilters from './searchFilters';
 import noData from '../../assets/images/no-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
-import BannerSearch from '../shared/bannerSearch'
+// import BannerSearch from '../shared/bannerSearch'
+import BannerSearchProps from '../shared/bannerSearchProps'
 import TradieBox from '../shared/tradieBox'
+import moment from 'moment';
+// name
+// tradeId
+// specializations
+// location
+// calender
 
 const SearchResultTradie = (props: any) => {
     const location: any = useLocation();
-    const { data, searchText, stateData, selectedAddress, selectedTrade, exta } = location?.state;
-    const [filterState, setFilterState] = useState({
-        page: 1,
-        filterByPrice: false,
-    });
-    const [selectedItem, setSelectedItem] = useState(location?.state);
-    const [forceupdate, setForceUpdate] = useState({});
+    const [stateData, setStateData] = useState(location.state);
     const [isToggle, setToggleSearch] = useState(false);
-
-    const handleChangeToggle = (value: any) => {
-        setToggleSearch(value)
-    }
+    const [localInfo, setLocalInfo] = useState({});
 
     useEffect(() => {
         props.getRecentSearchList();
+        console.log({ stateData }, '----')
+        let data: any = {
+            page: 1,
+            isFiltered: true,
+            tradeId: stateData?.tradeId,
+            specializationId: stateData?.specializations,
+        }
+        if (stateData?.location) {
+            data['location'] = stateData?.location;
+        }
+        if (stateData?.calender?.startDate) {
+            data['from_date'] = moment(stateData?.calender?.startDate).format('YYYY-MM-DD')
+        }
+        if (stateData?.calender?.endDate) {
+            data['to_date'] = moment(stateData?.calender?.endDate).format('YYYY-MM-DD')
+        }
+        let spec_count: any = stateData?.specializations?.length;
+        console.log({ data }, '--------------- 49');
+        setLocalInfo({
+            name: stateData?.name,
+            count: spec_count === 1 ? 0 : spec_count,
+            tradeId: data.tradeId,
+            specializationId: data.specializationId
+        })
+        props.postHomeSearchData(data);
     }, []);
 
-    // <img src={noData} alt="data not found" />
-
-    const showBudgetFilterResults = (budgetFilterData: any) => {
-        const data = {
-            page: filterState.page,
-            isFiltered: true,
-            tradeId: location?.state?.tradeId,
-            pay_type: budgetFilterData.pay_type,
-            max_budget: budgetFilterData.max_budget,
-            // location: stateData?.bannerLocation ? stateData?.bannerLocation : stateData?.location,
-            // specializationId: stateData?.specializationId,
-            // from_date: stateData?.from_date,
-            // to_date: stateData?.to_date,
-            // sortBy: 2,
-        }
-        props.postHomeSearchData(data);
-        setFilterState((prevData: any) => ({ ...prevData, filterByPrice: true }))
+    const getTitleInfo = (info: any) => {
+        setLocalInfo(info)
+        console.log({ info });
     }
 
-    const updateSearchName = (item: any) => {
-        let seleted_item: any = selectedItem;
-        if (item?.length) {
-            let item_ids = item.map((it: any) => it._id);
-            seleted_item['searchText'] = item[0].name;
+    const handleChangeToggle = (value: any) => { setToggleSearch(value) }
 
-            seleted_item['data'] = {
-                specializationId: item_ids,
-                tradeId: item[0].tradeId
-            }
-
-            seleted_item['selectedTrade'] = {
-                specialisations: item_ids,
-                _id: item[0].tradeId
-            }
-
-            // if (seleted_item?.data?.specializationId) {
-            //     seleted_item.data.specializationId = item_ids;
-            // } else {
-            //     seleted_item['data'] = {};
-            //     if(seleted_item.data){
-            //         seleted_item.data['specializationId'] = item_ids;
-            //     }
-            // }
-
-            // if (seleted_item?.data?.tradeId) {
-            //     seleted_item.data.tradeId = item[0].tradeId;
-            // } else {
-            //     seleted_item['data'] = {};
-            //     if(seleted_item.data){
-            //         seleted_item.data['tradeId'] = item[0].tradeId;
-            //     }
-            // }
-
-            // if (seleted_item?.selectedTrade?.specialisations) {
-            //     console.log('if---->')
-            //     seleted_item.selectedTrade.specialisations = item_ids
-            // } else {
-            //     console.log('else---->')
-            //     seleted_item['selectedTrade'] = {};
-            //     if (seleted_item.selectedTrade) {
-            //         console.log('else---2->')
-            //         seleted_item.selectedTrade['specialisations'] = item_ids
-            //     }
-            // }
-
-            // if (seleted_item?.selectedTrade?._id) {
-            //     seleted_item.selectedTrade._id = item[0].tradeId;
-            // } else {
-            //     seleted_item['selectedTrade'] = {};
-            //     if(seleted_item.selectedTrade){
-            //         seleted_item.selectedTrade['_id'] = item[0].tradeId;
-            //     }
-            // }
-
-            setSelectedItem(seleted_item);
-            props.isHandleChanges(false);
-            if (Array.isArray(forceupdate)) {
-                setForceUpdate({});
-            } else {
-                setForceUpdate([]);
-            }
-        }
-    }
-
-    let homeSearchJobData = props.homeSearchJobData;
-    let seleted_item: any = selectedItem;
-    console.log({
-        seleted_item
-    })
-    let length_items = 0;
-    if (seleted_item?.data?.specializationId?.length) {
-        length_items = seleted_item?.data?.specializationId?.length - 1;
-    }
+    let homeSearchJobData: any = props.homeSearchJobData;
+    let local_info: any = localInfo;
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
-                <BannerSearch {...props} selectedItem={selectedItem} handleChangeToggle={handleChangeToggle}/>
+                <BannerSearchProps
+                    {...props}
+                    getTitleInfo={getTitleInfo}
+                    localInfo={localInfo}
+                    handleChangeToggle={handleChangeToggle} />
             </div>
             <div className="search_result">
                 <div className="section_wrapper bg_gray">
@@ -146,16 +89,15 @@ const SearchResultTradie = (props: any) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <span className="title">
-                                        {`${seleted_item?.searchText || ''} ${length_items ? `+${length_items}` : ''}`}
+                                        {`${local_info?.name} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
                                             {`${homeSearchJobData?.length} results`}
                                         </span>
                                     </span>
-                                    <SearchResultFilters
+                                    <SearchFilters
                                         {...props}
-                                        showBudgetFilterResults={showBudgetFilterResults}
-                                        selectedItem={selectedItem}
-                                        updateSearchName={updateSearchName}
+                                        localInfo={localInfo}
+                                        getTitleInfo={getTitleInfo}
                                     />
                                 </div>
                             </div>
