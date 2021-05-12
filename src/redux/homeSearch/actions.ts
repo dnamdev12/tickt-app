@@ -14,9 +14,9 @@ export const getJobWithJobTypeLatLong = (jobData: object) => ({ type: actionType
 export const postHomeSearchData = (jobData: object) => ({ type: actionTypes.POST_HOME_SEARCH_DATA, jobData })
 
 // export const getHomeJobDetails = (jobId: string) => ({ type: actionTypes.GET_HOME_JOB_DETAILS, jobId })
-export const getHomeJobDetails = async (jobId: string) => {
+export const getHomeJobDetails = async (data: any) => {
     setLoading(true);
-    const response: FetchResponse = await NetworkOps.get(Urls.homeJobDetails + `?jobId=${jobId}`);
+    const response: FetchResponse = await NetworkOps.get(Urls.homeJobDetails + `?jobId=${data.jobId}&tradeId=${data.tradeId}&specializationId=${data.specializationId}`);
     setLoading(false);
     if (response.status_code === 200) {
         return { success: true, data: response.result };
@@ -27,7 +27,7 @@ export const getHomeJobDetails = async (jobId: string) => {
 
 export const getHomeSaveJob = async (data: any) => {
     setLoading(true);
-    const response: FetchResponse = await NetworkOps.get(Urls.homeSaveJob + `?jobId=${data.jobId}&isSave=${data.isSave}`);
+    const response: FetchResponse = await NetworkOps.get(Urls.homeSaveJob + `?jobId=${data.jobId}&tradeId=${data.tradeId}&specializationId=${data.specializationId}&isSave=${data.isSave}`);
     setLoading(false);
     if (response.status_code === 200) {
         setShowToast(true, response.message);

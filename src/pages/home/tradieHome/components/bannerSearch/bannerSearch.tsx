@@ -9,6 +9,7 @@ import { format } from 'date-fns';
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+import moment from 'moment';
 
 import Searchicon from "../../../../../assets/images/main-search.png";
 import search from "../../../../../assets/images/ic-search.png";
@@ -22,54 +23,92 @@ import close from "../../../../../assets/images/icon-close-1.png";
 interface PropsType {
     history: any,
     location?: any,
-    bannerData: any,
+    currentCoordinates: any,
     searchJobListData: Array<object>,
     recentSearchJobData: Array<object>,
     homeSearchJobData: Array<object>,
-    setBannerData: (data: any) => void,
+    paramsData?: any,
+    setTradieHomeData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
+    cleanFiltersHandler: (data: any) => void,
 }
 
 const BannerSearch = (props: PropsType) => {
-    const [stateData, setStateData] = useState<any>(props.bannerData)
-    // const [stateData, setStateData] = useState<any>({
-    //     page: 1,
-    //     searchedJob: '',
-    //     isSearchedJobSelected: false,
-    //     tradeId: [],
-    //     specializationId: [],
-    //     specializati[...onId: [],
-    //     s]earchedJobId: null,
-    //     location: {
-    //         coordinates: [
-    //             144.946457, //long
-    //             -37.840935 //lat
-    //         ]
-    //     },
-    //     bannerLocation: '',
-    //     selectedMapLocation: '',
-    //     isMapLocationSelected: false,
-    //     from_date: '',
-    //     startDate: '',
-    //     to_date: '',
-    //     endDate: '',
-    // });
+    // const [stateData, setStateData] = useState<any>(props.bannerData)
+    const { paramsData } = props;
+    const [stateData, setStateData] = useState<any>({
+        page: 1,
+        searchedJob: '',
+        isFiltered: false,
+        isSearchedJobSelected: false,
+        tradeId: [],
+        specializationId: [],
+        searchedJobId: null,
+        location: {
+            coordinates: [
+                144.946457, //long
+                -37.840935 //lat
+                // props.currentAddress?.coordinates[0],
+                // props.currentAddress?.coordinates[1]
+            ]
+        },
+        bannerLocation: '',
+        locationDenied: false,
+        selectedMapLocation: '',
+        isMapLocationSelected: false,
+        from_date: '',
+        startDate: '',
+        to_date: '',
+        endDate: '',
+    });
+
     const [errors, setErrors] = useState<any>({});
     const [inputFocus1, setInputFocus1] = useState<boolean>(false)
     const [inputFocus2, setInputFocus2] = useState<boolean>(false)
     const [inputFocus3, setInputFocus3] = useState<boolean>(false)
-
     const [calenderRange1, setCalenderRange1] = useState<any>({ startDate: new Date(), endDate: new Date(), key: 'selection1' });
-
 
     useEffect(() => {
         window.addEventListener('mousedown', handleClicked)
-
         return () => {
             window.removeEventListener('mousedown', handleClicked)
         }
     }, [])
+
+    useEffect(() => {
+        if (paramsData) {
+            var data = {
+                page: paramsData?.page ? paramsData?.page : 1,
+                searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
+                isFiltered: paramsData?.isFiltered ? paramsData?.isFiltered : false,
+                isSearchedJobSelected: paramsData?.searchJob ? true : false,
+                tradeId: paramsData?.tradeId ? paramsData?.tradeId : [],
+                specializationId: paramsData?.specializationId ? paramsData?.specializationId : [],
+                // searchedJobId: null,
+                location: {
+                    coordinates: [
+                        paramsData?.long ? paramsData?.long : paramsData?.defaultLong,
+                        paramsData?.lat ? paramsData?.lat : paramsData?.defaultLat
+                    ]
+                },
+                // bannerLocation: '',
+                // locationDenied: false,
+                selectedMapLocation: paramsData?.address ? paramsData?.address : '',
+                isMapLocationSelected: paramsData?.address ? true : false,
+                from_date: paramsData?.from_date ? paramsData?.from_date : '',
+                startDate: '',
+                to_date: paramsData?.to_date ? paramsData?.to_date : '',
+                endDate: '',
+            }
+            if (paramsData?.from_date) {
+                data.startDate = moment(paramsData?.from_date).format('MMM DD')
+                data.endDate = moment(paramsData?.to_date).format('MMM DD')
+
+            }
+            setStateData((prevData: any) => ({ ...prevData, ...data }));
+        }
+    }, [paramsData])
 
     useEffect(() => {
         if (calenderRange1 && inputFocus3) {
@@ -83,38 +122,28 @@ const BannerSearch = (props: PropsType) => {
     }, [calenderRange1])
 
     useEffect(() => {
-        if (props.bannerData !== stateData) {
-            setStateData(props.bannerData);
+        if (props.currentCoordinates) {
+            setStateData((prevData: any) => ({ ...prevData, location: props.currentCoordinates }));
         }
-    }, [props.bannerData])
+    }, [props.currentCoordinates])
 
     const handleClicked = (event: any) => {
         if ((document.getElementById("recent-job-search-div") || document.getElementById("fetched-custom-job-category-div")) && (!document.getElementById("text-field-div")?.contains(event.target) && !document.getElementById("recent-job-search-div")?.contains(event.target)) && (!document.getElementById("fetched-custom-job-category-div")?.contains(event.target))) {
             setInputFocus1(false)
         }
-
         if ((document.getElementById("current-location-search-div") || document.getElementById("autocomplete-dropdown-container")) && !document.getElementById("location-text-field-div")?.contains(event.target) && !document.getElementById("current-location-search-div")?.contains(event.target)) {
             setInputFocus2(false)
         }
-
         if (document.getElementById("custom-date-range-div") && (!document.getElementById("date-range-div")?.contains(event.target) && !document.getElementById("custom-date-range-div")?.contains(event.target))) {
             setInputFocus3(false)
         }
     }
 
     const handleCalenderRange = (item: any) => {
-        // if (!isEqual(item.selection1?.startDate, item.selection1?.endDate) && isBefore(item.selection1?.startDate, item.selection1?.endDate)) {
-        //     var hours = differenceInHours(new Date(item.selection1?.endDate), new Date(item.selection1?.startDate));
-        //     if (hours >= 25) {
-        //         setCalenderRange2((prevData: any) => ({ ...prevData, startDate: addDays(item.selection1?.startDate, 1), endDate: subDays(item.selection1?.endDate, 1) }))
-        //     }
-        // } else {
-        //     setCalenderRange2((prevData: any) => ({ ...prevData, startDate: null, endDate: null }))
-        // }
         setCalenderRange1(item.selection1)
     };
 
-    console.log(stateData, "stateData diff", props.bannerData)
+    console.log(stateData, "stateData diff", props.currentCoordinates)
 
     const checkInputValidation = (e: any) => {
         const alphaRegex = new RegExp(regex.alphaSpecial)
@@ -122,15 +151,15 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const handleJobChange = (e: any) => {
-        if (checkInputValidation(e)) {
-            e.target.value.length >= 1 && props.getSearchJobList(e.target.value)
-            setStateData((prevData: any) => ({ ...prevData, searchedJob: e.target.value, isSearchedJobSelected: false }))
-        }
+        // if (checkInputValidation(e)) {
+        e.target.value.length >= 1 && props.getSearchJobList(e.target.value)
+        setStateData((prevData: any) => ({ ...prevData, searchedJob: e.target.value, isSearchedJobSelected: false }))
+        // }
     }
 
     const cleanInputData = (item: string) => {
         if (item === "calender") {
-            setStateData((prevData: any) => ({ ...prevData, start_date: '', end_date: '', startDate: '', endDate: '' }))
+            setStateData((prevData: any) => ({ ...prevData, from_date: '', to_date: '', startDate: '', endDate: '' }))
             return;
         }
         setStateData((prevData: any) => ({ ...prevData, [item]: '' }))
@@ -189,7 +218,7 @@ const BannerSearch = (props: PropsType) => {
             .then((results: any) => getLatLng(results[0]))
             .then(({ lat, lng }: any) => {
                 const locationNew: any = {
-                    bannerLocation: {
+                    location: {
                         coordinates: [lng, lat]
                     }
                 }
@@ -204,22 +233,18 @@ const BannerSearch = (props: PropsType) => {
 
     const getCurrentLocation = (e: any) => {
         e.preventDefault();
-
         const showPosition = (position: any) => {
             var address: string;
-            const locationNew: any = {
-                //use current location in input tag when selected
-                bannerLocation: {
-                    coordinates: []
-                }
-            }
-            const lat = position.coords.latitude;
-            const long = position.coords.longitude;
-            locationNew.bannerLocation.coordinates[0] = long;
-            locationNew.bannerLocation.coordinates[1] = lat;
-            // const gLat = locationNew.bannerLocation.coordinates[1] ? locationNew.bannerLocation.coordinates[1] : stateData.location.coordinates[1];
-            // const gLng = locationNew.bannerLocation.coordinates[0] ? locationNew.bannerLocation.coordinates[0] : stateData.location.coordinates[0];
-            var latlng = new google.maps.LatLng(lat, long);
+            // const locationNew: any = {
+            //     bannerLocation: {
+            //         coordinates: []
+            //     }
+            // }
+            // const lat = position.coords.latitude;
+            // const long = position.coords.longitude;
+            // locationNew.bannerLocation.coordinates[0] = long;
+            // locationNew.bannerLocation.coordinates[1] = lat;
+            var latlng = new google.maps.LatLng(props.currentCoordinates?.coordinates[1], props.currentCoordinates?.coordinates[0]);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, function (results, status) {
                 if (status !== google.maps.GeocoderStatus.OK) {
@@ -230,7 +255,7 @@ const BannerSearch = (props: PropsType) => {
                     setInputFocus2(false);
                     document.getElementById("current-location-search-div")?.blur();
                     address = (results[1].formatted_address);
-                    setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: address, isMapLocationSelected: true, locationDenied: false }));
+                    setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: address, isMapLocationSelected: true, locationDenied: false }));
                 }
             });
         }
@@ -263,7 +288,6 @@ const BannerSearch = (props: PropsType) => {
                 newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
             }
         }
-
         if (!stateData?.isMapLocationSelected && stateData?.selectedMapLocation) {
             newErrors.selectedMapLocation = Constants.errorStrings.bannerSearchLocation;
         }
@@ -273,22 +297,47 @@ const BannerSearch = (props: PropsType) => {
 
     const bannerSearchClicked = () => {
         if (validateForm()) {
+            const params = new URLSearchParams(props.location?.search);
+            const queryParamsData: any = {
+                defaultLat: params.get('defaultLat'),
+                defaultLong: params.get('defaultLong'),
+            }
             const data = {
-                // page: stateData?.page,
-                page: 1,
+                page: stateData.page,
                 isFiltered: false,
                 tradeId: stateData?.tradeId,
-                location: stateData?.bannerLocation ? stateData?.bannerLocation : stateData?.location,
+                location: stateData?.location,
                 specializationId: stateData?.specializationId,
                 ...(stateData?.from_date && { from_date: stateData?.from_date }),
-                ...(stateData?.to_date && { to_date: stateData?.to_date }),
-                // to_date: stateData?.to_date,
-                // sortBy: 2,
+                ...(stateData?.to_date && { to_date: stateData?.to_date })
             }
-            props.postHomeSearchData(data)
-            props.history.push('search-job-results')
+            props.postHomeSearchData(data);
+            const newData = {
+                ...data,
+                lat: stateData.location.coordinates[1],
+                long: stateData.location.coordinates[0],
+                defaultLat: props.currentCoordinates?.coordinates[1] ? props.currentCoordinates?.coordinates[1] : queryParamsData.defaultLat,
+                defaultLong: props.currentCoordinates?.coordinates[0] ? props.currentCoordinates?.coordinates[0] : queryParamsData.defaultLong,
+                ...(stateData.selectedMapLocation && { address: stateData.selectedMapLocation }),
+                searchJob: stateData?.searchedJob,
+                jobResults: null
+            }
+            delete newData.location;
+            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null) && delete newData[key]);
+            var url = 'search-job-results?';
+            for (let [key, value] of Object.entries(newData)) {
+                console.log(key, value);
+                url += `${key}=${value}&`
+            }
+            const newUrl = url.slice(0, url.length - 1)
+            console.log(newUrl, "newUrl", data, "data", newData, "newData");
+            if (props.history?.location?.pathname == '/') {
+                props.history.push(newUrl);
+            } else {
+                props.history.replace(newUrl);
+                props.cleanFiltersHandler(true);
+            }
         }
-        // alert("Under construction!!")
     }
 
     return (
@@ -301,6 +350,8 @@ const BannerSearch = (props: PropsType) => {
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
                             <input type="text" placeholder="What jobs are you after?" value={stateData?.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} />
+                            {/* <input type="text" placeholder="What jobs are you after?" value={props.history?.location?.pathname == '/' ? stateData?.searchedJob : stateData.specializationId?.length >= 2 ? `${stateData?.searchedJob} +${stateData.specializationId?.length - 1}` : stateData?.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} /> */}
+                            {/* <input type="text" placeholder="What jobs are you after?" value={props.history?.location?.pathname == '/' ? stateData?.searchedJob : stateData?.searchedJob ? `${stateData.searchedJob}${stateData.specializationId?.length == 2 ? ' +1' : stateData.specializationId?.length >= 3 ? ` +${stateData.specializationId?.length - 1}` : ''}` : ''} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} /> */}
                             <div className="border_eff"></div>
                             <span className="detect_icon_ltr">
                                 <img src={Searchicon} alt="search" />

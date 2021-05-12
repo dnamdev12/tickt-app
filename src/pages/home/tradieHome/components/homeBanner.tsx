@@ -4,22 +4,23 @@ import bannerimg from '../../../../assets/images/home-banner.png';
 
 interface PropsType {
     history: any,
-    bannerData: any,
-    setBannerData: (data: any) => void,
+    currentCoordinates: any,
+    setTradieHomeData: (data: any) => void,
     getViewNearByJob: (data: any) => void,
 }
 
 const HomeBanner = (props: PropsType) => {
 
     const viewMoreClicked = () => {
-        props.history.push({
-            pathname: '/search-job-results',
-            state: {
-                queryParam: "viewNearByJob",
-                bannerData: props.bannerData,
-                heading: "Jobs in your area",
-            }
-        })
+        // props.history.push({
+        //     pathname: '/search-job-results?pageType=viewNearByJob&heading=Jobs in your area',
+        //     search
+        //     state: {
+        //         queryParam: "viewNearByJob",
+        //         heading: "Jobs in your area",
+        //     }
+        // })
+        props.history.push(`/search-job-results?jobResults=viewNearByJob&defaultLat=${props.currentCoordinates?.coordinates[1]}&defaultLong=${props.currentCoordinates?.coordinates[0]}`)
     }
 
     return (

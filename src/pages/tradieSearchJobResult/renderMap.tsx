@@ -32,7 +32,7 @@ const RenderMap = (props: any) => {
     // })
 
     var mapCenterCoordinates;
-    if (props.filterByPrice) {
+    if (props.searchByFilter) {
         mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
     } else if (props?.location?.state?.queryParam == 'viewNearByJob') {
         mapCenterCoordinates = props.viewNearByJobData?.slice(0, 1);
@@ -88,8 +88,8 @@ const RenderMap = (props: any) => {
         return null;
     }
 
-    const jobClickHandler = (jobId: string) => {
-        props.history.push(`/job-details-page?jobId=${jobId}`);
+    const jobClickHandler = (item: any) => {
+        props.history.push(`/job-details-page?jobId=${item.jobId}&tradeId=${item.tradeId}&specializationId=${item.specializationId}`);
     }
 
     return (
@@ -127,7 +127,7 @@ const RenderMap = (props: any) => {
                 >
                     <div className="preview_card">
                         <div className="tradie_card">
-                            <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(selected.jobId)}></a>
+                            <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(selected)}></a>
                             <div className="user_wrap">
                                 <figure className="u_img">
                                     <img src={selected.tradeSelectedUrl ? selected.tradeSelectedUrl : ""} alt="traide-img" />

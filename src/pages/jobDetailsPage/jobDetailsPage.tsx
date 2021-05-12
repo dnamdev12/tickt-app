@@ -59,6 +59,7 @@ const JobDetailsPage = (props: PropsType) => {
         updateQuestionsClicked: false,
         questionsClickedType: '',
         confirmationClicked: false,
+        showAnswerButton: true,
         questionId: '',
         questionData: ''
     })
@@ -67,8 +68,12 @@ const JobDetailsPage = (props: PropsType) => {
     useEffect(() => {
         (async () => {
             const params = new URLSearchParams(props.location?.search);
-            const jobId: any = params.get('jobId')
-            const res = await getHomeJobDetails(jobId);
+            const data: any = {
+                jobId: params.get('jobId'),
+                tradeId: params.get('tradeId'),
+                specializationId: params.get('specializationId')
+            }
+            const res = await getHomeJobDetails(data);
             if (res.success) {
                 setJobDetailsData(res.data);
             }
@@ -79,7 +84,9 @@ const JobDetailsPage = (props: PropsType) => {
     const applyJobClicked = async () => {
         const data = {
             jobId: jobDetailsData?.jobId,
-            builderId: jobDetailsData?.postedBy?.builderId
+            builderId: jobDetailsData?.postedBy?.builderId,
+            tradeId: jobDetailsData?.tradeId,
+            specializationId: jobDetailsData?.specializationId
         }
         const res = await postHomeApplyJob(data);
         if (res.success) {
@@ -90,6 +97,8 @@ const JobDetailsPage = (props: PropsType) => {
     const saveJobClicked = () => {
         const data = {
             jobId: jobDetailsData?.jobId,
+            tradeId: jobDetailsData?.tradeId,
+            specializationId: jobDetailsData?.specializationId,
             isSave: !jobDetailsData?.isSaved
         }
         getHomeSaveJob(data);
@@ -105,7 +114,7 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const modalCloseHandler = (modalType: string) => {
-        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false }))
+        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, showAnswerButton: true, showQuestionAnswer: false }))
     }
 
     const submitQuestionHandler = async (type: string) => {
@@ -117,7 +126,7 @@ const JobDetailsPage = (props: PropsType) => {
                 const data = {
                     jobId: jobDetailsData?.jobId,
                     builderId: jobDetailsData?.postedBy?.builderId,
-                    question: questionsData.questionData
+                    question: questionsData.questionData.trim()
                 }
                 //api calling ask Question
                 response = await postAskQuestion(data);
@@ -132,7 +141,7 @@ const JobDetailsPage = (props: PropsType) => {
             } else if (type == 'updateQuestion') {
                 const data = {
                     questionId: questionsData.questionId,
-                    question: questionsData.questionData
+                    question: questionsData.questionData.trim()
                 }
                 //api calling update Question
                 response = await updateQuestion(data);
@@ -194,7 +203,10 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>, type: string) => {
-        setQuestionsData((prevData: any) => ({ ...prevData, [type]: e.target.value }))
+        console.log(e.target.value.trim(), "job details question", e.target.value.trim().length)
+        if (e.target.value.trim().length <= 250) {
+            setQuestionsData((prevData: any) => ({ ...prevData, [type]: e.target.value }))
+        }
     }
 
 
@@ -302,22 +314,22 @@ const JobDetailsPage = (props: PropsType) => {
                                                             <p>{questionData?.question}</p>
                                                             {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
                                                             {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId)}>Delete</span>}
-                                                            {Object.keys(questionData?.answerData).length > 0 &&
+                                                            {(Object.keys(questionData?.answerData).length > 0 && questionsData?.showAnswerButton) &&
                                                                 <span className="show_hide_ans link"
-                                                                    onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showQuestionAnswer: true }))}>Show answer</span>}
+                                                                    onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showQuestionAnswer: true, showAnswerButton: false }))}>Show answer</span>}
                                                         </div>
-                                                        {questionsData.showQuestionAnswer &&
+                                                        {questionData?.answerData?.answer && questionsData.showQuestionAnswer &&
                                                             <div className="question_ans_card answer">
                                                                 <div className="user_detail">
                                                                     <figure className="user_img">
                                                                         <img src={dummy} alt="user-img" />
                                                                     </figure>
                                                                     <div className="details">
-                                                                        <span className="user_name">Cheryl</span>
-                                                                        <span className="date">12 Aug 2020</span>
+                                                                        <span className="user_name">{questionData?.answerData?.userName}</span>
+                                                                        <span className="date">{questionData?.answerData?.date}</span>
                                                                     </div>
                                                                 </div>
-                                                                <p>Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it.</p>
+                                                                <p>{questionData?.answerData?.answer}</p>
                                                             </div>}
                                                     </div>
                                                 )
@@ -353,7 +365,8 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <div className="text_field">
                                                         <textarea placeholder="Write here.." value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                                     </div>
-                                                    <span className="char_count">{`${questionsData.questionData.length}/250`}</span>
+                                                    <span >Maximum length: 250</span>
+                                                    <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                                 </div>
                                             </div>
                                             <div className="bottom_btn custom_btn">
@@ -375,13 +388,14 @@ const JobDetailsPage = (props: PropsType) => {
                                     <>
                                         <div className="custom_wh confirmation">
                                             <div className="heading">
-                                                <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
+                                                {/* <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span> */}
+                                                <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : questionsData.updateQuestionsClicked ? 'Update' : 'Ask'} Question Confirmation`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
                                             <div className="modal_message">
-                                                <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'ask'} a question?`}</p>
+                                                <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : questionsData.updateQuestionsClicked ? 'update' : 'ask'} a question?`}</p>
                                             </div>
                                             <div className="dialog_actions">
                                                 <button className="fill_btn" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>
@@ -396,7 +410,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <div className="flex_col_sm_12">
                                         <span className="sub_title">Job type</span>
                                         <ul className="job_categories">
-                                            <li className="draw">
+                                            <li>
                                                 <figure className="type_icon">
                                                     <img alt="icon" src={jobDetailsData?.jobType?.jobTypeImage} />
                                                 </figure>
