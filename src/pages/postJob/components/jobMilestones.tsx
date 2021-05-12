@@ -5,6 +5,13 @@ import { callMilestones, profileTemplateList } from '../../../redux/jobs/actions
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
 // please arrange milestone date wise.
 // milestone start date should be doffent from another can not be.
 interface Proptypes {
@@ -28,6 +35,25 @@ interface Proptypes {
 const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage, editMileStone, editMilestoneTiming, handleStepJustUpdate, handleCombineMileStones, removeMilestoneByIndex, handleStepForward, updateMileStoneIndex, updateMileStoneTimings, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localMilestones, setLocalMilestones] = useState<Array<any>>([]);
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
+    const [open, setOpen] = React.useState(false);
+    const [deleteItem, setDeleteItem] = React.useState(null);
+
+
+    const handleClickOpen = (id: any) => {
+        setOpen(true)
+        setDeleteItem(id);
+    };
+    const handleClose = () => {
+        setOpen(false)
+        setDeleteItem(null);
+    };
+
+    const handleYes = () => {
+        removeMilestoneByIndex(deleteItem);
+        setOpen(false);
+        setDeleteItem(null);
+    }
+
 
     useEffect(() => {
         if (!localMilestones?.length !== milestones?.length) {
@@ -58,7 +84,8 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             let from = localMilestones[source.index].from_date;
             let end = localMilestones[destination.index].from_date;
             let default_format = 'MM-DD-YYYY';
-            let diff = moment(end, default_format).diff(moment(from, default_format), 'days')
+            let diff = moment(end, default_format).diff(moment(from, default_format), 'days');
+            console.log({diff})
             if (diff > 0) {
                 const reOrderedMilestones = reorder(
                     localMilestones,
@@ -82,6 +109,30 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+
+
+                    <div>
+                        <Dialog
+                            open={open}
+                            onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                                {"Are you sure you want to delete the milestone ?"}
+                            </DialogTitle>
+                            <DialogActions>
+                                <Button onClick={handleYes} color="primary" autoFocus>
+                                    {'Yes'}
+                                </Button>
+                                <Button onClick={handleClose} color="primary">
+                                    {'No'}
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+                    </div>
+
+
                     <div className="form_field">
                         <div className="flex_row f_reverse">
                             <div className="flex_col_sm_7">
@@ -119,13 +170,15 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                             {localMilestones.map(({
                                                 milestone_name,
                                                 isPhotoevidence,
+                                                recommended_hours,
                                                 from_date,
                                                 to_date
                                             }: {
                                                 milestone_name: string,
                                                 isPhotoevidence: boolean,
                                                 from_date: string,
-                                                to_date: string
+                                                to_date: string,
+                                                recommended_hours:any
                                             }, index) => (
                                                 <Draggable
                                                     key={`${index}-${milestone_name}`}
@@ -154,8 +207,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                     <span
                                                                         onClick={(e) => {
                                                                             e.preventDefault();
-                                                                            removeMilestoneByIndex(index);
-                                                                            // setEditItems({});
+                                                                            handleClickOpen(index);
+                                                                            // removeMilestoneByIndex(index);
+
+                                                                            // setEditItems({}); // too old comment
                                                                         }}
                                                                         className="delete"></span>
                                                                 </div>
@@ -167,7 +222,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                     className="filter-type filled-in"
                                                                     type="checkbox"
                                                                     id={`milestone${index}`} />
-                                                                <label htmlFor={`milestone${index}`}>{milestone_name}</label>
+                                                                <label htmlFor={`milestone${index}`}>{`${index+1}. ${milestone_name}`}</label>
                                                                 <div className="info">
                                                                     {isPhotoevidence ?
                                                                         <span>{'Photo evidence required'}</span>
@@ -176,6 +231,9 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                         {from_date?.length && !to_date?.length ? `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
                                                                             : from_date?.length && to_date?.length ?
                                                                                 `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}` : ''}
+                                                                    </span>
+                                                                    <span>
+                                                                        {recommended_hours}
                                                                     </span>
                                                                 </div>
                                                             </div>
@@ -206,13 +264,13 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                     <div className="form_field">
                                         <button className="fill_btn full_btn"
                                             onClick={() => {
-                                                if(milestones?.length === 1){
-                                                    newMileStoneScreen(1); 
+                                                if (milestones?.length === 1) {
+                                                    newMileStoneScreen(1);
                                                 } else {
                                                     let item = milestones[milestones?.length - 1];
-                                                    if(Object.keys(item).length){
-                                                        if(!item?.milestone_name?.length && !item?.recommended_hours?.length && !item?.date_from?.length){
-                                                            console.log({item})
+                                                    if (Object.keys(item).length) {
+                                                        if (!item?.milestone_name?.length && !item?.recommended_hours?.length && !item?.date_from?.length) {
+                                                            console.log({ item })
                                                             console.log('Already have!')
                                                         } else {
                                                             newMileStoneScreen(milestones?.length);
@@ -220,7 +278,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                     }
                                                 }
 
-                                                console.log({milestones},'----')
+                                                console.log({ milestones }, '----')
                                                 handleStepComplete({})
                                             }}>
                                             {'+ Add milestone'}

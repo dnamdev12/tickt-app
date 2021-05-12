@@ -26,6 +26,7 @@ import { useDetectClickOutside } from 'react-detect-click-outside';
 import moment from 'moment';
 import Geocode from "react-geocode";
 import { setShowToast } from '../../redux/common/actions';
+import { property } from 'lodash';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -50,6 +51,7 @@ interface PropsType {
     setBannerData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
+    handleChangeToggle: (data: any) => void
 }
 
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
@@ -339,7 +341,11 @@ const BannerSearch = (props: PropsType) => {
     let custom_name = searchText;
     return (
         <div className="home_search">
-            <button className="modal_srch_close">
+            <button
+            onClick={() => {
+                props.handleChangeToggle(false)
+            }}
+            className="modal_srch_close">
                 <img src={close} alt="close" />
             </button>
             <form className="search_wrapr">

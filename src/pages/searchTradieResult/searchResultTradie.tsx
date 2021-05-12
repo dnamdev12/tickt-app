@@ -23,6 +23,11 @@ const SearchResultTradie = (props: any) => {
     });
     const [selectedItem, setSelectedItem] = useState(location?.state);
     const [forceupdate, setForceUpdate] = useState({});
+    const [isToggle, setToggleSearch] = useState(false);
+
+    const handleChangeToggle = (value: any) => {
+        setToggleSearch(value)
+    }
 
     useEffect(() => {
         props.getRecentSearchList();
@@ -101,7 +106,7 @@ const SearchResultTradie = (props: any) => {
             //         seleted_item.selectedTrade['_id'] = item[0].tradeId;
             //     }
             // }
-            
+
             setSelectedItem(seleted_item);
             props.isHandleChanges(false);
             if (Array.isArray(forceupdate)) {
@@ -118,13 +123,13 @@ const SearchResultTradie = (props: any) => {
         seleted_item
     })
     let length_items = 0;
-    if(seleted_item?.data?.specializationId?.length){
+    if (seleted_item?.data?.specializationId?.length) {
         length_items = seleted_item?.data?.specializationId?.length - 1;
     }
     return (
         <div className="app_wrapper" >
-            <div className="top_search">
-                <BannerSearch {...props} selectedItem={selectedItem} />
+            <div className={`top_search ${isToggle ? 'active' : ''}`}>
+                <BannerSearch {...props} selectedItem={selectedItem} handleChangeToggle={handleChangeToggle}/>
             </div>
             <div className="search_result">
                 <div className="section_wrapper bg_gray">
@@ -133,7 +138,7 @@ const SearchResultTradie = (props: any) => {
                         <div className="flex_row mob_srch_option">
                             <div className="flex_col_sm_6"></div>
                             <div className="flex_col_sm_6 text-right">
-                                <button className="fill_grey_btn">Modify Search</button>
+                                <button onClick={() => { setToggleSearch(true) }} className="fill_grey_btn">Modify Search</button>
                             </div>
                         </div>
 
