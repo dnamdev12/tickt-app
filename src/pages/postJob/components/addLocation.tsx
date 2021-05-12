@@ -10,6 +10,7 @@ import PlacesAutocomplete, {
 import icgps from "../../../assets/images/ic-gps.png";
 import Geocode from "react-geocode";
 import { setShowToast, setLoading } from '../../../redux/common/actions';
+import cross from "../../../assets/images/close-black.png";
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -27,6 +28,8 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const [error, setError] = useState('');
   const [localChanges, setLocationChanges] = useState(false);
   const [activeCurrent, setActiveCurrent] = useState(false);
+  const [inputFocus, setInputFocus] = useState(false);
+  const [locationSelected, setLocationSelected] = useState(false);
 
 
   const updateLocalData = (data: any) => {
@@ -116,6 +119,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   }
 
   const handleSelect = async (address: any) => {
+    setLocationSelected(true);
     let coordinates_response = await Geocode.fromAddress(address);
     console.log('get-l')
     if (coordinates_response) {
@@ -168,7 +172,10 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                   <PlacesAutocomplete
                     // debounce={400}
                     value={address}
-                    onChange={(value) => setAddress(value)}
+                    onChange={(value) => {
+                      setLocationSelected(false);
+                      setAddress(value)
+                    }}
                     onSelect={handleSelect}
                   >
                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
@@ -176,7 +183,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                         <input
                           id="location_search_dynamic"
                           onFocus={(x) => {
-                            // console.log('Input - 2')
+                            setInputFocus(true);
                           }}
                           style={{ display: address.length < 3 ? 'none' : '' }}
                           {...getInputProps({
@@ -184,8 +191,21 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                             className: 'location-search-input',
                           })}
                         />
+                        <span className="detect_icon" >
+                          <img
+                            src={cross}
+                            alt="cross"
+                            onClick={() => {
+                              setAddress('');
+                            }} />
+                        </span>
                         <div className="autocomplete-drop-down-map-container">
                           {loading && <div>Loading...</div>}
+                          {!locationSelected && !loading && !suggestions?.length && address?.length > 3 ?
+                            <div className="loc_suggestions">
+                              {'No Result Found.'}
+                            </div>
+                            : ''}
                           {suggestions.map((suggestion: any) => {
                             const className = suggestion.active
                               ? 'suggestion-item--active'
@@ -239,4 +259,4 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   )
 }
 
-export default AddLocation
+export default AddLocation;
