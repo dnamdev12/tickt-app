@@ -131,7 +131,7 @@ const JobDetails = ({
                     let render_item: any = null;
 
                     if (imageFormats.includes(item?.format)) {
-                        render_item = <img alt="" src={item?.url} style={{ height: '400px' }} />
+                        render_item = <img alt="" src={item?.url}  />
                     }
 
                     // if (videoFormats.includes(item?.format)) {
@@ -190,7 +190,7 @@ const JobDetails = ({
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <div className="vid_img_wrapper">
+                    <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
                                 <button

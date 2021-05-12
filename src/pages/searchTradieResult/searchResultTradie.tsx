@@ -165,8 +165,14 @@ const SearchResultTradie = (props: any) => {
                                 homeSearchJobData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
                                 ))
-                                : <img src={noData} alt="data not found" />}
+                                // : <img src={noData} alt="data not found" />}
+                                : <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                </div>}
                         </div>
+
                     </div>
                 </div>
             </div>

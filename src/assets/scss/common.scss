@@ -202,7 +202,7 @@ body {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background-size: contain;
+    background-size: contain !important;
   }
 }
 
@@ -1151,13 +1151,10 @@ body {
     @media (max-width: 768px) {
       margin-bottom: 20px;
     }
-    @media (max-width: 650px) {
-      height: 300px;
-    }
     img,
     video {
       width: 100%;
-      height: 100% !important;
+      height: 400px;
       object-fit: cover;
 	  @include border-radius(3px);
     }
@@ -1981,6 +1978,7 @@ body {
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+      text-align: center;
     }
   }
   .logo_img {
@@ -2024,10 +2022,16 @@ body {
       align-items: center;
       .fill_btn{
         width: 250px;
+        @media (max-width: 650px) {
+          width: 120px;
+        }
         &.white_btn{
           background-color: var(--white);
           color: var(--blue);
           margin-left: 60px;
+          @media (max-width: 650px) {
+            margin-left: 20px;
+          }
         }
       }
     }
@@ -2613,9 +2617,9 @@ body {
   }
   transform: translateY(0%);
   -webkit-transform: translateY(0%);
-  animation: slide-out 0.5s forwards;
-  -webkit-animation: slide-out 0.5s forwards;
-  @-webkit-keyframes slide-out {
+  animation: slide 0.5s forwards;
+  -webkit-animation: slide 0.5s forwards;
+  @-webkit-keyframes slide {
     0% {
       opacity: 0;
       -webkit-transform: scale3d(0, 1, 0);
@@ -2625,7 +2629,7 @@ body {
       -webkit-transform: scale3d(1, 1, 1);
     }
   }
-  @keyframes slide-out {
+  @keyframes slide {
     0% {
       opacity: 0;
       transform: scale3d(0, 1, 0);
@@ -2745,7 +2749,7 @@ body {
       width: 50%;
     }
     @media (max-width: 650px) {
-      width: 100%;
+      width: 100% !important;
     }
   }
 }
@@ -3323,6 +3327,9 @@ body {
   max-width: 345px;
   margin: 0 0 20px;
   min-height: 250px;
+  @media (max-width: 650px) {
+    min-height: 70px;
+  }
   li{
     display: flex;
     justify-content: space-between;
@@ -3657,9 +3664,14 @@ body {
     top: 18px;
     z-index: 999;
     display: none;
+    @media(max-width: 650px){
+      right: 7px;
+      top: 7px;
+      border: none;
+    }
     img{
-      width: 16px;
-      height: 16px;
+      width: 24px;
+      height: 24px;
     }
   }
   @media(max-width: 768px){
@@ -3676,14 +3688,23 @@ body {
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       margin-bottom: 55px;
     }
+    @media(max-width: 650px){
+      margin-bottom: 45px;
+    }
   }
 }  
 
 .dashboard_menu {
   li {
     margin-bottom: 35px;
+    @media(max-width: 650px){
+      margin-bottom: 30px;
+    }
     .icon {
       padding-left: 35px;
+      @media(max-width: 650px){
+        padding-left: 30px;
+      }
       color: var(--blue);
       &.active{
         font-family: "Neue Haas Grotesk Text Pro Bold";        
@@ -3691,6 +3712,10 @@ body {
       &:before {
         width: 24px;
         height: 24px;
+        @media(max-width: 650px){
+          width: 20px;
+          height: 20px;
+        }
       }
       &.star {
         &::before {
@@ -3770,6 +3795,29 @@ body {
       text-align: center;
     }
   }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    .flex_col_sm_6 {
+      width: 100%;
+      }
+  }
+  .flex_col_sm_9{
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+  .tradies_row{
+    .flex_col_sm_6{
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        width: 100%;
+      }
+      @media(max-width: 768px){
+        width: 50%;
+      }
+      @media(max-width: 650px){
+        width: 100%;
+      }
+    }
+  }
   .tradie_card {
     // min-height: 264px;
     .count_wrap{
@@ -3793,6 +3841,9 @@ body {
     }
     .edit_icon{
       right: 0;
+      @media(max-width: 768px){
+        right: 50px;
+      }
     }
     .xs_sub_title{
       font-size: 16px;
@@ -3807,10 +3858,17 @@ body {
     transform: translateX(95px);
     background-color: #f7f8fa;
     margin: 0;
+    @media(max-width: 1024px){
+      display: none;
+    }
   }
   .total_payment{
     margin: 48px 0 32px;
     max-width: 250px;
+    @media(max-width: 650px){
+      max-width: 100%;
+      margin: 30px 0 25px;
+    }
     span{
       font-family: 'Neue Haas Grotesk Text Pro Bold';
     }
@@ -3823,8 +3881,18 @@ body {
     padding: 17px 20px;
     border: 1px solid var(--blue-two);
     margin-bottom: 40px;
+    @media(max-width: 650px){
+      width: 100%;
+      padding: 12px 20px;
+      margin-bottom: 30px;
+    }
     img{
       margin-right: 30px;
+      @media(max-width: 650px){
+        width: 18px;
+        height: 18px;
+        margin-right: 20px;
+      }
     }
   }
 }
@@ -3843,6 +3911,10 @@ body {
     height: 24px;
     background: url("../images/ic-revenue.png") center no-repeat;
     background-size: contain;
+    @media(max-width: 650px){
+      width: 20px;
+      height: 20px;
+    }
   }
 }
 .job_progress_wrap {
