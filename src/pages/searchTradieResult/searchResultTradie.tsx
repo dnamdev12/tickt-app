@@ -101,7 +101,7 @@ const SearchResultTradie = (props: any) => {
             //         seleted_item.selectedTrade['_id'] = item[0].tradeId;
             //     }
             // }
-            
+
             setSelectedItem(seleted_item);
             props.isHandleChanges(false);
             if (Array.isArray(forceupdate)) {
@@ -118,7 +118,7 @@ const SearchResultTradie = (props: any) => {
         seleted_item
     })
     let length_items = 0;
-    if(seleted_item?.data?.specializationId?.length){
+    if (seleted_item?.data?.specializationId?.length) {
         length_items = seleted_item?.data?.specializationId?.length - 1;
     }
     return (
@@ -160,8 +160,14 @@ const SearchResultTradie = (props: any) => {
                                 homeSearchJobData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
                                 ))
-                                : <img src={noData} alt="data not found" />}
+                                // : <img src={noData} alt="data not found" />}
+                                : <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                </div>}
                         </div>
+
                     </div>
                 </div>
             </div>

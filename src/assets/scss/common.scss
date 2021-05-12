@@ -2625,7 +2625,7 @@ body {
       width: 50%;
     }
     @media (max-width: 650px) {
-      width: 100%;
+      width: 100% !important;
     }
   }
 }
