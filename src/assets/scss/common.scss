@@ -1977,6 +1977,18 @@ body {
     .full_btn {
       margin-bottom: 0;
     }
+    .btn_wrapr{
+      display: flex;
+      align-items: center;
+      .fill_btn{
+        width: 250px;
+        &.white_btn{
+          background-color: var(--white);
+          color: var(--blue);
+          margin-left: 60px;
+        }
+      }
+    }
   }
 }
 
@@ -2688,6 +2700,15 @@ body {
 		width: 100%;
 		margin-bottom: 20px;
 	}
+  .full_btn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+      margin-right: 10px;
+    }
+  }
 	.more_detail {
 		position: absolute;
 		top: 16px;
@@ -2716,7 +2737,7 @@ body {
 			}
 		}
 		.details {
-			width: 80%;
+			width: 70%;
 			.name {
 				font-size: 16px;
 				display: block;
@@ -3628,10 +3649,289 @@ body {
 
 .dashboard_menu {
   li {
-    margin-bottom: 48px;
+    margin-bottom: 35px;
     .icon {
-      display: block;
-      padding-left: 12px;
+      padding-left: 35px;
+      color: var(--blue);
+      &.active{
+        font-family: "Neue Haas Grotesk Text Pro Bold";        
+      }
+      &:before {
+        width: 24px;
+        height: 24px;
+      }
+      &.star {
+        &::before {
+          background: url("../images/ic-star.png") center no-repeat;
+        }
+      }
+      &.applied {
+        &::before {
+          background: url("../images/checked-1.png") center no-repeat;
+        }
+      }
+      &.past {
+        &::before {
+          background: url("../images/date-1.png") center no-repeat;
+        }
+      }
+      &.new {
+        &::before {
+          background: url("../images/ic-job.png") center no-repeat;
+        }
+      }
+      &.approved {
+        &::before {
+          background: url("../images/ic-template.png") center no-repeat;
+        }
+      }
+    }
+  }
+  .badge_count {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: var(--yellow);
+    position: absolute;
+    right: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--blue);
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+  }
+}
+.detail_col {
+  width: 860px;
+  padding: 32px 20px 0 50px;
+  margin-left: 260px;
+  @media(max-width: 768px){
+    width: 100%;
+    padding: 30px 20px 0;
+    margin-left: 0;
+    .flex_col_sm_2 {
+      width: 20%;
+    }
+    .flex_col_sm_3{
+      width: 50%;
+    }
+  }
+  @media(max-width: 650px){
+    padding: 30px 10px 0;
+    .flex_col_sm_6 {
+      width: 100%;
+    }
+    .flex_col_sm_2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    padding: 20px;
+    .flex_col_sm_6 {
+      width: 100%;
+      }
+    .flex_col_sm_2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .tradie_card {
+    // min-height: 264px;
+    .count_wrap{
+      justify-content: space-around;
+      width: 100%;
+    }
+  }
+  .job_info {
+    padding: 15px;
+    margin-bottom: 20px;
+    ul{
+      li{
+        margin: 5px 0;
+      }
+    }
+  }
+  .relate{
+    .back{
+      width: 20px;
+      height: 20px;
+    }
+    .edit_icon{
+      right: 0;
+    }
+    .xs_sub_title{
+      font-size: 16px;
+      padding-left: 30px;
+    }
+  }
+  hr{
+    width: 1px;
+    height: 100vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(95px);
+    background-color: #f7f8fa;
+    margin: 0;
+  }
+  .total_payment{
+    margin: 48px 0 32px;
+    max-width: 250px;
+    span{
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
+    }
+  }
+  .bank_btn{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 17px 20px;
+    border: 1px solid var(--blue-two);
+    margin-bottom: 40px;
+    img{
+      margin-right: 30px;
+    }
+  }
+}
+.payment_note{
+  font-size: 14px;
+  line-height: 1.43;
+  color: #313d48;
+  padding-left: 30px;
+  position: relative;
+  display: block;
+  margin-bottom: 30px;
+  &::before{
+    @include position(absolute, 0px, auto, auto, 0px);
+    content: "";
+    width: 24px;
+    height: 24px;
+    background: url("../images/ic-revenue.png") center no-repeat;
+    background-size: contain;
+  }
+}
+.job_progress_wrap {
+  padding: 8px 0;
+    .progress_wrapper{
+        position: relative;
+    }
+    .approval_info{
+        position: absolute;
+        top: 2px;
+        right: 0;
+        font-size: 10px;
+        line-height: 1.8;
+        letter-spacing: 0.3px;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        display: flex;
+        align-items: center;
+        color: var(--blue-two);
+        text-transform: uppercase;
+        img{
+            margin-right: 5px;
+            width: 12px;
+            height: 12px;
+            object-fit: none;
+        }
+    }
+}
+
+.milestones_check{
+  margin: 20px 0px;
+  li{
+    min-height: 64px;
+    position: relative;
+    margin-bottom: 30px;
+    &::before{
+      position: absolute;
+      left: 11px;
+      top: 32px;
+      border: 1px dashed #dfe5ef;
+      height: 80%;
+      width: 0px;
+      z-index: -1;
+      content: "";
+    }
+    &:last-child{
+      &::before{
+        display: none;
+      }
+    }
+    &.active{
+      .circle_stepper{
+        span{
+          opacity: 1;
+          visibility: visible;
+          width: 12px;
+          height: 12px;
+          background-color: var(--blue-two);
+          display: inline-block;
+          border-radius: 50%;
+         }
+      }
+    }
+    &.check{
+      &::before{
+        border-color: var(--blue-two);
+      }
+      .circle_stepper{
+        border: none;
+        span{
+          opacity: 1;
+          visibility: visible;
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--blue-two) url('../images/checked-2.png') center no-repeat;
+          background-size: contain;
+         }
+      }
+      .info{
+        label, span{
+          color: #748092;
+        }
+      }
+    }
+    .circle_stepper{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: solid 2px #dfe5ef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      span{
+        opacity: 0;
+        visibility: hidden;
+      }
+      
+    }
+    .info{
+      padding-left: 40px;
+      label {
+        font-size: 16px;
+        color: var(--blue);
+        font-family: "Neue Haas Grotesk Text Pro Medium";
+        width: 100%;
+        max-width: 400px;
+        display: block;
+      }
+      span{
+        margin: 3px 0;
+        display: block;
+        font-size: 14px;
+      }
+      .full_btn{
+        margin-top: 16px;
+      }
     }
   }
 }

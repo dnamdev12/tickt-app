@@ -9,9 +9,13 @@
 }
 .relate {
   position: relative;
-  .title{
+  .title, .xs_sub_title{
     padding-left: 40px;
   }
+}
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 .form_label {
   font-size: 14px;
@@ -799,3 +803,108 @@ a.fill_grey_btn {
 //------------Upload Media close-----------------//
 
 
+//------------Progress bar---------------//
+.progress_bar {
+  position: relative;
+  width: 100%;
+  position: relative;
+  width: 100%;
+  background-color: #dfe5ef;
+  display: block;
+  height: 8px;
+  border-radius: 10px;
+  margin: 10px 0;
+  .done_progress {
+      background: var(--blue-two);
+      display: block;
+      height: 8px;
+      border-top-left-radius: 10px;
+      border-bottom-left-radius: 10px;
+      border-top-right-radius: 10px;
+      border-bottom-right-radius: 10px;
+      position: absolute;
+      border: none !important;
+      padding: 0px !important;
+      top: 0;
+      left: 0;
+  }
+  .ongoing {
+      background-color: var(--blue);
+  }
+  input[type="range"] { 
+      margin: auto;
+      -webkit-appearance: none;
+      position: relative;
+      overflow: hidden;
+      cursor: pointer;
+      outline: none;
+      height: 8px;
+  }
+  ::-webkit-slider-runnable-track {
+      background: #ddd;
+  }
+  ::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 1px;
+      height: 40px;
+      background: #0b41a8;
+      box-shadow: -100vw 0 0 100vw #0b41a8;
+      border: 2px #0b41a8 #999;
+  }
+  ::-moz-range-track {
+      height: 40px;
+      background: #ddd;
+  }
+  ::-moz-range-thumb {
+      background: #fff;
+      height: 40px;
+      width: 20px;
+      border: 3px solid #999;
+      border-radius: 0 !important;
+      box-shadow: -100vw 0 0 100vw #0b41a8;
+      box-sizing: border-box;
+  }
+  ::-ms-fill-lower { 
+      background: #0b41a8;
+  }
+  ::-ms-thumb { 
+      background: #fff;
+      border: 2px solid #999;
+      height: 40px;
+      width: 20px;
+      box-sizing: border-box;
+  }
+  ::-ms-ticks-after { 
+      display: none; 
+  }
+  ::-ms-ticks-before { 
+      display: none; 
+  }
+  ::-ms-track { 
+      background: #ddd;
+      color: transparent;
+      height: 40px;
+      border: none;
+  }
+  ::-ms-tooltip { 
+      display: none;
+  }
+}
+.completed-digit{
+  line-height: 1;
+  letter-spacing: normal;
+  text-align: left;
+  color: #313d48;
+  font-size: 14px;
+  b{
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
+  }
+}
+//------------Progress bar close---------------//
+
+
+hr {
+  height: 1px;
+  margin: 32px 0;
+  background-color: #dfe5ef;
+}
