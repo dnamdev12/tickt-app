@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
 import { useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
@@ -19,6 +20,7 @@ const Header = (props: any) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
+    const [toggleMenu, setToggleMenu] = useState(false);
 
     // const USER_TYPE = storageService.getItem('userType');
 
@@ -50,6 +52,7 @@ const Header = (props: any) => {
     }
 
     const postClicked = () => {
+        setToggleMenu(false);
         history.push('/post-new-job')
     }
 
@@ -66,7 +69,7 @@ const Header = (props: any) => {
                                     alt="logo" />
                             </figure>
                         </div>
-                        <ul className="center_nav">
+                        <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
                             <li><a className="active">Discover</a></li>
                             <li><a >Jobs</a></li>
                             {userType === 2 && <li><a onClick={postClicked}>Post</a></li>}
@@ -74,7 +77,10 @@ const Header = (props: any) => {
                         </ul>
                         <ul className="side_nav">
                             <li className="mob_nav">
-                                <img src={menu} alt="menu" />
+                                <img
+                                    src={menu}
+                                    alt="menu"
+                                    onClick={() => { setToggleMenu(!toggleMenu) }} />
                             </li>
                             <div className="profile_notification">
                                 {storageService.getItem("jwtToken") && <div className="notification_bell">
