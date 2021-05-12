@@ -17,7 +17,7 @@ const MostViewedJobs = (props: any) => {
                     <div className="flex_row tradies_row">
                         {mostViewedJobsData?.length > 0 ?
                             (mostViewedJobsData?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} />
+                                return <TradieJobInfoBox item={jobData} {...props}/>
                             })) : <span>No data Found</span>}
                     </div>
                     <button className="fill_grey_btn full_btn m-tb40 view_more" onClick={viewAllJobs}>View all</button>

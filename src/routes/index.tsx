@@ -1,7 +1,7 @@
 import routes from './routesData';
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import PrivateRoute from './privateRoute';
-import Header from '../common/header';
+import Header from '../common/header/index';
 
 const Routes = () => {
   return (

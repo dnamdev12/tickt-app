@@ -168,6 +168,14 @@ body {
   }
 }
 
+.tagg{
+  font-size: 16px;
+  line-height: 1.13;
+  color: #748092;
+  display: block;
+  margin-bottom: 15px;
+}
+
 
 .edit_icon{
 	position: absolute;
@@ -185,6 +193,9 @@ body {
   position: relative;
   font-size: 14px;
   color: var(--greyish-brown);
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    font-size: 12px;
+  }
   &:before {
     content: "";
     position: absolute;
@@ -578,20 +589,22 @@ body {
   }
 }
 
-.setting,
 .bookmark_icon {
-  width: 56px;
-  height: 56px;
+  width: 58px;
+  height: 58px;
   padding: 14px;
-  border-radius: 12px;
-  border: solid 1px rgba(160, 159, 167, 0.35);
+  border-radius: 3px;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  margin-right: 24px;
-  &:active {
-    border-color: var(--orange);
+  margin-right: 10px;
+  box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.09);
+  background: #dfe5ef url('../images/bookmark.png') center no-repeat;
+  background-size: auto;
+  &.active{
+    background: #dfe5ef url('../images/bookmarked.png') center no-repeat;
+    background-size: auto;
   }
 }
 
@@ -1105,14 +1118,20 @@ body {
     }
   }
   .flex_col_sm_4 {
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 33%;
+    }
     @media (max-width: 768px) {
       width: 100%;
     }
   }
   .back {
     top: -20px;
-	left: 10px;
+	  left: 10px;
     cursor: pointer;
+    @media (max-width: 650px) {
+      top: -20px !important;
+    }
   }
   .tags_wrap {
     ul {
@@ -1126,6 +1145,9 @@ body {
     @include border-radius(3px);
     background-color: rgba(18, 14, 36, 0.3);
     height: 400px;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      height: 300px;
+    }
     @media (max-width: 768px) {
       margin-bottom: 20px;
     }
@@ -1317,7 +1339,7 @@ body {
       font-family: "Neue Haas Grotesk Text Pro Bold";
       line-height: 1.29;
       text-align: left;
-      color: #2d2d2d;
+      color: var(--black-two);
     }
     .rent {
       font-size: 14px;
@@ -1432,9 +1454,80 @@ body {
 	}
 	@media (max-width: 650px) {
 		height: 100%;
-		max-height: 97%;
+		max-height: 70%;
 		margin: 15px auto;
 	}
+  &.ask_ques{
+    width: 864px;
+	  max-width: 864px;
+    height: 503px;
+	  max-height: 503px;
+    @media (max-width: 1500px) {
+      margin: 16px auto 0;
+      height: 420px;
+      max-height: 420px;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 90%;
+      margin: 30px auto;
+      height: 100%;
+    }
+    @media (max-width: 768px) {
+      width: 95%;
+      height: 100%;
+      max-height: 85%;
+    }
+    @media (max-width: 650px) {
+      height: 100%;
+      max-height: 60%;
+      margin: 15px auto;
+    }
+  }
+  &.confirmation{
+    width: 480px;
+	  max-width: 480px;
+    height: 255px;
+	  max-height: 255px;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 90%;
+      margin: 30px auto;
+      height: 100%;
+    }
+    @media (max-width: 768px) {
+      width: 95%;
+      height: 100%;
+      max-height: 25%;
+    }
+    @media (max-width: 650px) {
+      height: 100%;
+      max-height: 35%;
+      margin: 15px auto;
+    }
+    .modal_message{
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px 0;
+      text-align: center;
+      p{
+        font-size: 18px;
+        @media (max-width: 650px){
+          font-size: 15px;
+        }
+      }
+    }
+    .dialog_actions{
+      padding: 8px 0;
+      display: flex;
+      flex-wrap: wrap;
+      min-height: 52px;
+      align-items: center;
+      justify-content: center;
+      margin-top: 15px;
+      .fill_btn, .fill_grey_btn{
+        padding: 12px 25px;
+      }
+    }
+  }
 }
 .ques_ans_modal,
 .custom_modal {
@@ -1469,6 +1562,8 @@ body {
     @media (max-width: 650px) {
       width: 30px;
       height: 30px;
+      top: -6px;
+      right: 10px;
     }
   }
   .inner_wrappr {
@@ -1489,6 +1584,12 @@ body {
     @media (max-width: 1500px){
       max-height: 350px;
     }
+    textarea {
+      min-height: 242px;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      min-height: 130px;
+    }
+    }
   }
   .fill_btn {
     margin-right: 32px;
@@ -1502,13 +1603,19 @@ body {
     }
   }
   .btn_wrap {
-    height: 100px;
+    height: 90px;
     position: relative;
     .bottom_btn {
+      position: absolute;
+      bottom: 0;
       @media (max-width: 1024px) {
         width: 100%;
         display: flex;
       }
+      @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        position: relative;
+      }
+      
       .full_btn {
         @media (max-width: 1024px) {
           width: 200px;
@@ -1912,6 +2019,18 @@ body {
     .full_btn {
       margin-bottom: 0;
     }
+    .btn_wrapr{
+      display: flex;
+      align-items: center;
+      .fill_btn{
+        width: 250px;
+        &.white_btn{
+          background-color: var(--white);
+          color: var(--blue);
+          margin-left: 60px;
+        }
+      }
+    }
   }
 }
 
@@ -2136,6 +2255,7 @@ body {
   }
   .commn_para {
     margin: 0 0 7px 0;
+    max-width: 85%;
   }
   .cross-icon {
     display: inline-block;
@@ -2648,6 +2768,15 @@ body {
 		width: 100%;
 		margin-bottom: 20px;
 	}
+  .full_btn{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+      margin-right: 10px;
+    }
+  }
 	.more_detail {
 		position: absolute;
 		top: 16px;
@@ -2676,7 +2805,7 @@ body {
 			}
 		}
 		.details {
-			width: 80%;
+			width: 70%;
 			.name {
 				font-size: 16px;
 				display: block;
@@ -3192,7 +3321,8 @@ body {
 
 .job_milestone{
   max-width: 345px;
-  margin: 0 0 40px;
+  margin: 0 0 20px;
+  min-height: 250px;
   li{
     display: flex;
     justify-content: space-between;
@@ -3551,12 +3681,392 @@ body {
 
 .dashboard_menu {
   li {
-    margin-bottom: 48px;
+    margin-bottom: 35px;
     .icon {
-      display: block;
-      padding-left: 12px;
+      padding-left: 35px;
+      color: var(--blue);
+      &.active{
+        font-family: "Neue Haas Grotesk Text Pro Bold";        
+      }
+      &:before {
+        width: 24px;
+        height: 24px;
+      }
+      &.star {
+        &::before {
+          background: url("../images/ic-star.png") center no-repeat;
+        }
+      }
+      &.applied {
+        &::before {
+          background: url("../images/checked-1.png") center no-repeat;
+        }
+      }
+      &.past {
+        &::before {
+          background: url("../images/date-1.png") center no-repeat;
+        }
+      }
+      &.new {
+        &::before {
+          background: url("../images/ic-job.png") center no-repeat;
+        }
+      }
+      &.approved {
+        &::before {
+          background: url("../images/ic-template.png") center no-repeat;
+        }
+      }
+    }
+  }
+  .badge_count {
+    width: 20px;
+    height: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 20px;
+    background-color: var(--yellow);
+    position: absolute;
+    right: -35px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--blue);
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+  }
+}
+.detail_col {
+  width: 860px;
+  padding: 32px 20px 0 50px;
+  margin-left: 260px;
+  @media(max-width: 768px){
+    width: 100%;
+    padding: 30px 20px 0;
+    margin-left: 0;
+    .flex_col_sm_2 {
+      width: 20%;
+    }
+    .flex_col_sm_3{
+      width: 50%;
+    }
+  }
+  @media(max-width: 650px){
+    padding: 30px 10px 0;
+    .flex_col_sm_6 {
+      width: 100%;
+    }
+    .flex_col_sm_2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    padding: 20px;
+    .flex_col_sm_6 {
+      width: 100%;
+      }
+    .flex_col_sm_2 {
+      width: 100%;
+      text-align: center;
+    }
+  }
+  .tradie_card {
+    // min-height: 264px;
+    .count_wrap{
+      justify-content: space-around;
+      width: 100%;
+    }
+  }
+  .job_info {
+    padding: 15px;
+    margin-bottom: 20px;
+    ul{
+      li{
+        margin: 5px 0;
+      }
+    }
+  }
+  .relate{
+    .back{
+      width: 20px;
+      height: 20px;
+    }
+    .edit_icon{
+      right: 0;
+    }
+    .xs_sub_title{
+      font-size: 16px;
+      padding-left: 30px;
+    }
+  }
+  hr{
+    width: 1px;
+    height: 100vh;
+    position: absolute;
+    left: 50%;
+    transform: translateX(95px);
+    background-color: #f7f8fa;
+    margin: 0;
+  }
+  .total_payment{
+    margin: 48px 0 32px;
+    max-width: 250px;
+    span{
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
+    }
+  }
+  .bank_btn{
+    width: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 17px 20px;
+    border: 1px solid var(--blue-two);
+    margin-bottom: 40px;
+    img{
+      margin-right: 30px;
+    }
+  }
+}
+.payment_note{
+  font-size: 14px;
+  line-height: 1.43;
+  color: #313d48;
+  padding-left: 30px;
+  position: relative;
+  display: block;
+  margin-bottom: 30px;
+  &::before{
+    @include position(absolute, 0px, auto, auto, 0px);
+    content: "";
+    width: 24px;
+    height: 24px;
+    background: url("../images/ic-revenue.png") center no-repeat;
+    background-size: contain;
+  }
+}
+.job_progress_wrap {
+  padding: 8px 0;
+    .progress_wrapper{
+        position: relative;
+    }
+    .approval_info{
+        position: absolute;
+        top: 2px;
+        right: 0;
+        font-size: 10px;
+        line-height: 1.8;
+        letter-spacing: 0.3px;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        display: flex;
+        align-items: center;
+        color: var(--blue-two);
+        text-transform: uppercase;
+        img{
+            margin-right: 5px;
+            width: 12px;
+            height: 12px;
+            object-fit: none;
+        }
+    }
+}
+
+.milestones_check{
+  margin: 20px 0px;
+  li{
+    min-height: 64px;
+    position: relative;
+    margin-bottom: 30px;
+    &::before{
+      position: absolute;
+      left: 11px;
+      top: 32px;
+      border: 1px dashed #dfe5ef;
+      height: 80%;
+      width: 0px;
+      z-index: -1;
+      content: "";
+    }
+    &:last-child{
+      &::before{
+        display: none;
+      }
+    }
+    &.active{
+      .circle_stepper{
+        span{
+          opacity: 1;
+          visibility: visible;
+          width: 12px;
+          height: 12px;
+          background-color: var(--blue-two);
+          display: inline-block;
+          border-radius: 50%;
+         }
+      }
+    }
+    &.check{
+      &::before{
+        border-color: var(--blue-two);
+      }
+      .circle_stepper{
+        border: none;
+        span{
+          opacity: 1;
+          visibility: visible;
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--blue-two) url('../images/checked-2.png') center no-repeat;
+          background-size: contain;
+         }
+      }
+      .info{
+        label, span{
+          color: #748092;
+        }
+      }
+    }
+    .circle_stepper{
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      border: solid 2px #dfe5ef;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      span{
+        opacity: 0;
+        visibility: hidden;
+      }
+      
+    }
+    .info{
+      padding-left: 40px;
+      label {
+        font-size: 16px;
+        color: var(--blue);
+        font-family: "Neue Haas Grotesk Text Pro Medium";
+        width: 100%;
+        max-width: 400px;
+        display: block;
+      }
+      span{
+        margin: 3px 0;
+        display: block;
+        font-size: 14px;
+      }
+      .full_btn{
+        margin-top: 16px;
+      }
     }
   }
 }
 //----------------Job Dashboard close-------------------//
 
+
+//------------Ques-Ans list modal--------------------//
+.question_ans_card {
+  max-width: 800px;
+  margin: 0 0 16px;
+  padding: 16px 64px 16px 16px;
+  border-radius: 3px;
+  background-color: #f6f6f6;
+  @media (max-width: 650px) {
+    max-width: 100%;
+    padding: 10px;
+  }
+  &.answer {
+    margin: 0 0 16px 49px;
+    background: var(--white);
+    transform: translateX(0%);
+    -webkit-transform: translateX(0%);
+    animation: slide-out 0.5s forwards;
+    -webkit-animation: slide-out 0.5s forwards;
+    @media (max-width: 650px) {
+      margin: 0 0 16px 15px;
+    }
+    @keyframes slide-out {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
+    }
+    @-webkit-keyframes slide-out {
+      0% {
+        transform: translateX(-100%);
+      }
+      100% {
+        transform: translateX(0%);
+      }
+    }
+  }
+  .user_detail {
+    display: flex;
+    margin-bottom: 15px;
+    @media (max-width: 650px) {
+      margin-bottom: 10px;
+    }
+    .user_img {
+      width: 40px;
+      height: 40px;
+      margin: 0 8px 0 0;
+      overflow: hidden;
+      border-radius: 4px;
+      @media (max-width: 650px) {
+        width: 30px;
+        height: 30px;
+      }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+    .details {
+      width: 80%;
+      .user_name {
+        font-size: 14px;
+        font-family: "Neue Haas Grotesk Text Pro Bold";
+        line-height: 1.29;
+        color: var(--black-two);
+        display: block;
+      }
+      .date {
+        font-size: 14px;
+        line-height: 1.29;
+        color: #aeaeae;
+        @media (max-width: 650px) {
+          font-size: 12px;
+        }
+      }
+    }
+  }
+  p {
+    margin: 16px 0;
+    font-size: 14px;
+    line-height: 1.29;
+    color: var(--black-two);
+    @media (max-width: 650px) {
+      margin: 0 0 10px;
+    }
+  }
+  .show_hide_ans,
+  .action {
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-family: "Neue Haas Grotesk Text Pro Bold";
+    line-height: 1.29;
+    color: var(--blue-two);
+    margin-right: 16px;
+  }
+}
+//------------Ques-Ans list modal close--------------------//

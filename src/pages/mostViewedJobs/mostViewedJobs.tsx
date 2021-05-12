@@ -19,7 +19,7 @@ const MostViewedJobs = (props: any) => {
                     <div className="flex_row tradies_row">
                         {mostViewJobsData?.length > 0 ?
                             (mostViewJobsData?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} />
+                                return <TradieJobInfoBox item={jobData} {...props}/>
                             })) : <span>No data Found</span>}
                     </div>
                 </div>

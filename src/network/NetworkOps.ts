@@ -117,9 +117,10 @@ export class NetworkOps {
         }
     }
 
-    delete = async (service: string): Promise<any> => {
+    delete = async (service: string, data: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('DELETE');
+            request.body = JSON.stringify(data);
             return this.wrapperWithOptions(urlFor(service), request)
         }
         catch (err) {

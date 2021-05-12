@@ -2,18 +2,17 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import JobDetailsPageComponent from './jobDetailsPage';
 import {
-    getHomeJobDetails,
+    getHomeSaveJob,
 } from '../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
     return {
-        homeJobDetailsData: state.homeSearch.homeJobDetailsData,
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
-        getHomeJobDetails
+        getHomeSaveJob,
     }, dispatch);
 }
 

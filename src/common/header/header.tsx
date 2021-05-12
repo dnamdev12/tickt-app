@@ -4,14 +4,14 @@ import { useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import storageService from '../utils//storageService';
-import AuthModal from './auth/authModal';
+import storageService from '../../utils/storageService';
+import AuthModal from '../auth/authModal';
 
-import colorLogo from '../assets/images/ic-logo-yellow.png';
-import menu from '../assets/images/menu-line-white.svg';
-import bell from '../assets/images/ic-notification.png';
-import dummy from '../assets/images/u_placeholder.jpg';
-import profile from '../assets/images/ic-profile.png';
+import colorLogo from '../../assets/images/ic-logo-yellow.png';
+import menu from '../../assets/images/menu-line-white.svg';
+import bell from '../../assets/images/ic-notification.png';
+import dummy from '../../assets/images/u_placeholder.jpg';
+import profile from '../../assets/images/ic-profile.png';
 
 const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
@@ -26,6 +26,10 @@ const Header = (props: any) => {
 
     let location = useLocation();
     let history = useHistory();
+
+    useEffect(() => {
+        props.callTradieProfileData();
+    }, [])
 
     useEffect(() => {
         if (DISABLE_HEADER.includes(location.pathname)) {
@@ -101,6 +105,7 @@ const Header = (props: any) => {
                                         open={Boolean(anchorEl)}
                                         onClose={handleClose}
                                     >
+                                        {/* <span className="sub_title">{props.tradieProfileData?.userName}</span> */}
                                         <span className="sub_title">John Oldman</span>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon">

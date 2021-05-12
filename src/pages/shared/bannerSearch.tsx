@@ -51,7 +51,7 @@ interface PropsType {
     setBannerData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
-    handleChangeToggle: (data: any) => void
+    handleChangeToggle?: (data: any) => void
 }
 
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
@@ -343,7 +343,9 @@ const BannerSearch = (props: PropsType) => {
         <div className="home_search">
             <button
             onClick={() => {
-                props.handleChangeToggle(false)
+                if(props?.handleChangeToggle){
+                    props.handleChangeToggle(false)
+                }
             }}
             className="modal_srch_close">
                 <img src={close} alt="close" />
