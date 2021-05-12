@@ -226,7 +226,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <OwlCarousel className='owl-theme' {...options}>
                                         {jobDetailsData && jobDetailsData?.photos?.map((image: string) => {
                                             return (
-                                                <img alt="" src={image} style={{ height: '400px' }} />
+                                                <img alt="" src={image}  />
                                             )
                                         })}
                                     </OwlCarousel>
