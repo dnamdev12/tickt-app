@@ -53,7 +53,7 @@ export default class TradieBox extends Component<Props, State> {
                         </figure>
                         <div className="details">
                             <span className="name">{item?.tradieName}</span>
-                            <span className="rating">{item?.ratings}, {item?.reviews} reviews </span>
+                            <span className="rating">{item?.ratings || '5'} , {item?.reviews || '200'} reviews </span>
                         </div>
                     </div>
                     <div className="tags_wrap">

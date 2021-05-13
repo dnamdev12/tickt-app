@@ -11,6 +11,7 @@ import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import { setShowToast } from '../../../redux/common/actions';
 interface Proptypes {
     data: any;
     milestones: any;
@@ -117,26 +118,26 @@ const JobDetails = ({
         let data_clone: any = data;
         if (data_clone?.urls?.length) {
             let format_items = data_clone?.urls?.map((item: any) => {
-                let split_item_format = item.split('.');
+                let split_item_format = item.link.split('.');
                 let get_split_fromat = split_item_format[split_item_format.length - 1];
 
-                if (imageFormats.includes(get_split_fromat)) { // || videoFormats.includes(get_split_fromat)
-                    return { url: item, format: get_split_fromat };
+                if (imageFormats.includes(get_split_fromat)  || videoFormats.includes(get_split_fromat)) {
+                    return { url: item.link, format: get_split_fromat };
                 }
             });
-            
+
             if (format_items?.length) {
 
                 return format_items.map((item: any) => {
                     let render_item: any = null;
-
+                    console.log({item, format_items});
                     if (imageFormats.includes(item?.format)) {
-                        render_item = <img alt="" src={item?.url}  />
+                        render_item = <img alt="" src={item?.url} />
                     }
 
-                    // if (videoFormats.includes(item?.format)) {
-                    //     render_item = <video src={item?.url} style={{ height: '410px', width: '800px' }} />
-                    // }
+                    if (videoFormats.includes(item?.format)) {
+                        render_item = <video src={item?.url} style={{ height: '410px', width: '800px' }} />
+                    }
 
                     return (
                         <div className='item'>
@@ -270,7 +271,11 @@ const JobDetails = ({
 
 
                                 </ul>
-                                <button className="fill_grey_btn ques_btn">
+                                <button
+                                    onClick={() => {
+                                        setShowToast(true, 'Under development.')
+                                    }}
+                                    className="fill_grey_btn ques_btn">
                                     <img src={question} alt="question" />
                                     {'0 questions'}
                                 </button>
@@ -290,7 +295,7 @@ const JobDetails = ({
                                                     <img src={categorySelected?.job_type?.image} alt="icon" />
                                                 </figure>
                                                 <span className="name">{categorySelected?.job_type?.name}</span>
-                                            </li>   
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>

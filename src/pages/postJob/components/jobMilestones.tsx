@@ -37,7 +37,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [open, setOpen] = React.useState(false);
     const [deleteItem, setDeleteItem] = React.useState(null);
-
+    const [sortedItems, setSortedItems] = React.useState([]);
 
     const handleClickOpen = (id: any) => {
         setOpen(true)
@@ -73,51 +73,31 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         return result;
     };
 
+    const checkIfValidDates = (item: any) => {
+        const newarr: any = localMilestones.slice().sort((a, b) => {
+            return moment(a.from_date).diff(b.from_date);
+        });
+        setSortedItems(newarr);
+        return JSON.stringify(item) === JSON.stringify(newarr);
+    }
+
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
-
         // dropped outside the list
         if (!destination) {
             return;
         }
 
         if (source.droppableId === destination.droppableId) {
-            let source_item = localMilestones[source.index];
-            let destination_item = localMilestones[destination.index];
-            let filteredItem = localMilestones.filter((mil: any) => mil.milestone_name !== source_item.milestone_name);
-
-            let checkIsValid: any = true;
-            filteredItem.forEach((mile: any) => {
-                let validStart = moment(mile.from_date).isValid();
-
-                let validStartInput =  moment(source_item.from_date).isValid();
-
-                if(validStart && validStartInput){
-                    console.log({
-                        source_item:source_item.from_date,
-                        mile:mile.from_date,
-                        is:moment(source_item.from_date).isAfter(mile.from_date) 
-                    })
-                    if(moment(source_item.from_date).isAfter(mile.from_date)){
-                        checkIsValid = true;
-                    } else {
-                        checkIsValid = false;
-                    }
-                }
-            })
-            console.log({
-                checkIsValid,
-                isCheck:moment(source_item.from_date).isBefore(destination_item.from_date)
-            })
-            if (!checkIsValid) {
-                const reOrderedMilestones = reorder(
-                    localMilestones,
-                    source.index,
-                    destination.index
-                );
-                setLocalMilestones(reOrderedMilestones);
-            } else {
-                setShowToast(true, "please arrange milestone date wise.")
+            const reOrderedMilestones = reorder(
+                localMilestones,
+                source.index,
+                destination.index
+            );
+            setLocalMilestones(reOrderedMilestones);
+            let isValid = checkIfValidDates(reOrderedMilestones);
+            if (!isValid) {
+                setShowToast(true, "Please arrange milestonea date wise.")
             }
         }
     };
@@ -132,8 +112,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-
-
                     <div>
                         <Dialog
                             open={open}
@@ -176,7 +154,15 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             </div>
                             {localMilestones?.length ? (
                                 <div
-                                    onClick={() => { handleStepForward(10) }}
+                                    onClick={() => { 
+                                        let check: boolean = checkIfValidDates(localMilestones);
+                                        if(check){
+                                            handleCombineMileStones(localMilestones);
+                                            handleStepForward(10) 
+                                        } else {
+                                            setShowToast(true, "Please arrange milestonea date wise.")
+                                        }
+                                    }}
                                     className="flex_col_sm_5 text-right">
                                     <a href="javascript:void(0)" className="link">Save as template</a>
                                 </div>
@@ -300,8 +286,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                         }
                                                     }
                                                 }
-
-                                                console.log({ milestones }, '----')
                                                 handleStepComplete({})
                                             }}>
                                             {'+ Add milestone'}
@@ -310,16 +294,16 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                     <div className="form_field">
                                         <button
                                             onClick={() => {
-                                                if (milestones?.length && localMilestones?.length) {
-                                                    if (milestones[0]?.milestone_name !== localMilestones[0]?.milestone_name) {
-                                                        handleCombineMileStones(localMilestones);
+                                                let check: boolean = checkIfValidDates(localMilestones);
+                                                if (check) {
+                                                    handleCombineMileStones(localMilestones);
+                                                    if (editDetailPage?.currentScreen) {
+                                                        handleStepForward(14)
+                                                    } else {
+                                                        handleStepForward(13)
                                                     }
-                                                }
-
-                                                if (editDetailPage?.currentScreen) {
-                                                    handleStepForward(14)
                                                 } else {
-                                                    handleStepForward(13)
+                                                    setShowToast(true, "Please arrange milestonea date wise.")
                                                 }
                                             }}
                                             className="fill_btn fill_grey_btn full_btn">

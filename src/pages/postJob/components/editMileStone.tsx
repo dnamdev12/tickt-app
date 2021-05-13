@@ -42,7 +42,7 @@ export default class EditMilestone extends Component<Props, State> {
         }
     }
 
-    checkIsDateValid = (milestones:any,time:any) => {
+    checkIsDateValid = (milestones: any, time: any) => {
         let checkIsValid: any = true;
         milestones.forEach((mile: any) => {
             let validStart = moment(mile.from_date).isValid();
@@ -66,12 +66,12 @@ export default class EditMilestone extends Component<Props, State> {
                         checkIsValid = false
                     }
                 }
-                
+
                 if (validEndInput) {
                     if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
                         checkIsValid = false
                     }
-                }                
+                }
             }
 
             if (validStart && validStartInput && !validEnd) {
@@ -88,7 +88,7 @@ export default class EditMilestone extends Component<Props, State> {
 
         });
 
-        console.log({checkIsValid});
+        console.log({ checkIsValid });
 
         return checkIsValid;
 
@@ -100,10 +100,10 @@ export default class EditMilestone extends Component<Props, State> {
 
         if (Object.keys(item).length) {
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
-            let isValid:any = null;
+            let isValid: any = null;
             if (editMilestoneTiming && Object.keys(editMilestoneTiming).length) {
                 isValid = this.checkIsDateValid(milestones, editMilestoneTiming);
-                if(isValid){
+                if (isValid) {
                     if ('from_date' in editMilestoneTiming) {
                         from_date = editMilestoneTiming?.from_date;
                     }
@@ -112,15 +112,15 @@ export default class EditMilestone extends Component<Props, State> {
                     }
                 }
             }
-
+            console.log({ isPhotoevidence, isValid })
             this.setState({
                 from_date: from_date,
-                isPhotoevidence: isPhotoevidence,
+                isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
                 milestone_name: milestone_name,
                 recommended_hours: recommended_hours,
                 to_date: to_date,
             }, () => {
-                if(isValid){
+                if (isValid !== null) {
                     this.props.addTimeToMileStone({
                         from_date,
                         to_date
@@ -169,7 +169,7 @@ export default class EditMilestone extends Component<Props, State> {
     }
 
     checkErrors = () => {
-        const { milestones,editMileStone } = this.props;
+        const { milestones, editMileStone } = this.props;
         let milestone_index = editMileStone;
         let from_date = milestones[editMileStone]?.from_date || '';
         let state_from_date = this.state.from_date;

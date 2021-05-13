@@ -32,12 +32,14 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
 
     const handleContinue = async (id: any) => {
         let { success, data } = await getMileStoneByTempId(id);
+        console.log({success, data},'---->')
         if (success && data) {
             let filter_milestones = data?.milestones?.map((item: any) => ({
                 from_date: moment(item?.fromDate).format('MM-DD-YYYY'),
                 to_date: item?.toDate?.length ? moment(item?.toDate).format('MM-DD-YYYY') : '',
                 milestone_name: item?.milestoneName,
-                recommended_hours: item?.recommendedHours
+                recommended_hours: item?.recommendedHours,
+                isPhotoevidence: item?.isPhotoevidence || false,
             }))
             handleCombineMileStones(filter_milestones);
             handleStepForward(6);

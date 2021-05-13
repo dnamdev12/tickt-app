@@ -21,6 +21,7 @@ const Header = (props: any) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
     const [toggleMenu, setToggleMenu] = useState(false);
+    const [activeLink, setActiveLink] = useState('');
 
     // const USER_TYPE = storageService.getItem('userType');
 
@@ -57,6 +58,7 @@ const Header = (props: any) => {
 
     const postClicked = () => {
         setToggleMenu(false);
+        setActiveLink('post');
         history.push('/post-new-job')
     }
 
@@ -68,16 +70,36 @@ const Header = (props: any) => {
                         <div className="brand_wrap">
                             <figure>
                                 <img
-                                    onClick={() => { props.history.push('/') }}
+                                    onClick={() => {
+                                        setActiveLink('');
+                                        props.history.push('/')
+                                    }}
                                     src={colorLogo}
                                     alt="logo" />
                             </figure>
                         </div>
                         <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
-                            <li><a className="active">Discover</a></li>
-                            <li><a >Jobs</a></li>
-                            {userType === 2 && <li><a onClick={postClicked}>Post</a></li>}
-                            <li><a >Chat</a></li>
+                            <li>
+                                <a className={activeLink === 'discover' ? 'active' : ''}>
+                                    {'Discover'}
+                                </a>
+                            </li>
+                            <li>
+                                <a className={activeLink === 'jobs' ? 'active' : ''}>
+                                    {'Jobs'}
+                                </a>
+                            </li>
+                            {userType === 2 &&
+                                <li>
+                                    <a className={activeLink === 'post' ? 'active' : ''} onClick={postClicked}>
+                                        {'Post'}
+                                    </a>
+                                </li>}
+                            <li>
+                                <a className={activeLink === 'chat' ? 'active' : ''}>
+                                    {'Chat'}
+                                </a>
+                            </li>
                         </ul>
                         <ul className="side_nav">
                             <li className="mob_nav">
