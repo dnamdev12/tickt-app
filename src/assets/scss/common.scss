@@ -192,6 +192,10 @@ body {
 	img{
 		width: 24px !important;
 		height: 24px !important;
+    @media (max-width: 650px) {
+      width: 20px !important;
+		  height: 20px !important;
+    }
 	}
 }
 
@@ -1235,6 +1239,9 @@ body {
     margin: 45px 0 20px;
     .sub_title {
       margin-bottom: 25px;
+      @media (max-width: 650px){
+        margin-bottom: 15px;
+      }
     }
     p {
       font-size: 14px;
@@ -1262,9 +1269,17 @@ body {
           margin: 10px 0;
           &.icon{
             padding-left: 38px;
+            @media (max-width: 650px) {
+              padding-left: 28px;
+            }
             &:before{
               width: 24px;
               height: 24px;
+              @media (max-width: 650px) {
+                width: 18px;
+                height: 18px;
+                background-size: contain !important;
+              }
             }
             &.clock {
               &::before {
@@ -1504,6 +1519,7 @@ body {
 		height: 100%;
 		max-height: 70%;
 		margin: 15px auto;
+    padding: 18px 15px;
 	}
   &.ask_ques{
     width: 864px;
@@ -2428,6 +2444,10 @@ body {
       padding: 14px 20px;
       max-width: 176px;
       width: 100%;
+      @media(max-width: 650px){
+        padding: 12px 15px;
+        max-width: 135px;
+      }
       &:hover {
         background-color: transparent;
         color: var(--white);
@@ -2771,12 +2791,25 @@ body {
   line-height: 1.43;
   text-align: center;
   color: #120e24;
-  .gps_icon {
-    margin-right: 20px;
-  }
   @media (max-width: 768px) {
     width: 100%;
+    justify-content: center;
+    height: 41px;
+    padding: 11px 30px;
   }
+  .gps_icon {
+    margin-right: 20px;
+    @media (max-width: 768px){
+      margin-right: 15px;
+    }
+    img{
+      @media (max-width: 768px){
+        width: 20px;
+        height: 20px;
+      } 
+    }
+  }
+  
 }
 
 .blocked_note {
@@ -3343,6 +3376,10 @@ body {
       width: 100%;
       position: relative;
       padding-left: 40px;
+      @media(max-width: 650px){
+        max-width: 250px;
+        padding-left: 30px;
+      }
       &:before {
         @include position(absolute, 50%, auto, auto, 0px);
         transform: translateY(-50%);
@@ -3351,6 +3388,10 @@ body {
         height: 24px;
         background: url("../images/ic-template.png") center no-repeat;
         background-size: contain;
+        @media(max-width: 650px){
+          width: 20px;
+          height: 20px;
+        }
         @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
           width: 18px;
           height: 18px;
@@ -3391,6 +3432,7 @@ body {
   min-height: 250px;
   @media (max-width: 650px) {
     min-height: 70px;
+    max-width: 100%;
   }
   li{
     display: flex;
@@ -3404,6 +3446,9 @@ body {
       font-size: 18px;
       color: var(--blue);
       line-height: 1;
+      @media (max-width: 650px) {
+        font-size: 16px;
+      }
     }
   }
 }
