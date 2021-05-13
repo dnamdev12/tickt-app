@@ -208,7 +208,7 @@ body {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background-size: contain !important;
+    // background-size: contain !important;
   }
 }
 
@@ -1259,7 +1259,34 @@ body {
         justify-content: initial;
         li {
           flex: 1 1 50%;
-          margin: 5px 0;
+          margin: 7px 0;
+          &.icon{
+            padding-left: 35px;
+            &:before{
+              width: 24px;
+              height: 24px;
+            }
+            &.clock {
+              &::before {
+                background: url('../images/clock-1.png') center no-repeat;
+              }
+            }
+            &.dollar {
+              &::before {
+                background: url('../images/dollar-1.png') center no-repeat;
+              }
+            }
+            &.location {
+              &::before {
+                background: url('../images/location-1.png') center no-repeat;
+              }
+            }
+            &.calendar {
+              &::before {
+                background: url('../images/calendar-1.png') center no-repeat;
+              }
+            }
+          }
         }
       }
     }
@@ -2946,8 +2973,8 @@ body {
 			&.icon {
 				padding-left: 20px;
 				&:before {
-					width: 12px;
-					height: 12px;
+					width: 16px;
+					height: 16px;
 				}
 				&.clock {
 					&::before {
