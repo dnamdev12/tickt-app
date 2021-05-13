@@ -237,7 +237,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <OwlCarousel className='owl-theme' {...options}>
                                         {jobDetailsData && jobDetailsData?.photos?.map((image: string) => {
                                             return (
-                                                <img alt="" src={image}  />
+                                                <img alt="" src={image} />
                                             )
                                         })}
                                     </OwlCarousel>
@@ -309,43 +309,45 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
-                                            {jobDetailsData?.questionsData?.map((item: any) => {
-                                                const { questionData } = item;
-                                                return (
-                                                    <div className="inner_wrap">
-                                                        <div className="question_ans_card">
-                                                            <div className="user_detail">
-                                                                <figure className="user_img">
-                                                                    <img src={questionData?.userImage ? questionData?.userImage : dummy} alt="user-img" />
-                                                                </figure>
-                                                                <div className="details">
-                                                                    <span className="user_name">{questionData?.userName}</span>
-                                                                    <span className="date">{questionData?.date}</span>
-                                                                </div>
-                                                            </div>
-                                                            <p>{questionData?.question}</p>
-                                                            {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
-                                                            {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId)}>Delete</span>}
-                                                            {(Object.keys(questionData?.answerData).length > 0 && questionsData?.showAnswerButton) &&
-                                                                <span className="show_hide_ans link"
-                                                                    onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showQuestionAnswer: true, showAnswerButton: false }))}>Show answer</span>}
-                                                        </div>
-                                                        {questionData?.answerData?.answer && questionsData.showQuestionAnswer &&
-                                                            <div className="question_ans_card answer">
+                                            <div className="inner_wrap">
+                                                {jobDetailsData?.questionsData?.map((item: any) => {
+                                                    const { questionData } = item;
+                                                    return (
+                                                        <>
+                                                            <div className="question_ans_card">
                                                                 <div className="user_detail">
                                                                     <figure className="user_img">
-                                                                        <img src={dummy} alt="user-img" />
+                                                                        <img src={questionData?.userImage ? questionData?.userImage : dummy} alt="user-img" />
                                                                     </figure>
                                                                     <div className="details">
-                                                                        <span className="user_name">{questionData?.answerData?.userName}</span>
-                                                                        <span className="date">{questionData?.answerData?.date}</span>
+                                                                        <span className="user_name">{questionData?.userName}</span>
+                                                                        <span className="date">{questionData?.date}</span>
                                                                     </div>
                                                                 </div>
-                                                                <p>{questionData?.answerData?.answer}</p>
-                                                            </div>}
-                                                    </div>
-                                                )
-                                            })}
+                                                                <p>{questionData?.question}</p>
+                                                                {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
+                                                                {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId)}>Delete</span>}
+                                                                {(Object.keys(questionData?.answerData).length > 0 && questionsData?.showAnswerButton) &&
+                                                                    <span className="show_hide_ans link"
+                                                                        onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showQuestionAnswer: true, showAnswerButton: false }))}>Show answer</span>}
+                                                            </div>
+                                                            {questionData?.answerData?.answer && questionsData.showQuestionAnswer &&
+                                                                <div className="question_ans_card answer">
+                                                                    <div className="user_detail">
+                                                                        <figure className="user_img">
+                                                                            <img src={dummy} alt="user-img" />
+                                                                        </figure>
+                                                                        <div className="details">
+                                                                            <span className="user_name">{questionData?.answerData?.userName}</span>
+                                                                            <span className="date">{questionData?.answerData?.date}</span>
+                                                                        </div>
+                                                                    </div>
+                                                                    <p>{questionData?.answerData?.answer}</p>
+                                                                </div>}
+                                                        </>
+                                                    )
+                                                })}
+                                            </div>
                                             <div className="btn_wrap">
                                                 <div className="bottom_btn">
                                                     <button className="fill_grey_btn full_btn" onClick={() => questionHandler('askQuestion')}>Ask question</button>
