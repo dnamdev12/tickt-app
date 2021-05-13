@@ -1266,7 +1266,7 @@ body {
         justify-content: initial;
         li {
           flex: 1 1 50%;
-          margin: 10px 0;
+          margin: 13px 0;
           &.icon{
             padding-left: 38px;
             @media (max-width: 650px) {
@@ -1615,14 +1615,12 @@ body {
     }
   }
   .close_btn {
-    width: 40px;
-    height: 40px;
     display: flex;
     justify-content: center;
     align-items: center;
     background-color: transparent;
     z-index: 9;
-    @include position(absolute, 0px, 20px, auto, auto);
+    @include position(absolute, 0px, 10px, auto, auto);
     @media (max-width: 650px) {
       width: 30px;
       height: 30px;
