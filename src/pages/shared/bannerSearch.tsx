@@ -22,6 +22,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { getSearchJobList, getRecentSearchList, postHomeSearchData } from '../../redux/homeSearch/actions';
 import { isHandleChanges } from '../../redux/jobs/actions';
+// @ts-ignore
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import moment from 'moment';
 import Geocode from "react-geocode";
