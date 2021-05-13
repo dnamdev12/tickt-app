@@ -124,7 +124,7 @@ const JobDetails = ({
                     return { url: item, format: get_split_fromat };
                 }
             });
-            console.log({ format_items })
+            
             if (format_items?.length) {
 
                 return format_items.map((item: any) => {
@@ -179,7 +179,6 @@ const JobDetails = ({
 
         let response: any = await createPostJob(data_clone);
         if (response?.success) {
-            console.log({ data: response?.data });
             clearParentStates();
             handleStepForward(12);
         }
@@ -213,6 +212,7 @@ const JobDetails = ({
                                             <img src={editIconBlue} alt="edit" />
                                         </span>
                                     </span>
+                                    <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
                                             {/* <li className="icon clock">0 minutes ago</li> */}

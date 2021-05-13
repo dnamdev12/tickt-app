@@ -46,10 +46,11 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     if (stepCompleted && !localChanges) {
       updateLocalData(data);
       setAddress(data?.location_name);
+      setLocationSelected(true);
       setLocationChanges(true);
     }
 
-    if (address.length > 2) {
+    if (address?.length > 2) {
       setActiveCurrent(false);
       document.getElementById('location_search_dynamic')?.focus();
     } else {
@@ -121,7 +122,6 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const handleSelect = async (address: any) => {
     setLocationSelected(true);
     let coordinates_response = await Geocode.fromAddress(address);
-    console.log('get-l')
     if (coordinates_response) {
       const { lat, lng } = coordinates_response.results[0].geometry.location;
       setLocation({ coordinates: [lng, lat], address })
@@ -187,7 +187,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                           onFocus={(x) => {
                             setInputFocus(true);
                           }}
-                          style={{ display: address.length < 3 ? 'none' : '' }}
+                          style={{ display: address?.length < 3 ? 'none' : '' }}
                           {...getInputProps({
                             placeholder: 'Type a State, city or suburb',
                             className: 'location-search-input detect_input',
@@ -199,6 +199,9 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                             alt="cross"
                             onClick={() => {
                               setAddress('');
+                              // setLocation({});
+                              setLocation({ coordinates: [], address:'' })
+                              setLocationSelected(false);
                             }} />
                         </span>
                       </div>
