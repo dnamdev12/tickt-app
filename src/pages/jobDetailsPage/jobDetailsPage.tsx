@@ -63,7 +63,8 @@ const JobDetailsPage = (props: PropsType) => {
         questionId: '',
         questionData: ''
     })
-    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData")
+
+    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData");
 
     useEffect(() => {
         (async () => {
@@ -118,20 +119,26 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const submitQuestionHandler = async (type: string) => {
-        setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true, questionsClickedType: 'askQuestion', confirmationClicked: true }))
+        if (type == 'submitAskQuestion') {
+            setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true, questionsClickedType: 'askQuestion', confirmationClicked: true }));
+            return;
+        } else if (type == 'updateAskedQuestion') {
+            setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true, confirmationClicked: true }));
+            return;
+        }
         if (['askQuestion', 'deleteQuestion', 'updateQuestion'].includes(type)) {
             var response;
             if (type == 'askQuestion') {
-                console.log('ask inside if')
                 const data = {
                     jobId: jobDetailsData?.jobId,
                     builderId: jobDetailsData?.postedBy?.builderId,
-                    question: questionsData.questionData.trim()
+                    question: questionsData.questionData.trim(),
+                    tradeId: jobDetailsData?.tradeId,
+                    specializationId: jobDetailsData?.specializationId
                 }
                 //api calling ask Question
                 response = await postAskQuestion(data);
             } else if (type == 'deleteQuestion') {
-                console.log('delete inside if')
                 const data = {
                     jobId: jobDetailsData?.jobId,
                     questionId: questionsData.questionId
@@ -147,7 +154,12 @@ const JobDetailsPage = (props: PropsType) => {
                 response = await updateQuestion(data);
             }
             if (response?.success) {
-                const res = await getHomeJobDetails(jobDetailsData?.jobId);
+                const data: any = {
+                    jobId: jobDetailsData?.jobId,
+                    tradeId: jobDetailsData?.tradeId,
+                    specializationId: jobDetailsData?.specializationId
+                }
+                const res = await getHomeJobDetails(data);
                 if (res.success) {
                     setJobDetailsData(res.data);
                 }
@@ -203,7 +215,6 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>, type: string) => {
-        console.log(e.target.value.trim(), "job details question", e.target.value.trim().length)
         if (e.target.value.trim().length <= 250) {
             setQuestionsData((prevData: any) => ({ ...prevData, [type]: e.target.value }))
         }
@@ -281,6 +292,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     {`${jobDetailsData?.questionsCount ? jobDetailsData?.questionsCount : '0'} questions`}
                                 </button>
                             </div>
+                            {/* show all questions modal */}
                             {questionsData.showAllQuestionsClicked && jobDetailsData?.questionsCount > 0 &&
                                 <Modal
                                     className="ques_ans_modal"
@@ -343,6 +355,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </>
                                 </Modal>
                             }
+                            {/* show ask question modal */}
                             {questionsData.askQuestionsClicked &&
                                 <Modal
                                     className="ques_ans_modal"
@@ -369,13 +382,14 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </div>
                                             </div>
                                             <div className="bottom_btn custom_btn">
-                                                <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('')}>Send</button>
+                                                <button className="fill_btn full_btn" onClick={() => submitQuestionHandler(questionsData.updateQuestionsClicked ? 'updateAskedQuestion' : 'submitAskQuestion')}>Send</button>
                                                 <button className="fill_grey_btn" onClick={() => questionHandler('askUpdateQuestionCancelled')}>Cancel</button>
                                             </div>
                                         </div>
                                     </>
                                 </Modal>
                             }
+                            {/* send confirmation yes/no modal */}
                             {(questionsData.confirmationClicked) &&
                                 <Modal
                                     className="custom_modal"
