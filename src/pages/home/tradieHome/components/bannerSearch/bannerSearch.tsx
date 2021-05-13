@@ -347,7 +347,8 @@ const BannerSearch = (props: PropsType) => {
             <button className="modal_srch_close">
                 <img src={close} alt="close" />
             </button>
-            <form className="search_wrapr">
+            {/* first_input class should remove when category input get the value */}
+            <form className="search_wrapr first_input">
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
@@ -436,7 +437,7 @@ const BannerSearch = (props: PropsType) => {
                               </span>}
                         </div>
                     }
-                    <li>
+                    <li className="date_box">
                         <div className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>

@@ -2528,6 +2528,16 @@ body {
 		border: solid 1px var(--light-gray);
 		background-color: var(--white);
 		position: relative;
+    &.first_input{
+      ul{
+        li{
+          width: 100%;
+          &.loc_box, &.date_box{
+            display: none;
+          }
+        }
+      }
+    }
 		.error_msg{
 			position: absolute;
       bottom: 4px;
