@@ -6,7 +6,14 @@ const initialState = {
     editDetailPage: null,
     builderHome: null,
     testBuilderHome: null,
-    localChanges: false
+    localChanges: false,
+    activeJobList: [],
+    appliedJobList: [],
+    pastJobList: [],
+    newJobList: [],
+    approvedMilestoneList: [],
+    milestonesCount: 0,
+    newJobsCount: 0,
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -40,6 +47,42 @@ const reducer = (state = initialState, action: any) => {
                 ...state,
                 localChanges: action.payload.data
             }
+
+        case actionTypes.GET_ACTIVE_JOBS_END:
+          return {
+            ...state,
+            activeJobList: action.payload.active,
+            milestonesCount: action.payload.milestonesCount,
+            newJobsCount: action.payload.newJobsCount,
+          };
+    
+        case actionTypes.GET_APPLIED_JOBS_END:
+          return {
+            ...state,
+            appliedJobList: action.payload.applied,
+            milestonesCount: action.payload.milestonesCount,
+            newJobsCount: action.payload.newJobsCount,
+          };
+    
+        case actionTypes.GET_PAST_JOBS_END:
+          return {
+            ...state,
+            pastJobList: action.payload.completed,
+            milestonesCount: action.payload.milestonesCount,
+            newJobsCount: action.payload.newJobsCount,
+          };
+    
+        case actionTypes.GET_NEW_JOBS_END:
+          return {
+            ...state,
+            newJobList: action.payload,
+          };
+    
+        case actionTypes.GET_APPROVED_MILESTONE_END:
+          return {
+            ...state,
+            approvedMilestoneList: action.payload,
+          };
 
         default: return state
     }

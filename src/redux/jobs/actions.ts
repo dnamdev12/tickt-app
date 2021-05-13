@@ -142,3 +142,29 @@ export const updateQuestion = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+export const getActiveJobList = (page: number) => ({
+  type: actionTypes.GET_ACTIVE_JOBS_START,
+  page,
+});
+
+export const getAppliedJobList = (page: number) => ({
+  type: actionTypes.GET_APPLIED_JOBS_START,
+  page,
+});
+
+export const getPastJobList = (page: number) => ({
+  type: actionTypes.GET_PAST_JOBS_START,
+  page,
+});
+
+export const getNewJobList = (page: number) => ({
+  type: actionTypes.GET_NEW_JOBS_START,
+  page,
+});
+
+export const getApprovedMilestoneList = (page: number) => ({
+  type: actionTypes.GET_APPROVED_MILESTONE_START,
+  page,
+});
+
