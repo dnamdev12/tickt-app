@@ -347,7 +347,7 @@ const BannerSearch = (props: PropsType) => {
             <button className="modal_srch_close">
                 <img src={close} alt="close" />
             </button>
-            {/* first_input class should remove when category input get the value */}
+            {/* first_input class should remove when first input get the value */}
             <form className="search_wrapr first_input">
                 <ul>
                     <li className="categ_box">
