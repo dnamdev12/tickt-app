@@ -19,7 +19,7 @@ const SavedJobs = (props: any) => {
                     <div className="flex_row tradies_row">
                         {savedJobsData?.length > 0 ?
                             (savedJobsData?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} />
+                                return <TradieJobInfoBox item={jobData} {...props}/>
                             })) : <span>No data Found</span>}
                     </div>
                 </div>

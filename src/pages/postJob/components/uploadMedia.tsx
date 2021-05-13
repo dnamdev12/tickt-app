@@ -30,9 +30,9 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
     const [localFiles, setLocalFiles] = useState({});
     const [update, forceUpdate] = useState({});
     const [filesUrl, setFilesUrl] = useState([] as any);
-    
+
     useEffect(() => {
-        if(stepCompleted){
+        if (stepCompleted) {
             setFilesUrl(data?.urls)
         }
     }, [stepCompleted, data]);
@@ -180,18 +180,17 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                                 ) : null}
                             </div>
                         </div>
-
-                        <div className="form_field">
-                            <button
-                                onClick={() => {
-                                    handleStepComplete({
-                                        urls: filesUrl
-                                    })
-                                }}
-                                className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}>
-                                {'Submit'}
-                            </button>
-                        </div>
+                    </div>
+                    <div className="form_field">
+                        <button
+                            onClick={() => {
+                                handleStepComplete({
+                                    urls: filesUrl
+                                })
+                            }}
+                            className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}>
+                            {'Submit'}
+                        </button>
                     </div>
                 </div>
             </div>

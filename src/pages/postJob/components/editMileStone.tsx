@@ -47,15 +47,7 @@ export default class EditMilestone extends Component<Props, State> {
         let item = milestones[editMileStone];
 
         if (Object.keys(item).length) {
-            console.log({
-                item,
-                editMilestoneTiming,
-                editMileStone
-            })
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
-            console.log({
-                from_date, to_date,
-            })
             if (editMilestoneTiming && Object.keys(editMilestoneTiming).length) {
                 if ('from_date' in editMilestoneTiming) {
                     from_date = editMilestoneTiming?.from_date;
@@ -187,9 +179,6 @@ export default class EditMilestone extends Component<Props, State> {
                                             name="milestone_name" />
                                     </div>
                                     <span className="error_msg">{errors?.milestone_name}</span>
-                                    {!milestone_name?.length ? null : (
-                                        <span className="char_count">{`character length : ${milestone_name?.length}`}</span>
-                                    )}
                                 </div>
                                 <div className="form_field">
 

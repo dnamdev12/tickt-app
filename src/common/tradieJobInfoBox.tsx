@@ -1,13 +1,16 @@
-import React from 'react';
 import dummy from '../assets/images/u_placeholder.jpg';
 
 
 const TradieJobInfoBox = (props: any) => {
+    const jobClickHandler = (item: any) => {
+        props.history.push(`/job-details-page?jobId=${item.jobId}&tradeId=${item.tradeId}&specializationId=${item.specializationId}`);
+    }
+
     const { item } = props;
     return (
         <div className="flex_col_sm_6">
             <div className="tradie_card">
-                <a href="javascript:void(0)" className="more_detail circle"></a>
+                <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(item)} />
                 <div className="user_wrap">
                     <figure className="u_img">
                         <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="traide-img" />
@@ -21,7 +24,7 @@ const TradieJobInfoBox = (props: any) => {
                     <ul>
                         <li className="icon clock">{item.time}</li>
                         <li className="icon dollar">{item.amount}</li>
-                        <li className="icon location">{item.locationName}</li>
+                        <li className="icon location line-1">{item.locationName}</li>
                         <li className="icon calendar">{item.durations}</li>
                     </ul>
                 </div>

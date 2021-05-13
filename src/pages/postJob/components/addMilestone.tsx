@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from 'react';
 import moment from 'moment';
 import { values } from 'lodash';
 
-
+// Please add a unique date
 interface Props {
     data: any;
     stepCompleted: Boolean;
@@ -57,7 +57,7 @@ export default class AddMilestone extends Component<Props, State> {
         if (nextProps.milestones.length) {
             let milestones_items = nextProps.milestones;
             let item = milestones_items[milestones_items.length - 1];
-            console.log('Here!!!!-------------------------------------------------------->', { item })
+            
             if ('milestone_name' in item) {
                 this.setLocalValueByCompare(item?.milestone_name, milestone_name, 'milestone_name');
             } else {
@@ -97,7 +97,6 @@ export default class AddMilestone extends Component<Props, State> {
     }
 
     setLocalValueByCompare = (prop: any, state: any, name: any) => {
-        console.log({ prop, state, name })
         if (name === "isPhotoevidence") {
             if (prop !== state) {
                 this.setState({ ...this.state, [name]: prop });
@@ -250,9 +249,6 @@ export default class AddMilestone extends Component<Props, State> {
                                             name="milestone_name" />
                                     </div>
                                     <span className="error_msg">{errors?.milestone_name}</span>
-                                    {!milestone_name?.length ? null : (
-                                        <span className="char_count">{`character length : ${milestone_name?.length}`}</span>
-                                    )}
                                 </div>
                                 <div className="form_field">
 

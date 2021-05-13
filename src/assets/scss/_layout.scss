@@ -66,6 +66,7 @@ header {
   .brand_wrap {
     width: 176px;
     height: 34px;
+    cursor: pointer;
     @media (max-width: 650px) {
       width: 140px;
     }
@@ -206,8 +207,8 @@ header {
           width: 20px;
           height: 20px;
           display: flex;
-        justify-content: center;
-        align-items: center;
+          justify-content: center;
+          align-items: center;
           border-radius: 20px;
           background-color: var(--yellow);
           position: absolute;
@@ -236,7 +237,4 @@ header {
       }
     }
   }
-  
-  
-  
   

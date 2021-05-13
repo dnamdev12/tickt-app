@@ -10,6 +10,7 @@ import PlacesAutocomplete, {
 import icgps from "../../../assets/images/ic-gps.png";
 import Geocode from "react-geocode";
 import { setShowToast, setLoading } from '../../../redux/common/actions';
+import cross from "../../../assets/images/close-black.png";
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -27,6 +28,8 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const [error, setError] = useState('');
   const [localChanges, setLocationChanges] = useState(false);
   const [activeCurrent, setActiveCurrent] = useState(false);
+  const [inputFocus, setInputFocus] = useState(false);
+  const [locationSelected, setLocationSelected] = useState(false);
 
 
   const updateLocalData = (data: any) => {
@@ -43,10 +46,11 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     if (stepCompleted && !localChanges) {
       updateLocalData(data);
       setAddress(data?.location_name);
+      setLocationSelected(true);
       setLocationChanges(true);
     }
 
-    if (address.length > 2) {
+    if (address?.length > 2) {
       setActiveCurrent(false);
       document.getElementById('location_search_dynamic')?.focus();
     } else {
@@ -62,13 +66,18 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     console.log({ permission_web }, '56')
     if (permission_web.state !== 'denied') {
       setLoading(true)
-      console.log({ state: permission_web.state }, 'if')
-      const position: any = await new Promise((resolve, reject) => {
-        navigator.geolocation.getCurrentPosition(resolve, reject);
-      });
-      console.log({ position }, '62')
-      let { latitude, longitude } = position.coords;
-      let response: any = await Geocode.fromLatLng(longitude.toString(), latitude.toString());
+      // console.log({ state: permission_web.state }, 'if')
+      // const position: any = await new Promise((resolve, reject) => {
+      //   navigator.geolocation.getCurrentPosition(resolve, reject);
+      // });
+
+      // console.log({ position }, '62')
+      // let { latitude, longitude } = position.coords;
+      let item_position: any = localStorage.getItem('position');
+      let position = JSON.parse(item_position);
+      let longitude = (position[0])?.toString();
+      let latitude = (position[1])?.toString();
+      let response: any = await Geocode.fromLatLng(latitude, longitude);
       console.log({ response }, '65')
       if (response) {
         const address = response.results[0].formatted_address;
@@ -111,8 +120,8 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   }
 
   const handleSelect = async (address: any) => {
+    setLocationSelected(true);
     let coordinates_response = await Geocode.fromAddress(address);
-    console.log('get-l')
     if (coordinates_response) {
       const { lat, lng } = coordinates_response.results[0].geometry.location;
       setLocation({ coordinates: [lng, lat], address })
@@ -146,69 +155,91 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
           <div className="flex_row">
             <div className="flex_col_sm_5">
               <div className="form_field">
-                <div className="text_field">
 
+                <div className="text_field none">
                   <input
                     placeholder='Type a State, city or suburb'
-                    className='location-search-input'
                     value={address}
-                    style={{ display: address.length > 2 ? 'none' : '' }}
+                    // style={{ display: address.length > 2 ? 'none' : '' }}
                     id="location_search_static"
                     onChange={(e) => setAddress(e.target.value)}
                     onFocus={(x) => {
                       // console.log('Input - 1')
                     }}
                   />
+                </div>
 
-                  <PlacesAutocomplete
-                    // debounce={400}
-                    value={address}
-                    onChange={(value) => setAddress(value)}
-                    onSelect={handleSelect}
-                  >
-                    {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
-                      <div>
+
+                <PlacesAutocomplete
+                  // debounce={400}
+                  value={address}
+                  onChange={(value) => {
+                    setLocationSelected(false);
+                    setAddress(value)
+                  }}
+                  onSelect={handleSelect}
+                >
+                  {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
+                    <div>
+                      <div className="text_field">
                         <input
                           id="location_search_dynamic"
                           onFocus={(x) => {
-                            // console.log('Input - 2')
+                            setInputFocus(true);
                           }}
-                          style={{ display: address.length < 3 ? 'none' : '' }}
+                          style={{ display: address?.length < 3 ? 'none' : '' }}
                           {...getInputProps({
                             placeholder: 'Type a State, city or suburb',
-                            className: 'location-search-input',
+                            className: 'location-search-input detect_input',
                           })}
                         />
-                        <div className="autocomplete-drop-down-map-container">
-                          {loading && <div>Loading...</div>}
-                          {suggestions.map((suggestion: any) => {
-                            const className = suggestion.active
-                              ? 'suggestion-item--active'
-                              : 'suggestion-item';
-                            // inline style for demonstration purpose
-                            const style = suggestion.active
-                              ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                              : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                            return (
-                              <div
-                                {...getSuggestionItemProps(suggestion, {
-                                  className,
-                                  style,
-                                })}
-                              >
-                                <div className="loc_suggestions">{suggestion.description}</div>
-                              </div>
-                            );
-                          })}
-
-                        </div>
+                        <span className="detect_icon" >
+                          <img
+                            src={cross}
+                            alt="cross"
+                            onClick={() => {
+                              setAddress('');
+                              // setLocation({});
+                              setLocation({ coordinates: [], address:'' })
+                              setLocationSelected(false);
+                            }} />
+                        </span>
                       </div>
-                    )}
-                  </PlacesAutocomplete>
+                      <div className="autocomplete-drop-down-map-container">
+                        {loading && <div>Loading...</div>}
+                        {!locationSelected && !loading && !suggestions?.length && address?.length > 3 ?
+                          <div className="loc_suggestions">
+                            {'No Result Found.'}
+                          </div>
+                          : ''}
+                        {suggestions.map((suggestion: any) => {
+                          const className = suggestion.active
+                            ? 'suggestion-item--active'
+                            : 'suggestion-item';
+                          // inline style for demonstration purpose
+                          const style = suggestion.active
+                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                          return (
+                            <div
+                              {...getSuggestionItemProps(suggestion, {
+                                className,
+                                style,
+                              })}
+                            >
+                              <div className="loc_suggestions">{suggestion.description}</div>
+                            </div>
+                          );
+                        })}
 
-                  <span className="error_msg">{error}</span>
-                </div>
+                      </div>
+                    </div>
+                  )}
+                </PlacesAutocomplete>
+
+                <span className="error_msg">{error}</span>
               </div>
+
               <div className="form_field">
                 <button
                   className={activeCurrent ? 'location-btn fill_btn' : "location-btn"}
@@ -234,4 +265,4 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   )
 }
 
-export default AddLocation
+export default AddLocation;

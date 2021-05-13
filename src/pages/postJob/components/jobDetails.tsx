@@ -124,14 +124,14 @@ const JobDetails = ({
                     return { url: item, format: get_split_fromat };
                 }
             });
-            console.log({ format_items })
+            
             if (format_items?.length) {
 
                 return format_items.map((item: any) => {
                     let render_item: any = null;
 
                     if (imageFormats.includes(item?.format)) {
-                        render_item = <img alt="" src={item?.url} style={{ height: '400px' }} />
+                        render_item = <img alt="" src={item?.url}  />
                     }
 
                     // if (videoFormats.includes(item?.format)) {
@@ -179,7 +179,6 @@ const JobDetails = ({
 
         let response: any = await createPostJob(data_clone);
         if (response?.success) {
-            console.log({ data: response?.data });
             clearParentStates();
             handleStepForward(12);
         }
@@ -190,7 +189,7 @@ const JobDetails = ({
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <div className="vid_img_wrapper">
+                    <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
                                 <button
@@ -213,6 +212,7 @@ const JobDetails = ({
                                             <img src={editIconBlue} alt="edit" />
                                         </span>
                                     </span>
+                                    <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
                                             {/* <li className="icon clock">0 minutes ago</li> */}
@@ -223,7 +223,7 @@ const JobDetails = ({
                                                         : '0 days'}
                                             </li>
                                             <li className="icon dollar">${data?.amount} {data?.pay_type === "fixed" ? 'fixed' : 'p/h'} </li>
-                                            <li className="icon location line-1">{data?.location_name}</li>
+                                            <li className="icon location">{data?.location_name}</li>
                                         </ul>
                                     </div>
                                     <button

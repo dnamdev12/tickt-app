@@ -25,7 +25,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   const [errors, setErrors] = useState({ pay_type: '', amount: '' });
   const [continueClicked, setContinueClicked] = useState(false);
   const [localChanges, setLocationChanges] = useState(false);
-  const [reactSelect, setReactSelect] = useState({value: "fixed", label: "Fixed Price"});
+  const [reactSelect, setReactSelect] = useState({ value: "fixed", label: "Fixed Price" });
 
   useEffect(() => {
     if (stepCompleted && !localChanges) {
@@ -33,6 +33,13 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         pay_type: data.pay_type || 'fixed',
         amount: data.amount
       });
+
+      if(data.pay_type === 'perHour'){
+        setReactSelect({ value: 'perHour', label: 'Per Hour' });
+      } else {
+        setReactSelect({ value: 'fixed', label: 'Fixed Price' });
+      }
+
       setLocationChanges(true);
     }
   }, [stepCompleted, data]);
@@ -74,9 +81,9 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     }));
 
     setPaymentDetails((prevDetails) => {
-      if (name === "pay_type" && prevDetails.pay_type !== value) {
-        prevDetails.amount = '';
-      }
+      // if (name === "pay_type" && prevDetails.pay_type !== value) {
+      //   prevDetails.amount = '';
+      // }
       return ({
         ...prevDetails,
         [name]: value,
@@ -145,29 +152,31 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
           </div>
 
           <div className="flex_row">
-            <div className="flex_col_sm_3">
-              <div className="form_field">
-                <div className="text_field">
-                  <input
-                    type="number"
-                    placeholder="Price"
-                    name="Price"
-                    className="detect_input_ltr"
-                    min="0"
-                    step=".01"
-                    required
-                    value={amount}
-                    onChange={({ target: { value } }) => handleChange(value, 'amount')}
-                  />
-                  <span className="detect_icon_ltr dollar">$</span>
+            <div className="flex_col_sm_6">
+              <div className="flex_row">
+                <div className="flex_col_sm_7">
+                  <div className="form_field">
+                    <div className="text_field">
+                      <input
+                        type="number"
+                        placeholder="Price"
+                        name="Price"
+                        className="detect_input_ltr"
+                        min="0"
+                        step=".01"
+                        required
+                        value={amount}
+                        onChange={({ target: { value } }) => handleChange(value, 'amount')}
+                      />
+                      <span className="detect_icon_ltr dollar">$</span>
+                    </div>
+                    <span className="error_msg mtb-15">{errors?.amount}</span>
+                  </div>
                 </div>
-                <span className="error_msg mtb-15">{errors?.amount}</span>
-              </div>
-            </div>
-            <div className="flex_col_sm_2">
-              <div className="form_field">
-                <div className="text_field">
-                  {/* <select
+                <div className="flex_col_sm_5">
+                  <div className="form_field">
+                    <div className="text_field">
+                      {/* <select
                     value={pay_type}
                     onChange={({ target: { value } }) => handleChange(value, 'pay_type')}
                     className="select_input"
@@ -176,19 +185,21 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                     <option value="perHour">{'Per Hour'}</option>
                   </select> */}
 
-                  <Select
-                    className="select_menu"
-                    value={reactSelect}
-                    options={priceOptions}
-                    onChange={(item:any) => {
-                      setReactSelect(item);
-                      handleChange(item?.value, 'pay_type')
-                    }}
-                  />
+                      <Select
+                        className="select_menu"
+                        value={reactSelect}
+                        options={priceOptions}
+                        onChange={(item: any) => {
+                          setReactSelect(item);
+                          handleChange(item?.value, 'pay_type')
+                        }}
+                      />
 
 
+                    </div>
+
+                  </div>
                 </div>
-
               </div>
             </div>
           </div>

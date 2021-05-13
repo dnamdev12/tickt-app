@@ -1,16 +1,17 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
-import storageService from '../utils//storageService';
-import AuthModal from './auth/authModal';
+import storageService from '../../utils/storageService';
+import AuthModal from '../auth/authModal';
 
-import colorLogo from '../assets/images/ic-logo-yellow.png';
-import menu from '../assets/images/menu-line-white.svg';
-import bell from '../assets/images/ic-notification.png';
-import dummy from '../assets/images/u_placeholder.jpg';
-import profile from '../assets/images/ic-profile.png';
+import colorLogo from '../../assets/images/ic-logo-yellow.png';
+import menu from '../../assets/images/menu-line-white.svg';
+import bell from '../../assets/images/ic-notification.png';
+import dummy from '../../assets/images/u_placeholder.jpg';
+import profile from '../../assets/images/ic-profile.png';
 
 const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
@@ -19,11 +20,16 @@ const Header = (props: any) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
+    const [toggleMenu, setToggleMenu] = useState(false);
 
     // const USER_TYPE = storageService.getItem('userType');
 
     let location = useLocation();
     let history = useHistory();
+
+    useEffect(() => {
+        props.callTradieProfileData();
+    }, [])
 
     useEffect(() => {
         if (DISABLE_HEADER.includes(location.pathname)) {
@@ -50,6 +56,7 @@ const Header = (props: any) => {
     }
 
     const postClicked = () => {
+        setToggleMenu(false);
         history.push('/post-new-job')
     }
 
@@ -60,11 +67,13 @@ const Header = (props: any) => {
                     <div className="flex_headrow">
                         <div className="brand_wrap">
                             <figure>
-                                <img src={colorLogo}
-                                    alt="logo-white" />
+                                <img
+                                    onClick={() => { props.history.push('/') }}
+                                    src={colorLogo}
+                                    alt="logo" />
                             </figure>
                         </div>
-                        <ul className="center_nav">
+                        <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
                             <li><a className="active">Discover</a></li>
                             <li><a >Jobs</a></li>
                             {userType === 2 && <li><a onClick={postClicked}>Post</a></li>}
@@ -72,7 +81,10 @@ const Header = (props: any) => {
                         </ul>
                         <ul className="side_nav">
                             <li className="mob_nav">
-                                <img src={menu} alt="menu" />
+                                <img
+                                    src={menu}
+                                    alt="menu"
+                                    onClick={() => { setToggleMenu(!toggleMenu) }} />
                             </li>
                             <div className="profile_notification">
                                 {storageService.getItem("jwtToken") && <div className="notification_bell">
@@ -93,6 +105,7 @@ const Header = (props: any) => {
                                         open={Boolean(anchorEl)}
                                         onClose={handleClose}
                                     >
+                                        {/* <span className="sub_title">{props.tradieProfileData?.userName}</span> */}
                                         <span className="sub_title">John Oldman</span>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon">
@@ -116,4 +129,4 @@ const Header = (props: any) => {
     )
 }
 
-export default Header
+export default withRouter(Header);
