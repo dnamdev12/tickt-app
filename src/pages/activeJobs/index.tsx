@@ -23,7 +23,7 @@ const ActiveJobs = () => {
               <ul>
                 <li className="icon clock">32 minutes ago</li>
                 <li className="icon dollar">$250 p/h</li>
-                <li className="icon location">Melbourne CBD</li>
+                <li className="icon location line-1">Melbourne CBD</li>
                 <li className="icon calendar">4 days </li>
               </ul>
             </div>
@@ -63,7 +63,7 @@ const ActiveJobs = () => {
               <ul>
                 <li className="icon clock">32 minutes ago</li>
                 <li className="icon dollar">$250 p/h</li>
-                <li className="icon location">Melbourne CBD</li>
+                <li className="icon location line-1">Melbourne CBD</li>
                 <li className="icon calendar">4 days </li>
               </ul>
             </div>
@@ -100,7 +100,7 @@ const ActiveJobs = () => {
               <ul>
                 <li className="icon clock">32 minutes ago</li>
                 <li className="icon dollar">$250 p/h</li>
-                <li className="icon location">Melbourne CBD</li>
+                <li className="icon location line-1">Melbourne CBD</li>
                 <li className="icon calendar">4 days </li>
               </ul>
             </div>

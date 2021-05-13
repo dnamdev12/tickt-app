@@ -64,6 +64,12 @@ body {
   max-width: 1216px;
   margin: 0 auto;
   position: relative;
+  @media (max-width: 1366px) {
+    max-width: 1150px;
+  }
+  @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    max-width: 1150px;
+  }
   @media (max-width: 1200px) {
     max-width: 95%;
   }
@@ -202,7 +208,7 @@ body {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    background-size: contain !important;
+    // background-size: contain !important;
   }
 }
 
@@ -619,6 +625,12 @@ body {
     right: 280px !important;
     border-radius: 3px;
     box-shadow: 0 20px 24px 0 rgba(132, 132, 132, 0.2);
+    @media (max-width: 1366px) {
+      right: 90px !important;
+    }
+    @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      right: 90px !important;
+    }
     @media (max-width: 1024px) {
       right: 60px !important;
     }
@@ -1125,6 +1137,18 @@ body {
       width: 100%;
     }
   }
+  .job_categories {
+    li{
+      cursor: auto;
+    }
+  }
+  .tags_wrap{
+    ul{
+      li{
+        cursor: auto;
+      }
+    }
+  }
   .back {
     top: -20px;
 	  left: 10px;
@@ -1234,8 +1258,35 @@ body {
       ul {
         justify-content: initial;
         li {
-          width: 50%;
-          margin: 5px 0;
+          flex: 1 1 50%;
+          margin: 7px 0;
+          &.icon{
+            padding-left: 35px;
+            &:before{
+              width: 24px;
+              height: 24px;
+            }
+            &.clock {
+              &::before {
+                background: url('../images/clock-1.png') center no-repeat;
+              }
+            }
+            &.dollar {
+              &::before {
+                background: url('../images/dollar-1.png') center no-repeat;
+              }
+            }
+            &.location {
+              &::before {
+                background: url('../images/location-1.png') center no-repeat;
+              }
+            }
+            &.calendar {
+              &::before {
+                background: url('../images/calendar-1.png') center no-repeat;
+              }
+            }
+          }
         }
       }
     }
@@ -1461,8 +1512,8 @@ body {
 	  max-height: 503px;
     @media (max-width: 1500px) {
       margin: 16px auto 0;
-      height: 420px;
-      max-height: 420px;
+      height: 490px;
+      max-height: 490px;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       width: 90%;
@@ -2461,8 +2512,8 @@ body {
 		position: relative;
 		.error_msg{
 			position: absolute;
-			bottom: 2px;
-      left: 5px;
+      bottom: 4px;
+      left: 15px;
 		}
 		ul {
 			display: flex;
@@ -2647,7 +2698,13 @@ body {
     li {
       display: flex;
       width: 100% !important;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover, &.active{
+        background-color: rgba(0,0,0,.04);
+      }
       .category {
         width: 40px;
         height: 40px;
@@ -2908,6 +2965,7 @@ body {
 		flex-wrap: wrap;
 		li {
 			display: inline-block;
+      flex: 1;
 			@media(max-width: 812px){
 				margin: 5px 0;
 				width: 50%;
@@ -2915,8 +2973,8 @@ body {
 			&.icon {
 				padding-left: 20px;
 				&:before {
-					width: 12px;
-					height: 12px;
+					width: 16px;
+					height: 16px;
 				}
 				&.clock {
 					&::before {
@@ -3370,6 +3428,7 @@ body {
 			width: 30%;
 		}
 	}
+ 
 	.result_heading{
 		margin-bottom: 40px;
 		.flex_row{
@@ -3485,6 +3544,7 @@ body {
 		}
 		.map_col{
 			flex: 1 1 50%;
+      z-index: 9;
 			@media (max-width: 1000px){
 				flex: 1 1 100%;
 			}
@@ -3544,6 +3604,7 @@ body {
 }
 .preview_card {
 	.tradie_card {
+    max-width: 372px;
 	  min-height: 145px;
 	  margin-bottom: 0;
 	  padding: 0px;
@@ -3564,7 +3625,7 @@ body {
 		padding: 8px 10px;
 		margin: 0;
 		li{
-			width: 50%;
+			flex: 1 1 50%;
     		margin: 5px 0;
 		}
 	  }
@@ -3584,6 +3645,12 @@ body {
 		height: 312px;
 		margin: 0 auto 15px;
 		width: 100%;
+    @media (max-width: 1366px) {
+      height: 250px;
+    }
+    @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      height: 250px;
+    }
 		img{
 			width: 100%;
 			height: 100%;
