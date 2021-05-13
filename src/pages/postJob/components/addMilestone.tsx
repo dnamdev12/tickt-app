@@ -57,7 +57,7 @@ export default class AddMilestone extends Component<Props, State> {
         if (nextProps.milestones.length) {
             let milestones_items = nextProps.milestones;
             let item = milestones_items[milestones_items.length - 1];
-            console.log('Here!!!!-------------------------------------------------------->', { item })
+            
             if ('milestone_name' in item) {
                 this.setLocalValueByCompare(item?.milestone_name, milestone_name, 'milestone_name');
             } else {
@@ -97,7 +97,6 @@ export default class AddMilestone extends Component<Props, State> {
     }
 
     setLocalValueByCompare = (prop: any, state: any, name: any) => {
-        console.log({ prop, state, name })
         if (name === "isPhotoevidence") {
             if (prop !== state) {
                 this.setState({ ...this.state, [name]: prop });
