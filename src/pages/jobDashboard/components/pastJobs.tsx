@@ -1,7 +1,17 @@
-import dummy from '../../assets/images/u_placeholder.jpg';
-import rateStar from '../../assets/images/ic-star-fill.png';
+import { useEffect } from 'react';
+import dummy from '../../../assets/images/u_placeholder.jpg';
+import rateStar from '../../../assets/images/ic-star-fill.png';
 
-const PastJobs = () => {
+interface Proptypes {
+  getPastJobList: (page: number) => void,
+  pastJobList: Array<any>,
+};
+
+const PastJobs = ({ getPastJobList, pastJobList }: Proptypes) => {
+  useEffect(() => {
+    getPastJobList(1);
+  }, [getPastJobList]);
+
   return (
     <>
       {/* Past Jobs */}

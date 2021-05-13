@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import dummy from '../../assets/images/u_placeholder.jpg';
-import editIconBlue from '../../assets/images/ic-edit-blue.png';
-import more from '../../assets/images/icon-direction-right.png';
-import check from '../../assets/images/checked-2.png';
+import dummy from '../../../assets/images/u_placeholder.jpg';
+import editIconBlue from '../../../assets/images/ic-edit-blue.png';
+import more from '../../../assets/images/icon-direction-right.png';
+import check from '../../../assets/images/checked-2.png';
 
 interface Proptypes {
   showMilestoneCompletePage: () => void,

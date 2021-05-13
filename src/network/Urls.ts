@@ -47,6 +47,11 @@ const Urls = {
     askQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}askQuestion`,
     deleteQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}deleteQuestion`,
     updateQuestion: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateQuestion`,
+    activeJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}activeJobList`,
+    appliedJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}appliedJobList`,
+    pastJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}pastJobList`,
+    newJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}newJobList`,
+    approvedMilestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}approveMilestoneList`,
 }
 
 export const urlFor = (service: String): string => {

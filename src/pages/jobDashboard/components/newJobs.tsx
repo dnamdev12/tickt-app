@@ -1,7 +1,16 @@
-import dummy from '../../assets/images/u_placeholder.jpg';
-import approved from '../../assets/images/approved.png';
+import { useEffect } from 'react';
+import dummy from '../../../assets/images/u_placeholder.jpg';
 
-const AppliedJobs = () => {
+interface Proptypes {
+  getNewJobList: (page: number) => void,
+  newJobList: Array<any>,
+};
+
+const NewJobs = ({ getNewJobList, newJobList }: Proptypes) => {
+  useEffect(() => {
+    getNewJobList(1);
+  }, [getNewJobList]);
+
   return (
     <>
       {/* Applied Jobs */}
@@ -26,25 +35,14 @@ const AppliedJobs = () => {
                 <li className="icon calendar">4 days </li>
               </ul>
             </div>
-            <div className="job_progress_wrap" id="scroll-progress-bar">
-              <div className="progress_wrapper">
-                <span className="completed-digit" id="digit-progress">
-                  <b>Job Milestones 2</b> of 5
-                </span>
-                <span className="approval_info">
-                  <img src={approved} alt="icon" />
-                  Approved{' '}
-                </span>
-                <span className="progress_bar">
-                  <input
-                    className="done_progress"
-                    id="progress-bar"
-                    type="range"
-                    min="0"
-                  />
-                </span>
-              </div>
-            </div>
+            <p className="commn_para line-2">
+              Sparky wanted for a quick job to hook up two floodlights on the
+              exterior of an apartment building...
+            </p>
+            <ul className="count_wrap">
+              <li className="icon view">127</li>
+              <li className="icon comment">8</li>
+            </ul>
           </div>
         </div>
       </div>
@@ -53,4 +51,4 @@ const AppliedJobs = () => {
   );
 };
 
-export default AppliedJobs;
+export default NewJobs;
