@@ -108,7 +108,7 @@ const ChooseTimingMileStone = ({
                         </div>
                     </div>
                     <div className="flex_row">
-                        <div className="flex_col_sm_5">
+                        <div className="flex_col_sm_8">
                             <div className="form_field">
                                 <DateRangePicker
                                     ranges={[range]}

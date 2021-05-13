@@ -26,7 +26,6 @@ const reducer = (state = initialState, action: any) => {
             return { ...state }
 
         case actionTypes.FETCH_HOME_BUILDER:
-            console.log({ action }, '------------- In actions')
             state.builderHome = action.payload;
             return { ...state }
 
@@ -37,7 +36,6 @@ const reducer = (state = initialState, action: any) => {
             }
 
         case actionTypes.SET_LOCAL_CHANGES:
-            console.log({action})
             return {
                 ...state,
                 localChanges: action.payload.data
