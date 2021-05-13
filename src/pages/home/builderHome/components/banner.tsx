@@ -16,27 +16,15 @@ const Banner = (props: any) => {
     const viewMoreClicked = () => {
         let position: any = props.position;
         console.log({ position });
-        props.postHomeSearchData({
-            page: 1,
-            isFiltered: false,
-            location: {
-                "coordinates": [
-                    position.long,
-                    position.lan
-                ]
-            }
-        })
         props.history.push({
             pathname: `search-tradie-results`,
             state: {
-                data: null,
-                stateData: null,
-                searchText: null,
-                selectedAddress: null,
-                addressText: null,
-                selectedTrade: null,
-                calenderRange1: null,
-                exta: 0
+                name: null,
+                tradeId: null,
+                specializations: null,
+                location: Object.keys(position).length ? { "coordinates": [position?.long, position?.lat] } : null,
+                calender: null,
+                address: null
             }
         })
     }

@@ -33,6 +33,13 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         pay_type: data.pay_type || 'fixed',
         amount: data.amount
       });
+
+      if(data.pay_type === 'perHour'){
+        setReactSelect({ value: 'perHour', label: 'Per Hour' });
+      } else {
+        setReactSelect({ value: 'fixed', label: 'Fixed Price' });
+      }
+
       setLocationChanges(true);
     }
   }, [stepCompleted, data]);
@@ -74,9 +81,9 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     }));
 
     setPaymentDetails((prevDetails) => {
-      if (name === "pay_type" && prevDetails.pay_type !== value) {
-        prevDetails.amount = '';
-      }
+      // if (name === "pay_type" && prevDetails.pay_type !== value) {
+      //   prevDetails.amount = '';
+      // }
       return ({
         ...prevDetails,
         [name]: value,

@@ -23,7 +23,7 @@ import spherePlaceholder from '../../assets/images/ic_categories_placeholder.svg
 
 
 const SearchFilter = (props: any) => {
-    // const { data, searchText, selectedAddress, selectedTrade, exta } = props.selectedItem;
+    const { data, searchText, selectedAddress, selectedTrade, exta } = props.selectedItem;
     const [errors, setErrors] = useState<any>({});
     const [priceAnchorEl, setPriceAnchorEl] = useState(null);
     const [filterAnchorEl, setFilterAnchorEl] = useState(null);
@@ -41,8 +41,8 @@ const SearchFilter = (props: any) => {
 
     const [sortByFilter, setSortByFilter] = useState<any>({
         sortByFilterClicked: false,
-        tradeId: [],
-        specializationId: [],
+        tradeId: data?.tradeId || [],
+        specializationId: data?.specializationId || [],
         allSpecializationClicked: false,
     })
     // jobTypes: [],
@@ -58,15 +58,10 @@ const SearchFilter = (props: any) => {
     }, [])
 
     useEffect(() => {
-        console.log({ localInfo: props.localInfo, tradeId: sortByFilter.tradeId?.length }, '-->', { sortByFilter })
-        if (props?.localInfo?.tradeId?.length) {
-            setSortByFilter((prev: any) => ({
-                ...prev,
-                tradeId: props.localInfo.tradeId,
-                specializationId: props.localInfo.specializationId
-            }));
-        }
-    }, [props])
+        sortByFilter.tradeId = data?.tradeId || [];
+        sortByFilter.specializationId = data?.specializationId || [];
+        setSortByFilter(sortByFilter);
+    }, [data])
 
     const sortByPriceClick = (event: any) => {
         setPriceAnchorEl(event.currentTarget);
@@ -110,6 +105,48 @@ const SearchFilter = (props: any) => {
             setSortByPrice((prevData: any) => ({ ...prevData, max_budget: e.target.value }))
         }
     }
+
+    const validateForm = () => {
+        const newErrors: any = {};
+        if (!sortByPrice.max_budget) {
+            newErrors.maxBudget = Constants.errorStrings.priceFilterInput;
+        }
+        // } else {
+        //     const searchJobRegex = new RegExp(regex.numeric);
+        //     if (!searchJobRegex.test(sortByPrice.max_budget)) {
+        //         newErrors.maxBudget = Constants.errorStrings.bannerSearchJob;
+        //     }
+        // }
+
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
+    }
+
+    // const showResultsByBudget = (e: any) => {
+    //     e.preventDefault();
+    //     if (validateForm()) {
+    //         const data = {
+    //             pay_type: sortByPrice.pay_type,
+    //             max_budget: parseInt(sortByPrice.max_budget)
+    //         }
+    //         props.showBudgetFilterResults(data);
+    //         sortByPriceClose();
+    //     }
+    // }
+
+    // const showResultsByFilter1 = () => {
+    //     //sortByFilter.jobTypes.length && 
+    //     if (sortByFilter.specializationId.length && sortByFilter.tradeId.length) {
+    //         const data = {
+    //             pay_type: sortByPrice.pay_type,
+    //             max_budget: parseInt(sortByPrice.max_budget)
+    //         }
+    //         props.showBudgetFilterResults(data);
+    //         sortByFilterClose();
+    //     } else {
+    //         setShowToast(true, "Please select all required fields")
+    //     }
+    // }
 
     const sortByButtonClicked = (num: number) => {
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: num }));
@@ -196,12 +233,10 @@ const SearchFilter = (props: any) => {
     }
 
     const updateOnChange = (sort?: any) => {
-        let local_info: any = props.localInfo;
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
         const { specializationId, tradeId } = sortByFilter;
         if (specializationId?.length) {
             let filteredItem: any = []
-            let name = specializationList[0].name;
             if (specializationList?.length) {
                 filteredItem = specializationList.filter((item: any) => {
                     if (specializationId.includes(item._id)) {
@@ -224,32 +259,10 @@ const SearchFilter = (props: any) => {
                     "coordinates": JSON.parse(get_position)
                 }
             } else {
-                if (local_info?.location) {
-                    data['location'] = local_info?.location;
-                }
                 delete data.location;
             }
-
-            if (local_info?.from_date) {
-                data['from_date'] = local_info?.from_date;
-            }
-
-            if (local_info?.to_date) {
-                data['to_date'] = local_info?.to_date;
-            }
-
             props.postHomeSearchData(data)
-            props.getTitleInfo((prev: any) => ({
-                ...prev,
-                name: name,
-                count: specializationId?.length,
-                tradeId: data.tradeId,
-                specializationId: data.specializationId,
-                sortBy: data.sortBy,
-                to_date: local_info?.to_date,
-                from_date: local_info?.from_date
-            }))
-            // props.updateSearchName(filteredItem);
+            props.updateSearchName(filteredItem);
         }
     }
 

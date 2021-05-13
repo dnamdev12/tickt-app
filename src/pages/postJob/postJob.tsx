@@ -37,7 +37,7 @@ const PostJob = ({
     editDetailPage,
     editMilestoneId }: Proptypes) => {
     const [categoriesData, setCategoriesData] = useState([]);
-    const [step, setStep] = useState(6);
+    const [step, setStep] = useState(1);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
     const [data, setData] = useState({});
     const [editMileStone, setEditMileStone] = useState(0 as number);
@@ -99,12 +99,16 @@ const PostJob = ({
         milestone_clone[index]['isPhotoevidence'] = data.isPhotoevidence;
         milestone_clone[index]['recommended_hours'] = data.recommended_hours;
         setMileStones(milestone_clone);
-        console.log({milestone_clone, data, index})
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
 
     const addTimeToMileStone = (time: any, index: any) => {
         let milestone_clone: any = milestones;
+        console.log({
+            milestone_clone,
+            time
+        });
+
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
         setMileStones(milestone_clone);
@@ -144,7 +148,7 @@ const PostJob = ({
             setStep(step);
         }
     };
-    console.log({data, milestones});
+
     let page;
     switch (step) {
         case 1:
