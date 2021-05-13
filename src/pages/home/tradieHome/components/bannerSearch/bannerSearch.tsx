@@ -10,6 +10,7 @@ import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import moment from 'moment';
+// @ts-ignore
 import { useDetectClickOutside } from 'react-detect-click-outside';
 
 import Searchicon from "../../../../../assets/images/main-search.png";
