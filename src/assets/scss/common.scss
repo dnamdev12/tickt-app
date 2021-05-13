@@ -2531,7 +2531,7 @@ body {
     &.first_input{
       ul{
         li{
-          width: 92%;
+          width: 92.5%;
           @media (max-width: 650px) {
             width: 84%;
           }
@@ -3376,7 +3376,7 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-	cursor: pointer;
+	  cursor: pointer;
     .name {
       color: var(--blue);
       font-size: 14px;
@@ -3387,6 +3387,12 @@ body {
       width: 100%;
       position: relative;
       padding-left: 40px;
+      @media (max-width: 1366px) {
+        max-width: 400px;
+      }
+      @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        max-width: 400px;
+      }
       @media(max-width: 650px){
         max-width: 250px;
         padding-left: 30px;
