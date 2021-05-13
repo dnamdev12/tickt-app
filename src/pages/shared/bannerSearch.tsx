@@ -368,7 +368,7 @@ const BannerSearch = (props: PropsType) => {
                 className="modal_srch_close">
                 <img src={close} alt="close" />
             </button>
-            <form className="search_wrapr">
+            <form className="search_wrapr first_input">
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
