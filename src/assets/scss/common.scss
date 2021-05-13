@@ -2531,7 +2531,10 @@ body {
     &.first_input{
       ul{
         li{
-          width: 100%;
+          width: 92%;
+          @media (max-width: 650px) {
+            width: 84%;
+          }
           &.loc_box, &.date_box{
             display: none;
           }
