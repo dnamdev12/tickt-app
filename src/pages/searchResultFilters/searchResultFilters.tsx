@@ -185,11 +185,10 @@ const SearchResultFilters = (props: any) => {
             ...(sortByFilter.jobTypes?.length && { jobTypes: sortByFilter.jobTypes }),
             ...(sortByFilter.specializationId?.length && { specializationId: sortByFilter.specializationId }),
             ...(sortByPrice.max_budget && { pay_type: sortByPrice.pay_type }),
-            ...(sortByPrice.max_budget && { max_budget: sortByPrice.max_budget }),
+            ...(sortByPrice.max_budget && { max_budget: Number(sortByPrice.max_budget) }),
             ...(item?.sortBy && { sortBy: item?.sortBy }),
         }
         props.showBudgetFilterResults(data);
-
         sortByFilterClose();
     }
 
@@ -418,10 +417,6 @@ const SearchResultFilters = (props: any) => {
                         <img src={cancel} alt="cancel" />
                     </span>
                     <span className="sub_title">Sort by</span>
-                    {/* <div><input type="radio" value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} /> Highest rated</div>
-                    <div><input type="radio" value="Closest to me" checked={sortBySorting.sortBy === 2} onChange={() => sortByButtonClicked(2)} /> Closest to me</div>
-                    <div><input type="radio" value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} /> Most jobs completed</div> */}
-
                     <div className="radio_wrap agree_check">
                         <input className="filter-type filled-in" type="radio" id="highestRated"
                             value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} />
