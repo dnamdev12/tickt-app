@@ -141,7 +141,7 @@ const RenderMap = (props: any) => {
                                 <ul>
                                     <li className="icon clock">{selected.time}</li>
                                     <li className="icon dollar">{selected.amount}</li>
-                                    <li className="icon location">{selected.locationName}</li>
+                                    <li className="icon location line-1">{selected.locationName}</li>
                                     <li className="icon calendar">{selected.durations}</li>
                                 </ul>
                             </div>

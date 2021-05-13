@@ -1258,7 +1258,7 @@ body {
       ul {
         justify-content: initial;
         li {
-          width: 50%;
+          flex: 1 1 50%;
           margin: 5px 0;
         }
       }
@@ -2671,7 +2671,13 @@ body {
     li {
       display: flex;
       width: 100% !important;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      &:hover, &.active{
+        background-color: rgba(0,0,0,.04);
+      }
       .category {
         width: 40px;
         height: 40px;
@@ -2932,6 +2938,7 @@ body {
 		flex-wrap: wrap;
 		li {
 			display: inline-block;
+      flex: 1;
 			@media(max-width: 812px){
 				margin: 5px 0;
 				width: 50%;
@@ -3390,6 +3397,7 @@ body {
 			width: 30%;
 		}
 	}
+ 
 	.result_heading{
 		margin-bottom: 40px;
 		.flex_row{
@@ -3505,6 +3513,7 @@ body {
 		}
 		.map_col{
 			flex: 1 1 50%;
+      z-index: 9;
 			@media (max-width: 1000px){
 				flex: 1 1 100%;
 			}
@@ -3564,6 +3573,7 @@ body {
 }
 .preview_card {
 	.tradie_card {
+    max-width: 372px;
 	  min-height: 145px;
 	  margin-bottom: 0;
 	  padding: 0px;
@@ -3584,7 +3594,7 @@ body {
 		padding: 8px 10px;
 		margin: 0;
 		li{
-			width: 50%;
+			flex: 1 1 50%;
     		margin: 5px 0;
 		}
 	  }
