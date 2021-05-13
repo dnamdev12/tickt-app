@@ -1,8 +1,18 @@
-import dummy from '../../assets/images/u_placeholder.jpg';
-import approved from '../../assets/images/approved.png';
+import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import dummy from '../../../assets/images/u_placeholder.jpg';
+import approved from '../../../assets/images/approved.png';
 
-const ApprovedMilestones = () => {
+interface Proptypes {
+  getApprovedMilestoneList: (page: number) => void,
+  approvedMilestoneList: Array<any>,
+};
+
+const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }: Proptypes) => {
+  useEffect(() => {
+    getApprovedMilestoneList(1);
+  }, [getApprovedMilestoneList]);
+
   return (
     <>
       {/* Approved Milestones */}

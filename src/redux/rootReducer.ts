@@ -10,7 +10,7 @@ const rootReducer = combineReducers({
         common,
         homeSearch,
         jobs,
-        profile
+        profile,
 });
 
 export default rootReducer
