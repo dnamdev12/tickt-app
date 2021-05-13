@@ -1,6 +1,6 @@
 import BannerSearch from './bannerSearch/index';
 
-import bannerimg from '../../../../assets/images/home-banner.png';
+import bannerimg from '../../../../assets/images/tradie-banner.png';
 
 interface PropsType {
     history: any,
