@@ -33,9 +33,17 @@ const SearchResultTradie = (props: any) => {
         let data: any = {
             page: 1,
             isFiltered: true,
-            tradeId: stateData?.tradeId,
-            specializationId: stateData?.specializations,
         }
+        if(stateData?.tradeId){
+            data['tradeId'] = stateData?.tradeId
+        }
+
+        if( stateData?.specializations){
+            data['specializationId'] = stateData?.specializations;
+        }
+        // tradeId: stateData?.tradeId,
+        // specializationId: stateData?.specializations,
+
         if (stateData?.location) {
             data['location'] = stateData?.location;
         }
@@ -89,7 +97,7 @@ const SearchResultTradie = (props: any) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <span className="title">
-                                        {`${local_info?.name} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
+                                        {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
                                             {`${homeSearchJobData?.length} results`}
                                         </span>
