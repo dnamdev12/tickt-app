@@ -24,7 +24,7 @@ const TradieJobInfoBox = (props: any) => {
                     <ul>
                         <li className="icon clock">{item.time}</li>
                         <li className="icon dollar">{item.amount}</li>
-                        <li className="icon location">{item.locationName}</li>
+                        <li className="icon location line-1">{item.locationName}</li>
                         <li className="icon calendar">{item.durations}</li>
                     </ul>
                 </div>

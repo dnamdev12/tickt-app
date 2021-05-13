@@ -283,6 +283,9 @@ body.loader_show .full_loader {
 	display: -webkit-box !important;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
+    @media(max-width: 650px){
+	    -webkit-line-clamp: 2;
+    }
 }
 //----------------- For Text Ellipsis close----------------//
 
