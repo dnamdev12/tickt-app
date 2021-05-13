@@ -57,12 +57,13 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
 
     useEffect(() => {
         if (!localMilestones?.length !== milestones?.length) {
+            console.log('Inside------------>')
             let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
             setLocalMilestones(filter_milestones); // set milestoner here!
             updateMileStoneIndex(null);
             updateMileStoneTimings(null);
         }
-    }, [milestones, removeMilestoneByIndex, editItem]);
+    }, [milestones, removeMilestoneByIndex]);
 
     const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
         const result = Array.from(list);
@@ -81,12 +82,34 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         }
 
         if (source.droppableId === destination.droppableId) {
-            let from = localMilestones[source.index].from_date;
-            let end = localMilestones[destination.index].from_date;
-            let default_format = 'MM-DD-YYYY';
-            let diff = moment(end, default_format).diff(moment(from, default_format), 'days');
-            console.log({diff})
-            if (diff > 0) {
+            let source_item = localMilestones[source.index];
+            let destination_item = localMilestones[destination.index];
+            let filteredItem = localMilestones.filter((mil: any) => mil.milestone_name !== source_item.milestone_name);
+
+            let checkIsValid: any = true;
+            filteredItem.forEach((mile: any) => {
+                let validStart = moment(mile.from_date).isValid();
+
+                let validStartInput =  moment(source_item.from_date).isValid();
+
+                if(validStart && validStartInput){
+                    console.log({
+                        source_item:source_item.from_date,
+                        mile:mile.from_date,
+                        is:moment(source_item.from_date).isAfter(mile.from_date) 
+                    })
+                    if(moment(source_item.from_date).isAfter(mile.from_date)){
+                        checkIsValid = true;
+                    } else {
+                        checkIsValid = false;
+                    }
+                }
+            })
+            console.log({
+                checkIsValid,
+                isCheck:moment(source_item.from_date).isBefore(destination_item.from_date)
+            })
+            if (!checkIsValid) {
                 const reOrderedMilestones = reorder(
                     localMilestones,
                     source.index,
@@ -178,7 +201,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                 isPhotoevidence: boolean,
                                                 from_date: string,
                                                 to_date: string,
-                                                recommended_hours:any
+                                                recommended_hours: any
                                             }, index) => (
                                                 <Draggable
                                                     key={`${index}-${milestone_name}`}
@@ -222,7 +245,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                     className="filter-type filled-in"
                                                                     type="checkbox"
                                                                     id={`milestone${index}`} />
-                                                                <label htmlFor={`milestone${index}`}>{`${index+1}. ${milestone_name}`}</label>
+                                                                <label htmlFor={`milestone${index}`}>{`${index + 1}. ${milestone_name}`}</label>
                                                                 <div className="info">
                                                                     {isPhotoevidence ?
                                                                         <span>{'Photo evidence required'}</span>
