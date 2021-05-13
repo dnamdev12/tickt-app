@@ -82,10 +82,10 @@ const TradieSearchJobResult = (props: any) => {
             isFiltered: params.get('isFiltered') === "true",
             tradeId: tradeIdArray,
             specializationId: specializationArray,
-            lat: params.get('lat'),
-            long: params.get('long'),
-            defaultLat: params.get('defaultLat'),
-            defaultLong: params.get('defaultLong'),
+            lat: Number(params.get('lat')),
+            long: Number(params.get('long')),
+            defaultLat: Number(params.get('defaultLat')),
+            defaultLong: Number(params.get('defaultLong')),
             address: params.get('address'),
             from_date: params.get('from_date'),
             to_date: params.get('to_date'),
@@ -211,7 +211,7 @@ const TradieSearchJobResult = (props: any) => {
                         <div className="result_heading">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
-                                    <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'Jobs in your area' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''}
+                                    <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''}
                                         <span className="count">45 results</span>
                                     </span>
                                     <SearchResultFilters
