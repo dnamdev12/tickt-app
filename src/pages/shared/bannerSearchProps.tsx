@@ -347,14 +347,11 @@ const BannerSearch = (props: PropsType) => {
             }
 
             if (sortBy === 2) {
-                let local_position = [];
-                let item_position: any = localStorage.getItem('position');
-                local_position = JSON.parse(item_position);
-                if (local_position?.length) {
+                if (Object.keys(selected_address)?.length) {
                     data['location'] = {
                         "coordinates": [
-                            (local_position[1]).toString(),
-                            (local_position[0]).toString()
+                            selected_address?.lng,
+                            selected_address?.lat
                         ]
                     }
                 }
@@ -498,13 +495,9 @@ const BannerSearch = (props: PropsType) => {
                                 <PlacesAutocomplete
                                     value={addressText}
                                     onChange={(item: any) => {
-                                        if (sortBy === 2) {
-                                            setShowToast(true, 'please first change sort by filter.')
-                                        } else {
-                                            setAddressText(item)
-                                            if (!item.length) {
-                                                setSelectedAddress({});
-                                            }
+                                        setAddressText(item)
+                                        if (!item.length) {
+                                            setSelectedAddress({});
                                         }
                                     }}
                                     shouldFetchSuggestions={true}
@@ -533,11 +526,7 @@ const BannerSearch = (props: PropsType) => {
                                                     id="location-input-tag"
                                                     ref={locationRef}
                                                     onFocus={() => {
-                                                        if (sortBy === 2) {
-                                                            setShowToast(true, 'please first change sort by filter.')
-                                                        } else {
-                                                            setInputFocus2(true)
-                                                        }
+                                                        setInputFocus2(true)
                                                     }}
                                                 />
                                                 <span className="detect_icon_ltr">

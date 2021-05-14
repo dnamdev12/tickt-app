@@ -4282,3 +4282,9 @@ body {
 
 
 
+div#light-box div {
+  background-color: #00000073 !important;
+  z-index: '9999' !important;
+  height: '10%' !important;
+  width: '100%' !important;
+}

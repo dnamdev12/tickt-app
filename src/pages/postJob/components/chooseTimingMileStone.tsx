@@ -91,7 +91,7 @@ const ChooseTimingMileStone = ({
         }
         return true;
     }
-
+    console.log({ data }, '---')
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -120,7 +120,7 @@ const ChooseTimingMileStone = ({
                                     showDateDisplay={false}
                                     showSelectionPreview={true}
                                     showPreview={true}
-                                    minDate={new Date()}
+                                    minDate={data?.from_date?.length ? moment(data?.from_date).toDate() : new Date()}
                                     maxDate={moment().add(2, 'years').toDate()}
                                     fixedHeight={true}
                                 />

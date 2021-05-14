@@ -11,6 +11,9 @@ import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import { setShowToast } from '../../../redux/common/actions';
+// @ts-ignore
+import ReactImageVideoLightbox from 'react-image-video-lightbox';
 interface Proptypes {
     data: any;
     milestones: any;
@@ -117,29 +120,29 @@ const JobDetails = ({
         let data_clone: any = data;
         if (data_clone?.urls?.length) {
             let format_items = data_clone?.urls?.map((item: any) => {
-                let split_item_format = item.split('.');
+                let split_item_format = item.link.split('.');
                 let get_split_fromat = split_item_format[split_item_format.length - 1];
 
-                if (imageFormats.includes(get_split_fromat)) { // || videoFormats.includes(get_split_fromat)
-                    return { url: item, format: get_split_fromat };
+                if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
+                    return { url: item.link, format: get_split_fromat };
                 }
             });
-            
+
             if (format_items?.length) {
 
                 return format_items.map((item: any) => {
                     let render_item: any = null;
-
+                    console.log({ item, format_items });
                     if (imageFormats.includes(item?.format)) {
-                        render_item = <img alt="" src={item?.url}  />
+                        render_item = <img onClick={() => { console.log({ item }) }} alt="" src={item?.url} />
                     }
 
-                    // if (videoFormats.includes(item?.format)) {
-                    //     render_item = <video src={item?.url} style={{ height: '410px', width: '800px' }} />
-                    // }
+                    if (videoFormats.includes(item?.format)) {
+                        render_item = <video onClick={() => { console.log({ item }) }} src={item?.url} style={{ height: '410px', width: '800px' }} />
+                    }
 
                     return (
-                        <div className='item'>
+                        <div className='item' >
                             <span
                                 onClick={(e: any) => {
                                     e.preventDefault();
@@ -187,8 +190,42 @@ const JobDetails = ({
 
     return (
         <div className="app_wrapper">
+            {/* <div id="light-box">
+                <ReactImageVideoLightbox
+                    data={[
+                        {
+                            url: "https://placekitten.com/450/300",
+                            type: "photo",
+                            altTag: "some image",
+                        },
+                        {
+                            url: "https://www.youtube.com/embed/ScMzIvxBSi4",
+                            type: "video",
+                            title: "some video",
+                        },
+                        {
+                            url: "https://placekitten.com/550/500",
+                            type: "photo",
+                            altTag: "some other image",
+                        },
+                        {
+                            url: "https://www.youtube.com/embed/ScMzIvxBSi4",
+                            type: "video",
+                            title: "some other video",
+                        },
+                    ]}
+                    style={{ zIndex: '999', backgroundColor: 'rgb(0 0 0 / 48%)' }}
+                    startIndex={0}
+                    showResourceCount={true}
+                    onCloseCallback={(item: any) => { console.log('callback!', { item }) }}
+                    onNavigationCallback={(currentIndex: any) =>
+                        console.log(`Current index: ${currentIndex}`)
+                    }
+                />
+            </div> */}
             <div className="section_wrapper">
                 <div className="custom_container">
+
                     <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
@@ -270,7 +307,11 @@ const JobDetails = ({
 
 
                                 </ul>
-                                <button className="fill_grey_btn ques_btn">
+                                <button
+                                    onClick={() => {
+                                        setShowToast(true, 'Under development.')
+                                    }}
+                                    className="fill_grey_btn ques_btn">
                                     <img src={question} alt="question" />
                                     {'0 questions'}
                                 </button>
@@ -290,7 +331,7 @@ const JobDetails = ({
                                                     <img src={categorySelected?.job_type?.image} alt="icon" />
                                                 </figure>
                                                 <span className="name">{categorySelected?.job_type?.name}</span>
-                                            </li>   
+                                            </li>
                                         </ul>
                                     </div>
                                 </div>

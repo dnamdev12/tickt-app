@@ -26,6 +26,7 @@ const SearchResultTradie = (props: any) => {
     const [stateData, setStateData] = useState(location.state);
     const [isToggle, setToggleSearch] = useState(false);
     const [localInfo, setLocalInfo] = useState({});
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         props.getRecentSearchList();
@@ -34,11 +35,11 @@ const SearchResultTradie = (props: any) => {
             page: 1,
             isFiltered: true,
         }
-        if(stateData?.tradeId){
+        if (stateData?.tradeId) {
             data['tradeId'] = stateData?.tradeId
         }
 
-        if( stateData?.specializations){
+        if (stateData?.specializations) {
             data['specializationId'] = stateData?.specializations;
         }
         // tradeId: stateData?.tradeId,
@@ -54,7 +55,6 @@ const SearchResultTradie = (props: any) => {
             data['to_date'] = moment(stateData?.calender?.endDate).format('YYYY-MM-DD')
         }
         let spec_count: any = stateData?.specializations?.length;
-        console.log({ data }, '--------------- 49');
         setLocalInfo({
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
@@ -68,6 +68,14 @@ const SearchResultTradie = (props: any) => {
         setLocalInfo(info)
         console.log({ info });
     }
+
+    useEffect(() => {
+        let home: any = props.homeSearchJobData?.length ? true : false;
+        setLoading(home);
+        return () => {
+            setLoading(home);
+        }
+    }, [props])
 
     const handleChangeToggle = (value: any) => { setToggleSearch(value) }
 
@@ -111,12 +119,12 @@ const SearchResultTradie = (props: any) => {
                             </div>
                         </div>
                         <div className="flex_row tradies_row">
-                            {homeSearchJobData?.length ?
+                            {loading ?
                                 homeSearchJobData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
                                 ))
-                                // : <img src={noData} alt="data not found" />}
-                                : <div className="no_record">
+                                :
+                                <div className="no_record">
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />
                                     </figure>
