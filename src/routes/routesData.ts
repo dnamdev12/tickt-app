@@ -4,7 +4,6 @@ import NotFound from '../pages/notFound/notFound';
 import Signup from '../pages/signup';
 import ForgerPassword from '../pages/forgetPassword/forgetPassword';
 import PostJob from '../pages/postJob';
-import TradieHome from '../pages/home/tradieHome';
 import SavedJobs from '../pages/savedJobs/index';
 import RecommendedJobs from '../pages/recommendedJobs/index';
 import MostViewedJobs from '../pages/mostViewedJobs/index';
@@ -16,6 +15,7 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import JobDashboard from '../pages/jobDashboard';
 import TradieListData from '../pages/shared/tradieListData';
 import SearchResultTradie from '../pages/searchTradieResult/index';
+import BuilderProfile from '../pages/builderProfile/builderProfile';
 
 const routes = [
     {
@@ -52,11 +52,6 @@ const routes = [
         component: PostJob,
         // authRoute: true,
     },
-    // {
-    //     name: 'tradiehome',
-    //     path: '/tradie',
-    //     component: TradieHome,
-    // },
     {
         name: 'recommendedjobs',
         path: '/recommended-jobs',
@@ -92,14 +87,19 @@ const routes = [
         privateRoute: true,
     },
     {
+        name: 'builderprofile',
+        path: '/builder-profile',
+        component: BuilderProfile,
+    },
+    {
         name: 'jobdashboard',
         path: [
-          '/active-jobs',
-          '/applied-jobs',
-          '/past-jobs',
-          '/new-jobs',
-          '/approved-milestones',
-          '/mark-milestone/:jobId',
+            '/active-jobs',
+            '/applied-jobs',
+            '/past-jobs',
+            '/new-jobs',
+            '/approved-milestones',
+            '/mark-milestone/:jobId',
         ],
         component: JobDashboard,
         authRoute: false,
@@ -110,7 +110,6 @@ const routes = [
         path: '/linkedin',
         component: LinkedInPopUp
     },
-    
     {
         name: 'recommended-trade-people',
         path: '/recommended-trade-people',
@@ -127,8 +126,8 @@ const routes = [
         component: TradieListData
     },
     {
-        name:'search-tradie-results',
-        path:'/search-tradie-results',
+        name: 'search-tradie-results',
+        path: '/search-tradie-results',
         component: SearchResultTradie,
         authRoute: false,
         privateRoute: true,
