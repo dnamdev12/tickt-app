@@ -49,13 +49,13 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
     // if (stepCompleted || continueClicked) {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: isInvalid(name, value),
+      [name]: isInvalid(name, (value).trim()),
     }));
     // }
 
     setBasicDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [name]: (value).trim(),
     }));
   };
 

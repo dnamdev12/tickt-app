@@ -21,7 +21,7 @@ interface Proptypes {
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
 const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
-const docformats: Array<any> = ["pdf", "doc"];
+const docformats: Array<any> = ["pdf", "doc", "docx"];
 
 // 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4'
 // 'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
@@ -60,17 +60,17 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         }
 
         let filesUrlClone: any = filesUrl;
-        console.log({filesUrlClone})
+        console.log({ filesUrlClone })
         let countVideoFormats = filesUrlClone.map((item: any) => {
             let split_items = item.link.split('.');
             console.log(split_items);
             let format_split_items = split_items[split_items?.length - 1];
-            console.log({format_split_items})
+            console.log({ format_split_items })
             if (videoFormats.includes(format_split_items)) {
                 return format_split_items;
             }
         }).filter((item: any) => item !== undefined);
-        console.log({countVideoFormats})
+        console.log({ countVideoFormats })
         var fileType = newFile?.type?.split('/')[1];
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
@@ -84,10 +84,10 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
             return;
         }
 
-        // if (docformats.includes(fileType) && selectedFileSize > 10) { // doc validations
-        //     setShowToast(true, "The file size must be below 10 MB.")
-        //     return;
-        // }
+        if (docformats.includes(fileType) && selectedFileSize > 10) { // doc validations
+            setShowToast(true, "The file size must be below 10 MB.")
+            return;
+        }
 
         if (videoFormats.includes(fileType)) { // video validations
             if (selectedFileSize > 10) {
@@ -104,8 +104,9 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         const res = await onFileUpload(formData)
         if (res.success) {
             let link: string = res.imgUrl;
+            let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx"].includes(fileType) ? 3 : 4
             setFilesUrl((prev: Array<any>) => [...prev, {
-                "mediaType": imageFormats.includes(fileType) ? 1 : 2,
+                "mediaType": check_type,
                 "link": link
             }]);
             setLocalFiles((prev: any) => ({ ...prev, newFile }));
@@ -128,9 +129,9 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                 image_render = <img title={get_split_name} src={videoThumbnail} alt="media" style={{ padding: '17px' }} />
             }
 
-            // if (docformats.includes(get_split_fromat)) {
-            //     image_render = <img title={get_split_name} src={docThumbnail} alt="media" />
-            // }
+            if (docformats.includes(get_split_fromat)) {
+                image_render = <img title={get_split_name} src={docThumbnail} alt="media" />
+            }
 
             return (
                 <figure className="img_video">
@@ -193,10 +194,14 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                                 console.log({ filesUrl })
                                 // return
                                 handleStepComplete({
-                                    urls: filesUrl
+                                    urls: [
+                                        {mediaType: 1, link: "https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg"},
+                                        {mediaType: 2, link: "https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4"}
+                                    ] //filesUrl
                                 })
                             }}
-                            className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}>
+                            // className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
+                            >
                             {'Submit'}
                         </button>
                     </div>
