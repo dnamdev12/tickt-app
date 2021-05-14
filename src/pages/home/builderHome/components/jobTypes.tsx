@@ -16,15 +16,6 @@ import hourlyRate from "../../../../assets/images/ic-clock.png";
 
 const JobTypes = (props: any) => {
     let tradeListData: any = props.tradeListData;
-
-    const categoriesjob = {
-        desktop: {
-            breakpoint: { max: 3000, min: 1024 },
-            items: 7,
-            slidesToSlide: tradeListData?.length ? Math.round(tradeListData?.length / 7) : 0, // optional, default to 1.
-        },
-    };
-    console.log({ props, tradeListData, categoriesjob }, '------------------->')
     return (
         <div className="home_job_categories">
             <div className="custom_container">
