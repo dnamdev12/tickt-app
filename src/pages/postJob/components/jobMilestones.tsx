@@ -57,7 +57,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
 
     useEffect(() => {
         if (!localMilestones?.length !== milestones?.length) {
-            console.log('Inside------------>')
             let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
             setLocalMilestones(filter_milestones); // set milestoner here!
             updateMileStoneIndex(null);

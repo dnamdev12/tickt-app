@@ -21,7 +21,7 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
   useEffect(() => {
     if (stepCompleted) {
       setBasicDetails({
-        jobName: data?.jobName, 
+        jobName: data?.jobName,
         job_description: data?.job_description
       });
     }
@@ -49,13 +49,13 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
     // if (stepCompleted || continueClicked) {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: isInvalid(name, (value).trim()),
+      [name]: isInvalid(name, (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "")),
     }));
     // }
 
     setBasicDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: (value).trim(),
+      [name]: (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, ""),
     }));
   };
 

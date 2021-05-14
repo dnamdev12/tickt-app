@@ -66,13 +66,6 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     console.log({ permission_web }, '56')
     if (permission_web.state !== 'denied') {
       setLoading(true)
-      // console.log({ state: permission_web.state }, 'if')
-      // const position: any = await new Promise((resolve, reject) => {
-      //   navigator.geolocation.getCurrentPosition(resolve, reject);
-      // });
-
-      // console.log({ position }, '62')
-      // let { latitude, longitude } = position.coords;
       let item_position: any = localStorage.getItem('position');
       let position = JSON.parse(item_position);
       let longitude = (position[0])?.toString();
@@ -156,13 +149,13 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
             <div className="flex_col_sm_5">
               <div className="form_field">
 
-                <div className="text_field none">
+                <div className={`text_field ${address.length > 2 ? 'none' : ''}`}>
                   <input
                     placeholder='Type a State, city or suburb'
                     value={address}
-                    // style={{ display: address.length > 2 ? 'none' : '' }}
+                    // style={{ display:address.length > 2  ? 'none' : '' }}
                     id="location_search_static"
-                    onChange={(e) => setAddress(e.target.value)}
+                    onChange={(e) => setAddress((e.target.value).trimLeft())}
                     onFocus={(x) => {
                       // console.log('Input - 1')
                     }}
@@ -175,7 +168,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                   value={address}
                   onChange={(value) => {
                     setLocationSelected(false);
-                    setAddress(value)
+                    setAddress((value).trimLeft())
                   }}
                   onSelect={handleSelect}
                 >
@@ -187,20 +180,20 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                           onFocus={(x) => {
                             setInputFocus(true);
                           }}
-                          style={{ display: address?.length < 3 ? 'none' : '' }}
+                          // style={{ display: address?.length < 3 ? 'none+!important' : '' }}
                           {...getInputProps({
                             placeholder: 'Type a State, city or suburb',
-                            className: 'location-search-input detect_input',
+                            className: `${address?.length < 3 ? 'none' : 'location-search-input detect_input' }`,
                           })}
                         />
-                        <span className="detect_icon" >
+                        <span className={`${address?.length < 3 ? 'none' : 'detect_icon'}`}>
                           <img
                             src={cross}
                             alt="cross"
                             onClick={() => {
                               setAddress('');
                               // setLocation({});
-                              setLocation({ coordinates: [], address:'' })
+                              setLocation({ coordinates: [], address: '' })
                               setLocationSelected(false);
                             }} />
                         </span>
@@ -208,9 +201,9 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                       <div className="autocomplete-drop-down-map-container">
                         {loading && <div>Loading...</div>}
                         {!locationSelected && !loading && !suggestions?.length && address?.length > 3 ?
-                          <div className="loc_suggestions">
+                          (<div className="loc_suggestions">
                             {'No Result Found.'}
-                          </div>
+                          </div>)
                           : ''}
                         {suggestions.map((suggestion: any) => {
                           const className = suggestion.active

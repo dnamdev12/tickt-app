@@ -72,6 +72,7 @@ const Header = (props: any) => {
                                 <img
                                     onClick={() => {
                                         setActiveLink('');
+                                        setToggleMenu(false);
                                         props.history.push('/')
                                     }}
                                     src={colorLogo}

@@ -133,13 +133,12 @@ const JobDetails = ({
 
                 return format_items.map((item: any) => {
                     let render_item: any = null;
-                    console.log({ item, format_items });
                     if (imageFormats.includes(item?.format)) {
-                        render_item = <img onClick={() => { setPopUp(true); console.log({ item }) }} alt="" src={item?.url} />
+                        render_item = <img onClick={() => { console.log({ item }) }} alt="" src={item?.url} />
                     }
 
                     if (videoFormats.includes(item?.format)) {
-                        render_item = <video onClick={() => { setPopUp(true); console.log({ item }) }} src={item?.url} style={{ height: '410px', width: '800px' }} />
+                        render_item = <video onClick={() => {console.log({ item }) }} src={item?.url} style={{ height: '410px', width: '800px' }} />
                     }
 
                     return (
@@ -191,7 +190,7 @@ const JobDetails = ({
 
     return (
         <div className="app_wrapper">
-            {isEnablePopup ? 
+            {/* {isEnablePopup ? 
             <div id="light-box">
                 <ReactImageVideoLightbox
                     data={[
@@ -209,7 +208,7 @@ const JobDetails = ({
                     }
                 />
             </div> 
-            : null}
+            : null} */}
             <div className="section_wrapper">
                 <div className="custom_container">
 

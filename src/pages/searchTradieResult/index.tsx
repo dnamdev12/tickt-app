@@ -16,7 +16,8 @@ const mapStateToProps = (state: any) => {
         jobTypeListData: state.homeSearch.jobTypeListData,
         tradeListData: state.auth.tradeListData,
         homeSearchJobData: state.homeSearch.homeSearchJobData,
-        localChanges:state.jobs.localChanges
+        localChanges:state.jobs.localChanges,
+        isLoading:state.common.isLoading
     }
 }
 

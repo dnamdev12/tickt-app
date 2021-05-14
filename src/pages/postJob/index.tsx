@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import PostJobComponent from './postJob';
 import { callTradeList } from '../../redux/auth/actions';
 import { callCategories } from '../../redux/jobs/actions';
-import { updateMileStoneIndex, updateMileStoneTimings, updateDetailScreen  } from '../../redux/jobs/actions';
+import { updateMileStoneIndex, updateMileStoneTimings, updateDetailScreen } from '../../redux/jobs/actions';
 
 const mapStateToProps = (state: any) => {
   return {
@@ -11,6 +11,7 @@ const mapStateToProps = (state: any) => {
     editMilestoneId: state.jobs.editMilestoneId,
     editMilestoneTiming: state.jobs.editMilestoneTiming,
     editDetailPage: state.jobs.editDetailPage,
+    isLoading: state.common.isLoading
   }
 }
 
