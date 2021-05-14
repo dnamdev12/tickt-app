@@ -148,38 +148,42 @@ const JobDashboard = ({
               <ul className="dashboard_menu">
                 <li>
                   <NavLink className="icon star" to="/active-jobs">
-                    Active Jobs
+                    <span className="menu_txt">Active Jobs</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon applied" to="/applied-jobs">
-                    Applied jobs
+                    <span className="menu_txt">Applied jobs</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon past" to="/past-jobs">
-                    Past jobs
+                    <span className="menu_txt">Past jobs</span>
                   </NavLink>
                 </li>
                 <hr></hr>
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
-                    New jobs
+                    <span className="menu_txt">New jobs
                     {!!newJobsCount && (
-                      <span className="badge_count">
-                        {newJobsCount > 9 ? '9+' : newJobsCount}
-                      </span>
-                    )}
+                        <span className="badge_count">
+                          {newJobsCount > 9 ? '9+' : newJobsCount}
+                        </span>
+                      )}
+                    </span>
+
+
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon approved" to="/approved-milestones">
-                    Approved milestones
+                    <span className="menu_txt">Approved milestones
                     {!!milestonesCount && (
-                      <span className="badge_count">
-                        {milestonesCount > 9 ? '9+' : milestonesCount}
-                      </span>
-                    )}
+                        <span className="badge_count">
+                          {milestonesCount > 9 ? '9+' : milestonesCount}
+                        </span>
+                      )}
+                    </span>
                   </NavLink>
                 </li>
               </ul>
