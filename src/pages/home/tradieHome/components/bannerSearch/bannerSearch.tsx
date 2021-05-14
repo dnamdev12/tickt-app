@@ -134,7 +134,7 @@ const BannerSearch = (props: PropsType) => {
         setCalenderRange1(item.selection1)
     };
 
-    console.log(stateData, "stateData diff", props.currentCoordinates)
+    console.log(stateData, "stateData diff", errors)
 
     const checkInputValidation = (e: any) => {
         const alphaRegex = new RegExp(regex.alphaSpecial)
@@ -209,7 +209,7 @@ const BannerSearch = (props: PropsType) => {
                         })}
                     </ul>
                 </div>
-            </div> 
+            </div>
         )
     }
 
@@ -250,7 +250,7 @@ const BannerSearch = (props: PropsType) => {
                     setInputFocus2(false);
                     // document.getElementById("current-location-search-div")?.blur();
                     address = results.length >= 9 ? results[5].formatted_address : results.length >= 5 ? results[3].formatted_address : results[1].formatted_address;
-                    setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: address.split(',').slice(0,2).toString(), isMapLocationSelected: true, locationDenied: false }));
+                    setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: address.split(',').slice(0, 2).toString(), isMapLocationSelected: true, locationDenied: false }));
                 }
             });
         }
@@ -289,23 +289,23 @@ const BannerSearch = (props: PropsType) => {
         if (!stateData?.isMapLocationSelected && stateData?.selectedMapLocation) {
             newErrors.selectedMapLocation = Constants.errorStrings.bannerSearchLocation;
         }
-        if(type == 'showErrorToast'){
+        if (type == 'showErrorToast') {
             return newErrors;
         }
-        setErrors(newErrors);
+        // setErrors(newErrors);
         return !Object.keys(newErrors).length;
     }
 
     const bannerSearchClicked = (newSearchData?: any) => {
-        const newErrors = validateForm('showErrorToast');
-        console.log(newErrors, "newErrors")
-        if(!!newErrors.searchedJob || !!newErrors.selectedMapLocation){
-            if(!!newErrors.searchedJob){
+        const newErrors = validateForm(newSearchData?.isRecentSearchesClicked ? newSearchData?.isRecentSearchesClicked : 'showErrorToast');
+        if (!!newErrors.searchedJob || !!newErrors.selectedMapLocation) {
+            if (!!newErrors.searchedJob) {
                 setShowToast(true, 'Please select job type from the list');
                 return;
             }
-            if(!!newErrors.selectedMapLocation){
+            if (!!newErrors.selectedMapLocation) {
                 setShowToast(true, 'Please select location from the list');
+                return;
             }
         }
         if (validateForm(newSearchData?.isRecentSearchesClicked)) {
@@ -338,7 +338,6 @@ const BannerSearch = (props: PropsType) => {
             Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null) && delete newData[key]);
             var url = 'search-job-results?';
             for (let [key, value] of Object.entries(newData)) {
-                console.log(key, value);
                 url += `${key}=${value}&`
             }
             const newUrl = url.slice(0, url.length - 1)
