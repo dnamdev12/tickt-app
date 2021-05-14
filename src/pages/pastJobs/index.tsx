@@ -1,5 +1,7 @@
 import dummy from '../../assets/images/u_placeholder.jpg';
 import rateStar from '../../assets/images/ic-star-fill.png';
+import more from '../../assets/images/icon-direction-right.png';
+
 
 const PastJobs = () => {
   return (
@@ -57,7 +59,60 @@ const PastJobs = () => {
           </div>
         </div>
       </div>
-      {/* Applied Jobs close */}
+      {/* Past Jobs close */}
+
+
+
+      {/*Review for builder */}
+      {/* <div className="flex_row">
+        <div className="flex_col_sm_6">
+          <div className="relate">
+            <button className="back"></button>
+            <span className="xs_sub_title">Wire up circuit box</span>
+          </div>
+          <div className="form_field">
+            <span className="sub_title">Review completed job</span>
+          </div>
+          <span className="inner_title">Rate this builder</span>
+          <div className="form_field">
+            Rating star here
+          </div>
+          <div className="form_field">
+            <label className="form_label">Comment</label>
+            <div className="text_field">
+              <input type="text" placeholder="Thanks.." />
+            </div>
+          </div>
+          <div className="form_field">
+            <button className="fill_btn full_btn">Leave review</button>
+          </div>
+        </div>
+        <hr></hr>
+        <div className="flex_col_sm_6">
+          <div className="relate">
+            <span className="sub_title">Job details</span>
+            <span className="edit_icon" title="More">
+              <img src={more} alt="more" />
+            </span>
+          </div>
+          <div className="tradie_card posted_by view_more ">
+            <div className="user_wrap">
+              <figure className="u_img">
+                <img src={dummy} alt="traide-img" />
+              </figure>
+              <div className="details">
+                <span className="name">Electrician</span>
+                <span className="prof">Wire up 2 rooms in new apartment</span>
+                <span className="prof">May 23 - 25 </span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div> */}
+      {/* Review for builder close */}
+
+
     </>
   );
 };
