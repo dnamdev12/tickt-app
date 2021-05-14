@@ -27,7 +27,6 @@ import { useDetectClickOutside } from 'react-detect-click-outside';
 import moment from 'moment';
 import Geocode from "react-geocode";
 import { setShowToast } from '../../redux/common/actions';
-import { property } from 'lodash';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -96,9 +95,9 @@ const BannerSearch = (props: PropsType) => {
     const searchRef = useDetectClickOutside({ onTriggered: handleOnOutsideSearch });
     const locationRef = useDetectClickOutside({
         onTriggered: () => {
-            if(addressText?.length > 3){
+            if (addressText?.length > 3) {
                 handleOnOutsideLocation()
-            } 
+            }
         }
     });
     const locationRefClone = useDetectClickOutside({
@@ -378,6 +377,7 @@ const BannerSearch = (props: PropsType) => {
         }
     }
 
+
     let custom_name = searchText;
     let condition_location: any = addressText?.length > 2 || (addressText?.length && enableCurrentLocation && Object.keys(selectedAddress).length);
     console.log({ addressText, enableCurrentLocation, inputFocus2, selectedAddress })
@@ -507,7 +507,7 @@ const BannerSearch = (props: PropsType) => {
                                     }}
                                     highlightFirstSuggestion={true}
                                     onError={onError}
-                                    debounce={400}
+                                    debounce={0}
                                 >
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
                                         <div>
@@ -558,7 +558,7 @@ const BannerSearch = (props: PropsType) => {
                                                             })}
                                                         </div>
                                                     </div>
-                                                </div> : addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation ? (
+                                                </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
                                                     <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                                         <div className="flex_row recent_search auto_loc">
                                                             <div className="flex_col_sm_4">

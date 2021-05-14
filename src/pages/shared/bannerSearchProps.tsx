@@ -534,11 +534,11 @@ const BannerSearch = (props: PropsType) => {
                                     }}
                                     highlightFirstSuggestion={true}
                                     onError={onError}
-                                    debounce={400}
+                                    debounce={0}
                                 >
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
                                         <div>
-                                            <div 
+                                            <div
                                                 className={`text_field ${addressText?.length > 2 ? '' : 'none'}`}>
                                                 <input
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
@@ -585,16 +585,16 @@ const BannerSearch = (props: PropsType) => {
                                                             })}
                                                         </div>
                                                     </div>
-                                                </div> : addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation ? (
-                                                    <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
-                                                        <div className="flex_row recent_search auto_loc">
-                                                            <div className="flex_col_sm_4">
-                                                                <div className="loc_suggestions">
-                                                                    {'No Result Found.'}
-                                                                </div>
-                                                            </div>
+                                                </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
+                                            <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                <div className="flex_row recent_search auto_loc">
+                                                    <div className="flex_col_sm_4">
+                                                        <div className="loc_suggestions">
+                                                            {'No Result Found.'}
                                                         </div>
                                                     </div>
+                                                </div>
+                                            </div>
                                                 ) : null}
                                         </div>
                                     )}
