@@ -176,7 +176,7 @@ const SearchResultFilters = (props: any) => {
 
 
     const showResultsByAllFilter = (item?: any) => {
-        if(item == 'searchedBySearchBannerClicked'){
+        if (item == 'searchedBySearchBannerClicked') {
             props.showBudgetFilterResults('searchedBySearchBannerClicked');
             return;
         }
@@ -387,10 +387,13 @@ const SearchResultFilters = (props: any) => {
                         </div>
                         {!!errors.maxBudget && <span className="error_msg">{errors.maxBudget}</span>}
                     </div>
-                    <span className={sortByPrice.payTypeClicked ? "price up" : 'price down'} onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, payTypeClicked: !prevData.payTypeClicked }))}>
-                        {sortByPrice.pay_type == "Fixed price" ? "Fixed price" : sortByPrice.pay_type == "Per hour" ? "Per hour" : ""}
-                    </span>
 
+                    <div className="f_spacebw">
+                        <span className={sortByPrice.payTypeClicked ? "price up" : 'price down'} onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, payTypeClicked: !prevData.payTypeClicked }))}>
+                            {sortByPrice.pay_type == "Fixed price" ? "Fixed price" : sortByPrice.pay_type == "Per hour" ? "Per hour" : ""}
+                        </span>
+                        <a className="link" onClick={showResultsByBudget}>Show results</a>
+                    </div>
                     {sortByPrice.payTypeClicked &&
                         <div>
                             <div onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Per hour", payTypeClicked: !prevData.payTypeClicked }))}>
@@ -401,7 +404,7 @@ const SearchResultFilters = (props: any) => {
                             </div>
                         </div>
                     }
-                    <a className="link" onClick={showResultsByBudget}>Show results</a>
+
                 </Menu>}
             {/* sorting filter box */}
             {sortBySorting.sortBySorting &&
