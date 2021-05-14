@@ -36,7 +36,7 @@ const Banner = (props: any) => {
                 <div className="banner_container">
                     <BannerSearch {...props} />
                     <div className="text-center">
-                        <h1 className="heading text_effect">Your local network</h1>
+                        <h1 className="heading text_shine">Your local network</h1>
                         <p className="commn_para">Connect with Tradies in your area</p>
                         {/* <a className="fill_btn view-btn">View More</a> */}
                         <button className="fill_btn view-btn" onClick={viewMoreClicked}>View More</button>
