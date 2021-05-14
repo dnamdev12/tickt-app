@@ -21,8 +21,8 @@ interface Proptypes {
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
 const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
+const docformats: Array<any> = ["pdf", "doc"];
 
-// const docformats: Array<any> = ["pdf", "doc"];
 // 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4'
 // 'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
 

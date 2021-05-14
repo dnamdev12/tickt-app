@@ -297,7 +297,7 @@ export default class AddMilestone extends Component<Props, State> {
                                             }}
                                             value={recommended_hours}
                                             type="text"
-                                            placeholder="Enter Recommended hours like: 04:03"
+                                            placeholder="Enter Recommended hours"
                                             name="recommended_hours" />
                                     </div>
                                     <span className="error_msg">{errors.recommended_hours}</span>
