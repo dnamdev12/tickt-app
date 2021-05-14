@@ -3787,7 +3787,7 @@ body {
     margin: 0 0 0 -130px;
   }
   @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    margin: 0 0 0 -130px;
+    margin: 0 0 0 -120px;
   }
   &.active{
     @media(max-width: 768px){
@@ -3843,10 +3843,10 @@ body {
      margin: 0 0 15px 120px;
     }
     @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      margin-bottom: 20px;
+      margin: 0 0 15px 100px;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      margin-bottom: 55px;
+      margin: 0 0 25px 130px;
     }
     @media(max-width: 768px){
       margin: 0 0 15px 50px;
@@ -3863,7 +3863,7 @@ body {
       padding: 19px 10px 19px 160px;
       color: var(--blue);
       display: block;   
-      margin-bottom: 12px;    
+      margin-bottom: 12px;   
       @media (max-width: 1366px){
         padding: 15px 10px 17px 160px;
         margin-bottom: 8px;
@@ -3878,7 +3878,7 @@ body {
       @media(max-width: 650px){
        padding: 12px 10px 12px 40px;
       }
-      &.active{
+      &.active, &:hover{
         font-family: "Neue Haas Grotesk Text Pro Bold";
         background: #ffffff;
       }

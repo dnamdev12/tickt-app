@@ -1,4 +1,5 @@
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
+import noData from '../../assets/images/no-data.png';
 
 const MostViewedJobs = (props: any) => {
 
@@ -10,7 +11,7 @@ const MostViewedJobs = (props: any) => {
 
     return (
         <div className={'app_wrapper'} >
-            <div className="section_wrapper bg_gray">
+            <div className="section_wrapper">
                 <div className="custom_container">
                     <div className="relate">
                         <button className="back" onClick={backButtonClicked}></button>
@@ -20,7 +21,11 @@ const MostViewedJobs = (props: any) => {
                         {mostViewJobsData?.length > 0 ?
                             (mostViewJobsData?.map((jobData: any) => {
                                 return <TradieJobInfoBox item={jobData} {...props}/>
-                            })) : <span>No data Found</span>}
+                            })) : <div className="no_record">
+                            <figure className="no_img">
+                                <img src={noData} alt="data not found" />
+                            </figure>
+                        </div>}
                     </div>
                 </div>
             </div>
