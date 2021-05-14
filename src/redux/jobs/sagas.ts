@@ -33,6 +33,8 @@ function* getActiveJobList({ page }: any) {
       type: actionTypes.GET_ACTIVE_JOBS_END,
       payload: response.result,
     });
+
+    return;
   }
 
   setShowToast(true, response.message);
@@ -52,6 +54,8 @@ function* getAppliedJobList({ page }: any) {
       type: actionTypes.GET_APPLIED_JOBS_END,
       payload: response.result,
     });
+
+    return;
   }
 
   setShowToast(true, response.message);
@@ -71,6 +75,8 @@ function* getPastJobList({ page }: any) {
       type: actionTypes.GET_PAST_JOBS_END,
       payload: response.result,
     });
+
+    return;
   }
 
   setShowToast(true, response.message);
@@ -90,6 +96,8 @@ function* getNewJobList({ page }: any) {
       type: actionTypes.GET_NEW_JOBS_END,
       payload: response.result,
     });
+
+    return;
   }
 
   setShowToast(true, response.message);
@@ -109,6 +117,8 @@ function* getApprovedMilestoneList({ page }: any) {
       type: actionTypes.GET_APPROVED_MILESTONE_END,
       payload: response.result,
     });
+
+    return;
   }
 
   setShowToast(true, response.message);
@@ -116,6 +126,7 @@ function* getApprovedMilestoneList({ page }: any) {
 }
 
 function* postJobWatcher() {
+  try {
     yield takeLatest(actionTypes.FETCH_HOME_BUILDER, setHomeBuilder);
     yield takeLatest(actionTypes.GET_LOCAL_CHANGES, setLocalChanges);
     yield takeLatest(actionTypes.GET_ACTIVE_JOBS_START, getActiveJobList);
@@ -123,6 +134,9 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_PAST_JOBS_START, getPastJobList);
     yield takeLatest(actionTypes.GET_NEW_JOBS_START, getNewJobList);
     yield takeLatest(actionTypes.GET_APPROVED_MILESTONE_START, getApprovedMilestoneList);
+  } catch (e) {
+    console.log(e);
+  }
 }
 
 export default postJobWatcher;

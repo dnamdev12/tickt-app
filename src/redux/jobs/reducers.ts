@@ -51,9 +51,9 @@ const reducer = (state = initialState, action: any) => {
         case actionTypes.GET_ACTIVE_JOBS_END:
           return {
             ...state,
-            activeJobList: action.payload.active,
-            milestonesCount: action.payload.milestonesCount,
-            newJobsCount: action.payload.newJobsCount,
+            activeJobList: action.payload?.active || [],
+            milestonesCount: action.payload?.milestonesCount,
+            newJobsCount: action.payload?.newJobsCount,
           };
     
         case actionTypes.GET_APPLIED_JOBS_END:
