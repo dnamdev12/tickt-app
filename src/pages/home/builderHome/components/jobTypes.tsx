@@ -12,11 +12,15 @@ const JobTypes = (props: any) => {
 
     const categoriesjob = {
         desktop: {
+            loop: false,
+            touchDrag: false,
+            pullDrag: false,
             breakpoint: { max: 3000, min: 1024 },
             items: 1,
-            slidesToSlide: 1, // optional, default to 1.
+            // slidesToSlide: 1, // optional, default to 1.
         },
     };
+    
     let tradeListData: any = props.tradeListData;
     console.log({ props, tradeListData }, '------------------->')
     return (
@@ -25,10 +29,11 @@ const JobTypes = (props: any) => {
                 <Carousel
                     className="item_slider"
                     responsive={categoriesjob}
-                    autoPlay={true}
+                    autoPlay={false}
                     arrows={false}
                     showDots={true}
                     infinite={false}>
+
                     <div className="select_sphere">
                         <ul>
                             {tradeListData?.length ?
@@ -47,6 +52,8 @@ const JobTypes = (props: any) => {
                                 null}
                         </ul>
                     </div>
+
+
 
                 </Carousel>
             </div>
