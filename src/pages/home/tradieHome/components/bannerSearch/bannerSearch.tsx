@@ -12,6 +12,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import moment from 'moment';
 // @ts-ignore
 import { useDetectClickOutside } from 'react-detect-click-outside';
+import { setShowToast } from '../../../../../redux/common/actions';
 
 import Searchicon from "../../../../../assets/images/main-search.png";
 import search from "../../../../../assets/images/ic-search.png";
@@ -175,7 +176,7 @@ const BannerSearch = (props: PropsType) => {
                 {props.recentSearchJobData?.length > 0 && <div className="custom_autosuggestion" id="recent-job-search-div">
                     <span className="sub_title">Recent searches</span>
                     <div className="flex_row recent_search">
-                        {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
+                        {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 3).map((item: any) => {
                             return (
                                 <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
                                     <div className="autosuggestion_icon card history">
@@ -192,7 +193,7 @@ const BannerSearch = (props: PropsType) => {
 
     const renderJobResult = () => {
         return (
-            (props.searchJobListData?.length && stateData.searchedJob.length >= 3) ? <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
+            (props.searchJobListData?.length && stateData.searchedJob.length >= 3) && <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
                 <div className="recent_search">
                     <ul className="drop_data">
                         {props.searchJobListData?.map((item: any) => {
@@ -208,7 +209,7 @@ const BannerSearch = (props: PropsType) => {
                         })}
                     </ul>
                 </div>
-            </div> : stateData.searchedJob.length < 3 ? '' : <span className="error_msg">Please select job type from the listtt</span>
+            </div> 
         )
     }
 
@@ -234,28 +235,22 @@ const BannerSearch = (props: PropsType) => {
     const getCurrentLocation = (e: any) => {
         e.preventDefault();
         const showPosition = (position: any) => {
-            var address: string;
-            // const locationNew: any = {
-            //     bannerLocation: {
-            //         coordinates: []
-            //     }
-            // }
-            // const lat = position.coords.latitude;
-            // const long = position.coords.longitude;
-            // locationNew.bannerLocation.coordinates[0] = long;
-            // locationNew.bannerLocation.coordinates[1] = lat;
-            var latlng = new google.maps.LatLng(props.currentCoordinates?.coordinates[1], props.currentCoordinates?.coordinates[0]);
+            var address: any;
+            const lat = position.coords.latitude;
+            const long = position.coords.longitude;
+            // const lat = props.currentCoordinates?.coordinates[1] ? props.currentCoordinates?.coordinates[1] : paramsData?.defaultLat ? paramsData?.defaultLat : position.coords.latitude;
+            // const long = props.currentCoordinates?.coordinates[0] ? props.currentCoordinates?.coordinates[0] : paramsData?.defaultLong ? paramsData?.defaultLong : position.coords.longitude;
+            var latlng = new google.maps.LatLng(lat, long);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, function (results, status) {
                 if (status !== google.maps.GeocoderStatus.OK) {
                     alert(status);
                 }
-                // This is checking to see if the Geoeode Status is OK before proceeding
                 if (status == google.maps.GeocoderStatus.OK) {
                     setInputFocus2(false);
                     // document.getElementById("current-location-search-div")?.blur();
-                    address = (results[1].formatted_address);
-                    setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: address, isMapLocationSelected: true, locationDenied: false }));
+                    address = results.length >= 9 ? results[5].formatted_address : results.length >= 5 ? results[3].formatted_address : results[1].formatted_address;
+                    setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: address.split(',').slice(0,2).toString(), isMapLocationSelected: true, locationDenied: false }));
                 }
             });
         }
@@ -276,8 +271,8 @@ const BannerSearch = (props: PropsType) => {
         clearSuggestions();
     }
 
-    const validateForm = (isRecentSearchesClicked?: string) => {
-        if (isRecentSearchesClicked == 'isRecentSearchesClicked' && props.history?.location?.pathname == '/') {
+    const validateForm = (type?: string) => {
+        if (type == 'isRecentSearchesClicked' && props.history?.location?.pathname == '/') {
             return true;
         }
         const newErrors: any = {};
@@ -294,11 +289,25 @@ const BannerSearch = (props: PropsType) => {
         if (!stateData?.isMapLocationSelected && stateData?.selectedMapLocation) {
             newErrors.selectedMapLocation = Constants.errorStrings.bannerSearchLocation;
         }
+        if(type == 'showErrorToast'){
+            return newErrors;
+        }
         setErrors(newErrors);
         return !Object.keys(newErrors).length;
     }
 
     const bannerSearchClicked = (newSearchData?: any) => {
+        const newErrors = validateForm('showErrorToast');
+        console.log(newErrors, "newErrors")
+        if(!!newErrors.searchedJob || !!newErrors.selectedMapLocation){
+            if(!!newErrors.searchedJob){
+                setShowToast(true, 'Please select job type from the list');
+                return;
+            }
+            if(!!newErrors.selectedMapLocation){
+                setShowToast(true, 'Please select location from the list');
+            }
+        }
         if (validateForm(newSearchData?.isRecentSearchesClicked)) {
             const params = new URLSearchParams(props.location?.search);
             const queryParamsData: any = {
@@ -355,12 +364,11 @@ const BannerSearch = (props: PropsType) => {
                 {stateData?.selectedMapLocation && inputFocus2 && <span className="detect_icon" >
                     <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '' }))} />
                 </span>}
-                {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>}
+                {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
             </div>
             {suggestions?.length > 0 && stateData?.selectedMapLocation.length >= 3 && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                 <div className="flex_row recent_search auto_loc">
                     <div className="flex_col_sm_4">
-                        {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>}
                         {loading && <div>Loading...</div>}
                         {suggestions.map((suggestion: any) => {
                             const className = 'autosuggestion_icon card loc name';
@@ -391,7 +399,7 @@ const BannerSearch = (props: PropsType) => {
                 <img src={close} alt="close" />
             </button>
             {/* first_input class should remove when first input get the value */}
-            <form className="search_wrapr first_input">
+            <form className={`search_wrapr ${(!stateData?.isSearchedJobSelected || inputFocus1) ? 'first_input' : ''}`}>
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
@@ -408,7 +416,7 @@ const BannerSearch = (props: PropsType) => {
                                     <img src={cross} alt="cross" onClick={() => cleanInputData('searchedJob')} />
                                 </span>}
                         </div>
-                        {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>}
+                        {/* {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>} */}
                     </li>
                     {!stateData?.searchedJob && inputFocus1 && recentJobSearches()}
                     {stateData?.searchedJob?.length >= 1 && inputFocus1 && renderJobResult()}
@@ -442,7 +450,7 @@ const BannerSearch = (props: PropsType) => {
                         </div>
                     }
                     <li className="date_box">
-                        <div className="custom_date_range" id="date-range-div">
+                        <div ref={calenderRef} className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>
                                 <input type="text" placeholder={stateData?.startDate ? `${stateData?.startDate} - ${stateData?.endDate}` : "When?"} onFocus={() => setInputFocus3(true)} />
