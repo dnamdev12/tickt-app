@@ -357,6 +357,7 @@ const BannerSearch = (props: PropsType) => {
     }
 
     let custom_name = searchText;
+    console.log({length_spec, selected_trade});
     return (
         <div className="home_search">
             <button
@@ -368,7 +369,8 @@ const BannerSearch = (props: PropsType) => {
                 className="modal_srch_close">
                 <img src={close} alt="close" />
             </button>
-            <form className="search_wrapr">
+            <form className={`search_wrapr ${!length_spec ? 'first_input' : ''}`}>
+            {/* first_input */}
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
@@ -399,6 +401,7 @@ const BannerSearch = (props: PropsType) => {
                                             // clear here
                                             // isHandleChanges(true)
                                             setSearchText('');
+                                            setStateData({});
                                             setSelectedTrade({})
                                         }} />
                                 </span>
@@ -538,7 +541,7 @@ const BannerSearch = (props: PropsType) => {
                               </span>}
                         </div>
                         : null}
-                    <li>
+                    <li className="date_box">
                         <div
                             ref={calenderRef}
                             className="custom_date_range" id="date-range-div">

@@ -42,32 +42,90 @@ export default class EditMilestone extends Component<Props, State> {
         }
     }
 
+    checkIsDateValid = (milestones: any, time: any) => {
+        let checkIsValid: any = true;
+        milestones.forEach((mile: any) => {
+            let validStart = moment(mile.from_date).isValid();
+            let validEnd = moment(mile.to_date).isValid();
+
+            let validStartInput = moment(time.from_date).isValid();
+            let validEndInput = moment(time.to_date).isValid();
+
+            if (validStart && validEnd) {
+                if (validStartInput && validEndInput) {
+                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                    if (moment(time.to_date).subtract(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+
+                if (validStartInput) {
+                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+
+                if (validEndInput) {
+                    if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+            }
+
+            if (validStart && validStartInput && !validEnd) {
+                if (moment(time.from_date).isSame(mile.from_date)) {
+                    checkIsValid = false
+                }
+            }
+
+            if (validEnd && validEndInput && !validStart) {
+                if (moment(time.to_date).isSame(mile.to_date)) {
+                    checkIsValid = false
+                }
+            }
+
+        });
+
+        console.log({ checkIsValid });
+
+        return checkIsValid;
+
+    }
+
     componentDidMount() {
         const { editMileStone, milestones, editMilestoneTiming } = this.props;
         let item = milestones[editMileStone];
 
         if (Object.keys(item).length) {
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
+            let isValid: any = null;
             if (editMilestoneTiming && Object.keys(editMilestoneTiming).length) {
-                if ('from_date' in editMilestoneTiming) {
-                    from_date = editMilestoneTiming?.from_date;
-                }
-                if ('to_date' in editMilestoneTiming) {
-                    to_date = editMilestoneTiming?.to_date;
+                isValid = this.checkIsDateValid(milestones, editMilestoneTiming);
+                if (isValid) {
+                    if ('from_date' in editMilestoneTiming) {
+                        from_date = editMilestoneTiming?.from_date;
+                    }
+                    if ('to_date' in editMilestoneTiming) {
+                        to_date = editMilestoneTiming?.to_date;
+                    }
                 }
             }
-
+            console.log({ isPhotoevidence, isValid })
             this.setState({
                 from_date: from_date,
-                isPhotoevidence: isPhotoevidence,
+                isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
                 milestone_name: milestone_name,
                 recommended_hours: recommended_hours,
                 to_date: to_date,
             }, () => {
-                this.props.addTimeToMileStone({
-                    from_date,
-                    to_date
-                }, editMileStone)
+                if (isValid !== null) {
+                    this.props.addTimeToMileStone({
+                        from_date,
+                        to_date
+                    }, editMileStone)
+                }
             })
         }
     }
@@ -111,7 +169,7 @@ export default class EditMilestone extends Component<Props, State> {
     }
 
     checkErrors = () => {
-        const { milestones,editMileStone } = this.props;
+        const { milestones, editMileStone } = this.props;
         let milestone_index = editMileStone;
         let from_date = milestones[editMileStone]?.from_date || '';
         let state_from_date = this.state.from_date;

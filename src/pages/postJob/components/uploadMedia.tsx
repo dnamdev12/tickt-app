@@ -21,8 +21,8 @@ interface Proptypes {
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
 const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
+const docformats: Array<any> = ["pdf", "doc"];
 
-// const docformats: Array<any> = ["pdf", "doc"];
 // 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4'
 // 'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
 
@@ -60,14 +60,17 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         }
 
         let filesUrlClone: any = filesUrl;
+        console.log({filesUrlClone})
         let countVideoFormats = filesUrlClone.map((item: any) => {
-            let split_items = item.split('.');
+            let split_items = item.link.split('.');
+            console.log(split_items);
             let format_split_items = split_items[split_items?.length - 1];
+            console.log({format_split_items})
             if (videoFormats.includes(format_split_items)) {
                 return format_split_items;
             }
         }).filter((item: any) => item !== undefined);
-
+        console.log({countVideoFormats})
         var fileType = newFile?.type?.split('/')[1];
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
@@ -101,7 +104,10 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         const res = await onFileUpload(formData)
         if (res.success) {
             let link: string = res.imgUrl;
-            setFilesUrl((prev: Array<any>) => [...prev, link]);
+            setFilesUrl((prev: Array<any>) => [...prev, {
+                "mediaType": imageFormats.includes(fileType) ? 1 : 2,
+                "link": link
+            }]);
             setLocalFiles((prev: any) => ({ ...prev, newFile }));
         }
     }
@@ -161,7 +167,7 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                         <div className="flex_col_sm_12">
                             <div className="upload_img_video">
                                 {filesUrl?.length ?
-                                    filesUrl.map((item: any, index: number) => (renderbyFileFormat(item, index)))
+                                    filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
                                     : null}
 
                                 {filesUrl?.length < 6 ? (
@@ -184,6 +190,8 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                     <div className="form_field">
                         <button
                             onClick={() => {
+                                console.log({ filesUrl })
+                                // return
                                 handleStepComplete({
                                     urls: filesUrl
                                 })
