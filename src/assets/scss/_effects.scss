@@ -156,6 +156,29 @@
 }
 
 
+
+.text_shine{
+  color: #ffffff;
+  background: linear-gradient(to right, #fff 0, #fee600 10%, #fff 20%);
+  background-position: 0;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 3s infinite linear;
+  animation-fill-mode: forwards;
+  -webkit-text-size-adjust: none;
+}
+@keyframes shine{
+  0%{
+    background-position: 0;
+	}
+  60%{
+    background-position: 480px;
+  }
+  100%{
+    background-position: 480px;
+  }
+}
+
 /*--------------------Text Effect--------------------------*/
 
 
