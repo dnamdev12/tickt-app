@@ -21,7 +21,7 @@ const AppliedJobs = ({ getAppliedJobList, appliedJobList }: Proptypes) => {
         {appliedJobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, time, amount, locationName, durations }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card">
-              <NavLink to={`/mark-milestone?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
+              <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
               <div className="user_wrap">
                 <figure className="u_img">
                   <img src={tradeSelectedUrl || dummy} alt="traide-img" />

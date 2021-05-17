@@ -26,6 +26,7 @@ interface Proptypes {
   approvedMilestoneList: Array<any>;
   getMilestoneList: (jobId: string) => void;
   milestoneList: any;
+  markMilestoneComplete: (data: any, callback: () => void) => void;
   milestonesCount: number;
   newJobsCount: number;
 }
@@ -43,6 +44,7 @@ const JobDashboard = ({
   approvedMilestoneList,
   getMilestoneList,
   milestoneList,
+  markMilestoneComplete,
   milestonesCount,
   newJobsCount,
 }: Proptypes) => {
@@ -253,6 +255,7 @@ const JobDashboard = ({
                     milestoneList={milestoneList}
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
                     showJobCompletePage={() => setJobComplete(true)}
+                    markMilestoneComplete={markMilestoneComplete}
                     {...props}
                   />
                 )}

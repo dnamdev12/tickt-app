@@ -26,6 +26,7 @@ interface Proptypes {
   milestoneList: JobDetais;
   showMilestoneCompletePage: () => void;
   showJobCompletePage: () => void;
+  markMilestoneComplete: (data: any, callback: () => void) => void;
 }
 
 const MarkMilestone = ({
@@ -33,6 +34,7 @@ const MarkMilestone = ({
   milestoneList: { jobName, milestones, postedBy },
   showJobCompletePage,
   showMilestoneCompletePage,
+  markMilestoneComplete,
 }: Proptypes) => {
   const history = useHistory();
   let params: any = new URLSearchParams(history.location?.search);
@@ -41,11 +43,26 @@ const MarkMilestone = ({
     tradeId: params.get('tradeId'),
     specializationId: params.get('specializationId'),
   };
-  const data = {
+
+  const defaultData = {
     urls: [],
+    description: '',
+    actualHours: '',
+    totalAmount: '0',
+    account_name: '',
+    account_number: '',
+    bsb_number: '',
   };
+  const [data, setData] = useState(defaultData);
+  const [errors, setErrors] = useState({
+    actualHours: '',
+    account_name: '',
+    account_number: '',
+    bsb_number: '',
+  });
   const [step, setStep] = useState(1);
   const [isLastMilestone, setIsLastMilestone] = useState(false);
+  const [milestoneIndex, setMilestoneIndex] = useState(0);
 
   const { builderId, builderImage, builderName, reviews } = postedBy || {};
 
@@ -54,6 +71,29 @@ const MarkMilestone = ({
   }, [params.jobId, getMilestoneList]);
 
   const handleStepBack = () => setStep((prevStep) => prevStep - 1);
+
+  const handleStepComplete = (stepData: any) => {
+    setData((prevData) => ({
+      ...prevData,
+      ...stepData,
+    }));
+
+    setStep(3);
+  };
+
+  const handleChange = ({ target: { name, value } }: any) => {
+    setData((prevData: any) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  };
+
+  const updateErrors = (name: string, value: string) => {
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: value,
+    }));
+  };
 
   let page = null;
   switch (step) {
@@ -79,39 +119,80 @@ const MarkMilestone = ({
             </p>
 
             <ul className="milestones_check">
-              {milestones?.map(({ milestoneId, milestoneName, isPhotoevidence, status, fromDate, toDate }, index) => {
-                const prevMilestoneStatus = milestones[index - 1]?.status;
-                const isActive = prevMilestoneStatus === 1 || prevMilestoneStatus === undefined;
-                fromDate = fromDate ? format(new Date(fromDate), 'MMM dd') : '';
-                toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
+              {milestones?.map(
+                (
+                  {
+                    milestoneId,
+                    milestoneName,
+                    isPhotoevidence,
+                    status,
+                    fromDate,
+                    toDate,
+                  },
+                  index
+                ) => {
+                  const prevMilestoneStatus = milestones[index - 1]?.status;
+                  const isActive =
+                    prevMilestoneStatus === 1 ||
+                    prevMilestoneStatus === undefined;
+                  fromDate = fromDate
+                    ? format(new Date(fromDate), 'MMM dd')
+                    : '';
+                  toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
 
-                return (
-                  <li key={milestoneId} className={status === 1 ? `check` : isActive ? 'active' : 'disabled'}>
-                    <div className="circle_stepper">
-                      <span></span>
-                    </div>
-                    <div className="info">
-                      <label>{milestoneName}</label>
-                      {isPhotoevidence && <span>Photo evidence required</span>}
-                      <span>{fromDate}{toDate && ` - ${fromDate.startsWith(toDate.split(' ')[0]) ? toDate.split(' ')[1] : toDate}`}</span>
-                      {isActive && (
-                        <button
-                          className="fill_btn full_btn"
-                          onClick={() => {
-                            setStep(2);
+                  return (
+                    <li
+                      key={milestoneId}
+                      className={
+                        status === 1
+                          ? `check`
+                          : isActive
+                          ? 'active'
+                          : 'disabled'
+                      }
+                    >
+                      <div className="circle_stepper">
+                        <span></span>
+                      </div>
+                      <div className="info">
+                        <label>{milestoneName}</label>
+                        {isPhotoevidence && (
+                          <span>Photo evidence required</span>
+                        )}
+                        <span>
+                          {fromDate}
+                          {toDate &&
+                            ` - ${
+                              fromDate.startsWith(toDate.split(' ')[0])
+                                ? toDate.split(' ')[1]
+                                : toDate
+                            }`}
+                        </span>
+                        {isActive && (
+                          <button
+                            className="fill_btn full_btn"
+                            onClick={() => {
+                              setMilestoneIndex(index);
 
-                            if (index === milestones?.length - 1) {
-                              setIsLastMilestone(true);
-                            }
-                          }}
-                        >
-                          Done
-                        </button>
-                      )}
-                    </div>
-                  </li>
-                );
-              })}
+                              if (index === milestones?.length - 1) {
+                                setIsLastMilestone(true);
+                              }
+
+                              if (isPhotoevidence) {
+                                setStep(2);
+                              } else {
+                                setStep(3);
+                              }
+                            }}
+                          >
+                            Done
+                          </button>
+                        )}
+                      </div>
+                    </li>
+                  );
+                }
+              )}
             </ul>
           </div>
           <hr></hr>
@@ -158,7 +239,7 @@ const MarkMilestone = ({
           data={data}
           handleStepBack={handleStepBack}
           handleStepForward={() => {}}
-          handleStepComplete={() => setStep(3)}
+          handleStepComplete={handleStepComplete}
           hasDescription
         />
       );
@@ -168,24 +249,51 @@ const MarkMilestone = ({
         <div className="flex_row">
           <div className="flex_col_sm_8">
             <div className="relate">
-              <button className="back"></button>
+              <button className="back" onClick={() => {
+                if (milestones[milestoneIndex].isPhotoevidence) {
+                  setStep(2);
+                } else {
+                  setStep(1);
+                }
+              }}></button>
               <span className="xs_sub_title">{jobName}</span>
             </div>
             <span className="sub_title">Worked hours in this milestone</span>
             <p className="commn_para">
-              Submit your actual hours worked to calculate any variation from the estimateed hours. The amount will be approved by the Builder
+              Submit your actual hours worked to calculate any variation from
+              the estimateed hours. The amount will be approved by the Builder
             </p>
 
             <div className="form_field">
               <label className="form_label">Time Spent</label>
               <div className="text_field">
-                <input type="text" placeholder="2" />
+                <input
+                  type="text"
+                  placeholder="2"
+                  name="actualHours"
+                  value={data.actualHours}
+                  onChange={handleChange}
+                  maxLength={5}
+                />
               </div>
-              <span className="error_msg"></span>
+              <span className="error_msg">{errors.actualHours}</span>
             </div>
             <button
               className="fill_btn full_btn"
-              onClick={() => setStep(4)}
+              onClick={() => {
+                if (!data.actualHours) {
+                  updateErrors('actualHours', 'This field is required');
+                  return;
+                }
+                let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
+                if (data.actualHours.match(pattern) === null) {
+                  updateErrors('actualHours', 'Hours should be in hh:mm format');
+                  return;
+                }
+
+                updateErrors('actualHours', '');
+                setStep(4);
+              }}
             >
               Submit
             </button>
@@ -198,11 +306,17 @@ const MarkMilestone = ({
         <div className="flex_row">
           <div className="flex_col_sm_7">
             <div className="relate">
-              <button className="back"></button>
+              <button className="back" onClick={() => setStep(3)}></button>
               <span className="xs_sub_title">{jobName}</span>
             </div>
-            <span className="sub_title">{isLastMilestone ? 'Job Complete' : 'Add payment details'}</span>
-            <p className="commn_para">{isLastMilestone ? 'Please enter your prefered payment method below so your point of contact can organise payment' : 'You need to add your bank account details for payment from the builder after approving this milestone'}</p>
+            <span className="sub_title">
+              {isLastMilestone ? 'Job Complete' : 'Add payment details'}
+            </span>
+            <p className="commn_para">
+              {isLastMilestone
+                ? 'Please enter your prefered payment method below so your point of contact can organise payment'
+                : 'You need to add your bank account details for payment from the builder after approving this milestone'}
+            </p>
             {isLastMilestone && (
               <div className="f_spacebw total_payment">
                 <span>Total payment</span>
@@ -237,7 +351,7 @@ const MarkMilestone = ({
         <div className="flex_row">
           <div className="flex_col_sm_8">
             <div className="relate">
-              <button className="back"></button>
+              <button className="back" onClick={() => setStep(4)}></button>
               <span className="xs_sub_title">{jobName}</span>
             </div>
             <span className="sub_title">Payment Details</span>
@@ -246,27 +360,76 @@ const MarkMilestone = ({
             <div className="form_field">
               <label className="form_label">Account name</label>
               <div className="text_field">
-                <input type="text" placeholder="Enter Account name" />
+                <input
+                  type="text"
+                  placeholder="Enter Account name"
+                  name="account_name"
+                  value={data.account_name}
+                  onChange={handleChange}
+                  maxLength={50}
+                />
               </div>
-              <span className="error_msg"></span>
+              <span className="error_msg">{errors.account_name}</span>
             </div>
             <div className="form_field">
               <label className="form_label">Account number</label>
               <div className="text_field">
-                <input type="number" placeholder="Enter Account number" />
+                <input
+                  type="number"
+                  placeholder="Enter Account number"
+                  name="account_number"
+                  value={data.account_number}
+                  onChange={handleChange}
+                  maxLength={50}
+                />
               </div>
-              <span className="error_msg"></span>
+              <span className="error_msg">{errors.account_number}</span>
             </div>
             <div className="form_field">
               <label className="form_label">BSB number</label>
               <div className="text_field">
-                <input type="number" placeholder="Enter BSB number" />
+                <input
+                  type="number"
+                  placeholder="Enter BSB number"
+                  name="bsb_number"
+                  value={data.bsb_number}
+                  onChange={handleChange}
+                  maxLength={50}
+                />
               </div>
-              <span className="error_msg"></span>
+              <span className="error_msg">{errors.bsb_number}</span>
             </div>
             <button
               className="fill_btn full_btn"
-              onClick={isLastMilestone ? showJobCompletePage : showMilestoneCompletePage}
+              onClick={() => {
+                if (!data.account_name) {
+                  updateErrors('account_name', 'This field is required');
+                  return;
+                }
+                if (!data.account_number) {
+                  updateErrors('account_number', 'This field is required');
+                  return;
+                }
+                if (!data.bsb_number) {
+                  updateErrors('bsb_number', 'This field is required');
+                  return;
+                }
+
+                updateErrors('account_name', '');
+                updateErrors('account_number', '');
+                updateErrors('bsb_number', '');
+
+                const callback = () => {
+                  if (isLastMilestone) {
+                    showJobCompletePage();
+                  } else {
+                    setData(defaultData);
+                    showMilestoneCompletePage();
+                  }
+                }
+
+                markMilestoneComplete({ ...data, evidence: data.urls, urls: undefined, jobId: params.jobId, milestoneId: milestones[milestoneIndex].milestoneId }, callback);
+              }}
             >
               Continue
             </button>

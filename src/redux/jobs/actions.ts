@@ -176,3 +176,8 @@ export const getMilestoneList = (jobId: string) => ({
   type: actionTypes.GET_MILESTONES_START,
   jobId,
 });
+
+export const markMilestoneComplete = (data: any) => ({
+  type: actionTypes.MARK_MILESTONE_COMPLETE,
+  data,
+});

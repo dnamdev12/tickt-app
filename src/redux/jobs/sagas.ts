@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import NetworkOps, { FetchResponse } from "../../network/NetworkOps";
 import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
@@ -150,6 +150,23 @@ function* getMilestoneList({ jobId }: any) {
   yield put({ type: actionTypes.GET_MILESTONES_END });
 }
 
+// milestoneList
+function* markMilestoneComplete({ data, callback }: any) {
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.postToJson(Urls.markComplete, data);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    if (callback) {
+      yield call(callback);
+    }
+
+    return;
+  }
+
+  setShowToast(true, response.message);
+}
+
 function* postJobWatcher() {
   try {
     yield takeLatest(actionTypes.FETCH_HOME_BUILDER, setHomeBuilder);
@@ -160,6 +177,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_NEW_JOBS_START, getNewJobList);
     yield takeLatest(actionTypes.GET_APPROVED_MILESTONE_START, getApprovedMilestoneList);
     yield takeLatest(actionTypes.GET_MILESTONES_START, getMilestoneList);
+    yield takeLatest(actionTypes.MARK_MILESTONE_COMPLETE, markMilestoneComplete);
   } catch (e) {
     console.log(e);
   }
