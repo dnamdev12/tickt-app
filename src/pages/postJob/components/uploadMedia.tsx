@@ -76,7 +76,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
         }).filter((item: any) => item !== undefined);
         
-        var fileType = newFile?.type?.split('/')[1];
+        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {

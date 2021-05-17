@@ -52,6 +52,13 @@ const Urls = {
     pastJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}pastJobList`,
     newJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}newJobList`,
     approvedMilestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}approveMilestoneList`,
+    activeJobListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}activeJobList`, //active-job-list (builder)
+    OpenJobLisBuildert: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}openJobList`, //open-job-list (builder)
+    pastJobListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}pastJobList`,  //past-job-list (builder)
+    newApplicantsBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}newApplicants`, //new-applicants (builder)
+    newJobApplicationListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}newJobApplicationList`, //new-job-application-list (builder)
+    needApprovalBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`, //new-approval (builder)
+    jobDetailsBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}jobDetails`, //job-details (builder)
     milestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}milestoneList`,
 }
 

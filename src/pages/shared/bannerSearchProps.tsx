@@ -164,10 +164,12 @@ const BannerSearch = (props: PropsType) => {
     }, [props])
 
     useEffect(() => {
-        if (addressText?.length > 2) {
-            document.getElementById('location-input-tag')?.focus();
-        } else {
-            document.getElementById('location_search_static')?.focus();
+        if (addressText !== null) {
+            if (addressText?.length > 2) {
+                document.getElementById('location-input-tag')?.focus();
+            } else {
+                document.getElementById('location_search_static')?.focus();
+            }
         }
     }, [addressText])
 
@@ -322,8 +324,8 @@ const BannerSearch = (props: PropsType) => {
             if (Object.keys(selectedAddress).length) {
                 data['location'] = {
                     "coordinates": [
-                        selected_address?.lng,
-                        selected_address?.lat
+                        +selected_address?.lng,
+                        +selected_address?.lat
                     ]
                 }
             } else {
@@ -368,8 +370,8 @@ const BannerSearch = (props: PropsType) => {
                 if (Object.keys(selected_address)?.length) {
                     data['location'] = {
                         "coordinates": [
-                            selected_address?.lng,
-                            selected_address?.lat
+                            +selected_address?.lng,
+                            +selected_address?.lat
                         ]
                     }
                 }
@@ -407,13 +409,14 @@ const BannerSearch = (props: PropsType) => {
     const getCurrentLocation = async () => {
         let local_position: any = localStorage.getItem('position');
         let position: any = JSON.parse(local_position);
+        console.log({ position, local_position });
         if (position?.length) {
-            let long = (position[0]).toString();
+            let lng = (position[0]).toString();
             let lat = (position[1]).toString();
-            let response: any = await Geocode.fromLatLng(lat, long);
+            let response: any = await Geocode.fromLatLng(lat, lng);
             if (response?.results && Array.isArray(response.results) && response?.results?.length) {
                 const address = response.results[0].formatted_address;
-                setSelectedAddress({ lat, long });
+                setSelectedAddress({ lat, lng });
                 setAddressText(address);
                 setInputFocus2(true);
                 setCurrentLocations(true);
@@ -586,15 +589,15 @@ const BannerSearch = (props: PropsType) => {
                                                         </div>
                                                     </div>
                                                 </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
-                                            <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
-                                                <div className="flex_row recent_search auto_loc">
-                                                    <div className="flex_col_sm_4">
-                                                        <div className="loc_suggestions">
-                                                            {'No Result Found.'}
+                                                    <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                        <div className="flex_row recent_search auto_loc">
+                                                            <div className="flex_col_sm_4">
+                                                                <div className="loc_suggestions">
+                                                                    {'No Result Found.'}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
                                                 ) : null}
                                         </div>
                                     )}
