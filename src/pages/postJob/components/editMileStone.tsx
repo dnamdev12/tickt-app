@@ -127,7 +127,18 @@ export default class EditMilestone extends Component<Props, State> {
 
     handleChange = (name: string, value: any) => {
         let error_clone: any = this.state.errors;
-        if (['milestone_name', 'from_date', 'recommended_hours']) {
+
+        
+        if(name === "milestone_name"){
+            value = (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "")
+        }
+
+        if(name  === "recommended_hours") {
+            value = (value).trimLeft();
+        }
+
+
+        if (['milestone_name', 'from_date', 'recommended_hours'].includes(name)) {
             error_clone[name] = this.isInvalid(name, value)
         }
         this.setState({ ...this.state, [name]: value, errors: error_clone });
@@ -252,7 +263,7 @@ export default class EditMilestone extends Component<Props, State> {
                                     <div className="text_field">
                                         <input
                                             onChange={(e) => {
-                                                this.setState({ recommended_hours: e.target.value }, () => {
+                                                this.setState({ recommended_hours: (e.target.value).trimLeft() }, () => {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;
