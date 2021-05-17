@@ -324,8 +324,8 @@ const BannerSearch = (props: PropsType) => {
             if (Object.keys(selectedAddress).length) {
                 data['location'] = {
                     "coordinates": [
-                        selected_address?.lng,
-                        selected_address?.lat
+                        +selected_address?.lng,
+                        +selected_address?.lat
                     ]
                 }
             } else {
@@ -370,8 +370,8 @@ const BannerSearch = (props: PropsType) => {
                 if (Object.keys(selected_address)?.length) {
                     data['location'] = {
                         "coordinates": [
-                            selected_address?.lng,
-                            selected_address?.lat
+                            +selected_address?.lng,
+                            +selected_address?.lat
                         ]
                     }
                 }
@@ -409,13 +409,14 @@ const BannerSearch = (props: PropsType) => {
     const getCurrentLocation = async () => {
         let local_position: any = localStorage.getItem('position');
         let position: any = JSON.parse(local_position);
+        console.log({ position, local_position });
         if (position?.length) {
-            let long = (position[0]).toString();
+            let lng = (position[0]).toString();
             let lat = (position[1]).toString();
-            let response: any = await Geocode.fromLatLng(lat, long);
+            let response: any = await Geocode.fromLatLng(lat, lng);
             if (response?.results && Array.isArray(response.results) && response?.results?.length) {
                 const address = response.results[0].formatted_address;
-                setSelectedAddress({ lat, long });
+                setSelectedAddress({ lat, lng });
                 setAddressText(address);
                 setInputFocus2(true);
                 setCurrentLocations(true);
