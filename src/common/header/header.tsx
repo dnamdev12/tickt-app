@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
-import { useLocation, withRouter } from "react-router-dom";
+import { NavLink, useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -25,7 +25,7 @@ const Header = (props: any) => {
 
     // const USER_TYPE = storageService.getItem('userType');
 
-    let location = useLocation();
+    let { pathname } = useLocation();
     let history = useHistory();
 
     useEffect(() => {
@@ -33,13 +33,13 @@ const Header = (props: any) => {
     }, [])
 
     useEffect(() => {
-        if (DISABLE_HEADER.includes(location.pathname)) {
+        if (DISABLE_HEADER.includes(pathname)) {
             setShowHeader(false)
         } else {
             setShowHeader(true)
         }
         setUserType(storageService.getItem('userType'))
-    }, [location.pathname, storageService.getItem('userType')])
+    }, [pathname, storageService.getItem('userType')])
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -55,7 +55,7 @@ const Header = (props: any) => {
         storageService.removeItem("userType")
         history.push('/login')
     }
-
+    
     const postClicked = () => {
         setToggleMenu(false);
         setActiveLink('post');
@@ -73,7 +73,7 @@ const Header = (props: any) => {
                                     onClick={() => {
                                         setActiveLink('');
                                         setToggleMenu(false);
-                                        props.history.push('/')
+                                        props.history.push('/');
                                     }}
                                     src={colorLogo}
                                     alt="logo" />

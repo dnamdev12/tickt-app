@@ -21,10 +21,10 @@ const routes = [
     {
         name: 'main',
         path: '/',
-        exact: true,
         component: Home,
         authRoute: false,
         privateRoute: true,
+        exact: true,
     },
     {
         name: 'login',
@@ -94,12 +94,12 @@ const routes = [
     {
         name: 'jobdashboard',
         path: [
-            '/active-jobs',
-            '/applied-jobs',
-            '/past-jobs',
-            '/new-jobs',
-            '/approved-milestones',
-            '/mark-milestone/:jobId',
+          '/active-jobs',
+          '/applied-jobs',
+          '/past-jobs',
+          '/new-jobs',
+          '/approved-milestones',
+          '/mark-milestone',
         ],
         component: JobDashboard,
         authRoute: false,

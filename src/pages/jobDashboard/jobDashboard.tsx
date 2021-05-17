@@ -21,9 +21,11 @@ interface Proptypes {
   getPastJobList: (page: number) => void;
   pastJobList: Array<any>;
   getNewJobList: (page: number) => void;
-  approvedMilestoneList: Array<any>;
-  getApprovedMilestoneList: (page: number) => void;
   newJobList: Array<any>;
+  getApprovedMilestoneList: (page: number) => void;
+  approvedMilestoneList: Array<any>;
+  getMilestoneList: (jobId: string) => void;
+  milestoneList: any;
   milestonesCount: number;
   newJobsCount: number;
 }
@@ -39,6 +41,8 @@ const JobDashboard = ({
   newJobList,
   getApprovedMilestoneList,
   approvedMilestoneList,
+  getMilestoneList,
+  milestoneList,
   milestonesCount,
   newJobsCount,
 }: Proptypes) => {
@@ -242,11 +246,14 @@ const JobDashboard = ({
                 )}
               />
               <Route
-                path="/mark-milestone/:jobId"
-                component={() => (
+                path="/mark-milestone"
+                render={(props) => (
                   <MarkMilestonePage
+                    getMilestoneList={getMilestoneList}
+                    milestoneList={milestoneList}
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
                     showJobCompletePage={() => setJobComplete(true)}
+                    {...props}
                   />
                 )}
               />

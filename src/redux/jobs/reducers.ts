@@ -12,6 +12,7 @@ const initialState = {
     pastJobList: [],
     newJobList: [],
     approvedMilestoneList: [],
+    milestoneList: [],
     milestonesCount: 0,
     newJobsCount: 0,
 }
@@ -84,7 +85,13 @@ const reducer = (state = initialState, action: any) => {
             approvedMilestoneList: action.payload,
           };
 
-        default: return state
+        case actionTypes.GET_MILESTONES_END:
+          return {
+            ...state,
+            milestoneList: action.payload,
+          };
+
+        default: return state;
     }
 }
 

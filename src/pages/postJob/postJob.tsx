@@ -366,7 +366,7 @@ const PostJob = (props: Proptypes) => {
                     stepCompleted={stepsCompleted.includes(13)}
                     handleStepComplete={handleStepComplete}
                     handleStepForward={handleStepForward}
-                    handleStepBack={handleStepBack}
+                    handleStepBack={() => handleStepForward(6)}
                 />)
             break;
         case 14:
