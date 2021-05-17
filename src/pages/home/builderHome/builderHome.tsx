@@ -11,6 +11,7 @@ import { withRouter } from 'react-router'
 import { setShowToast, setLoading } from '../../../redux/common/actions';
 import { getBuilderHomeData } from '../../../redux/jobs/actions';
 import TradieHome from '../../shared/tradieHome';
+import JobTypes from './components/jobTypes';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 
@@ -93,6 +94,10 @@ const BuilderHome = (props: any) => {
                 {...props}
                 current_address={addressItem}
                 position={position}
+            />
+
+            <JobTypes
+                {...props}
             />
 
             <TradieHome

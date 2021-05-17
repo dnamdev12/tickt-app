@@ -65,6 +65,7 @@ const JobDetails = ({
     clearParentStates,
     handleStepBack }: Proptypes) => {
     const [categorySelected, setSelected] = useState<{ [index: string]: any }>({ category: {}, job_type: {} });
+    const [isEnablePopup, setPopUp] = useState(false);
 
     const findSelectedCategory = () => {
         let preSelectedItem: any = null;
@@ -132,13 +133,12 @@ const JobDetails = ({
 
                 return format_items.map((item: any) => {
                     let render_item: any = null;
-                    console.log({ item, format_items });
                     if (imageFormats.includes(item?.format)) {
                         render_item = <img onClick={() => { console.log({ item }) }} alt="" src={item?.url} />
                     }
 
                     if (videoFormats.includes(item?.format)) {
-                        render_item = <video onClick={() => { console.log({ item }) }} src={item?.url} style={{ height: '410px', width: '800px' }} />
+                        render_item = <video onClick={() => {console.log({ item }) }} src={item?.url} style={{ height: '410px', width: '800px' }} />
                     }
 
                     return (
@@ -190,39 +190,25 @@ const JobDetails = ({
 
     return (
         <div className="app_wrapper">
-            {/* <div id="light-box">
+            {/* {isEnablePopup ? 
+            <div id="light-box">
                 <ReactImageVideoLightbox
                     data={[
-                        {
-                            url: "https://placekitten.com/450/300",
-                            type: "photo",
-                            altTag: "some image",
-                        },
-                        {
-                            url: "https://www.youtube.com/embed/ScMzIvxBSi4",
-                            type: "video",
-                            title: "some video",
-                        },
-                        {
-                            url: "https://placekitten.com/550/500",
-                            type: "photo",
-                            altTag: "some other image",
-                        },
-                        {
-                            url: "https://www.youtube.com/embed/ScMzIvxBSi4",
-                            type: "video",
-                            title: "some other video",
-                        },
+                        { url: 'https://placekitten.com/450/300', type: 'photo', altTag: 'some image' },
+                        { url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video', altTag: 'some video' },
+                        { url: 'https://placekitten.com/550/500', type: 'photo', altTag: 'some other image' },
+                        { url: 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4', type: 'video', altTag: 'some other video' }
                     ]}
                     style={{ zIndex: '999', backgroundColor: 'rgb(0 0 0 / 48%)' }}
                     startIndex={0}
                     showResourceCount={true}
-                    onCloseCallback={(item: any) => { console.log('callback!', { item }) }}
+                    onCloseCallback={(item: any) => { setPopUp(false); console.log('callback!', { item }) }}
                     onNavigationCallback={(currentIndex: any) =>
                         console.log(`Current index: ${currentIndex}`)
                     }
                 />
-            </div> */}
+            </div> 
+            : null} */}
             <div className="section_wrapper">
                 <div className="custom_container">
 

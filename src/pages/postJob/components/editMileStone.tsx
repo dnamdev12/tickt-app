@@ -87,11 +87,7 @@ export default class EditMilestone extends Component<Props, State> {
             }
 
         });
-
-        console.log({ checkIsValid });
-
         return checkIsValid;
-
     }
 
     componentDidMount() {
@@ -112,7 +108,6 @@ export default class EditMilestone extends Component<Props, State> {
                     }
                 }
             }
-            console.log({ isPhotoevidence, isValid })
             this.setState({
                 from_date: from_date,
                 isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
@@ -170,26 +165,13 @@ export default class EditMilestone extends Component<Props, State> {
 
     checkErrors = () => {
         const { milestones, editMileStone } = this.props;
-        let milestone_index = editMileStone;
         let from_date = milestones[editMileStone]?.from_date || '';
-        let state_from_date = this.state.from_date;
-        console.log({
-            from_date,
-            state_from_date,
-            editMileStone,
-            milestone_index
-        })
         let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
         if (milestone_name?.length && recommended_hours?.length) {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-            console.log({
-                error_1,
-                error_2,
-                error_3,
-                pattern_error
-            })
+            
             if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }

@@ -11,6 +11,7 @@ import noData from '../../../assets/images/no-data.png';
 
 interface Proptypes {
     data: any;
+    isLoading:any,
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
@@ -18,7 +19,8 @@ interface Proptypes {
     handleStepBack: () => void;
 }
 
-const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+const MileStoneTemplates = (props: Proptypes) => {
+    const { data, isLoading, stepCompleted, handleCombineMileStones, handleStepForward, handleStepComplete, handleStepBack } = props;
     const [list, setList] = useState([]);
     const [localFetch, setLocalFetch] = useState(false);
 
@@ -32,7 +34,6 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
 
     const handleContinue = async (id: any) => {
         let { success, data } = await getMileStoneByTempId(id);
-        console.log({success, data},'---->')
         if (success && data) {
             let filter_milestones = data?.milestones?.map((item: any) => ({
                 from_date: moment(item?.fromDate).format('MM-DD-YYYY'),
@@ -49,7 +50,7 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
     useEffect(() => {
         preFetch();
     }, []);
-
+    
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -76,8 +77,7 @@ const MileStoneTemplates = ({ data, stepCompleted, handleCombineMileStones, hand
                                                     <span>milestones</span>
                                                 </div>
                                             </li>
-                                        )) : null}
-                                        {!list?.length && !localFetch ? (
+                                        )) : !isLoading && !list?.length ? (
                                             <div className="flex_row tradies_row">
                                                 <div className="no_record">
                                                     <figure className="no_img">

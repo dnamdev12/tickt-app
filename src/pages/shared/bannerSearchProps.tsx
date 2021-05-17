@@ -89,7 +89,20 @@ const BannerSearch = (props: PropsType) => {
     const handleOnOutsideCalender = () => setInputFocus3(false);
 
     const searchRef = useDetectClickOutside({ onTriggered: handleOnOutsideSearch });
-    const locationRef = useDetectClickOutside({ onTriggered: handleOnOutsideLocation });
+    const locationRef = useDetectClickOutside({
+        onTriggered: () => {
+            if (addressText?.length > 3) {
+                handleOnOutsideLocation()
+            }
+        }
+    });
+    const locationRefClone = useDetectClickOutside({
+        onTriggered: () => {
+            if (!addressText || addressText?.length < 2) {
+                handleOnOutsideLocation()
+            }
+        }
+    });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
     const [sortBy, setSortBy] = useState(1);
@@ -105,7 +118,6 @@ const BannerSearch = (props: PropsType) => {
         let local_info: any = props.localInfo;
 
         if (!searchText?.length && !checkRender) {
-            console.log('In local-changes', { props })
             setSearchText(state.name);
 
             setStateData({
@@ -151,7 +163,13 @@ const BannerSearch = (props: PropsType) => {
 
     }, [props])
 
-    console.log({ selectedItem }, '-------render')
+    useEffect(() => {
+        if (addressText?.length > 2) {
+            document.getElementById('location-input-tag')?.focus();
+        } else {
+            document.getElementById('location_search_static')?.focus();
+        }
+    }, [addressText])
 
     const checkIfExist = (_id: any) => {
         if (selectedTrade) {
@@ -413,6 +431,7 @@ const BannerSearch = (props: PropsType) => {
     }
     console.log({ state_data, length_spec })
     let custom_name = searchText;
+    let condition_location: any = addressText?.length > 2 || (addressText?.length && enableCurrentLocation && Object.keys(selectedAddress).length);
     return (
         <div className="home_search">
             <button
@@ -470,33 +489,32 @@ const BannerSearch = (props: PropsType) => {
                         <div id="location-text-field-div">
 
                             <div
-                                style={{ display: !enableCurrentLocation ? 'none' : '' }}
-                                className="text_field">
+                                className={`text_field ${addressText?.length > 2 ? 'none' : ''}`}>
                                 <input
-                                    type="text"
-                                    placeholder="Where?"
-                                    className="line-1"
-                                    id="location-input-tag"
-                                    onChange={(e) => {
-                                        setCurrentLocations(false);
-                                        setAddressText(e.target.value);
-                                    }}
+                                    id="location_search_static"
+                                    placeholder='Where?'
+                                    ref={locationRefClone}
+                                    value={addressText}
+                                    autoComplete="nope"
+                                    className={'line-1'}
+                                    onChange={(e: any) => { setAddressText(e.target.value) }}
                                     onFocus={() => {
-                                        setCurrentLocations(false);
-                                        setInputFocus2(true);
+                                        setInputFocus2(true)
+                                        console.log('Hard --->', { addressText, inputFocus2 })
                                     }}
-                                    value={addressText} />
+                                />
                                 <span className="detect_icon_ltr">
                                     <img src={Location} alt="location" />
                                 </span>
                             </div>
 
-                            <div style={{ display: enableCurrentLocation ? 'none' : '' }}>
+
+                            <div>
                                 <PlacesAutocomplete
                                     value={addressText}
                                     onChange={(item: any) => {
                                         setAddressText(item)
-                                        if (!item.length) {
+                                        if (!addressText.length) {
                                             setSelectedAddress({});
                                         }
                                     }}
@@ -516,11 +534,12 @@ const BannerSearch = (props: PropsType) => {
                                     }}
                                     highlightFirstSuggestion={true}
                                     onError={onError}
-                                    debounce={400}
+                                    debounce={0}
                                 >
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
                                         <div>
-                                            <div className="text_field">
+                                            <div
+                                                className={`text_field ${addressText?.length > 2 ? '' : 'none'}`}>
                                                 <input
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
                                                     id="location-input-tag"
@@ -532,17 +551,17 @@ const BannerSearch = (props: PropsType) => {
                                                 <span className="detect_icon_ltr">
                                                     <img src={Location} alt="location" />
                                                 </span>
-                                                {inputFocus2 &&
+                                                {inputFocus2 && addressText?.length > 2 ?
                                                     <span className="detect_icon" >
                                                         <img
                                                             src={cross}
                                                             alt="cross"
                                                             onClick={() => {
-                                                                setAddressText('')
+                                                                setAddressText('');
                                                                 setSelectedAddress({});
                                                             }}
                                                         />
-                                                    </span>}
+                                                    </span> : null}
                                             </div>
                                             {suggestions?.length && inputFocus2 ?
                                                 <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
@@ -566,7 +585,17 @@ const BannerSearch = (props: PropsType) => {
                                                             })}
                                                         </div>
                                                     </div>
-                                                </div> : null}
+                                                </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
+                                            <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                <div className="flex_row recent_search auto_loc">
+                                                    <div className="flex_col_sm_4">
+                                                        <div className="loc_suggestions">
+                                                            {'No Result Found.'}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                                ) : null}
                                         </div>
                                     )}
                                 </PlacesAutocomplete>
@@ -631,6 +660,7 @@ const BannerSearch = (props: PropsType) => {
                                         months={2}
                                         showPreview={true}
                                         minDate={new Date()}
+                                        maxDate={moment().add(2, 'years').toDate()}
                                         direction="horizontal"
                                         fixedHeight={true}
                                     />

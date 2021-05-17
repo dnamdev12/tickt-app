@@ -27,6 +27,7 @@ const SearchResultTradie = (props: any) => {
     const [isToggle, setToggleSearch] = useState(false);
     const [localInfo, setLocalInfo] = useState({});
     const [loading, setLoading] = useState(false);
+    const [localData, setLocalData] = useState([]);
 
     useEffect(() => {
         props.getRecentSearchList();
@@ -71,9 +72,10 @@ const SearchResultTradie = (props: any) => {
 
     useEffect(() => {
         let home: any = props.homeSearchJobData?.length ? true : false;
-        setLoading(home);
-        return () => {
-            setLoading(home);
+        if (home) {
+            setLocalData(props.homeSearchJobData)
+        } else {
+            setLocalData([])
         }
     }, [props])
 
@@ -81,6 +83,8 @@ const SearchResultTradie = (props: any) => {
 
     let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
+    let isLoading: any = props.isLoading;
+    console.log('enter ----------->', { isLoading: props.isLoading, length: homeSearchJobData?.length })
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
@@ -119,16 +123,17 @@ const SearchResultTradie = (props: any) => {
                             </div>
                         </div>
                         <div className="flex_row tradies_row">
-                            {loading ?
-                                homeSearchJobData.map((item: any, index: number) => (
+                            {localData?.length ?
+                                localData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
                                 ))
                                 :
-                                <div className="no_record">
-                                    <figure className="no_img">
-                                        <img src={noData} alt="data not found" />
-                                    </figure>
-                                </div>}
+                                !isLoading && !localData?.length ?
+                                    <div className="no_record">
+                                        <figure className="no_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                    </div> : null}
                         </div>
 
                     </div>
