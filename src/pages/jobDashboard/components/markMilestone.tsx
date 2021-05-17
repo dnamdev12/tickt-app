@@ -31,7 +31,7 @@ interface Proptypes {
 
 const MarkMilestone = ({
   getMilestoneList,
-  milestoneList: { jobName, milestones, postedBy },
+  milestoneList,
   showJobCompletePage,
   showMilestoneCompletePage,
   markMilestoneComplete,
@@ -64,6 +64,7 @@ const MarkMilestone = ({
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
 
+  const { jobName, milestones, postedBy } = milestoneList || {};
   const { builderId, builderImage, builderName, reviews } = postedBy || {};
 
   useEffect(() => {
