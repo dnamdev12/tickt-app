@@ -164,10 +164,12 @@ const BannerSearch = (props: PropsType) => {
     }, [props])
 
     useEffect(() => {
-        if (addressText?.length > 2) {
-            document.getElementById('location-input-tag')?.focus();
-        } else {
-            document.getElementById('location_search_static')?.focus();
+        if (addressText !== null) {
+            if (addressText?.length > 2) {
+                document.getElementById('location-input-tag')?.focus();
+            } else {
+                document.getElementById('location_search_static')?.focus();
+            }
         }
     }, [addressText])
 
@@ -586,15 +588,15 @@ const BannerSearch = (props: PropsType) => {
                                                         </div>
                                                     </div>
                                                 </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
-                                            <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
-                                                <div className="flex_row recent_search auto_loc">
-                                                    <div className="flex_col_sm_4">
-                                                        <div className="loc_suggestions">
-                                                            {'No Result Found.'}
+                                                    <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                        <div className="flex_row recent_search auto_loc">
+                                                            <div className="flex_col_sm_4">
+                                                                <div className="loc_suggestions">
+                                                                    {'No Result Found.'}
+                                                                </div>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
                                                 ) : null}
                                         </div>
                                     )}
