@@ -559,3 +559,27 @@ body.loader_show .full_loader {
 }
 
 //--------------------------------//
+
+
+
+// ------------Dialog custom buttons---------//
+.MuiDialogActions-root{
+    justify-content: center !important;
+    button{
+        padding: 12px 20px;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        background-color: var(--yellow);
+        color: var(--blue);
+        &:hover {
+            background-color: #ecd501;
+        }
+        &:last-child{
+            background-color: var(--grey);
+            margin-left: 20px;
+            &:hover {
+                background-color: #dadee6;
+            }
+        }
+    }
+}
+// ------------Dialog custom buttons close---------//
