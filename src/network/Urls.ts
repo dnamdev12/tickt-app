@@ -52,6 +52,7 @@ const Urls = {
     pastJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}pastJobList`,
     newJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}newJobList`,
     approvedMilestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}approveMilestoneList`,
+    milestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}milestoneList`,
 }
 
 export const urlFor = (service: String): string => {

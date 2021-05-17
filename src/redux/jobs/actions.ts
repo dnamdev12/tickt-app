@@ -168,3 +168,7 @@ export const getApprovedMilestoneList = (page: number) => ({
   page,
 });
 
+export const getMilestoneList = (jobId: string) => ({
+  type: actionTypes.GET_MILESTONES_START,
+  jobId,
+});
