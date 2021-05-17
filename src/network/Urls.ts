@@ -59,6 +59,7 @@ const Urls = {
     newJobApplicationListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}newJobApplicationList`, //new-job-application-list (builder)
     needApprovalBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`, //new-approval (builder)
     jobDetailsBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}jobDetails`, //job-details (builder)
+    milestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}milestoneList`,
 }
 
 export const urlFor = (service: String): string => {

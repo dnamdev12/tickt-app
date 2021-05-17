@@ -7,6 +7,7 @@ import {
   getPastJobList,
   getNewJobList,
   getApprovedMilestoneList,
+  getMilestoneList,
 } from '../../redux/jobs/actions';
 
 const mapStateToProps = (state: any) => {
@@ -19,6 +20,7 @@ const mapStateToProps = (state: any) => {
       approvedMilestoneList,
       milestonesCount,
       newJobsCount,
+      milestoneList,
     },
   } = state;
 
@@ -28,6 +30,7 @@ const mapStateToProps = (state: any) => {
     pastJobList,
     newJobList,
     approvedMilestoneList,
+    milestoneList,
     milestonesCount,
     newJobsCount,
   };
@@ -41,6 +44,7 @@ const mapDispatchToProps = (dispatch: any) => {
       getPastJobList,
       getNewJobList,
       getApprovedMilestoneList,
+      getMilestoneList,
     },
     dispatch
   );
