@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
@@ -11,6 +11,10 @@ import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
 
 interface Proptypes {
+    jobName?: string;
+    title?: string;
+    para?: string;
+    hasDescription?: boolean;
     data: any;
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
@@ -21,15 +25,16 @@ interface Proptypes {
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
 const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
+const docformats: Array<any> = ["pdf", "doc", "docx"];
 
-// const docformats: Array<any> = ["pdf", "doc"];
 // 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4'
 // 'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
 
-const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localFiles, setLocalFiles] = useState({});
     const [update, forceUpdate] = useState({});
     const [filesUrl, setFilesUrl] = useState([] as any);
+    const [description, setDescription] = useState('');
 
     useEffect(() => {
         if (stepCompleted) {
@@ -60,15 +65,18 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         }
 
         let filesUrlClone: any = filesUrl;
+        
         let countVideoFormats = filesUrlClone.map((item: any) => {
-            let split_items = item.split('.');
+            let split_items = item.link.split('.');
+        
             let format_split_items = split_items[split_items?.length - 1];
+            
             if (videoFormats.includes(format_split_items)) {
                 return format_split_items;
             }
         }).filter((item: any) => item !== undefined);
-
-        var fileType = newFile?.type?.split('/')[1];
+        
+        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
@@ -101,7 +109,12 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
         const res = await onFileUpload(formData)
         if (res.success) {
             let link: string = res.imgUrl;
-            setFilesUrl((prev: Array<any>) => [...prev, link]);
+            let check_type: any = imageFormats.includes(fileType) ? 1 : 2;
+            // let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx"].includes(fileType) ? 3 : 4
+            setFilesUrl((prev: Array<any>) => [...prev, {
+                "mediaType": check_type,
+                "link": link
+            }]);
             setLocalFiles((prev: any) => ({ ...prev, newFile }));
         }
     }
@@ -139,20 +152,21 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
     }
 
     return (
-        <div className="app_wrapper">
-            <div className="section_wrapper">
+        <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
+            <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
                 <div className="custom_container">
                     <div className="form_field">
                         <div className="flex_row">
-                            <div className="flex_col_sm_6">
+                            <div className={`flex_col_sm_${jobName ? '7' : '6'}`}>
                                 <div className="relate">
                                     <button
-                                        onClick={() => { handleStepForward(6) }}
+                                        onClick={handleStepBack}
                                         className="back"></button>
-                                    <span className="title">Video upload or add photos</span>
+                                    <span className={jobName ? "xs_sub_title" : "title"}>{jobName || 'Video upload or add photos'}</span>
                                 </div>
+                                {title && <span className="sub_title">{title}</span>}
                                 <p className="commn_para">
-                                    {'Record a short video or add photos to demonstrate your job and any unique requirements.'}
+                                    {para || 'Record a short video or add photos to demonstrate your job and any unique requirements.'}
                                 </p>
                             </div>
                         </div>
@@ -161,7 +175,7 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                         <div className="flex_col_sm_12">
                             <div className="upload_img_video">
                                 {filesUrl?.length ?
-                                    filesUrl.map((item: any, index: number) => (renderbyFileFormat(item, index)))
+                                    filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
                                     : null}
 
                                 {filesUrl?.length < 6 ? (
@@ -181,11 +195,20 @@ const UploadMedia = ({ data, stepCompleted, handleStepForward, handleStepComplet
                             </div>
                         </div>
                     </div>
+                    {hasDescription && <div className="form_field">
+                        <label className="form_label">Photo description</label>
+                        <div className="text_field">
+                            <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value }}: any) => setDescription(value)} />
+                        </div>
+                        <span className="error_msg"></span>
+                    </div>}
                     <div className="form_field">
                         <button
                             onClick={() => {
+                                console.log({ filesUrl, description })
                                 handleStepComplete({
-                                    urls: filesUrl
+                                    urls: filesUrl,
+                                    description: hasDescription ? description : undefined,
                                 })
                             }}
                             className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}>

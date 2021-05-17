@@ -211,8 +211,9 @@ const TradieSearchJobResult = (props: any) => {
                         <div className="result_heading">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
-                                    <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''}
-                                        <span className="count">45 results</span>
+                                    {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
+                                    <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
+                                        <span className="count">{`${renderJobsData()?.length} results`}</span>
                                     </span>
                                     <SearchResultFilters
                                         showBudgetFilterResults={showBudgetFilterResults}

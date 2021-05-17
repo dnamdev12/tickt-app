@@ -22,6 +22,7 @@ function* setLocalChanges(action: any) {
 
 // activeJobList
 function* getActiveJobList({ page }: any) {
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.activeJobList}?page=${page}`
@@ -43,6 +44,7 @@ function* getActiveJobList({ page }: any) {
 
 // appliedJobList
 function* getAppliedJobList({ page }: any) {
+  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.appliedJobList}?page=${page}`
@@ -64,6 +66,7 @@ function* getAppliedJobList({ page }: any) {
 
 // pastJobList
 function* getPastJobList({ page }: any) {
+  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.pastJobList}?page=${page}`
@@ -85,6 +88,7 @@ function* getPastJobList({ page }: any) {
 
 // newJobList
 function* getNewJobList({ page }: any) {
+  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.newJobList}?page=${page}`
@@ -106,6 +110,7 @@ function* getNewJobList({ page }: any) {
 
 // approvedMilestoneList
 function* getApprovedMilestoneList({ page }: any) {
+  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.approvedMilestoneList}?page=${page}`
@@ -125,6 +130,43 @@ function* getApprovedMilestoneList({ page }: any) {
   yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END });
 }
 
+// milestoneList
+function* getMilestoneList({ jobId }: any) {
+  yield put({ type: actionTypes.GET_MILESTONES_END, payload: {} });
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(`${Urls.milestoneList}?jobId=${jobId}`);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    yield put({
+      type: actionTypes.GET_MILESTONES_END,
+      payload: response.result,
+    });
+
+    return;
+  }
+
+  setShowToast(true, response.message);
+  yield put({ type: actionTypes.GET_MILESTONES_END });
+}
+
+// milestoneList
+function* markMilestoneComplete({ data, callback }: any) {
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.postToJson(Urls.markComplete, data);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    if (callback) {
+      yield call(callback);
+    }
+
+    return;
+  }
+
+  setShowToast(true, response.message);
+}
+
 function* postJobWatcher() {
   try {
     yield takeLatest(actionTypes.FETCH_HOME_BUILDER, setHomeBuilder);
@@ -134,6 +176,8 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_PAST_JOBS_START, getPastJobList);
     yield takeLatest(actionTypes.GET_NEW_JOBS_START, getNewJobList);
     yield takeLatest(actionTypes.GET_APPROVED_MILESTONE_START, getApprovedMilestoneList);
+    yield takeLatest(actionTypes.GET_MILESTONES_START, getMilestoneList);
+    yield takeLatest(actionTypes.MARK_MILESTONE_COMPLETE, markMilestoneComplete);
   } catch (e) {
     console.log(e);
   }

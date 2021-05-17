@@ -42,39 +42,103 @@ export default class EditMilestone extends Component<Props, State> {
         }
     }
 
+    checkIsDateValid = (milestones: any, time: any) => {
+        let checkIsValid: any = true;
+        milestones.forEach((mile: any) => {
+            let validStart = moment(mile.from_date).isValid();
+            let validEnd = moment(mile.to_date).isValid();
+
+            let validStartInput = moment(time.from_date).isValid();
+            let validEndInput = moment(time.to_date).isValid();
+
+            if (validStart && validEnd) {
+                if (validStartInput && validEndInput) {
+                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                    if (moment(time.to_date).subtract(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+
+                if (validStartInput) {
+                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+
+                if (validEndInput) {
+                    if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+            }
+
+            if (validStart && validStartInput && !validEnd) {
+                if (moment(time.from_date).isSame(mile.from_date)) {
+                    checkIsValid = false
+                }
+            }
+
+            if (validEnd && validEndInput && !validStart) {
+                if (moment(time.to_date).isSame(mile.to_date)) {
+                    checkIsValid = false
+                }
+            }
+
+        });
+        return checkIsValid;
+    }
+
     componentDidMount() {
         const { editMileStone, milestones, editMilestoneTiming } = this.props;
         let item = milestones[editMileStone];
 
         if (Object.keys(item).length) {
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
+            let isValid: any = null;
             if (editMilestoneTiming && Object.keys(editMilestoneTiming).length) {
-                if ('from_date' in editMilestoneTiming) {
-                    from_date = editMilestoneTiming?.from_date;
-                }
-                if ('to_date' in editMilestoneTiming) {
-                    to_date = editMilestoneTiming?.to_date;
+                isValid = this.checkIsDateValid(milestones, editMilestoneTiming);
+                if (isValid) {
+                    if ('from_date' in editMilestoneTiming) {
+                        from_date = editMilestoneTiming?.from_date;
+                    }
+                    if ('to_date' in editMilestoneTiming) {
+                        to_date = editMilestoneTiming?.to_date;
+                    }
                 }
             }
-
             this.setState({
                 from_date: from_date,
-                isPhotoevidence: isPhotoevidence,
+                isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
                 milestone_name: milestone_name,
                 recommended_hours: recommended_hours,
                 to_date: to_date,
             }, () => {
-                this.props.addTimeToMileStone({
-                    from_date,
-                    to_date
-                }, editMileStone)
+                if (isValid !== null) {
+                    this.props.addTimeToMileStone({
+                        from_date,
+                        to_date
+                    }, editMileStone)
+                }
             })
         }
     }
 
     handleChange = (name: string, value: any) => {
         let error_clone: any = this.state.errors;
-        if (['milestone_name', 'from_date', 'recommended_hours']) {
+
+        
+        if(name === "milestone_name"){
+            value = (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "")
+        }
+
+        if(name  === "recommended_hours") {
+            value = (value).trimLeft();
+        }
+
+
+        if (['milestone_name', 'from_date', 'recommended_hours'].includes(name)) {
             error_clone[name] = this.isInvalid(name, value)
         }
         this.setState({ ...this.state, [name]: value, errors: error_clone });
@@ -111,27 +175,14 @@ export default class EditMilestone extends Component<Props, State> {
     }
 
     checkErrors = () => {
-        const { milestones,editMileStone } = this.props;
-        let milestone_index = editMileStone;
+        const { milestones, editMileStone } = this.props;
         let from_date = milestones[editMileStone]?.from_date || '';
-        let state_from_date = this.state.from_date;
-        console.log({
-            from_date,
-            state_from_date,
-            editMileStone,
-            milestone_index
-        })
         let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
         if (milestone_name?.length && recommended_hours?.length) {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-            console.log({
-                error_1,
-                error_2,
-                error_3,
-                pattern_error
-            })
+            
             if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
@@ -212,7 +263,7 @@ export default class EditMilestone extends Component<Props, State> {
                                     <div className="text_field">
                                         <input
                                             onChange={(e) => {
-                                                this.setState({ recommended_hours: e.target.value }, () => {
+                                                this.setState({ recommended_hours: (e.target.value).trimLeft() }, () => {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;

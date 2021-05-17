@@ -13,6 +13,7 @@ import Modal from '@material-ui/core/Modal';
 
 import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
+import jobDummyImage from '../../assets/images/ic-placeholder-detail.png';
 import question from '../../assets/images/ic-question.png';
 import leftIcon from '../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../assets/images/ic-next-arrow-line.png'
@@ -235,11 +236,11 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
                                     <OwlCarousel className='owl-theme' {...options}>
-                                        {jobDetailsData && jobDetailsData?.photos?.map((image: string) => {
+                                        {jobDetailsData?.photos?.length ? jobDetailsData?.photos?.map((image: string) => {
                                             return (
                                                 <img alt="" src={image} />
                                             )
-                                        })}
+                                        }) : <img alt="" src={jobDummyImage} />}
                                     </OwlCarousel>
                                 </figure>
                             </div>
@@ -384,7 +385,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </div>
                                             </div>
                                             <div className="bottom_btn custom_btn">
-                                                <button className="fill_btn full_btn" onClick={() => submitQuestionHandler(questionsData.updateQuestionsClicked ? 'updateAskedQuestion' : 'submitAskQuestion')}>Send</button>
+                                                <button className="fill_btn full_btn" onClick={() => submitQuestionHandler(questionsData.updateQuestionsClicked ? 'updateAskedQuestion' : 'submitAskQuestion')}>{`${questionsData.updateQuestionsClicked ? 'Save' : 'Send'}`}</button>
                                                 <button className="fill_grey_btn" onClick={() => questionHandler('askUpdateQuestionCancelled')}>Cancel</button>
                                             </div>
                                         </div>

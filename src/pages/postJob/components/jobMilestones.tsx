@@ -37,7 +37,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [open, setOpen] = React.useState(false);
     const [deleteItem, setDeleteItem] = React.useState(null);
-
+    const [sortedItems, setSortedItems] = React.useState([]);
 
     const handleClickOpen = (id: any) => {
         setOpen(true)
@@ -62,7 +62,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             updateMileStoneIndex(null);
             updateMileStoneTimings(null);
         }
-    }, [milestones, removeMilestoneByIndex, editItem]);
+    }, [milestones, removeMilestoneByIndex]);
 
     const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
         const result = Array.from(list);
@@ -72,29 +72,31 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         return result;
     };
 
+    const checkIfValidDates = (item: any) => {
+        const newarr: any = localMilestones.slice().sort((a, b) => {
+            return moment(a.from_date).diff(b.from_date);
+        });
+        setSortedItems(newarr);
+        return JSON.stringify(item) === JSON.stringify(newarr);
+    }
+
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
-
         // dropped outside the list
         if (!destination) {
             return;
         }
 
         if (source.droppableId === destination.droppableId) {
-            let from = localMilestones[source.index].from_date;
-            let end = localMilestones[destination.index].from_date;
-            let default_format = 'MM-DD-YYYY';
-            let diff = moment(end, default_format).diff(moment(from, default_format), 'days');
-            console.log({diff})
-            if (diff > 0) {
-                const reOrderedMilestones = reorder(
-                    localMilestones,
-                    source.index,
-                    destination.index
-                );
-                setLocalMilestones(reOrderedMilestones);
-            } else {
-                setShowToast(true, "please arrange milestone date wise.")
+            const reOrderedMilestones = reorder(
+                localMilestones,
+                source.index,
+                destination.index
+            );
+            setLocalMilestones(reOrderedMilestones);
+            let isValid = checkIfValidDates(reOrderedMilestones);
+            if (!isValid) {
+                setShowToast(true, "Please arrange milestonea date wise.")
             }
         }
     };
@@ -109,8 +111,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-
-
                     <div>
                         <Dialog
                             open={open}
@@ -153,7 +153,15 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             </div>
                             {localMilestones?.length ? (
                                 <div
-                                    onClick={() => { handleStepForward(10) }}
+                                    onClick={() => { 
+                                        let check: boolean = checkIfValidDates(localMilestones);
+                                        if(check){
+                                            handleCombineMileStones(localMilestones);
+                                            handleStepForward(10) 
+                                        } else {
+                                            setShowToast(true, "Please arrange milestonea date wise.")
+                                        }
+                                    }}
                                     className="flex_col_sm_5 text-right">
                                     <a href="javascript:void(0)" className="link">Save as template</a>
                                 </div>
@@ -178,7 +186,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                 isPhotoevidence: boolean,
                                                 from_date: string,
                                                 to_date: string,
-                                                recommended_hours:any
+                                                recommended_hours: any
                                             }, index) => (
                                                 <Draggable
                                                     key={`${index}-${milestone_name}`}
@@ -222,7 +230,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                     className="filter-type filled-in"
                                                                     type="checkbox"
                                                                     id={`milestone${index}`} />
-                                                                <label htmlFor={`milestone${index}`}>{`${index+1}. ${milestone_name}`}</label>
+                                                                <label htmlFor={`milestone${index}`}>{`${index + 1}. ${milestone_name}`}</label>
                                                                 <div className="info">
                                                                     {isPhotoevidence ?
                                                                         <span>{'Photo evidence required'}</span>
@@ -277,8 +285,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                         }
                                                     }
                                                 }
-
-                                                console.log({ milestones }, '----')
                                                 handleStepComplete({})
                                             }}>
                                             {'+ Add milestone'}
@@ -287,16 +293,16 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                     <div className="form_field">
                                         <button
                                             onClick={() => {
-                                                if (milestones?.length && localMilestones?.length) {
-                                                    if (milestones[0]?.milestone_name !== localMilestones[0]?.milestone_name) {
-                                                        handleCombineMileStones(localMilestones);
+                                                let check: boolean = checkIfValidDates(localMilestones);
+                                                if (check) {
+                                                    handleCombineMileStones(localMilestones);
+                                                    if (editDetailPage?.currentScreen) {
+                                                        handleStepForward(14)
+                                                    } else {
+                                                        handleStepForward(13)
                                                     }
-                                                }
-
-                                                if (editDetailPage?.currentScreen) {
-                                                    handleStepForward(14)
                                                 } else {
-                                                    handleStepForward(13)
+                                                    setShowToast(true, "Please arrange milestonea date wise.")
                                                 }
                                             }}
                                             className="fill_btn fill_grey_btn full_btn">

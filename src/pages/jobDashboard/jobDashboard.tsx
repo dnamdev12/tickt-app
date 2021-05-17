@@ -27,6 +27,24 @@ interface Proptypes {
   newJobsCount: number;
 }
 
+interface Proptypes {
+  getActiveJobList: (page: number) => void;
+  activeJobList: Array<any>;
+  getAppliedJobList: (page: number) => void;
+  appliedJobList: Array<any>;
+  getPastJobList: (page: number) => void;
+  pastJobList: Array<any>;
+  getNewJobList: (page: number) => void;
+  newJobList: Array<any>;
+  getApprovedMilestoneList: (page: number) => void;
+  approvedMilestoneList: Array<any>;
+  getMilestoneList: (jobId: string) => void;
+  milestoneList: any;
+  markMilestoneComplete: (data: any, callback: () => void) => void;
+  milestonesCount: number;
+  newJobsCount: number;
+}
+
 const JobDashboard = ({
   getActiveJobList,
   activeJobList,
@@ -38,6 +56,9 @@ const JobDashboard = ({
   newJobList,
   getApprovedMilestoneList,
   approvedMilestoneList,
+  getMilestoneList,
+  milestoneList,
+  markMilestoneComplete,
   milestonesCount,
   newJobsCount,
 }: Proptypes) => {
@@ -147,38 +168,42 @@ const JobDashboard = ({
               <ul className="dashboard_menu">
                 <li>
                   <NavLink className="icon star" to="/active-jobs">
-                    Active Jobs
+                    <span className="menu_txt">Active Jobs</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon applied" to="/applied-jobs">
-                    Applied jobs
+                    <span className="menu_txt">Applied jobs</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon past" to="/past-jobs">
-                    Past jobs
+                    <span className="menu_txt">Past jobs</span>
                   </NavLink>
                 </li>
                 <hr></hr>
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
-                    New jobs
+                    <span className="menu_txt">New jobs
                     {!!newJobsCount && (
-                      <span className="badge_count">
-                        {newJobsCount > 9 ? '9+' : newJobsCount}
-                      </span>
-                    )}
+                        <span className="badge_count">
+                          {newJobsCount > 9 ? '9+' : newJobsCount}
+                        </span>
+                      )}
+                    </span>
+
+
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon approved" to="/approved-milestones">
-                    Approved milestones
+                    <span className="menu_txt">Approved milestones
                     {!!milestonesCount && (
-                      <span className="badge_count">
-                        {milestonesCount > 9 ? '9+' : milestonesCount}
-                      </span>
-                    )}
+                        <span className="badge_count">
+                          {milestonesCount > 9 ? '9+' : milestonesCount}
+                        </span>
+                      )}
+                    </span>
                   </NavLink>
                 </li>
               </ul>
@@ -237,11 +262,15 @@ const JobDashboard = ({
                 )}
               />
               <Route
-                path="/mark-milestone/:jobId"
-                component={() => (
+                path="/mark-milestone"
+                render={(props) => (
                   <MarkMilestonePage
+                    getMilestoneList={getMilestoneList}
+                    milestoneList={milestoneList}
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
                     showJobCompletePage={() => setJobComplete(true)}
+                    markMilestoneComplete={markMilestoneComplete}
+                    {...props}
                   />
                 )}
               />

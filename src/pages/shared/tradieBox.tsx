@@ -34,7 +34,7 @@ export default class TradieBox extends Component<Props, State> {
 
     render() {
         const { item, index } = this.props;
-        let this_state:any = this.state;
+        let this_state: any = this.state;
         let isItemSpec = this_state.isItemSpec;
 
         return (
@@ -53,7 +53,7 @@ export default class TradieBox extends Component<Props, State> {
                         </figure>
                         <div className="details">
                             <span className="name">{item?.tradieName}</span>
-                            <span className="rating">{item?.ratings}, {item?.reviews} reviews </span>
+                            <span className="rating">{item?.ratings || Math.floor(Math.random() * 5) + 1} , {item?.reviews || Math.floor(Math.random() * 200) + 50} reviews </span>
                         </div>
                     </div>
                     <div className="tags_wrap">
@@ -79,7 +79,9 @@ export default class TradieBox extends Component<Props, State> {
                                     item?.specializationData?.slice(0, 4)?.map((item_spec: any, index_spec: any) => (
                                         <li>{item_spec?.specializationName}</li>
                                     ))}
+                                {item?.specializationData?.length > 4 ? (
                                     <li>{'More'}</li>
+                                ) : null}
                                 {/* {item?.specializationData?.length > 4 && !isItemSpec[index] ?
                                     <li onClick={() => { this.toggleMoreSpec(index) }}>{'More'}</li>
                                     : null} */}

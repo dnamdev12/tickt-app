@@ -21,7 +21,7 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
   useEffect(() => {
     if (stepCompleted) {
       setBasicDetails({
-        jobName: data?.jobName, 
+        jobName: data?.jobName,
         job_description: data?.job_description
       });
     }
@@ -49,13 +49,13 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
     // if (stepCompleted || continueClicked) {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: isInvalid(name, value),
+      [name]: isInvalid(name, (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "")),
     }));
     // }
 
     setBasicDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: value,
+      [name]: (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, ""),
     }));
   };
 
@@ -141,7 +141,12 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                 <div className="text_field">
                   <textarea placeholder="This job..." name="job_description" value={job_description} onChange={handleChange} />
                 </div>
-                <span className="error_msg">{errors.job_description}</span>
+                {job_description.length ?
+                  <span className="char_count">
+                    {`character length : ${job_description.length}`}
+                  </span>
+                  : ''}
+                  <span className="error_msg">{errors.job_description}</span>
               </div>
               <div className="form_field">
                 <button

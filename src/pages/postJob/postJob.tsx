@@ -15,6 +15,8 @@ import MileStoneTemplates from './components/milestoneTemplates';
 import JobDetails from './components/jobDetails';
 import EditMilestone from './components/editMileStone';
 import { callCategories } from '../../redux/jobs/actions';
+import moment from 'moment';
+import { setShowToast } from '../../redux/common/actions';
 
 interface Proptypes {
     callTradeList: () => void;
@@ -22,20 +24,24 @@ interface Proptypes {
     editMilestoneId: any;
     editMilestoneTiming: any;
     editDetailPage: any;
+    isLoading: any,
+    history:any,
     updateMileStoneIndex: (data: any) => void;
     updateMileStoneTimings: (data: any) => void;
     updateDetailScreen: (data: any) => void;
 }
 
-const PostJob = ({
-    callTradeList,
-    tradeListData,
-    updateMileStoneIndex,
-    updateMileStoneTimings,
-    updateDetailScreen,
-    editMilestoneTiming,
-    editDetailPage,
-    editMilestoneId }: Proptypes) => {
+const PostJob = (props: Proptypes) => {
+    const {
+        callTradeList,
+        isLoading,
+        tradeListData,
+        updateMileStoneIndex,
+        updateMileStoneTimings,
+        updateDetailScreen,
+        editMilestoneTiming,
+        editDetailPage,
+        editMilestoneId } = props;
     const [categoriesData, setCategoriesData] = useState([]);
     const [step, setStep] = useState(1);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
@@ -79,7 +85,7 @@ const PostJob = ({
             handleStepForward(14);
         }
 
-        if(goto !== true && goto > 0){
+        if (goto !== true && goto > 0) {
             handleStepForward(goto)
         }
     }
@@ -104,11 +110,55 @@ const PostJob = ({
 
     const addTimeToMileStone = (time: any, index: any) => {
         let milestone_clone: any = milestones;
-        console.log({
-            milestone_clone,
-            time
-        });
+        let checkIsValid: any = true;
+        milestone_clone.forEach((mile: any) => {
+            let validStart = moment(mile.from_date).isValid();
+            let validEnd = moment(mile.to_date).isValid();
 
+            let validStartInput = moment(time.from_date).isValid();
+            let validEndInput = moment(time.to_date).isValid();
+
+            if (validStart && validEnd) {
+                if (validStartInput && validEndInput) {
+                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                    if (moment(time.to_date).subtract(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+
+                if (validStartInput) {
+                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+
+                if (validEndInput) {
+                    if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+                        checkIsValid = false
+                    }
+                }
+            }
+
+            if (validStart && validStartInput && !validEnd) {
+                if (moment(time.from_date).isSame(mile.from_date)) {
+                    checkIsValid = false
+                }
+            }
+
+            if (validEnd && validEndInput && !validStart) {
+                if (moment(time.to_date).isSame(mile.to_date)) {
+                    checkIsValid = false
+                }
+            }
+
+        })
+
+        if (!checkIsValid) {
+            setShowToast(true, 'Please add unique date.');
+            return;
+        }
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
         setMileStones(milestone_clone);
@@ -202,6 +252,7 @@ const PostJob = ({
             page = (
                 <ChooseTiming
                     data={data}
+                    milestones={milestones}
                     stepCompleted={stepsCompleted.includes(5)}
                     handleStepComplete={handleStepComplete}
                     handleStepBack={handleStepBack}
@@ -264,6 +315,7 @@ const PostJob = ({
         case 9:
             page = (
                 <MileStoneTemplates
+                    {...props}
                     data={data}
                     handleCombineMileStones={handleCombineMileStones}
                     stepCompleted={stepsCompleted.includes(9)}
@@ -298,6 +350,7 @@ const PostJob = ({
         case 12:
             page = (
                 <JobPostedSuccess
+                    history={props.history}
                     data={data}
                     editDetailPage={editDetailPage}
                     stepCompleted={stepsCompleted.includes(12)}

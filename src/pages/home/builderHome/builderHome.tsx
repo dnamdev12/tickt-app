@@ -11,6 +11,7 @@ import { withRouter } from 'react-router'
 import { setShowToast, setLoading } from '../../../redux/common/actions';
 import { getBuilderHomeData } from '../../../redux/jobs/actions';
 import TradieHome from '../../shared/tradieHome';
+import JobTypes from './components/jobTypes';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 
@@ -31,7 +32,7 @@ const BuilderHome = (props: any) => {
         const showPosition = (position: any) => {
             let { latitude, longitude } = position.coords;
             const jobType = { lat: latitude, long: longitude, jobType: '', tradie: true };
-            localStorage.setItem('postion', `[${longitude},${latitude}]`);
+            localStorage.setItem('position', `[${longitude},${latitude}]`);
             setPosition({ lat: latitude, long: longitude });
             // console.log({ jobType }, '--------------!!!');
             setHomeBuilder(jobType);
@@ -52,7 +53,7 @@ const BuilderHome = (props: any) => {
             const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
             setHomeBuilder(jobType);
             setPosition({ lat: '37.8136', long: '144.9631' });
-            localStorage.setItem('postion', '[37.8136,144.9631]');
+            localStorage.setItem('position', '[37.8136,144.9631]');
             Geocode.fromLatLng('37.8136', '144.9631').then(
                 (response) => {
                     const address = response.results[0].formatted_address;
@@ -93,6 +94,10 @@ const BuilderHome = (props: any) => {
                 {...props}
                 current_address={addressItem}
                 position={position}
+            />
+
+            <JobTypes
+                {...props}
             />
 
             <TradieHome

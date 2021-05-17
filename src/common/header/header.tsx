@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
-import { useLocation, withRouter } from "react-router-dom";
+import { NavLink, useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -21,10 +21,11 @@ const Header = (props: any) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
     const [toggleMenu, setToggleMenu] = useState(false);
+    const [activeLink, setActiveLink] = useState('');
 
     // const USER_TYPE = storageService.getItem('userType');
 
-    let location = useLocation();
+    let { pathname } = useLocation();
     let history = useHistory();
 
     useEffect(() => {
@@ -32,13 +33,13 @@ const Header = (props: any) => {
     }, [])
 
     useEffect(() => {
-        if (DISABLE_HEADER.includes(location.pathname)) {
+        if (DISABLE_HEADER.includes(pathname)) {
             setShowHeader(false)
         } else {
             setShowHeader(true)
         }
         setUserType(storageService.getItem('userType'))
-    }, [location.pathname, storageService.getItem('userType')])
+    }, [pathname, storageService.getItem('userType')])
 
     const handleClick = (event: any) => {
         setAnchorEl(event.currentTarget);
@@ -54,9 +55,10 @@ const Header = (props: any) => {
         storageService.removeItem("userType")
         history.push('/login')
     }
-
+    
     const postClicked = () => {
         setToggleMenu(false);
+        setActiveLink('post');
         history.push('/post-new-job')
     }
 
@@ -68,16 +70,37 @@ const Header = (props: any) => {
                         <div className="brand_wrap">
                             <figure>
                                 <img
-                                    onClick={() => { props.history.push('/') }}
+                                    onClick={() => {
+                                        setActiveLink('');
+                                        setToggleMenu(false);
+                                        props.history.push('/');
+                                    }}
                                     src={colorLogo}
                                     alt="logo" />
                             </figure>
                         </div>
                         <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
-                            <li><a className="active">Discover</a></li>
-                            <li><a >Jobs</a></li>
-                            {userType === 2 && <li><a onClick={postClicked}>Post</a></li>}
-                            <li><a >Chat</a></li>
+                            <li>
+                                <a className={activeLink === 'discover' ? 'active' : ''}>
+                                    {'Discover'}
+                                </a>
+                            </li>
+                            <li>
+                                <a className={activeLink === 'jobs' ? 'active' : ''}>
+                                    {'Jobs'}
+                                </a>
+                            </li>
+                            {userType === 2 &&
+                                <li>
+                                    <a className={activeLink === 'post' ? 'active' : ''} onClick={postClicked}>
+                                        {'Post'}
+                                    </a>
+                                </li>}
+                            <li>
+                                <a className={activeLink === 'chat' ? 'active' : ''}>
+                                    {'Chat'}
+                                </a>
+                            </li>
                         </ul>
                         <ul className="side_nav">
                             <li className="mob_nav">

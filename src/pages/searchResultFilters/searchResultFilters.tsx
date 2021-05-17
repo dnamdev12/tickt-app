@@ -34,6 +34,7 @@ const SearchResultFilters = (props: any) => {
 
     const [sortByFilter, setSortByFilter] = useState<any>({
         sortByFilterClicked: false,
+        showResultsButtonClicked: false,
         tradeId: [],
         jobTypes: [],
         specializationId: [],
@@ -102,7 +103,7 @@ const SearchResultFilters = (props: any) => {
             }
             if (paramsData.specializationId?.length && paramsData.tradeId?.length && paramsData.jobTypes?.length) {
                 console.log("searchResultsFilters 1111 filter ran", paramsData);
-                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: paramsData.tradeId, jobTypes: paramsData.jobTypes, specializationId: paramsData.specializationId }));
+                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: paramsData.tradeId, jobTypes: paramsData.jobTypes, specializationId: paramsData.specializationId, showResultsButtonClicked: true }));
                 setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
             }
             if (paramsData.sortBy && paramsData.isFiltered) {
@@ -196,6 +197,7 @@ const SearchResultFilters = (props: any) => {
         if (sortByFilter.jobTypes.length && sortByFilter.specializationId.length && sortByFilter.tradeId.length) {
             sortByFilterClose();
             showResultsByAllFilter();
+            setSortByFilter((prevData: any) => ({ ...prevData, showResultsButtonClicked: true }));
         } else {
             setShowToast(true, "Please select all required fields")
         }
@@ -274,15 +276,15 @@ const SearchResultFilters = (props: any) => {
             <ul className="filters_row">
                 <li>
                     <a onClick={sortByFilterClick}>
-                        <img src={sortByFilter.sortByFilterClicked ? filterSelected : filterUnselected} alt="filter" />Filter
+                        <img src={sortByFilter.showResultsButtonClicked ? filterSelected : filterUnselected} alt="filter" />Filter
                        {/* <img src={filterSelected} alt="filter" />Filter */}
                     </a>
                 </li>
                 <li>
-                    <a className={sortByPrice.priceFilterClicked ? "active" : ''} onClick={sortByPriceClick}>Price</a>
+                    <a className={sortByPrice.max_budget ? "active" : ''} onClick={sortByPriceClick}>Price</a>
                 </li>
                 <li>
-                    <a onClick={sortBySortingClick}>Sorting</a>
+                    <a className={sortBySorting.sortBy ? "active" : ''} onClick={sortBySortingClick}>Sorting</a>
                 </li>
             </ul>
             {/* filter 1 modal box */}

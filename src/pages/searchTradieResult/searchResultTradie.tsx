@@ -26,6 +26,8 @@ const SearchResultTradie = (props: any) => {
     const [stateData, setStateData] = useState(location.state);
     const [isToggle, setToggleSearch] = useState(false);
     const [localInfo, setLocalInfo] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [localData, setLocalData] = useState([]);
 
     useEffect(() => {
         props.getRecentSearchList();
@@ -34,11 +36,11 @@ const SearchResultTradie = (props: any) => {
             page: 1,
             isFiltered: true,
         }
-        if(stateData?.tradeId){
+        if (stateData?.tradeId) {
             data['tradeId'] = stateData?.tradeId
         }
 
-        if( stateData?.specializations){
+        if (stateData?.specializations) {
             data['specializationId'] = stateData?.specializations;
         }
         // tradeId: stateData?.tradeId,
@@ -54,7 +56,6 @@ const SearchResultTradie = (props: any) => {
             data['to_date'] = moment(stateData?.calender?.endDate).format('YYYY-MM-DD')
         }
         let spec_count: any = stateData?.specializations?.length;
-        console.log({ data }, '--------------- 49');
         setLocalInfo({
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
@@ -69,10 +70,21 @@ const SearchResultTradie = (props: any) => {
         console.log({ info });
     }
 
+    useEffect(() => {
+        let home: any = props.homeSearchJobData?.length ? true : false;
+        if (home) {
+            setLocalData(props.homeSearchJobData)
+        } else {
+            setLocalData([])
+        }
+    }, [props])
+
     const handleChangeToggle = (value: any) => { setToggleSearch(value) }
 
     let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
+    let isLoading: any = props.isLoading;
+    console.log('enter ----------->', { isLoading: props.isLoading, length: homeSearchJobData?.length })
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
@@ -111,16 +123,17 @@ const SearchResultTradie = (props: any) => {
                             </div>
                         </div>
                         <div className="flex_row tradies_row">
-                            {homeSearchJobData?.length ?
-                                homeSearchJobData.map((item: any, index: number) => (
+                            {localData?.length ?
+                                localData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
                                 ))
-                                // : <img src={noData} alt="data not found" />}
-                                : <div className="no_record">
-                                    <figure className="no_img">
-                                        <img src={noData} alt="data not found" />
-                                    </figure>
-                                </div>}
+                                :
+                                !isLoading && !localData?.length ?
+                                    <div className="no_record">
+                                        <figure className="no_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                    </div> : null}
                         </div>
 
                     </div>

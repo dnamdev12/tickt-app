@@ -26,25 +26,46 @@ const options = {
 }
 
 const RenderMap = (props: any) => {
-    // const { isLoaded, loadError } = useLoadScript({
-    //     // googleMapsApiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
-    //     libraries
-    // })
+    const [center, setCenter] = useState<any>('');
 
-    var mapCenterCoordinates;
-    if (props.searchByFilter) {
-        mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
-    } else if (props?.location?.state?.queryParam == 'viewNearByJob') {
-        mapCenterCoordinates = props.viewNearByJobData?.slice(0, 1);
-    } else {
-        mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
-    }
-    console.log(mapCenterCoordinates, "mapCenterCoordinates");
-    const center = {
-        lat: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[1] : -37.840935,
-        lng: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[0] : 144.946457
-        // lat: 21.17021,
-        // lng: 72.831062
+    // var mapCenterCoordinates;
+    // const jobResultsParam = new URLSearchParams(props.location?.search).get('jobResults');
+    // if (props.searchByFilter) {
+    //     mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
+    // } else if (jobResultsParam == 'viewNearByJob') {
+    //     mapCenterCoordinates = props.viewNearByJobData?.slice(0, 1);
+    // } else {
+    //     mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
+    // }
+    // console.log(mapCenterCoordinates, "mapCenterCoordinates");
+    // const center = {
+    //     lat: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[1] : -37.840935,
+    //     lng: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[0] : 144.946457
+    //     // lat: 21.17021,
+    //     // lng: 72.831062
+    // }
+    const setMapCenter = () => {
+        var mapCenterCoordinates;
+        const jobResultsParam = new URLSearchParams(props.location?.search).get('jobResults');
+        if (props.searchByFilter) {
+            mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
+        } else if (jobResultsParam == 'viewNearByJob') {
+            mapCenterCoordinates = props.viewNearByJobData?.slice(0, 1);
+        } else {
+            mapCenterCoordinates = props.homeSearchJobData?.slice(0, 1);
+        }
+        console.log(mapCenterCoordinates, "mapCenterCoordinates");
+        const newCenter = {
+            lat: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[1] : -37.840935,
+            lng: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[0] : 144.946457
+        }
+        if (JSON.stringify(center) == JSON.stringify(newCenter)) {
+            return;
+        } else {
+            setCenter(newCenter);
+            console.log('map center fn clicked 1111', newCenter,"mapCenterCoordinates", mapCenterCoordinates);
+        }
+        console.log('map center fn clicked 22222', newCenter,"mapCenterCoordinates", mapCenterCoordinates);
     }
     const [markers, setMarkers] = useState<Array<any>>([]);
     const [selected, setSelected] = useState<any>(null);
@@ -71,14 +92,15 @@ const RenderMap = (props: any) => {
     console.log(props, "props renderMap");
 
     const renderJobsData = () => {
-        // const jobsData = props.viewNearByJobData;
-        // return jobsData;
-        console.log(props.homeSearchJobData, "homeSearchJobData response")
+        setMapCenter();
         var jobsData;
-        if (props.filterByPrice) {
+        const jobResultsParam = new URLSearchParams(props.location?.search).get('jobResults');
+        // if (props.filterByPrice) {
+        if (props.searchByFilter) {
             jobsData = props.homeSearchJobData;
             return jobsData;
-        } else if (props?.location?.state?.queryParam == 'viewNearByJob') {
+        }
+        if (jobResultsParam == 'viewNearByJob') {
             jobsData = props.viewNearByJobData;
             return jobsData;
         } else {

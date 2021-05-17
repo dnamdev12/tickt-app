@@ -44,10 +44,6 @@ const ChooseTimingMileStone = ({
     const [error, setError] = useState('');
     const [localChanges, setLocalChanges] = useState(false);
 
-    useEffect(() => {
-        console.log({ milestones })
-    }, [milestones])
-
     const handleChange = (item: any) => {
         setRange(item.selection);
         handleCheck(item.selection);
@@ -91,7 +87,7 @@ const ChooseTimingMileStone = ({
         }
         return true;
     }
-
+    console.log({ from_date: data?.from_date, to_date: data?.to_date }) 
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -120,8 +116,8 @@ const ChooseTimingMileStone = ({
                                     showDateDisplay={false}
                                     showSelectionPreview={true}
                                     showPreview={true}
-                                    minDate={new Date()}
-                                    maxDate={moment().add(2, 'years').toDate()}
+                                    minDate={data?.from_date?.length ? moment(data?.from_date, 'YYYY-MM-DD').toDate() : new Date()}
+                                    maxDate={data?.to_date?.length && data?.from_date !== data?.to_date ? moment(data?.to_date, 'YYYY-MM-DD').toDate() : moment().add(2, 'years').toDate()}
                                     fixedHeight={true}
                                 />
                             </div>

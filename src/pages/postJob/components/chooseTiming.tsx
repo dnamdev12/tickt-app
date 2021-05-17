@@ -9,17 +9,19 @@ import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import moment from 'moment';
+import { setShowToast } from '../../../redux/common/actions';
 interface Proptypes {
     data: any;
+    milestones: any,
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
     handleStepBack: () => void;
 }
 
 const default_format = 'YYYY-MM-DD';
-const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
     const [range, setRange] = useState<{ [index: string]: any }>({
-        startDate:'',//new Date(), // ''
+        startDate: '',//new Date(), // ''
         endDate: '',// new Date(),
         key: 'selection',
     });
@@ -32,7 +34,7 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
         if (stepCompleted) {
             setRange({
                 startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
-                endDate:  data.to_date ? moment(data.to_date).toDate() : '',
+                endDate: data.to_date ? moment(data.to_date).toDate() : '',
                 key: 'selection',
             });
             setLocalChanges(true);
@@ -40,6 +42,44 @@ const ChooseTiming = ({ data, stepCompleted, handleStepComplete, handleStepBack 
     }, [data, stepCompleted])
 
     const handleChange = (item: any) => {
+        let mile: any = milestones;
+        if (mile?.length) {
+            let start_selection: any = moment(item.selection.startDate).format('MM-DD-YYYY');
+            let end_selection: any = moment(item.selection.endDate).isValid() ? moment(item.selection.endDate).format('MM-DD-YYYY') : null;
+            let item_find: any = false;
+            mile.forEach((item_date: any) => {
+                let start: any = item_date.from_date;
+                let end: any = moment(item_date.to_date).isValid() ? item_date.to_date :  null;
+                
+                if (start && end) {
+                    if(moment(start_selection).isSameOrAfter(start) && moment(end_selection).isSameOrBefore(end)){
+                        item_find = false; 
+                    } else {
+                        item_find = true 
+                    }
+
+                }
+
+                if(start && !end){
+                    if (moment(start_selection).isAfter(start)){
+                        item_find = true; // true;
+                    }
+                }
+
+                if(start_selection && end_selection && !end){
+                    if(moment(start).isSameOrAfter(start_selection) && moment(start).isSameOrBefore(end_selection)){
+                        item_find = false; 
+                    } else {
+                        item_find = true 
+                    }
+                }
+
+            });
+            if (item_find) {
+                setShowToast(true, 'please check the milestone dates.');
+                return;
+            }
+        }
         setRange(item.selection);
         handleCheck(item.selection);
     };
