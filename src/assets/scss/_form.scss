@@ -925,3 +925,18 @@ hr {
     margin: 25px 0;
   }
 }
+
+
+.col_ruler{
+  position: relative;
+  padding-left: 50px !important;
+  &::before{
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 15px;
+    width: 1px;
+    height: 100vh;
+    background-color: #dfe5ef;
+  }
+}

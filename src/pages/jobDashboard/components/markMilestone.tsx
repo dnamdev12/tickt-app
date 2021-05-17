@@ -112,7 +112,7 @@ const MarkMilestone = ({
                 <img src={editIconBlue} alt="edit" />
               </span>
             </div>
-            <span className="sub_title">Job Milestones</span>
+            {/* <span className="sub_title">Job Milestones</span> */}
             <p className="commn_para">
               Your job point of contact has indicated they want to be notified
               when you reach the following milestones. Tap the milestone and
@@ -196,8 +196,8 @@ const MarkMilestone = ({
               )}
             </ul>
           </div>
-          <hr></hr>
-          <div className="flex_col_sm_6">
+          
+          <div className="flex_col_sm_6 col_ruler">
             <span className="sub_title">Posted by</span>
             <div className="tradie_card posted_by view_more ">
               <a href="javascript:void(0)" className="chat circle"></a>
