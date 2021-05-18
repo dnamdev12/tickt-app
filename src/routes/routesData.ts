@@ -16,6 +16,8 @@ import JobDashboard from '../pages/jobDashboard';
 import TradieListData from '../pages/shared/tradieListData';
 import SearchResultTradie from '../pages/searchTradieResult/index';
 import BuilderProfile from '../pages/builderProfile/builderProfile';
+import builderJobDasboard from '../pages/builderJobDasboard/index';
+import TradieDetails from '../common/tradieDetails';
 
 const routes = [
     {
@@ -94,12 +96,12 @@ const routes = [
     {
         name: 'jobdashboard',
         path: [
-          '/active-jobs',
-          '/applied-jobs',
-          '/past-jobs',
-          '/new-jobs',
-          '/approved-milestones',
-          '/mark-milestone',
+            '/active-jobs',
+            '/applied-jobs',
+            '/past-jobs',
+            '/new-jobs',
+            '/approved-milestones',
+            '/mark-milestone',
         ],
         component: JobDashboard,
         authRoute: false,
@@ -111,6 +113,11 @@ const routes = [
         component: LinkedInPopUp
     },
     {
+        name: 'builder-jobs',
+        path: '/jobs',
+        component: builderJobDasboard
+    },
+    {
         name: 'recommended-trade-people',
         path: '/recommended-trade-people',
         component: TradieListData
@@ -119,6 +126,11 @@ const routes = [
         name: 'saved-trade-people',
         path: '/saved-trade-people',
         component: TradieListData
+    },
+    {
+        name: 'tradie-details',
+        path: '/tradie-details',
+        component: TradieDetails
     },
     {
         name: 'search-builder-result',

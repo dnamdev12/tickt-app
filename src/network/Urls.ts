@@ -1,5 +1,5 @@
-// const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
-const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
+const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
+// const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
 
 const versions = {
     v1: 'v1/',
@@ -53,7 +53,7 @@ const Urls = {
     newJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}newJobList`,
     approvedMilestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}approveMilestoneList`,
     activeJobListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}activeJobList`, //active-job-list (builder)
-    OpenJobLisBuildert: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}openJobList`, //open-job-list (builder)
+    OpenJobLisBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}openJobList`, //open-job-list (builder)
     pastJobListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}pastJobList`,  //past-job-list (builder)
     newApplicantsBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}newApplicants`, //new-applicants (builder)
     newJobApplicationListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}newJobApplicationList`, //new-job-application-list (builder)

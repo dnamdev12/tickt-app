@@ -55,7 +55,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
         } else {
             setError('');
         }
-        setTemplateName(value)
+        setTemplateName((value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, ""))
     }
 
     console.log({error})
