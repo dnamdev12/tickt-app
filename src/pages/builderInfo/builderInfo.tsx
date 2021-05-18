@@ -1,9 +1,126 @@
+import { useState, useEffect } from 'react';
+import { getBuilderProfile } from '../../redux/jobs/actions';
+
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
 
+import Modal from '@material-ui/core/Modal';
+import Carousel from 'react-multi-carousel';
+import 'react-multi-carousel/lib/styles.css';
 
-const BuilderProfile = () => {
+import leftIcon from '../../assets/images/ic-back-arrow-line.png'
+import rightIcon from '../../assets/images/ic-next-arrow-line.png'
+import OwlCarousel from 'react-owl-carousel';
+import 'owl.carousel/dist/assets/owl.carousel.css';
+import 'owl.carousel/dist/assets/owl.theme.default.css';
+
+interface PropsType {
+    location: any
+}
+
+const options = {
+    items: 1,
+    nav: true,
+    navText: [`<div class='nav-btn prev-slide'> <img src="${leftIcon}"> </div>`, `<div class='nav-btn next-slide'> <img src="${rightIcon}"> </div>`],
+    rewind: true,
+    autoplay: false,
+    slideBy: 1,
+    dots: true,
+    dotsEach: true,
+    dotData: true,
+    responsive: {
+        0: {
+            items: 5,
+        },
+        600: {
+            items: 5,
+        },
+        1000: {
+            items: 5,
+        },
+    },
+};
+
+const responsive = {
+    desktop: {
+        breakpoint: { max: 3000, min: 1024 },
+        items: 5,
+        slidesToSlide: 5, // optional, default to 1.
+    },
+    tablet: {
+        breakpoint: { max: 1024, min: 768 },
+        items: 3
+    },
+    mobile: {
+        breakpoint: { max: 650, min: 0 },
+        items: 1
+    }
+};
+
+const portifolioData = [
+    {
+        jobDescription: "My first job",
+        portfolioId: "607e924c1d275647a8d9589fg",
+        portfolioImage: [
+            "url1"
+        ]
+    },
+    {
+        jobDescription: "My second job",
+        portfolioId: "607e924c1d275647a8d9589fh",
+        portfolioImage: [
+            "url1"
+        ]
+    },
+    {
+        jobDescription: "My third job",
+        portfolioId: "607e924c1d275647a8d9589fi",
+        portfolioImage: [
+            "url1"
+        ]
+    },
+    {
+        jobDescription: "My fourth job",
+        portfolioId: "607e924c1d275647a8d9589fj",
+        portfolioImage: [
+            "url1"
+        ]
+    },
+    {
+        jobDescription: "My fifth job",
+        portfolioId: "607e924c1d275647a8d9589fjk",
+        portfolioImage: [
+            "url1"
+        ]
+    },
+    {
+        jobDescription: "My sixth job",
+        portfolioId: "607e924c1d275647a8d9589fjl",
+        portfolioImage: [
+            "url1"
+        ]
+    }
+]
+
+const BuilderInfo = (props: PropsType) => {
+    const [profileData, setProfileData] = useState<any>('');
+    const [portfolioImageClicked, setPortfolioImageClicked] = useState<boolean>(false);
+
+    useEffect(() => {
+        (async () => {
+            const builderId: any = new URLSearchParams(props.location?.search).get('builderId');
+            const res = await getBuilderProfile(builderId);
+            if (res?.success) {
+                setProfileData(res.data);
+            }
+        })();
+    }, [])
+
+    const portfolioImageHandler = () => {
+        setPortfolioImageClicked(true);
+    }
+
     return (
         <>
             <div className="app_wrapper">
@@ -23,16 +140,16 @@ const BuilderProfile = () => {
                                 </div>
                                 <div className="flex_col_sm_4 relative">
                                     <div className="detail_card">
-                                        <span className="title">John Oldman</span>
-                                        <span className="tagg">Project Manager</span>
-                                        <span className="xs_sub_title">Company name</span>
+                                        <span className="title">{profileData?.builderName}</span>
+                                        <span className="tagg">{profileData?.position}</span>
+                                        <span className="xs_sub_title">{profileData?.companyName}</span>
                                         <ul className="review_job">
                                             <li>
-                                                <span className="icon reviews">4.3</span>
-                                                <span className="review_count"> reviews</span>
+                                                <span className="icon reviews">{profileData?.ratings}</span>
+                                                <span className="review_count">{`${profileData?.reviewsCount} reviews`}</span>
                                             </li>
                                             <li>
-                                                <span className="icon job">21</span>
+                                                <span className="icon job">{profileData?.jobCompletedCount}</span>
                                                 <span className="review_count"> jobs completed</span>
                                             </li>
                                         </ul>
@@ -44,17 +161,16 @@ const BuilderProfile = () => {
                                 <div className="flex_col_sm_8">
                                     <div>
                                         <span className="sub_title">About</span>
-                                        <p className="commn_para">** Currently on holiday, back Jan 10! ** Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. If that sounds good to you, flick me a message and I’ll reply ASAP! Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. Just finished up my Electricians apprenticeship working on large project sites around Melbourne. </p>
+                                        <p className="commn_para">{profileData?.about}</p>
                                     </div>
                                 </div>
                                 <div className="flex_col_sm_4">
                                     <span className="sub_title">Areas of jobs</span>
                                     <div className="tags_wrap">
                                         <ul>
-                                            <li>Circuit Board Wiring</li>
-                                            <li>Highway</li>
-                                            <li>Circuit Board Wiring</li>
-                                            <li>Highway Systems</li>
+                                            {profileData?.areasOfjobs?.map((item: any) => {
+                                                return <li key={item.specializationId}>{item.specializationName}</li>
+                                            })}
                                         </ul>
                                     </div>
                                 </div>
@@ -67,22 +183,61 @@ const BuilderProfile = () => {
                 <div className="section_wrapper">
                     <div className="custom_container">
                         <span className="sub_title">Portfolio</span>
-                        <ul className="portfolio_wrappr">
-                            <li>
+                        {/* <ul className="portfolio_wrappr"> */}
+                        {/* <OwlCarousel className='owl-theme' {...options}>
+                                {portifolioData.length ? portifolioData?.map((item: any) => {
+                                    return (
+                                        <li key={item.portfolioId} onClick={portfolioImageHandler}>
+                                            <figure className="portfolio_img">
+                                                <img src={portfolioPlaceholder} alt="portfolio-images" />
+                                                <span className="xs_sub_title">{item.jobDescription}</span>
+                                            </figure>
+                                        </li>
+                                    )
+                                }) : <img alt="" src={portfolioPlaceholder} />}
+                            </OwlCarousel> */}
+                        <Carousel
+                            responsive={responsive}
+                            showDots={true}
+                            arrows={false}
+                            infinite={true}
+                        // centerMode={true}
+                        >
+                            <ul className="portfolio_wrappr">
+                                {portifolioData.length ? portifolioData?.map((item: any) => {
+                                    return (
+                                        <li key={item.portfolioId} onClick={portfolioImageHandler}>
+                                            <figure className="portfolio_img">
+                                                <img src={portfolioPlaceholder} alt="portfolio-images" />
+                                                <span className="xs_sub_title">{item.jobDescription}</span>
+                                            </figure>
+                                        </li>
+                                    )
+                                }) : <img alt="" src={portfolioPlaceholder} />}
+                            </ul>
+                        </Carousel>
+                        {/* <li>
                                 <figure className="portfolio_img">
                                     <img src={portfolioPlaceholder} alt="portfolio-images" />
                                     <span className="xs_sub_title">Machine Maintenance</span>
                                 </figure>
-                            </li>
-                            <li>
-                                <figure className="portfolio_img">
-                                    <img src={portfolioPlaceholder} alt="portfolio-images" />
-                                    <span className="xs_sub_title">Machine Maintenance</span>
-                                </figure>
-                            </li>
-                        </ul>
+                            </li> */}
+                        {/* </ul> */}
                     </div>
                 </div>
+                {/* portfolio Image modal desc */}
+                {portfolioImageClicked &&
+                    <Modal
+                        className="ques_ans_modal"
+                        open={portfolioImageClicked}
+                        onClose={() => setPortfolioImageClicked(false)}
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                    >
+                        <div className="custom_wh ask_ques">
+                            portfolio description
+                            </div>
+                    </Modal>}
 
                 <div className="section_wrapper">
                     <div className="custom_container">
@@ -240,8 +395,7 @@ const BuilderProfile = () => {
                 </div>
             </div>
         </>
-
     )
 }
 
-export default BuilderProfile;
+export default BuilderInfo;

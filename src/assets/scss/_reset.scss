@@ -319,7 +319,7 @@ body.loader_show .full_loader {
         height: 8px;
         border: none;
     }
-    &.react-multi-carousel-dot--active {
+    &.react-multi-carousel-dot--active, &.active {
         button{
             background-color: var(--blue-two) !important;
         }

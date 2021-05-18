@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import rateStar from '../../../assets/images/ic-star-fill.png';
 import more from '../../assets/images/icon-direction-right.png';
@@ -7,101 +7,123 @@ import more from '../../assets/images/icon-direction-right.png';
 interface Proptypes {
   getPastJobList: (page: number) => void,
   pastJobList: Array<any>,
+  history: any
 };
 
-const PastJobs = ({ getPastJobList, pastJobList }: Proptypes) => {
+const PastJobs = (props: Proptypes) => {
   useEffect(() => {
-    getPastJobList(1);
-  }, [getPastJobList]);
+    props.getPastJobList(1);
+  }, [props.getPastJobList]);
 
   return (
     <>
-      {/* Past Jobs */}
       <span className="sub_title">Past Jobs</span>
       <div className="flex_row tradies_row">
-        {pastJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, jobDescription, time, amount, locationName, durations }) => (
-          <div className="flex_col_sm_6">
-            <div className="tradie_card">
-              <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
-              <div className="user_wrap">
-                <figure className="u_img">
-                  <img src={dummy || tradeSelectedUrl} alt="traide-img" />
-                </figure>
-                <div className="details">
-                  <span className="name">{jobName}</span>
+        {/* {props.pastJobList?.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, milestoneNumber, totalMilestones, tradeName, status, jobName, builderData, time, amount, locationName, durations }, index: number) => { */}
+        {props.pastJobList?.map((item: any) => {
+          return (
+            <div className="flex_col_sm_6">
+              <div className="tradie_card">
+                <NavLink to={`/job-details-page?jobId=${item.jobId}&tradeId=${item.tradeId}&specializationId=${item.specializationId}`} className="more_detail circle"></NavLink>
+                <div className="user_wrap">
+                  <figure className="u_img">
+                    <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="traide-img" />
+                  </figure>
+                  <div className="details">
+                    <span className="name">{item.tradeName}</span>
+                    <span className="prof">{item.jobName}</span>
+                  </div>
                 </div>
-              </div>
-              <div className="job_info">
-                <ul>
-                  <li className="icon clock">{time}</li>
-                  <li className="icon dollar">{amount}</li>
-                  <li className="icon location line-1">{locationName}</li>
-                  <li className="icon calendar">{durations}</li>
-                </ul>
-              </div>
-              <button className="fill_grey_btn full_btn">
-                <img src={rateStar} alt="rating-star" /> Rate this job
-              </button>
-              {/* <p className="commn_para line-3">
-                {jobDescription}
+                <div className="job_info">
+                  <ul>
+                    <li className="icon clock">{item.time}</li>
+                    <li className="icon dollar">{item.amount}</li>
+                    <li className="icon location line-1">{item.locationName}</li>
+                    {item.durations ? <li className="icon calendar">{item.durations}</li> : <li className="link ">{item.status}</li>}
+                  </ul>
+                </div>
+                {/* <p className="commn_para line-3">
+                {builderData.jobDescription}
               </p> */}
-            </div>
-          </div>
-        ))}
-      </div>
-      {/* Past Jobs close */}
-
-
-      {/*Review for builder */}
-      {/* <div className="flex_row">
-        <div className="flex_col_sm_6">
-          <div className="relate">
-            <button className="back"></button>
-            <span className="xs_sub_title">Wire up circuit box</span>
-          </div>
-          <div className="form_field">
-            <span className="sub_title">Review completed job</span>
-          </div>
-          <span className="inner_title">Rate this builder</span>
-          <div className="form_field">
-            Rating star here
-          </div>
-          <div className="form_field">
-            <label className="form_label">Comment</label>
-            <div className="text_field">
-              <input type="text" placeholder="Thanks.." />
-            </div>
-          </div>
-          <div className="form_field">
-            <button className="fill_btn full_btn">Leave review</button>
-          </div>
-        </div>
-        <hr></hr>
-        <div className="flex_col_sm_6">
-          <div className="relate">
-            <span className="sub_title">Job details</span>
-            <span className="edit_icon" title="More">
-              <img src={more} alt="more" />
-            </span>
-          </div>
-          <div className="tradie_card posted_by view_more ">
-            <div className="user_wrap">
-              <figure className="u_img">
-                <img src={dummy} alt="traide-img" />
-              </figure>
-              <div className="details">
-                <span className="name">Electrician</span>
-                <span className="prof">Wire up 2 rooms in new apartment</span>
-                <span className="prof">May 23 - 25 </span>
+                <div className="job_progress_wrap" id="scroll-progress-bar">
+                  <div className="progress_wrapper">
+                    <span className="completed-digit" id="digit-progress">
+                      <b>Job Milestones {item.milestoneNumber}</b> of {item.totalMilestones}
+                    </span>
+                    <span className="progress_bar">
+                      <input
+                        className="done_progress"
+                        id="progress-bar"
+                        type="range"
+                        min="0"
+                        readOnly={true}
+                      />
+                    </span>
+                  </div>
+                </div>
+                <NavLink to={{
+                  pathname: "/review-builder",
+                  state: { item: item }
+                }}
+                >
+                  <button className="fill_grey_btn full_btn">
+                    <img src={rateStar} alt="rating-star" /> Rate this job
+                </button>
+                </NavLink>
               </div>
-            </div>
-          </div>
-
-        </div>
-      </div> */}
-      {/* Review for builder close */}
-    </>
-  );
+            </div>)
+        })}
+      </div >
+    </>);
 };
 
 export default PastJobs;
+
+{/*Review for builder */ }
+{/* <div className="flex_row">
+  <div className="flex_col_sm_6">
+    <div className="relate">
+      <button className="back"></button>
+      <span className="xs_sub_title">Wire up circuit box</span>
+    </div>
+    <div className="form_field">
+      <span className="sub_title">Review completed job</span>
+    </div>
+    <span className="inner_title">Rate this builder</span>
+    <div className="form_field">
+      Rating star here
+    </div>
+    <div className="form_field">
+      <label className="form_label">Comment</label>
+      <div className="text_field">
+        <input type="text" placeholder="Thanks.." />
+      </div>
+    </div>
+    <div className="form_field">
+      <button className="fill_btn full_btn">Leave review</button>
+    </div>
+  </div>
+  <hr></hr>
+  <div className="flex_col_sm_6">
+    <div className="relate">
+      <span className="sub_title">Job details</span>
+      <span className="edit_icon" title="More">
+        <img src={more} alt="more" />
+      </span>
+    </div>
+    <div className="tradie_card posted_by view_more ">
+      <div className="user_wrap">
+        <figure className="u_img">
+          <img src={dummy} alt="traide-img" />
+        </figure>
+        <div className="details">
+          <span className="name">Electrician</span>
+          <span className="prof">Wire up 2 rooms in new apartment</span>
+          <span className="prof">May 23 - 25 </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div> */}
+{/* Review for builder close */ }

@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { NavLink, Route, Switch, useHistory } from 'react-router-dom';
 
-import menu from '../../assets/images/menu-line-blue.png';
-import close from '../../assets/images/ic-cancel-blue.png';
 import ActiveJobsPage from './components/activeJobs';
 import AppliedJobsPage from './components/appliedJobs';
 import PastJobsPage from './components/pastJobs';
 import NewJobsPage from './components/newJobs';
 import ApprovedMilestonesPage from './components/approvedMilestones';
 import MarkMilestonePage from './components/markMilestone';
+import ReviewBuilder from './components/reviewBuilder';
+
+import menu from '../../assets/images/menu-line-blue.png';
+import close from '../../assets/images/ic-cancel-blue.png';
 import templateImage from '../../assets/images/job-complete-bg.png';
 import reviewBuilderSuccess from '../../assets/images/review-builder-success.png';
 
@@ -254,6 +256,15 @@ const JobDashboard = ({
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
                     showJobCompletePage={() => setJobComplete(true)}
                     {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/review-builder"
+                render={(props) => (
+                  <ReviewBuilder
+                    {...props}
+                    history={history}
                   />
                 )}
               />
