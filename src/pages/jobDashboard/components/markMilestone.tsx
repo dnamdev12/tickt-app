@@ -148,8 +148,8 @@ const MarkMilestone = ({
                         status === 1
                           ? `check`
                           : isActive
-                          ? 'active'
-                          : 'disabled'
+                            ? 'active'
+                            : 'disabled'
                       }
                     >
                       <div className="circle_stepper">
@@ -163,10 +163,9 @@ const MarkMilestone = ({
                         <span>
                           {fromDate}
                           {toDate &&
-                            ` - ${
-                              fromDate.startsWith(toDate.split(' ')[0])
-                                ? toDate.split(' ')[1]
-                                : toDate
+                            ` - ${fromDate.startsWith(toDate.split(' ')[0])
+                              ? toDate.split(' ')[1]
+                              : toDate
                             }`}
                         </span>
                         {isActive && (
@@ -196,7 +195,7 @@ const MarkMilestone = ({
               )}
             </ul>
           </div>
-          
+
           <div className="flex_col_sm_6 col_ruler">
             <span className="sub_title">Posted by</span>
             <div className="tradie_card posted_by view_more ">
@@ -239,7 +238,7 @@ const MarkMilestone = ({
           stepCompleted={true}
           data={data}
           handleStepBack={handleStepBack}
-          handleStepForward={() => {}}
+          handleStepForward={() => { }}
           handleStepComplete={handleStepComplete}
           hasDescription
         />
@@ -260,9 +259,13 @@ const MarkMilestone = ({
               <span className="xs_sub_title">{jobName}</span>
             </div>
             <span className="sub_title">Worked hours in this milestone</span>
-            <p className="commn_para">
+            {/* <p className="commn_para">
               Submit your actual hours worked to calculate any variation from
               the estimateed hours. The amount will be approved by the Builder
+            </p> */}
+
+            <p className="commn_para">
+              The amount paid will be recalculated based on approval of the actual hours by the Builder
             </p>
 
             <div className="form_field">
