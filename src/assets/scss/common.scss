@@ -1424,6 +1424,7 @@ body {
         font-size: 14px;
         color: #313d48;
         line-height: 1;
+        margin-top: 10px;
       }
   }
 }
@@ -1434,9 +1435,9 @@ body {
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 30px;
-  li{
+  .media{
       display: inline-block;
-      margin: 0px 24px 0px 0px;
+      // margin: 0px 24px 0px 0px;
       cursor: pointer;
       .portfolio_img{
           width: 256px;
