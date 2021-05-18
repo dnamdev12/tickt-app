@@ -267,15 +267,16 @@ const MarkMilestone = ({
 
             <div className="form_field">
               <label className="form_label">Time Spent</label>
-              <div className="text_field">
+              <div className="text_field time_spent">
                 <input
                   type="text"
-                  placeholder="2"
+                  placeholder="hh:mm"
                   name="actualHours"
                   value={data.actualHours}
                   onChange={handleChange}
                   maxLength={5}
                 />
+                <span className="detect_icon">hours</span>
               </div>
               <span className="error_msg">{errors.actualHours}</span>
             </div>

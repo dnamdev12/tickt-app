@@ -4129,7 +4129,7 @@ body {
     }
   }
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    .flex_col_sm_6 {
+    .flex_col_sm_6, .flex_col_sm_8 {
       width: 100%;
       }
   }
@@ -4279,6 +4279,24 @@ body {
             object-fit: none;
         }
     }
+}
+
+.time_spent{
+  display: block;
+  max-width: 280px;
+  width: 100%;
+  @media(max-width: 650px){
+    max-width: 100%;
+  }
+  input{
+    width: 215px;
+    @media(max-width: 650px){
+      width: 80%;
+    }
+  }
+  .detect_icon{
+    font-family: "Neue Haas Grotesk Text Pro Medium";    
+  }
 }
 
 .milestones_check{
