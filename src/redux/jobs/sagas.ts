@@ -39,7 +39,7 @@ function* getActiveJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END });
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
 }
 
 // appliedJobList
@@ -61,7 +61,7 @@ function* getAppliedJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_APPLIED_JOBS_END });
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
 }
 
 // pastJobList
@@ -83,7 +83,7 @@ function* getPastJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_PAST_JOBS_END });
+  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
 }
 
 // newJobList
@@ -105,7 +105,7 @@ function* getNewJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_NEW_JOBS_END });
+  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
 }
 
 // approvedMilestoneList
@@ -127,7 +127,7 @@ function* getApprovedMilestoneList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END });
+  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
 }
 
 // milestoneList
@@ -147,7 +147,7 @@ function* getMilestoneList({ jobId }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_MILESTONES_END });
+  yield put({ type: actionTypes.GET_MILESTONES_END, payload: {} });
 }
 
 // milestoneList

@@ -61,6 +61,9 @@ const Urls = {
     jobDetailsBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}jobDetails`, //job-details (builder)
     milestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}milestoneList`,
     markComplete: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}markComplete`,
+    addBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}addBankDetails`,
+    updateBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}updateBankDetails`,
+    getBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getBankDetails`,
 }
 
 export const urlFor = (service: String): string => {

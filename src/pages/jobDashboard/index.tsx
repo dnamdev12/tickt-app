@@ -8,8 +8,12 @@ import {
   getNewJobList,
   getApprovedMilestoneList,
   getMilestoneList,
-  markMilestoneComplete,
 } from '../../redux/jobs/actions';
+import {
+  getBankDetails,
+  addBankDetails,
+  updateBankDetails,
+} from '../../redux/profile/actions';
 
 const mapStateToProps = (state: any) => {
   const {
@@ -23,6 +27,9 @@ const mapStateToProps = (state: any) => {
       newJobsCount,
       milestoneList,
     },
+    profile: {
+      bankDetails,
+    }
   } = state;
 
   return {
@@ -34,6 +41,7 @@ const mapStateToProps = (state: any) => {
     milestoneList,
     milestonesCount,
     newJobsCount,
+    bankDetails,
   };
 };
 
@@ -46,7 +54,9 @@ const mapDispatchToProps = (dispatch: any) => {
       getNewJobList,
       getApprovedMilestoneList,
       getMilestoneList,
-      markMilestoneComplete,
+      getBankDetails,
+      addBankDetails,
+      updateBankDetails,
     },
     dispatch
   );

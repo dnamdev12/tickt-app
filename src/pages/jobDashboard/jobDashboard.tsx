@@ -20,29 +20,17 @@ interface Proptypes {
   getPastJobList: (page: number) => void;
   pastJobList: Array<any>;
   getNewJobList: (page: number) => void;
-  approvedMilestoneList: Array<any>;
-  getApprovedMilestoneList: (page: number) => void;
-  newJobList: Array<any>;
-  milestonesCount: number;
-  newJobsCount: number;
-}
-
-interface Proptypes {
-  getActiveJobList: (page: number) => void;
-  activeJobList: Array<any>;
-  getAppliedJobList: (page: number) => void;
-  appliedJobList: Array<any>;
-  getPastJobList: (page: number) => void;
-  pastJobList: Array<any>;
-  getNewJobList: (page: number) => void;
   newJobList: Array<any>;
   getApprovedMilestoneList: (page: number) => void;
   approvedMilestoneList: Array<any>;
   getMilestoneList: (jobId: string) => void;
   milestoneList: any;
-  markMilestoneComplete: (data: any, callback: () => void) => void;
   milestonesCount: number;
   newJobsCount: number;
+  addBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  updateBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  getBankDetails: () => void;
+  bankDetails: any;
 }
 
 const JobDashboard = ({
@@ -58,9 +46,12 @@ const JobDashboard = ({
   approvedMilestoneList,
   getMilestoneList,
   milestoneList,
-  markMilestoneComplete,
   milestonesCount,
   newJobsCount,
+  addBankDetails,
+  updateBankDetails,
+  getBankDetails,
+  bankDetails,
 }: Proptypes) => {
   const history = useHistory();
   const [openSidebar, setOpenSidebar] = useState(false);
@@ -269,7 +260,10 @@ const JobDashboard = ({
                     milestoneList={milestoneList}
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
                     showJobCompletePage={() => setJobComplete(true)}
-                    markMilestoneComplete={markMilestoneComplete}
+                    getBankDetails={getBankDetails}
+                    addBankDetails={addBankDetails}
+                    updateBankDetails={updateBankDetails}
+                    bankDetails={bankDetails}
                     {...props}
                   />
                 )}

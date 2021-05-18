@@ -15,18 +15,28 @@ interface BuilderDetails {
   reviews: number;
 }
 
-interface JobDetais {
+interface JobDetails {
   jobId: string;
   jobName: string;
   milestones: Array<any>;
   postedBy: BuilderDetails;
 }
+
+interface BankDetails {
+  userId: string;
+  account_name: string;
+  account_number: string;
+  bsb_number: string;
+}
 interface Proptypes {
   getMilestoneList: (jobId: string) => void;
-  milestoneList: JobDetais;
+  milestoneList: JobDetails;
   showMilestoneCompletePage: () => void;
   showJobCompletePage: () => void;
-  markMilestoneComplete: (data: any, callback: () => void) => void;
+  addBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  updateBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  getBankDetails: () => void;
+  bankDetails: BankDetails;
 }
 
 const MarkMilestone = ({
@@ -34,7 +44,10 @@ const MarkMilestone = ({
   milestoneList,
   showJobCompletePage,
   showMilestoneCompletePage,
-  markMilestoneComplete,
+  getBankDetails,
+  addBankDetails,
+  updateBankDetails,
+  bankDetails,
 }: Proptypes) => {
   const history = useHistory();
   let params: any = new URLSearchParams(history.location?.search);
@@ -53,7 +66,7 @@ const MarkMilestone = ({
     account_number: '',
     bsb_number: '',
   };
-  const [data, setData] = useState(defaultData);
+  const [data, setData] = useState<any>(defaultData);
   const [errors, setErrors] = useState({
     actualHours: '',
     account_name: '',
@@ -61,40 +74,68 @@ const MarkMilestone = ({
     bsb_number: '',
   });
   const [step, setStep] = useState(1);
+  const [stepCompleted, setStepCompleted] = useState<Array<number>>([]);
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
 
-  const { jobName, milestones, postedBy } = milestoneList || {};
-  const { builderId, builderImage, builderName, reviews } = postedBy || {};
-
   useEffect(() => {
     getMilestoneList(params.jobId);
-  }, [params.jobId, getMilestoneList]);
+    getBankDetails();
+  }, [params.jobId, getMilestoneList, getBankDetails]);
 
-  const handleStepBack = () => setStep((prevStep) => prevStep - 1);
-
-  const handleStepComplete = (stepData: any) => {
-    setData((prevData) => ({
+  useEffect(() => {
+    setData((prevData: any) => ({
       ...prevData,
-      ...stepData,
+      ...bankDetails,
     }));
+  }, [bankDetails]);
 
-    setStep(3);
-  };
+  const validateActualHours = (value: any) => {
+    if (!value) {
+      return 'This field is required';
+    }
+
+    let pattern =
+      '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
+    if (value.match(pattern) === null) {
+      return 'Hours should be in hh:mm format';
+    }
+
+    return '';
+  }
+
+  const validateBankDetails = (value: string) => {
+    if (!value) {
+      return 'This field is required';
+    }
+
+    return '';
+  }
 
   const handleChange = ({ target: { name, value } }: any) => {
     setData((prevData: any) => ({
       ...prevData,
       [name]: value,
     }));
+
+    if (step === 3 && stepCompleted.includes(3)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: validateActualHours(value),
+      }));
+    }
+
+    console.log(step, stepCompleted, name, value);
+    if (step === 5 && stepCompleted.includes(5)) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: validateBankDetails(value),
+      }));
+    }
   };
 
-  const updateErrors = (name: string, value: string) => {
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: value,
-    }));
-  };
+  const { jobName, milestones, postedBy } = milestoneList || {};
+  const { builderId, builderImage, builderName, reviews } = postedBy || {};
 
   let page = null;
   switch (step) {
@@ -195,7 +236,6 @@ const MarkMilestone = ({
               )}
             </ul>
           </div>
-
           <div className="flex_col_sm_6 col_ruler">
             <span className="sub_title">Posted by</span>
             <div className="tradie_card posted_by view_more ">
@@ -235,11 +275,19 @@ const MarkMilestone = ({
           jobName={jobName}
           title="Photo required"
           para="Your job point of contact has indicated they want to be notified when you reach the following milestones. Tap the milestone and Submit when a milestone is completed"
-          stepCompleted={true}
+          stepCompleted={stepCompleted.includes(2)}
           data={data}
-          handleStepBack={handleStepBack}
-          handleStepForward={() => { }}
-          handleStepComplete={handleStepComplete}
+          handleStepBack={() => setStep(1)}
+          handleStepForward={() => {}}
+          handleStepComplete={(stepData: any) => {
+            setData((prevData: any) => ({
+              ...prevData,
+              ...stepData,
+            }));
+
+            setStepCompleted((prevValue) => prevValue.concat([2]));
+            setStep(3);
+          }}
           hasDescription
         />
       );
@@ -249,13 +297,16 @@ const MarkMilestone = ({
         <div className="flex_row">
           <div className="flex_col_sm_8">
             <div className="relate">
-              <button className="back" onClick={() => {
-                if (milestones[milestoneIndex].isPhotoevidence) {
-                  setStep(2);
-                } else {
-                  setStep(1);
-                }
-              }}></button>
+              <button
+                className="back"
+                onClick={() => {
+                  if (milestones[milestoneIndex].isPhotoevidence) {
+                    setStep(2);
+                  } else {
+                    setStep(1);
+                  }
+                }}
+              ></button>
               <span className="xs_sub_title">{jobName}</span>
             </div>
             <span className="sub_title">Worked hours in this milestone</span>
@@ -286,18 +337,17 @@ const MarkMilestone = ({
             <button
               className="fill_btn full_btn"
               onClick={() => {
-                if (!data.actualHours) {
-                  updateErrors('actualHours', 'This field is required');
-                  return;
-                }
-                let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
-                if (data.actualHours.match(pattern) === null) {
-                  updateErrors('actualHours', 'Hours should be in hh:mm format');
-                  return;
-                }
+                setStepCompleted((prevValue) => prevValue.concat([3]));
 
-                updateErrors('actualHours', '');
-                setStep(4);
+                const error = validateActualHours(data.actualHours);
+                if (error) {
+                  setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    actualHours: error,
+                  }));
+                } else {
+                  setStep(4);
+                }
               }}
             >
               Submit
@@ -407,33 +457,52 @@ const MarkMilestone = ({
             <button
               className="fill_btn full_btn"
               onClick={() => {
-                if (!data.account_name) {
-                  updateErrors('account_name', 'This field is required');
-                  return;
-                }
-                if (!data.account_number) {
-                  updateErrors('account_number', 'This field is required');
-                  return;
-                }
-                if (!data.bsb_number) {
-                  updateErrors('bsb_number', 'This field is required');
-                  return;
-                }
+                setStepCompleted((prevValue) => prevValue.concat([5]));
 
-                updateErrors('account_name', '');
-                updateErrors('account_number', '');
-                updateErrors('bsb_number', '');
+                const hasErrors = ['account_name', 'account_number', 'bsb_number'].reduce((prevValue, name) => {
+                  const error = validateBankDetails(data[name]);
+                  setErrors((prevErrors) => ({
+                    ...prevErrors,
+                    [name]: error,
+                  }));
+
+                  return prevValue || error;
+                }, '');
 
                 const callback = () => {
                   if (isLastMilestone) {
                     showJobCompletePage();
                   } else {
+                    setStepCompleted([]);
                     setData(defaultData);
                     showMilestoneCompletePage();
                   }
                 }
+                  
+                const milestoneData = {
+                  evidence: data.urls,
+                  jobId: params.jobId,
+                  milestoneId: milestones[milestoneIndex].milestoneId,
+                  description: data.description,
+                  actualHours: data.actualHours,
+                  totalAmount: data.totalAmount,
+                };
 
-                markMilestoneComplete({ ...data, evidence: data.urls, urls: undefined, jobId: params.jobId, milestoneId: milestones[milestoneIndex].milestoneId }, callback);
+                const updatedBankDetails = {
+                  account_name: data.account_name,
+                  account_number: data.account_number,
+                  bsb_number: data.bsb_number,
+                }
+                if (!hasErrors) {
+                  if (bankDetails.userId) {
+                    updateBankDetails({
+                      userId: data.userId,
+                      ...updatedBankDetails,
+                    }, milestoneData, callback);                  
+                  } else {
+                    addBankDetails(bankDetails, milestoneData, callback);
+                  }
+                };
               }}
             >
               Continue
