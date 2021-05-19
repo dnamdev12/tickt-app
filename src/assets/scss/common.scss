@@ -1957,10 +1957,20 @@ body {
     border: none;
     padding: 15px 10px 15px 65px;
     transition: all ease-in 0.3s;
+    background-color: #f6f6f6;
+    position: relative;
     &:hover,
     &.active {
-      background-color: #f6f6f6;
       box-shadow: 2px 0 20px 0 rgba(46, 61, 73, 0.2);
+    }
+    .remove_card{
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      img{
+        width: 20px;
+        height: 20px;
+      }
     }
     @media (max-width: 812px) {
       margin-bottom: 24px;
@@ -4074,6 +4084,7 @@ body {
         max-width: 145px;
         display: inline-block;
         color: var(--blue);
+        cursor: pointer;
       }
     }
   }

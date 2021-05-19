@@ -41,7 +41,7 @@ const JobTypeList = (props: any) => {
     return (
         <div className="home_job_categories">
             <div className="custom_container">
-                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={true} infinite={false}>
+                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={true} infinite={false} swipeable={false} draggable={false}>
                     <div>
                         <ul className="job_categories">
                             {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
