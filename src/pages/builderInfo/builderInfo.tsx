@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getBuilderProfile } from '../../redux/jobs/actions';
+import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
@@ -14,6 +15,7 @@ import rightIcon from '../../assets/images/ic-next-arrow-line.png'
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+import noData from '../../assets/images/no-data.png';
 
 interface PropsType {
     location: any
@@ -243,7 +245,7 @@ const BuilderInfo = (props: PropsType) => {
                     <div className="custom_container">
                         <span className="sub_title">Job posted</span>
                         <div className="flex_row tradies_row">
-                            <div className="flex_col_sm_6">
+                            {/* <div className="flex_col_sm_6">
                                 <div className="tradie_card">
                                     <a href="javascript:void(0)" className="more_detail circle"></a>
                                     <div className="user_wrap">
@@ -268,33 +270,16 @@ const BuilderInfo = (props: PropsType) => {
                                         <li className="icon comment">32</li>
                                     </ul>
                                 </div>
-                            </div>
-                            <div className="flex_col_sm_6">
-                                <div className="tradie_card">
-                                    <a href="javascript:void(0)" className="more_detail circle"></a>
-                                    <div className="user_wrap">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="traide-img" />
-                                        </figure>
-                                        <div className="details">
-                                            <span className="name">Wire up circuit box</span>
-                                        </div>
-                                    </div>
-                                    <div className="job_info">
-                                        <ul>
-                                            <li className="icon clock">32 minutes ago</li>
-                                            <li className="icon dollar">$250 p/h</li>
-                                            <li className="icon location line-1">Melbourne CBD</li>
-                                            <li className="icon calendar">4 days </li>
-                                        </ul>
-                                    </div>
-                                    <p className="commn_para">Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness. Sparky wanted for a quick job to hook up two floodlights...</p>
-                                    <ul className="count_wrap">
-                                        <li className="icon view">127</li>
-                                        <li className="icon comment">32</li>
-                                    </ul>
-                                </div>
-                            </div>
+                            </div> */}
+                            {profileData?.jobPostedData?.length > 0 ?
+                                (profileData?.jobPostedData?.slice(0,4)?.map((jobData: any) => {
+                                    return <TradieJobInfoBox item={jobData} {...props} />
+                                })) :
+                                <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                </div>}
                         </div>
                         <button className="fill_grey_btn full_btn m-tb40 view_more">View all 10 jobs</button>
                     </div>
