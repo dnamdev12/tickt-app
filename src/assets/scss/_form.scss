@@ -271,6 +271,8 @@ a.fill_grey_btn {
   transform: translateY(-50%);
   background-color: transparent;
   cursor: pointer;
+  font-size: 14px;
+  color: var(--greyish-brown);
   &.eye{
     width: 24px;
     height: 24px;
@@ -923,5 +925,20 @@ hr {
   background-color: #dfe5ef;
   @media(max-width: 768px){
     margin: 25px 0;
+  }
+}
+
+
+.col_ruler{
+  position: relative;
+  padding-left: 50px !important;
+  &::before{
+    content: '';
+    position: absolute;
+    top: -50px;
+    left: 15px;
+    width: 1px;
+    height: 100vh;
+    background-color: #dfe5ef;
   }
 }

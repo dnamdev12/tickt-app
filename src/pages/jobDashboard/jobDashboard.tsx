@@ -14,7 +14,6 @@ import close from '../../assets/images/ic-cancel-blue.png';
 import templateImage from '../../assets/images/job-complete-bg.png';
 import reviewBuilderSuccess from '../../assets/images/review-builder-success.png';
 
-
 interface Proptypes {
   getActiveJobList: (page: number) => void;
   activeJobList: Array<any>;
@@ -30,6 +29,10 @@ interface Proptypes {
   milestoneList: any;
   milestonesCount: number;
   newJobsCount: number;
+  addBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  updateBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  getBankDetails: () => void;
+  bankDetails: any;
 }
 
 const JobDashboard = ({
@@ -47,8 +50,19 @@ const JobDashboard = ({
   milestoneList,
   milestonesCount,
   newJobsCount,
+  addBankDetails,
+  updateBankDetails,
+  getBankDetails,
+  bankDetails,
 }: Proptypes) => {
   const history = useHistory();
+  let params: any = new URLSearchParams(history.location?.search);
+  params = {
+    jobId: params.get('jobId'),
+    tradeId: params.get('tradeId'),
+    specializationId: params.get('specializationId'),
+  };
+
   const [openSidebar, setOpenSidebar] = useState(false);
   const [milestoneComplete, setMilestoneComplete] = useState(false);
   const [jobComplete, setJobComplete] = useState(false);
@@ -88,7 +102,7 @@ const JobDashboard = ({
               <button
                 className="fill_btn"
                 onClick={() => {
-                  history.push('/mark-milestone/1');
+                  history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
                   setMilestoneComplete(false);
                 }}
               >
@@ -115,8 +129,8 @@ const JobDashboard = ({
               <button
                 className="fill_btn"
                 onClick={() => {
-                  history.push('/mark-milestone/1');
-                  setMilestoneComplete(false);
+                  history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
+                  setJobComplete(false);
                 }}
               >
                 OK
@@ -125,7 +139,7 @@ const JobDashboard = ({
                 className="fill_btn white_btn"
                 onClick={() => {
                   history.push('/past-jobs');
-                  setMilestoneComplete(false);
+                  setJobComplete(false);
                 }}
               >
                 See completed jobs
@@ -255,6 +269,10 @@ const JobDashboard = ({
                     milestoneList={milestoneList}
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
                     showJobCompletePage={() => setJobComplete(true)}
+                    getBankDetails={getBankDetails}
+                    addBankDetails={addBankDetails}
+                    updateBankDetails={updateBankDetails}
+                    bankDetails={bankDetails}
                     {...props}
                   />
                 )}

@@ -845,6 +845,7 @@ body {
   padding: 0 !important;
   .close_btn{
     top: 20px !important;
+    right: 30px !important;
   }
 	.react-multi-carousel-dot-list {
 		bottom: 135px;
@@ -3123,7 +3124,7 @@ body {
     }
   }
   &.posted_by {
-    min-height: 40px;
+    min-height: 40px !important;
     background-color: transparent;
     box-shadow: none;
     .chat {
@@ -4147,7 +4148,7 @@ body {
     }
   }
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    .flex_col_sm_6 {
+    .flex_col_sm_6, .flex_col_sm_8 {
       width: 100%;
       }
   }
@@ -4203,6 +4204,7 @@ body {
     .xs_sub_title{
       font-size: 16px;
       padding-left: 30px;
+      max-width: 93%;
     }
   }
   hr{
@@ -4296,6 +4298,24 @@ body {
             object-fit: none;
         }
     }
+}
+
+.time_spent{
+  display: block;
+  max-width: 280px;
+  width: 100%;
+  @media(max-width: 650px){
+    max-width: 100%;
+  }
+  input{
+    width: 215px;
+    @media(max-width: 650px){
+      width: 80%;
+    }
+  }
+  .detect_icon{
+    font-family: "Neue Haas Grotesk Text Pro Medium";    
+  }
 }
 
 .milestones_check{
