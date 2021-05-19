@@ -172,7 +172,8 @@ const BannerSearch = (props: PropsType) => {
         }
     }
 
-    const cleanRecentSearch = async (recentSearchId: string) => {
+    const cleanRecentSearch = async (event: any, recentSearchId: string) => {
+        event.stopPropagation();
         const data = {
             id: recentSearchId,
             status: 0
@@ -196,7 +197,7 @@ const BannerSearch = (props: PropsType) => {
                                     <div className="autosuggestion_icon card history">
                                         <span>{item.name}</span>
                                         <span className="name">{item.trade_name}</span>
-                                        <span className="remove_card" onClick={() => cleanRecentSearch(item.recentSearchId)}>
+                                        <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
                                             <img src={close} alt="remove" />
                                         </span>
                                     </div>
