@@ -42,21 +42,25 @@ const options = {
     },
 };
 
-const responsive = {
+const portfolio = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
-        items: 5,
-        slidesToSlide: 5, // optional, default to 1.
+        items: 4,
+        slidesToSlide: 1, // optional, default to 1.
+        paritialVisibilityGutter: 30
     },
     tablet: {
-        breakpoint: { max: 1024, min: 768 },
-        items: 3
+        breakpoint: { max: 1200, min: 768 },
+        items: 2,
+        paritialVisibilityGutter: 50
     },
     mobile: {
         breakpoint: { max: 650, min: 0 },
-        items: 1
+        items: 1,
+        paritialVisibilityGutter: 45
     }
 };
+
 
 const portifolioData = [
     {
@@ -197,24 +201,26 @@ const BuilderInfo = (props: PropsType) => {
                                 }) : <img alt="" src={portfolioPlaceholder} />}
                             </OwlCarousel> */}
                         <Carousel
-                            responsive={responsive}
-                            showDots={true}
-                            arrows={false}
+                            responsive={portfolio}
+                            showDots={false}
+                            arrows={true}
                             infinite={true}
+                            className="portfolio_wrappr"
+                            partialVisbile
                         // centerMode={true}
                         >
-                            <ul className="portfolio_wrappr">
-                                {portifolioData.length ? portifolioData?.map((item: any) => {
-                                    return (
-                                        <li key={item.portfolioId} onClick={portfolioImageHandler}>
+                            {portifolioData.length ? portifolioData?.map((item: any) => {
+                                return (
+
+                                        <div className="media" key={item.portfolioId} onClick={portfolioImageHandler}>
                                             <figure className="portfolio_img">
                                                 <img src={portfolioPlaceholder} alt="portfolio-images" />
                                                 <span className="xs_sub_title">{item.jobDescription}</span>
                                             </figure>
-                                        </li>
-                                    )
-                                }) : <img alt="" src={portfolioPlaceholder} />}
-                            </ul>
+                                        </div>
+                                )
+                            }) : <img alt="" src={portfolioPlaceholder} />}
+
                         </Carousel>
                         {/* <li>
                                 <figure className="portfolio_img">
