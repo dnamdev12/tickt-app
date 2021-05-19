@@ -261,7 +261,16 @@ const BuilderInfo = (props: PropsType) => {
                 <div className="custom_container">
                     <span className="sub_title">Reviews</span>
                     <div className="flex_row review_parent">
-                        <div className="flex_col_sm_3">
+                        {profileData?.reviewData?.length > 0 ?
+                            (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                return <ReviewInfoBox item={jobData} {...props} />
+                            })) :
+                            <div className="no_record">
+                                <figure className="no_img">
+                                    <img src={noData} alt="data not found" />
+                                </figure>
+                            </div>}
+                        {/* <div className="flex_col_sm_3">
                             <div className="review_card">
                                 <div className="rating_star">
                                     star here..
@@ -277,7 +286,7 @@ const BuilderInfo = (props: PropsType) => {
                                 </div>
                                 <p className="commn_para">Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it. That’s great.</p>
                             </div>
-                        </div>
+                        </div> */}
                         {/* <div className="flex_col_sm_3">
                             <div className="review_card">
                                 <div className="rating_star">
