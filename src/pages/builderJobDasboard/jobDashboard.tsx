@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom';
 import menu from '../../assets/images/menu-line-blue.png';
@@ -7,82 +8,48 @@ import approved from '../../assets/images/approved.png';
 import tradieListData from '../shared/tradieListData';
 import rateStar from '../../assets/images/ic-star-fill.png';
 import moment from 'moment';
+
+import ActiveJobsComponent from './components/activeJobs';
+import OpenJobsComponent from './components/openJobs';
+import PastJobsComponent from './components/pastJobs';
+import NewApplicantComponent from './components/newApplicants';
+
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
     getNewApplicantsBuilder: (page: number) => void,
     getOpenJobsBuilder: (page: number) => void,
+    getnewJobApplicationListBuilder: (page: number, jobId: any) => void,
     activeJobs: any,
     pastJobs: any,
     openJobs: any
     applicantJobs: any,
-    approvalJobs: any
+    approvalJobs: any,
+    applicantsListJobs: any
 }
 
-interface Active {
-    amount: any,
-    durations: any,
-    jobId: any,
-    jobName: any,
-    milestoneNumber: any,
-    specializationId: any,
-    specializationName: any,
-    status: any,
-    timeLeft: any,
-    totalmem: any,
-    totalMilestones: any,
-    tradieListData: any,
-    tradeName: any,
-    tradieId: any,
-    tradieImage: any,
-}
-
-interface Post {
-    amount: any,
-    fromDate: any,
-    jobData: any,
-    jobId: any,
-    jobName: any,
-    locationName: any,
-    milestoneNumber: any,
-    specializationId: any,
-    specializationName: any,
-    status: any,
-    toDate: any,
-    totalMilestones: any,
-    tradeId: any,
-    tradeName: any,
-    tradieData: any,
-}
-
-interface Applicant {
-    amount: any,
-    builderId: any,
-    builderImage: any,
-    durations: any,
-    fromDate: any,
-    jobDescription: any,
-    jobId: any,
-    specializationName: any,
-    timeLeft: any,
-    toDate: any,
-    total: any,
-    tradeName: any,
-    tradeSelectedUrl: any,
-}
-
-const JobDashboard = ({ getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs }: Props) => {
+const JobDashboard = ({
+    getActiveJobsBuilder,
+    getPastJobsBuilder,
+    getnewJobApplicationListBuilder,
+    getOpenJobsBuilder,
+    getNewApplicantsBuilder,
+    activeJobs,
+    openJobs,
+    pastJobs,
+    applicantJobs,
+    approvalJobs,
+    applicantsListJobs
+}: Props) => {
     const [openSidebar, setOpenSidebar] = useState(false);
     const [jobType, setJobtype] = useState('active');
     const [currentPage, setCurrentPage] = useState(1);
+    const [jobId, setJobId] = useState(null);
     const [dataItems, setDataItems] = useState({ activeJobs: {}, openJobs: {}, pastJobs: {}, applicantJobs: {}, approvalJobs: {} });
 
-    // let activeJobList: any = [];
-    let appliedJobList: any = [];
-
     useEffect(() => {
-        setDataItems((prev) => ({ ...prev, activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs }));
-    }, [activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs])
+        setDataItems((prev) => ({ ...prev, activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs, applicantsListJobs }));
+    }, [activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs, applicantsListJobs])
 
     const fetchActive = (page: any) => {
         if (jobType === 'active') {
@@ -109,6 +76,12 @@ const JobDashboard = ({ getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBui
             }
         }
 
+        if (jobType === 'applicantList') {
+            if (getnewJobApplicationListBuilder) {
+                getnewJobApplicationListBuilder(page, jobId);
+            }
+        }
+
         if (jobType === 'approval') {
             // approval
         }
@@ -120,312 +93,15 @@ const JobDashboard = ({ getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBui
 
     useEffect(() => {
         fetchActive(currentPage);
-    }, [jobType])
+    }, [jobType]);
 
-    const ActiveJobs = () => {
-        let data_item: any = dataItems;
-        let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
-        return (
-            <React.Fragment>
-                <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
-                <div className="flex_row tradies_row">
-                    {listData?.length ?
-                        listData.map(({
-                            amount,
-                            durations,
-                            jobId,
-                            jobName,
-                            milestoneNumber,
-                            specializationId,
-                            specializationName,
-                            status,
-                            timeLeft,
-                            totalmem,
-                            totalMilestones,
-                            tradieListData,
-                            tradeName,
-                            tradieId,
-                            tradieImage,
-                        }: Active) => (
-                            <div className="flex_col_sm_6">
-                                <div className="tradie_card">
-                                    <span className="more_detail circle">
-                                    </span>
-                                    <div className="user_wrap">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="traide-img" />
-                                        </figure>
-                                        <div className="details">
-                                            <span className="name">{tradeName}</span>
-                                            <p className="commn_para">{jobName}</p>
-                                        </div>
-                                    </div>
-                                    <div className="job_info">
-                                        <ul>
-                                            <li className="icon clock">{`${timeLeft} minutes ago`}</li>
-                                            <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{''}</li>
-                                            <li className="icon calendar">{`${durations} days`}</li>
-                                        </ul>
-                                    </div>
-                                    <div className="job_progress_wrap" id="scroll-progress-bar">
-                                        <div className="progress_wrapper">
-                                            <span className="completed-digit" id="digit-progress">
-                                                <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
-                                            </span>
-                                            <span className="approval_info">
-                                                {status === "Approved" && <img src={approved} alt="icon" />}
-                                                {status}
-                                                {/* {'Approved'} */} {/* Awating */}
-                                                {/* <img src={waiting} alt="icon" /> */}
-                                                {/* Need approval */}
-                                            </span>
-                                            <span className="progress_bar">
-                                                <input
-                                                    className="done_progress"
-                                                    id="progress-bar"
-                                                    type="range"
-                                                    min="0"
-                                                    value={milestoneNumber / totalMilestones * 100}
-                                                />
-                                            </span>
-                                        </div>
-                                        <button className="fill_grey_btn full_btn">
-                                            {'Applications'}
-                                            {/* <img src={rateStar} alt="rating-star" />
-                                            {'Rate this job'} */}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )) : null}
-                </div>
-            </React.Fragment>
-        )
+
+    const setJobLabel = (item: any) => {
+        setJobId(item.jobId);
+        setJobtype(item.title);
     }
 
-    const PastJobs = () => {
-        let data_item: any = dataItems;
-        let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
-        return (
-            <React.Fragment>
-                <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
-                <div className="flex_row tradies_row">
-                    {listData?.length ?
-                        listData.map(({
-                            amount,
-                            fromDate,
-                            jobData,
-                            jobId,
-                            jobName,
-                            locationName,
-                            milestoneNumber,
-                            specializationId,
-                            specializationName,
-                            status,
-                            toDate,
-                            totalMilestones,
-                            tradeId,
-                            tradeName,
-                            tradieData,
-                        }: Post) => (
-                            <div className="flex_col_sm_6">
-                                <div className="tradie_card">
-                                    <span className="more_detail circle">
-                                    </span>
-                                    <div className="user_wrap">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="traide-img" />
-                                        </figure>
-                                        <div className="details">
-                                            <span className="name">{tradeName}</span>
-                                            <p className="commn_para">{jobName}</p>
-                                        </div>
-                                    </div>
-                                    <div className="job_info">
-                                        <ul>
-                                            <li className="icon clock">{`${0} minutes ago`}</li>
-                                            <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{locationName}</li>
-                                            <li className="icon calendar">{'0 days'}</li>
-                                        </ul>
-                                    </div>
-                                    <div className="job_progress_wrap" id="scroll-progress-bar">
-                                        <div className="progress_wrapper">
-                                            <span className="completed-digit" id="digit-progress">
-                                                <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
-                                            </span>
-                                            <span className="approval_info">
-                                                {status === "Approved" && <img src={approved} alt="icon" />}
-                                                {status}
-                                                {/* {'Approved'} */} {/* Awating */}
-                                                {/* <img src={waiting} alt="icon" /> */}
-                                                {/* Need approval */}
-                                            </span>
-                                            <span className="progress_bar">
-                                                <input
-                                                    className="done_progress"
-                                                    id="progress-bar"
-                                                    type="range"
-                                                    min="0"
-                                                    value={(milestoneNumber / totalMilestones) > 0 ? milestoneNumber / totalMilestones * 100 : 0}
-                                                />
-                                            </span>
-                                        </div>
-                                        <button className="fill_grey_btn full_btn">
-                                            {'Applications'}
-                                            {/* <img src={rateStar} alt="rating-star" />
-                                            {'Rate this job'} */}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )) : null}
-                </div>
-            </React.Fragment>
-        )
-    }
 
-    const OpenJobs = () => {
-        let data_item: any = dataItems;
-        let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
-        return (
-            <React.Fragment>
-                <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
-                <div className="flex_row tradies_row">
-                    {listData?.length ?
-                        listData.map(({
-                            amount,
-                            durations,
-                            jobId,
-                            jobName,
-                            milestoneNumber,
-                            specializationId,
-                            specializationName,
-                            status,
-                            timeLeft,
-                            totalmem,
-                            totalMilestones,
-                            tradieListData,
-                            tradeName,
-                            tradieId,
-                            tradieImage,
-                        }: Active) => (
-                            <div className="flex_col_sm_6">
-                                <div className="tradie_card">
-                                    <span className="more_detail circle">
-                                    </span>
-                                    <div className="user_wrap">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="traide-img" />
-                                        </figure>
-                                        <div className="details">
-                                            <span className="name">{tradeName}</span>
-                                            <p className="commn_para">{jobName}</p>
-                                        </div>
-                                    </div>
-                                    <div className="job_info">
-                                        <ul>
-                                            <li className="icon clock">{`${timeLeft} minutes ago`}</li>
-                                            <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{''}</li>
-                                            <li className="icon calendar">{`${durations} days`}</li>
-                                        </ul>
-                                    </div>
-                                    <div className="job_progress_wrap" id="scroll-progress-bar">
-                                        <div className="progress_wrapper">
-                                            <span className="completed-digit" id="digit-progress">
-                                                <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
-                                            </span>
-                                            <span className="approval_info">
-                                                {status === "Approved" && <img src={approved} alt="icon" />}
-                                                {status}
-                                                {/* {'Approved'} */} {/* Awating */}
-                                                {/* <img src={waiting} alt="icon" /> */}
-                                                {/* Need approval */}
-                                            </span>
-                                            <span className="progress_bar">
-                                                <input
-                                                    className="done_progress"
-                                                    id="progress-bar"
-                                                    type="range"
-                                                    min="0"
-                                                    value={milestoneNumber / totalMilestones * 100}
-                                                />
-                                            </span>
-                                        </div>
-                                        <button className="fill_grey_btn full_btn">
-                                            {'Applications'}
-                                            {/* <img src={rateStar} alt="rating-star" />
-                                            {'Rate this job'} */}
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        )) : null}
-                </div>
-            </React.Fragment>
-        )
-    }
-
-    const Applicant = () => {
-        let data_item: any = dataItems;
-        let listData: any = data_item[`${jobType}Jobs`]
-        console.log({ listData, jobType, data_item })
-        return (
-            <React.Fragment>
-                <span className="sub_title">New Applicants</span>
-                <div className="flex_row tradies_row">
-                    {listData?.length ?
-                        listData.map(({
-                            amount,
-                            builderId,
-                            builderImage,
-                            durations,
-                            fromDate,
-                            jobDescription,
-                            jobId,
-                            specializationName,
-                            timeLeft,
-                            toDate,
-                            total,
-                            tradeName,
-                            tradeSelectedUrl,
-                        }: Applicant) => (
-                            <div className="flex_col_sm_6">
-                                <div className="tradie_card">
-                                    <span className="more_detail circle">
-                                    </span>
-                                    <div className="user_wrap">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="traide-img" />
-                                        </figure>
-                                        <div className="details">
-                                            <span className="name">{tradeName}</span>
-                                            <p className="commn_para">{jobDescription}</p>
-                                        </div>
-                                    </div>
-                                    <div className="job_info">
-                                        <ul>
-                                            <li className="icon clock">{`${timeLeft} minutes ago`}</li>
-                                            <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{'.'}</li>
-                                            <li className="icon calendar">{`${durations} days`}</li>
-                                        </ul>
-                                    </div>
-                                    <button className="fill_grey_btn full_btn">
-                                        {'Applications'}
-                                    </button>
-
-                                </div>
-                            </div>
-                        )) : null}
-                </div>
-            </React.Fragment>
-        )
-    }
-
-    console.log({ activeJobs, openJobs, pastJobs });
     let data_item: any = dataItems;
     let currentItem = data_item[`${jobType}Jobs`]
     let needApprovalCount: any = 0;
@@ -505,51 +181,28 @@ const JobDashboard = ({ getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBui
                         </div>
                     </div>
                     <div className="detail_col">
-                        {jobType === 'active' && <ActiveJobs />}
-                        {jobType === 'open' && <OpenJobs />}
-                        {jobType === 'past' && <PastJobs />}
-                        {jobType === "applicant" && <Applicant />}
+                        {jobType === 'active' && (
+                            <ActiveJobsComponent
+                                dataItems={dataItems}
+                                jobType={jobType}
+                            />)}
+                        {jobType === 'open' && (
+                            <OpenJobsComponent
+                                dataItems={dataItems}
+                                jobType={jobType}
+                            />)}
+                        {jobType === 'past' && (
+                            <PastJobsComponent
+                                dataItems={dataItems}
+                                jobType={jobType}
+                            />)}
+                        {jobType === "applicant" && (
+                            <NewApplicantComponent
+                                dataItems={dataItems}
+                                jobType={jobType}
+                                setJobLabel={setJobLabel}
+                            />)}
                     </div>
-                    {/* <div className="detail_col">
-                        <Switch>
-                            <Route
-                                path="/active-jobs"
-                                render={(props) => (
-                                    <ActiveJobs />
-                                )}
-                            />
-                            <Route
-                                path="/applied-jobs"
-                                render={(props) => (
-                                    <ActiveJobs />
-                                )}
-                            />
-                            <Route
-                                path="/past-jobs"
-                                render={(props) => (
-                                    <ActiveJobs />
-                                )}
-                            />
-                            <Route
-                                path="/new-jobs"
-                                render={(props) => (
-                                    <ActiveJobs />
-                                )}
-                            />
-                            <Route
-                                path="/approved-milestones"
-                                render={(props) => (
-                                    <ActiveJobs />
-                                )}
-                            />
-                            <Route
-                                path="/mark-milestone"
-                                render={(props) => (
-                                    <ActiveJobs />
-                                )}
-                            />
-                        </Switch>
-                    </div> */}
                 </div>
             </div>
         </div>
