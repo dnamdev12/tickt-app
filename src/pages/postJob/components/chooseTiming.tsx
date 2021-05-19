@@ -77,7 +77,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
 
             });
             if (item_find) {
-                setShowToast(true, 'please check the milestone dates.');
+                setShowToast(true, 'Please check the milestone dates.');
                 return;
             }
         }
