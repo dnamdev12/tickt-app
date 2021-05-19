@@ -319,7 +319,7 @@ body.loader_show .full_loader {
         height: 8px;
         border: none;
     }
-    &.react-multi-carousel-dot--active {
+    &.react-multi-carousel-dot--active, &.active {
         button{
             background-color: var(--blue-two) !important;
         }
@@ -350,6 +350,41 @@ body.loader_show .full_loader {
 }
 
 
+
+
+.react-multiple-carousel__arrow{
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #dfe5ef;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9;
+    &:hover{
+        background-color: #b1bbcd;
+    }
+    &.react-multiple-carousel__arrow--left{
+        left: 0;
+        &::before{
+            content: '';
+            width: 24px;
+            height: 24px;
+            background: url('../images/icon-direction-left.png') center no-repeat;
+            background-size: contain;
+        }
+    }
+    &.react-multiple-carousel__arrow--right{
+        right: 0;
+        &::before{
+            content: '';
+            width: 24px;
+            height: 24px;
+            background: url('../images/icon-direction-right.png') center no-repeat;
+            background-size: contain;
+        }
+    }
+}
 //----------------Onboarding carowsel--------------------//
 
 

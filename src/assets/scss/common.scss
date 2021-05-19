@@ -1425,6 +1425,7 @@ body {
         font-size: 14px;
         color: #313d48;
         line-height: 1;
+        margin-top: 10px;
       }
   }
 }
@@ -1435,9 +1436,9 @@ body {
   flex-wrap: wrap;
   align-items: center;
   margin-bottom: 30px;
-  li{
+  .media{
       display: inline-block;
-      margin: 0px 24px 0px 0px;
+      // margin: 0px 24px 0px 0px;
       cursor: pointer;
       .portfolio_img{
           width: 256px;
@@ -2426,7 +2427,7 @@ body {
   top: 0;
   margin: 15px 0;
   display: flex;
-  background-color: var(--white);
+  background-color: #f0f3fa;
   box-shadow: 0 0 5px #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -3313,6 +3314,13 @@ body {
       }
     }
   }
+  .select_sphere {
+    ul{
+      li{
+        margin: 0;
+      }
+    }
+  }
 }
 .job_categories {
   display: flex;
@@ -3601,7 +3609,7 @@ body {
 .job_milestone{
   max-width: 345px;
   margin: 0 0 20px;
-  min-height: 250px;
+  min-height: 90px;
   @media (max-width: 650px) {
     min-height: 70px;
     max-width: 100%;

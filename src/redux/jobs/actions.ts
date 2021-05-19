@@ -143,6 +143,29 @@ export const updateQuestion = async (data: any) => {
   return { success: false };
 }
 
+export const reviewBuilder = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewBuilder, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const getBuilderProfile = async (builderId: string) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`)
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 export const getActiveJobList = (page: number) => ({
   type: actionTypes.GET_ACTIVE_JOBS_START,
   page,
@@ -171,6 +194,7 @@ export const getApprovedMilestoneList = (page: number) => ({
 export const getActiveJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_ACTIVE_JOBS, page });
 export const getOpenJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_OPEN_JOBS, page });
 export const getPastJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_PAST_JOBS, page });
+export const getNewApplicantsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS, page });
 
 export const getMilestoneList = (jobId: string) => ({
   type: actionTypes.GET_MILESTONES_START,

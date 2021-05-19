@@ -238,7 +238,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <OwlCarousel className='owl-theme' {...options}>
                                         {jobDetailsData?.photos?.length ? jobDetailsData?.photos?.map((image: string) => {
                                             return (
-                                                <img alt="" src={image} />
+                                                <img alt="" src={image ? image : jobDummyImage} />
                                             )
                                         }) : <img alt="" src={jobDummyImage} />}
                                     </OwlCarousel>
@@ -462,7 +462,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
                                             </figure>
                                             <div className="details">
-                                                <span className="name">{jobDetailsData?.postedBy?.builderName}</span>
+                                                <span className="name" onClick={() => props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)}>{jobDetailsData?.postedBy?.builderName}</span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                                 <span className="rating">{`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}</span>
                                             </div>

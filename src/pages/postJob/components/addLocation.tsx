@@ -183,7 +183,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                           // style={{ display: address?.length < 3 ? 'none+!important' : '' }}
                           {...getInputProps({
                             placeholder: 'Type a State, city or suburb',
-                            className: `${address?.length < 3 ? 'none' : 'location-search-input detect_input' }`,
+                            className: `${address?.length < 3 ? 'none' : 'location-search-input detect_input'}`,
                           })}
                         />
                         <span className={`${address?.length < 3 ? 'none' : 'detect_icon'}`}>
@@ -200,31 +200,31 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                       </div>
                       <div className="autocomplete-drop-down-map-container">
                         {loading && <div>Loading...</div>}
-                        {!locationSelected && !loading && !suggestions?.length && address?.length > 3 ?
+                        {!locationSelected && !loading && !suggestions?.length && address?.length > 3 && !locationDetails?.location?.coordinates?.length ?
                           (<div className="loc_suggestions">
                             {'No Result Found.'}
                           </div>)
                           : ''}
-                        {suggestions.map((suggestion: any) => {
-                          const className = suggestion.active
-                            ? 'suggestion-item--active'
-                            : 'suggestion-item';
-                          // inline style for demonstration purpose
-                          const style = suggestion.active
-                            ? { backgroundColor: '#fafafa', cursor: 'pointer' }
-                            : { backgroundColor: '#ffffff', cursor: 'pointer' };
-                          return (
-                            <div
-                              {...getSuggestionItemProps(suggestion, {
-                                className,
-                                style,
-                              })}
-                            >
-                              <div className="loc_suggestions">{suggestion.description}</div>
-                            </div>
-                          );
-                        })}
-
+                        {!locationSelected && !loading && suggestions?.length && address?.length > 3 ?
+                          suggestions.map((suggestion: any) => {
+                            const className = suggestion.active
+                              ? 'suggestion-item--active'
+                              : 'suggestion-item';
+                            // inline style for demonstration purpose
+                            const style = suggestion.active
+                              ? { backgroundColor: '#fafafa', cursor: 'pointer' }
+                              : { backgroundColor: '#ffffff', cursor: 'pointer' };
+                            return (
+                              <div
+                                {...getSuggestionItemProps(suggestion, {
+                                  className,
+                                  style,
+                                })}
+                              >
+                                <div className="loc_suggestions">{suggestion.description}</div>
+                              </div>
+                            );
+                          }) : null}
                       </div>
                     </div>
                   )}

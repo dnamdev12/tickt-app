@@ -53,7 +53,7 @@ const Urls = {
     newJobList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}newJobList`,
     approvedMilestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}approveMilestoneList`,
     activeJobListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}activeJobList`, //active-job-list (builder)
-    OpenJobLisBuildert: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}openJobList`, //open-job-list (builder)
+    OpenJobLisBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}openJobList`, //open-job-list (builder)
     pastJobListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}pastJobList`,  //past-job-list (builder)
     newApplicantsBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}newApplicants`, //new-applicants (builder)
     newJobApplicationListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}newJobApplicationList`, //new-job-application-list (builder)
@@ -64,6 +64,8 @@ const Urls = {
     addBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}addBankDetails`,
     updateBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}updateBankDetails`,
     getBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getBankDetails`,
+    reviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewBuilder`,
+    builderProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}builderProfile`,
 }
 
 export const urlFor = (service: String): string => {
