@@ -13,6 +13,7 @@ import moment from 'moment';
 // @ts-ignore
 import { useDetectClickOutside } from 'react-detect-click-outside';
 import { setShowToast } from '../../../../../redux/common/actions';
+import { deleteRecentSearch } from '../../../../../redux/homeSearch/actions';
 
 import Searchicon from "../../../../../assets/images/main-search.png";
 import search from "../../../../../assets/images/ic-search.png";
@@ -34,6 +35,7 @@ interface PropsType {
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
     cleanFiltersHandler?: (data: any) => void,
+    getRecentSearchList: () => void,
 }
 
 const BannerSearch = (props: PropsType) => {
@@ -170,19 +172,31 @@ const BannerSearch = (props: PropsType) => {
         }
     }
 
+    const cleanRecentSearch = async (recentSearchId: string) => {
+        const data = {
+            id: recentSearchId,
+            status: 0
+        }
+
+        const res = await deleteRecentSearch(data);
+        if (res.success) {
+            props.getRecentSearchList();
+        }
+    }
+
     const recentJobSearches = () => {
         return (
             <>
                 {props.recentSearchJobData?.length > 0 && <div className="custom_autosuggestion" id="recent-job-search-div">
                     <span className="sub_title">Recent searches</span>
                     <div className="flex_row recent_search">
-                        {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 3).map((item: any) => {
+                        {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.map((item: any) => {
                             return (
                                 <div className="flex_col_sm_4" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
                                     <div className="autosuggestion_icon card history">
                                         <span>{item.name}</span>
                                         <span className="name">{item.trade_name}</span>
-                                        <span className="remove_card">
+                                        <span className="remove_card" onClick={() => cleanRecentSearch(item.recentSearchId)}>
                                             <img src={close} alt="remove" />
                                         </span>
                                     </div>
