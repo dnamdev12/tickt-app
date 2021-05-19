@@ -182,6 +182,9 @@ const BannerSearch = (props: PropsType) => {
                                     <div className="autosuggestion_icon card history">
                                         <span>{item.name}</span>
                                         <span className="name">{item.trade_name}</span>
+                                        <span className="remove_card">
+                                            <img src={close} alt="remove" />
+                                        </span>
                                     </div>
                                 </div>)
                         })}
