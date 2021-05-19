@@ -151,7 +151,7 @@ const BannerSearch = (props: PropsType) => {
                         <React.Fragment>
                             <span className="sub_title">Recent searches</span>
                             <div className="flex_row recent_search">
-                                {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 3).map((item: any) => {
+                                {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 4).map((item: any) => {
                                     return (
                                         <div
                                             className="flex_col_sm_4"
@@ -406,7 +406,9 @@ const BannerSearch = (props: PropsType) => {
                                     // isHandleChanges(true)
                                     setSearchText(e.target.value);
                                     setSelectedTrade({})
-                                    props.getSearchJobList(e.target.value)
+                                    if(searchText?.length > 3){
+                                        props.getSearchJobList(e.target.value)
+                                    }
                                 }}
                                 // readOnly={props?.selectedItem ? true : false}
                                 onFocus={() => { setInputFocus1(true) }}
@@ -433,7 +435,7 @@ const BannerSearch = (props: PropsType) => {
                         {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>}
                     </li>
                     {!searchText?.length && inputFocus1 ? recentJobSearches() : null}
-                    {searchText?.length && inputFocus1 ? renderJobResult() : null}
+                    {searchText?.length > 3 && inputFocus1 ? renderJobResult() : null}
 
                     {/* {'location search start here!'} */}
                     <li className="loc_box">

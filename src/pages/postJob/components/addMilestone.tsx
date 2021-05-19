@@ -255,11 +255,11 @@ export default class AddMilestone extends Component<Props, State> {
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
                                 <div className="form_field">
-                                    <label className="form_label">Milestone name</label>
+                                    <label className="form_label">Milestone Name</label>
                                     <div className="text_field">
                                         <input
                                             type="text"
-                                            placeholder="Enter Milestone name"
+                                            placeholder="Enter Milestone Name"
                                             onChange={(e) => { this.handleChange('milestone_name', e.target.value) }}
                                             value={milestone_name}
                                             name="milestone_name" />
@@ -294,7 +294,7 @@ export default class AddMilestone extends Component<Props, State> {
                                     </div>
                                 </div>
                                 <div className="form_field">
-                                    <label className="form_label">Recommended hours</label>
+                                    <label className="form_label">Recommended Hours</label>
                                     <div className="text_field">
                                         <input
                                             onChange={(e) => {
@@ -313,7 +313,7 @@ export default class AddMilestone extends Component<Props, State> {
                                             }}
                                             value={recommended_hours}
                                             type="text"
-                                            placeholder="Enter Recommended hours"
+                                            placeholder="Enter Recommended Hours"
                                             name="recommended_hours" />
                                     </div>
                                     <span className="error_msg">{errors.recommended_hours}</span>

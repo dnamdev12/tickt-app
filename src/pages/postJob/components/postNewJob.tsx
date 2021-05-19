@@ -130,9 +130,9 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                 <span className="xs_sub_title">Job</span>
               </div>
               <div className="form_field">
-                <label className="form_label">Job name</label>
+                <label className="form_label">Job Name</label>
                 <div className="text_field">
-                  <input type="text" placeholder="Enter job name" name="jobName" value={jobName} onChange={handleChange} />
+                  <input type="text" placeholder="Enter Job Name" name="jobName" value={jobName} onChange={handleChange} />
                 </div>
                 <span className="error_msg">{errors.jobName}</span>
               </div>

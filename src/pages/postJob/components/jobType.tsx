@@ -183,7 +183,7 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ed
             <span className="error_msg">{errors.categories}</span>
           </div>
           <div className="form_field">
-            <span className="xs_sub_title">Job types</span>
+            <span className="xs_sub_title">Job Types</span>
           </div>
           <ul className="job_categories">
             {jobTypes.map(({ _id, name, image }: { _id: string, name: string, image: string }) => (

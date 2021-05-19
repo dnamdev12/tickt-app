@@ -14,12 +14,32 @@ import cross from "../../../assets/images/close-black.png";
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
-
 interface Proptypes {
   data: any;
   stepCompleted: Boolean;
   handleStepComplete: (data: any) => void;
   handleStepBack: () => void;
+}
+
+
+// const center = { lat: -25, lng: 131 };
+// const defaultBounds = {
+//   north: center.lat + 0.1,
+//   south: center.lat - 0.1,
+//   east: center.lng + 0.1,
+//   west: center.lng - 0.1,
+// };
+// const meter = 1000;
+const searchOptions = {
+  componentRestrictions: { country: "au" },
+  // bounds: defaultBounds,
+  // fields: ["address_components"],
+  // origin: center,
+  // strictBounds: false,
+  // types: ["address"],
+  // location: new google.maps.LatLng(-23, 132),
+  // radius: meter, // meters to km
+  // types: ['address']
 }
 
 const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
@@ -170,6 +190,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                     setLocationSelected(false);
                     setAddress((value).trimLeft())
                   }}
+                  searchOptions={searchOptions}
                   onSelect={handleSelect}
                 >
                   {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
