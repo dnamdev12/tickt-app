@@ -72,17 +72,17 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         }
 
         let filesUrlClone: any = filesUrl;
-        
+
         let countVideoFormats = filesUrlClone.map((item: any) => {
             let split_items = item.link.split('.');
-        
+
             let format_split_items = split_items[split_items?.length - 1];
-            
+
             if (videoFormats.includes(format_split_items)) {
                 return format_split_items;
             }
         }).filter((item: any) => item !== undefined);
-        
+
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
@@ -167,7 +167,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             <div className={`flex_col_sm_${jobName ? '7' : '6'}`}>
                                 <div className="relate">
                                     <button
-                                        onClick={handleStepBack}
+                                        onClick={() => { handleStepForward(6) }}
                                         className="back"></button>
                                     <span className={jobName ? "xs_sub_title" : "title"}>{jobName || 'Video upload or add photos'}</span>
                                 </div>
@@ -205,7 +205,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     {hasDescription && <div className="form_field">
                         <label className="form_label">Photo description</label>
                         <div className="text_field">
-                            <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value }}: any) => setDescription(value)} />
+                            <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
                         </div>
                         <span className="error_msg">{submitClicked && !description ? 'This field is required' : ''}</span>
                     </div>}

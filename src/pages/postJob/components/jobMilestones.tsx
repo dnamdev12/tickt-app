@@ -54,8 +54,8 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         setDeleteItem(null);
     }
 
-
     useEffect(() => {
+        console.log({localMilestones, milestones},'------------------------------------------------->')
         if (!localMilestones?.length !== milestones?.length) {
             let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
             setLocalMilestones(filter_milestones); // set milestoner here!

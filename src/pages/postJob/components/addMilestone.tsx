@@ -31,6 +31,13 @@ const defaultStates = {
     to_date: '',
     recommended_hours: '',
 }
+
+// for error messages
+const label: { [index: string]: string } = {
+    milestone_name: 'Milestone Name',
+    from_date: 'From Date',
+    recommended_hours: 'Recommended Hours',
+}
 export default class AddMilestone extends Component<Props, State> {
     constructor(props: any) {
         super(props)
@@ -57,7 +64,7 @@ export default class AddMilestone extends Component<Props, State> {
         if (nextProps.milestones.length) {
             let milestones_items = nextProps.milestones;
             let item = milestones_items[milestones_items.length - 1];
-            
+
             if ('milestone_name' in item) {
                 this.setLocalValueByCompare(item?.milestone_name, milestone_name, 'milestone_name');
             } else {
@@ -117,14 +124,14 @@ export default class AddMilestone extends Component<Props, State> {
     }
 
     handleChange = (name: string, value: any) => {
-        console.log({name })
+        console.log({ name })
         let error_clone: any = this.state.errors;
 
-        if(name === "milestone_name"){
+        if (name === "milestone_name") {
             value = (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "")
         }
 
-        if(name  === "recommended_hours") {
+        if (name === "recommended_hours") {
             value = (value).trimLeft();
         }
 
@@ -154,11 +161,11 @@ export default class AddMilestone extends Component<Props, State> {
     isInvalid = (name: string, value: string) => {
         switch (name) {
             case 'milestone_name':
-                return !value.length ? `please enter ${name}` : value.length > 50 ? 'max length exceed to 50.' : '';
+                return !value.length ? `${label[name]} is required.` : value.length > 50 ? 'Maximum 50 characters are allowed.' : '';
             case 'from_date':
-                return !value.length ? `please enter ${name}` : '';
+                return !value.length ? `${label[name]} is required.` : '';
             case 'recommended_hours':
-                return !value.length ? `please enter ${name}` : '';
+                return !value.length ? `${label[name]} is required.` : '';
         }
     }
 
@@ -248,11 +255,11 @@ export default class AddMilestone extends Component<Props, State> {
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
                                 <div className="form_field">
-                                    <label className="form_label">Milestone name</label>
+                                    <label className="form_label">Milestone Name</label>
                                     <div className="text_field">
                                         <input
                                             type="text"
-                                            placeholder="Enter Milestone name"
+                                            placeholder="Enter Milestone Name"
                                             onChange={(e) => { this.handleChange('milestone_name', e.target.value) }}
                                             value={milestone_name}
                                             name="milestone_name" />
@@ -287,7 +294,7 @@ export default class AddMilestone extends Component<Props, State> {
                                     </div>
                                 </div>
                                 <div className="form_field">
-                                    <label className="form_label">Recommended hours</label>
+                                    <label className="form_label">Recommended Hours</label>
                                     <div className="text_field">
                                         <input
                                             onChange={(e) => {
@@ -306,7 +313,7 @@ export default class AddMilestone extends Component<Props, State> {
                                             }}
                                             value={recommended_hours}
                                             type="text"
-                                            placeholder="Enter Recommended hours"
+                                            placeholder="Enter Recommended Hours"
                                             name="recommended_hours" />
                                     </div>
                                     <span className="error_msg">{errors.recommended_hours}</span>

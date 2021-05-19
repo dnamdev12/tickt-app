@@ -78,7 +78,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                     <div className="flex_row">
                         <div className="flex_col_sm_5">
                             <div className="form_field">
-                                <label className="form_label">Template name</label>
+                                <label className="form_label">Template Name</label>
                                 <div className="text_field">
                                     <input
                                         onChange={(e) => {

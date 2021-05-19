@@ -168,7 +168,9 @@ function* markMilestoneComplete({ data, callback }: any) {
 }
 
 function* getActiveJobsBuilder({ page }: any) {
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(`${Urls.activeJobListBuilder}?page=${page}`);
+  setLoading(false);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_BUILDER_ACTIVE_JOBS,
@@ -180,7 +182,9 @@ function* getActiveJobsBuilder({ page }: any) {
 }
 
 function* getPastJobsBuilder({ page }: any) {
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(`${Urls.pastJobListBuilder}?page=${page}`);
+  setLoading(false);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_BUILDER_PAST_JOBS,
@@ -192,7 +196,9 @@ function* getPastJobsBuilder({ page }: any) {
 }
 
 function* getOpenJobsBuilder({ page }: any) {
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(`${Urls.OpenJobLisBuilder}?page=${page}`);
+  setLoading(false);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_BUILDER_OPEN_JOBS,
@@ -204,10 +210,26 @@ function* getOpenJobsBuilder({ page }: any) {
 }
 
 function* getBuilderNewApplicants({ page }: any) {
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(`${Urls.newApplicantsBuilder}?page=${page}`);
+  setLoading(false);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_BUILDER_NEW_APPLICANTS,
+      payload: response.result,
+    });
+
+    return;
+  }
+}
+
+function* getnewJobApplicationListBuilder({ page, jobId }: any) {
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(`${Urls.newJobApplicationListBuilder}?page=${page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    yield put({
+      type: actionTypes.SET_BUILDER_NEW_APPLICANTS_LIST,
       payload: response.result,
     });
 
@@ -231,6 +253,8 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_BUILDER_PAST_JOBS, getPastJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_OPEN_JOBS, getOpenJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS, getBuilderNewApplicants);
+    yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, getnewJobApplicationListBuilder);
+
   } catch (e) {
     console.log(e);
   }

@@ -18,7 +18,8 @@ const initialState = {
   builderActionJobs: [],
   builderOpenJobs: [],
   builderPastJobs: [],
-  builderNewApplicants:[]
+  builderNewApplicants: [],
+  builderNewApplicantsList: []
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -117,6 +118,12 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderNewApplicants: action.payload,
+      };
+
+    case actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST:
+      return {
+        ...state,
+        builderNewApplicantsList: action.payload,
       };
 
     default: return state;

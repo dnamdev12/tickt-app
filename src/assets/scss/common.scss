@@ -3046,6 +3046,15 @@ body {
       margin-right: 10px;
     }
   }
+  .job_status{
+    font-size: 10px;
+    color: var(--blue-two);
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    line-height: 1.7;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    display: block;
+  }
 	.more_detail {
 		position: absolute;
 		top: 16px;

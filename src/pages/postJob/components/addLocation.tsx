@@ -14,12 +14,35 @@ import cross from "../../../assets/images/close-black.png";
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
-
+Geocode.setRegion('au');
+// Enable or disable logs. Its optional.
+Geocode.enableDebug();
 interface Proptypes {
   data: any;
   stepCompleted: Boolean;
   handleStepComplete: (data: any) => void;
   handleStepBack: () => void;
+}
+
+
+// const center = { lat: -25, lng: 131 };
+// const defaultBounds = {
+//   north: center.lat + 0.1,
+//   south: center.lat - 0.1,
+//   east: center.lng + 0.1,
+//   west: center.lng - 0.1,
+// };
+// const meter = 1000;
+const searchOptions = {
+  componentRestrictions: { country: "au" },
+  // bounds: defaultBounds,
+  // fields: ["address_components"],
+  // origin: center,
+  // strictBounds: false,
+  // types: ["address"],
+  // location: new google.maps.LatLng(-23, 132),
+  // radius: meter, // meters to km
+  // types: ['address']
 }
 
 const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
@@ -30,7 +53,6 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const [activeCurrent, setActiveCurrent] = useState(false);
   const [inputFocus, setInputFocus] = useState(false);
   const [locationSelected, setLocationSelected] = useState(false);
-
 
   const updateLocalData = (data: any) => {
     setLocationDetails({
@@ -59,6 +81,27 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     }
   }, [address, stepCompleted, data])
 
+
+  const filterFromAddress = (response: any) => {
+    let city, state, country = null;
+    for (let i = 0; i < response.results[0].address_components.length; i++) {
+      for (let j = 0; j < response.results[0].address_components[i].types.length; j++) {
+        switch (response.results[0].address_components[i].types[j]) {
+          case "locality":
+            city = response.results[0].address_components[i].long_name;
+            break;
+          case "administrative_area_level_1":
+            state = response.results[0].address_components[i].long_name;
+            break;
+          case "country":
+            country = response.results[0].address_components[i].long_name;
+            break;
+        }
+      }
+    }
+    return { city, state, country: country.toLowerCase() };
+  }
+
   const getCurrentLocation = async (e: any) => {
     e.preventDefault();
     setActiveCurrent(true);
@@ -70,15 +113,24 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
       let position = JSON.parse(item_position);
       let longitude = (position[0])?.toString();
       let latitude = (position[1])?.toString();
-      let response: any = await Geocode.fromLatLng(latitude, longitude);
-      console.log({ response }, '65')
-      if (response) {
-        const address = response.results[0].formatted_address;
-        let coordinates_values = [latitude, longitude];
-        console.log('before set', { coordinates_values, address })
-        setLocation({ coordinates: coordinates_values, address: address })
-        setLoading(false);
+      try {
+        let response: any = await Geocode.fromLatLng(latitude, longitude);
+        const { city, state, country } = filterFromAddress(response);
+        console.log({ response, city, state, country }, '65')
+        if (response && ["australia", "au"].includes(country)) {
+          const address = response.results[0].formatted_address;
+          let coordinates_values = [latitude, longitude];
+          console.log('before set', { coordinates_values, address })
+          setLocation({ coordinates: coordinates_values, address: address })
+          setLoading(false);
+        } else {
+          setLocation({ coordinates: [144.9631, -37.8136], address: '325 Little Bourke Street, Melbourne CBD, Melbourne, Australia' })
+          setLoading(false);
+        }
+      } catch (err) {
+        console.log({ err });
       }
+
     } else {
       setError('Please enable the location permission from the settings so that Tickt app can access your location');
     }
@@ -114,10 +166,14 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
 
   const handleSelect = async (address: any) => {
     setLocationSelected(true);
-    let coordinates_response = await Geocode.fromAddress(address);
-    if (coordinates_response) {
-      const { lat, lng } = coordinates_response.results[0].geometry.location;
-      setLocation({ coordinates: [lng, lat], address })
+    try {
+      let coordinates_response = await Geocode.fromAddress(address);
+      if (coordinates_response) {
+        const { lat, lng } = coordinates_response.results[0].geometry.location;
+        setLocation({ coordinates: [lng, lat], address })
+      }
+    } catch (err) {
+      console.log({ err });
     }
   };
 
@@ -170,6 +226,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                     setLocationSelected(false);
                     setAddress((value).trimLeft())
                   }}
+                  searchOptions={searchOptions}
                   onSelect={handleSelect}
                 >
                   {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (

@@ -29,8 +29,8 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
 
   // for error messages
   const label: { [index: string]: string } = {
-    jobName: 'job name',
-    job_description: 'job description',
+    jobName: 'Job Name',
+    job_description: 'Job Details',
   }
 
   // const isEmpty = (name: string, value: string) => !value ? errorStrings.pleaseEnter + label[name] : '';
@@ -38,9 +38,9 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
   const isInvalid = (name: string, value: string) => {
     switch (name) {
       case 'jobName':
-        return !value.length ? errorStrings.pleaseEnter + label[name] : value.length > 100 ? 'length exceed to 100 characters.' : '';
+        return !value.length ? `${label[name]} is required.` : value.length > 100 ? 'Maximum 100 characters are allowed.' : '';
       case 'job_description':
-        return !value.length ? errorStrings.pleaseEnter + label[name] : value.length > 250 ? 'length exceed to 250 characters.' : '';
+        return !value.length ? `${label[name]} is required.` : value.length > 250 ? 'Maximum 250 characters are allowed.' : '';
     }
   }
   // return isEmpty(name, value);
@@ -130,9 +130,9 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                 <span className="xs_sub_title">Job</span>
               </div>
               <div className="form_field">
-                <label className="form_label">Job name</label>
+                <label className="form_label">Job Name</label>
                 <div className="text_field">
-                  <input type="text" placeholder="Enter job name" name="jobName" value={jobName} onChange={handleChange} />
+                  <input type="text" placeholder="Enter Job Name" name="jobName" value={jobName} onChange={handleChange} />
                 </div>
                 <span className="error_msg">{errors.jobName}</span>
               </div>
@@ -146,7 +146,7 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                     {`character length : ${job_description.length}`}
                   </span>
                   : ''}
-                  <span className="error_msg">{errors.job_description}</span>
+                <span className="error_msg">{errors.job_description}</span>
               </div>
               <div className="form_field">
                 <button
