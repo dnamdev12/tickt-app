@@ -19,7 +19,7 @@ const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
       {/* Active Jobs */}
       <span className="sub_title">Active Jobs</span>
       <div className="flex_row tradies_row">
-        {activeJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, time, amount, locationName, durations }) => (
+        {activeJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, time, amount, locationName, durations, milestoneNumber, totalMilestones }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card">
               <NavLink to={`/mark-milestone?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
@@ -42,7 +42,7 @@ const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
               <div className="job_progress_wrap" id="scroll-progress-bar">
                 <div className="progress_wrapper">
                   <span className="completed-digit" id="digit-progress">
-                    <b>Job Milestones 2</b> of 5
+                    <b>Job Milestones {milestoneNumber}</b> of {totalMilestones}
                   </span>
                   <span className="approval_info">
                     <img src={approved} alt="icon" />
@@ -57,6 +57,8 @@ const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
                       id="progress-bar"
                       type="range"
                       min="0"
+                      value={milestoneNumber}
+                      max={totalMilestones}
                     />
                   </span>
                 </div>

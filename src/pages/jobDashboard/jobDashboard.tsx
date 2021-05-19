@@ -54,6 +54,13 @@ const JobDashboard = ({
   bankDetails,
 }: Proptypes) => {
   const history = useHistory();
+  let params: any = new URLSearchParams(history.location?.search);
+  params = {
+    jobId: params.get('jobId'),
+    tradeId: params.get('tradeId'),
+    specializationId: params.get('specializationId'),
+  };
+
   const [openSidebar, setOpenSidebar] = useState(false);
   const [milestoneComplete, setMilestoneComplete] = useState(false);
   const [jobComplete, setJobComplete] = useState(false);
@@ -93,7 +100,7 @@ const JobDashboard = ({
               <button
                 className="fill_btn"
                 onClick={() => {
-                  history.push('/mark-milestone/1');
+                  history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
                   setMilestoneComplete(false);
                 }}
               >
@@ -120,8 +127,8 @@ const JobDashboard = ({
               <button
                 className="fill_btn"
                 onClick={() => {
-                  history.push('/mark-milestone/1');
-                  setMilestoneComplete(false);
+                  history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
+                  setJobComplete(false);
                 }}
               >
                 OK
@@ -130,7 +137,7 @@ const JobDashboard = ({
                 className="fill_btn white_btn"
                 onClick={() => {
                   history.push('/past-jobs');
-                  setMilestoneComplete(false);
+                  setJobComplete(false);
                 }}
               >
                 See completed jobs

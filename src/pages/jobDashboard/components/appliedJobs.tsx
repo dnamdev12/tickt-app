@@ -18,7 +18,7 @@ const AppliedJobs = ({ getAppliedJobList, appliedJobList }: Proptypes) => {
       {/* Applied Jobs */}
       <span className="sub_title">Applied Jobs</span>
       <div className="flex_row tradies_row">
-        {appliedJobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, time, amount, locationName, durations }) => (
+        {appliedJobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, time, amount, locationName, durations, milestoneNumber, totalMilestones }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card">
               <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
@@ -41,7 +41,7 @@ const AppliedJobs = ({ getAppliedJobList, appliedJobList }: Proptypes) => {
               <div className="job_progress_wrap" id="scroll-progress-bar">
                 <div className="progress_wrapper">
                   <span className="completed-digit" id="digit-progress">
-                    <b>Job Milestones 2</b> of 5
+                    <b>Job Milestones {milestoneNumber}</b> of {totalMilestones}
                   </span>
                   <span className="approval_info">
                     <img src={approved} alt="icon" />
@@ -56,6 +56,8 @@ const AppliedJobs = ({ getAppliedJobList, appliedJobList }: Proptypes) => {
                       id="progress-bar"
                       type="range"
                       min="0"
+                      value={milestoneNumber}
+                      max={totalMilestones}
                     />
                   </span>
                 </div>

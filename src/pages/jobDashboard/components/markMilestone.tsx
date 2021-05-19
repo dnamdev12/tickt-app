@@ -34,7 +34,11 @@ interface Proptypes {
   showMilestoneCompletePage: () => void;
   showJobCompletePage: () => void;
   addBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
-  updateBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  updateBankDetails: (
+    data: any,
+    milestoneData: any,
+    callback: () => void
+  ) => void;
   getBankDetails: () => void;
   bankDetails: BankDetails;
 }
@@ -102,7 +106,7 @@ const MarkMilestone = ({
     }
 
     return '';
-  }
+  };
 
   const validateBankDetails = (value: string) => {
     if (!value) {
@@ -110,7 +114,7 @@ const MarkMilestone = ({
     }
 
     return '';
-  }
+  };
 
   const handleChange = ({ target: { name, value } }: any) => {
     setData((prevData: any) => ({
@@ -146,7 +150,7 @@ const MarkMilestone = ({
             <div className="relate">
               <button
                 className="back"
-                onClick={() => history.push('/applied-jobs')}
+                onClick={() => history.push('/active-jobs')}
               ></button>
               <span className="xs_sub_title">{jobName}</span>
               <span className="edit_icon" title="Edit">
@@ -175,8 +179,9 @@ const MarkMilestone = ({
                 ) => {
                   const prevMilestoneStatus = milestones[index - 1]?.status;
                   const isActive =
-                    prevMilestoneStatus === 1 ||
-                    prevMilestoneStatus === undefined;
+                    status === 0 &&
+                    (prevMilestoneStatus === 1 ||
+                      prevMilestoneStatus === undefined);
                   fromDate = fromDate
                     ? format(new Date(fromDate), 'MMM dd')
                     : '';
@@ -189,8 +194,8 @@ const MarkMilestone = ({
                         status === 1
                           ? `check`
                           : isActive
-                            ? 'active'
-                            : 'disabled'
+                          ? 'active'
+                          : 'disabled'
                       }
                     >
                       <div className="circle_stepper">
@@ -204,9 +209,10 @@ const MarkMilestone = ({
                         <span>
                           {fromDate}
                           {toDate &&
-                            ` - ${fromDate.startsWith(toDate.split(' ')[0])
-                              ? toDate.split(' ')[1]
-                              : toDate
+                            ` - ${
+                              fromDate.startsWith(toDate.split(' ')[0])
+                                ? toDate.split(' ')[1]
+                                : toDate
                             }`}
                         </span>
                         {isActive && (
@@ -316,7 +322,8 @@ const MarkMilestone = ({
             </p> */}
 
             <p className="commn_para">
-              The amount paid will be recalculated based on approval of the actual hours by the Builder
+              The amount paid will be recalculated based on approval of the
+              actual hours by the Builder
             </p>
 
             <div className="form_field">
@@ -435,7 +442,8 @@ const MarkMilestone = ({
                   name="account_number"
                   value={data.account_number}
                   onChange={handleChange}
-                  maxLength={50}
+                  maxLength={10}
+                  max={9999999999}
                 />
               </div>
               <span className="error_msg">{errors.account_number}</span>
@@ -449,7 +457,8 @@ const MarkMilestone = ({
                   name="bsb_number"
                   value={data.bsb_number}
                   onChange={handleChange}
-                  maxLength={50}
+                  maxLength={6}
+                  max={999999}
                 />
               </div>
               <span className="error_msg">{errors.bsb_number}</span>
@@ -459,7 +468,11 @@ const MarkMilestone = ({
               onClick={() => {
                 setStepCompleted((prevValue) => prevValue.concat([5]));
 
-                const hasErrors = ['account_name', 'account_number', 'bsb_number'].reduce((prevValue, name) => {
+                const hasErrors = [
+                  'account_name',
+                  'account_number',
+                  'bsb_number',
+                ].reduce((prevValue, name) => {
                   const error = validateBankDetails(data[name]);
                   setErrors((prevErrors) => ({
                     ...prevErrors,
@@ -477,13 +490,13 @@ const MarkMilestone = ({
                     setData(defaultData);
                     showMilestoneCompletePage();
                   }
-                }
-                  
+                };
+
                 const milestoneData = {
-                  evidence: data.urls,
+                  evidence: milestones[milestoneIndex].isPhotoevidence ? data.urls : undefined,
                   jobId: params.jobId,
                   milestoneId: milestones[milestoneIndex].milestoneId,
-                  description: data.description,
+                  description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
                   actualHours: data.actualHours,
                   totalAmount: data.totalAmount,
                 };
@@ -492,17 +505,21 @@ const MarkMilestone = ({
                   account_name: data.account_name,
                   account_number: data.account_number,
                   bsb_number: data.bsb_number,
-                }
+                };
                 if (!hasErrors) {
                   if (bankDetails.userId) {
-                    updateBankDetails({
-                      userId: data.userId,
-                      ...updatedBankDetails,
-                    }, milestoneData, callback);                  
+                    updateBankDetails(
+                      {
+                        userId: data.userId,
+                        ...updatedBankDetails,
+                      },
+                      milestoneData,
+                      callback
+                    );
                   } else {
-                    addBankDetails(bankDetails, milestoneData, callback);
+                    addBankDetails(updatedBankDetails, milestoneData, callback);
                   }
-                };
+                }
               }}
             >
               Continue

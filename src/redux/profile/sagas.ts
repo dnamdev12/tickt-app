@@ -1,5 +1,6 @@
 import { call, put, takeLatest } from 'redux-saga/effects';
 import * as actionTypes from './constants';
+import { MARK_MILESTONE_COMPLETE } from '../jobs/constants';
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
 import { setLoading, setShowToast } from '../common/actions';
@@ -31,7 +32,7 @@ function* addBankDetails({ data, milestoneData, callback }: any) {
       payload: response.result
     });
 
-    markMilestoneComplete(milestoneData, callback);
+    yield put({ type: MARK_MILESTONE_COMPLETE, data: milestoneData, callback });
 
     return;
   }
@@ -54,7 +55,7 @@ function* updateBankDetails({ data, milestoneData, callback }: any) {
       payload: response.result
     });
 
-    markMilestoneComplete(milestoneData, callback);
+    yield put({ type: MARK_MILESTONE_COMPLETE, data: milestoneData, callback });
 
     return;
   }
