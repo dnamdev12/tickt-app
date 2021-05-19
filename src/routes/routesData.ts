@@ -90,11 +90,11 @@ const routes = [
         authRoute: false,
         privateRoute: true,
     },
-    {
-        name: 'builderinfo',
-        path: '/builder-info',
-        component: BuilderInfo,
-    },
+    // {
+    //     name: 'builderinfo',
+    //     path: '/builder-info',
+    //     component: BuilderInfo,
+    // },
     // {
     //     name: 'jobdashboard',
     //     path: [
@@ -110,13 +110,13 @@ const routes = [
     //     authRoute: false,
     //     privateRoute: true,
     // },
-    {
-        name: 'builderreviewsubmitted',
-        path: '/builder-review-submitted',
-        component: BuilderReviewSubmitted,
-        authRoute: false,
-        privateRoute: true,
-    },
+    // {
+    //     name: 'builderreviewsubmitted',
+    //     path: '/builder-review-submitted',
+    //     component: BuilderReviewSubmitted,
+    //     authRoute: false,
+    //     privateRoute: true,
+    // },
     {
         name: 'linkedin-oauth',
         path: '/linkedin',

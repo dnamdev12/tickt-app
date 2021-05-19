@@ -235,11 +235,20 @@ const TradieSearchJobResult = (props: any) => {
                                 {renderJobsData()?.length > 0 ?
                                     (renderJobsData()?.map((jobData: any) => {
                                         return <TradieJobInfoBox item={jobData} {...props} />
-                                    })) : <span>No data Found</span>}
+                                    })) :
+                                    <div className="no_record">
+                                        <figure className="no_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                    </div>}
                             </div> : renderJobsData()?.length > 0 ?
                                 (renderJobsData()?.map((jobData: any) => {
                                     return <TradieJobInfoBox item={jobData} {...props} />
-                                })) : <span>No data Found</span>}
+                                })) : <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                </div>}
                             {<div className="map_col" style={!mapData.showMap ? { display: "none" } : {}}>
                                 <div className="map_stick">
                                     <span className="close_map" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
