@@ -34,7 +34,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         amount: data.amount
       });
 
-      if(data.pay_type === 'perHour'){
+      if (data.pay_type === 'perHour') {
         setReactSelect({ value: 'perHour', label: 'Per Hour' });
       } else {
         setReactSelect({ value: 'fixed', label: 'Fixed Price' });
@@ -46,19 +46,19 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
 
   // for error messages
   const label: { [index: string]: string } = {
-    pay_type: 'pay type',
-    amount: 'price',
+    pay_type: 'Pay Type',
+    amount: 'Price',
   }
 
   const checkDecimal = (name: string, value: string) => {
     let split_values = value.split('.');
     if (split_values.length > 1) {
       if (split_values[0].length > 6) {
-        return 'price field must have 6 digits before decimal or less.'
+        return 'Price field must have 6 digits before decimal or less.'
       }
 
       if (split_values[1].length > 2) {
-        return 'price field must have 2 digits after decimal or less.'
+        return 'Price field must have 2 digits after decimal or less.'
       }
 
     } else {
@@ -68,9 +68,9 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   const isInvalid = (name: string, value: string) => {
     switch (name) {
       case 'pay_type':
-        return !value.length ? ` please enter ` + label[name] : '';
+        return !value.length ? `${label[name]} is required.` : '';
       case 'amount':
-        return !value.length ? ` please enter ` + label[name] : checkDecimal(name, value);
+        return !value.length || +value < 1 ? `${label[name]} is required.` : checkDecimal(name, value);
     }
   }
 
@@ -162,7 +162,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         placeholder="Price"
                         name="Price"
                         className="detect_input_ltr"
-                        min="0"
+                        min="1"
                         step=".01"
                         required
                         value={amount}

@@ -19,7 +19,7 @@ interface Proptypes {
     handleStepComplete: (data: any) => void;
     handleStepMileStone: (data: any, index: any) => void;
     handleStepBack: () => void;
-    addTimeToMileStone: (time: any, index: number) => void;
+    addTimeToMileStone: (time: any, index: number, skip?: any) => void;
     updateMileStoneTimings: (data: any) => void;
 }
 
@@ -69,12 +69,14 @@ const ChooseTimingMileStone = ({
         }
 
         let item_index = null;
+        console.log({timings, range})
+        item_index = milestones.length ? milestones.length - 1 : 0;
         if (editMileStone == null) {
-            item_index = milestones.length ? milestones.length - 1 : 0;
             addTimeToMileStone(timings, item_index);
             handleStepBack();
         } else {
             updateMileStoneTimings(timings);
+            addTimeToMileStone(timings, item_index);
             handleStepForward(15);
         }
         // handleStepComplete(formattedDates);
@@ -87,7 +89,7 @@ const ChooseTimingMileStone = ({
         }
         return true;
     }
-    console.log({ from_date: data?.from_date, to_date: data?.to_date }) 
+    console.log({ from_date: data?.from_date, to_date: data?.to_date })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">

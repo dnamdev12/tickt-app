@@ -29,8 +29,8 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
 
   // for error messages
   const label: { [index: string]: string } = {
-    jobName: 'job name',
-    job_description: 'job description',
+    jobName: 'Job Name',
+    job_description: 'Job Details',
   }
 
   // const isEmpty = (name: string, value: string) => !value ? errorStrings.pleaseEnter + label[name] : '';
@@ -38,9 +38,9 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
   const isInvalid = (name: string, value: string) => {
     switch (name) {
       case 'jobName':
-        return !value.length ? errorStrings.pleaseEnter + label[name] : value.length > 100 ? 'length exceed to 100 characters.' : '';
+        return !value.length ? `${label[name]} is required.` : value.length > 100 ? 'Maximum 100 characters are allowed.' : '';
       case 'job_description':
-        return !value.length ? errorStrings.pleaseEnter + label[name] : value.length > 250 ? 'length exceed to 250 characters.' : '';
+        return !value.length ? `${label[name]} is required.` : value.length > 250 ? 'Maximum 250 characters are allowed.' : '';
     }
   }
   // return isEmpty(name, value);
@@ -146,7 +146,7 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                     {`character length : ${job_description.length}`}
                   </span>
                   : ''}
-                  <span className="error_msg">{errors.job_description}</span>
+                <span className="error_msg">{errors.job_description}</span>
               </div>
               <div className="form_field">
                 <button

@@ -10,6 +10,7 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
+import { stat } from 'node:fs';
 interface Proptypes {
     data: any;
     milestones: any,
@@ -43,34 +44,34 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
 
     const handleChange = (item: any) => {
         let mile: any = milestones;
+        // console.log({ mile, item });
         if (mile?.length) {
             let start_selection: any = moment(item.selection.startDate).format('MM-DD-YYYY');
             let end_selection: any = moment(item.selection.endDate).isValid() ? moment(item.selection.endDate).format('MM-DD-YYYY') : null;
             let item_find: any = false;
+            
             mile.forEach((item_date: any) => {
                 let start: any = item_date.from_date;
-                let end: any = moment(item_date.to_date).isValid() ? item_date.to_date :  null;
-                
-                if (start && end) {
-                    if(moment(start_selection).isSameOrAfter(start) && moment(end_selection).isSameOrBefore(end)){
-                        item_find = false; 
-                    } else {
-                        item_find = true 
-                    }
+                let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
 
+                if (start && end) {
+                    console.log({ start_selection, end_selection, start, end })
+                    if (moment(start_selection).isAfter(start) || moment(end_selection).isBefore(end)) {
+                        item_find = true
+                    } 
                 }
 
-                if(start && !end){
-                    if (moment(start_selection).isAfter(start)){
+                if (start && !end) {
+                    if (moment(start_selection).isAfter(start)) {
                         item_find = true; // true;
                     }
                 }
 
-                if(start_selection && end_selection && !end){
-                    if(moment(start).isSameOrAfter(start_selection) && moment(start).isSameOrBefore(end_selection)){
-                        item_find = false; 
+                if (start_selection && end_selection && !end) {
+                    if (moment(start).isSameOrAfter(start_selection) && moment(start).isSameOrBefore(end_selection)) {
+                        item_find = false;
                     } else {
-                        item_find = true 
+                        item_find = true
                     }
                 }
 

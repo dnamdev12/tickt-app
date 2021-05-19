@@ -7,7 +7,7 @@ interface Props {
     editMileStone: any;
     editMilestoneTiming: any;
     handleStepComplete: (data: any) => void;
-    addTimeToMileStone: (data: any, index: any) => void;
+    addTimeToMileStone: (data: any, index: any, skip?: any) => void;
     handleStepForward: (data: any) => void;
     newMileStoneScreen: (data: any) => void;
     handleStepMileStone: (data: any, index: any) => void;
@@ -24,6 +24,12 @@ interface State {
     errors: any;
 }
 
+// for error messages
+const label: { [index: string]: string } = {
+    milestone_name: 'Milestone Name',
+    from_date: 'From Date',
+    recommended_hours: 'Recommended Hours',
+}
 export default class EditMilestone extends Component<Props, State> {
     constructor(props: any) {
         super(props)
@@ -43,51 +49,60 @@ export default class EditMilestone extends Component<Props, State> {
     }
 
     checkIsDateValid = (milestones: any, time: any) => {
+        const { editMileStone, editMilestoneTiming } = this.props;
+        console.log({ editMileStone, milestones, editMilestoneTiming })
         let checkIsValid: any = true;
-        milestones.forEach((mile: any) => {
-            let validStart = moment(mile.from_date).isValid();
-            let validEnd = moment(mile.to_date).isValid();
+        let isSkip: any = true;
 
-            let validStartInput = moment(time.from_date).isValid();
-            let validEndInput = moment(time.to_date).isValid();
+        let filterMilestone: any = [];
 
-            if (validStart && validEnd) {
-                if (validStartInput && validEndInput) {
-                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-                        checkIsValid = false
+        if (milestones.length > 1) {
+            filterMilestone = milestones.filter((mile_item: any, index: any) => index !== editMileStone);
+            filterMilestone.forEach((mile: any) => {
+                let validStart = moment(mile.from_date).isValid();
+                let validEnd = moment(mile.to_date).isValid();
+
+                let validStartInput = moment(time.from_date).isValid();
+                let validEndInput = moment(time.to_date).isValid();
+
+                console.log({ validStart, validEnd, validStartInput, validEndInput })
+                if (validStart && validEnd) {
+                    if (validStartInput && validEndInput) {
+                        if (moment(time.from_date).isSameOrAfter(mile.from_date) && (moment(time.to_date).isSameOrBefore(mile.to_date) ||
+                            moment(time.to_date).isSameOrAfter(mile.from_date))
+                        ) {
+                            checkIsValid = false;
+                            isSkip = false;
+                        }
                     }
-                    if (moment(time.to_date).subtract(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-                        checkIsValid = false
+
+                    if (validStartInput && !validEndInput) {
+                        if (
+                            moment(time.from_date).isSameOrAfter(mile.from_date) &&
+                            moment(time.from_date).isSameOrBefore(mile.to_date)) {
+                            checkIsValid = false;
+                            isSkip = false;
+                        }
                     }
                 }
 
-                if (validStartInput) {
-                    if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-                        checkIsValid = false
+                if (validStart && validStartInput && !validEnd) {
+                    if (moment(time.from_date).isSame(mile.from_date) || moment(time.to_date).isSame(mile.from_date)) {
+                        checkIsValid = false;
+                        isSkip = false;
                     }
                 }
 
-                if (validEndInput) {
-                    if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-                        checkIsValid = false
+                if (validEnd && validEndInput) {
+                    if (moment(time.to_date).isSame(mile.to_date)) {
+                        checkIsValid = false;
+                        isSkip = false;
                     }
                 }
-            }
 
-            if (validStart && validStartInput && !validEnd) {
-                if (moment(time.from_date).isSame(mile.from_date)) {
-                    checkIsValid = false
-                }
-            }
-
-            if (validEnd && validEndInput && !validStart) {
-                if (moment(time.to_date).isSame(mile.to_date)) {
-                    checkIsValid = false
-                }
-            }
-
-        });
-        return checkIsValid;
+            });
+        }
+        return { checkIsValid, skip: isSkip };
     }
 
     componentDidMount() {
@@ -96,9 +111,15 @@ export default class EditMilestone extends Component<Props, State> {
 
         if (Object.keys(item).length) {
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
+
             let isValid: any = null;
+            let isSkip: any = null;
+
             if (editMilestoneTiming && Object.keys(editMilestoneTiming).length) {
-                isValid = this.checkIsDateValid(milestones, editMilestoneTiming);
+                const { checkIsValid, skip } = this.checkIsDateValid(milestones, editMilestoneTiming);
+                isValid = checkIsValid;
+                isSkip = skip;
+
                 if (isValid) {
                     if ('from_date' in editMilestoneTiming) {
                         from_date = editMilestoneTiming?.from_date;
@@ -108,6 +129,7 @@ export default class EditMilestone extends Component<Props, State> {
                     }
                 }
             }
+            console.log({ isValid, isSkip, editMilestoneTiming, from_date, to_date });
             this.setState({
                 from_date: from_date,
                 isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
@@ -116,10 +138,11 @@ export default class EditMilestone extends Component<Props, State> {
                 to_date: to_date,
             }, () => {
                 if (isValid !== null) {
-                    this.props.addTimeToMileStone({
-                        from_date,
-                        to_date
-                    }, editMileStone)
+                    this.props.addTimeToMileStone(
+                        { from_date, to_date },
+                        editMileStone,
+                        isSkip
+                    )
                 }
             })
         }
@@ -128,12 +151,12 @@ export default class EditMilestone extends Component<Props, State> {
     handleChange = (name: string, value: any) => {
         let error_clone: any = this.state.errors;
 
-        
-        if(name === "milestone_name"){
+
+        if (name === "milestone_name") {
             value = (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "")
         }
 
-        if(name  === "recommended_hours") {
+        if (name === "recommended_hours") {
             value = (value).trimLeft();
         }
 
@@ -166,11 +189,11 @@ export default class EditMilestone extends Component<Props, State> {
     isInvalid = (name: string, value: string) => {
         switch (name) {
             case 'milestone_name':
-                return !value.length ? `please enter ${name}` : value.length > 50 ? 'max length exceed to 50.' : '';
+                return !value.length ? `${label[name]} is required.` : value.length > 50 ? 'Maximum 50 characters are allowed.' : '';
             case 'from_date':
-                return !value.length ? `please enter ${name}` : '';
+                return !value.length ? `${label[name]} is required.` : '';
             case 'recommended_hours':
-                return !value.length ? `please enter ${name}` : '';
+                return !value.length ? `${label[name]} is required.` : '';
         }
     }
 
@@ -182,7 +205,7 @@ export default class EditMilestone extends Component<Props, State> {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-            
+
             if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }

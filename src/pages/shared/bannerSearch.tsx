@@ -517,6 +517,7 @@ const BannerSearch = (props: PropsType) => {
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
                                                     id="location-input-tag"
                                                     ref={locationRef}
+                                                    autoComplete="none"
                                                     onFocus={() => { setInputFocus2(true) }}
                                                 />
                                                 <span className="detect_icon_ltr">
