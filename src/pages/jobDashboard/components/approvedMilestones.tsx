@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
+import waiting from '../../../assets/images/exclamation.png';
 
 interface Proptypes {
   getApprovedMilestoneList: (page: number) => void,
@@ -18,7 +19,7 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
       {/* Approved Milestones */}
       <span className="sub_title">Approved Milestones</span>
       <div className="flex_row tradies_row">
-        {approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, time, amount, locationName, durations }) => (
+        {approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card">
               <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
@@ -41,11 +42,22 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
               <div className="job_progress_wrap" id="scroll-progress-bar">
                 <div className="progress_wrapper">
                   <span className="completed-digit" id="digit-progress">
-                    <b>Job Milestones 2</b> of 5
+                    <b>Job Milestones {milestoneNumber}</b> of {totalMilestones}
                   </span>
                   <span className="approval_info">
-                    <img src={approved} alt="icon" />
-                    Approved
+                      {status === 'APPROVED' ? (
+                        <>
+                          <img src={approved} alt="icon" />
+                          Approved
+                        </>
+                      ) : status === 'NEEDS APPROVAL' ? (
+                        <>
+                          <img src={waiting} alt="icon" />
+                          Needs approval
+                        </>
+                      ) : (
+                        'Awating'
+                      )}
                   </span>
                   <span className="progress_bar">
                     <input
@@ -53,6 +65,8 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
                       id="progress-bar"
                       type="range"
                       min="0"
+                      value={milestoneNumber}
+                      max={totalMilestones}
                     />
                   </span>
                 </div>

@@ -1,5 +1,5 @@
-const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
-// const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
+// const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
+const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
 
 const versions = {
     v1: 'v1/',
@@ -60,6 +60,10 @@ const Urls = {
     needApprovalBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`, //new-approval (builder)
     jobDetailsBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}jobDetails`, //job-details (builder)
     milestoneList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}milestoneList`,
+    markComplete: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}markComplete`,
+    addBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}addBankDetails`,
+    updateBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}updateBankDetails`,
+    getBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getBankDetails`,
     reviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewBuilder`,
     builderProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}builderProfile`,
     deleteRecentSearch: `${versions.v1}${ServiceEnum.admin}deleteRecentSearch`, //admin

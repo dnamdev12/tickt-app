@@ -1,4 +1,4 @@
-import { put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest } from 'redux-saga/effects';
 import NetworkOps, { FetchResponse } from "../../network/NetworkOps";
 import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
@@ -39,7 +39,7 @@ function* getActiveJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END });
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
 }
 
 // appliedJobList
@@ -61,7 +61,7 @@ function* getAppliedJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_APPLIED_JOBS_END });
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
 }
 
 // pastJobList
@@ -83,7 +83,7 @@ function* getPastJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_PAST_JOBS_END });
+  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
 }
 
 // newJobList
@@ -105,7 +105,7 @@ function* getNewJobList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_NEW_JOBS_END });
+  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
 }
 
 // approvedMilestoneList
@@ -127,7 +127,7 @@ function* getApprovedMilestoneList({ page }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END });
+  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
 }
 
 // milestoneList
@@ -147,9 +147,25 @@ function* getMilestoneList({ jobId }: any) {
   }
 
   setShowToast(true, response.message);
-  yield put({ type: actionTypes.GET_MILESTONES_END });
+  yield put({ type: actionTypes.GET_MILESTONES_END, payload: {} });
 }
 
+// milestoneList
+function* markMilestoneComplete({ data, callback }: any) {
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.postToJson(Urls.markComplete, data);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    if (callback) {
+      yield call(callback);
+    }
+
+    return;
+  }
+
+  setShowToast(true, response.message);
+}
 
 function* getActiveJobsBuilder({ page }: any) {
   const response: FetchResponse = yield NetworkOps.get(`${Urls.activeJobListBuilder}?page=${page}`);
@@ -209,6 +225,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_NEW_JOBS_START, getNewJobList);
     yield takeLatest(actionTypes.GET_APPROVED_MILESTONE_START, getApprovedMilestoneList);
     yield takeLatest(actionTypes.GET_MILESTONES_START, getMilestoneList);
+    yield takeLatest(actionTypes.MARK_MILESTONE_COMPLETE, markMilestoneComplete);
 
     yield takeLatest(actionTypes.GET_BUILDER_ACTIVE_JOBS, getActiveJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_PAST_JOBS, getPastJobsBuilder);

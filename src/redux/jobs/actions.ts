@@ -200,3 +200,9 @@ export const getMilestoneList = (jobId: string) => ({
   type: actionTypes.GET_MILESTONES_START,
   jobId,
 });
+
+export const markMilestoneComplete = (data: any, callback: () => void) => ({
+  type: actionTypes.MARK_MILESTONE_COMPLETE,
+  data,
+  callback,
+});

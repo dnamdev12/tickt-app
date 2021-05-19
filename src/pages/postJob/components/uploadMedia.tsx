@@ -35,10 +35,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [update, forceUpdate] = useState({});
     const [filesUrl, setFilesUrl] = useState([] as any);
     const [description, setDescription] = useState('');
+    const [submitClicked, setSubmitClicked] = useState(false);
 
     useEffect(() => {
         if (stepCompleted) {
-            setFilesUrl(data?.urls)
+            setFilesUrl(data?.urls);
+            setSubmitClicked(true);
         }
     }, [stepCompleted, data]);
 
@@ -46,6 +48,11 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         if (!filesUrl?.length) {
             return true;
         }
+
+        if (hasDescription && !description) {
+            return true;
+        }
+
         return false;
     }
 
@@ -200,12 +207,13 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         <div className="text_field">
                             <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value }}: any) => setDescription(value)} />
                         </div>
-                        <span className="error_msg"></span>
+                        <span className="error_msg">{submitClicked && !description ? 'This field is required' : ''}</span>
                     </div>}
                     <div className="form_field">
                         <button
                             onClick={() => {
                                 console.log({ filesUrl, description })
+                                setSubmitClicked(true);
                                 handleStepComplete({
                                     urls: filesUrl,
                                     description: hasDescription ? description : undefined,
