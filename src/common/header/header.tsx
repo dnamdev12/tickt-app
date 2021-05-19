@@ -62,6 +62,12 @@ const Header = (props: any) => {
         history.push('/post-new-job')
     }
 
+    const jobClick = () => {
+        setToggleMenu(false);
+        // setActiveLink('jobs');
+        // history.push('/jobs')
+    }
+
     return (
         <>
             {showHeader && <header id="header">
@@ -86,7 +92,7 @@ const Header = (props: any) => {
                                 </a>
                             </li>
                             <li>
-                                <a className={activeLink === 'jobs' ? 'active' : ''}>
+                                <a className={activeLink === 'jobs' ? 'active' : ''} onClick={jobClick}>
                                     {'Jobs'}
                                 </a>
                             </li>

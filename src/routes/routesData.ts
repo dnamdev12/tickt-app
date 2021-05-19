@@ -15,6 +15,9 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import JobDashboard from '../pages/jobDashboard';
 import TradieListData from '../pages/shared/tradieListData';
 import SearchResultTradie from '../pages/searchTradieResult/index';
+// import BuilderProfile from '../pages/builderProfile/builderProfile';
+import builderJobDasboard from '../pages/builderJobDasboard/index';
+import TradieDetails from '../common/tradieDetails';
 import BuilderInfo from '../pages/builderInfo/builderInfo';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
 
@@ -87,37 +90,42 @@ const routes = [
         authRoute: false,
         privateRoute: true,
     },
-    {
-        name: 'builderinfo',
-        path: '/builder-info',
-        component: BuilderInfo,
-    },
-    {
-        name: 'jobdashboard',
-        path: [
-            '/active-jobs',
-            '/applied-jobs',
-            '/past-jobs',
-            '/new-jobs',
-            '/approved-milestones',
-            '/mark-milestone',
-            '/review-builder',
-        ],
-        component: JobDashboard,
-        authRoute: false,
-        privateRoute: true,
-    },
-    {
-        name: 'builderreviewsubmitted',
-        path: '/builder-review-submitted',
-        component: BuilderReviewSubmitted,
-        authRoute: false,
-        privateRoute: true,
-    },
+    // {
+    //     name: 'builderinfo',
+    //     path: '/builder-info',
+    //     component: BuilderInfo,
+    // },
+    // {
+    //     name: 'jobdashboard',
+    //     path: [
+    //         '/active-jobs',
+    //         '/applied-jobs',
+    //         '/past-jobs',
+    //         '/new-jobs',
+    //         '/approved-milestones',
+    //         '/mark-milestone',
+    //         '/review-builder',
+    //     ],
+    //     component: JobDashboard,
+    //     authRoute: false,
+    //     privateRoute: true,
+    // },
+    // {
+    //     name: 'builderreviewsubmitted',
+    //     path: '/builder-review-submitted',
+    //     component: BuilderReviewSubmitted,
+    //     authRoute: false,
+    //     privateRoute: true,
+    // },
     {
         name: 'linkedin-oauth',
         path: '/linkedin',
         component: LinkedInPopUp
+    },
+    {
+        name: 'builder-jobs',
+        path: '/jobs',
+        component: builderJobDasboard
     },
     {
         name: 'recommended-trade-people',
@@ -128,6 +136,11 @@ const routes = [
         name: 'saved-trade-people',
         path: '/saved-trade-people',
         component: TradieListData
+    },
+    {
+        name: 'tradie-details',
+        path: '/tradie-details',
+        component: TradieDetails
     },
     {
         name: 'search-builder-result',

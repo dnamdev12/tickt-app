@@ -2,53 +2,46 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import JobDashboard from './jobDashboard';
 import {
-  getActiveJobList,
-  getAppliedJobList,
-  getPastJobList,
-  getNewJobList,
-  getApprovedMilestoneList,
+    getActiveJobsBuilder,
+    getPastJobsBuilder,
+    getOpenJobsBuilder,
+    getNewApplicantsBuilder
 } from '../../redux/jobs/actions';
 
 const mapStateToProps = (state: any) => {
-  const {
-    jobs: {
-      activeJobList,
-      appliedJobList,
-      pastJobList,
-      newJobList,
-      approvedMilestoneList,
-      milestonesCount,
-      newJobsCount,
-    },
-  } = state;
-
-  return {
-    activeJobList,
-    appliedJobList,
-    pastJobList,
-    newJobList,
-    approvedMilestoneList,
-    milestonesCount,
-    newJobsCount,
-  };
+    console.log({ state });
+    const {
+        jobs: {
+            builderActionJobs,
+            builderOpenJobs,
+            builderPastJobs,
+            builderNewApplicants
+        },
+    } = state;
+    return {
+        activeJobs: builderActionJobs,
+        openJobs: builderOpenJobs,
+        pastJobs: builderPastJobs,
+        applicantJobs: builderNewApplicants,
+        approvalJobs: null
+    };
 };
 
 const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators(
-    {
-      getActiveJobList,
-      getAppliedJobList,
-      getPastJobList,
-      getNewJobList,
-      getApprovedMilestoneList,
-    },
-    dispatch
-  );
+    return bindActionCreators(
+        {
+            getActiveJobsBuilder,
+            getPastJobsBuilder,
+            getOpenJobsBuilder,
+            getNewApplicantsBuilder
+        },
+        dispatch
+    );
 };
 
 const JobDashboardPage = connect(
-  mapStateToProps,
-  mapDispatchToProps
+    mapStateToProps,
+    mapDispatchToProps
 )(JobDashboard);
 
 export default JobDashboardPage;
