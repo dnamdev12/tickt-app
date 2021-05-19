@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
+import waiting from '../../../assets/images/exclamation.png';
 
 interface Proptypes {
   getApprovedMilestoneList: (page: number) => void,
@@ -18,7 +19,7 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
       {/* Approved Milestones */}
       <span className="sub_title">Approved Milestones</span>
       <div className="flex_row tradies_row">
-        {approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, time, amount, locationName, durations, milestoneNumber, totalMilestones }) => (
+        {approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card">
               <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
@@ -44,8 +45,19 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
                     <b>Job Milestones {milestoneNumber}</b> of {totalMilestones}
                   </span>
                   <span className="approval_info">
-                    <img src={approved} alt="icon" />
-                    Approved
+                      {status === 'APPROVED' ? (
+                        <>
+                          <img src={approved} alt="icon" />
+                          Approved
+                        </>
+                      ) : status === 'NEEDS APPROVAL' ? (
+                        <>
+                          <img src={waiting} alt="icon" />
+                          Needs approval
+                        </>
+                      ) : (
+                        'Awating'
+                      )}
                   </span>
                   <span className="progress_bar">
                     <input

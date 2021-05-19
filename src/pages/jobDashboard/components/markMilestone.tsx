@@ -108,9 +108,16 @@ const MarkMilestone = ({
     return '';
   };
 
-  const validateBankDetails = (value: string) => {
+  const validateBankDetails = (name: string, value: string) => {
     if (!value) {
       return 'This field is required';
+    }
+
+    switch (name) {
+      case 'account_number':
+        return value.length > 10 ? 'Maximum 10 digits are allowed' : '';
+      case 'bsb_number':
+        return value.length > 6 ? 'Maximum 6 digits are allowed' : '';
     }
 
     return '';
@@ -133,13 +140,16 @@ const MarkMilestone = ({
     if (step === 5 && stepCompleted.includes(5)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        [name]: validateBankDetails(value),
+        [name]: validateBankDetails(name, value),
       }));
     }
   };
 
   const { jobName, milestones, postedBy } = milestoneList || {};
   const { builderId, builderImage, builderName, reviews } = postedBy || {};
+
+  const hoursMinutes = data.actualHours.split(':').map((key: string) => parseInt(key));
+  const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1]/60));
 
   let page = null;
   switch (step) {
@@ -382,7 +392,7 @@ const MarkMilestone = ({
             {isLastMilestone && (
               <div className="f_spacebw total_payment">
                 <span>Total payment</span>
-                <span>$187.00</span>
+                <span>${totalAmount}</span>
               </div>
             )}
             <button className="fill_grey_btn bank_btn">
@@ -473,7 +483,7 @@ const MarkMilestone = ({
                   'account_number',
                   'bsb_number',
                 ].reduce((prevValue, name) => {
-                  const error = validateBankDetails(data[name]);
+                  const error = validateBankDetails(name, data[name]);
                   setErrors((prevErrors) => ({
                     ...prevErrors,
                     [name]: error,
@@ -498,7 +508,7 @@ const MarkMilestone = ({
                   milestoneId: milestones[milestoneIndex].milestoneId,
                   description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
                   actualHours: data.actualHours,
-                  totalAmount: data.totalAmount,
+                  totalAmount: `${totalAmount}`,
                 };
 
                 const updatedBankDetails = {
