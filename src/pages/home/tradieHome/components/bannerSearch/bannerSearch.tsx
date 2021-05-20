@@ -471,7 +471,7 @@ const BannerSearch = (props: PropsType) => {
                               </span>}
                         </div>
                     }
-                    <li className="date_box">
+                    <li className="date_box date_value">
                         <div ref={calenderRef} className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>
