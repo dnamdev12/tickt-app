@@ -20,7 +20,6 @@ const TradieHome = (props: any) => {
     });
 
     useEffect(() => {
-        props.getRecentSearchList();
         const showPosition = (position: any) => {
             const locationNew: any = {
                 location: {
@@ -60,7 +59,7 @@ const TradieHome = (props: any) => {
     return (
         <div className="app_wrapper" >
             <HomeBanner {...props} currentCoordinates={tradieHomeData.location} setTradieHomeData={setTradieHomeData} />
-            <JobTypeList {...props} currentCoordinates={tradieHomeData.location}/>
+            <JobTypeList {...props} currentCoordinates={tradieHomeData.location} />
             <SavedJobs {...props} />
             <PopularBuilders {...props} />
             <RecommendedJobs {...props} />
