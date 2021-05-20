@@ -227,7 +227,7 @@ const BuilderInfo = (props: PropsType) => {
                                     responsive={portfolioModal}
                                     showDots={true}
                                     infinite={true}
-                                    autoPlay={false}
+                                    autoPlay={true}
                                     arrows={false}
                                     className="portfolio_wrappr"
                                 >
