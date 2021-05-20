@@ -64,8 +64,13 @@ const Header = (props: any) => {
 
     const jobClick = () => {
         setToggleMenu(false);
-        // setActiveLink('jobs');
-        // history.push('/jobs')
+        if(userType == 1) {
+            setActiveLink('jobs');
+            history.push('/applied-jobs');
+        } else if(userType == 2) {
+            // setActiveLink('jobs');
+            // history.push('/jobs')
+        }
     }
 
     return (
