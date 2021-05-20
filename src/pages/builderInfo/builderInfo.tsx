@@ -8,8 +8,8 @@ import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
 import noData from '../../assets/images/no-data.png';
+import noDataFound from '../../assets/images/no-data-found.png';
 import cancel from "../../assets/images/ic-cancel.png";
-
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -224,34 +224,53 @@ const BuilderInfo = (props: PropsType) => {
             {/* portfolio Image modal desc */}
             {portfolioData.portfolioImageClicked &&
                 <Modal
-                    className="ques_ans_modal"
+                    className="custom_modal"
                     open={portfolioData.portfolioImageClicked}
                     onClose={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <div className="custom_wh">
-                        <Carousel
-                            responsive={portfolioModal}
-                            showDots={true}
-                            infinite={true}
-                            autoPlay={true}
-                            arrows={false}
-                        // className="portfolio_wrappr"
-                        >
-                            {portfolioData?.portfolioDetails ? portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
-                                return (
-                                    <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
-                                        <figure className="portfolio_img">
-                                            <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
-                                        </figure>
-                                    </div>
-                                )
-                            }) : <img alt="" src={portfolioPlaceholder} />}
-                        </Carousel>
-                        <h5>job description</h5>
-                        {/* <span className="xs_sub_title">{portfolioData?.portfolioDetails?.jobDescription}</span> */}
-                        <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
+                    <div className="custom_wh portfolio_preview">
+                        <div className="heading">
+                            <button className="close_btn">
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
+                        <div className="flex_row">
+                            <div className="flex_col_sm_6">
+                                <Carousel
+                                    responsive={portfolioModal}
+                                    showDots={true}
+                                    infinite={true}
+                                    autoPlay={true}
+                                    arrows={false}
+                                    className="portfolio_wrappr"
+                                >
+                                    {portfolioData?.portfolioDetails ? portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
+                                        return (
+                                            <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
+                                                <figure className="portfolio_img">
+                                                    <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
+                                                </figure>
+                                            </div>
+                                        )
+                                    }) : <img alt="" src={portfolioPlaceholder} />}
+                                </Carousel>
+                            </div>
+                            <div className="flex_col_sm_6">
+                                {/* <span className="xs_sub_title">{portfolioData?.portfolioDetails?.jobDescription}</span> */}
+                                <span className="xs_sub_title">Job Description</span>
+                                <div className="job_content">
+                                <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
+                                Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
+                                Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
+                                
+                                </div>
+                            </div>
+                        </div>
+
+
+
                     </div>
                 </Modal>}
 
@@ -264,9 +283,10 @@ const BuilderInfo = (props: PropsType) => {
                                 return <TradieJobInfoBox item={jobData} {...props} />
                             })) :
                             <div className="no_record">
-                                <figure className="no_img">
-                                    <img src={noData} alt="data not found" />
+                                <figure className="no_data_img">
+                                    <img src={noDataFound} alt="data not found" />
                                 </figure>
+                                <span>Data not found</span>
                             </div>}
                     </div>
                     <button className="fill_grey_btn full_btn m-tb40 view_more" disabled={profileData?.jobPostedData?.length > 0}>{`View all ${profileData?.jobPostedData?.length ? `${profileData?.jobPostedData?.length} jobs` : ''}`}</button>
@@ -282,9 +302,10 @@ const BuilderInfo = (props: PropsType) => {
                                 return <ReviewInfoBox item={jobData} {...props} />
                             })) :
                             <div className="no_record">
-                                <figure className="no_img">
-                                    <img src={noData} alt="data not found" />
+                                <figure className="no_data_img">
+                                    <img src={noDataFound} alt="data not found" />
                                 </figure>
+                                <span>Data not found</span>
                             </div>}
                     </div>
                     <button className="fill_grey_btn full_btn view_more" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}>View all 10 reviews</button>

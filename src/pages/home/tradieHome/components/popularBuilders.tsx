@@ -1,4 +1,4 @@
-import React from 'react'
+
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 
 const PopularBuilders = (props: any) => {
@@ -7,14 +7,18 @@ const PopularBuilders = (props: any) => {
         // props.history.push('popular-builders')
     }
 
+
+
     const popularBuildersData = props.jobDataWithJobTypeLatLong?.popular_builders?.slice(0, 6);
+
+    
 
     return (
         <>
             { popularBuildersData?.length > 0 && <div className="section_wrapper">
                 <div className="custom_container">
                     <span className="title">Popular builders</span>
-                    <ul className="popular_tradies">
+                    <ul className="popular_tradies" data-aos="fade-zoom-in" data-aos-offset="200" data-aos-easing="ease-in-sine" data-aos-duration="500">
                         {popularBuildersData?.length ? popularBuildersData?.map((item: any) => {
                             return (
                                 <li>
