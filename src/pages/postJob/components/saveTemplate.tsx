@@ -27,7 +27,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
     const handleContinue = async () => {
 
         if (!templateName?.length) {
-            setError('please enter template name.');
+            setError('Template name is required.');
             return
         }
         let filter_milestone = milestones.filter((item: any) => {
@@ -51,7 +51,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
 
     const handleChange = (value: any) => {
          if (templateName?.length && templateName?.length > 50) {
-            setError('limit exceed to 50 characters.');
+            setError('Maximum 50 characters are allowed.');
         } else {
             setError('');
         }

@@ -306,7 +306,7 @@ export default class AddMilestone extends Component<Props, State> {
                                                     if (rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
                                                     } else {
-                                                        error_item['pattern_error'] = 'please enter a valid pattern like : 04:03';
+                                                        error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
                                                     }
                                                     this.setState({ errors: error_item });
                                                 });
