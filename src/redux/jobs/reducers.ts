@@ -1,3 +1,4 @@
+import { getTradieReviewList } from './actions';
 import * as actionTypes from './constants'
 
 const initialState = {
@@ -19,7 +20,8 @@ const initialState = {
   builderOpenJobs: [],
   builderPastJobs: [],
   builderNewApplicants: [],
-  builderNewApplicantsList: []
+  builderNewApplicantsList: [],
+  tradieReviewList: [],
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -124,6 +126,12 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderNewApplicantsList: action.payload,
+      };
+
+    case actionTypes.SET_TRADIE_REVIEW_LIST:
+      return {
+        ...state,
+        tradieReviewList: action.payload,
       };
 
     default: return state;

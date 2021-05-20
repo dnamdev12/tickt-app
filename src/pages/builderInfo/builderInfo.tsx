@@ -8,13 +8,16 @@ import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
 import noData from '../../assets/images/no-data.png';
+import cancel from "../../assets/images/ic-cancel.png";
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 interface PropsType {
     location: any,
-    history: any
+    history: any,
+    getTradieReviewList: (data: any) => void,
+    tradieReviewList: Array<object>,
 }
 
 const portfolio = {
@@ -53,50 +56,6 @@ const portfolioModal = {
 };
 
 
-// const portifolioData = [
-//     {
-//         jobDescription: "My first job",
-//         portfolioId: "607e924c1d275647a8d9589fg",
-//         portfolioImage: [
-//             "url1"
-//         ]
-//     },
-//     {
-//         jobDescription: "My second job",
-//         portfolioId: "607e924c1d275647a8d9589fh",
-//         portfolioImage: [
-//             "url1"
-//         ]
-//     },
-//     {
-//         jobDescription: "My third job",
-//         portfolioId: "607e924c1d275647a8d9589fi",
-//         portfolioImage: [
-//             "url1"
-//         ]
-//     },
-//     {
-//         jobDescription: "My fourth job",
-//         portfolioId: "607e924c1d275647a8d9589fj",
-//         portfolioImage: [
-//             "url1"
-//         ]
-//     },
-//     {
-//         jobDescription: "My fifth job",
-//         portfolioId: "607e924c1d275647a8d9589fjk",
-//         portfolioImage: [
-//             "url1"
-//         ]
-//     },
-//     {
-//         jobDescription: "My sixth job",
-//         portfolioId: "607e924c1d275647a8d9589fjl",
-//         portfolioImage: [
-//             "url1"
-//         ]
-//     }
-// ]
 
 const BuilderInfo = (props: PropsType) => {
     const [profileData, setProfileData] = useState<any>('');
@@ -105,7 +64,21 @@ const BuilderInfo = (props: PropsType) => {
         portfolioDetails: '',
     });
 
-    console.log(portfolioData, "portfolioData");
+    const [reviewsData, setReviewsData] = useState<any>({
+        reviewReplyClicked: false,
+        showAllReviewsClicked: false,
+        submitReviewsClicked: false,
+        deleteReviewsClicked: false,
+        updateReviewsClicked: false,
+        questionsClickedType: '',
+        confirmationClicked: false,
+        showReviewAnswerButton: true,
+        questionId: '',
+        questionData: ''
+    })
+    console.log(reviewsData, "reviewData");
+
+    console.log(portfolioData, "portfolioData", props.tradieReviewList, "eded");
 
     useEffect(() => {
         (async () => {
@@ -113,12 +86,55 @@ const BuilderInfo = (props: PropsType) => {
             const res = await getBuilderProfile(builderId);
             if (res?.success) {
                 setProfileData(res.data);
+                const data = {
+                    builderId: res.data?.builderId,
+                    page: 1
+                }
+                props.getTradieReviewList(data);
             }
         })();
     }, [])
 
     const portfolioImageHandler = (data: any) => {
         setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: true, portfolioDetails: data }));
+    }
+
+    const modalCloseHandler = (modalType: string) => {
+        setReviewsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteReviewsClicked: false, showAnswerButton: true, showQuestionAnswer: false }))
+    }
+
+    const questionHandler = (type: string, questionId?: string, question?: string) => {
+        if (type == 'askUpdateQuestionCancelled') {
+            setReviewsData((prevData: any) => ({
+                ...prevData,
+                reviewReplyClicked: false,
+                updateQuestionsClicked: false,
+                deleteReviewsClicked: false,
+                showAllReviewsClicked: true,
+                questionData: '',
+                questionsClickedType: '',
+                questionId: '',
+            }));
+        } else if (type == 'askQuestion') {
+            setReviewsData((prevData: any) => ({
+                ...prevData,
+                reviewReplyClicked: true,
+                showAllReviewsClicked: false,
+                questionsClickedType: type,
+            }));
+        } else if (type == 'deleteQuestion') {
+            setReviewsData((prevData: any) => ({ ...prevData, confirmationClicked: true, deleteQuestionsClicked: true, questionId: questionId, questionsClickedType: type }));
+        } else if (type == 'updateQuestion') {
+            setReviewsData((prevData: any) => ({
+                ...prevData,
+                reviewReplyClicked: true,
+                updateQuestionsClicked: true,
+                questionId: questionId,
+                questionsClickedType: type,
+                showAllReviewsClicked: false,
+                questionData: question
+            }));
+        }
     }
 
     return (
@@ -270,97 +286,79 @@ const BuilderInfo = (props: PropsType) => {
                                     <img src={noData} alt="data not found" />
                                 </figure>
                             </div>}
-                        {/* <div className="flex_col_sm_3">
-                            <div className="review_card">
-                                <div className="rating_star">
-                                    star here..
-                                </div>
-                                <div className="pic_shot_dtl">
-                                    <figure className="u_img">
-                                        <img src={dummy} alt="user-img" />
-                                    </figure>
-                                    <div className="name_wrap">
-                                        <span className="user_name" title="Cheryl">Cheryl</span>
-                                        <span className="date">August 2020</span>
-                                    </div>
-                                </div>
-                                <p className="commn_para">Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it. That’s great.</p>
-                            </div>
-                        </div> */}
-                        {/* <div className="flex_col_sm_3">
-                            <div className="review_card">
-                                <div className="rating_star">
-                                    star here..
-                                </div>
-                                <div className="pic_shot_dtl">
-                                    <figure className="u_img">
-                                        <img src={dummy} alt="user-img" />
-                                    </figure>
-                                    <div className="name_wrap">
-                                        <span className="user_name" title="Cheryl">Cheryl</span>
-                                        <span className="date">August 2020</span>
-                                    </div>
-                                </div>
-                                <p className="commn_para" title="">Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it. That’s great.</p>
-                            </div>
-                        </div>
-                        <div className="flex_col_sm_3">
-                            <div className="review_card">
-                                <div className="rating_star">
-                                    star here..
-                                </div>
-                                <div className="pic_shot_dtl">
-                                    <figure className="u_img">
-                                        <img src={dummy} alt="user-img" />
-                                    </figure>
-                                    <div className="name_wrap">
-                                        <span className="user_name" title="Cheryl">Cheryl</span>
-                                        <span className="date">August 2020</span>
-                                    </div>
-                                </div>
-                                <p className="commn_para">Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it. That’s great.</p>
-                            </div>
-                        </div>
-                        <div className="flex_col_sm_3">
-                            <div className="review_card">
-                                <div className="rating_star">
-                                    star here..
-                                </div>
-                                <div className="pic_shot_dtl">
-                                    <figure className="u_img">
-                                        <img src={dummy} alt="user-img" />
-                                    </figure>
-                                    <div className="name_wrap">
-                                        <span className="user_name" title="Cheryl">Cheryl</span>
-                                        <span className="date">August 2020</span>
-                                    </div>
-                                </div>
-                                <p className="commn_para">Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it. That’s great.</p>
-                            </div>
-                        </div>
-                        <div className="flex_col_sm_3">
-                            <div className="review_card">
-                                <div className="rating_star">
-                                    star here..
-                                </div>
-                                <div className="pic_shot_dtl">
-                                    <figure className="u_img">
-                                        <img src={dummy} alt="user-img" />
-                                    </figure>
-                                    <div className="name_wrap">
-                                        <span className="user_name" title="Cheryl">Cheryl</span>
-                                        <span className="date">August 2020</span>
-                                    </div>
-                                </div>
-                                <p className="commn_para">Don’t usually go for Global Industries boards but my go to longboard was in the shop being repaired. Compared to my usual this one isn’t as grippy but the weight and speed really made up for it. That’s great.</p>
-                            </div>
-                        </div> */}
                     </div>
-                    <button className="fill_grey_btn full_btn view_more">View all 10 reviews</button>
+                    <button className="fill_grey_btn full_btn view_more" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}>View all 10 reviews</button>
                 </div>
             </div>
+            {reviewsData.showAllReviewsClicked && props.tradieReviewList?.length > 0 &&
+                <Modal
+                    className="ques_ans_modal"
+                    open={reviewsData.showAllReviewsClicked}
+                    onClose={() => modalCloseHandler('showAllReviewsClicked')}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <>
+                        <div className="custom_wh">
+                            <div className="heading">
+                                <span className="sub_title">{`${props.tradieReviewList?.length} questions`}</span>
+                                <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
+                                    <img src={cancel} alt="cancel" />
+                                </button>
+                            </div>
+                            <div className="inner_wrap">
+                                {props.tradieReviewList?.map((item: any) => {
+                                    const { reviewData } = item;
+                                    console.log('review modalClicked', reviewData)
+                                    return (
+                                        <>
+                                            <div className="question_ans_card">
+                                                <div className="user_detail">
+                                                    <figure className="user_img">
+                                                        <img src={reviewData?.userImage || dummy} alt="user-img" />
+                                                    </figure>
+                                                    <div className="details">
+                                                        <span className="user_name">{reviewData?.userName}</span>
+                                                        <span className="date">{reviewData?.date}</span>
+                                                    </div>
+                                                </div>
+                                                <p>{reviewData?.review}</p>
+                                                {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion')}>Reply</span>}
+                                                {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', reviewData?.questionId, reviewData?.question)}>Edit</span>} */}
+                                                {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', reviewData?.questionId)}>Delete</span>} */}
+                                                {(Object.keys(reviewData?.replyData).length > 0 && reviewsData?.showReviewAnswerButton) &&
+                                                    <span className="show_hide_ans link"
+                                                        onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showQuestionAnswer: true, showReviewAnswerButton: false }))}>Show review</span>}
+                                            </div>
+                                            {/* {reviewData?.replyData?.answer && reviewsData.showQuestionAnswer &&
+                                                <div className="question_ans_card answer">
+                                                    <div className="user_detail">
+                                                        <figure className="user_img">
+                                                            <img src={dummy} alt="user-img" />
+                                                        </figure>
+                                                        <div className="details">
+                                                            <span className="user_name">{reviewData?.replyData?.userName}</span>
+                                                            <span className="date">{reviewData?.replyData?.date}</span>
+                                                        </div>
+                                                    </div>
+                                                    <p>{reviewData?.replyData?.answer}</p>
+                                                </div>} */}
+                                            {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', reviewData?.questionId, reviewData?.question)}>Edit</span>} */}
+                                            {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', reviewData?.questionId)}>Delete</span>} */}
+                                        </>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </>
+                </Modal>
+            }
         </div>
     )
 }
 
 export default BuilderInfo;
+
+{/* <div className="text-center">
+    <button className="fill_grey_btn load_more">Load more</button>
+</div> */}

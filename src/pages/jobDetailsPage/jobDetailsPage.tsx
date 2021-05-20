@@ -92,7 +92,8 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await postHomeApplyJob(data);
         if (res.success) {
-            setJobDetailsData((prevData: any) => ({ ...prevData, appliedStatus: 'APPLIED' }))
+            // setJobDetailsData((prevData: any) => ({ ...prevData, appliedStatus: 'APPLIED' }))
+            props.history.push('job-applied-successfully')
         }
     }
 
