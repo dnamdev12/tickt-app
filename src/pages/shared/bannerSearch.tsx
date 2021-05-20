@@ -154,7 +154,7 @@ const BannerSearch = (props: PropsType) => {
                                 {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 4).map((item: any) => {
                                     return (
                                         <div
-                                            className="flex_col_sm_4"
+                                            className="flex_col_sm_3"
                                             onClick={() => {
                                                 let selected_address: any = selectedAddress;
                                                 props.history.push({

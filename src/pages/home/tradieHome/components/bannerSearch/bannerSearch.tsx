@@ -193,7 +193,7 @@ const BannerSearch = (props: PropsType) => {
                     <div className="flex_row recent_search">
                         {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.map((item: any) => {
                             return (
-                                <div className="flex_col_sm_4">
+                                <div className="flex_col_sm_3">
 
                                     <div className="autosuggestion_icon card history" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
                                         <span>{item.name}</span>

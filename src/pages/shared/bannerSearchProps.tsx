@@ -199,7 +199,7 @@ const BannerSearch = (props: PropsType) => {
                                 {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.slice(0, 2).map((item: any) => {
                                     return (
                                         <div
-                                            className="flex_col_sm_4"
+                                            className="flex_col_sm_3"
                                             onClick={() => {
                                                 setItemSearch({
                                                     createdAt: item?.createdAt,
