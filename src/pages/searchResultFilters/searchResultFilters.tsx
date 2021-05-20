@@ -88,7 +88,6 @@ const SearchResultFilters = (props: any) => {
             setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], jobTypes: [], specializationId: [], allSpecializationClicked: false }));
             setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Fixed price', max_budget: null }));
             setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
-            // props.cleanFiltersHandler(false);
             showResultsByAllFilter('searchedBySearchBannerClicked')
         }
     }, [props.cleanFiltersData])
@@ -98,20 +97,16 @@ const SearchResultFilters = (props: any) => {
             if (paramsData.max_budget && paramsData.pay_type) {
                 setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsData.pay_type, max_budget: paramsData.max_budget }));
                 setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
-                console.log("searchResultsFilters 0000 filter ran", paramsData);
 
             }
             if (paramsData.specializationId?.length && paramsData.tradeId?.length && paramsData.jobTypes?.length) {
-                console.log("searchResultsFilters 1111 filter ran", paramsData);
                 setSortByFilter((prevData: any) => ({ ...prevData, tradeId: paramsData.tradeId, jobTypes: paramsData.jobTypes, specializationId: paramsData.specializationId, showResultsButtonClicked: true }));
                 setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
             }
             if (paramsData.sortBy && paramsData.isFiltered) {
                 setSortBySorting((prevData: any) => ({ ...prevData, sortBy: paramsData.sortBy }));
                 setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
-                console.log("searchResultsFilters 2222 filter ran", paramsData);
             }
-            // setFilterState((prevData: any) => ({ ...prevData, paramData: true }));
         }
     }, [paramsData])
 
@@ -275,9 +270,8 @@ const SearchResultFilters = (props: any) => {
         <div className="filters_wrapr">
             <ul className="filters_row">
                 <li>
-                    <a onClick={sortByFilterClick}>
+                    <a onClick={sortByFilterClick} className={sortByFilter.showResultsButtonClicked ? 'active' : ''}>
                         <img src={sortByFilter.showResultsButtonClicked ? filterSelected : filterUnselected} alt="filter" />Filter
-                       {/* <img src={filterSelected} alt="filter" />Filter */}
                     </a>
                 </li>
                 <li>
