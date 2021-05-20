@@ -82,6 +82,10 @@ const BannerSearch = (props: PropsType) => {
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
     useEffect(() => {
+        props.getRecentSearchList();
+    }, [])
+
+    useEffect(() => {
         if (paramsData) {
             var data = {
                 page: paramsData?.page ? paramsData?.page : 1,
@@ -471,7 +475,7 @@ const BannerSearch = (props: PropsType) => {
                         <div ref={calenderRef} className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>
-                                <input type="text" placeholder={stateData?.startDate ? `${stateData?.startDate} - ${stateData?.endDate}` : "When?"} onFocus={() => setInputFocus3(true)} />
+                                <input type="text" id="calender-input" placeholder={stateData?.startDate ? `${stateData?.startDate} - ${stateData?.endDate}` : "When?"} onFocus={() => setInputFocus3(true)} />
                                 {stateData?.startDate && inputFocus3 &&
                                     <span className="detect_icon" >
                                         <img src={cross} alt="cross" onClick={() => cleanInputData('calender')} />
