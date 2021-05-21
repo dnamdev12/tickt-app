@@ -195,7 +195,7 @@ export const getActiveJobsBuilder = (page: number) => ({ type: actionTypes.GET_B
 export const getOpenJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_OPEN_JOBS, page });
 export const getPastJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_PAST_JOBS, page });
 export const getNewApplicantsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS, page });
-export const getnewJobApplicationListBuilder = (page: number, jobId: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, page, jobId });
+export const getnewJobApplicationListBuilder = (page: number, jobId: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, page});
 
 export const getMilestoneList = (jobId: string) => ({
   type: actionTypes.GET_MILESTONES_START,

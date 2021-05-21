@@ -85,6 +85,18 @@ export class NetworkOps {
         }
     }
 
+    getToJson = async (service: string, data: any): Promise<FetchResponse> => {
+        try {
+            const JSONData = JSON.stringify(data);
+            const request = await this.getRequest('GET');
+            request.body = JSONData;
+            return this.wrapperWithOptions(urlFor(service), request)
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
     postRaw = async (service: string, data: any, options?: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('POST', options);

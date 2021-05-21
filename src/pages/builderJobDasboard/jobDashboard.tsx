@@ -78,7 +78,7 @@ const JobDashboard = ({
 
         if (jobType === 'applicantList') {
             if (getnewJobApplicationListBuilder) {
-                console.log({page, jobId});
+                console.log({ page, jobId });
                 getnewJobApplicationListBuilder(page, jobId);
             }
         }
@@ -98,7 +98,9 @@ const JobDashboard = ({
 
 
     const setJobLabel = (item: any) => {
-        setJobId(item.jobId);
+        if(item?.jobId){
+            setJobId(item.jobId);
+        }
         setJobtype(item.title);
     }
 
@@ -182,8 +184,7 @@ const JobDashboard = ({
                         </div>
                     </div>
                     <div className="detail_col">
-                        {'Here!'}
-                        {/* {jobType === 'active' && (
+                        {jobType === 'active' && (
                             <ActiveJobsComponent
                                 dataItems={dataItems}
                                 jobType={jobType}
@@ -192,6 +193,7 @@ const JobDashboard = ({
                             <OpenJobsComponent
                                 dataItems={dataItems}
                                 jobType={jobType}
+                                applicantsList={applicantsListJobs}
                                 setJobLabel={setJobLabel}
                             />)}
                         {jobType === 'past' && (
@@ -204,7 +206,7 @@ const JobDashboard = ({
                                 dataItems={dataItems}
                                 jobType={jobType}
                                 setJobLabel={setJobLabel}
-                            />)} */}
+                            />)}
                     </div>
                 </div>
             </div>

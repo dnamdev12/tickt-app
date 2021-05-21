@@ -223,9 +223,12 @@ function* getBuilderNewApplicants({ page }: any) {
   }
 }
 
-function* getnewJobApplicationListBuilder({ page, jobId }: any) {
+function* getnewJobApplicationListBuilder(item:any) {
+  console.log({ item })
+  let page = 1;
   setLoading(true);
-  const response: FetchResponse = yield NetworkOps.get(`${Urls.newJobApplicationListBuilder}?page=${page}`);
+  const response: FetchResponse = yield NetworkOps.getToJson(Urls.newJobApplicationListBuilder, { page });
+  // const response: FetchResponse = yield NetworkOps.get(`${Urls.newJobApplicationListBuilder}?page=${page}`);
   setLoading(false);
   if (response.status_code === 200) {
     yield put({

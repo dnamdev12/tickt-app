@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
-
+import MarkMilestones from './markMilestones';
 interface Active {
     amount: any,
     durations: any,
@@ -24,6 +24,10 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
     let data_item: any = dataItems;
     let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
     console.log({listData});
+
+
+    return <MarkMilestones />
+    
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -64,7 +68,7 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                         <li className="icon clock">{timeLeft}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{''}</li>
-                                        <li className="icon calendar">{`${durations} days`}</li>
+                                        <li className="icon calendar">{durations}</li>
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
