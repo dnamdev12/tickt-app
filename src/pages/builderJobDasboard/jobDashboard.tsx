@@ -182,7 +182,8 @@ const JobDashboard = ({
                         </div>
                     </div>
                     <div className="detail_col">
-                        {jobType === 'active' && (
+                        {'Here!'}
+                        {/* {jobType === 'active' && (
                             <ActiveJobsComponent
                                 dataItems={dataItems}
                                 jobType={jobType}
@@ -203,7 +204,7 @@ const JobDashboard = ({
                                 dataItems={dataItems}
                                 jobType={jobType}
                                 setJobLabel={setJobLabel}
-                            />)}
+                            />)} */}
                     </div>
                 </div>
             </div>
