@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getBuilderProfile } from '../../redux/jobs/actions';
+import { getBuilderProfile, tradieReviewReply } from '../../redux/jobs/actions';
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import Modal from '@material-ui/core/Modal';
 import ReviewInfoBox from '../../common/reviewInfoBox';
@@ -70,11 +70,11 @@ const BuilderInfo = (props: PropsType) => {
         submitReviewsClicked: false,
         deleteReviewsClicked: false,
         updateReviewsClicked: false,
-        questionsClickedType: '',
+        reviewsClickedType: '',
         confirmationClicked: false,
         showReviewAnswerButton: true,
-        questionId: '',
-        questionData: ''
+        reviewId: '',
+        reviewData: ''
     })
     console.log(reviewsData, "reviewData");
 
@@ -99,40 +99,89 @@ const BuilderInfo = (props: PropsType) => {
         setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: true, portfolioDetails: data }));
     }
 
-    const modalCloseHandler = (modalType: string) => {
-        setReviewsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteReviewsClicked: false, showAnswerButton: true, showQuestionAnswer: false }))
+    const handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>, type: string) => {
+        if (e.target.value.trim().length <= 250) {
+            setReviewsData((prevData: any) => ({ ...prevData, [type]: e.target.value }))
+        }
     }
 
-    const questionHandler = (type: string, questionId?: string, question?: string) => {
+    const modalCloseHandler = (modalType: string) => {
+        setReviewsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteReviewsClicked: false, showAnswerButton: true, showReviewReply: false }))
+    }
+
+    const submitQuestionHandler = async (type: string) => {
+        if (type == 'submitReviewReply') {
+            setReviewsData((prevData: any) => ({ ...prevData, submitReviewsClicked: true, reviewsClickedType: 'askQuestion', confirmationClicked: true }));
+            return;
+        }
+        // else if (type == 'updateAskedQuestion') {
+        //     setQuestionsData((prevData: any) => ({ ...prevData, submitQuestionsClicked: true, confirmationClicked: true }));
+        //     return;
+        // }
+        if (['reviewReply', 'updateReviewBuilder', 'removeReviewBuilder'].includes(type)) {
+            var response;
+            if (type == 'reviewReply') {
+                const data = {
+                    reviewId: reviewsData.reviewId,
+                    reply: reviewsData.reviewData
+                }
+                //api calling ask Question
+                response = await tradieReviewReply(data);
+                if (response?.success) {
+                    const data: any = {
+                        builderId: profileData?.builderId,
+                        page: 1
+                    }
+                    props.getTradieReviewList(data);
+                }
+                setReviewsData((prevData: any) => ({
+                    ...prevData,
+                    submitReviewsClicked: false,
+                    reviewReplyClicked: false,
+                    showAllReviewsClicked: true,
+                    confirmationClicked: false,
+                    reviewsClickedType: '',
+                    deleteReviewsClicked: false,
+                    updateReviewsClicked: false,
+                    reviewId: '',
+                    reviewData: '',
+                    showReviewReply: false
+                }))
+            }
+        }
+    }
+
+    const reviewHandler = (type: string, reviewId?: string, question?: string) => {
         if (type == 'askUpdateQuestionCancelled') {
             setReviewsData((prevData: any) => ({
                 ...prevData,
                 reviewReplyClicked: false,
-                updateQuestionsClicked: false,
+                updateReviewsClicked: false,
                 deleteReviewsClicked: false,
                 showAllReviewsClicked: true,
-                questionData: '',
-                questionsClickedType: '',
-                questionId: '',
+                reviewData: '',
+                reviewsClickedType: '',
+                reviewId: '',
             }));
+        } else if (type == 'reviewReplyClicked') {
+            setReviewsData((prevData: any) => ({
+                ...prevData,
+                reviewReplyClicked: true,
+                showAllReviewsClicked: false,
+                reviewsClickedType: type,
+                reviewId: reviewId,
+            }));
+        } else if (type == 'deleteQuestion') {
+            setReviewsData((prevData: any) => ({ ...prevData, confirmationClicked: true, deleteReviewsClicked: true, reviewId: reviewId, reviewsClickedType: type }));
         } else if (type == 'askQuestion') {
             setReviewsData((prevData: any) => ({
                 ...prevData,
                 reviewReplyClicked: true,
+                updateReviewsClicked: true,
+                reviewId: reviewId,
+                reviewsClickedType: type,
                 showAllReviewsClicked: false,
-                questionsClickedType: type,
-            }));
-        } else if (type == 'deleteQuestion') {
-            setReviewsData((prevData: any) => ({ ...prevData, confirmationClicked: true, deleteQuestionsClicked: true, questionId: questionId, questionsClickedType: type }));
-        } else if (type == 'updateQuestion') {
-            setReviewsData((prevData: any) => ({
-                ...prevData,
-                reviewReplyClicked: true,
-                updateQuestionsClicked: true,
-                questionId: questionId,
-                questionsClickedType: type,
-                showAllReviewsClicked: false,
-                questionData: question
+                reviewData: question
             }));
         }
     }
@@ -261,10 +310,10 @@ const BuilderInfo = (props: PropsType) => {
                                 {/* <span className="xs_sub_title">{portfolioData?.portfolioDetails?.jobDescription}</span> */}
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
-                                <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
+                                    <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
+                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
                                 Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
-                                
+
                                 </div>
                             </div>
                         </div>
@@ -344,31 +393,94 @@ const BuilderInfo = (props: PropsType) => {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.review}</p>
-                                                {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion')}>Reply</span>}
-                                                {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', reviewData?.questionId, reviewData?.question)}>Edit</span>} */}
-                                                {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', reviewData?.questionId)}>Delete</span>} */}
+                                                {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
+                                                {/* {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData?.reviewId, reviewData?.question)}>Edit</span>} */}
+                                                {/* {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('deleteQuestion', reviewData?.reviewId)}>Delete</span>} */}
                                                 {(Object.keys(reviewData?.replyData).length > 0 && reviewsData?.showReviewAnswerButton) &&
                                                     <span className="show_hide_ans link"
-                                                        onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showQuestionAnswer: true, showReviewAnswerButton: false }))}>Show review</span>}
+                                                        onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showReviewReply: true, showReviewAnswerButton: false }))}>{`${reviewsData.showReviewReply ? 'Hide review' : 'Show review'}`}</span>}
                                             </div>
-                                            {/* {reviewData?.replyData?.answer && reviewsData.showQuestionAnswer &&
+                                            {reviewData?.replyData?.reply && reviewsData.showReviewReply &&
                                                 <div className="question_ans_card answer">
                                                     <div className="user_detail">
                                                         <figure className="user_img">
-                                                            <img src={dummy} alt="user-img" />
+                                                            <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
                                                         </figure>
                                                         <div className="details">
                                                             <span className="user_name">{reviewData?.replyData?.userName}</span>
                                                             <span className="date">{reviewData?.replyData?.date}</span>
                                                         </div>
                                                     </div>
-                                                    <p>{reviewData?.replyData?.answer}</p>
-                                                </div>} */}
-                                            {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', reviewData?.questionId, reviewData?.question)}>Edit</span>} */}
-                                            {/* {reviewData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', reviewData?.questionId)}>Delete</span>} */}
+                                                    <p>{reviewData?.replyData?.reply}</p>
+                                                    {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData?.reviewId, reviewData?.question)}>Edit</span>}
+                                                    {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('deleteQuestion', reviewData?.reviewId)}>Delete</span>}
+                                                </div>}
                                         </>
                                     )
                                 })}
+                            </div>
+                        </div>
+                    </>
+                </Modal>
+            }
+            {/* show ask question modal */}
+            {reviewsData.reviewReplyClicked &&
+                <Modal
+                    className="ques_ans_modal"
+                    open={reviewsData.reviewReplyClicked}
+                    onClose={() => modalCloseHandler('reviewReplyClicked')}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <>
+                        <div className="custom_wh ask_ques">
+                            <div className="heading">
+                                <span className="sub_title">{`${reviewsData.updateReviewsClicked ? 'Edit a reply' : 'Reply'}`}</span>
+                                <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
+                                    <img src={cancel} alt="cancel" />
+                                </button>
+                            </div>
+                            <div className="inner_wrap">
+                                <div className="form_field">
+                                    <label className="form_label">Your reply</label>
+                                    <div className="text_field">
+                                        <textarea placeholder="Text" value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
+                                    </div>
+                                    <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                                </div>
+                            </div>
+                            <div className="bottom_btn custom_btn">
+                                <button className="fill_btn full_btn" onClick={() => submitQuestionHandler(reviewsData.updateReviewsClicked ? 'updateAskedQuestion' : 'submitReviewReply')}>{`${reviewsData.updateReviewsClicked ? 'Save' : 'Send'}`}</button>
+                                <button className="fill_grey_btn" onClick={() => reviewHandler('askUpdateQuestionCancelled')}>Cancel</button>
+                            </div>
+                        </div>
+                    </>
+                </Modal>
+            }
+            {/* send confirmation yes/no modal */}
+            {(reviewsData.confirmationClicked) &&
+                <Modal
+                    className="custom_modal"
+                    open={reviewsData.confirmationClicked}
+                    onClose={() => modalCloseHandler('confirmationClicked')}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <>
+                        <div className="custom_wh confirmation">
+                            <div className="heading">
+                                {/* <span className="sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span> */}
+                                <span className="sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : reviewsData.updateQuestionsClicked ? 'Update' : 'Ask'} Reply Confirmation`}</span>
+                                <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
+                                    <img src={cancel} alt="cancel" />
+                                </button>
+                            </div>
+                            <div className="modal_message">
+                                <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete' : reviewsData.updateQuestionsClicked ? 'update' : 'reply'} a review?`}</p>
+                            </div>
+                            <div className="dialog_actions">
+                                <button className="fill_btn" onClick={() => submitQuestionHandler(reviewsData.reviewsClickedType)}>Yes</button>
+                                <button className="fill_grey_btn" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
                             </div>
                         </div>
                     </>

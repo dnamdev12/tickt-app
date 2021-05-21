@@ -55,7 +55,7 @@ const Header = (props: any) => {
         storageService.removeItem("userType")
         history.push('/login')
     }
-    
+
     const postClicked = () => {
         return;
         setToggleMenu(false);
@@ -66,10 +66,10 @@ const Header = (props: any) => {
     const jobClick = () => {
         return;
         setToggleMenu(false);
-        if(userType == 1) {
+        if (userType == 1) {
             setActiveLink('jobs');
             history.push('/applied-jobs');
-        } else if(userType == 2) {
+        } else if (userType == 2) {
             // setActiveLink('jobs');
             // history.push('/jobs')
         }

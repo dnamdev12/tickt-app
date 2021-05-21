@@ -18,7 +18,7 @@ const PopularBuilders = (props: any) => {
             { popularBuildersData?.length > 0 && <div className="section_wrapper">
                 <div className="custom_container">
                     <span className="title">Popular builders</span>
-                    <ul className="popular_tradies" data-aos="fade-zoom-in" data-aos-offset="200" data-aos-easing="ease-in-sine" data-aos-duration="500">
+                    <ul className="popular_tradies">
                         {popularBuildersData?.length ? popularBuildersData?.map((item: any) => {
                             return (
                                 <li>
