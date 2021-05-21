@@ -43,7 +43,7 @@ export const postHomeApplyJob = async (data: any) => {
     const response: FetchResponse = await NetworkOps.postToJson(Urls.homeApplyJob, data)
     setLoading(false);
     if (response.status_code === 200) {
-        setShowToast(true, response.message);
+        // setShowToast(true, response.message);
         return { success: true, data: response };
     }
     setShowToast(true, response.message);

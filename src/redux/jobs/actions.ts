@@ -3,6 +3,8 @@ import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
 import { setShowToast, setLoading } from '../common/actions';
 
+export const getTradieReviewList = (data: any) => ({ type: actionTypes.GET_TRADIE_REVIEW_LIST, data })
+
 //jobTypeList
 export const callCategories = async () => {
   const response: FetchResponse = await NetworkOps.get(Urls.jobTypeList);
