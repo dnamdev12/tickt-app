@@ -157,6 +157,18 @@ export const reviewBuilder = async (data: any) => {
   return { success: false };
 }
 
+export const tradieReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieReviewReply, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 export const getBuilderProfile = async (builderId: string) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`)

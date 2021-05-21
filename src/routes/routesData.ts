@@ -51,46 +51,46 @@ const routes = [
         component: ForgerPassword,
         authRoute: true,
     },
-    {
-        name: 'postnewjob',
-        path: '/post-new-job',
-        component: PostJob,
-        // authRoute: true,
-    },
-    {
-        name: 'recommendedjobs',
-        path: '/recommended-jobs',
-        component: RecommendedJobs,
-    },
-    {
-        name: 'savedjobs',
-        path: '/saved-jobs',
-        component: SavedJobs,
-    },
-    {
-        name: 'mostviewedjobs',
-        path: '/most-viewed-jobs',
-        component: MostViewedJobs,
-    },
-    {
-        name: 'popularbuilders',
-        path: '/popular-builders',
-        component: PopularBuilders,
-    },
-    {
-        name: 'searchjobresults',
-        path: '/search-job-results',
-        component: TradieSearchJobResult,
-        authRoute: false,
-        privateRoute: true,
-    },
-    {
-        name: 'jobdetailspage',
-        path: '/job-details-page',
-        component: JobDetailsPage,
-        authRoute: false,
-        privateRoute: true,
-    },
+    // {
+    //     name: 'postnewjob',
+    //     path: '/post-new-job',
+    //     component: PostJob,
+    //     // authRoute: true,
+    // },
+    // {
+    //     name: 'recommendedjobs',
+    //     path: '/recommended-jobs',
+    //     component: RecommendedJobs,
+    // },
+    // {
+    //     name: 'savedjobs',
+    //     path: '/saved-jobs',
+    //     component: SavedJobs,
+    // },
+    // {
+    //     name: 'mostviewedjobs',
+    //     path: '/most-viewed-jobs',
+    //     component: MostViewedJobs,
+    // },
+    // {
+    //     name: 'popularbuilders',
+    //     path: '/popular-builders',
+    //     component: PopularBuilders,
+    // },
+    // {
+    //     name: 'searchjobresults',
+    //     path: '/search-job-results',
+    //     component: TradieSearchJobResult,
+    //     authRoute: false,
+    //     privateRoute: true,
+    // },
+    // {
+    //     name: 'jobdetailspage',
+    //     path: '/job-details-page',
+    //     component: JobDetailsPage,
+    //     authRoute: false,
+    //     privateRoute: true,
+    // },
     // {
     //     name: 'job-applied-successfully',
     //     path: '/job-applied-successfully',
@@ -103,21 +103,21 @@ const routes = [
     //     path: '/builder-info',
     //     component: BuilderInfo,
     // },
-    {
-        name: 'jobdashboard',
-        path: [
-            '/active-jobs',
-            '/applied-jobs',
-            '/past-jobs',
-            '/new-jobs',
-            '/approved-milestones',
-            '/mark-milestone',
-            '/review-builder',
-        ],
-        component: JobDashboard,
-        authRoute: false,
-        privateRoute: true,
-    },
+    // {
+    //     name: 'jobdashboard',
+    //     path: [
+    //         '/active-jobs',
+    //         '/applied-jobs',
+    //         '/past-jobs',
+    //         '/new-jobs',
+    //         '/approved-milestones',
+    //         '/mark-milestone',
+    //         '/review-builder',
+    //     ],
+    //     component: JobDashboard,
+    //     authRoute: false,
+    //     privateRoute: true,
+    // },
     // {
     //     name: 'builderreviewsubmitted',
     //     path: '/builder-review-submitted',
@@ -130,38 +130,38 @@ const routes = [
         path: '/linkedin',
         component: LinkedInPopUp
     },
-    {
-        name: 'builder-jobs',
-        path: '/jobs',
-        component: builderJobDasboard
-    },
-    {
-        name: 'recommended-trade-people',
-        path: '/recommended-trade-people',
-        component: TradieListData
-    },
-    {
-        name: 'saved-trade-people',
-        path: '/saved-trade-people',
-        component: TradieListData
-    },
-    {
-        name: 'tradie-details',
-        path: '/tradie-details',
-        component: TradieDetails
-    },
-    {
-        name: 'search-builder-result',
-        path: '/search-builder-result',
-        component: TradieListData
-    },
-    {
-        name: 'search-tradie-results',
-        path: '/search-tradie-results',
-        component: SearchResultTradie,
-        authRoute: false,
-        privateRoute: true,
-    },
+    // {
+    //     name: 'builder-jobs',
+    //     path: '/jobs',
+    //     component: builderJobDasboard
+    // },
+    // {
+    //     name: 'recommended-trade-people',
+    //     path: '/recommended-trade-people',
+    //     component: TradieListData
+    // },
+    // {
+    //     name: 'saved-trade-people',
+    //     path: '/saved-trade-people',
+    //     component: TradieListData
+    // },
+    // {
+    //     name: 'tradie-details',
+    //     path: '/tradie-details',
+    //     component: TradieDetails
+    // },
+    // {
+    //     name: 'search-builder-result',
+    //     path: '/search-builder-result',
+    //     component: TradieListData
+    // },
+    // {
+    //     name: 'search-tradie-results',
+    //     path: '/search-tradie-results',
+    //     component: SearchResultTradie,
+    //     authRoute: false,
+    //     privateRoute: true,
+    // },
     {
         name: 'notFound',
         path: '/404',

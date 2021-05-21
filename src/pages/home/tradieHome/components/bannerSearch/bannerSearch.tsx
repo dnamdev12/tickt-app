@@ -159,6 +159,9 @@ const BannerSearch = (props: PropsType) => {
             setStateData((prevData: any) => ({ ...prevData, from_date: '', to_date: '', startDate: '', endDate: '' }))
             return;
         }
+        if (item == "searchedJob") {
+            setStateData((prevData: any) => ({ ...prevData, [item]: '', isSearchedJobSelected: false  }))
+        }
         setStateData((prevData: any) => ({ ...prevData, [item]: '' }))
     }
 
@@ -421,7 +424,7 @@ const BannerSearch = (props: PropsType) => {
                 <img src={close} alt="close" />
             </button>
             {/* first_input class should remove when first input get the value */}
-            <form className={`search_wrapr ${(!stateData?.isSearchedJobSelected || inputFocus1) ? 'first_input' : ''}`}>
+            <form className={`search_wrapr ${stateData?.isSearchedJobSelected ? '' : 'first_input'}`}>
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
