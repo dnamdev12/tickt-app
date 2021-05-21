@@ -677,10 +677,10 @@ body {
       &:hover {
         .setting_icon {
           color: var(--blue-two);
+          width: 100%;
           &.logout {
             color: #f11820;
             display: block;
-            width: 100%;
           }
         }
       }
