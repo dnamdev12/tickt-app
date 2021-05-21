@@ -57,12 +57,14 @@ const Header = (props: any) => {
     }
     
     const postClicked = () => {
+        return;
         setToggleMenu(false);
         setActiveLink('post');
         history.push('/post-new-job')
     }
 
     const jobClick = () => {
+        return;
         setToggleMenu(false);
         if(userType == 1) {
             setActiveLink('jobs');
