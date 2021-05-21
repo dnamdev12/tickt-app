@@ -5,6 +5,7 @@ import { callMilestones, profileTemplateList } from '../../../redux/jobs/actions
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 
+import milestonesPlaceholder from '../../../assets/images/Job milestones-preview.png';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -250,6 +251,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                 </Draggable>
                                             ))}
                                             {provided.placeholder}
+                                            
+                                            <figure className="placeholder_img">
+                                                <img src={milestonesPlaceholder} alt="milestones-placeholder" />
+                                            </figure>
                                         </ul>
                                     )}
                                 </Droppable>

@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
-import dummy from '../../assets/images/u_placeholder.jpg';
+import media from '../../assets/images/portfolio-placeholder.jpg';
 import approved from '../../assets/images/approved.png';
 import tradieListData from '../shared/tradieListData';
 import rateStar from '../../assets/images/ic-star-fill.png';
@@ -13,6 +13,7 @@ import ActiveJobsComponent from './components/activeJobs';
 import OpenJobsComponent from './components/openJobs';
 import PastJobsComponent from './components/pastJobs';
 import NewApplicantComponent from './components/newApplicants';
+import MarkMilestone from './components/markMilestones';
 
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
@@ -98,7 +99,7 @@ const JobDashboard = ({
 
 
     const setJobLabel = (item: any) => {
-        if(item?.jobId){
+        if (item?.jobId) {
             setJobId(item.jobId);
         }
         setJobtype(item.title);
@@ -184,7 +185,7 @@ const JobDashboard = ({
                         </div>
                     </div>
                     <div className="detail_col">
-                        {jobType === 'active' && (
+                        {/* {jobType === 'active' && (
                             <ActiveJobsComponent
                                 dataItems={dataItems}
                                 jobType={jobType}
@@ -206,7 +207,9 @@ const JobDashboard = ({
                                 dataItems={dataItems}
                                 jobType={jobType}
                                 setJobLabel={setJobLabel}
-                            />)}
+                            />)} */}
+
+                        <MarkMilestone />
                     </div>
                 </div>
             </div>

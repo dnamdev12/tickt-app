@@ -4261,6 +4261,12 @@ body {
       }
     }
   }
+  .upload_img_video {
+    margin-bottom: 10px;
+    .img_video{
+      margin: 0 20px 20px 0;
+    }
+  }
 }
 .payment_note{
   font-size: 14px;
