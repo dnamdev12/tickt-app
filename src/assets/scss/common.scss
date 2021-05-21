@@ -639,25 +639,28 @@ body {
     width: 262px;
     top: 70px !important;
     left: auto !important;
-    right: 280px !important;
+    right: 15.5vw !important;
     border-radius: 3px;
     box-shadow: 0 20px 24px 0 rgba(132, 132, 132, 0.2);
     @media (max-width: 1366px) {
-      right: 90px !important;
+      right: 9vw !important;
     }
     @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      right: 90px !important;
+      right: 9vw !important;
     }
     @media (max-width: 1024px) {
-      right: 60px !important;
+      right: 6vw !important;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      right: 4vw !important;
     }
     @media (max-width: 768px) {
-      right: 30px !important;
+      right: 3vw !important;
     }
     @media (max-width: 650px) {
       padding: 0 10px 0 20px;
       width: 180px;
-      right: 20px !important;
+      right: 2vw !important;
     }
     .sub_title {
       font-size: 20px;
@@ -674,8 +677,10 @@ body {
       &:hover {
         .setting_icon {
           color: var(--blue-two);
+          width: 100%;
           &.logout {
             color: #f11820;
+            display: block;
           }
         }
       }
@@ -3827,8 +3832,8 @@ body {
 				border-color: var(--blue-two);
 			  }
 			  img {
-				width: 24px;
-				height: 24px;
+        width: 20px;
+        height: 20px;
 				margin-right: 5px;
 				@media (max-width: 650px){
 					width: 15px;
