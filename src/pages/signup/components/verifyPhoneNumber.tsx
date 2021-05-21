@@ -63,7 +63,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
     return (
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
-                <span className="show_label"><b>Verification Code</b></span>
+                <span className="show_label">Verification Code</span>
                 {/* <div className="otp_input_wrapper">
                                 <input type="number" className="sms-no-box" name="ssn-1" maxLength={1} onChange={changeHandler} />
                             </div> */}
