@@ -96,8 +96,7 @@ const ReviewBuilder = (props: Proptypes) => {
                     <button className="fill_btn full_btn" onClick={submitReviewClicked}>Leave review</button>
                 </div>
             </div>
-            <hr></hr>
-            <div className="flex_col_sm_6">
+            <div className="flex_col_sm_6 col_ruler">
                 <div className="relate">
                     <span className="sub_title">Job details</span>
                     <span className="edit_icon" title="More" onClick={jobClickHandler}>

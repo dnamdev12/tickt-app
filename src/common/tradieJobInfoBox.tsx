@@ -9,7 +9,7 @@ const TradieJobInfoBox = (props: any) => {
     const { item } = props;
     return (
         <div className="flex_col_sm_6">
-            <div className="tradie_card" data-aos="fade-up" data-aos-anchor-placement="top-bottom">
+            <div className="tradie_card">
                 <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(item)} />
                 <div className="user_wrap">
                     <figure className="u_img">
