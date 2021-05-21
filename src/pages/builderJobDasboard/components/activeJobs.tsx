@@ -23,6 +23,7 @@ interface Active {
 export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
     let data_item: any = dataItems;
     let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
+    console.log({listData});
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -51,7 +52,7 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={dummy} alt="traide-img" />
+                                        <img src={tradieImage ||dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -60,7 +61,7 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{`${timeLeft} minutes ago`}</li>
+                                        <li className="icon clock">{timeLeft}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{''}</li>
                                         <li className="icon calendar">{`${durations} days`}</li>
@@ -89,7 +90,7 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                         </span>
                                     </div>
                                     <button className="fill_grey_btn full_btn">
-                                        {'Applications'}
+                                        {'Approve'}
                                         {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}
                                     </button>

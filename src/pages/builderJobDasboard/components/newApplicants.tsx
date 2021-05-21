@@ -65,7 +65,7 @@ export default function NewApplicants({ dataItems, jobType, setJobLabel }: any):
                                 </div>
                                 <button
                                     onClick={() => {
-                                        setJobLabel({ title: 'applicantList', jobId: ''})
+                                        setJobLabel({ title: 'applicantList', jobId: jobId})
                                     }}
                                     className="fill_grey_btn full_btn">
                                     {'Applications'}

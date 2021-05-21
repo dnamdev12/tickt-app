@@ -78,6 +78,7 @@ const JobDashboard = ({
 
         if (jobType === 'applicantList') {
             if (getnewJobApplicationListBuilder) {
+                console.log({page, jobId});
                 getnewJobApplicationListBuilder(page, jobId);
             }
         }
@@ -190,6 +191,7 @@ const JobDashboard = ({
                             <OpenJobsComponent
                                 dataItems={dataItems}
                                 jobType={jobType}
+                                setJobLabel={setJobLabel}
                             />)}
                         {jobType === 'past' && (
                             <PastJobsComponent

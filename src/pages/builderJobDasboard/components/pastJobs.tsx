@@ -64,7 +64,8 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                                         <li className="icon clock">{`${0} minutes ago`}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
-                                        <li className="icon calendar">{'0 days'}</li>
+                                        {/* <li className="icon calendar">{'0 days'}</li> */}
+                                        <li className="job_status">Completed</li>
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">

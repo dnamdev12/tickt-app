@@ -20,7 +20,7 @@ interface Active {
     tradieImage: any,
 }
 
-export default function OpenJobs({ dataItems, jobType, }: any): ReactElement {
+export default function OpenJobs({ setJobLabel, dataItems, jobType, }: any): ReactElement {
     let data_item: any = dataItems;
     let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
     return (
@@ -88,7 +88,11 @@ export default function OpenJobs({ dataItems, jobType, }: any): ReactElement {
                                             />
                                         </span>
                                     </div>
-                                    <button className="fill_grey_btn full_btn">
+                                    <button
+                                        onClick={() => {
+                                            setJobLabel({ title: 'applicantList', jobId: jobId })
+                                        }}
+                                        className="fill_grey_btn full_btn">
                                         {'Applications'}
                                         {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}
