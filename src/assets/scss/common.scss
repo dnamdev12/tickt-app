@@ -679,6 +679,8 @@ body {
           color: var(--blue-two);
           &.logout {
             color: #f11820;
+            display: block;
+            width: 100%;
           }
         }
       }
