@@ -6,7 +6,8 @@ export interface FetchResponse {
     status?: number | boolean,
     status_code?: number
     message: string,
-    result: any
+    result: any,
+    data: any
 }
 
 export class NetworkOps {
@@ -117,7 +118,7 @@ export class NetworkOps {
         }
     }
 
-    delete = async (service: string, data: any): Promise<FetchResponse> => {
+    delete = async (service: string, data?: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('DELETE');
             request.body = JSON.stringify(data);

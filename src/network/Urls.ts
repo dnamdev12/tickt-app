@@ -1,6 +1,6 @@
-// const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
+const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
 // const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
-const ACTIVE_HOST = 'https://ticktstgapi.appskeeper.in';  // stg env
+// const ACTIVE_HOST = 'https://ticktstgapi.appskeeper.in';  // stg env
 
 const versions = {
     v1: 'v1/',
@@ -33,6 +33,7 @@ const Urls = {
     milestones: `${versions.v1}${ServiceEnum.job}tempMilestoneList`,
     getSearchData: `${versions.v1}${ServiceEnum.admin}getSearchData`, //admin
     getRecentSearch: `${versions.v1}${ServiceEnum.admin}getRecentSearch`, //admin
+    getRecentLocation: `${versions.v1}${ServiceEnum.admin}getRecentLocation`, //admin
     jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
     jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
     home: `${versions.v1}${ServiceEnum.home}`,
@@ -70,6 +71,8 @@ const Urls = {
     deleteRecentSearch: `${versions.v1}${ServiceEnum.admin}deleteRecentSearch`, //admin
     tradieReviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewList`,
     tradieReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewReply`,
+    tradieUpdateReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewReply`,
+    tradieRemoveReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewReply`,
 }
 
 export const urlFor = (service: String): string => {

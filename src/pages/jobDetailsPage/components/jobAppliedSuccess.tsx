@@ -16,7 +16,7 @@ const JobAppliedSuccess = (props: PropsType) => {
                             We'll let you know if you've been selected for the job.
                         </span>
                         <div className="btn_wrapr">
-                            <button className="fill_btn" onClick={() => props.history?.go(-2)}>OK</button>
+                            <button className="fill_btn" onClick={() => props.history?.push('/')}>OK</button>
                         </div>
                     </div>
                 </div>

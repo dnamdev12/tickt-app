@@ -3,6 +3,7 @@ import * as actionTypes from './constants'
 const initialState = {
     searchJobListData: [],
     recentSearchJobData: [],
+    recentLocationData: [],
     jobTypeListData: [],
     jobTypeList: [],
     jobDataWithJobTypeLatLong: {},
@@ -30,6 +31,11 @@ const reducer = (state = initialState, action: any) => {
             return {
                 ...state,
                 recentSearchJobData: action.payload
+            }
+        case actionTypes.SET_RECENT_LOCATION_LIST:
+            return {
+                ...state,
+                recentLocationData: action.payload
             }
         case actionTypes.SET_JOB_TYPE_LIST:
             return {

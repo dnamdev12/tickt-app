@@ -169,6 +169,30 @@ export const tradieReviewReply = async (data: any) => {
   return { success: false };
 }
 
+export const tradieUpdateReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdateReviewReply, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const tradieRemoveReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(Urls.tradieRemoveReviewReply + `?reviewId=${data.reviewId}&replyId=${data.replyId}`)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 export const getBuilderProfile = async (builderId: string) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`)
