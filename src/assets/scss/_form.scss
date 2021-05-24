@@ -856,7 +856,7 @@ a.fill_grey_btn {
       -webkit-appearance: none;
       position: relative;
       overflow: hidden;
-      cursor: pointer;
+      pointer-events: none;
       outline: none;
       height: 8px;
   }

@@ -3,7 +3,7 @@ import dummy from '../assets/images/u_placeholder.jpg';
 const ReviewInfoBox = (props: any) => {
     const { item } = props;
     return (
-        <div className="flex_col_sm_3">
+        <div className="flex_col_sm_3" key={item.reviewId}>
             <div className="review_card">
                 <div className="rating_star">
                     star here..

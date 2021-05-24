@@ -124,11 +124,9 @@ const RenderMap = (props: any) => {
                 onClick={onMapClick}
                 onLoad={onMapLoad}
             >
-                {/* {props.viewNearByJobData?.map((item: any) => ( */}
                 {renderJobsData()?.map((item: any) => (
                     <Marker
-                        key={new Date().toISOString()}
-                        // position={{ lat: 21.17021, lng: 72.831062 }}
+                        key={item.jobId}
                         position={{ lat: item.location.coordinates[1], lng: item.location.coordinates[0] }}
                         icon={{
                             url: jobIconDemo,
@@ -139,7 +137,6 @@ const RenderMap = (props: any) => {
                         onClick={() => {
                             const lat = item.location.coordinates[1];
                             const lng = item.location.coordinates[0];
-                            // setSelected({ lat: lat, lng: lng });
                             setSelected(item);
                         }}
                     />

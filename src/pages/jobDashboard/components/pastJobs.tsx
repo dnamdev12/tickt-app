@@ -22,7 +22,7 @@ const PastJobs = (props: Proptypes) => {
         {/* {props.pastJobList?.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, milestoneNumber, totalMilestones, tradeName, status, jobName, builderData, time, amount, locationName, durations }, index: number) => { */}
         {props.pastJobList?.map((item: any) => {
           return (
-            <div className="flex_col_sm_6">
+            <div className="flex_col_sm_6" key={item.jobId}>
               <div className="tradie_card">
                 <NavLink to={`/job-details-page?jobId=${item.jobId}&tradeId=${item.tradeId}&specializationId=${item.specializationId}`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">

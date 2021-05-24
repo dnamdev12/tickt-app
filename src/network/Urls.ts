@@ -32,6 +32,7 @@ const Urls = {
     milestones: `${versions.v1}${ServiceEnum.job}tempMilestoneList`,
     getSearchData: `${versions.v1}${ServiceEnum.admin}getSearchData`, //admin
     getRecentSearch: `${versions.v1}${ServiceEnum.admin}getRecentSearch`, //admin
+    getRecentLocation: `${versions.v1}${ServiceEnum.admin}getRecentLocation`, //admin
     jobTypeList: `${versions.v1}${ServiceEnum.auth}jobTypeList`, //admin
     jobType: `${versions.v1}${ServiceEnum.auth}jobType`, //admin
     home: `${versions.v1}${ServiceEnum.home}`,
@@ -67,6 +68,10 @@ const Urls = {
     reviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewBuilder`,
     builderProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}builderProfile`,
     deleteRecentSearch: `${versions.v1}${ServiceEnum.admin}deleteRecentSearch`, //admin
+    tradieReviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewList`,
+    tradieReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewReply`,
+    tradieUpdateReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewReply`,
+    tradieRemoveReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewReply`,
 }
 
 export const urlFor = (service: String): string => {

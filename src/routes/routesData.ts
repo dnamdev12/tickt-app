@@ -10,6 +10,7 @@ import MostViewedJobs from '../pages/mostViewedJobs/index';
 import TradieSearchJobResult from '../pages/tradieSearchJobResult/index';
 import PopularBuilders from '../pages/popularBuilders/index';
 import JobDetailsPage from '../pages/jobDetailsPage/index';
+import JobAppliedSuccessfully from '../pages/jobDetailsPage/components/jobAppliedSuccess';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import JobDashboard from '../pages/jobDashboard';
@@ -18,7 +19,7 @@ import SearchResultTradie from '../pages/searchTradieResult/index';
 // import BuilderProfile from '../pages/builderProfile/builderProfile';
 import builderJobDasboard from '../pages/builderJobDasboard/index';
 import TradieDetails from '../common/tradieDetails';
-import BuilderInfo from '../pages/builderInfo/builderInfo';
+import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
 
 const routes = [
@@ -87,6 +88,13 @@ const routes = [
         name: 'jobdetailspage',
         path: '/job-details-page',
         component: JobDetailsPage,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'job-applied-successfully',
+        path: '/job-applied-successfully',
+        component: JobAppliedSuccessfully,
         authRoute: false,
         privateRoute: true,
     },

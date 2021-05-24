@@ -73,9 +73,9 @@ const AuthSlider = (props: Props) => {
 
     return (
         <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false} infinite={true}>
-            {SLIDER_DATA.map((item: any) => {
+            {SLIDER_DATA.map((item: any, i: number) => {
                 return (
-                    <div>
+                    <div key={i}>
                         <figure className="banner_img">
                             <figure className="logo">
                                 <img src={logoyellow} alt="logo" />

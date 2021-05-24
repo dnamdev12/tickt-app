@@ -119,7 +119,7 @@ const AddQualification = (props: Propstype) => {
                         const isChecked = qualification.find((i: any) => i.qualification_id === item._id);
                         const docDetails = isChecked?.url && fileDetails(isChecked);
                         return (
-                            <div className="f_spacebw">
+                            <div className="f_spacebw" key={item._id}>
                                 <div className="checkbox_wrap agree_check">
                                     <input className="filter-type filled-in" type="checkbox"
                                         checked={isChecked ? true : false} name={item.name} id={item.name}

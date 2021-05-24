@@ -3,6 +3,8 @@ import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
 import { setShowToast, setLoading } from '../common/actions';
 
+export const getTradieReviewList = (data: any) => ({ type: actionTypes.GET_TRADIE_REVIEW_LIST, data })
+
 //jobTypeList
 export const callCategories = async () => {
   const response: FetchResponse = await NetworkOps.get(Urls.jobTypeList);
@@ -146,6 +148,42 @@ export const updateQuestion = async (data: any) => {
 export const reviewBuilder = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewBuilder, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const tradieReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieReviewReply, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const tradieUpdateReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdateReviewReply, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const tradieRemoveReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(Urls.tradieRemoveReviewReply + `?reviewId=${data.reviewId}&replyId=${data.replyId}`)
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);

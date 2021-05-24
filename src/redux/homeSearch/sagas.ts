@@ -26,6 +26,16 @@ function* getRecentSearchList() {
     }
 }
 
+function* getRecentLocationList() {
+    const response: FetchResponse = yield NetworkOps.get(Urls.getRecentLocation);
+    if (response.status_code === 200) {
+        yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: response.data.resultData });
+    } else {
+        yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: [] });
+    }
+}
+
+
 function* getJobTypeList() {
     const response: FetchResponse = yield NetworkOps.get(Urls.jobTypeList);
     if (response.status_code === 200) {
@@ -85,13 +95,13 @@ function* postHomeSearchData(action: any) {
 }
 
 function* authWatcher() {
+    // yield takeLatest(actionTypes.GET_JOB_TYPE, getJobType);
     yield takeLatest(actionTypes.GET_SEARCH_JOB_LIST, getSearchJobList);
     yield takeLatest(actionTypes.GET_RECENT_SEARCH_LIST, getRecentSearchList);
+    yield takeLatest(actionTypes.GET_RECENT_LOCATION_LIST, getRecentLocationList);
     yield takeLatest(actionTypes.GET_JOB_TYPE_LIST, getJobTypeList);
     yield takeLatest(actionTypes.GET_VIEW_NEARBY_JOBS, getViewNearByJob);
-    // yield takeLatest(actionTypes.GET_JOB_TYPE, getJobType);
     yield takeLatest(actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, getJobWithJobTypeLatLong);
-    // yield takeLatest(actionTypes.GET_HOME_JOB_DETAILS, getHomeJobDetails);
     yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
 }
 

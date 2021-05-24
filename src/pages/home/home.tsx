@@ -10,13 +10,14 @@ const Home = () => {
     const location: any = useLocation();
     const history: any = useHistory();
 
+    // if (userType === 0 || userType === 1 || userType === 2) {
     if (userType === 0) {
         return <GuestHome />
     }
     else if (userType === 1) {
-        return <TradieHome history={history}/>
+        return <TradieHome history={history} />
     } else if (userType === 2) {
-        return <BuilderHome history={history}/>
+        return <BuilderHome history={history} />
     }
     else {
         return <GuestHome />
