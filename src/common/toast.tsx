@@ -11,7 +11,7 @@ export const TYPES = {
 }
 
 // handles the auto hinding of toast
-const TOAST_TIMEOUT = 2000;
+const TOAST_TIMEOUT = 3000;
 
 const Toast = (props: any) => {
     const [isOnline, setNetwork] = useState(window.navigator.onLine);

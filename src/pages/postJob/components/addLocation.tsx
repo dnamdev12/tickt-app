@@ -106,7 +106,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     e.preventDefault();
     setActiveCurrent(true);
     let permission_web = await navigator.permissions.query({ name: 'geolocation' });
-    console.log({ permission_web }, '56')
+    console.log({ permission_web }, '56');
     if (permission_web.state !== 'denied') {
       setLoading(true)
       let item_position: any = localStorage.getItem('position');
@@ -124,7 +124,8 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
           setLocation({ coordinates: coordinates_values, address: address })
           setLoading(false);
         } else {
-          setLocation({ coordinates: [144.9631, -37.8136], address: '325 Little Bourke Street, Melbourne CBD, Melbourne, Australia' })
+          setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+          // setLocation({ coordinates: [144.9631, -37.8136], address: '325 Little Bourke Street, Melbourne CBD, Melbourne, Australia' })
           setLoading(false);
         }
       } catch (err) {

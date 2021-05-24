@@ -120,7 +120,7 @@ const reducer = (state = initialState, action: any) => {
         builderNewApplicants: action.payload,
       };
 
-    case actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST:
+    case actionTypes.SET_BUILDER_NEW_APPLICANTS_LIST:
       return {
         ...state,
         builderNewApplicantsList: action.payload,

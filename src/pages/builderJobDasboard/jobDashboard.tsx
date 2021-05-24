@@ -13,14 +13,17 @@ import ActiveJobsComponent from './components/activeJobs';
 import OpenJobsComponent from './components/openJobs';
 import PastJobsComponent from './components/pastJobs';
 import NewApplicantComponent from './components/newApplicants';
-import MarkMilestone from './components/markMilestones';
+
+import MarkMilestones from './components/markMilestones';
+import DeclineMilestone from './components/declineMilestone';
+import DeclineMilestoneSuccess from './components/declineMilestoneSuccess';
 
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
     getNewApplicantsBuilder: (page: number) => void,
     getOpenJobsBuilder: (page: number) => void,
-    getnewJobApplicationListBuilder: (page: number, jobId: any) => void,
+    getnewJobApplicationListBuilder: (item: any) => void,
     activeJobs: any,
     pastJobs: any,
     openJobs: any
@@ -28,6 +31,67 @@ interface Props {
     approvalJobs: any,
     applicantsListJobs: any
 }
+
+const ApplicantsList: any = [
+    {
+        "tradieId": "605c2593dcf5842c9061811e",
+        "tradieImage": "",
+        "tradieName": "abc",
+        "reviews": 1,
+        "ratings": 4,
+        "status": "AWAITING",
+        "tradeData": [
+            {
+                "tradeId": "60486a7d1abc8a08073cf0e5",
+                "tradeSelectedUrl": "https://appinventiv-development.s3.amazonaws.com/1618218684352.png",
+                "tradeName": "Demolition"
+            }
+        ],
+        "specializationData": [
+            {
+                "specializationId": "605200a30289795c7a667e11",
+                "specializationName": "Water supply"
+            },
+            {
+                "specializationId": "6059d9e30b0c3f7406950945",
+                "specializationName": "test1"
+            }
+        ]
+    },
+    {
+        "tradieId": "60a35096de60d01d99d3ae56",
+        "tradieImage": "",
+        "tradieName": "Test Tradie",
+        "reviews": 0,
+        "ratings": 0,
+        "status": "AWAITING",
+        "tradeData": [
+            {
+                "tradeId": "605c8bccb777553e6b057b8a",
+                "tradeSelectedUrl": "https://appinventiv-development.s3.amazonaws.com/1619674591945.png",
+                "tradeName": "Plumber"
+            }
+        ],
+        "specializationData": [
+            {
+                "specializationId": "605c8bccb777553e6b057b8b",
+                "specializationName": "Two Two Two"
+            },
+            {
+                "specializationId": "6066fca0cc682b18cd57a4c6",
+                "specializationName": "Security and Fire Alarm Installation"
+            },
+            {
+                "specializationId": "6066fca0cc682b18cd57a4c9",
+                "specializationName": "Powerhouse and Substation Technician"
+            },
+            {
+                "specializationId": "6066fca0cc682b18cd57a4ca",
+                "specializationName": "Electrotechnical Panel Building"
+            }
+        ]
+    }
+]
 
 const JobDashboard = ({
     getActiveJobsBuilder,
@@ -46,10 +110,11 @@ const JobDashboard = ({
     const [jobType, setJobtype] = useState('active');
     const [currentPage, setCurrentPage] = useState(1);
     const [jobId, setJobId] = useState(null);
-    const [dataItems, setDataItems] = useState({ activeJobs: {}, openJobs: {}, pastJobs: {}, applicantJobs: {}, approvalJobs: {} });
-
+    const [dataItems, setDataItems] = useState({ activeJobs: {}, openJobs: {}, pastJobs: {}, applicantJobs: {}, approvalJobs: {}, applicantsListJobs: [] });
+    const [resetItem, setResetItem] = useState(false);
+    const [count, setCount] = useState({ name: 'Here!' });
     useEffect(() => {
-        setDataItems((prev) => ({ ...prev, activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs, applicantsListJobs }));
+        setDataItems((prev) => ({ ...prev, activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs, applicantsListJobs: ApplicantsList }));
     }, [activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs, applicantsListJobs])
 
     const fetchActive = (page: any) => {
@@ -80,13 +145,16 @@ const JobDashboard = ({
         if (jobType === 'applicantList') {
             if (getnewJobApplicationListBuilder) {
                 console.log({ page, jobId });
-                getnewJobApplicationListBuilder(page, jobId);
+                let requestItem = { page, jobId, sortBy: 1 };
+                getnewJobApplicationListBuilder(requestItem);
             }
         }
 
         if (jobType === 'approval') {
             // approval
         }
+
+        setResetItem(false);
     }
 
     useEffect(() => {
@@ -94,8 +162,13 @@ const JobDashboard = ({
     }, [])
 
     useEffect(() => {
+        setResetItem(true);
         fetchActive(currentPage);
     }, [jobType]);
+
+    useEffect(() => {
+        console.log({ resetItem });
+    }, [resetItem])
 
 
     const setJobLabel = (item: any) => {
@@ -114,6 +187,7 @@ const JobDashboard = ({
         needApprovalCount = currentItem.needApprovalCount;
         newApplicantsCount = currentItem.newApplicantsCount;
     }
+    console.log({ applicantsListJobs, resetItem });
     return (
         <div className="app_wrapper">
             <div className="custom_container">
@@ -129,12 +203,19 @@ const JobDashboard = ({
                             <img src={close} alt="close" />
                         </button>
                         <div className="stick">
-                            <span className="title">Job Dashboard</span>
+                            <span onClick={() => {
+                                setCount((prev: any) => ({ ...prev, name: 'sam' }));
+                                console.log({ count });
+                            }} className="title">Job Dashboard</span>
                             <ul className="dashboard_menu">
                                 <li>
                                     <span className={`icon star ${jobType === "active" ? 'active' : ''}`}>
                                         <span
-                                            onClick={() => { setJobtype('active') }}
+                                            onClick={() => {
+                                                console.log('Here!!!!')
+                                                setResetItem(true);
+                                                setJobtype('active')
+                                            }}
                                             className="menu_txt">Active Jobs</span>
                                     </span>
                                 </li>
@@ -185,10 +266,14 @@ const JobDashboard = ({
                         </div>
                     </div>
                     <div className="detail_col">
+
+
                         {/* {jobType === 'active' && (
                             <ActiveJobsComponent
                                 dataItems={dataItems}
                                 jobType={jobType}
+                                resetItem={resetItem}
+                                setJobLabel={setJobLabel}
                             />)}
                         {jobType === 'open' && (
                             <OpenJobsComponent
@@ -205,15 +290,16 @@ const JobDashboard = ({
                         {jobType === "applicant" && (
                             <NewApplicantComponent
                                 dataItems={dataItems}
+                                applicantsList={applicantsListJobs}
                                 jobType={jobType}
                                 setJobLabel={setJobLabel}
                             />)} */}
-
-                        <MarkMilestone />
+                        <DeclineMilestone />
+                        <DeclineMilestoneSuccess />
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }
 

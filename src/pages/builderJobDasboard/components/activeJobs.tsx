@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import MarkMilestones from './markMilestones';
@@ -18,16 +18,56 @@ interface Active {
     tradeName: any,
     tradieId: any,
     tradieImage: any,
+    setJobLabel: (item: any) => void
 }
 
-export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
+const listData: any = [{
+    amount: '2233',
+    durations: '1 day',
+    jobId: 'ekfnefneknf',
+    jobName: 'Circtuit',
+    milestoneNumber: 1,
+    specializationId: 'lflmfdmfdmfdm',
+    specializationName: 'fmdkfmdk',
+    status: 1,
+    timeLeft: '2 days',
+    totalmem: '0',
+    totalMilestones: 5,
+    tradieListData: {},
+    tradeName: 'trade local',
+    tradieId: 'fdmkfdkfdk',
+    tradieImage: '',
+}, {
+    amount: '2233',
+    durations: '1 day',
+    jobId: 'ekfnefneknf',
+    jobName: 'Circtuit',
+    milestoneNumber: 1,
+    specializationId: 'lflmfdmfdmfdm',
+    specializationName: 'fmdkfmdk',
+    status: 1,
+    timeLeft: '2 days',
+    totalmem: '0',
+    totalMilestones: 5,
+    tradieListData: {},
+    tradeName: 'trade local',
+    tradieId: 'fdmkfdkfdk',
+    tradieImage: '',
+}]
+
+export default function ActiveJobs({ setJobLabel, dataItems, jobType, }: any): ReactElement {
     let data_item: any = dataItems;
-    let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
-    console.log({listData});
+    // let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
+    const [localState, setLocalState] = useState(false);
 
+    const resetStateLocal = () => {
+        setLocalState(false)
+    }
 
-    return <MarkMilestones />
-    
+    if (localState) {
+        return <MarkMilestones resetStateLocal={resetStateLocal} />
+    }
+
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -56,7 +96,7 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradieImage ||dummy} alt="traide-img" />
+                                        <img src={tradieImage || dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -93,7 +133,11 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                             />
                                         </span>
                                     </div>
-                                    <button className="fill_grey_btn full_btn">
+                                    <button
+                                        onClick={() => {
+                                            setLocalState(true);
+                                        }}
+                                        className="fill_grey_btn full_btn">
                                         {'Approve'}
                                         {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}

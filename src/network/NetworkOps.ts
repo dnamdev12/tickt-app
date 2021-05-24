@@ -60,11 +60,11 @@ export class NetworkOps {
                 const res = await response.text();
                 console.log('res -->>', JSON.parse(res))
                 try {
-                    console.log('if',{res:JSON.parse(res)})
+                    console.log('if', { res: JSON.parse(res) })
                     return JSON.parse(res);
                 }
                 catch {
-                    console.log('else',{res})
+                    console.log('else', { res })
                     return res;
                 }
             }
@@ -79,18 +79,6 @@ export class NetworkOps {
         try {
             const JSONData = JSON.stringify(data);
             return this.postRaw(service, JSONData)
-        }
-        catch (err) {
-            throw err;
-        }
-    }
-
-    getToJson = async (service: string, data: any): Promise<FetchResponse> => {
-        try {
-            const JSONData = JSON.stringify(data);
-            const request = await this.getRequest('GET');
-            request.body = JSONData;
-            return this.wrapperWithOptions(urlFor(service), request)
         }
         catch (err) {
             throw err;

@@ -1,15 +1,15 @@
 import React from 'react'
 import media from '../../../assets/images/portfolio-placeholder.jpg';
 interface Props {
-
+    backToScreen: any
 }
 
-const MilestoneDetails = (props: Props) => {
+const MilestoneApprove = ({ backToScreen }: Props) => {
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button className="back"></button>
+                    <button onClick={() => { backToScreen() }} className="back"></button>
                     <span className="xs_sub_title">Wire up circuit box</span>
                 </div>
                 <span className="sub_title">Milestone details</span>
@@ -42,4 +42,4 @@ const MilestoneDetails = (props: Props) => {
     )
 }
 
-export default MilestoneDetails;
+export default MilestoneApprove;
