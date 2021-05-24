@@ -4,13 +4,13 @@ import "react-multi-carousel/lib/styles.css";
 
 const categoriesjob = {
     desktop: {
-        breakpoint: { max: 3000, min: 1024 },
+        breakpoint: { max: 3000, min: 1200 },
         items: 1,
-        slidesToSlide: 1, // optional, default to 1.
+        // slidesToSlide: 1, // optional, default to 1.
     },
     tablet: {
         breakpoint: { max: 1024, min: 768 },
-        items: 2
+        items: 1
     },
     mobile: {
         breakpoint: { max: 650, min: 0 },
@@ -41,7 +41,7 @@ const JobTypeList = (props: any) => {
     return (
         <div className="home_job_categories">
             <div className="custom_container">
-                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={false} infinite={false} swipeable={false} draggable={false}>
+                <Carousel responsive={categoriesjob} autoPlay={false} arrows={false} showDots={true} >
                     <div>
                         <ul className="job_categories">
                             {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
@@ -53,9 +53,11 @@ const JobTypeList = (props: any) => {
                                         <span className="name">{item.name}</span>
                                     </li>
                                 )
-                            }) : <span>Loading...</span>}
+                            }) :
+                                <span>Loading...</span>}
                         </ul>
-                    </div>
+                    </div> 
+
                 </Carousel>
             </div>
         </div >
