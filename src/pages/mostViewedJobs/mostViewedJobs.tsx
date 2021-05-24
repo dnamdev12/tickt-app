@@ -20,7 +20,7 @@ const MostViewedJobs = (props: any) => {
                     <div className="flex_row tradies_row">
                         {mostViewJobsData?.length > 0 ?
                             (mostViewJobsData?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} {...props}/>
+                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
                             })) : <div className="no_record">
                             <figure className="no_img">
                                 <img src={noData} alt="data not found" />

@@ -234,7 +234,7 @@ const TradieSearchJobResult = (props: any) => {
                             {mapData.showMap ? <div className="card_col">
                                 {renderJobsData()?.length > 0 ?
                                     (renderJobsData()?.map((jobData: any) => {
-                                        return <TradieJobInfoBox item={jobData} {...props} />
+                                        return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
                                     })) :
                                     <div className="no_record">
                                         <figure className="no_img">
@@ -243,7 +243,7 @@ const TradieSearchJobResult = (props: any) => {
                                     </div>}
                             </div> : renderJobsData()?.length > 0 ?
                                 (renderJobsData()?.map((jobData: any) => {
-                                    return <TradieJobInfoBox item={jobData} {...props} />
+                                    return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
                                 })) : <div className="no_record">
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />

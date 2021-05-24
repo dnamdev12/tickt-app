@@ -361,7 +361,7 @@ const BuilderInfo = (props: PropsType) => {
                     <div className="flex_row tradies_row">
                         {profileData?.jobPostedData?.length > 0 ?
                             (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} {...props} />
+                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
                             })) :
                             <div className="no_record">
                                 <figure className="no_data_img">
@@ -412,7 +412,7 @@ const BuilderInfo = (props: PropsType) => {
                                 const { reviewData } = item;
                                 return (
                                     <>
-                                        <div className="question_ans_card">
+                                        <div className="question_ans_card" key={reviewData.reviewId}>
                                             <div className="user_detail">
                                                 <figure className="user_img">
                                                     <img src={reviewData?.userImage || dummy} alt="user-img" />

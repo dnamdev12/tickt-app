@@ -12,17 +12,17 @@ const Routes = () => {
       <Switch>
         {routes.map((route: any) => {
           if (route.redirectTO) {
-            return <Redirect to={route.redirectTO} />
+            return <Redirect to={route.redirectTO} key={route.path} />
           }
           if (route.privateRoute) {
             // return <PrivateRoute path={route.path} component={route.component} />
-            return <PrivateRoute {...route} />
+            return <PrivateRoute {...route} key={route.path} />
           }
           if (route.authRoute) {
             // return <PrivateRoute path={route.path} Component={route.component} authRoute />
-            return <PrivateRoute {...route} />
+            return <PrivateRoute {...route} key={route.path} />
           }
-          return <Route path={route.path} component={route.component} exact={route.exact} />
+          return <Route path={route.path} component={route.component} exact={route.exact} key={route.path} />
         }
         )}
         {/* <Redirect from='*' to='/' /> */}

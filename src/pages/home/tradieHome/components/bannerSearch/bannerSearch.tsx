@@ -263,7 +263,7 @@ const BannerSearch = (props: PropsType) => {
                     <div className="flex_row recent_search">
                         {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.map((item: any) => {
                             return (
-                                <div className="flex_col_sm_3">
+                                <div className="flex_col_sm_3" key={item._id}>
                                     <div className="autosuggestion_icon card history" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
                                         <span>{item.name}</span>
                                         <span className="name">{item.trade_name}</span>
@@ -285,7 +285,7 @@ const BannerSearch = (props: PropsType) => {
                 <div className="recent_search">
                     <ul className="drop_data">
                         {props.searchJobListData?.map((item: any) => {
-                            return (<li onClick={() => searchedJobClicked(item)}>
+                            return (<li key={item._id} onClick={() => searchedJobClicked(item)}>
                                 <figure className="category">
                                     <img src={item.image ? item.image : residential} alt="icon" />
                                 </figure>
@@ -463,6 +463,7 @@ const BannerSearch = (props: PropsType) => {
                                         className,
                                         style,
                                     })}
+                                    key={suggestion.formattedSuggestion.mainText}
                                 >
                                     <span>{suggestion.formattedSuggestion.mainText}</span>
                                     <span className="name">{suggestion.formattedSuggestion.secondaryText}</span>

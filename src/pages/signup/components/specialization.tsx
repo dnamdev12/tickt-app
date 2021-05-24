@@ -45,7 +45,7 @@ const Specialization = (props: Propstype) => {
                     {specializationList?.length ? specializationList.map((item: any) => {
                         const active = specialization.indexOf(item._id) >= 0;
                         return (
-                            <li className={active ? 'active' : ''} onClick={() => changeHandler(item._id)}>{item.name}</li>
+                            <li key={item._id} className={active ? 'active' : ''} onClick={() => changeHandler(item._id)}>{item.name}</li>
                         )
                     }) : <li className='no_data'>
                             <img src={noData} alt="no-data" />

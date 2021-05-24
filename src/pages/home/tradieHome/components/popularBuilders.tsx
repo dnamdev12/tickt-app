@@ -19,9 +19,9 @@ const PopularBuilders = (props: any) => {
                 <div className="custom_container">
                     <span className="title">Popular builders</span>
                     <ul className="popular_tradies">
-                        {popularBuildersData?.length ? popularBuildersData?.map((item: any) => {
+                        {popularBuildersData?.length ? popularBuildersData?.map((item: any, index: number) => {
                             return (
-                                <li>
+                                <li key={`${item.userName}item${index}`}>
                                     <figure className="tradies_img">
                                         <img src={item.userImage ? item.userImage : dummy} alt="tradies-img" />
                                     </figure>
