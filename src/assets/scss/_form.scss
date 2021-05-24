@@ -782,6 +782,12 @@ a.fill_grey_btn {
   margin-bottom: 40px;
   .upload_media{
     cursor: pointer;
+    width: 100px;
+    height: 100px;
+    img{
+      width: 100px;
+      height: 100px;
+    }
     @media(max-width: 650px){
       width: 90px;
       height: 90px;
