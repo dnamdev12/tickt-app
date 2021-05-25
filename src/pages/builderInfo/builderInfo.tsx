@@ -408,7 +408,7 @@ const BuilderInfo = (props: PropsType) => {
                     <button className="fill_grey_btn full_btn view_more" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}>{`View all ${profileData?.reviewsCount} reviews`}</button>
                 </div>
             </div>
-            {/* view total reviews  */}
+            {/* view All reviews  */}
             {reviewsData.showAllReviewsClicked && reviewList?.length > 0 &&
                 <Modal
                     className="ques_ans_modal"
@@ -441,7 +441,7 @@ const BuilderInfo = (props: PropsType) => {
                                                 <div className="rating_star">
                                                     <ReactStars
                                                         count={5}
-                                                        value={3}
+                                                        value={reviewData.rating}
                                                         size={20}
                                                         edit={false}
                                                         isHalf={true}
@@ -455,8 +455,10 @@ const BuilderInfo = (props: PropsType) => {
                                             <p>{reviewData?.review}</p>
                                             {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
                                                 <span className="show_hide_ans link"
-                                                    onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show review</span>}
-                                            {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
+                                                    onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
+                                            {/* span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>} */}
+                                            {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
+                                            {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
                                         </div>
                                         {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
                                             <div className="question_ans_card answer">

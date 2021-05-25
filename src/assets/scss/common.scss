@@ -1210,10 +1210,15 @@ body {
 		right: 20px;
 	}
 	.owl-nav{
+    .nav-btn{
+      width: 40px;
+			height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 		.owl-prev{
 			@include position(absolute, auto, 80px, 30px, auto);
-			width: 40px;
-			height: 40px;
 			@include border-radius(50%);
 			background-color: #938d8b;	
 			&:hover{
@@ -1225,8 +1230,6 @@ body {
 		}
 		.owl-next{
 			@include position(absolute, auto, 20px, 30px, auto);
-			width: 40px;
-			height: 40px;
 			@include border-radius(50%);
 			background-color: #938d8b;
 			&:hover{
@@ -2099,6 +2102,10 @@ body {
     .card {
       margin-top: 13px;
       padding: 11px 10px 11px 65px;
+      background-color: transparent;
+      &:hover{
+        background-color: #f6f6f6;
+      }
     }
   }
   &.select_sphere{
