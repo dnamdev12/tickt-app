@@ -9,6 +9,7 @@ const regex = {
         alpha: /^[a-zA-Z\s.]*$/,
         alphaSpecial: /^[ A-Za-z&]*$/,
         numeric: /^\d+$/,
+        // max_budget: "[0-9]+(\.[0-9][0-9]?)?",
         alphaNumeric: /^[a-zA-Z0-9]*$/,
         fullname: /^[a-zA-Z ]{3,50}$/,
 };

@@ -50,11 +50,11 @@ const BuilderHome = (props: any) => {
         }
 
         const postionError = (error: any) => {
-            const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
+            const jobType = { lat: '-37.840935', long: '144.946457', jobType: '', tradie: true };
             setHomeBuilder(jobType);
-            setPosition({ lat: '37.8136', long: '144.9631' });
-            localStorage.setItem('position', '[37.8136,144.9631]');
-            Geocode.fromLatLng('37.8136', '144.9631').then(
+            setPosition({ lat: '-37.840935', long: '144.946457' });
+            localStorage.setItem('position', '[-37.840935,144.946457]');
+            Geocode.fromLatLng('-37.840935', '144.946457').then(
                 (response) => {
                     const address = response.results[0].formatted_address;
                     setAddressItem(address)

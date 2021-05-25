@@ -144,12 +144,15 @@ const SearchResultFilters = (props: any) => {
 
     const maxBudgetHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const inputVal = e.target.value;
-        const key = inputVal.charCodeAt(inputVal.length - 1)
+        const val = inputVal.split('.');
+        if (val.length > 2) return;
+        if (inputVal.includes('.') && val[1].length > 2) return;
+        const key = inputVal.charCodeAt(inputVal.length - 1);
         if ((key == NaN || inputVal == "") && sortByPrice.max_budget?.length === 1) {
             setSortByPrice((prevData: any) => ({ ...prevData, max_budget: null }))
             return;
         }
-        if ((key > 47 && key < 58) || key === 8) {
+        if ((key > 47 && key < 58) || (key === 8 || key === 46)) {
             setSortByPrice((prevData: any) => ({ ...prevData, max_budget: e.target.value }))
         }
     }
@@ -157,15 +160,14 @@ const SearchResultFilters = (props: any) => {
     const validateForm = () => {
         const newErrors: any = {};
         if (!sortByPrice.max_budget) {
-            newErrors.maxBudget = Constants.errorStrings.priceFilterInput;
+            newErrors.maxBudget = Constants.errorStrings.maxBudgetEmpty;
         }
-        // } else {
-        //     const searchJobRegex = new RegExp(regex.numeric);
-        //     if (!searchJobRegex.test(sortByPrice.max_budget)) {
-        //         newErrors.maxBudget = Constants.errorStrings.bannerSearchJob;
+        // else {
+        //     const budgetRegex = new RegExp(regex.max_budget);
+        //     if (!budgetRegex.test(sortByPrice.max_budget)) {
+        //         newErrors.maxBudget = Constants.errorStrings.maxBudgetError
         //     }
         // }
-
         setErrors(newErrors);
         return !Object.keys(newErrors).length;
     }
@@ -284,82 +286,80 @@ const SearchResultFilters = (props: any) => {
             {/* filter 1 modal box */}
             {sortByFilter.sortByFilterClicked &&
                 <Modal
-                    className="custom_modal"  
+                    className="custom_modal"
                     open={sortByFilter.sortByFilterClicked}
                     onClose={sortByFilterClose}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <>
-                        <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                            <div className="heading">
-                                <span className="sub_title">Filter</span>
-                                <button className="close_btn" onClick={sortByFilterClose}>
-                                    <img src={cancel} alt="cancel" />
-                                </button>
-                            </div>
+                    <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading">
+                            <span className="sub_title">Filter</span>
+                            <button className="close_btn" onClick={sortByFilterClose}>
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
 
-                            <div className="inner_wrap">
-                                <div className="form_field">
-                                    <span className="xs_sub_title">Categories</span>
-                                </div>
-                                <div className="select_sphere">
-                                    <ul>
-                                        {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
-                                            const active = sortByFilter.tradeId[0] === _id;
-                                            return (
-                                                <li key={_id} className={active ? 'active' : ''} onClick={() => filterChangeHandler(_id, 'categories')}>
-                                                    <figure>
-                                                        <img src={selected_url ? selected_url : spherePlaceholder} />
-                                                    </figure>
-                                                    <span className="name">{trade_name}</span>
-                                                </li>
-                                            )
-                                        })}
-                                    </ul>
-                                    {/* <span className="error_msg">{errors.categories}</span> */}
-                                </div>
-                                <div className="form_field">
-                                    <span className="xs_sub_title">Job types</span>
-                                </div>
-                                <ul className="job_categories">
-                                    {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
-                                        const active = sortByFilter.jobTypes[0] == _id;
+                        <div className="inner_wrap">
+                            <div className="form_field">
+                                <span className="xs_sub_title">Categories</span>
+                            </div>
+                            <div className="select_sphere">
+                                <ul>
+                                    {props.tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
+                                        const active = sortByFilter.tradeId[0] === _id;
                                         return (
-                                            <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
-                                                <figure className="type_icon">
-                                                    <img src={image} alt="icon" />
+                                            <li key={_id} className={active ? 'active' : ''} onClick={() => filterChangeHandler(_id, 'categories')}>
+                                                <figure>
+                                                    <img src={selected_url ? selected_url : spherePlaceholder} />
                                                 </figure>
-                                                <span className="name">{name}</span>
+                                                <span className="name">{trade_name}</span>
                                             </li>
                                         )
                                     })}
                                 </ul>
-                                <div className="form_field">
-                                    <span className="xs_sub_title">Specialisation</span>
-                                </div>
-                                <div className="tags_wrap">
-                                    <ul>
-                                        {specializationList?.length > 0 &&
-                                            <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
-                                                onClick={() => filterChangeHandler(specializationList, 'All Clicked')}>All</li>}
-                                        {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
-                                            const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
-                                            return (
-                                                <li key={_id} className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''} onClick={() => filterChangeHandler(_id, 'specializationId')}>{name}</li>)
-                                        }
-                                        )
-                                        }
-                                    </ul>
-                                    {/* <span className="error_msg">{errors.specializationId}</span> */}
-                                </div>
+                                {/* <span className="error_msg">{errors.categories}</span> */}
                             </div>
-                            <div className="filter_btn">
-                                <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
-                                <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
+                            <div className="form_field">
+                                <span className="xs_sub_title">Job types</span>
+                            </div>
+                            <ul className="job_categories">
+                                {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
+                                    const active = sortByFilter.jobTypes[0] == _id;
+                                    return (
+                                        <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
+                                            <figure className="type_icon">
+                                                <img src={image} alt="icon" />
+                                            </figure>
+                                            <span className="name">{name}</span>
+                                        </li>
+                                    )
+                                })}
+                            </ul>
+                            <div className="form_field">
+                                <span className="xs_sub_title">Specialisation</span>
+                            </div>
+                            <div className="tags_wrap">
+                                <ul>
+                                    {specializationList?.length > 0 &&
+                                        <li className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                            onClick={() => filterChangeHandler(specializationList, 'All Clicked')}>All</li>}
+                                    {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
+                                        const active = sortByFilter.specializationId?.indexOf(_id) >= 0;
+                                        return (
+                                            <li key={_id} className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''} onClick={() => filterChangeHandler(_id, 'specializationId')}>{name}</li>)
+                                    }
+                                    )
+                                    }
+                                </ul>
+                                {/* <span className="error_msg">{errors.specializationId}</span> */}
                             </div>
                         </div>
-                    </>
+                        <div className="filter_btn">
+                            <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
+                            <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
+                        </div>
+                    </div>
                 </Modal>
             }
             {/* price filter box */}
@@ -378,7 +378,7 @@ const SearchResultFilters = (props: any) => {
 
                     <div className="form_field">
                         <div className="text_field">
-                            <input type="text" placeholder="0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={6} className="detect_input_ltr" />
+                            <input type="text" placeholder="0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={9} className="detect_input_ltr" />
                             <span className="detect_icon_ltr">$</span>
                         </div>
                         {!!errors.maxBudget && <span className="error_msg">{errors.maxBudget}</span>}

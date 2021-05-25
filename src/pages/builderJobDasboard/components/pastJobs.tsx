@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
+import noDataFound from '../../../assets/images/no-data.png';
+
 interface Post {
     amount: any,
     fromDate: any,
@@ -17,12 +19,13 @@ interface Post {
     totalMilestones: any,
     tradeId: any,
     tradeName: any,
+    isLoading:any,
     tradieData: any,
 }
 
 
 export default function PastJobs(props: any): ReactElement {
-    const { dataItems, jobType } = props;
+    const { dataItems, jobType , isLoading} = props;
     let listData: any = dataItems;
 
     const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
@@ -110,7 +113,13 @@ export default function PastJobs(props: any): ReactElement {
                                 </div>
                             </div>
                         </div>
-                    )) : null}
+                    )) : !isLoading && (
+                        <div className="no_record">
+                            <figure className="no_img">
+                                <img src={noDataFound} alt="data not found" />
+                            </figure>
+                        </div>
+                    )}
             </div>
         </React.Fragment>
     )

@@ -3,6 +3,7 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
+import noDataFound from '../../../assets/images/no-data.png';
 
 interface Active {
     amount: any,
@@ -21,6 +22,7 @@ interface Active {
     tradeName: any,
     tradieId: any,
     tradieImage: any,
+
 }
 interface State {
     isToggleApplicants: boolean
@@ -32,6 +34,7 @@ interface Props {
     applicantsList?: any,
     jobType: any,
     history?: any,
+    isLoading: any
 }
 
 class OpenJobs extends Component<Props, State> {
@@ -42,7 +45,7 @@ class OpenJobs extends Component<Props, State> {
         }
     }
 
-    redirectToInfo = ({ jobId, tradieId, specializationId , status}: any) => {
+    redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
         console.log({ jobId, tradieId, specializationId });
         this.props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
     }
@@ -50,7 +53,7 @@ class OpenJobs extends Component<Props, State> {
     setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })
 
     render() {
-        const { setJobLabel, dataItems, applicantsList, jobType, } = this.props;
+        const { setJobLabel, dataItems, applicantsList, jobType, isLoading} = this.props;
         let listData: any = dataItems
         let { isToggleApplicants } = this.state;
         console.log({ applicantsList, isToggleApplicants })
@@ -136,7 +139,13 @@ class OpenJobs extends Component<Props, State> {
                                     </div>
                                 </div>
                             </div>
-                        )) : null}
+                        )) : !isLoading && (
+                            <div className="no_record">
+                                <figure className="no_img">
+                                    <img src={noDataFound} alt="data not found" />
+                                </figure>
+                            </div>
+                        )}
                 </div>
             </React.Fragment>
         )
