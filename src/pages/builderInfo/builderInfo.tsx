@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import {
     getBuilderProfile,
+    getTradieReviewList,
     tradieReviewReply,
     tradieUpdateReviewReply,
     tradieRemoveReviewReply
@@ -8,6 +9,9 @@ import {
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import Modal from '@material-ui/core/Modal';
 import ReviewInfoBox from '../../common/reviewInfoBox';
+import { NavLink } from 'react-router-dom';
+// @ts-ignore
+import ReactStars from "react-rating-stars-component";
 
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
@@ -21,8 +25,6 @@ import 'react-multi-carousel/lib/styles.css';
 interface PropsType {
     location: any,
     history: any,
-    getTradieReviewList: (data: any) => void,
-    tradieReviewList: Array<object>,
 }
 
 const portfolio = {
@@ -69,6 +71,8 @@ const BuilderInfo = (props: PropsType) => {
         portfolioDetails: '',
     });
 
+    const [reviewList, setReviewList] = useState<Array<any>>([]);
+    const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
     const [reviewsData, setReviewsData] = useState<any>({
         reviewReplyClicked: false,
         showAllReviewsClicked: false,
@@ -88,14 +92,17 @@ const BuilderInfo = (props: PropsType) => {
     useEffect(() => {
         (async () => {
             const builderId: any = new URLSearchParams(props.location?.search).get('builderId');
-            const res = await getBuilderProfile(builderId);
-            if (res?.success) {
-                setProfileData(res.data);
+            const res1 = await getBuilderProfile(builderId);
+            if (res1?.success) {
+                setProfileData(res1.data);
                 const data = {
-                    builderId: res.data?.builderId,
+                    builderId: res1.data?.builderId,
                     page: 1
                 }
-                props.getTradieReviewList(data);
+                const res2 = await getTradieReviewList(data);
+                if (res2.success) {
+                    setReviewList(res2.data);
+                }
             }
         })();
     }, [])
@@ -123,7 +130,6 @@ const BuilderInfo = (props: PropsType) => {
                     reviewId: reviewsData.reviewId,
                     reply: reviewsData.reviewData
                 }
-                // need to send reply id in response
                 response = await tradieReviewReply(data);
             }
             if (type == 'updateReviewReply') {
@@ -146,7 +152,8 @@ const BuilderInfo = (props: PropsType) => {
                     builderId: profileData?.builderId,
                     page: 1
                 }
-                props.getTradieReviewList(data);
+                const res = await getTradieReviewList(data);
+                setReviewList(res.data);
                 newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
             }
             setReviewsData((prevData: any) => ({
@@ -343,12 +350,12 @@ const BuilderInfo = (props: PropsType) => {
                                 </Carousel>
                             </div>
                             <div className="flex_col_sm_6">
-                                {/* <span className="xs_sub_title">{portfolioData?.portfolioDetails?.jobDescription}</span> */}
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
                                     <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
                                     Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
+                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
+                                    {/* <p>{portfolioData?.portfolioDetails?.jobDescription}</p> */}
                                 </div>
                             </div>
                         </div>
@@ -361,7 +368,7 @@ const BuilderInfo = (props: PropsType) => {
                     <div className="flex_row tradies_row">
                         {profileData?.jobPostedData?.length > 0 ?
                             (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
+                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
                             })) :
                             <div className="no_record">
                                 <figure className="no_data_img">
@@ -370,9 +377,16 @@ const BuilderInfo = (props: PropsType) => {
                                 <span>Data not found</span>
                             </div>}
                     </div>
-                    <button className="fill_grey_btn full_btn m-tb40 view_more" disabled={profileData?.jobPostedData?.length > 0}>{`View all ${profileData?.jobPostedData?.length ? `${profileData?.jobPostedData?.length} jobs` : ''}`}</button>
+                    <NavLink to={{
+                        pathname: "/builder-posted-jobs",
+                        state: { jobsPosted: profileData?.jobPostedData, totalJobPostedCount: profileData?.totalJobPostedCount }
+                    }}
+                    >
+                        <button className="fill_grey_btn full_btn m-tb40 view_more" disabled={profileData?.jobPostedData?.length < 1}>
+                            {`View all ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount} jobs` : ''}`}</button>
+                    </NavLink>
                 </div>
-            </div>
+            </div >
 
             <div className="section_wrapper">
                 <div className="custom_container">
@@ -389,10 +403,11 @@ const BuilderInfo = (props: PropsType) => {
                                 <span>Data not found</span>
                             </div>}
                     </div>
-                    <button className="fill_grey_btn full_btn view_more" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}>View all 10 reviews</button>
+                    <button className="fill_grey_btn full_btn view_more" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}>{`View all ${profileData?.reviewsCount} reviews`}</button>
                 </div>
             </div>
-            {reviewsData.showAllReviewsClicked && props.tradieReviewList?.length > 0 &&
+            {/* view total reviews  */}
+            {reviewsData.showAllReviewsClicked && reviewList?.length > 0 &&
                 <Modal
                     className="ques_ans_modal"
                     open={reviewsData.showAllReviewsClicked}
@@ -402,16 +417,16 @@ const BuilderInfo = (props: PropsType) => {
                 >
                     <div className="custom_wh">
                         <div className="heading">
-                            <span className="sub_title">{`${props.tradieReviewList?.length} questions`}</span>
+                            <span className="sub_title">{`${reviewList?.length || 0} reviews`}</span>
                             <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
                         <div className="inner_wrap">
-                            {props.tradieReviewList?.map((item: any) => {
+                            {reviewList?.map((item: any) => {
                                 const { reviewData } = item;
                                 return (
-                                    <>
+                                    <div key={reviewsData.reviewId}>
                                         <div className="question_ans_card" key={reviewData.reviewId}>
                                             <div className="user_detail">
                                                 <figure className="user_img">
@@ -421,12 +436,24 @@ const BuilderInfo = (props: PropsType) => {
                                                     <span className="user_name">{reviewData?.userName}</span>
                                                     <span className="date">{reviewData?.date}</span>
                                                 </div>
+                                                <div className="form_field">
+                                                    <ReactStars
+                                                        count={5}
+                                                        value={3}
+                                                        size={20}
+                                                        edit={false}
+                                                        isHalf={true}
+                                                        emptyIcon={<i className="far fa-star"></i>}
+                                                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                                                        fullIcon={<i className="fa fa-star"></i>}
+                                                        activeColor="#ffd700"
+                                                    />
+                                                </div>
                                             </div>
                                             <p>{reviewData?.review}</p>
                                             {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
                                                 <span className="show_hide_ans link"
                                                     onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show review</span>}
-                                            {/* onClick={() => setReviewsData((prevData: any) => ({ ...prevData, replyShownHideList: [...prevData.replyShownHideList, reviewData?.replyData?.replyId] }))}>Show review</span>} */}
                                             {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
                                         </div>
                                         {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
@@ -441,19 +468,18 @@ const BuilderInfo = (props: PropsType) => {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.replyData?.reply}</p>
-                                                {/* <span className="show_hide_ans link" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showReviewReply: false, showReviewReplyButton: true }))}>Hide review</span> */}
                                                 <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide review</span>
                                                 {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
                                                 {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
                                             </div>}
-                                    </>
+                                    </div>
                                 )
                             })}
                         </div>
                     </div>
                 </Modal>
             }
-            {/* post reply modal */}
+            {/* review reply modal */}
             {reviewsData.reviewReplyClicked &&
                 <Modal
                     className="ques_ans_modal"
@@ -489,8 +515,8 @@ const BuilderInfo = (props: PropsType) => {
                     </>
                 </Modal>
             }
-            {/* send confirmation yes/no modal */}
-            {(reviewsData.confirmationClicked) &&
+            {/* send confirmation modal */}
+            {reviewsData.confirmationClicked &&
                 <Modal
                     className="custom_modal"
                     open={reviewsData.confirmationClicked}
@@ -517,7 +543,7 @@ const BuilderInfo = (props: PropsType) => {
                     </>
                 </Modal>
             }
-        </div>
+        </div >
     )
 }
 

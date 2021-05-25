@@ -63,6 +63,10 @@ const ReviewBuilder = (props: Proptypes) => {
         props.history.push(`/job-details-page?jobId=${item?.jobId}&tradeId=${item?.tradeId}&specializationId=${item?.specializationId}`);
     }
 
+    const builderClicked = () => {
+        props.history.push(`/builder-info?builderId=${item?.builderData?.builderId}`);
+    }
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
@@ -108,7 +112,7 @@ const ReviewBuilder = (props: Proptypes) => {
                         <figure className="u_img">
                             <img src={item.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
                         </figure>
-                        <div className="details">
+                        <div className="details" onClick={() => builderClicked()}>
                             <span className="name">{item?.tradeName}</span>
                             <span className="prof">{item?.jobName}</span>
                             <span className="prof">{`${startDate} - ${endDate}`}</span>

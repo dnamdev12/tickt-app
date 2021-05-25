@@ -70,6 +70,7 @@ const Urls = {
     builderProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}builderProfile`,
     deleteRecentSearch: `${versions.v1}${ServiceEnum.admin}deleteRecentSearch`, //admin
     tradieReviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewList`,
+    tradieQuestionList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}questionList`,
     tradieReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewReply`,
     tradieUpdateReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewReply`,
     tradieRemoveReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewReply`,

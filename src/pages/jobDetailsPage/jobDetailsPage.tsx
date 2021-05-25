@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
+import Constants from '../../utils/constants';
 import {
     getHomeJobDetails,
     getHomeSaveJob,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
+import { getTradieQuestionList } from '../../redux/jobs/actions';
 import {
     postAskQuestion,
     deleteQuestion,
@@ -51,7 +53,10 @@ const options = {
 };
 
 const JobDetailsPage = (props: PropsType) => {
-    const [jobDetailsData, setJobDetailsData] = useState<any>('')
+    const [errors, setErrors] = useState<any>({});
+    const [jobDetailsData, setJobDetailsData] = useState<any>('');
+    const [questionList, setQuestionList] = useState<Array<any>>([]);
+    const [questionListPageNo, setQuestionListPageNo] = useState<number>(1);
     const [questionsData, setQuestionsData] = useState<any>({
         askQuestionsClicked: false,
         showAllQuestionsClicked: false,
@@ -63,10 +68,11 @@ const JobDetailsPage = (props: PropsType) => {
         showAnswerButton: true,
         questionId: '',
         questionData: '',
-        answerShownHideList: []
+        answerShownHideList: [],
+        questionIndex: null
     })
 
-    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData");
+    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo');
 
     useEffect(() => {
         (async () => {
@@ -76,9 +82,17 @@ const JobDetailsPage = (props: PropsType) => {
                 tradeId: params.get('tradeId'),
                 specializationId: params.get('specializationId')
             }
-            const res = await getHomeJobDetails(data);
-            if (res.success) {
-                setJobDetailsData(res.data);
+            const res1 = await getHomeJobDetails(data);
+            if (res1.success) {
+                setJobDetailsData(res1.data);
+            }
+            const questionData: any = {
+                jobId: params.get('jobId'),
+                page: 1
+            }
+            const res2 = await getTradieQuestionList(questionData);
+            if (res2.success) {
+                setQuestionList(res2.data);
             }
         })();
     }, [])
@@ -93,7 +107,7 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await postHomeApplyJob(data);
         if (res.success) {
-            props.history.push('job-applied-successfully')
+            props.history.push('job-applied-successfully');
         }
     }
 
@@ -109,14 +123,41 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const modalCloseHandler = (modalType: string) => {
-        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, answerShownHideList: [] }))
+        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, answerShownHideList: [] }));
+        setErrors({});
+    }
+
+    const loadMoreQuestionHandler = async () => {
+        const data: any = {
+            jobId: jobDetailsData?.jobId,
+            page: questionListPageNo + 1
+        }
+        const res = await getTradieQuestionList(data);
+        if (res.success) {
+            setQuestionList((prevData: any) => ([...prevData, ...res.data]));
+            setQuestionListPageNo(data.page);
+        }
+    }
+
+    const validateForm = (type: string) => {
+        if (type == 'deleteQuestion') return true;
+        const newErrors: any = {};
+        if (!questionsData.questionData.trim()?.length) {
+            newErrors.questionData = Constants.errorStrings.askQuestion;
+        }
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
     }
 
     const submitQuestionHandler = async (type: string) => {
         if (['askQuestion', 'deleteQuestion', 'updateQuestion'].includes(type)) {
-            var response;
+            if (!validateForm(type)) {
+                return;
+            }
+            var response: any;
+            var data: any;
             if (type == 'askQuestion') {
-                const data = {
+                data = {
                     jobId: jobDetailsData?.jobId,
                     builderId: jobDetailsData?.postedBy?.builderId,
                     question: questionsData.questionData.trim(),
@@ -125,47 +166,69 @@ const JobDetailsPage = (props: PropsType) => {
                 }
                 response = await postAskQuestion(data);
             } else if (type == 'deleteQuestion') {
-                const data = {
+                data = {
                     jobId: jobDetailsData?.jobId,
                     questionId: questionsData.questionId
                 }
                 response = await deleteQuestion(data);
             } else if (type == 'updateQuestion') {
-                const data = {
+                data = {
                     questionId: questionsData.questionId,
                     question: questionsData.questionData.trim()
                 }
                 response = await updateQuestion(data);
             }
             if (response?.success) {
-                const data: any = {
-                    jobId: jobDetailsData?.jobId,
-                    tradeId: jobDetailsData?.tradeId,
-                    specializationId: jobDetailsData?.specializationId
+                if (type == 'askQuestion' && response.data?.questionData?.question) {
+                    // const askData: any = {
+                    //     jobId: jobDetailsData?.jobId,
+                    //     page: 1
+                    // }
+                    // const res = await getTradieQuestionList(askData);
+                    // if (res.success) {
+                    //     setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
+                    // }
+                    // setQuestionList(res.data);
+                    // setQuestionListPageNo(1);
+                    var updatedQuestionList = [...questionList];
+                    updatedQuestionList.unshift(response.data);
+                    setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
+                    setQuestionList(updatedQuestionList);
                 }
-                const res = await getHomeJobDetails(data);
-                if (res.success) {
-                    setJobDetailsData(res.data);
+
+                if (type === 'updateQuestion' && response.data?.question) {
+                    var updatedQuestionList = [...questionList];
+                    var newList = updatedQuestionList.find((item: any) => item.questionData.questionId == response.data?.questionId);
+                    newList.questionData.question = response.data?.question;
+                    setQuestionList(updatedQuestionList);
                 }
+
+                if (type === 'deleteQuestion') {
+                    setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount - 1 }));
+                    var updatedQuestionList = [...questionList]
+                    updatedQuestionList.splice(questionsData.questionIndex, 1);
+                    setQuestionList(updatedQuestionList);
+                }
+                setQuestionsData((prevData: any) => ({
+                    ...prevData,
+                    submitQuestionsClicked: false,
+                    askQuestionsClicked: false,
+                    showAllQuestionsClicked: true,
+                    confirmationClicked: false,
+                    questionsClickedType: '',
+                    deleteQuestionsClicked: false,
+                    updateQuestionsClicked: false,
+                    questionId: '',
+                    questionData: '',
+                    showQuestionAnswer: false,
+                    questionIndex: null
+                }));
             }
-            setQuestionsData((prevData: any) => ({
-                ...prevData,
-                submitQuestionsClicked: false,
-                askQuestionsClicked: false,
-                showAllQuestionsClicked: true,
-                confirmationClicked: false,
-                questionsClickedType: '',
-                deleteQuestionsClicked: false,
-                updateQuestionsClicked: false,
-                questionId: '',
-                questionData: '',
-                showQuestionAnswer: false
-            }))
         }
     }
 
-    const questionHandler = (type: string, questionId?: string, question?: string) => {
-        if (type == 'submitAskQuestion') {
+    const questionHandler = (type: string, questionId?: string, question?: string, questionIndex?: number) => {
+        if (type == 'submitAskQuestion' && validateForm('askQuestion')) {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 submitQuestionsClicked: true,
@@ -184,7 +247,8 @@ const JobDetailsPage = (props: PropsType) => {
                 confirmationClicked: true,
                 deleteQuestionsClicked: true,
                 questionId: questionId,
-                questionsClickedType: type
+                questionsClickedType: type,
+                questionIndex: questionIndex
             }));
         } else if (type == 'updateQuestion') {
             setQuestionsData((prevData: any) => ({
@@ -207,6 +271,7 @@ const JobDetailsPage = (props: PropsType) => {
                 questionsClickedType: '',
                 questionId: '',
             }));
+            setErrors({});
         } else if (type == 'hideAnswerClicked') {
             const newData = [...questionsData.answerShownHideList].filter(id => id !== questionId);
             setQuestionsData((prevData: any) => ({ ...prevData, answerShownHideList: newData }));
@@ -238,10 +303,8 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
                                     <OwlCarousel className='owl-theme' {...options}>
-                                        {jobDetailsData?.photos?.length ? jobDetailsData?.photos?.map((image: string) => {
-                                            return (
-                                                <img alt="" src={image ? image : jobDummyImage} />
-                                            )
+                                        {jobDetailsData?.photos?.length ? jobDetailsData?.photos?.map((image: string, index: number) => {
+                                            return <img key={`${image}${index}`} alt="" src={image ? image : jobDummyImage} />
                                         }) : <img alt="" src={jobDummyImage} />}
                                     </OwlCarousel>
                                 </figure>
@@ -279,7 +342,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 <ul className="job_milestone">
                                     {jobDetailsData && jobDetailsData?.jobMilestonesData?.map((item: any, index: number) => {
                                         return (
-                                            <li>
+                                            <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
                                                 <span>{item?.fromDate?.length && !item?.toDate?.length ?
                                                     `${moment(item?.fromDate).format('MMM DD')}` :
@@ -307,16 +370,16 @@ const JobDetailsPage = (props: PropsType) => {
                                     <>
                                         <div className="custom_wh">
                                             <div className="heading">
-                                                <span className="sub_title">{`${jobDetailsData?.questionsCount} questions`}</span>
+                                                <span className="sub_title">{`${jobDetailsData?.questionsCount || 0} questions`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('showAllQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
                                             <div className="inner_wrap">
-                                                {jobDetailsData?.questionsData?.map((item: any) => {
+                                                {questionList?.map((item: any, index: number) => {
                                                     const { questionData } = item;
                                                     return (
-                                                        <>
+                                                        <div key={questionData?.questionId}>
                                                             <div className="question_ans_card">
                                                                 <div className="user_detail">
                                                                     <figure className="user_img">
@@ -328,12 +391,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                                     </div>
                                                                 </div>
                                                                 <p>{questionData?.question}</p>
-                                                                {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
-                                                                {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId)}>Delete</span>}
                                                                 {Object.keys(questionData?.answerData).length > 0 && !(questionsData.answerShownHideList.includes(questionData?.questionId)) &&
                                                                     <span className="show_hide_ans link" onClick={() => questionHandler('showAnswerClicked', questionData?.questionId)}>Show answer</span>}
+                                                                {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
+                                                                {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId, '', index)}>Delete</span>}
                                                             </div>
-                                                            {questionData?.answerData?.answer && questionsData.showQuestionAnswer &&
+                                                            {questionData?.answerData?.answer && questionsData.answerShownHideList.includes(questionData?.questionId) &&
                                                                 <div className="question_ans_card answer">
                                                                     <div className="user_detail">
                                                                         <figure className="user_img">
@@ -347,9 +410,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                                     <p>{questionData?.answerData?.answer}</p>
                                                                     <span className="show_hide_ans link" onClick={() => questionHandler('hideAnswerClicked', questionData?.questionId)}>Hide answer</span>
                                                                 </div>}
-                                                        </>
+                                                        </div>
                                                     )
                                                 })}
+                                                {jobDetailsData?.questionsCount > questionList.length && <div className="text-center">
+                                                    <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>Load more</button>
+                                                </div>}
                                             </div>
                                             <div className="btn_wrap">
                                                 <div className="bottom_btn">
@@ -369,30 +435,29 @@ const JobDetailsPage = (props: PropsType) => {
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
-                                    <>
-                                        <div className="custom_wh ask_ques">
-                                            <div className="heading">
-                                                <span className="sub_title">{`${questionsData.updateQuestionsClicked ? 'Edit a question' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} a question`}`}</span>
-                                                <button className="close_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>
-                                                    <img src={cancel} alt="cancel" />
-                                                </button>
-                                            </div>
-                                            <div className="inner_wrap">
-                                                <div className="form_field">
-                                                    <label className="form_label">Your question</label>
-                                                    <div className="text_field">
-                                                        <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
-                                                    </div>
-                                                    <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
+                                    <div className="custom_wh ask_ques">
+                                        <div className="heading">
+                                            <span className="sub_title">{`${questionsData.updateQuestionsClicked ? 'Edit a question' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} a question`}`}</span>
+                                            <button className="close_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>
+                                                <img src={cancel} alt="cancel" />
+                                            </button>
+                                        </div>
+                                        <div className="inner_wrap">
+                                            <div className="form_field">
+                                                <label className="form_label">Your question</label>
+                                                <div className="text_field">
+                                                    <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                                 </div>
-                                            </div>
-                                            <div className="bottom_btn custom_btn">
-                                                {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>
-                                                    : <button className="fill_btn full_btn" onClick={() => questionHandler('submitAskQuestion')}>Send</button>}
-                                                <button className="fill_grey_btn" onClick={() => questionHandler('questionCancelBtnClicked')}>Cancel</button>
+                                                {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
+                                                <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                             </div>
                                         </div>
-                                    </>
+                                        <div className="bottom_btn custom_btn">
+                                            {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>
+                                                : <button className="fill_btn full_btn" onClick={() => questionHandler('submitAskQuestion')}>Send</button>}
+                                            <button className="fill_grey_btn" onClick={() => questionHandler('questionCancelBtnClicked')}>Cancel</button>
+                                        </div>
+                                    </div>
                                 </Modal>
                             }
                             {/* send confirmation yes/no modal */}
@@ -430,7 +495,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         <ul className="job_categories">
                                             <li>
                                                 <figure className="type_icon">
-                                                    <img alt="icon" src={jobDetailsData?.jobType?.jobTypeImage} />
+                                                    <img alt="" src={jobDetailsData?.jobType?.jobTypeImage} />
                                                 </figure>
                                                 <span className="name">{jobDetailsData?.jobType?.jobTypeName}</span>
                                             </li>

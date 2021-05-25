@@ -28,10 +28,10 @@ interface PropsType {
     location?: any,
     paramsData?: any,
     currentCoordinates: any,
-    searchJobListData: Array<object>,
-    recentSearchJobData: Array<object>,
-    recentLocationData: Array<object>,
-    homeSearchJobData: Array<object>,
+    searchJobListData: Array<any>,
+    recentSearchJobData: Array<any>,
+    recentLocationData: Array<any>,
+    homeSearchJobData: Array<any>,
     setTradieHomeData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
@@ -135,41 +135,16 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [props.currentCoordinates])
 
-    function getLocationData(item: any, index: number, callback: Function) {
-        var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
-        var geocoder = new google.maps.Geocoder();
-        if (geocoder) {
-            geocoder.geocode({ location: latlng }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    callback(results[0]);
-                }
-            });
-        }
-    }
-
     const getRecentLocationData = () => {
-        const tempLocationList: any = [
-            { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
-            { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
-            { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
-            { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
-        ]
+        // const tempLocationList: any = [
+        //     { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
+        //     { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
+        //     { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
+        //     { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
+        // ]
         var recentLocationDetails: any = [];
-        // props.recentLocationData?.map((item: any) => {
-        tempLocationList?.map((item: any, index: number) => {
-            // getLocationData(item, index, (locationData: any) => {
-            //     const formatedCityText = JSON.parse(JSON.stringify(locationData));
-            //     console.log(index, "index");
-            //     const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
-            //     const newData = {
-            //         mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-            //         secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-            //     }
-            //     recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-            //     if (recentLocationDetails?.length == tempLocationList?.length) {
-            //         setRecentLocation(recentLocationDetails);
-            //     }
-            // })
+        // tempLocationList?.map((item: any, index: number) => {
+        props.recentLocationData?.map((item: any, index: number) => {
             var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, (results, status) => {
@@ -182,7 +157,7 @@ const BannerSearch = (props: PropsType) => {
                         secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
                     }
                     recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-                    if (recentLocationDetails?.length == tempLocationList?.length) {
+                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
                         setRecentLocation(recentLocationDetails);
                     }
                 }
@@ -197,7 +172,7 @@ const BannerSearch = (props: PropsType) => {
             { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
             { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
         ]
-        if (props.recentLocationData?.length && JSON.stringify(tempLocationList[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+        if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
             getRecentLocationData();
         }
     }, [props.recentLocationData, recentLocation])
@@ -347,11 +322,6 @@ const BannerSearch = (props: PropsType) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         }
-    }
-
-    const onError = (status: string, clearSuggestions: Function) => {
-        console.log('Google Maps API returned error with status: ', status)
-        clearSuggestions();
     }
 
     const validateForm = (type?: string) => {
@@ -507,7 +477,6 @@ const BannerSearch = (props: PropsType) => {
                                 shouldFetchSuggestions={true}
                                 onSelect={locationSelectedHandler}
                                 highlightFirstSuggestion={true}
-                                onError={onError}
                             // searchOptions={{ types: ['(cities)','address'] }}
                             // searchOptions={{ componentRestrictions: { country: "au" } }}
                             // debounce={400}
@@ -515,7 +484,6 @@ const BannerSearch = (props: PropsType) => {
                                 {renderPlacesData}
                             </PlacesAutocomplete>
                         </div>
-                        {/* </li> */}
                         {!stateData?.selectedMapLocation && inputFocus2 &&
                             <div className="custom_autosuggestion location" id="current-location-search-div">
                                 <a className="location-btn" onClick={getCurrentLocation}>

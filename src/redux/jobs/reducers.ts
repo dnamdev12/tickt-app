@@ -21,7 +21,6 @@ const initialState = {
   builderPastJobs: [],
   builderNewApplicants: [],
   builderNewApplicantsList: [],
-  tradieReviewList: [],
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -126,12 +125,6 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderNewApplicantsList: action.payload,
-      };
-
-    case actionTypes.SET_TRADIE_REVIEW_LIST:
-      return {
-        ...state,
-        tradieReviewList: action.payload,
       };
 
     default: return state;

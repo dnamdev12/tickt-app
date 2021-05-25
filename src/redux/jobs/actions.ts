@@ -3,8 +3,6 @@ import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
 import { setShowToast, setLoading } from '../common/actions';
 
-export const getTradieReviewList = (data: any) => ({ type: actionTypes.GET_TRADIE_REVIEW_LIST, data })
-
 //jobTypeList
 export const callCategories = async () => {
   const response: FetchResponse = await NetworkOps.get(Urls.jobTypeList);
@@ -106,20 +104,41 @@ export const getBuilderHomeData = async (item: any) => {
 }
 
 export const isHandleChanges = (data: any) => ({ type: actionTypes.GET_LOCAL_CHANGES, data });
-//tradie ask a question
+
+export const getTradieQuestionList = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.tradieQuestionList + `?jobId=${data.jobId}&page=${data.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const getTradieReviewList = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.tradieReviewList + `?builderId=${data.builderId}&page=${data.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 export const postAskQuestion = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.askQuestion, data)
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
-    return { success: true };
+    return { success: true, data: { questionData: response.result } };
   }
   setShowToast(true, response.message);
   return { success: false };
 }
 
-//tradie delete question
 export const deleteQuestion = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.delete(Urls.deleteQuestion, data)
@@ -132,14 +151,13 @@ export const deleteQuestion = async (data: any) => {
   return { success: false };
 }
 
-//tradie update question
 export const updateQuestion = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.updateQuestion, data)
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
-    return { success: true };
+    return { success: true, data: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -163,7 +181,7 @@ export const tradieReviewReply = async (data: any) => {
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
-    return { success: true };
+    return { success: true, data: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };

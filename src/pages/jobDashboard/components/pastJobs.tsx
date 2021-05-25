@@ -19,7 +19,6 @@ const PastJobs = (props: Proptypes) => {
     <>
       <span className="sub_title">Past Jobs</span>
       <div className="flex_row tradies_row">
-        {/* {props.pastJobList?.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, milestoneNumber, totalMilestones, tradeName, status, jobName, builderData, time, amount, locationName, durations }, index: number) => { */}
         {props.pastJobList?.map((item: any) => {
           return (
             <div className="flex_col_sm_6" key={item.jobId}>
@@ -56,7 +55,7 @@ const PastJobs = (props: Proptypes) => {
                         id="progress-bar"
                         type="range"
                         min="0"
-                        readOnly={true}
+                        value={item.milestoneNumber / item.totalMilestones * 100}
                       />
                     </span>
                   </div>

@@ -7,13 +7,13 @@ import {
 
 const mapStateToProps = (state: any) => {
     return {
-        tradieReviewList: state.jobs.tradieReviewList,
+        // tradieReviewList: state.jobs.tradieReviewList,
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
-        getTradieReviewList,
+        // getTradieReviewList,
     }, dispatch);
 }
 

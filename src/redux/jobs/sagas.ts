@@ -237,16 +237,6 @@ function* getnewJobApplicationListBuilder({ page, jobId }: any) {
   }
 }
 
-function* getTradieReviewList({data}: any) {
-  const response: FetchResponse = yield NetworkOps.get(Urls.tradieReviewList + `?builderId=${data.builderId}&page=${data.page}`);
-  console.log(response.result, "response.result")
-  if (response.status_code === 200) {
-      yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: response.result });
-  } else {
-      yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: [] });
-  }
-}
-
 function* postJobWatcher() {
   try {
     yield takeLatest(actionTypes.FETCH_HOME_BUILDER, setHomeBuilder);
@@ -258,7 +248,6 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_APPROVED_MILESTONE_START, getApprovedMilestoneList);
     yield takeLatest(actionTypes.GET_MILESTONES_START, getMilestoneList);
     yield takeLatest(actionTypes.MARK_MILESTONE_COMPLETE, markMilestoneComplete);
-    yield takeLatest(actionTypes.GET_TRADIE_REVIEW_LIST, getTradieReviewList);
 
     yield takeLatest(actionTypes.GET_BUILDER_ACTIVE_JOBS, getActiveJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_PAST_JOBS, getPastJobsBuilder);
