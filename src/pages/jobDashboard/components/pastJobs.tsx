@@ -38,7 +38,7 @@ const PastJobs = (props: Proptypes) => {
                     <li className="icon clock">{item.time}</li>
                     <li className="icon dollar">{item.amount}</li>
                     <li className="icon location line-1">{item.locationName}</li>
-                    {item.durations ? <li className="icon calendar">{item.durations}</li> : <li className="link ">{item.status}</li>}
+                    {item.durations ? <li className="icon calendar">{item.durations}</li> : <li><span className="job_status">{item.status}</span></li>}
                   </ul>
                 </div>
                 {/* <p className="commn_para line-3">

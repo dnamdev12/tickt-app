@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
+import loader from "../../../../assets/images/page-loader.gif";
+
 
 const categoriesjob = {
     desktop: {
@@ -41,7 +43,7 @@ const JobTypeList = (props: any) => {
     return (
         <div className="home_job_categories">
             <div className="custom_container">
-                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={true} arrows={false} showDots={false} infinite={false} swipeable={false} draggable={false}>
+                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={false} arrows={false} showDots={true} >
                     <div>
                         <ul className="job_categories">
                             {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
@@ -53,9 +55,17 @@ const JobTypeList = (props: any) => {
                                         <span className="name">{item.name}</span>
                                     </li>
                                 )
-                            }) : <span>Loading...</span>}
+                            }) :
+                                <div className="page_loader">
+                                    <figure>
+                                        <img src={loader} alt="loader" />
+                                    </figure>
+                                </div>}
                         </ul>
                     </div>
+                    {/* <div>SLide 1</div>
+                    <div>SLide 2</div>
+                    <div>SLide 3</div> */}
                 </Carousel>
             </div>
         </div >
