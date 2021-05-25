@@ -2,6 +2,7 @@ import React, { ReactElement, useState, useEffect } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import MarkMilestones from './markMilestones';
+import { withRouter } from 'react-router-dom';
 interface Active {
     amount: any,
     durations: any,
@@ -12,6 +13,7 @@ interface Active {
     specializationName: any,
     status: any,
     timeLeft: any,
+    locationName: any,
     totalmem: any,
     totalMilestones: any,
     tradieListData: any,
@@ -55,22 +57,32 @@ const listData: any = [{
     tradieImage: '',
 }]
 
-export default function ActiveJobs({ setJobLabel, dataItems, jobType, }: any): ReactElement {
-    // let listData: any =  dataItems;
+const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
+    let listData: any = dataItems;
+    const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
 
     const resetStateLocal = () => {
         setLocalState(false)
     }
 
-
-
     useEffect(() => {
         console.log('here!')
     }, [jobType])
 
-    if (localState)
-        return <MarkMilestones resetStateLocal={resetStateLocal} />
+    const redirectToInfo = ({ jobId, tradieId, specializationId }: any) => {
+        console.log({ jobId, tradieId, specializationId });
+        history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}`);
+    }
+
+    if (localState && selectedIndex !== null) {
+        return (
+            <MarkMilestones
+                resetStateLocal={resetStateLocal}
+                selectedIndex={selectedIndex}
+                listData={listData}
+            />)
+    }
 
     return (
         <React.Fragment>
@@ -87,16 +99,19 @@ export default function ActiveJobs({ setJobLabel, dataItems, jobType, }: any): R
                         specializationName,
                         status,
                         timeLeft,
+                        locationName,
                         totalmem,
                         totalMilestones,
                         tradieListData,
                         tradeName,
                         tradieId,
                         tradieImage,
-                    }: Active) => (
+                    }: Active, index: number) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card">
-                                <span className="more_detail circle">
+                                <span onClick={() => {
+                                    redirectToInfo({ jobId, tradieId, specializationId });
+                                }} className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
@@ -111,7 +126,7 @@ export default function ActiveJobs({ setJobLabel, dataItems, jobType, }: any): R
                                     <ul>
                                         <li className="icon clock">{timeLeft}</li>
                                         <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{''}</li>
+                                        <li className="icon location line-1">{locationName}</li>
                                         <li className="icon calendar">{durations}</li>
                                     </ul>
                                 </div>
@@ -140,6 +155,7 @@ export default function ActiveJobs({ setJobLabel, dataItems, jobType, }: any): R
                                     <button
                                         onClick={() => {
                                             setLocalState(true);
+                                            setSelectedIndex(index);
                                         }}
                                         className="fill_grey_btn full_btn">
                                         {'Approve'}
@@ -154,3 +170,6 @@ export default function ActiveJobs({ setJobLabel, dataItems, jobType, }: any): R
         </React.Fragment>
     )
 }
+
+
+export default withRouter(ActiveJobs);

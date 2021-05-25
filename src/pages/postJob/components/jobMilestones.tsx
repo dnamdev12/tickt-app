@@ -56,7 +56,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     }
 
     useEffect(() => {
-        console.log({localMilestones, milestones},'------------------------------------------------->')
+        console.log({ localMilestones, milestones }, '------------------------------------------------->')
         if (!localMilestones?.length !== milestones?.length) {
             let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
             setLocalMilestones(filter_milestones); // set milestoner here!
@@ -154,11 +154,11 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             </div>
                             {localMilestones?.length ? (
                                 <div
-                                    onClick={() => { 
+                                    onClick={() => {
                                         let check: boolean = checkIfValidDates(localMilestones);
-                                        if(check){
+                                        if (check) {
                                             handleCombineMileStones(localMilestones);
-                                            handleStepForward(10) 
+                                            handleStepForward(10)
                                         } else {
                                             setShowToast(true, "Please arrange milestonea date wise.")
                                         }
@@ -176,85 +176,87 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                     {(provided, snapshot) => (
                                         <ul ref={provided.innerRef}
                                             className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}>
-                                            {localMilestones.map(({
-                                                milestone_name,
-                                                isPhotoevidence,
-                                                recommended_hours,
-                                                from_date,
-                                                to_date
-                                            }: {
-                                                milestone_name: string,
-                                                isPhotoevidence: boolean,
-                                                from_date: string,
-                                                to_date: string,
-                                                recommended_hours: any
-                                            }, index) => (
-                                                <Draggable
-                                                    key={`${index}-${milestone_name}`}
-                                                    draggableId={`${milestone_name}-${index}`}
-                                                    index={index}
-                                                >
-                                                    {(provided: any, snapshot: any) => (
-                                                        <li
-                                                            key={index}
-                                                            ref={provided.innerRef}
-                                                            {...provided.draggableProps}
-                                                            {...provided.dragHandleProps}
-                                                            style={{
-                                                                ...provided.draggableProps.style,
-                                                            }}>
-                                                            {editItem[index] ? (
-                                                                <div className="edit_delete">
-                                                                    <span
-                                                                        onClick={(e) => {
-                                                                            e.stopPropagation();
-                                                                            handleStepForward(15);
-                                                                            updateMileStoneIndex(index);
-                                                                        }}
-                                                                        className="edit">
-                                                                    </span>
-                                                                    <span
-                                                                        onClick={(e) => {
-                                                                            e.preventDefault();
-                                                                            handleClickOpen(index);
-                                                                            // removeMilestoneByIndex(index);
+                                            {localMilestones?.length > 0 &&
+                                                localMilestones.map(({
+                                                    milestone_name,
+                                                    isPhotoevidence,
+                                                    recommended_hours,
+                                                    from_date,
+                                                    to_date
+                                                }: {
+                                                    milestone_name: string,
+                                                    isPhotoevidence: boolean,
+                                                    from_date: string,
+                                                    to_date: string,
+                                                    recommended_hours: any
+                                                }, index) => (
+                                                    <Draggable
+                                                        key={`${index}-${milestone_name}`}
+                                                        draggableId={`${milestone_name}-${index}`}
+                                                        index={index}
+                                                    >
+                                                        {(provided: any, snapshot: any) => (
+                                                            <li
+                                                                key={index}
+                                                                ref={provided.innerRef}
+                                                                {...provided.draggableProps}
+                                                                {...provided.dragHandleProps}
+                                                                style={{
+                                                                    ...provided.draggableProps.style,
+                                                                }}>
+                                                                {editItem[index] ? (
+                                                                    <div className="edit_delete">
+                                                                        <span
+                                                                            onClick={(e) => {
+                                                                                e.stopPropagation();
+                                                                                handleStepForward(15);
+                                                                                updateMileStoneIndex(index);
+                                                                            }}
+                                                                            className="edit">
+                                                                        </span>
+                                                                        <span
+                                                                            onClick={(e) => {
+                                                                                e.preventDefault();
+                                                                                handleClickOpen(index);
+                                                                                // removeMilestoneByIndex(index);
 
-                                                                            // setEditItems({}); // too old comment
-                                                                        }}
-                                                                        className="delete"></span>
+                                                                                // setEditItems({}); // too old comment
+                                                                            }}
+                                                                            className="delete"></span>
+                                                                    </div>
+                                                                ) : ''}
+                                                                <div className="checkbox_wrap agree_check">
+                                                                    <input
+                                                                        checked={editItem[index]}
+                                                                        onChange={(e: any) => { checkOnClick(e, index) }}
+                                                                        className="filter-type filled-in"
+                                                                        type="checkbox"
+                                                                        id={`milestone${index}`} />
+                                                                    <label htmlFor={`milestone${index}`}>{`${index + 1}. ${milestone_name}`}</label>
+                                                                    <div className="info">
+                                                                        {isPhotoevidence ?
+                                                                            <span>{'Photo evidence required'}</span>
+                                                                            : <span></span>}
+                                                                        <span>
+                                                                            {from_date?.length && !to_date?.length ? `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
+                                                                                : from_date?.length && to_date?.length ?
+                                                                                    `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}` : ''}
+                                                                        </span>
+                                                                        <span>
+                                                                            {recommended_hours}
+                                                                        </span>
+                                                                    </div>
                                                                 </div>
-                                                            ) : ''}
-                                                            <div className="checkbox_wrap agree_check">
-                                                                <input
-                                                                    checked={editItem[index]}
-                                                                    onChange={(e: any) => { checkOnClick(e, index) }}
-                                                                    className="filter-type filled-in"
-                                                                    type="checkbox"
-                                                                    id={`milestone${index}`} />
-                                                                <label htmlFor={`milestone${index}`}>{`${index + 1}. ${milestone_name}`}</label>
-                                                                <div className="info">
-                                                                    {isPhotoevidence ?
-                                                                        <span>{'Photo evidence required'}</span>
-                                                                        : <span></span>}
-                                                                    <span>
-                                                                        {from_date?.length && !to_date?.length ? `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
-                                                                            : from_date?.length && to_date?.length ?
-                                                                                `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}` : ''}
-                                                                    </span>
-                                                                    <span>
-                                                                        {recommended_hours}
-                                                                    </span>
-                                                                </div>
-                                                            </div>
-                                                        </li>
-                                                    )}
-                                                </Draggable>
-                                            ))}
+                                                            </li>
+                                                        )}
+                                                    </Draggable>
+                                                ))}
                                             {provided.placeholder}
-                                            
-                                            <figure className="placeholder_img">
-                                                <img src={milestonesPlaceholder} alt="milestones-placeholder" />
-                                            </figure>
+                                            {localMilestones?.length === 0 && (
+                                                <figure className="placeholder_img">
+                                                    <img src={milestonesPlaceholder} alt="milestones-placeholder" />
+                                                </figure>
+                                            )}
                                         </ul>
                                     )}
                                 </Droppable>

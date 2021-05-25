@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import ApplicantsList from './applicantsList';
+import { withRouter } from 'react-router-dom'
+
 interface Active {
     amount: any,
     durations: any,
@@ -13,6 +15,7 @@ interface Active {
     status: any,
     timeLeft: any,
     totalmem: any,
+    locationName: any,
     totalMilestones: any,
     tradieListData: any,
     tradeName: any,
@@ -123,14 +126,20 @@ interface Props {
     dataItems: any,
     applicantsList?: any,
     jobType: any,
+    history?: any,
 }
 
-export default class OpenJobs extends Component<Props, State> {
+class OpenJobs extends Component<Props, State> {
     constructor(props: any) {
         super(props)
         this.state = {
             isToggleApplicants: false
         }
+    }
+
+    redirectToInfo = ({ jobId, tradieId, specializationId }: any) => {
+        console.log({ jobId, tradieId, specializationId });
+        this.props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}`);
     }
 
     setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })
@@ -153,6 +162,7 @@ export default class OpenJobs extends Component<Props, State> {
                             milestoneNumber,
                             specializationId,
                             specializationName,
+                            locationName,
                             status,
                             timeLeft,
                             totalmem,
@@ -164,11 +174,14 @@ export default class OpenJobs extends Component<Props, State> {
                         }: Active) => (
                             <div className="flex_col_sm_6">
                                 <div className="tradie_card">
-                                    <span className="more_detail circle">
+                                    <span
+                                        onClick={() => { this.redirectToInfo({ jobId, tradieId, specializationId }) }}
+                                        className="more_detail circle">
                                     </span>
                                     <div className="user_wrap">
                                         <figure className="u_img">
-                                            <img src={dummy} alt="traide-img" />
+                                            <img src={tradieImage || dummy} alt="traide-img"
+                                            />
                                         </figure>
                                         <div className="details">
                                             <span className="name">{tradeName}</span>
@@ -179,7 +192,7 @@ export default class OpenJobs extends Component<Props, State> {
                                         <ul>
                                             <li className="icon clock">{timeLeft}</li>
                                             <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{''}</li>
+                                            <li className="icon location line-1">{locationName}</li>
                                             <li className="icon calendar">{durations}</li>
                                         </ul>
                                     </div>
@@ -208,7 +221,7 @@ export default class OpenJobs extends Component<Props, State> {
                                         <button
                                             onClick={() => {
                                                 this.setToggle();
-                                                setJobLabel('applicantList', jobId, 1);
+                                                setJobLabel('applicantList', jobId, 1, specializationId);
                                             }}
                                             className="fill_grey_btn full_btn">
                                             {'Applications'}
@@ -224,3 +237,5 @@ export default class OpenJobs extends Component<Props, State> {
         )
     }
 }
+
+export default OpenJobs;

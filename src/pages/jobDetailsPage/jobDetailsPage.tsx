@@ -258,10 +258,12 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon location">{jobDetailsData.locationName}</li>
                                         </ul>
                                     </div>
-                                    <div className="bottom_btn">
-                                        <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
-                                        <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
-                                    </div>
+                                    {jobDetailsData?.appliedStatus && (
+                                        <div className="bottom_btn">
+                                            <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
+                                            <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
                         </div>

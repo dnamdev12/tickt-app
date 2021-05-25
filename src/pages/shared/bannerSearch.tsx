@@ -28,6 +28,8 @@ import moment from 'moment';
 import Geocode from "react-geocode";
 import { setShowToast } from '../../redux/common/actions';
 
+import { deleteRecentSearch } from '../../redux/homeSearch/actions';
+
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
 
@@ -51,7 +53,8 @@ interface PropsType {
     setBannerData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
-    handleChangeToggle?: (data: any) => void
+    handleChangeToggle?: (data: any) => void,
+    getRecentSearchList?: () => void,
 }
 
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
@@ -68,7 +71,7 @@ export function useStateFromProp(initialValue: any) {
 
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
-    const { selectedItem, isHandleChanges, localChanges, } = props;
+    const { selectedItem, isHandleChanges, localChanges , getRecentSearchList } = props;
 
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
@@ -141,6 +144,20 @@ const BannerSearch = (props: PropsType) => {
         return false;
     }
 
+    const cleanRecentSearch = async (event: any, recentSearchId: string) => {
+        event.stopPropagation();
+        const data = {
+            id: recentSearchId,
+            status: 0
+        }
+        const res = await deleteRecentSearch(data);
+        if (res.success) {
+            if(getRecentSearchList){
+                getRecentSearchList();
+            }
+        }
+    }
+
     const recentJobSearches = () => {
         let props_Clone: any = props;
         let tradeListData = props_Clone.tradeListData;
@@ -174,6 +191,9 @@ const BannerSearch = (props: PropsType) => {
                                             <div className="autosuggestion_icon card history">
                                                 <span>{item.name}</span>
                                                 <span className="name">{item.trade_name}</span>
+                                                <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
+                                                    <img src={close} alt="remove" />
+                                                </span>
                                             </div>
                                         </div>)
                                 })}
@@ -406,7 +426,7 @@ const BannerSearch = (props: PropsType) => {
                                     // isHandleChanges(true)
                                     setSearchText(e.target.value);
                                     setSelectedTrade({})
-                                    if(searchText?.length > 3){
+                                    if (searchText?.length > 3) {
                                         props.getSearchJobList(e.target.value)
                                     }
                                 }}

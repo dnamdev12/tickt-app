@@ -6,10 +6,12 @@ interface Props {
     items: any,
     jobid: any,
     setJobLabel: any,
-    activeType: any
+    activeType: any,
+    history: any,
+    specializationId: any
 }
 
-const ApplicantsList = ({ items, jobid, setJobLabel, activeType }: Props) => {
+const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, activeType }: Props) => {
     const [sortBySorting, setSortBySorting] = useState<any>({
         sortBySorting: false,
         sortBy: 1
@@ -109,9 +111,15 @@ const ApplicantsList = ({ items, jobid, setJobLabel, activeType }: Props) => {
                     </div>
 
                     <div className="flex_row">
+                        {console.log({ items }, '------------>')}
                         {items?.length ?
                             items.map((item: any, index: any) => (
-                                <TradieBox item={item} index={index} />
+                                <TradieBox
+                                    item={item}
+                                    index={index}
+                                    specializationId={specializationId}
+                                    jobId={jobid}
+                                />
                             ))
                             : null}
                     </div>

@@ -89,12 +89,54 @@ class TradieInfo extends Component<Props, State> {
             replyShownHideList: []
         },
         tradieReviewList: []
+    };
+
+
+    componentWillUnmount() {
+        this.setState({
+            profileData: {},
+            portfolioData: {
+                portfolioImageClicked: false,
+                portfolioDetails: {
+                    portfolioImage: [],
+                    portfolioId: '',
+                    jobDescription: ''
+                },
+            },
+            reviewsData: {
+                reviewReplyClicked: false,
+                showAllReviewsClicked: false,
+                submitReviewsClicked: false,
+                deleteReviewsClicked: false,
+                updateReviewsClicked: false,
+                reviewsClickedType: '',
+                confirmationClicked: false,
+                showReviewReplyButton: true,
+                reviewId: '',
+                reviewData: '',
+                showReviewReply: false,
+                replyShownHideList: []
+            }
+        });
+    }
+
+    getItemsFromLocation = () => {
+        let props: any = this.props;
+        const urlParams = new URLSearchParams(props.location.search)
+        let jobId = urlParams.get('jobId')
+        let specializationId = urlParams.get('specializationId')
+        let tradeId = urlParams.get('tradeId')
+        return { jobId, specializationId, tradeId };
     }
 
     componentDidMount() {
-        const { getTradieProfile, getTradieReviewListOnBuilder } = this.props;
-        getTradieProfile({ tradieId: '60a35096de60d01d99d3ae56', jobId: '60a35096de60d01d99d3ae56' });
-        getTradieReviewListOnBuilder({ tradieId: '60a35096de60d01d99d3ae56', page: 1 })
+        let props: any = this.props;
+        const { getTradieProfile, getTradieReviewListOnBuilder } = props;
+        const { jobId, specializationId, tradeId } = this.getItemsFromLocation();
+        getTradieProfile({ tradieId: tradeId, jobId: jobId });
+        getTradieReviewListOnBuilder({ tradieId: tradeId, page: 1 });
+        // getTradieProfile({ tradieId: '60a35096de60d01d99d3ae56', jobId: '60a35096de60d01d99d3ae56' });
+        // getTradieReviewListOnBuilder({ tradieId: '60a35096de60d01d99d3ae56', page: 1 })
     }
 
     portfolioImageHandler = (data: any) => {
@@ -237,9 +279,10 @@ class TradieInfo extends Component<Props, State> {
 
     submitAcceptDeclineRequest = (status: any) => {
         const { getAcceptDeclineTradie } = this.props;
+        const { jobId, specializationId, tradeId } = this.getItemsFromLocation();
         let data = {
-            "jobId": "6059a4777168c93f7051d41a",
-            "tradieId": "605c2593dcf5842c9061811e",
+            "jobId": jobId,
+            "tradieId": tradeId,
             "status": status
         };
         getAcceptDeclineTradie(data);
@@ -263,7 +306,9 @@ class TradieInfo extends Component<Props, State> {
                         <div className="vid_img_wrapper pt-20">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8 relative">
-                                    <button className="back" onClick={() => { }}></button>
+                                    <button className="back" onClick={() => {
+                                        props.history.goBack();
+                                    }}></button>
                                 </div>
                             </div>
                             <div className="flex_row">

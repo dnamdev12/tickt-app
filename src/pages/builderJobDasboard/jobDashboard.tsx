@@ -30,7 +30,8 @@ interface Props {
     openJobs: any
     applicantJobs: any,
     approvalJobs: any,
-    applicantsListJobs: any
+    applicantsListJobs: any,
+    history: any
 }
 interface State {
     isToggleSidebar: any,
@@ -52,7 +53,7 @@ class JobDashboard extends Component<Props, State> {
             currentPage: 1,
             isToggleSidebar: false,
             activeType: 'active',
-            selectedItem: { jobtype: 'active', jobid: null, sortby: 1 },
+            selectedItem: { jobtype: 'active', jobid: null, sortby: 1, specializationId: '' },
             count: { applicantCount: 0, approveCount: 0 },
             activeJobs: [],
             pastJobs: [],
@@ -116,16 +117,15 @@ class JobDashboard extends Component<Props, State> {
         console.log({ nextProps, jobtype, applicantJobs: this.state.applicantJobs })
     }
 
-    setItems = () => { }
 
     toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
-    setSelected = (jobtype: any, jobid?: any, sortby?: any) => {
+    setSelected = (jobtype: any, jobid?: any, sortby?: any, specializationId?: any) => {
         const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, } = this.props;
         let { currentPage } = this.state;
         if (['active', 'past', 'open', 'applicant'].includes(jobtype)) {
             this.setState({ activeType: jobtype })
         }
-        this.setState({ selectedItem: { jobtype, jobid, sortby }, applicantsListJobs: [] }, () => {
+        this.setState({ selectedItem: { jobtype, jobid, sortby, specializationId }, applicantsListJobs: [] }, () => {
             if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
             if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
             if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
@@ -138,12 +138,13 @@ class JobDashboard extends Component<Props, State> {
         let {
             isToggleSidebar,
             activeType,
-            selectedItem: { jobtype, jobid },
+            selectedItem: { jobtype, jobid , specializationId},
             count: { applicantCount, approveCount },
             activeJobs, pastJobs, openJobs, applicantJobs, applicantsListJobs,
         } = this.state;
         const { toggleSidebar, setSelected } = this;
-        console.log({ activeJobs, pastJobs, openJobs, applicantJobs, jobtype })
+        let props: any = this.props;
+        console.log({ activeJobs, pastJobs, openJobs, applicantJobs, jobtype, history: props.history })
         return (
             <div className="app_wrapper">
                 <div className="custom_container">
@@ -219,11 +220,11 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
                         <div className="detail_col">
-                            {jobtype === 'past' && <PastJobsComponent dataItems={pastJobs} jobType={jobtype} />}
-                            {jobtype === 'active' && <ActiveJobsComponent dataItems={activeJobs} jobType={jobtype} setJobLabel={setSelected} />}
-                            {jobtype === 'open' && <OpenJobsComponent dataItems={openJobs} jobType={jobtype} setJobLabel={setSelected} />}
-                            {jobtype === 'applicant' && <NewApplicantComponent dataItems={applicantJobs} jobType={jobtype} setJobLabel={setSelected} />}
-                            {jobtype === 'applicantList' && <ApplicantsList items={applicantsListJobs} jobid={jobid} setJobLabel={setSelected} activeType={activeType} />}
+                            {jobtype === 'past' && <PastJobsComponent dataItems={pastJobs} jobType={jobtype} history={props.history} />}
+                            {jobtype === 'active' && <ActiveJobsComponent dataItems={activeJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
+                            {jobtype === 'open' && <OpenJobsComponent dataItems={openJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
+                            {jobtype === 'applicant' && <NewApplicantComponent dataItems={applicantJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
+                            {jobtype === 'applicantList' && <ApplicantsList items={applicantsListJobs} jobid={jobid} specializationId={specializationId}  setJobLabel={setSelected} activeType={activeType} history={props.history} />}
                             {/* <DeclineMilestone /> */}
                             {/* <DeclineMilestoneSuccess /> */}
                         </div>

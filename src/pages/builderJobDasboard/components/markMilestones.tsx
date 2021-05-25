@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import UploadMedia from '../../postJob/components/uploadMedia';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
@@ -6,50 +6,99 @@ import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
 import { format } from 'date-fns';
 import MilestoneApprove from './milestoneApprove';
+import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
+import {
+    getHomeJobDetails,
+    getMilestoneList
+} from '../../../redux/homeSearch/actions';
+
 interface Props {
 
 }
-const milestones = [{
-    milestoneId: 1,
-    milestoneName: 'mile-1',
-    isPhotoevidence: true,
-    status: 1,
-    fromDate: '05-10-2021',
-    toDate: '05-31-2021',
-},
-{
-    milestoneId: 1,
-    milestoneName: 'mile-2',
-    isPhotoevidence: true,
-    status: 0,
-    fromDate: '05-10-2021',
-    toDate: '05-31-2021',
-},
-{
-    milestoneId: 1,
-    milestoneName: 'mile-3',
-    isPhotoevidence: true,
-    status: 0,
-    fromDate: '05-10-2021',
-    toDate: '05-31-2021',
-},
-{
-    milestoneId: 1,
-    milestoneName: 'mile-4',
-    isPhotoevidence: true,
-    status: 0,
-    fromDate: '05-10-2021',
-    toDate: '05-31-2021',
-}
-];
+// const milestones = [{
+//     milestoneId: 1,
+//     milestoneName: 'mile-1',
+//     isPhotoevidence: true,
+//     status: 1,
+//     fromDate: '05-10-2021',
+//     toDate: '05-31-2021',
+// },
+// {
+//     milestoneId: 1,
+//     milestoneName: 'mile-2',
+//     isPhotoevidence: true,
+//     status: 0,
+//     fromDate: '05-10-2021',
+//     toDate: '05-31-2021',
+// },
+// {
+//     milestoneId: 1,
+//     milestoneName: 'mile-3',
+//     isPhotoevidence: true,
+//     status: 0,
+//     fromDate: '05-10-2021',
+//     toDate: '05-31-2021',
+// },
+// {
+//     milestoneId: 1,
+//     milestoneName: 'mile-4',
+//     isPhotoevidence: true,
+//     status: 0,
+//     fromDate: '05-10-2021',
+//     toDate: '05-31-2021',
+// }
+// ];
 
-const MarkMilestones = ({ resetStateLocal }: any) => {
+interface Mile {
+    milestoneId: any,
+    milestoneName: any,
+    isPhotoevidence: any,
+    status: any,
+    fromDate: any,
+    toDate: any,
+}
+
+const MarkMilestones = (props: any) => {
+    const { resetStateLocal, listData, selectedIndex } = props;
     const [enableApprove, setEnableApprove] = useState(false);
+    const [itemDetails, setDetails] = useState(null);
 
     const backToScreen = () => {
         setEnableApprove(false);
     }
 
+    const selectedItem: any = listData[selectedIndex];
+
+
+    useEffect(() => {
+        console.log({ props })
+        preFetch();
+    }, []);
+
+    useEffect(() => {
+        console.log({ itemDetails });
+    }, [itemDetails])
+
+    const preFetch = async () => {
+        let { jobId } = selectedItem;
+        if (getMilestoneList) {
+            const res: any = await getMilestoneList(jobId);
+            if (res.success) {
+                setDetails(res.data);
+            }
+        }
+    }
+
+
+    const redirectToInfo = ({ jobId, tradeId, specializationId }: any) => {
+        console.log({ jobId, tradeId, specializationId });
+        let props_: any = props;
+        props_.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`);
+    }
+
+    let item_details: any = itemDetails;
     if (enableApprove) {
         return <MilestoneApprove backToScreen={backToScreen} />
     }
@@ -75,26 +124,26 @@ const MarkMilestones = ({ resetStateLocal }: any) => {
                 </p>
 
                 <ul className="milestones_check">
-                    {milestones?.map(({
+                    {item_details?.milestones?.map(({
                         milestoneId,
                         milestoneName,
                         isPhotoevidence,
                         status,
                         fromDate,
                         toDate,
-                    },
-                        index
+                    }:Mile,
+                        index:number
                     ) => {
-                        const prevMilestoneStatus = milestones[index - 1]?.status;
-                        const isActive =
-                            status === 0 &&
-                            (prevMilestoneStatus === 1 ||
-                                prevMilestoneStatus === undefined);
+                        // const prevMilestoneStatus = item_details?.milestones[index - 1]?.status;
+                        // const isActive =
+                        //     status === 0 &&
+                        //     (prevMilestoneStatus === 1 ||
+                        //         prevMilestoneStatus === undefined);
                         fromDate = fromDate
                             ? format(new Date(fromDate), 'MMM dd')
                             : '';
                         toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
-
+                        const isActive = status;
                         return (
                             <li
                                 key={milestoneId}
@@ -128,7 +177,7 @@ const MarkMilestones = ({ resetStateLocal }: any) => {
                                                 setEnableApprove(true);
                                                 // setMilestoneIndex(index);
 
-                                                if (index === milestones?.length - 1) {
+                                                if (index === item_details?.milestones?.length - 1) {
                                                     // setIsLastMilestone(true);
                                                 }
 
@@ -155,12 +204,12 @@ const MarkMilestones = ({ resetStateLocal }: any) => {
                     <a href="javascript:void(0)" className="chat circle"></a>
                     <div className="user_wrap">
                         <figure className="u_img">
-                            <img src={null || dummy} alt="traide-img" />
+                            <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
                         </figure>
                         <div className="details">
-                            <span className="name">{'Builder name'}</span>
+                            <span className="name">{item_details?.tradie?.tradieName || ''}</span>
                             {/* <span className="prof">Project Manager</span> */}
-                            <span className="rating">{0.5} reviews</span>
+                            <span className="rating">{item_details?.tradie?.reviews || 0} reviews</span>
                         </div>
                     </div>
                 </div>
@@ -169,7 +218,10 @@ const MarkMilestones = ({ resetStateLocal }: any) => {
                     <span
                         className="edit_icon"
                         title="More"
-                        onClick={() => { }}>
+                        onClick={() => {
+                            let { jobId, tradeId, specializationId } = selectedItem;
+                            redirectToInfo({ jobId, tradeId, specializationId })
+                        }}>
                         <img src={more} alt="more" />
                     </span>
                 </div>
@@ -179,4 +231,15 @@ const MarkMilestones = ({ resetStateLocal }: any) => {
     )
 }
 
-export default MarkMilestones;
+// const mapProps = (dispatch: any) => {
+//     return bindActionCreators({
+//         getHomeJobDetails
+//     }, dispatch)
+// }
+
+// const mapState = () => ({
+
+// })
+
+// export default connect(mapState, mapProps)(withRouter(MarkMilestones));
+export default withRouter(MarkMilestones)

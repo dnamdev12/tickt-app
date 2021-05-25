@@ -1,7 +1,7 @@
 import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
-
+import rateStar from '../../../assets/images/ic-star-fill.png';
 interface Post {
     amount: any,
     fromDate: any,
@@ -51,7 +51,7 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={dummy} alt="traide-img" />
+                                        <img src={tradieData?.tradieImage || dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -64,7 +64,7 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
                                         {/* <li className="icon calendar">{'0 days'}</li> */}
-                                        <li className="job_status">Completed</li>
+                                        <li className="job_status">{status}</li>
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -90,9 +90,12 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                                         </span>
                                     </div>
                                     <button className="fill_grey_btn full_btn">
-                                        {'Publish'}
-                                        {/* <img src={rateStar} alt="rating-star" />
-                                        {'Rate this job'} */}
+                                        {status === "COMPLETED" ? (
+                                            <React.Fragment>
+                                                <img src={rateStar} alt="rating-star" />
+                                                {'Rate this job'}
+                                            </React.Fragment>
+                                        ) : 'Publish again'}
                                     </button>
                                 </div>
                             </div>
