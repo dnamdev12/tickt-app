@@ -82,12 +82,12 @@ const ReviewBuilder = (props: Proptypes) => {
                     <ReactStars
                         count={5}
                         onChange={ratingChanged}
-                        size={60}
+                        size={55}
                         isHalf={true}
                         emptyIcon={<i className="far fa-star"></i>}
                         halfIcon={<i className="fa fa-star-half-alt"></i>}
                         fullIcon={<i className="fa fa-star"></i>}
-                        activeColor="#ffd700"
+                        activeColor="#fee600"
                     />
                 </div>
                 <div className="form_field">
