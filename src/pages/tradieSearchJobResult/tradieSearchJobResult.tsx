@@ -39,8 +39,6 @@ const TradieSearchJobResult = (props: any) => {
                 page: 1,
                 long: queryParamsData.defaultLong,
                 lat: queryParamsData.defaultLat
-                // long: 72.831062
-                // lat: 21.17021,
             }
             props.getViewNearByJob(data);
         } else if (queryParamsData.jobResults == 'jobTypeList') {
@@ -106,7 +104,7 @@ const TradieSearchJobResult = (props: any) => {
 
 
     const renderJobsData = () => {
-        var jobsData;
+        var jobsData: any;
         const jobResultsParam = new URLSearchParams(props.location?.search).get('jobResults');
         if (searchResultData.searchByFilter) {
             jobsData = props.homeSearchJobData;
@@ -241,7 +239,7 @@ const TradieSearchJobResult = (props: any) => {
                                             <img src={noData} alt="data not found" />
                                         </figure>
                                     </div>}
-                            </div> : renderJobsData()?.length > 0 ?
+                            </div> : (renderJobsData()?.length > 0 || props.isLoading)?
                                 (renderJobsData()?.map((jobData: any) => {
                                     return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
                                 })) : <div className="no_record">

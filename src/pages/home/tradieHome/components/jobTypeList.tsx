@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
 import loader from "../../../../assets/images/page-loader.gif";
@@ -43,7 +43,7 @@ const JobTypeList = (props: any) => {
     return (
         <div className="home_job_categories">
             <div className="custom_container">
-                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={false} arrows={false} showDots={true} >
+                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={false} arrows={false} showDots={false} >
                     <div>
                         <ul className="job_categories">
                             {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {

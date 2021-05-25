@@ -180,20 +180,21 @@ const JobDetailsPage = (props: PropsType) => {
             }
             if (response?.success) {
                 if (type == 'askQuestion' && response.data?.questionData?.question) {
-                    // const askData: any = {
-                    //     jobId: jobDetailsData?.jobId,
-                    //     page: 1
-                    // }
-                    // const res = await getTradieQuestionList(askData);
-                    // if (res.success) {
-                    //     setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
-                    // }
-                    // setQuestionList(res.data);
-                    // setQuestionListPageNo(1);
-                    var updatedQuestionList = [...questionList];
-                    updatedQuestionList.unshift(response.data);
-                    setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
-                    setQuestionList(updatedQuestionList);
+                    const askData: any = {
+                        jobId: jobDetailsData?.jobId,
+                        page: 1
+                    }
+                    const res = await getTradieQuestionList(askData);
+                    if (res.success) {
+                        setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
+                    }
+                    setQuestionList(res.data);
+                    setQuestionListPageNo(1);
+                    // var updatedQuestionList = [...questionList];
+                    // updatedQuestionList.unshift(response.data);
+                    // updatedQuestionList.pop();
+                    // setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
+                    // setQuestionList(updatedQuestionList);
                 }
 
                 if (type === 'updateQuestion' && response.data?.question) {

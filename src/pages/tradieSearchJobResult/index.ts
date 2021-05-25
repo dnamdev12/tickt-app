@@ -13,6 +13,7 @@ const mapStateToProps = (state: any) => {
         viewNearByJobData: state.homeSearch.viewNearByJobData,
         homeSearchJobData: state.homeSearch.homeSearchJobData,
         tradeListData: state.auth.tradeListData,
+        isLoading: state.common.isLoading,
     }
 }
 

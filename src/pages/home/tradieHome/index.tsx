@@ -6,16 +6,17 @@ import {
     getRecentSearchList,
     getJobTypeList,
     getJobWithJobTypeLatLong,
-    getViewNearByJob
+    getViewNearByJob,
+    resetHomeSearchJobData
 } from '../../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
     return {
         searchJobListData: state.homeSearch.searchJobListData,
         jobTypeListData: state.homeSearch.jobTypeListData,
-        // jobTypeList: state.homeSearch.jobTypeList,
         jobDataWithJobTypeLatLong: state.homeSearch.jobDataWithJobTypeLatLong,
         viewNearByJobData: state.homeSearch.viewNearByJobData,
+        homeSearchJobData: state.homeSearch.homeSearchJobData,
     }
 }
 
@@ -25,7 +26,8 @@ const mapDispatchToProps = (dispatch: any) => {
         getRecentSearchList,
         getJobTypeList,
         getJobWithJobTypeLatLong,
-        getViewNearByJob
+        getViewNearByJob,
+        resetHomeSearchJobData,
     }, dispatch);
 }
 
