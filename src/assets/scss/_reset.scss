@@ -557,6 +557,13 @@ body.loader_show .full_loader {
     font-size: 14px;
     color: var(--blue);
 }
+.no_search_found{
+    width: 100px;
+    height: 100px;
+    background: url('../images/no-search-data.png') center no-repeat;
+    background-size: contain;
+    margin: auto;
+}
 
 .select_menu, .css-yk16xz-control{
     min-height: 48px !important;

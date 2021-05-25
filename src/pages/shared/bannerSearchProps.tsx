@@ -611,8 +611,7 @@ const BannerSearch = (props: PropsType) => {
                                                     <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                                         <div className="flex_row recent_search auto_loc">
                                                             <div className="flex_col_sm_4">
-                                                                <div className="loc_suggestions">
-                                                                    {'No Result Found.'}
+                                                                <div className=" no_search_found">
                                                                 </div>
                                                             </div>
                                                         </div>
