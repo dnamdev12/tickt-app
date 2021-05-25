@@ -21,7 +21,7 @@ const PopularBuilders = (props: any) => {
                     <ul className="popular_tradies">
                         {popularBuildersData?.length ? popularBuildersData?.map((item: any, index: number) => {
                             return (
-                                <li key={`${item.userName}item${index}`}>
+                                <li key={`${item.userName}item${index}`} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000">
                                     <figure className="tradies_img">
                                         <img src={item.userImage ? item.userImage : dummy} alt="tradies-img" />
                                     </figure>
