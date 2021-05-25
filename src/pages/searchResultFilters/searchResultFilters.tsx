@@ -284,14 +284,14 @@ const SearchResultFilters = (props: any) => {
             {/* filter 1 modal box */}
             {sortByFilter.sortByFilterClicked &&
                 <Modal
-                    className="custom_modal"
+                    className="custom_modal"  
                     open={sortByFilter.sortByFilterClicked}
                     onClose={sortByFilterClose}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <>
-                        <div className="custom_wh filter_modal">
+                        <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
                                 <span className="sub_title">Filter</span>
                                 <button className="close_btn" onClick={sortByFilterClose}>

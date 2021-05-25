@@ -271,7 +271,7 @@ const SearchFilter = (props: any) => {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description">
                     <>
-                        <div className="custom_wh filter_modal">
+                        <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
                                 <span className="sub_title">Filter</span>
                                 <button className="close_btn" onClick={sortByFilterClose}>

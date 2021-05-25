@@ -318,7 +318,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon clock">{jobDetailsData.time}</li>
                                             <li className="icon dollar">{jobDetailsData.amount}</li>
                                             <li className="icon calendar">{jobDetailsData.duration}</li>
-                                            <li className="icon location">{jobDetailsData.locationName}</li>
+                                            <li className="icon location line-3">{jobDetailsData.locationName}</li>
                                         </ul>
                                     </div>
                                     <div className="bottom_btn">
@@ -368,7 +368,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh">
+                                        <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                             <div className="heading">
                                                 <span className="sub_title">{`${jobDetailsData?.questionsCount || 0} questions`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('showAllQuestionsClicked')}>
@@ -435,7 +435,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
-                                    <div className="custom_wh ask_ques">
+                                    <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                         <div className="heading">
                                             <span className="sub_title">{`${questionsData.updateQuestionsClicked ? 'Edit a question' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} a question`}`}</span>
                                             <button className="close_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>
@@ -470,7 +470,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
-                                        <div className="custom_wh confirmation">
+                                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                             <div className="heading">
                                                 <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>

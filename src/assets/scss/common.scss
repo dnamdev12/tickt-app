@@ -1315,6 +1315,7 @@ body {
               }
             }
             &.location {
+              min-height: 24px;
               &::before {
                 background: url('../images/location-1.png') center no-repeat;
               }
@@ -1385,7 +1386,6 @@ body {
   align-items: center;
   margin-bottom: 16px;
   li{
-      margin-right: 16px;
       width: 156px;
       height: 80px;
       padding: 16px;
@@ -1394,8 +1394,8 @@ body {
       justify-content: center;
       align-items: center;
       flex-flow: column;
-      &:last-child{
-          margin-right: 0;
+      &:not(:last-child){
+        margin-right: 16px;
       }
       @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
         padding: 10px;
@@ -1560,11 +1560,6 @@ body {
       }
     }
   }
-  .rating_star {
-    @include position(absolute, 8px, 16px, auto, auto);
-    font-size: 14px;
-  }
-
   .commn_para{
     margin: 0;
     overflow: hidden;
@@ -1598,6 +1593,12 @@ body {
     color: var(--orange);
   }
 }
+
+.rating_star {
+  @include position(absolute, 8px, 16px, auto, auto);
+  font-size: 14px;
+}
+
 
 .supplier_review_card {
   margin: 0 0 24px;
@@ -2057,6 +2058,7 @@ body {
       position: absolute;
       top: -5px;
       right: -5px;
+      overflow: initial;
       img{
         width: 18px;
         height: 18px;
@@ -2251,9 +2253,8 @@ body {
 .setting_menu {
   ul {
     li {
-      margin-bottom: 32px;
-      &:last-child {
-        margin: 0;
+      &:not(:last-child){
+        margin-bottom: 32px;
       }
       .icon {
         padding-left: 30px;
@@ -3754,9 +3755,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 22px;
-    &:last-child{
-      margin: 0;
+    &:not(:last-child){
+      margin-bottom: 22px;
     }
     span{
       font-size: 18px;
@@ -4551,6 +4551,7 @@ body {
   padding: 16px 64px 16px 16px;
   border-radius: 3px;
   background-color: #f6f6f6;
+  position: relative;
   @media (max-width: 650px) {
     max-width: 100%;
     padding: 10px;
