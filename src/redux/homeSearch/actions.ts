@@ -59,9 +59,19 @@ export const deleteRecentSearch = async (data: any) => {
     const response: FetchResponse = await NetworkOps.putToJson(Urls.deleteRecentSearch, data)
     setLoading(false);
     if (response.status_code === 200) {
-      setShowToast(true, response.message);
-      return { success: true };
+        setShowToast(true, response.message);
+        return { success: true };
     }
     setShowToast(true, response.message);
     return { success: false };
-  }
+}
+
+export const getMilestoneList = async (jobId: any) => {
+    setLoading(true);
+    const response: FetchResponse = await NetworkOps.get(`${Urls.milestoneListBuilder}?jobId=${jobId}`)
+    setLoading(false);
+    if (response.status_code === 200) {
+        return { success: true, data: response.result };
+    }
+    return { success: false, data: response.result };
+}

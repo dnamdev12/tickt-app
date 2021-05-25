@@ -1,6 +1,7 @@
 import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
+import { withRouter } from 'react-router';
 
 interface Applicant {
     amount: any,
@@ -14,14 +15,25 @@ interface Applicant {
     timeLeft: any,
     toDate: any,
     total: any,
+    tradeId: any,
+    LocationName: any,
+    specializationId: any,
     tradeName: any,
     tradeSelectedUrl: any,
 }
 
-export default function NewApplicants({ dataItems, jobType, setJobLabel }: any): ReactElement {
-    let data_item: any = dataItems;
-    let listData: any = data_item[`${jobType}Jobs`]
-    console.log({ listData, jobType, data_item })
+const NewApplicants = (props: any) => {
+    const { dataItems, jobType, setJobLabel } = props;
+    let listData: any = dataItems;
+    console.log({ dataItems })
+
+
+    const redirectToInfo = ({ jobId, tradeId, specializationId }: any) => {
+        console.log({ jobId, tradeId, specializationId });
+        const props_: any = props;
+        props_.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`);
+    }
+
     return (
         <React.Fragment>
             <span className="sub_title">New Applicants</span>
@@ -35,20 +47,25 @@ export default function NewApplicants({ dataItems, jobType, setJobLabel }: any):
                         fromDate,
                         jobDescription,
                         jobId,
+                        LocationName,
                         specializationName,
+                        specializationId,
                         timeLeft,
                         toDate,
                         total,
+                        tradeId,
                         tradeName,
                         tradeSelectedUrl,
                     }: Applicant) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                                <span className="more_detail circle">
+                                <span
+                                    onClick={() => { redirectToInfo({ jobId, tradeId, specializationId }) }}
+                                    className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={dummy} alt="traide-img" />
+                                        <img src={builderImage || dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -59,13 +76,13 @@ export default function NewApplicants({ dataItems, jobType, setJobLabel }: any):
                                     <ul>
                                         <li className="icon clock">{`${timeLeft} minutes ago`}</li>
                                         <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{'.'}</li>
+                                        <li className="icon location line-1">{LocationName}</li>
                                         <li className="icon calendar">{`${durations} days`}</li>
                                     </ul>
                                 </div>
                                 <button
                                     onClick={() => {
-                                        setJobLabel({ title: 'applicantList', jobId: ''})
+                                        setJobLabel('applicantList', jobId, 1, specializationId)
                                     }}
                                     className="fill_grey_btn full_btn">
                                     {'Applications'}
@@ -78,3 +95,5 @@ export default function NewApplicants({ dataItems, jobType, setJobLabel }: any):
         </React.Fragment>
     )
 }
+
+export default withRouter(NewApplicants)

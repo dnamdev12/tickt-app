@@ -548,7 +548,7 @@ const BuilderInfo = (props: PropsType) => {
         </div >
     )
 }
-
+export { portfolio, portfolioModal };
 export default BuilderInfo;
 
 {/* <div className="text-center">

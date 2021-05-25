@@ -4379,6 +4379,12 @@ body {
       }
     }
   }
+  .upload_img_video {
+    margin-bottom: 30px;
+    .img_video{
+      margin: 0 20px 0px 0;
+    }
+  }
 }
 .payment_note{
   font-size: 14px;
@@ -4662,4 +4668,17 @@ div#light-box div {
 //----------------------Utilities-------------------------//
 .padding_0 {
   padding: 0px;
+}
+
+.common-btn {
+  font-size: 14px;
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    line-height: 1.43;
+    color: var(--blue);
+    padding: 13px 15px;
+    border-radius: 6px;
+    border: 1px solid #dfe5ef;
+    background-color: #dfe5ef;
+    display: flex;
+    align-items: center;
 }

@@ -61,11 +61,11 @@ export class NetworkOps {
                 const res = await response.text();
                 console.log('res -->>', JSON.parse(res))
                 try {
-                    console.log('if',{res:JSON.parse(res)})
+                    console.log('if', { res: JSON.parse(res) })
                     return JSON.parse(res);
                 }
                 catch {
-                    console.log('else',{res})
+                    console.log('else', { res })
                     return res;
                 }
             }

@@ -2,6 +2,7 @@ import React, { Component, useState } from 'react'
 import Location from "../../assets/images/ic-location.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
 import TradieBox from './tradieBox';
+import noDataFound from '../../assets/images/no-data-found.png';
 
 interface Props {
     data: any,
@@ -18,13 +19,24 @@ export default class TradieHome extends Component<Props> {
             data = props.data;
         }
         let redirectPath = props?.redirectPath;
-        
+
+        if(!data?.length){
+            return null;
+        }
+
         return (
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
                     <span className="title">{props.title}</span>
                     <div className="flex_row tradies_row">
-                        {data?.length ? data.splice(0, props.length || data.length - 1).map((item: any, index: number) => (<TradieBox item={item} index={index} />)) : null}
+                        {data?.length ? data.splice(0, props.length || data.length - 1).map((item: any, index: number) => (<TradieBox item={item} index={index} />)) : (
+                            <div className="no_record">
+                                <figure className="no_data_img">
+                                    <img src={noDataFound} alt="data not found" />
+                                </figure>
+                                <span>Data not found</span>
+                            </div>
+                        )}
                     </div>
                     <button
                         onClick={() => {

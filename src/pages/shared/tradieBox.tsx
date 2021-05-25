@@ -1,18 +1,21 @@
 import React, { Component } from 'react'
 import Location from "../../assets/images/ic-location.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
-
-interface Props {
-    item: any,
-    index: any
-}
-
+import { RouteComponentProps, withRouter } from "react-router";
 interface State {
     isItemSpec: any
 }
 
 
-export default class TradieBox extends Component<Props, State> {
+// Your component own properties
+type PropsType = RouteComponentProps & {
+    item: any,
+    index: any,
+    jobId?: any,
+    specializationId?: any
+}
+
+class TradieBox extends Component<PropsType, State> {
     constructor(props: any) {
         super(props);
         this.state = {
@@ -31,6 +34,11 @@ export default class TradieBox extends Component<Props, State> {
         this.setState({ isItemSpec });
     }
 
+    redirectPath = (item: any) => {
+        const { jobId, specializationId, history } = this.props;
+        console.log({ item, jobId, specializationId });
+        history.push(`tradie-info?jobId=${jobId}&specializationId=${specializationId}&tradeId=${item?.tradieId}`)
+    }
 
     render() {
         const { item, index } = this.props;
@@ -40,7 +48,9 @@ export default class TradieBox extends Component<Props, State> {
         return (
             <div className="flex_col_sm_4">
                 <div className="tradie_card">
-                    <a href="javascript:void(0)" className="more_detail circle"></a>
+                    <span
+                        onClick={() => { this.redirectPath(item) }}
+                        className="more_detail circle"></span>
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img
@@ -93,3 +103,5 @@ export default class TradieBox extends Component<Props, State> {
         )
     }
 }
+
+export default withRouter(TradieBox);
