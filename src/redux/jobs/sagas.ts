@@ -239,13 +239,41 @@ function* getnewJobApplicationListBuilder({ item }: any) {
   }
 }
 
-function* getTradieReviewList({data}: any) {
+function* getTradieReviewList({ data }: any) {
   const response: FetchResponse = yield NetworkOps.get(Urls.tradieReviewList + `?builderId=${data.builderId}&page=${data.page}`);
   console.log(response.result, "response.result")
   if (response.status_code === 200) {
-      yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: response.result });
+    yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: response.result });
   } else {
-      yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: [] });
+    yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: [] });
+  }
+}
+
+function* getTradieProfile({ data }: any) {
+  const response: FetchResponse = yield NetworkOps.get(Urls.tradieProfile + `?tradieId=${data.tradieId}&jobId=${data.jobId}`);
+
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_TRADIE_PROFILE, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.SET_TRADIE_PROFILE, payload: [] });
+  }
+}
+
+function* getTradieReviewListOnBuilder({ data }: any) {
+  const response: FetchResponse = yield NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_TRADIE_REVIEWS_LIST_ON_BUILDER, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.SET_TRADIE_REVIEWS_LIST_ON_BUILDER, payload: [] });
+  }
+}
+
+function* getAcceptDeclineTradie({ data }: any) {
+  const response: FetchResponse = yield NetworkOps.putToJson(Urls.acceptDeclineRequest, data);
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_ACCEPT_DECLINE_TRADIE_REQUEST, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.SET_ACCEPT_DECLINE_TRADIE_REQUEST, payload: [] });
   }
 }
 
@@ -267,6 +295,9 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_BUILDER_OPEN_JOBS, getOpenJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS, getBuilderNewApplicants);
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, getnewJobApplicationListBuilder);
+    yield takeLatest(actionTypes.GET_TRADIE_PROFILE, getTradieProfile);
+    yield takeLatest(actionTypes.GET_TRADIE_REVIEWS_LIST_ON_BUILDER, getTradieReviewListOnBuilder);
+    yield takeLatest(actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, getAcceptDeclineTradie)
 
   } catch (e) {
     console.log(e);

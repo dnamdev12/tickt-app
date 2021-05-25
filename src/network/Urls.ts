@@ -72,6 +72,9 @@ const Urls = {
     tradieReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewReply`,
     tradieUpdateReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewReply`,
     tradieRemoveReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewReply`,
+    tradieProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}tradieProfile`,
+    reviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewList`,
+    acceptDeclineRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}acceptDeclineRequest`,
 }
 
 export const urlFor = (service: String): string => {

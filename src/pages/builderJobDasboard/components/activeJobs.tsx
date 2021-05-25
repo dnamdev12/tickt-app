@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import MarkMilestones from './markMilestones';
@@ -56,17 +56,21 @@ const listData: any = [{
 }]
 
 export default function ActiveJobs({ setJobLabel, dataItems, jobType, }: any): ReactElement {
-    let data_item: any = dataItems;
-    // let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
+    // let listData: any =  dataItems;
     const [localState, setLocalState] = useState(false);
 
     const resetStateLocal = () => {
         setLocalState(false)
     }
 
-    if (localState) {
+
+
+    useEffect(() => {
+        console.log('here!')
+    }, [jobType])
+
+    if (localState)
         return <MarkMilestones resetStateLocal={resetStateLocal} />
-    }
 
     return (
         <React.Fragment>

@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import media from '../../../assets/images/portfolio-placeholder.jpg';
 import close from '../../../assets/images/icon-close-1.png';
 import addMedia from "../../../assets/images/add-image.png";
+
 interface Props {
 
 }

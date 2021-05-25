@@ -22,8 +22,7 @@ interface Post {
 
 
 export default function PastJobs({ dataItems, jobType }: any): ReactElement {
-    let data_item: any = dataItems;
-    let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
+    let listData: any = dataItems;
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -91,7 +90,7 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                                         </span>
                                     </div>
                                     <button className="fill_grey_btn full_btn">
-                                        {'Applications'}
+                                        {'Publish'}
                                         {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}
                                     </button>

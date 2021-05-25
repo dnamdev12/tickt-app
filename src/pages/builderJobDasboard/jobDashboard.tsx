@@ -1,5 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect, useState } from 'react'
+import React, { Component } from 'react'
 import { Route, Switch, useHistory } from 'react-router-dom';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
@@ -14,10 +13,12 @@ import OpenJobsComponent from './components/openJobs';
 import PastJobsComponent from './components/pastJobs';
 import NewApplicantComponent from './components/newApplicants';
 
+import ApplicantsList from './components/applicantsList';
+
+
 import MarkMilestones from './components/markMilestones';
 import DeclineMilestone from './components/declineMilestone';
 import DeclineMilestoneSuccess from './components/declineMilestoneSuccess';
-
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -31,277 +32,206 @@ interface Props {
     approvalJobs: any,
     applicantsListJobs: any
 }
+interface State {
+    isToggleSidebar: any,
+    selectedItem: any,
+    count: any,
+    currentPage: any,
+    activeType: any,
+    activeJobs: any,
+    pastJobs: any,
+    openJobs: any
+    applicantJobs: any,
+    approvalJobs: any,
+    applicantsListJobs: any
+}
+class JobDashboard extends Component<Props, State> {
+    constructor(props: any) {
+        super(props)
+        this.state = {
+            currentPage: 1,
+            isToggleSidebar: false,
+            activeType: 'active',
+            selectedItem: { jobtype: 'active', jobid: null, sortby: 1 },
+            count: { applicantCount: 0, approveCount: 0 },
+            activeJobs: [],
+            pastJobs: [],
+            openJobs: [],
+            applicantJobs: [],
+            approvalJobs: [],
+            applicantsListJobs: []
 
-const ApplicantsList: any = [
-    {
-        "tradieId": "605c2593dcf5842c9061811e",
-        "tradieImage": "",
-        "tradieName": "abc",
-        "reviews": 1,
-        "ratings": 4,
-        "status": "AWAITING",
-        "tradeData": [
-            {
-                "tradeId": "60486a7d1abc8a08073cf0e5",
-                "tradeSelectedUrl": "https://appinventiv-development.s3.amazonaws.com/1618218684352.png",
-                "tradeName": "Demolition"
-            }
-        ],
-        "specializationData": [
-            {
-                "specializationId": "605200a30289795c7a667e11",
-                "specializationName": "Water supply"
-            },
-            {
-                "specializationId": "6059d9e30b0c3f7406950945",
-                "specializationName": "test1"
-            }
-        ]
-    },
-    {
-        "tradieId": "60a35096de60d01d99d3ae56",
-        "tradieImage": "",
-        "tradieName": "Test Tradie",
-        "reviews": 0,
-        "ratings": 0,
-        "status": "AWAITING",
-        "tradeData": [
-            {
-                "tradeId": "605c8bccb777553e6b057b8a",
-                "tradeSelectedUrl": "https://appinventiv-development.s3.amazonaws.com/1619674591945.png",
-                "tradeName": "Plumber"
-            }
-        ],
-        "specializationData": [
-            {
-                "specializationId": "605c8bccb777553e6b057b8b",
-                "specializationName": "Two Two Two"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c6",
-                "specializationName": "Security and Fire Alarm Installation"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c9",
-                "specializationName": "Powerhouse and Substation Technician"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4ca",
-                "specializationName": "Electrotechnical Panel Building"
-            }
-        ]
-    }
-]
-
-const JobDashboard = ({
-    getActiveJobsBuilder,
-    getPastJobsBuilder,
-    getnewJobApplicationListBuilder,
-    getOpenJobsBuilder,
-    getNewApplicantsBuilder,
-    activeJobs,
-    openJobs,
-    pastJobs,
-    applicantJobs,
-    approvalJobs,
-    applicantsListJobs
-}: Props) => {
-    const [openSidebar, setOpenSidebar] = useState(false);
-    const [jobType, setJobtype] = useState('active');
-    const [currentPage, setCurrentPage] = useState(1);
-    const [jobId, setJobId] = useState(null);
-    const [dataItems, setDataItems] = useState({ activeJobs: {}, openJobs: {}, pastJobs: {}, applicantJobs: {}, approvalJobs: {}, applicantsListJobs: [] });
-    const [resetItem, setResetItem] = useState(false);
-    const [count, setCount] = useState({ name: 'Here!' });
-    useEffect(() => {
-        setDataItems((prev) => ({ ...prev, activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs, applicantsListJobs: ApplicantsList }));
-    }, [activeJobs, openJobs, pastJobs, applicantJobs, approvalJobs, applicantsListJobs])
-
-    const fetchActive = (page: any) => {
-        if (jobType === 'active') {
-            if (getActiveJobsBuilder) {
-                getActiveJobsBuilder(page);
-            }
         }
-
-        if (jobType === 'past') {
-            if (getPastJobsBuilder) {
-                getPastJobsBuilder(page);
-            }
-        }
-
-        if (jobType === 'open') {
-            if (getOpenJobsBuilder) {
-                getOpenJobsBuilder(page);
-            }
-        }
-
-        if (jobType === 'applicant') {
-            if (getNewApplicantsBuilder) {
-                getNewApplicantsBuilder(page);
-            }
-        }
-
-        if (jobType === 'applicantList') {
-            if (getnewJobApplicationListBuilder) {
-                console.log({ page, jobId });
-                let requestItem = { page, jobId, sortBy: 1 };
-                getnewJobApplicationListBuilder(requestItem);
-            }
-        }
-
-        if (jobType === 'approval') {
-            // approval
-        }
-
-        setResetItem(false);
     }
 
-    useEffect(() => {
-        fetchActive(currentPage);
-    }, [])
+    componentDidMount() {
+        this.props.getActiveJobsBuilder(1);
+    }
 
-    useEffect(() => {
-        setResetItem(true);
-        fetchActive(currentPage);
-    }, [jobType]);
-
-    useEffect(() => {
-        console.log({ resetItem });
-    }, [resetItem])
-
-
-    const setJobLabel = (item: any) => {
-        if (item?.jobId) {
-            setJobId(item.jobId);
+    componentDidUpdate(prevProps: any) {
+        let nextProps: any = this.props;
+        let { activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs } = nextProps;
+        let { selectedItem: { jobtype } } = this.state;
+        if (jobtype === 'active' && activeJobs?.active?.length && activeJobs?.active?.length !== this.state.activeJobs.length) {
+            let { active, needApprovalCount, newApplicantsCount } = activeJobs;
+            this.setState({
+                activeJobs: active,
+                count: {
+                    approveCount: needApprovalCount,
+                    applicantCount: newApplicantsCount
+                }
+            });
         }
-        setJobtype(item.title);
+
+        if (jobtype === 'past' && pastJobs?.past?.length && pastJobs?.past?.length !== this.state.pastJobs.length) {
+            let { past, needApprovalCount, newApplicantsCount } = pastJobs;
+            this.setState({
+                pastJobs: past,
+                count: {
+                    approveCount: needApprovalCount,
+                    applicantCount: newApplicantsCount
+                }
+            });
+        }
+
+        if (jobtype === 'open' && openJobs?.open?.length && openJobs?.open?.length !== this.state.openJobs.length) {
+            let { open, needApprovalCount, newApplicantsCount } = openJobs;
+            this.setState({
+                openJobs: open,
+                count: {
+                    approveCount: needApprovalCount,
+                    applicantCount: newApplicantsCount
+                }
+            });
+        }
+
+        if (jobtype === 'applicantList' && applicantsListJobs?.length && applicantsListJobs?.length !== this.state.applicantsListJobs?.length) {
+            this.setState({ applicantsListJobs });
+        }
+
+        if (jobtype === 'applicant' && applicantJobs?.length && applicantJobs?.length !== this.state.applicantJobs?.length) {
+            this.setState({ applicantJobs })
+        }
+
+        console.log({ nextProps, jobtype, applicantJobs: this.state.applicantJobs })
     }
 
+    setItems = () => { }
 
-    let data_item: any = dataItems;
-    let currentItem = data_item[`${jobType}Jobs`]
-    let needApprovalCount: any = 0;
-    let newApplicantsCount: any = 0;
-    if (currentItem && Object.keys(currentItem)?.length) {
-        needApprovalCount = currentItem.needApprovalCount;
-        newApplicantsCount = currentItem.newApplicantsCount;
+    toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
+    setSelected = (jobtype: any, jobid?: any, sortby?: any) => {
+        const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, } = this.props;
+        let { currentPage } = this.state;
+        if (['active', 'past', 'open', 'applicant'].includes(jobtype)) {
+            this.setState({ activeType: jobtype })
+        }
+        this.setState({ selectedItem: { jobtype, jobid, sortby }, applicantsListJobs: [] }, () => {
+            if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
+            if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
+            if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
+            if (jobtype === 'applicant') { getNewApplicantsBuilder(currentPage); }
+            if (jobtype === 'applicantList') { getnewJobApplicationListBuilder({ page: currentPage, jobId: jobid, sortBy: sortby }); }
+        });
     }
-    console.log({ applicantsListJobs, resetItem });
-    return (
-        <div className="app_wrapper">
-            <div className="custom_container">
-                <span
-                    className="mob_side_nav"
-                    onClick={() => setOpenSidebar(!openSidebar)}
-                >
-                    <img src={menu} alt="mob-side-nav" />
-                </span>
-                <div className="f_row">
-                    <div className={`side_nav_col${openSidebar ? ' active' : ''}`}>
-                        <button className="close_nav" onClick={() => setOpenSidebar(false)}>
-                            <img src={close} alt="close" />
-                        </button>
-                        <div className="stick">
-                            <span onClick={() => {
-                                setCount((prev: any) => ({ ...prev, name: 'sam' }));
-                                console.log({ count });
-                            }} className="title">Job Dashboard</span>
-                            <ul className="dashboard_menu">
-                                <li>
-                                    <span className={`icon star ${jobType === "active" ? 'active' : ''}`}>
-                                        <span
-                                            onClick={() => {
-                                                console.log('Here!!!!')
-                                                setResetItem(true);
-                                                setJobtype('active')
-                                            }}
-                                            className="menu_txt">Active Jobs</span>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span className={`icon applied ${jobType === "open" ? 'active' : ''}`}>
-                                        <span
-                                            onClick={() => { setJobtype('open') }}
-                                            className="menu_txt">Open jobs</span>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span className={`icon past ${jobType === "past" ? 'active' : ''}`}>
-                                        <span
-                                            onClick={() => { setJobtype('past') }}
-                                            className="menu_txt">Past jobs</span>
-                                    </span>
-                                </li>
-                                <hr></hr>
-                                <li>
-                                    <span className="icon new">
-                                        <span
-                                            onClick={() => { setJobtype('applicant') }}
-                                            className="menu_txt">
-                                            {'New applicants'}
-                                            {!!needApprovalCount && (
-                                                <span className="badge_count">
-                                                    {needApprovalCount > 9 ? '9+' : needApprovalCount}
-                                                </span>
-                                            )}
+
+    render() {
+        let {
+            isToggleSidebar,
+            activeType,
+            selectedItem: { jobtype, jobid },
+            count: { applicantCount, approveCount },
+            activeJobs, pastJobs, openJobs, applicantJobs, applicantsListJobs,
+        } = this.state;
+        const { toggleSidebar, setSelected } = this;
+        console.log({ activeJobs, pastJobs, openJobs, applicantJobs, jobtype })
+        return (
+            <div className="app_wrapper">
+                <div className="custom_container">
+                    <span
+                        className="mob_side_nav"
+                        onClick={() => { toggleSidebar() }}
+                    >
+                        <img src={menu} alt="mob-side-nav" />
+                    </span>
+                    <div className="f_row">
+                        <div className={`side_nav_col${isToggleSidebar ? ' active' : ''}`}>
+                            <button className="close_nav" onClick={() => { toggleSidebar() }}>
+                                <img src={close} alt="close" />
+                            </button>
+                            <div className="stick">
+                                <span className="title">Job Dashboard</span>
+                                <ul className="dashboard_menu">
+                                    <li>
+                                        <span className={`icon star ${activeType === "active" ? 'active' : ''}`}>
+                                            <span
+                                                onClick={() => {
+                                                    console.log('Here!!!!')
+                                                    // setResetItem(true);
+                                                    setSelected('active')
+                                                }}
+                                                className="menu_txt">Active Jobs</span>
                                         </span>
-                                    </span>
-                                </li>
-                                <li>
-                                    <span className="icon approved">
-                                        <span
-                                            onClick={() => { setJobtype('approval') }}
-                                            className="menu_txt">
-                                            {'Need approval'}
-                                            {!!newApplicantsCount && (
-                                                <span className="badge_count">
-                                                    {newApplicantsCount > 9 ? '9+' : newApplicantsCount}
-                                                </span>
-                                            )}
+                                    </li>
+                                    <li>
+                                        <span className={`icon applied ${activeType === "open" ? 'active' : ''}`}>
+                                            <span
+                                                onClick={() => { setSelected('open') }}
+                                                className="menu_txt">Open jobs</span>
                                         </span>
-                                    </span>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <li>
+                                        <span className={`icon past ${activeType === "past" ? 'active' : ''}`}>
+                                            <span
+                                                onClick={() => { setSelected('past') }}
+                                                className="menu_txt">Past jobs</span>
+                                        </span>
+                                    </li>
+                                    <hr></hr>
+                                    <li>
+                                        <span className={`icon new ${activeType === "applicant" ? 'active' : ''}`}>
+                                            <span
+                                                onClick={() => { setSelected('applicant') }}
+                                                className="menu_txt">
+                                                {'New applicants'}
+                                                {!!approveCount && (
+                                                    <span className="badge_count">
+                                                        {approveCount > 9 ? '9+' : approveCount}
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <span className="icon approved">
+                                            <span
+                                                onClick={() => { setSelected('approval') }}
+                                                className="menu_txt">
+                                                {'Need approval'}
+                                                {!!applicantCount && (
+                                                    <span className="badge_count">
+                                                        {applicantCount > 9 ? '9+' : applicantCount}
+                                                    </span>
+                                                )}
+                                            </span>
+                                        </span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="detail_col">
+                            {jobtype === 'past' && <PastJobsComponent dataItems={pastJobs} jobType={jobtype} />}
+                            {jobtype === 'active' && <ActiveJobsComponent dataItems={activeJobs} jobType={jobtype} setJobLabel={setSelected} />}
+                            {jobtype === 'open' && <OpenJobsComponent dataItems={openJobs} jobType={jobtype} setJobLabel={setSelected} />}
+                            {jobtype === 'applicant' && <NewApplicantComponent dataItems={applicantJobs} jobType={jobtype} setJobLabel={setSelected} />}
+                            {jobtype === 'applicantList' && <ApplicantsList items={applicantsListJobs} jobid={jobid} setJobLabel={setSelected} activeType={activeType} />}
+                            {/* <DeclineMilestone /> */}
+                            {/* <DeclineMilestoneSuccess /> */}
                         </div>
                     </div>
-                    <div className="detail_col">
-
-
-                        {/* {jobType === 'active' && (
-                            <ActiveJobsComponent
-                                dataItems={dataItems}
-                                jobType={jobType}
-                                resetItem={resetItem}
-                                setJobLabel={setJobLabel}
-                            />)}
-                        {jobType === 'open' && (
-                            <OpenJobsComponent
-                                dataItems={dataItems}
-                                jobType={jobType}
-                                applicantsList={applicantsListJobs}
-                                setJobLabel={setJobLabel}
-                            />)}
-                        {jobType === 'past' && (
-                            <PastJobsComponent
-                                dataItems={dataItems}
-                                jobType={jobType}
-                            />)}
-                        {jobType === "applicant" && (
-                            <NewApplicantComponent
-                                dataItems={dataItems}
-                                applicantsList={applicantsListJobs}
-                                jobType={jobType}
-                                setJobLabel={setJobLabel}
-                            />)} */}
-                        <DeclineMilestone />
-                        <DeclineMilestoneSuccess />
-                    </div>
                 </div>
-            </div>
-        </div >
-    );
+            </div >
+        )
+    }
 }
-
 
 export default JobDashboard;

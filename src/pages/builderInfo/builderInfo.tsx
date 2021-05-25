@@ -361,7 +361,7 @@ const BuilderInfo = (props: PropsType) => {
                     <div className="flex_row tradies_row">
                         {profileData?.jobPostedData?.length > 0 ?
                             (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
+                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
                             })) :
                             <div className="no_record">
                                 <figure className="no_data_img">
@@ -520,7 +520,7 @@ const BuilderInfo = (props: PropsType) => {
         </div>
     )
 }
-
+export { portfolio, portfolioModal };
 export default BuilderInfo;
 
 {/* <div className="text-center">

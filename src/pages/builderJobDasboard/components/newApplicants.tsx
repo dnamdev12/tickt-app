@@ -19,9 +19,8 @@ interface Applicant {
 }
 
 export default function NewApplicants({ dataItems, jobType, setJobLabel }: any): ReactElement {
-    let data_item: any = dataItems;
-    let listData: any = data_item[`${jobType}Jobs`]
-    console.log({ listData, jobType, data_item })
+    let listData: any = dataItems; 
+    console.log({dataItems})
     return (
         <React.Fragment>
             <span className="sub_title">New Applicants</span>
@@ -65,7 +64,7 @@ export default function NewApplicants({ dataItems, jobType, setJobLabel }: any):
                                 </div>
                                 <button
                                     onClick={() => {
-                                        setJobLabel({ title: 'applicantList', jobId: jobId})
+                                        setJobLabel('applicantList', jobId, 1)
                                     }}
                                     className="fill_grey_btn full_btn">
                                     {'Applications'}

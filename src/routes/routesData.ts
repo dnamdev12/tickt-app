@@ -21,6 +21,7 @@ import builderJobDasboard from '../pages/builderJobDasboard/index';
 import TradieDetails from '../common/tradieDetails';
 import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
+import TradieInfo from '../pages/tradieInfo';
 
 const routes = [
     {
@@ -102,6 +103,11 @@ const routes = [
         name: 'builderinfo',
         path: '/builder-info',
         component: BuilderInfo,
+    },
+    {
+        name: 'tradieinfo',
+        path: '/tradie-info',
+        component: TradieInfo,
     },
     {
         name: 'jobdashboard',

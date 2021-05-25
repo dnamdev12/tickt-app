@@ -1,10 +1,16 @@
-import React from 'react'
+import React, { useState } from 'react'
 import media from '../../../assets/images/portfolio-placeholder.jpg';
+import DeclineMilestone from './declineMilestone';
 interface Props {
     backToScreen: any
 }
 
 const MilestoneApprove = ({ backToScreen }: Props) => {
+    const [isToggle, setToggle] = useState(false);
+
+    if (isToggle) {
+        return <DeclineMilestone />
+    }
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
@@ -36,7 +42,7 @@ const MilestoneApprove = ({ backToScreen }: Props) => {
                     <span className="show_label">5 hours</span>
                 </div>
                 <button className="fill_btn full_btn">Approve</button>
-                <button className="fill_grey_btn full_btn mt-16">Decline</button>
+                <button onClick={() => { setToggle(true) }} className="fill_grey_btn full_btn mt-16">Decline</button>
             </div>
         </div>
     )

@@ -22,6 +22,9 @@ const initialState = {
   builderNewApplicants: [],
   builderNewApplicantsList: [],
   tradieReviewList: [],
+  tradieInfo: [],
+  tradieReviews: [],
+  tradieRequestStatus: null
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -132,6 +135,24 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         tradieReviewList: action.payload,
+      };
+
+    case actionTypes.SET_TRADIE_PROFILE:
+      return {
+        ...state,
+        tradieInfo: action.payload,
+      };
+
+    case actionTypes.SET_TRADIE_REVIEWS_LIST_ON_BUILDER:
+      return {
+        ...state,
+        tradieReviews: action.payload,
+      };
+
+    case actionTypes.SET_ACCEPT_DECLINE_TRADIE_REQUEST:
+      return {
+        ...state,
+        tradieRequestStatus: action.payload,
       };
 
     default: return state;
