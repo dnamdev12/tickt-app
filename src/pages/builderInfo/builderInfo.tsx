@@ -324,7 +324,7 @@ const BuilderInfo = (props: PropsType) => {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <div className="custom_wh portfolio_preview">
+                    <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
                             <button className="close_btn">
                                 <img src={cancel} alt="cancel" />
@@ -417,7 +417,7 @@ const BuilderInfo = (props: PropsType) => {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <div className="custom_wh">
+                    <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
                             <span className="sub_title">{`${reviewList?.length || 0} reviews`}</span>
                             <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
@@ -438,7 +438,7 @@ const BuilderInfo = (props: PropsType) => {
                                                     <span className="user_name">{reviewData?.userName}</span>
                                                     <span className="date">{reviewData?.date}</span>
                                                 </div>
-                                                <div className="form_field">
+                                                <div className="rating_star">
                                                     <ReactStars
                                                         count={5}
                                                         value={3}
@@ -491,7 +491,7 @@ const BuilderInfo = (props: PropsType) => {
                     aria-describedby="simple-modal-description"
                 >
                     <>
-                        <div className="custom_wh ask_ques">
+                        <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
                                 <span className="sub_title">{`${reviewsData.updateReviewsClicked ? 'Edit reply' : 'Reply'}`}</span>
                                 <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
@@ -527,7 +527,7 @@ const BuilderInfo = (props: PropsType) => {
                     aria-describedby="simple-modal-description"
                 >
                     <>
-                        <div className="custom_wh confirmation">
+                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
                                 <span className="sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : reviewsData.updateReviewsClicked ? 'Update' : ''} Reply Confirmation`}</span>
                                 <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
