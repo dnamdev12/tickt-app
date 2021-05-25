@@ -22,7 +22,7 @@ const PastJobs = (props: Proptypes) => {
         {props.pastJobList?.map((item: any) => {
           return (
             <div className="flex_col_sm_6" key={item.jobId}>
-              <div className="tradie_card">
+              <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${item.jobId}&tradeId=${item.tradeId}&specializationId=${item.specializationId}`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
