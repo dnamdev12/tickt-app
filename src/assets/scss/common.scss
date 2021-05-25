@@ -1273,9 +1273,9 @@ body {
     padding: 0 0 0 10px;
     position: absolute;
     bottom: 0;
-    width: 100%;
+    width: 95%;
 	.full_btn{
-		width: 328px;
+		width: 100%;
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       width: 100%;
     }
@@ -2525,7 +2525,7 @@ body {
 .body-message {
   position: fixed;
   width: 305px;
-  min-height: 80px;
+  min-height: 55px;
   right: 50px;
   top: 0;
   margin: 15px 0;
@@ -3161,6 +3161,8 @@ body {
     align-items: center;
     img{
       margin-right: 10px;
+      width: 20px;
+      height: 20px;
     }
   }
   .job_status{
@@ -3201,6 +3203,7 @@ body {
 		}
 		.details {
 			width: 70%;
+      min-height: 57px;
 			.name {
 				font-size: 16px;
 				display: block;
@@ -3283,6 +3286,12 @@ body {
             right: -4px;
           }
         }
+      }
+    }
+    .user_wrap {
+      .details {
+        width: 62%;
+        min-height: auto;
       }
     }
   }
