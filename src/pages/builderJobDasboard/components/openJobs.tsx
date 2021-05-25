@@ -42,9 +42,9 @@ class OpenJobs extends Component<Props, State> {
         }
     }
 
-    redirectToInfo = ({ jobId, tradieId, specializationId }: any) => {
+    redirectToInfo = ({ jobId, tradieId, specializationId , status}: any) => {
         console.log({ jobId, tradieId, specializationId });
-        this.props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}`);
+        this.props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
     }
 
     setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })
@@ -80,7 +80,7 @@ class OpenJobs extends Component<Props, State> {
                             <div className="flex_col_sm_6">
                                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                     <span
-                                        onClick={() => { this.redirectToInfo({ jobId, tradieId, specializationId }) }}
+                                        onClick={() => { this.redirectToInfo({ jobId, tradieId, specializationId, status }) }}
                                         className="more_detail circle">
                                     </span>
                                     <div className="user_wrap">

@@ -21,8 +21,14 @@ interface Post {
 }
 
 
-export default function PastJobs({ dataItems, jobType }: any): ReactElement {
+export default function PastJobs(props: any): ReactElement {
+    const { dataItems, jobType } = props;
     let listData: any = dataItems;
+
+    const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
+        props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status${status}`);
+    }
+
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -47,7 +53,11 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                     }: Post) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                                <span className="more_detail circle">
+                                <span
+                                    onClick={() => {
+                                        redirectToInfo({ jobId, tradeId, specializationId, status })
+                                    }}
+                                    className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">

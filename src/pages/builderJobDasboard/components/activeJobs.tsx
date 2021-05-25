@@ -70,9 +70,9 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
         console.log('here!')
     }, [jobType])
 
-    const redirectToInfo = ({ jobId, tradieId, specializationId }: any) => {
+    const redirectToInfo = ({ jobId, tradieId, specializationId , status}: any) => {
         console.log({ jobId, tradieId, specializationId });
-        history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}`);
+        history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
     }
 
     if (localState && selectedIndex !== null) {
@@ -111,7 +111,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span className="more_detail circle"
                                     onClick={() => {
-                                        redirectToInfo({ jobId, tradieId, specializationId });
+                                        redirectToInfo({ jobId, tradieId, specializationId, status });
                                     }}>
                                 </span>
                                 <div className="user_wrap">
