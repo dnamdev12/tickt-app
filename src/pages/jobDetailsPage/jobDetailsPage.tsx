@@ -289,6 +289,34 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
+
+    const renderBuilderAvatar = (item: any) => {
+        let postedBy: any = jobDetailsData?.postedBy;
+        console.log({ jobDetailsData })
+        if (item === "image") {
+            if (postedBy && Array.isArray(postedBy) && postedBy[0] && postedBy[0].builderImage) {
+                return (
+                    <img
+                        src={postedBy[0].builderImage}
+                        alt="traide-img"
+                    />
+                )
+            } else {
+                return (
+                    <img
+                        src={dummy}
+                        alt="traide-img"
+                    />
+                )
+            }
+        }
+        if (item === "name") {
+            if (postedBy && Array.isArray(postedBy) && postedBy[0] && postedBy[0].firstName) {
+                return postedBy[0].firstName;
+            }
+        }
+    }
+
     const params = new URLSearchParams(props.location?.search);
     let paramStatus: any = '';
     if (params.get('status')) {
@@ -308,9 +336,21 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
                                     <OwlCarousel className='owl-theme' {...options}>
-                                        {jobDetailsData?.photos?.length ? jobDetailsData?.photos?.map((image: string, index: number) => {
-                                            return <img key={`${image}${index}`} alt="" src={image ? image : jobDummyImage} />
-                                        }) : <img alt="" src={jobDummyImage} />}
+                                        {jobDetailsData?.photos?.length ?
+                                            jobDetailsData?.photos?.map((image: any, index: number) => {
+                                                return image?.mediaType === 1 ? (
+                                                    <img
+                                                        key={`${image}${index}`}
+                                                        alt=""
+                                                        src={image?.link ? image?.link : jobDummyImage}
+                                                    />) : (
+                                                    <video
+                                                        key={`${image}${index}`}
+                                                        src={image?.link}
+                                                        style={{ height: '410px', width: '800px' }}
+                                                    />
+                                                )
+                                            }) : <img alt="" src={jobDummyImage} />}
                                     </OwlCarousel>
                                 </figure>
                             </div>
@@ -541,12 +581,24 @@ const JobDetailsPage = (props: PropsType) => {
                                         <a href="javascript:void(0)" className="chat circle"></a>
                                         <div className="user_wrap">
                                             <figure className="u_img">
-                                                <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
+                                                {jobDetailsData?.postedBy?.builderImage ? (
+                                                    <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
+                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
                                             </figure>
                                             <div className="details">
-                                                <span className="name" onClick={() => props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)}>{jobDetailsData?.postedBy?.builderName}</span>
+                                                <span
+                                                    className="name"
+                                                    onClick={() => {
+                                                        if (jobDetailsData?.postedBy?.builderName) {
+                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                                                        }
+                                                    }}>
+                                                    {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
+                                                </span>
                                                 {/* <span className="prof">Project Manager</span> */}
-                                                <span className="rating">{`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}</span>
+                                                <span className="rating">
+                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>

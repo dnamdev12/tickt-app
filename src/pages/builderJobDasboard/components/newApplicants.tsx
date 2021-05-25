@@ -2,7 +2,8 @@ import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import { withRouter } from 'react-router';
-
+import noDataFound from '../../../assets/images/no-data-found.png';
+import noData from '../../../assets/images/no-data.png';
 interface Applicant {
     amount: any,
     builderId: any,
@@ -23,7 +24,7 @@ interface Applicant {
 }
 
 const NewApplicants = (props: any) => {
-    const { dataItems, jobType, setJobLabel } = props;
+    const { dataItems, jobType, setJobLabel, isLoading } = props;
     let listData: any = dataItems;
     console.log({ dataItems })
 
@@ -90,7 +91,14 @@ const NewApplicants = (props: any) => {
 
                             </div>
                         </div>
-                    )) : null}
+                    )) :
+                    !isLoading && (
+                        <div className="no_record">
+                            <figure className="no_img">
+                                <img src={noData} alt="data not found" />
+                            </figure>
+                        </div>
+                    )}
             </div>
         </React.Fragment>
     )

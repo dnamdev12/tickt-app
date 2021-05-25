@@ -131,8 +131,8 @@ const MarkMilestones = (props: any) => {
                         status,
                         fromDate,
                         toDate,
-                    }:Mile,
-                        index:number
+                    }: Mile,
+                        index: number
                     ) => {
                         // const prevMilestoneStatus = item_details?.milestones[index - 1]?.status;
                         // const isActive =
@@ -170,7 +170,7 @@ const MarkMilestones = (props: any) => {
                                                 : toDate
                                             }`}
                                     </span>
-                                    {isActive && (
+                                    {isActive === 1 ? (
                                         <button
                                             className="fill_btn full_btn"
                                             onClick={() => {
@@ -190,7 +190,7 @@ const MarkMilestones = (props: any) => {
                                         >
                                             {'Check and Approve'}
                                         </button>
-                                    )}
+                                    ) : null}
                                 </div>
                             </li>
                         );

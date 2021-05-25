@@ -2,16 +2,18 @@ import React, { useState } from 'react'
 import TradieBox from '../../shared/tradieBox';
 import Menu from '@material-ui/core/Menu';
 import cancel from "../../../assets/images/ic-cancel.png";
+import noDataFound from '../../../assets/images/no-data.png';
 interface Props {
     items: any,
     jobid: any,
     setJobLabel: any,
     activeType: any,
     history: any,
-    specializationId: any
+    specializationId: any,
+    isLoading: any,
 }
 
-const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, activeType }: Props) => {
+const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading, activeType }: Props) => {
     const [sortBySorting, setSortBySorting] = useState<any>({
         sortBySorting: false,
         sortBy: 1
@@ -121,7 +123,14 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, activeTyp
                                     jobId={jobid}
                                 />
                             ))
-                            : null}
+                            :
+                            !isLoading && (
+                                <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noDataFound} alt="data not found" />
+                                    </figure>
+                                </div>
+                            )}
                     </div>
                 </div>
             </div>
