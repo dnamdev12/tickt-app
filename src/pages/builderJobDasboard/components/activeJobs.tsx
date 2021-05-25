@@ -1,7 +1,8 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
-
+import MarkMilestones from './markMilestones';
+import { withRouter } from 'react-router-dom';
 interface Active {
     amount: any,
     durations: any,
@@ -12,17 +13,77 @@ interface Active {
     specializationName: any,
     status: any,
     timeLeft: any,
+    locationName: any,
     totalmem: any,
     totalMilestones: any,
     tradieListData: any,
     tradeName: any,
     tradieId: any,
     tradieImage: any,
+    setJobLabel: (item: any) => void
 }
 
-export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
-    let data_item: any = dataItems;
-    let listData: any = data_item[`${jobType}Jobs`][`${jobType}`];
+const listData: any = [{
+    amount: '2233',
+    durations: '1 day',
+    jobId: 'ekfnefneknf',
+    jobName: 'Circtuit',
+    milestoneNumber: 1,
+    specializationId: 'lflmfdmfdmfdm',
+    specializationName: 'fmdkfmdk',
+    status: 1,
+    timeLeft: '2 days',
+    totalmem: '0',
+    totalMilestones: 5,
+    tradieListData: {},
+    tradeName: 'trade local',
+    tradieId: 'fdmkfdkfdk',
+    tradieImage: '',
+}, {
+    amount: '2233',
+    durations: '1 day',
+    jobId: 'ekfnefneknf',
+    jobName: 'Circtuit',
+    milestoneNumber: 1,
+    specializationId: 'lflmfdmfdmfdm',
+    specializationName: 'fmdkfmdk',
+    status: 1,
+    timeLeft: '2 days',
+    totalmem: '0',
+    totalMilestones: 5,
+    tradieListData: {},
+    tradeName: 'trade local',
+    tradieId: 'fdmkfdkfdk',
+    tradieImage: '',
+}]
+
+const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
+    let listData: any = dataItems;
+    const [selectedIndex, setSelectedIndex] = useState<any>(null);
+    const [localState, setLocalState] = useState(false);
+
+    const resetStateLocal = () => {
+        setLocalState(false)
+    }
+
+    useEffect(() => {
+        console.log('here!')
+    }, [jobType])
+
+    const redirectToInfo = ({ jobId, tradieId, specializationId }: any) => {
+        console.log({ jobId, tradieId, specializationId });
+        history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}`);
+    }
+
+    if (localState && selectedIndex !== null) {
+        return (
+            <MarkMilestones
+                resetStateLocal={resetStateLocal}
+                selectedIndex={selectedIndex}
+                listData={listData}
+            />)
+    }
+
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -38,20 +99,24 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                         specializationName,
                         status,
                         timeLeft,
+                        locationName,
                         totalmem,
                         totalMilestones,
                         tradieListData,
                         tradeName,
                         tradieId,
                         tradieImage,
-                    }: Active) => (
+                    }: Active, index: number) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                                <span className="more_detail circle">
+                                <span className="more_detail circle"
+                                    onClick={() => {
+                                        redirectToInfo({ jobId, tradieId, specializationId });
+                                    }}>
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={dummy} alt="traide-img" />
+                                        <img src={tradieImage || dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -60,10 +125,10 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{`${timeLeft} minutes ago`}</li>
+                                        <li className="icon clock">{timeLeft}</li>
                                         <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{''}</li>
-                                        <li className="icon calendar">{`${durations} days`}</li>
+                                        <li className="icon location line-1">{locationName}</li>
+                                        <li className="icon calendar">{durations}</li>
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -88,8 +153,13 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
                                             />
                                         </span>
                                     </div>
-                                    <button className="fill_grey_btn full_btn">
-                                        {'Applications'}
+                                    <button
+                                        onClick={() => {
+                                            setLocalState(true);
+                                            setSelectedIndex(index);
+                                        }}
+                                        className="fill_grey_btn full_btn">
+                                        {'Approve'}
                                         {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}
                                     </button>
@@ -101,3 +171,6 @@ export default function ActiveJobs({ dataItems, jobType, }: any): ReactElement {
         </React.Fragment>
     )
 }
+
+
+export default withRouter(ActiveJobs);

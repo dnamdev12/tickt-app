@@ -7,13 +7,13 @@ import { setShowToast, setLoading } from '../../../../../redux/common/actions';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
 import regex from '../../../../../utils/regex';
 // @ts-ignore
-import { format } from 'date-fns';
+import { format, differenceInCalendarYears } from 'date-fns';
 // @ts-ignore
 import moment from 'moment';
 // @ts-ignore
 import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 import Searchicon from "../../../../../assets/images/main-search.png";
 import search from "../../../../../assets/images/ic-search.png";
@@ -109,9 +109,15 @@ const BannerSearch = (props: PropsType) => {
                 to_date: paramsData?.to_date ? paramsData?.to_date : '',
                 endDate: '',
             }
-            if (paramsData?.from_date) {
-                data.startDate = moment(paramsData?.from_date).format('MMM DD')
-                data.endDate = moment(paramsData?.to_date).format('MMM DD')
+            if (paramsData?.from_date || paramsData?.to_date) {
+                const differenceInYears: number = differenceInCalendarYears(new Date(), paramsData?.to_date);
+                if (differenceInYears != 0) {
+                    data.startDate = moment(paramsData?.from_date).format('DD MMM YYYY');
+                    data.endDate = moment(paramsData?.to_date).format('DD MMM YYYY');
+                } else {
+                    data.startDate = moment(paramsData?.from_date).format('DD MMM');
+                    data.endDate = moment(paramsData?.to_date).format('DD MMM');
+                }
 
             }
             setStateData((prevData: any) => ({ ...prevData, ...data }));
@@ -120,12 +126,21 @@ const BannerSearch = (props: PropsType) => {
 
     useEffect(() => {
         if (calenderRange1 && inputFocus3) {
-            const startDate = format(new Date(calenderRange1.startDate), 'MMM dd')
-            const endDate = format(new Date(calenderRange1.endDate), 'MMM dd')
-            const from_date = format(new Date(calenderRange1.startDate), 'yyyy-MM-dd')
-            const to_date = format(new Date(calenderRange1.endDate), 'yyyy-MM-dd')
-            setStateData((prevData: any) => ({ ...prevData, startDate: startDate, endDate: endDate }))
-            setStateData((prevData: any) => ({ ...prevData, from_date: from_date, to_date: to_date }))
+            const differenceInYears: number = differenceInCalendarYears(new Date(), calenderRange1.endDate);
+            var startDate: string;
+            var endDate: string;
+            if (differenceInYears != 0) {
+                startDate = format(new Date(calenderRange1.startDate), 'dd MMM yyyy');
+                endDate = format(new Date(calenderRange1.endDate), 'dd MMM yyyy');
+            } else {
+                startDate = format(new Date(calenderRange1.startDate), 'dd MMM');
+                endDate = format(new Date(calenderRange1.endDate), 'dd MMM');
+
+            }
+            const from_date = format(new Date(calenderRange1.startDate), 'yyyy-MM-dd');
+            const to_date = format(new Date(calenderRange1.endDate), 'yyyy-MM-dd');
+            setStateData((prevData: any) => ({ ...prevData, startDate: startDate, endDate: endDate }));
+            setStateData((prevData: any) => ({ ...prevData, from_date: from_date, to_date: to_date }));
         }
     }, [calenderRange1])
 
@@ -195,13 +210,13 @@ const BannerSearch = (props: PropsType) => {
 
     const cleanInputData = (item: string) => {
         if (item === "calender") {
-            setStateData((prevData: any) => ({ ...prevData, from_date: '', to_date: '', startDate: '', endDate: '' }))
+            setStateData((prevData: any) => ({ ...prevData, from_date: '', to_date: '', startDate: '', endDate: '' }));
             return;
         }
         if (item == "searchedJob") {
-            setStateData((prevData: any) => ({ ...prevData, [item]: '', isSearchedJobSelected: false }))
+            setStateData((prevData: any) => ({ ...prevData, [item]: '', isSearchedJobSelected: false }));
         }
-        setStateData((prevData: any) => ({ ...prevData, [item]: '' }))
+        setStateData((prevData: any) => ({ ...prevData, [item]: '' }));
     }
 
     const searchedJobClicked = (item: any, isRecentSearchesClicked?: string) => {
@@ -510,7 +525,7 @@ const BannerSearch = (props: PropsType) => {
                             </div>
                         }
                     </li>
-                    <li className="date_box date_value">
+                    <li className={`date_box ${stateData.startDate ? 'date_value' : ''}`}>
                         <div ref={calenderRef} className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>

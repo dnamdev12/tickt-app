@@ -251,7 +251,7 @@ export const getActiveJobsBuilder = (page: number) => ({ type: actionTypes.GET_B
 export const getOpenJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_OPEN_JOBS, page });
 export const getPastJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_PAST_JOBS, page });
 export const getNewApplicantsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS, page });
-export const getnewJobApplicationListBuilder = (page: number, jobId: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, page, jobId });
+export const getnewJobApplicationListBuilder = (item: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, item });
 
 export const getMilestoneList = (jobId: string) => ({
   type: actionTypes.GET_MILESTONES_START,
@@ -263,3 +263,10 @@ export const markMilestoneComplete = (data: any, callback: () => void) => ({
   data,
   callback,
 });
+
+
+// Tradie
+
+export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data })
+export const getTradieReviewListOnBuilder = (data: any) => ({ type: actionTypes.GET_TRADIE_REVIEWS_LIST_ON_BUILDER, data })
+export const getAcceptDeclineTradie = (data: any) => ({ type: actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, data })

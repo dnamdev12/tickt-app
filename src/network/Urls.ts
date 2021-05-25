@@ -1,6 +1,5 @@
 const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
 // const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
-// const ACTIVE_HOST = 'https://ticktstgapi.appskeeper.in';  // stg env
 
 const versions = {
     v1: 'v1/',
@@ -74,6 +73,10 @@ const Urls = {
     tradieReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewReply`,
     tradieUpdateReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewReply`,
     tradieRemoveReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewReply`,
+    tradieProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}tradieProfile`,
+    reviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewList`,
+    acceptDeclineRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}acceptDeclineRequest`,
+    milestoneListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneList`,
 }
 
 export const urlFor = (service: String): string => {

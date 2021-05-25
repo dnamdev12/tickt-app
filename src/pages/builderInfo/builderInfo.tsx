@@ -307,8 +307,10 @@ const BuilderInfo = (props: PropsType) => {
                                     </figure>
                                 </div>
                             )
-                        }) : <img alt="" src={portfolioPlaceholder} />}
-
+                        }) :
+                            <figure className="portfolio_img">
+                                <img src={portfolioPlaceholder} alt="portfolio-images" />
+                            </figure>}
                     </Carousel>
                     {/* </ul> */}
                 </div>
@@ -546,7 +548,7 @@ const BuilderInfo = (props: PropsType) => {
         </div >
     )
 }
-
+export { portfolio, portfolioModal };
 export default BuilderInfo;
 
 {/* <div className="text-center">
