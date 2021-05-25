@@ -125,6 +125,20 @@ class JobDashboard extends Component<Props, State> {
     setSelected = (jobtype: any, jobid?: any, sortby?: any, specializationId?: any) => {
         const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, } = this.props;
         let { currentPage } = this.state;
+        let item_position: any = localStorage.getItem('position');
+        let locationLocal: any = JSON.parse(item_position);
+
+        let dataItemsAddons: any = { page: currentPage, jobId: jobid, sortBy: sortby };
+        if (sortby === 2) {
+            dataItemsAddons['location'] = {
+                "type": "Point",
+                "coordinates": [
+                    locationLocal[0],
+                    locationLocal[1]
+                ]
+            };
+        }
+
         if (['active', 'past', 'open', 'applicant'].includes(jobtype)) {
             this.setState({ activeType: jobtype })
         }
@@ -139,7 +153,7 @@ class JobDashboard extends Component<Props, State> {
             if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
             if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
             if (jobtype === 'applicant') { getNewApplicantsBuilder(currentPage); }
-            if (jobtype === 'applicantList') { getnewJobApplicationListBuilder({ page: currentPage, jobId: jobid, sortBy: sortby }); }
+            if (jobtype === 'applicantList') { getnewJobApplicationListBuilder(dataItemsAddons); }
         });
     }
 
@@ -204,9 +218,9 @@ class JobDashboard extends Component<Props, State> {
                                                 onClick={() => { setSelected('applicant') }}
                                                 className="menu_txt">
                                                 {'New applicants'}
-                                                {!!approveCount && (
+                                                {!!applicantCount && (
                                                     <span className="badge_count">
-                                                        {approveCount > 9 ? '9+' : approveCount}
+                                                        {applicantCount > 9 ? '9+' : applicantCount}
                                                     </span>
                                                 )}
                                             </span>
@@ -218,9 +232,9 @@ class JobDashboard extends Component<Props, State> {
                                                 onClick={() => { setSelected('approval') }}
                                                 className="menu_txt">
                                                 {'Need approval'}
-                                                {!!applicantCount && (
+                                                {!!approveCount && (
                                                     <span className="badge_count">
-                                                        {applicantCount > 9 ? '9+' : applicantCount}
+                                                        {approveCount > 9 ? '9+' : approveCount}
                                                     </span>
                                                 )}
                                             </span>
