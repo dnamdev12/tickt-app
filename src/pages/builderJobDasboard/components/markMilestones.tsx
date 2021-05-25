@@ -92,10 +92,10 @@ const MarkMilestones = (props: any) => {
     }
 
 
-    const redirectToInfo = ({ jobId, tradeId, specializationId }: any) => {
+    const redirectToInfo = ({ jobId, tradeId, specializationId , status}: any) => {
         console.log({ jobId, tradeId, specializationId });
         let props_: any = props;
-        props_.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`);
+        props_.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
     }
 
     let item_details: any = itemDetails;
@@ -131,8 +131,8 @@ const MarkMilestones = (props: any) => {
                         status,
                         fromDate,
                         toDate,
-                    }:Mile,
-                        index:number
+                    }: Mile,
+                        index: number
                     ) => {
                         // const prevMilestoneStatus = item_details?.milestones[index - 1]?.status;
                         // const isActive =
@@ -170,7 +170,7 @@ const MarkMilestones = (props: any) => {
                                                 : toDate
                                             }`}
                                     </span>
-                                    {isActive && (
+                                    {isActive === 1 ? (
                                         <button
                                             className="fill_btn full_btn"
                                             onClick={() => {
@@ -190,7 +190,7 @@ const MarkMilestones = (props: any) => {
                                         >
                                             {'Check and Approve'}
                                         </button>
-                                    )}
+                                    ) : null}
                                 </div>
                             </li>
                         );
@@ -219,8 +219,8 @@ const MarkMilestones = (props: any) => {
                         className="edit_icon"
                         title="More"
                         onClick={() => {
-                            let { jobId, tradeId, specializationId } = selectedItem;
-                            redirectToInfo({ jobId, tradeId, specializationId })
+                            let { jobId, tradeId, specializationId, status } = selectedItem;
+                            redirectToInfo({ jobId, tradeId, specializationId , status})
                         }}>
                         <img src={more} alt="more" />
                     </span>

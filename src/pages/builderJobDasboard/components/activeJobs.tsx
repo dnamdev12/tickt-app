@@ -3,6 +3,8 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import MarkMilestones from './markMilestones';
 import { withRouter } from 'react-router-dom';
+import noDataFound from '../../../assets/images/no-data.png';
+
 interface Active {
     amount: any,
     durations: any,
@@ -23,41 +25,8 @@ interface Active {
     setJobLabel: (item: any) => void
 }
 
-const listData: any = [{
-    amount: '2233',
-    durations: '1 day',
-    jobId: 'ekfnefneknf',
-    jobName: 'Circtuit',
-    milestoneNumber: 1,
-    specializationId: 'lflmfdmfdmfdm',
-    specializationName: 'fmdkfmdk',
-    status: 1,
-    timeLeft: '2 days',
-    totalmem: '0',
-    totalMilestones: 5,
-    tradieListData: {},
-    tradeName: 'trade local',
-    tradieId: 'fdmkfdkfdk',
-    tradieImage: '',
-}, {
-    amount: '2233',
-    durations: '1 day',
-    jobId: 'ekfnefneknf',
-    jobName: 'Circtuit',
-    milestoneNumber: 1,
-    specializationId: 'lflmfdmfdmfdm',
-    specializationName: 'fmdkfmdk',
-    status: 1,
-    timeLeft: '2 days',
-    totalmem: '0',
-    totalMilestones: 5,
-    tradieListData: {},
-    tradeName: 'trade local',
-    tradieId: 'fdmkfdkfdk',
-    tradieImage: '',
-}]
 
-const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
+const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any) => {
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
@@ -70,9 +39,9 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
         console.log('here!')
     }, [jobType])
 
-    const redirectToInfo = ({ jobId, tradieId, specializationId }: any) => {
+    const redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
         console.log({ jobId, tradieId, specializationId });
-        history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}`);
+        history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
     }
 
     if (localState && selectedIndex !== null) {
@@ -111,7 +80,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span className="more_detail circle"
                                     onClick={() => {
-                                        redirectToInfo({ jobId, tradieId, specializationId });
+                                        redirectToInfo({ jobId, tradieId, specializationId, status });
                                     }}>
                                 </span>
                                 <div className="user_wrap">
@@ -166,7 +135,12 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
                                 </div>
                             </div>
                         </div>
-                    )) : null}
+                    )) : !isLoading && (
+                        <div className="no_record">
+                            <figure className="no_img">
+                                <img src={noDataFound} alt="data not found" />
+                            </figure>
+                        </div>)}
             </div>
         </React.Fragment>
     )

@@ -2,6 +2,8 @@ import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
+import noDataFound from '../../../assets/images/no-data.png';
+
 interface Post {
     amount: any,
     fromDate: any,
@@ -17,12 +19,19 @@ interface Post {
     totalMilestones: any,
     tradeId: any,
     tradeName: any,
+    isLoading:any,
     tradieData: any,
 }
 
 
-export default function PastJobs({ dataItems, jobType }: any): ReactElement {
+export default function PastJobs(props: any): ReactElement {
+    const { dataItems, jobType , isLoading} = props;
     let listData: any = dataItems;
+
+    const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
+        props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
+    }
+
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -47,7 +56,11 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                     }: Post) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                                <span className="more_detail circle">
+                                <span
+                                    onClick={() => {
+                                        redirectToInfo({ jobId, tradeId, specializationId, status })
+                                    }}
+                                    className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
@@ -100,7 +113,13 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                                 </div>
                             </div>
                         </div>
-                    )) : null}
+                    )) : !isLoading && (
+                        <div className="no_record">
+                            <figure className="no_img">
+                                <img src={noDataFound} alt="data not found" />
+                            </figure>
+                        </div>
+                    )}
             </div>
         </React.Fragment>
     )

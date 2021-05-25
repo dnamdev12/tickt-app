@@ -31,7 +31,8 @@ interface Props {
     applicantJobs: any,
     approvalJobs: any,
     applicantsListJobs: any,
-    history: any
+    history: any,
+    isLoading: any
 }
 interface State {
     isToggleSidebar: any,
@@ -107,7 +108,9 @@ class JobDashboard extends Component<Props, State> {
         }
 
         if (jobtype === 'applicantList' && applicantsListJobs?.length && applicantsListJobs?.length !== this.state.applicantsListJobs?.length) {
-            this.setState({ applicantsListJobs });
+            this.setState({
+                applicantsListJobs
+            });
         }
 
         if (jobtype === 'applicant' && applicantJobs?.length && applicantJobs?.length !== this.state.applicantJobs?.length) {
@@ -122,15 +125,35 @@ class JobDashboard extends Component<Props, State> {
     setSelected = (jobtype: any, jobid?: any, sortby?: any, specializationId?: any) => {
         const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, } = this.props;
         let { currentPage } = this.state;
+        let item_position: any = localStorage.getItem('position');
+        let locationLocal: any = JSON.parse(item_position);
+
+        let dataItemsAddons: any = { page: currentPage, jobId: jobid, sortBy: sortby };
+        if (sortby === 2) {
+            dataItemsAddons['location'] = {
+                "type": "Point",
+                "coordinates": [
+                    locationLocal[0],
+                    locationLocal[1]
+                ]
+            };
+        }
+
         if (['active', 'past', 'open', 'applicant'].includes(jobtype)) {
             this.setState({ activeType: jobtype })
         }
-        this.setState({ selectedItem: { jobtype, jobid, sortby, specializationId }, applicantsListJobs: [] }, () => {
+        this.setState({
+            selectedItem: { jobtype, jobid, sortby, specializationId }, applicantsListJobs: [],
+            count: {
+                approveCount: 0,
+                applicantCount: 0
+            }
+        }, () => {
             if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
             if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
             if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
             if (jobtype === 'applicant') { getNewApplicantsBuilder(currentPage); }
-            if (jobtype === 'applicantList') { getnewJobApplicationListBuilder({ page: currentPage, jobId: jobid, sortBy: sortby }); }
+            if (jobtype === 'applicantList') { getnewJobApplicationListBuilder(dataItemsAddons); }
         });
     }
 
@@ -138,12 +161,13 @@ class JobDashboard extends Component<Props, State> {
         let {
             isToggleSidebar,
             activeType,
-            selectedItem: { jobtype, jobid , specializationId},
+            selectedItem: { jobtype, jobid, specializationId },
             count: { applicantCount, approveCount },
             activeJobs, pastJobs, openJobs, applicantJobs, applicantsListJobs,
         } = this.state;
         const { toggleSidebar, setSelected } = this;
         let props: any = this.props;
+        let isLoading: any = props.isLoading;
         console.log({ activeJobs, pastJobs, openJobs, applicantJobs, jobtype, history: props.history })
         return (
             <div className="app_wrapper">
@@ -194,9 +218,9 @@ class JobDashboard extends Component<Props, State> {
                                                 onClick={() => { setSelected('applicant') }}
                                                 className="menu_txt">
                                                 {'New applicants'}
-                                                {!!approveCount && (
+                                                {!!applicantCount && (
                                                     <span className="badge_count">
-                                                        {approveCount > 9 ? '9+' : approveCount}
+                                                        {applicantCount > 9 ? '9+' : applicantCount}
                                                     </span>
                                                 )}
                                             </span>
@@ -208,9 +232,9 @@ class JobDashboard extends Component<Props, State> {
                                                 onClick={() => { setSelected('approval') }}
                                                 className="menu_txt">
                                                 {'Need approval'}
-                                                {!!applicantCount && (
+                                                {!!approveCount && (
                                                     <span className="badge_count">
-                                                        {applicantCount > 9 ? '9+' : applicantCount}
+                                                        {approveCount > 9 ? '9+' : approveCount}
                                                     </span>
                                                 )}
                                             </span>
@@ -220,11 +244,11 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
                         <div className="detail_col">
-                            {jobtype === 'past' && <PastJobsComponent dataItems={pastJobs} jobType={jobtype} history={props.history} />}
-                            {jobtype === 'active' && <ActiveJobsComponent dataItems={activeJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
-                            {jobtype === 'open' && <OpenJobsComponent dataItems={openJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
-                            {jobtype === 'applicant' && <NewApplicantComponent dataItems={applicantJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
-                            {jobtype === 'applicantList' && <ApplicantsList items={applicantsListJobs} jobid={jobid} specializationId={specializationId}  setJobLabel={setSelected} activeType={activeType} history={props.history} />}
+                            {jobtype === 'past' && <PastJobsComponent isLoading={isLoading} dataItems={pastJobs} jobType={jobtype} history={props.history} />}
+                            {jobtype === 'active' && <ActiveJobsComponent isLoading={isLoading} dataItems={activeJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
+                            {jobtype === 'open' && <OpenJobsComponent isLoading={isLoading} dataItems={openJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
+                            {jobtype === 'applicant' && <NewApplicantComponent isLoading={isLoading} dataItems={applicantJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
+                            {jobtype === 'applicantList' && <ApplicantsList isLoading={isLoading} items={applicantsListJobs} jobid={jobid} specializationId={specializationId} setJobLabel={setSelected} activeType={activeType} history={props.history} />}
                             {/* <DeclineMilestone /> */}
                             {/* <DeclineMilestoneSuccess /> */}
                         </div>
