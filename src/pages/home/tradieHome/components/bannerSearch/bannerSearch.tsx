@@ -7,13 +7,13 @@ import { setShowToast, setLoading } from '../../../../../redux/common/actions';
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
 import regex from '../../../../../utils/regex';
 // @ts-ignore
-import { format } from 'date-fns';
+import { format, differenceInCalendarYears } from 'date-fns';
 // @ts-ignore
 import moment from 'moment';
 // @ts-ignore
 import { DateRange } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
 
 import Searchicon from "../../../../../assets/images/main-search.png";
 import search from "../../../../../assets/images/ic-search.png";
@@ -28,10 +28,10 @@ interface PropsType {
     location?: any,
     paramsData?: any,
     currentCoordinates: any,
-    searchJobListData: Array<object>,
-    recentSearchJobData: Array<object>,
-    recentLocationData: Array<object>,
-    homeSearchJobData: Array<object>,
+    searchJobListData: Array<any>,
+    recentSearchJobData: Array<any>,
+    recentLocationData: Array<any>,
+    homeSearchJobData: Array<any>,
     setTradieHomeData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
@@ -109,9 +109,15 @@ const BannerSearch = (props: PropsType) => {
                 to_date: paramsData?.to_date ? paramsData?.to_date : '',
                 endDate: '',
             }
-            if (paramsData?.from_date) {
-                data.startDate = moment(paramsData?.from_date).format('MMM DD')
-                data.endDate = moment(paramsData?.to_date).format('MMM DD')
+            if (paramsData?.from_date || paramsData?.to_date) {
+                const differenceInYears: number = differenceInCalendarYears(new Date(), paramsData?.to_date);
+                if (differenceInYears != 0) {
+                    data.startDate = moment(paramsData?.from_date).format('DD MMM YYYY');
+                    data.endDate = moment(paramsData?.to_date).format('DD MMM YYYY');
+                } else {
+                    data.startDate = moment(paramsData?.from_date).format('DD MMM');
+                    data.endDate = moment(paramsData?.to_date).format('DD MMM');
+                }
 
             }
             setStateData((prevData: any) => ({ ...prevData, ...data }));
@@ -120,12 +126,21 @@ const BannerSearch = (props: PropsType) => {
 
     useEffect(() => {
         if (calenderRange1 && inputFocus3) {
-            const startDate = format(new Date(calenderRange1.startDate), 'MMM dd')
-            const endDate = format(new Date(calenderRange1.endDate), 'MMM dd')
-            const from_date = format(new Date(calenderRange1.startDate), 'yyyy-MM-dd')
-            const to_date = format(new Date(calenderRange1.endDate), 'yyyy-MM-dd')
-            setStateData((prevData: any) => ({ ...prevData, startDate: startDate, endDate: endDate }))
-            setStateData((prevData: any) => ({ ...prevData, from_date: from_date, to_date: to_date }))
+            const differenceInYears: number = differenceInCalendarYears(new Date(), calenderRange1.endDate);
+            var startDate: string;
+            var endDate: string;
+            if (differenceInYears != 0) {
+                startDate = format(new Date(calenderRange1.startDate), 'dd MMM yyyy');
+                endDate = format(new Date(calenderRange1.endDate), 'dd MMM yyyy');
+            } else {
+                startDate = format(new Date(calenderRange1.startDate), 'dd MMM');
+                endDate = format(new Date(calenderRange1.endDate), 'dd MMM');
+
+            }
+            const from_date = format(new Date(calenderRange1.startDate), 'yyyy-MM-dd');
+            const to_date = format(new Date(calenderRange1.endDate), 'yyyy-MM-dd');
+            setStateData((prevData: any) => ({ ...prevData, startDate: startDate, endDate: endDate }));
+            setStateData((prevData: any) => ({ ...prevData, from_date: from_date, to_date: to_date }));
         }
     }, [calenderRange1])
 
@@ -135,41 +150,16 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [props.currentCoordinates])
 
-    function getLocationData(item: any, index: number, callback: Function) {
-        var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
-        var geocoder = new google.maps.Geocoder();
-        if (geocoder) {
-            geocoder.geocode({ location: latlng }, function (results, status) {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    callback(results[0]);
-                }
-            });
-        }
-    }
-
     const getRecentLocationData = () => {
-        const tempLocationList: any = [
-            { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
-            { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
-            { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
-            { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
-        ]
+        // const tempLocationList: any = [
+        //     { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
+        //     { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
+        //     { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
+        //     { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
+        // ]
         var recentLocationDetails: any = [];
-        // props.recentLocationData?.map((item: any) => {
-        tempLocationList?.map((item: any, index: number) => {
-            // getLocationData(item, index, (locationData: any) => {
-            //     const formatedCityText = JSON.parse(JSON.stringify(locationData));
-            //     console.log(index, "index");
-            //     const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
-            //     const newData = {
-            //         mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-            //         secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-            //     }
-            //     recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-            //     if (recentLocationDetails?.length == tempLocationList?.length) {
-            //         setRecentLocation(recentLocationDetails);
-            //     }
-            // })
+        // tempLocationList?.map((item: any, index: number) => {
+        props.recentLocationData?.map((item: any, index: number) => {
             var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, (results, status) => {
@@ -182,7 +172,7 @@ const BannerSearch = (props: PropsType) => {
                         secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
                     }
                     recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-                    if (recentLocationDetails?.length == tempLocationList?.length) {
+                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
                         setRecentLocation(recentLocationDetails);
                     }
                 }
@@ -197,7 +187,7 @@ const BannerSearch = (props: PropsType) => {
             { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
             { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
         ]
-        if (props.recentLocationData?.length && JSON.stringify(tempLocationList[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+        if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
             getRecentLocationData();
         }
     }, [props.recentLocationData, recentLocation])
@@ -220,13 +210,13 @@ const BannerSearch = (props: PropsType) => {
 
     const cleanInputData = (item: string) => {
         if (item === "calender") {
-            setStateData((prevData: any) => ({ ...prevData, from_date: '', to_date: '', startDate: '', endDate: '' }))
+            setStateData((prevData: any) => ({ ...prevData, from_date: '', to_date: '', startDate: '', endDate: '' }));
             return;
         }
         if (item == "searchedJob") {
-            setStateData((prevData: any) => ({ ...prevData, [item]: '', isSearchedJobSelected: false }))
+            setStateData((prevData: any) => ({ ...prevData, [item]: '', isSearchedJobSelected: false }));
         }
-        setStateData((prevData: any) => ({ ...prevData, [item]: '' }))
+        setStateData((prevData: any) => ({ ...prevData, [item]: '' }));
     }
 
     const searchedJobClicked = (item: any, isRecentSearchesClicked?: string) => {
@@ -347,11 +337,6 @@ const BannerSearch = (props: PropsType) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         }
-    }
-
-    const onError = (status: string, clearSuggestions: Function) => {
-        console.log('Google Maps API returned error with status: ', status)
-        clearSuggestions();
     }
 
     const validateForm = (type?: string) => {
@@ -507,7 +492,6 @@ const BannerSearch = (props: PropsType) => {
                                 shouldFetchSuggestions={true}
                                 onSelect={locationSelectedHandler}
                                 highlightFirstSuggestion={true}
-                                onError={onError}
                             // searchOptions={{ types: ['(cities)','address'] }}
                             // searchOptions={{ componentRestrictions: { country: "au" } }}
                             // debounce={400}
@@ -515,7 +499,6 @@ const BannerSearch = (props: PropsType) => {
                                 {renderPlacesData}
                             </PlacesAutocomplete>
                         </div>
-                        {/* </li> */}
                         {!stateData?.selectedMapLocation && inputFocus2 &&
                             <div className="custom_autosuggestion location" id="current-location-search-div">
                                 <a className="location-btn" onClick={getCurrentLocation}>
@@ -542,7 +525,7 @@ const BannerSearch = (props: PropsType) => {
                             </div>
                         }
                     </li>
-                    <li className="date_box date_value">
+                    <li className={`date_box ${stateData.startDate ? 'date_value' : ''}`}>
                         <div ref={calenderRef} className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>

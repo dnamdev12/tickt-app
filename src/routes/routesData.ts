@@ -22,6 +22,7 @@ import TradieDetails from '../common/tradieDetails';
 import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
+import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 
 const routes = [
     {
@@ -128,6 +129,13 @@ const routes = [
         name: 'builderreviewsubmitted',
         path: '/builder-review-submitted',
         component: BuilderReviewSubmitted,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'builderpostedjobs',
+        path: '/builder-posted-jobs',
+        component: BuilderPostedJobs,
         authRoute: false,
         privateRoute: true,
     },

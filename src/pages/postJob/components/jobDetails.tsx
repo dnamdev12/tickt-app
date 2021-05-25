@@ -246,7 +246,7 @@ const JobDetails = ({
                                                         : '0 days'}
                                             </li>
                                             <li className="icon dollar">${data?.amount} {data?.pay_type === "fixed" ? 'fixed' : 'p/h'} </li>
-                                            <li className="icon location">{data?.location_name}</li>
+                                            <li className="icon location line-3">{data?.location_name}</li>
                                         </ul>
                                     </div>
                                     <button

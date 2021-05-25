@@ -46,7 +46,7 @@ export default function PastJobs({ dataItems, jobType }: any): ReactElement {
                         tradieData,
                     }: Post) => (
                         <div className="flex_col_sm_6">
-                            <div className="tradie_card">
+                            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">

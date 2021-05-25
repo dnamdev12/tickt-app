@@ -20,7 +20,7 @@ import close from "../../assets/images/icon-close-1.png";
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { getSearchJobList, getRecentSearchList, postHomeSearchData } from '../../redux/homeSearch/actions';
+import { getSearchJobList, getRecentSearchList, postHomeSearchData, getRecentLocationList } from '../../redux/homeSearch/actions';
 import { isHandleChanges } from '../../redux/jobs/actions';
 // @ts-ignore
 import { useDetectClickOutside } from 'react-detect-click-outside';
@@ -40,6 +40,7 @@ interface PropsType {
     selectedItem: any,
     selectedTrade: any,
     current_address: any,
+    recentLocationData: Array<any>,
 
     searchText: any,
     stateData: any,
@@ -55,6 +56,7 @@ interface PropsType {
     postHomeSearchData: (data: any) => void,
     handleChangeToggle?: (data: any) => void,
     getRecentSearchList?: () => void,
+    getRecentLocationList: () => void,
 }
 
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
@@ -71,11 +73,12 @@ export function useStateFromProp(initialValue: any) {
 
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
-    const { selectedItem, isHandleChanges, localChanges , getRecentSearchList } = props;
+    const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
 
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
     const [addressText, setAddressText] = useState<any>('');
+    const [recentLocation, setRecentLocation] = useState<any>([]); // recentLocation
     const [selectedAddress, setSelectedAddress] = useState({});
     const [enableCurrentLocation, setCurrentLocations] = useState<boolean>(false);
     const [errors, setErrors] = useState<any>({});
@@ -117,6 +120,16 @@ const BannerSearch = (props: PropsType) => {
     };
 
     useEffect(() => {
+        if(getRecentSearchList){
+            getRecentSearchList();
+        }
+        if(getRecentLocationList){
+            getRecentLocationList();
+        }
+        getRecentLocationData();
+    }, [])
+
+    useEffect(() => {
         console.log('In local-changes', { props: props.selectedItem })
         return () => {
             console.log('local-changes', { props: props.selectedItem })
@@ -130,6 +143,45 @@ const BannerSearch = (props: PropsType) => {
             document.getElementById('location_search_static')?.focus();
         }
     }, [addressText])
+
+    useEffect(() => {
+        console.log({
+            props:props.recentLocationData
+        })
+        if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+            getRecentLocationData();
+        }
+    }, [props.recentLocationData, recentLocation])
+
+    const getRecentLocationData = () => {
+        // const tempLocationList: any = [
+        //     { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
+        //     { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
+        //     { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
+        //     { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
+        // ]
+        var recentLocationDetails: any = [];
+        // tempLocationList?.map((item: any, index: number) => {
+        props.recentLocationData?.map((item: any, index: number) => {
+            var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: latlng }, (results, status) => {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    const formatedCityText = JSON.parse(JSON.stringify(results[0]));
+                    console.log(index, "index");
+                    const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
+                    const newData = {
+                        mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
+                        secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
+                    }
+                    recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
+                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
+                        setRecentLocation(recentLocationDetails);
+                    }
+                }
+            });
+        })
+    }
 
     const checkIfExist = (_id: any) => {
         if (selectedTrade) {
@@ -152,7 +204,7 @@ const BannerSearch = (props: PropsType) => {
         }
         const res = await deleteRecentSearch(data);
         if (res.success) {
-            if(getRecentSearchList){
+            if (getRecentSearchList) {
                 getRecentSearchList();
             }
         }
@@ -400,7 +452,7 @@ const BannerSearch = (props: PropsType) => {
 
     let custom_name = searchText;
     let condition_location: any = addressText?.length > 2 || (addressText?.length && enableCurrentLocation && Object.keys(selectedAddress).length);
-    console.log({ addressText, enableCurrentLocation, inputFocus2, selectedAddress })
+    console.log({ addressText, enableCurrentLocation, inputFocus2, selectedAddress,  })
     return (
         <div className="home_search">
             <button
@@ -615,6 +667,18 @@ const BannerSearch = (props: PropsType) => {
                                 You have blocked your location.
                                 To use this, change your location settings in browser.
                               </span>}
+                            <div className="flex_row recent_search auto_loc">
+                                {recentLocation?.map((item: any) => {
+                                    return (
+                                        <div className="flex_col_sm_4"
+                                            onClick={() => setStateData((prevData: any) => ({ ...prevData, location: item.location, selectedMapLocation: item.allText?.mainText, isMapLocationSelected: true }))}>
+                                            <div className="autosuggestion_icon card loc name">
+                                                <span>{item.allText?.mainText}</span>
+                                                <span className="name">{item.allText?.secondaryText}</span>
+                                            </div>
+                                        </div>)
+                                })}
+                            </div>
                         </div>
                         : null}
                     <li className="date_box">
@@ -682,7 +746,8 @@ const mapStateToProps = (state: any) => {
         recentSearchJobData: state.homeSearch.recentSearchJobData,
         homeSearchJobData: state.homeSearch.homeSearchJobData,
         tradeListData: state.auth.tradeListData,
-        localChanges: state.jobs.localChanges
+        localChanges: state.jobs.localChanges,
+        recentLocationData: state.homeSearch.recentLocationData,
     }
 }
 
@@ -691,7 +756,8 @@ const mapDispatchToProps = (dispatch: any) => {
         getSearchJobList,
         getRecentSearchList,
         postHomeSearchData,
-        isHandleChanges
+        isHandleChanges,
+        getRecentLocationList
     }, dispatch);
 }
 

@@ -131,11 +131,11 @@ const reducer = (state = initialState, action: any) => {
         builderNewApplicantsList: action.payload,
       };
 
-    case actionTypes.SET_TRADIE_REVIEW_LIST:
-      return {
-        ...state,
-        tradieReviewList: action.payload,
-      };
+    // case actionTypes.SET_TRADIE_REVIEW_LIST:
+    //   return {
+    //     ...state,
+    //     tradieReviewList: action.payload,
+    //   };
 
     case actionTypes.SET_TRADIE_PROFILE:
       return {

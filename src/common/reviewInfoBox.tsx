@@ -1,3 +1,6 @@
+// @ts-ignore
+import ReactStars from "react-rating-stars-component";
+
 import dummy from '../assets/images/u_placeholder.jpg';
 
 const ReviewInfoBox = (props: any) => {
@@ -6,7 +9,17 @@ const ReviewInfoBox = (props: any) => {
         <div className="flex_col_sm_3" key={item.reviewId}>
             <div className="review_card">
                 <div className="rating_star">
-                    star here..
+                    <ReactStars
+                        count={5}
+                        value={item.ratings}
+                        size={20}
+                        edit={false}
+                        isHalf={true}
+                        emptyIcon={<i className="far fa-star"></i>}
+                        halfIcon={<i className="fa fa-star-half-alt"></i>}
+                        fullIcon={<i className="fa fa-star"></i>}
+                        activeColor="#ffd700"
+                    />
                 </div>
                 <div className="pic_shot_dtl">
                     <figure className="u_img">

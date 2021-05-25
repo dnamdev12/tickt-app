@@ -8,7 +8,7 @@ const SavedJobs = () => {
             <span className="title">Saved jobs</span>
             <div className="flex_row tradies_row">
                 <div className="flex_col_sm_6">
-                    <div className="tradie_card">
+                    <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                         <a href="javascript:void(0)" className="more_detail circle"></a>
                         <div className="user_wrap">
                             <figure className="u_img">
@@ -34,7 +34,7 @@ const SavedJobs = () => {
                     </div>
                 </div>
                 <div className="flex_col_sm_6">
-                    <div className="tradie_card">
+                    <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                         <a href="javascript:void(0)" className="more_detail circle"></a>
                         <div className="user_wrap">
                             <figure className="u_img">

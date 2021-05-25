@@ -22,101 +22,6 @@ interface Active {
     tradieId: any,
     tradieImage: any,
 }
-
-
-const results: any = [
-    {
-        "tradieId": "60a35096de60d01d99d3ae56",
-        "tradieImage": "",
-        "tradieName": "Test Tradie",
-        "reviews": 0,
-        "ratings": 0,
-        "status": "AWAITING",
-        "tradeData": [
-            {
-                "tradeId": "605c8bccb777553e6b057b8a",
-                "tradeSelectedUrl": "https://appinventiv-development.s3.amazonaws.com/1619674591945.png",
-                "tradeName": "Plumber"
-            }
-        ],
-        "specializationData": [
-            {
-                "specializationId": "605c8bccb777553e6b057b8b",
-                "specializationName": "Two Two Two"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c6",
-                "specializationName": "Security and Fire Alarm Installation"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c9",
-                "specializationName": "Powerhouse and Substation Technician"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4ca",
-                "specializationName": "Electrotechnical Panel Building"
-            }
-        ]
-    },
-    {
-        "tradieId": "608859be15c9ec2ff6fb7865",
-        "tradieImage": "",
-        "tradieName": "name",
-        "reviews": 0,
-        "ratings": 0,
-        "status": "AWAITING",
-        "tradeData": [
-            {
-                "tradeId": "605c8bccb777553e6b057b8a",
-                "tradeSelectedUrl": "https://appinventiv-development.s3.amazonaws.com/1619674591945.png",
-                "tradeName": "Plumber"
-            }
-        ],
-        "specializationData": [
-            {
-                "specializationId": "605c8bccb777553e6b057b8b",
-                "specializationName": "Two Two Two"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c2",
-                "specializationName": "Machine Maintenance"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c3",
-                "specializationName": "Circuit Board Wiring"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c4",
-                "specializationName": "Telecomms Line Installation"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c5",
-                "specializationName": "Highway Systems"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c6",
-                "specializationName": "Security and Fire Alarm Installation"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c7",
-                "specializationName": "Electrical Instrumentation"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c8",
-                "specializationName": "Electrical Inspection"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4c9",
-                "specializationName": "Powerhouse and Substation Technician"
-            },
-            {
-                "specializationId": "6066fca0cc682b18cd57a4ca",
-                "specializationName": "Electrotechnical Panel Building"
-            }
-        ]
-    }
-]
-
 interface State {
     isToggleApplicants: boolean
 }
@@ -173,7 +78,7 @@ class OpenJobs extends Component<Props, State> {
                             tradieImage,
                         }: Active) => (
                             <div className="flex_col_sm_6">
-                                <div className="tradie_card">
+                                <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                     <span
                                         onClick={() => { this.redirectToInfo({ jobId, tradieId, specializationId }) }}
                                         className="more_detail circle">

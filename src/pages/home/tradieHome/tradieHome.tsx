@@ -13,8 +13,6 @@ const TradieHome = (props: any) => {
             coordinates: [
                 144.946457,
                 -37.840935
-                // 72.831062,
-                // 21.17021
             ]
         },
     });
@@ -51,6 +49,9 @@ const TradieHome = (props: any) => {
         }
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
+        }
+        if (props.homeSearchJobData.length) {
+            props.resetHomeSearchJobData();
         }
     }, [])
 

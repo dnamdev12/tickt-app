@@ -108,10 +108,11 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, }: any) => {
                         tradieImage,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
-                            <div className="tradie_card">
-                                <span onClick={() => {
-                                    redirectToInfo({ jobId, tradieId, specializationId });
-                                }} className="more_detail circle">
+                            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
+                                <span className="more_detail circle"
+                                    onClick={() => {
+                                        redirectToInfo({ jobId, tradieId, specializationId });
+                                    }}>
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">

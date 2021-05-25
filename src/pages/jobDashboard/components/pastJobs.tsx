@@ -19,11 +19,10 @@ const PastJobs = (props: Proptypes) => {
     <>
       <span className="sub_title">Past Jobs</span>
       <div className="flex_row tradies_row">
-        {/* {props.pastJobList?.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, milestoneNumber, totalMilestones, tradeName, status, jobName, builderData, time, amount, locationName, durations }, index: number) => { */}
         {props.pastJobList?.map((item: any) => {
           return (
             <div className="flex_col_sm_6" key={item.jobId}>
-              <div className="tradie_card">
+              <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${item.jobId}&tradeId=${item.tradeId}&specializationId=${item.specializationId}`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
@@ -39,7 +38,7 @@ const PastJobs = (props: Proptypes) => {
                     <li className="icon clock">{item.time}</li>
                     <li className="icon dollar">{item.amount}</li>
                     <li className="icon location line-1">{item.locationName}</li>
-                    {item.durations ? <li className="icon calendar">{item.durations}</li> : <li className="link ">{item.status}</li>}
+                    {item.durations ? <li className="icon calendar">{item.durations}</li> : <li><span className="job_status">{item.status}</span></li>}
                   </ul>
                 </div>
                 {/* <p className="commn_para line-3">
@@ -56,7 +55,7 @@ const PastJobs = (props: Proptypes) => {
                         id="progress-bar"
                         type="range"
                         min="0"
-                        readOnly={true}
+                        value={item.milestoneNumber / item.totalMilestones * 100}
                       />
                     </span>
                   </div>
