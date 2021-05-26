@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import {
     getBuilderProfile,
     getTradieReviewList,
+    updateReviewBuilder,
+    deleteReviewBuilder,
     tradieReviewReply,
     tradieUpdateReviewReply,
     tradieRemoveReviewReply
@@ -74,20 +76,23 @@ const BuilderInfo = (props: PropsType) => {
     const [reviewList, setReviewList] = useState<Array<any>>([]);
     const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
     const [reviewsData, setReviewsData] = useState<any>({
-        reviewReplyClicked: false,
+        reviewReplyClicked: false, // reply modal opened
         showAllReviewsClicked: false,
         submitReviewsClicked: false,
-        deleteReviewsClicked: false,
-        updateReviewsClicked: false,
+        rating: null, // review star rating
+        deleteParentReviews: false, // delete revParentiew - rta
+        updateParentReviews: false, // update review - reviewData
+        deleteReviewsClicked: false, // delete reply - replyData
+        updateReviewsClicked: false, // update reply - replyData
         reviewsClickedType: '',
-        confirmationClicked: false,
+        confirmationClicked: false, // confirmation modal opened
         showReviewReplyButton: true,
         reviewId: '',
         reviewData: '',
         showReviewReply: false,
         replyShownHideList: []
     })
-    console.log(reviewsData, "reviewData");
+    console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo");
 
     useEffect(() => {
         (async () => {
@@ -121,19 +126,32 @@ const BuilderInfo = (props: PropsType) => {
         setReviewsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteReviewsClicked: false }))
     }
 
+    const loadMoreReviewHandler = async () => {
+        const data: any = {
+            builderId: profileData?.builderId,
+            page: reviewListPageNo + 1
+        }
+        const res = await getTradieReviewList(data);
+        if (res.success) {
+            setReviewList((prevData: any) => ([...prevData, ...res.data]));
+            setReviewListPageNo(data.page);
+        }
+    }
+
     const submitReviewHandler = async (type: string) => {
-        if (['reviewReply', 'updateReviewReply', 'removeReviewReply'].includes(type)) {
+        if (['reviewReply', 'updateReviewReply', 'removeReviewReply', 'removeReviewBuilder', 'updateReviewBuilder'].includes(type)) {
             var response;
+            var data: any;
             var newData: any = reviewsData.replyShownHideList;
             if (type == 'reviewReply') {
-                const data = {
+                data = {
                     reviewId: reviewsData.reviewId,
                     reply: reviewsData.reviewData
                 }
                 response = await tradieReviewReply(data);
             }
             if (type == 'updateReviewReply') {
-                const data = {
+                data = {
                     reviewId: reviewsData.reviewId,
                     replyId: reviewsData.replyId,
                     reply: reviewsData.reviewData
@@ -141,11 +159,23 @@ const BuilderInfo = (props: PropsType) => {
                 response = await tradieUpdateReviewReply(data);
             }
             if (type == 'removeReviewReply') {
-                const data = {
+                data = {
                     reviewId: reviewsData.reviewId,
                     replyId: reviewsData.replyId
                 }
                 response = await tradieRemoveReviewReply(data);
+            }
+            if (type == 'updateReviewBuilder') {
+                data = {
+                    reviewId: reviewsData.reviewId,
+                    rating: reviewsData.rating,
+                    review: reviewsData.reviewData
+                }
+                response = await updateReviewBuilder(data);
+            }
+            if (type == 'removeReviewBuilder') {
+                const reviewId = reviewsData.reviewId;
+                response = await deleteReviewBuilder(reviewId);
             }
             if (response?.success) {
                 const data: any = {
@@ -163,6 +193,9 @@ const BuilderInfo = (props: PropsType) => {
                 showAllReviewsClicked: true,
                 confirmationClicked: false,
                 reviewsClickedType: '',
+                rating: null,
+                deleteParentReviews: false,
+                updateParentReviews: false,
                 deleteReviewsClicked: false,
                 updateReviewsClicked: false,
                 reviewId: '',
@@ -172,7 +205,7 @@ const BuilderInfo = (props: PropsType) => {
         }
     }
 
-    const reviewHandler = (type: string, reviewId?: string, replyId?: string, reply?: string) => {
+    const reviewHandler = (type: string, reviewId?: string, replyId?: string, userText?: string, rating?: number) => {
         if (type == 'reviewReplyClicked') {
             setReviewsData((prevData: any) => ({
                 ...prevData,
@@ -201,12 +234,12 @@ const BuilderInfo = (props: PropsType) => {
             setReviewsData((prevData: any) => ({
                 ...prevData,
                 reviewReplyClicked: true,
-                updateReviewsClicked: true,
                 reviewId: reviewId,
                 replyId: replyId,
                 reviewsClickedType: type,
                 showAllReviewsClicked: false,
-                reviewData: reply
+                updateReviewsClicked: true,
+                reviewData: userText //reply text
             }));
         } else if (type == 'replyCancelBtnClicked') {
             setReviewsData((prevData: any) => ({
@@ -226,6 +259,25 @@ const BuilderInfo = (props: PropsType) => {
             const newData = [...reviewsData.replyShownHideList];
             newData.push(replyId);
             setReviewsData((prevData: any) => ({ ...prevData, replyShownHideList: newData }));
+        } else if (type == 'removeReviewBuilder') {
+            setReviewsData((prevData: any) => ({
+                ...prevData,
+                confirmationClicked: true,
+                deleteParentReviews: true,
+                reviewId: reviewId,
+                reviewsClickedType: type
+            }));
+        } else if (type == 'updateReviewBuilder') {
+            setReviewsData((prevData: any) => ({
+                ...prevData,
+                reviewReplyClicked: true,
+                updateParentReviews: true,
+                reviewsClickedType: type,
+                showAllReviewsClicked: false,
+                rating: rating,
+                reviewId: reviewId,
+                reviewData: userText //review text
+            }));
         }
     }
 
@@ -242,7 +294,7 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
-                                    <img src={profilePlaceholder} alt="profile-pic" />
+                                    <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" />
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">
@@ -453,14 +505,14 @@ const BuilderInfo = (props: PropsType) => {
                                                 </div>
                                             </div>
                                             <p>{reviewData?.review}</p>
-                                            {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
+                                            {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
                                                 <span className="show_hide_ans link"
                                                     onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
-                                            {/* span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>} */}
-                                            {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
-                                            {reviewData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
+                                            {!reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
+                                            {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('updateReviewBuilder', reviewData?.reviewId, '', reviewData?.review, reviewData?.rating)}>Edit</span>}
+                                            {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('removeReviewBuilder', reviewData?.reviewId)}>Delete</span>}
                                         </div>
-                                        {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
+                                        {reviewData?.replyData?.reply && reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) &&
                                             <div className="question_ans_card answer">
                                                 <div className="user_detail">
                                                     <figure className="user_img">
@@ -472,13 +524,16 @@ const BuilderInfo = (props: PropsType) => {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.replyData?.reply}</p>
-                                                <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide review</span>
+                                                <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>
                                                 {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
                                                 {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
                                             </div>}
                                     </div>
                                 )
                             })}
+                            {profileData?.reviewsCount > reviewList.length && <div className="text-center">
+                                <button className="fill_grey_btn load_more" onClick={loadMoreReviewHandler}>Load more</button>
+                            </div>}
                         </div>
                     </div>
                 </Modal>
@@ -495,14 +550,14 @@ const BuilderInfo = (props: PropsType) => {
                     <>
                         <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
-                                <span className="sub_title">{`${reviewsData.updateReviewsClicked ? 'Edit reply' : 'Reply'}`}</span>
+                                <span className="sub_title">{`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
                                 <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
                                     <img src={cancel} alt="cancel" />
                                 </button>
                             </div>
                             <div className="inner_wrap">
                                 <div className="form_field">
-                                    <label className="form_label">Your reply</label>
+                                    <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
                                     <div className="text_field">
                                         <textarea placeholder="Text" value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
                                     </div>
@@ -510,9 +565,9 @@ const BuilderInfo = (props: PropsType) => {
                                 </div>
                             </div>
                             <div className="bottom_btn custom_btn">
-                                {reviewsData.updateReviewsClicked ?
-                                    <button className="fill_btn full_btn" onClick={() => submitReviewHandler('updateReviewReply')}>Save</button>
-                                    : <button className="fill_btn full_btn" onClick={() => reviewHandler('reviewReply')}>Send</button>}
+                                {(reviewsData.updateReviewsClicked || reviewsData.updateParentReviews) ?
+                                    <button className="fill_btn full_btn" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Save</button>
+                                    : <button className="fill_btn full_btn" onClick={() => reviewHandler(reviewsData.reviewsClickedType)}>Send</button>}
                                 <button className="fill_grey_btn" onClick={() => reviewHandler('replyCancelBtnClicked')}>Cancel</button>
                             </div>
                         </div>
@@ -531,13 +586,13 @@ const BuilderInfo = (props: PropsType) => {
                     <>
                         <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
-                                <span className="sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : reviewsData.updateReviewsClicked ? 'Update' : ''} Reply Confirmation`}</span>
+                                {reviewsData.deleteReviewsClicked && <span className="sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>}
                                 <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                     <img src={cancel} alt="cancel" />
                                 </button>
                             </div>
                             <div className="modal_message">
-                                <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}reply?`}</p>
+                                <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
                             </div>
                             <div className="dialog_actions">
                                 <button className="fill_btn" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
@@ -552,7 +607,3 @@ const BuilderInfo = (props: PropsType) => {
 }
 export { portfolio, portfolioModal };
 export default BuilderInfo;
-
-{/* <div className="text-center">
-    <button className="fill_grey_btn load_more">Load more</button>
-</div> */}
