@@ -32,7 +32,7 @@ const NewApplicants = (props: any) => {
     const redirectToInfo = ({ jobId, tradeId, specializationId }: any) => {
         console.log({ jobId, tradeId, specializationId });
         const props_: any = props;
-        props_.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`);
+        props_.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`);
     }
 
     return (

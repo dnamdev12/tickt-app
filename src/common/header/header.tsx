@@ -13,6 +13,7 @@ import bell from '../../assets/images/ic-notification.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import profile from '../../assets/images/ic-profile.png';
 
+
 const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
 const Header = (props: any) => {
@@ -30,6 +31,10 @@ const Header = (props: any) => {
 
     useEffect(() => {
         props.callTradieProfileData();
+        let type: any = storageService.getItem('userType');
+        if (type === 2) {
+            props.getProfileBuilder();
+        }
     }, [])
 
     useEffect(() => {
@@ -74,7 +79,7 @@ const Header = (props: any) => {
             history.push('/jobs')
         }
     }
-
+    console.log({props},'---->')
     return (
         <>
             {showHeader && <header id="header">
@@ -142,12 +147,14 @@ const Header = (props: any) => {
                                         onClose={handleClose}
                                     >
                                         {/* <span className="sub_title">{props.tradieProfileData?.userName}</span> */}
-                                        <span className="sub_title">John Oldman</span>
+                                        <span className="sub_title">
+                                            {props?.builderProfile?.userName || ''}
+                                        </span>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon">
-                                                <img src={profile} />
-                                            My Profile
-                                        </span>
+                                                <img src={props?.builderProfile?.userImage || profile} alt="settings-icon" />
+                                                {'My Profile'}
+                                            </span>
                                         </MenuItem>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon logout" onClick={logoutHandler}>Logout</span>
@@ -155,8 +162,19 @@ const Header = (props: any) => {
                                     </Menu>
                                 </div>
                             </div>
-                            {!storageService.getItem("jwtToken") && <li> <a className="active" onClick={() => setShowModal(!showModal)}>Log in</a></li>}
-                            <AuthModal showModal={showModal} setShowModal={setShowModal} history={props.history} firstTimePopup>{props.children}</AuthModal>
+                            {!storageService.getItem("jwtToken") &&
+                                <li>
+                                    <a className="active" onClick={() => setShowModal(!showModal)}>
+                                        {'Log in'}
+                                    </a>
+                                </li>}
+                            <AuthModal
+                                showModal={showModal}
+                                setShowModal={setShowModal}
+                                history={props.history}
+                                firstTimePopup>
+                                {props.children}
+                            </AuthModal>
                         </ul>
                     </div>
                 </div>

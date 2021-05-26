@@ -55,12 +55,14 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
                                         {'New applicants'}
                                     </span>
                                 </div>
-                                {/* {activeType === 'applicant' && */}
+                                {/* { */}
                                 <p className="commn_para">
+                                    {activeType === 'applicant' &&
+                                        <button onClick={sortBySortingClick} className="common-btn ">
+                                            {'Sort by'}
+                                        </button>
+                                    } 
 
-                                    <button onClick={sortBySortingClick} className="common-btn ">
-                                        {'Sort by'}
-                                    </button>
                                     <Menu
                                         // id="simple-menu"
                                         className="fsp_modal range"

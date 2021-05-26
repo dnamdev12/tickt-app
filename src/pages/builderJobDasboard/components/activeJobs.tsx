@@ -1,5 +1,5 @@
 import React, { ReactElement, useState, useEffect } from 'react'
-import dummy from '../../../assets/images/u_placeholder.jpg';
+import dummy from "../../../assets/images/u_placeholder.jpg";
 import approved from '../../../assets/images/approved.png';
 import MarkMilestones from './markMilestones';
 import { withRouter } from 'react-router-dom';
@@ -41,7 +41,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
 
     const redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
         console.log({ jobId, tradieId, specializationId });
-        history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
+        history.push(`/job-detail?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
     }
 
     if (localState && selectedIndex !== null) {

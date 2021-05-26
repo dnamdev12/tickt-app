@@ -78,6 +78,15 @@ const Urls = {
     acceptDeclineRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}acceptDeclineRequest`,
     milestoneListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneList`,
     milestoneDetails: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneDetails`,
+    milestoneApproveDecline:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneApproveDecline`,
+    questionList:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}questionList`,
+    answerQuestion:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}answerQuestion`,
+    updateAnswer:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}updateAnswer`,
+    deleteAnswer:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}deleteAnswer`,
+    reviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewReply`,
+    updateReviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}updateReviewReply`,
+    removeReviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}removeReviewReply`,
+    builder:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
 }
 
 export const urlFor = (service: String): string => {
