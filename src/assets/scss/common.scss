@@ -1204,10 +1204,18 @@ body {
       height: 400px;
       object-fit: cover;
 	  @include border-radius(3px);
+    @media (max-width: 650px){
+      width: 100% !important;
+    }
     }
 	.edit_icon{
 		top: 10px;
 		right: 20px;
+    img{
+      @media (max-width: 650px){
+        width: 24px !important;
+      }
+    }
 	}
 	.owl-nav{
     .nav-btn{
@@ -1225,7 +1233,7 @@ body {
 				background-color: var(--blue-two);
 			}
       @media (max-width: 650px) {
-        @include position(absolute, auto, 80px, 0px, auto);
+        @include position(absolute, auto, 80px, 40px, auto);
       }
 		}
 		.owl-next{
@@ -1236,18 +1244,18 @@ body {
 				background-color: var(--blue-two);
 			}
       @media (max-width: 650px) {
-        @include position(absolute, auto, 20px, 0px, auto);
+        @include position(absolute, auto, 20px, 40px, auto);
       }
 		}
 		img{
-			width: 18px;
+			width: 18px !important;
 			height: 18px;
 		}
 	}
 	.owl-dots{
 		@include position(absolute, auto, auto, 40px, 30px);
     @media (max-width: 650px) {
-      @include position(absolute, auto, auto, 10px, 10px);
+      @include position(absolute, auto, auto, 50px, 10px);
     }
 		.owl-dot span{
 			background: rgba(255, 255, 255, 0.4);
@@ -1343,11 +1351,16 @@ body {
     }
     .title {
 		margin-bottom: 16px;
+    position: relative;
+    width: 100%;
       @media (max-width: 1024px) {
         font-size: 22px;
       }
       @media (max-width: 812px) {
         font-size: 17px;
+      }
+      .edit_icon{
+        top: auto;
       }
     }
     .sub_title {
@@ -4342,6 +4355,9 @@ body {
       right: 0;
       @media(max-width: 768px){
         right: 50px;
+      }
+      @media(max-width: 768px){
+        right: 10px;
       }
     }
     .xs_sub_title{
