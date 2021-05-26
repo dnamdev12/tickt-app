@@ -343,8 +343,8 @@ const BannerSearch = (props: PropsType) => {
             if (Object.keys(selectedAddress).length) {
                 data['location'] = {
                     "coordinates": [
-                        +selected_address?.lng,
-                        +selected_address?.lat
+                        parseFloat(selected_address?.lng),
+                        parseFloat(selected_address?.lat)
                     ]
                 }
             } else {

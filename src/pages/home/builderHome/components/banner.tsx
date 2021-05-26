@@ -22,7 +22,7 @@ const Banner = (props: any) => {
                 name: null,
                 tradeId: null,
                 specializations: null,
-                location: Object.keys(position).length ? { "coordinates": [position?.long, position?.lat] } : null,
+                location: Object.keys(position).length ? { "coordinates": [parseFloat(position?.long), parseFloat(position?.lat)] } : null,
                 calender: null,
                 address: null
             }

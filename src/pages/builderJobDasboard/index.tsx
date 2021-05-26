@@ -28,7 +28,6 @@ const mapStateToProps = (state: any) => {
         approvalJobs: null,
         applicantsListJobs: builderNewApplicantsList,
         isLoading: state.common.isLoading
-    
     };
 };
 

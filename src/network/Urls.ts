@@ -80,6 +80,7 @@ const Urls = {
     reviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewList`,
     acceptDeclineRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}acceptDeclineRequest`,
     milestoneListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneList`,
+    milestoneDetails: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneDetails`,
 }
 
 export const urlFor = (service: String): string => {

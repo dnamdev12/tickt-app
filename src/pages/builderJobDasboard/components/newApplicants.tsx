@@ -75,7 +75,7 @@ const NewApplicants = (props: any) => {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{`${timeLeft} minutes ago`}</li>
+                                        <li className="icon clock">{timeLeft}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{LocationName}</li>
                                         <li className="icon calendar">{`${durations} days`}</li>

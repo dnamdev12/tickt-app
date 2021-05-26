@@ -11,46 +11,13 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import {
     getHomeJobDetails,
-    getMilestoneList
+    getMilestoneList,
+    getMilestoneDetails
 } from '../../../redux/homeSearch/actions';
 
 interface Props {
 
 }
-// const milestones = [{
-//     milestoneId: 1,
-//     milestoneName: 'mile-1',
-//     isPhotoevidence: true,
-//     status: 1,
-//     fromDate: '05-10-2021',
-//     toDate: '05-31-2021',
-// },
-// {
-//     milestoneId: 1,
-//     milestoneName: 'mile-2',
-//     isPhotoevidence: true,
-//     status: 0,
-//     fromDate: '05-10-2021',
-//     toDate: '05-31-2021',
-// },
-// {
-//     milestoneId: 1,
-//     milestoneName: 'mile-3',
-//     isPhotoevidence: true,
-//     status: 0,
-//     fromDate: '05-10-2021',
-//     toDate: '05-31-2021',
-// },
-// {
-//     milestoneId: 1,
-//     milestoneName: 'mile-4',
-//     isPhotoevidence: true,
-//     status: 0,
-//     fromDate: '05-10-2021',
-//     toDate: '05-31-2021',
-// }
-// ];
-
 interface Mile {
     milestoneId: any,
     milestoneName: any,
@@ -64,6 +31,8 @@ const MarkMilestones = (props: any) => {
     const { resetStateLocal, listData, selectedIndex } = props;
     const [enableApprove, setEnableApprove] = useState(false);
     const [itemDetails, setDetails] = useState(null);
+    const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
+    const [selectedMile, setMilestone] = useState(null);
 
     const backToScreen = () => {
         setEnableApprove(false);
@@ -73,13 +42,25 @@ const MarkMilestones = (props: any) => {
 
 
     useEffect(() => {
+        fetchMilestoneDetail();
+    }, [selectedMilestoneIndex]);
+
+    const fetchMilestoneDetail = async () => {
+        if (selectedMilestoneIndex && Object.keys(selectedMilestoneIndex).length) {
+            const { milestoneId, jobId } = selectedMilestoneIndex;
+            if (milestoneId && jobId) {
+                let response: any = await getMilestoneDetails({ milestoneId, jobId });
+                if (response.success) {
+                    setMilestone(response.data);
+                }
+            }
+        }
+    }
+
+    useEffect(() => {
         console.log({ props })
         preFetch();
     }, []);
-
-    useEffect(() => {
-        console.log({ itemDetails });
-    }, [itemDetails])
 
     const preFetch = async () => {
         let { jobId } = selectedItem;
@@ -92,7 +73,7 @@ const MarkMilestones = (props: any) => {
     }
 
 
-    const redirectToInfo = ({ jobId, tradeId, specializationId , status}: any) => {
+    const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
         console.log({ jobId, tradeId, specializationId });
         let props_: any = props;
         props_.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
@@ -100,7 +81,13 @@ const MarkMilestones = (props: any) => {
 
     let item_details: any = itemDetails;
     if (enableApprove) {
-        return <MilestoneApprove backToScreen={backToScreen} />
+        return (
+            <MilestoneApprove
+                backToScreen={backToScreen}
+                milestone={selectedMile}
+                selectedItem={selectedMilestoneIndex}
+
+            />)
     }
     return (
         <div className="flex_row">
@@ -175,7 +162,11 @@ const MarkMilestones = (props: any) => {
                                             className="fill_btn full_btn"
                                             onClick={() => {
                                                 setEnableApprove(true);
-                                                // setMilestoneIndex(index);
+                                                setMilestoneIndex({
+                                                    index,
+                                                    milestoneId,
+                                                    jobId: item_details?.jobId
+                                                });
 
                                                 if (index === item_details?.milestones?.length - 1) {
                                                     // setIsLastMilestone(true);
@@ -220,7 +211,7 @@ const MarkMilestones = (props: any) => {
                         title="More"
                         onClick={() => {
                             let { jobId, tradeId, specializationId, status } = selectedItem;
-                            redirectToInfo({ jobId, tradeId, specializationId , status})
+                            redirectToInfo({ jobId, tradeId, specializationId, status })
                         }}>
                         <img src={more} alt="more" />
                     </span>
