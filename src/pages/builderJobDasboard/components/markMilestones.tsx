@@ -46,10 +46,14 @@ const MarkMilestones = (props: any) => {
     }, [selectedMilestoneIndex]);
 
     const fetchMilestoneDetail = async () => {
-        const { milestoneId, jobId } = selectedMilestoneIndex;
-        let response: any = await getMilestoneDetails({ milestoneId, jobId });
-        if (response.success) {
-            setMilestone(response.data);
+        if (selectedMilestoneIndex && Object.keys(selectedMilestoneIndex).length) {
+            const { milestoneId, jobId } = selectedMilestoneIndex;
+            if (milestoneId && jobId) {
+                let response: any = await getMilestoneDetails({ milestoneId, jobId });
+                if (response.success) {
+                    setMilestone(response.data);
+                }
+            }
         }
     }
 
@@ -82,7 +86,7 @@ const MarkMilestones = (props: any) => {
                 backToScreen={backToScreen}
                 milestone={selectedMile}
                 selectedItem={selectedMilestoneIndex}
-       
+
             />)
     }
     return (
