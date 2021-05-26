@@ -1,5 +1,6 @@
 const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
 // const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
+// const ACTIVE_HOST = 'https://ticktqastg.appskeeper.in';  // stg env
 
 const versions = {
     v1: 'v1/',
@@ -66,6 +67,8 @@ const Urls = {
     updateBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}updateBankDetails`,
     getBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getBankDetails`,
     reviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewBuilder`,
+    updateReviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewBuilder`,
+    removeReviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewBuilder`,
     builderProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}builderProfile`,
     deleteRecentSearch: `${versions.v1}${ServiceEnum.admin}deleteRecentSearch`, //admin
     tradieReviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewList`,

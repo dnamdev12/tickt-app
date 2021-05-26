@@ -145,8 +145,7 @@ const BannerSearch = (props: PropsType) => {
     }, [addressText])
 
     useEffect(() => {
-        if (props.recentLocationData?.length &&
-            JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+        if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
             getRecentLocationData();
         }
     }, [props.recentLocationData, recentLocation])
@@ -231,9 +230,14 @@ const BannerSearch = (props: PropsType) => {
                                                 // setItemSearch(item);
                                                 // setSelectedTrade({});
                                             }}>
-                                            <div className="autosuggestion_icon card history">
-                                                <span>{item.name}</span>
-                                                <span className="name">{item.trade_name}</span>
+                                            <div className="card ico_txt_wrap">
+                                                <figure className="ico">
+                                                    <img src={residential} alt="icon" />
+                                                </figure>
+                                                <div className="f_column">
+                                                    <span>{item.name}</span>
+                                                    <span className="name">{item.trade_name}</span>
+                                                </div>
                                                 <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
                                                     <img src={close} alt="remove" />
                                                 </span>

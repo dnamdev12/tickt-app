@@ -175,6 +175,30 @@ export const reviewBuilder = async (data: any) => {
   return { success: false };
 }
 
+export const updateReviewBuilder = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateReviewBuilder, data)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const deleteReviewBuilder = async (reviewId: string) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(Urls.removeReviewBuilder + `?reviewId=${reviewId}`)
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 export const tradieReviewReply = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieReviewReply, data)
