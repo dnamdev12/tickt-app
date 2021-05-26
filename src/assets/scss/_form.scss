@@ -942,6 +942,9 @@ hr {
 .col_ruler{
   position: relative;
   padding-left: 50px !important;
+  @media (max-width: 650px){
+    padding: 0 !important;
+  }
   &::before{
     content: '';
     position: absolute;
@@ -950,5 +953,8 @@ hr {
     width: 1px;
     height: 100vh;
     background-color: #dfe5ef;
+    @media (max-width: 650px){
+      display: none;
+    }
   }
 }
