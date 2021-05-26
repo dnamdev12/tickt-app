@@ -100,11 +100,11 @@ const routes = [
         authRoute: false,
         privateRoute: true,
     },
-    // {
-    //     name: 'builderinfo',
-    //     path: '/builder-info',
-    //     component: BuilderInfo,
-    // },
+    {
+        name: 'builderinfo',
+        path: '/builder-info',
+        component: BuilderInfo,
+    },
     {
         name: 'tradieinfo',
         path: '/tradie-info',
