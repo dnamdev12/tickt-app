@@ -17,7 +17,7 @@ const NewJobs = ({ getNewJobList, newJobList }: Proptypes) => {
       {/* New Jobs */}
       <span className="sub_title">New Jobs</span>
       <div className="flex_row tradies_row">
-        {newJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, jobDescription, time, amount, locationName, durations, viewersCount, questionsCount }) => (
+        {newJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, jobDescription, time, amount, locationName, durations, viewersCount, questionsCount }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
               <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
@@ -26,7 +26,8 @@ const NewJobs = ({ getNewJobList, newJobList }: Proptypes) => {
                   <img src={dummy || tradeSelectedUrl} alt="traide-img" />
                 </figure>
                 <div className="details">
-                  <span className="name">{jobName}</span>
+                  <span className="name">{tradeName}</span>
+                  <span className="prof">{jobName}</span>
                 </div>
               </div>
               <div className="job_info">

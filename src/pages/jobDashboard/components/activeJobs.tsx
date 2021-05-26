@@ -26,6 +26,7 @@ const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
             specializationId,
             tradeSelectedUrl,
             jobName,
+            tradeName,
             time,
             amount,
             locationName,
@@ -45,7 +46,8 @@ const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
                     <img src={tradeSelectedUrl || dummy} alt="traide-img" />
                   </figure>
                   <div className="details">
-                    <span className="name">{jobName}</span>
+                    <span className="name">{tradeName}</span>
+                    <span className="prof">{jobName}</span>
                   </div>
                 </div>
                 <div className="job_info">
