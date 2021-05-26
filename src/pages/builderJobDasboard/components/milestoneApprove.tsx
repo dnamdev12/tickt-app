@@ -2,12 +2,14 @@ import React, { useState } from 'react'
 import media from '../../../assets/images/portfolio-placeholder.jpg';
 import DeclineMilestone from './declineMilestone';
 interface Props {
-    backToScreen: any
+    backToScreen: any,
+    milestone: any,
+    selectedItem: any
 }
 
-const MilestoneApprove = ({ backToScreen }: Props) => {
+const MilestoneApprove = ({ backToScreen, milestone, selectedItem }: Props) => {
     const [isToggle, setToggle] = useState(false);
-
+    console.log({ milestone, selectedItem })
     if (isToggle) {
         return <DeclineMilestone />
     }

@@ -75,3 +75,13 @@ export const getMilestoneList = async (jobId: any) => {
     }
     return { success: false, data: response.result };
 }
+
+export const getMilestoneDetails = async (data: any) => {
+    setLoading(true);
+    const response: FetchResponse = await NetworkOps.get(`${Urls.milestoneDetails}?jobId=${data.jobId}&milestoneId=${data.milestoneId}`)
+    setLoading(false);
+    if (response.status_code === 200) {
+        return { success: true, data: response.result };
+    }
+    return { success: false, data: response.result };
+}

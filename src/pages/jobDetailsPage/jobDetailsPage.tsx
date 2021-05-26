@@ -371,7 +371,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
                                             <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
-                                    ) : (
+                                    ) : paramStatus ? (
                                         <div className="bottom_btn">
                                             <button
                                                 className="fill_btn full_btn"
@@ -379,7 +379,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 {paramStatus}
                                             </button>
                                         </div>
-                                    )}
+                                    ) : null}
                                 </div>
                             </div>
                         </div>
@@ -474,7 +474,9 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                             <div className="btn_wrap">
                                                 <div className="bottom_btn">
-                                                    <button className="fill_grey_btn full_btn" onClick={() => questionHandler('askQuestion')}>Ask question</button>
+                                                    <button className="fill_grey_btn full_btn" onClick={() => questionHandler('askQuestion')}>
+                                                        {'Ask question'}
+                                                    </button>
                                                 </div>
                                             </div>
                                         </div>
@@ -559,7 +561,8 @@ const JobDetailsPage = (props: PropsType) => {
                                 </div>
                                 <div className="flex_row">
                                     <div className="flex_col_sm_12">
-                                        <span className="sub_title">Specialisations needed
+                                        <span className="sub_title">
+                                            {'Specialisations needed'}
                                         </span>
                                         <div className="tags_wrap">
                                             <ul>
