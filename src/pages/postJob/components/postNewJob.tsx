@@ -132,7 +132,7 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
               <div className="form_field">
                 <label className="form_label">Job Name</label>
                 <div className="text_field">
-                  <input type="text" placeholder="Enter Job Name" name="jobName" value={jobName} onChange={handleChange} />
+                  <input type="text" className="capitalize" placeholder="Enter Job Name" name="jobName" value={jobName} onChange={handleChange} />
                 </div>
                 <span className="error_msg">{errors.jobName}</span>
               </div>
