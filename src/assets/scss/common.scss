@@ -2262,6 +2262,11 @@ body {
 				}
 			}
 		}
+    &.sort{
+      .MuiMenu-paper{
+        margin: 65px 0 0 90px;
+      }
+    }
 	}
 }
 
@@ -4418,6 +4423,19 @@ body {
     }
   }
 }
+
+.applicatns_row{
+  .flex_col_sm_4{
+    width: 50%;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 100%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+}
+
 .payment_note{
   font-size: 14px;
   line-height: 1.43;
