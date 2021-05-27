@@ -2061,11 +2061,18 @@ body {
   .card {
     border-radius: 12px;
     border: none;
-    padding: 15px 7px 15px 50px;
+    padding: 15px 7px 15px 15px;
     transition: all ease-in 0.3s;
     background-color: #f6f6f6;
     position: relative;
     min-height: 64px;
+    span{
+      font-size: 14px;
+      color: var(--black-four);
+      position: relative;
+      font-weight: bold;
+      cursor: pointer;
+    }
     &:hover,
     &.active {
       box-shadow: 2px 0 20px 0 rgba(46, 61, 73, 0.2);
@@ -2087,6 +2094,21 @@ body {
       &:before {
         left: 5px;
       }
+    }
+    &.ico_txt_wrap{
+      display: flex;
+      .ico{
+        width: 24px;
+        height: 24px;
+        margin-right: 7px;
+        img{
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+    .f_column{
+      width: 81%;
     }
   }
   .flex_col_sm_4 {
@@ -2262,6 +2284,11 @@ body {
 				}
 			}
 		}
+    &.sort{
+      .MuiMenu-paper{
+        margin: 65px 0 0 90px;
+      }
+    }
 	}
 }
 
@@ -4418,6 +4445,19 @@ body {
     }
   }
 }
+
+.applicatns_row{
+  .flex_col_sm_4{
+    width: 50%;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      width: 100%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+}
+
 .payment_note{
   font-size: 14px;
   line-height: 1.43;
