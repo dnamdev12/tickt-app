@@ -3,8 +3,8 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
-import noDataFound from '../../../assets/images/no-data.png';
-// import {  } from "../../../assets/images/job-type-placeholder.png";
+import noDataFound from '../../../assets/images/no-search-data.png';
+
 interface Active {
     amount: any,
     durations: any,

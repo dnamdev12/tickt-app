@@ -1,5 +1,5 @@
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
-import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-search-data.png';
 
 const MostViewedJobs = (props: any) => {
 

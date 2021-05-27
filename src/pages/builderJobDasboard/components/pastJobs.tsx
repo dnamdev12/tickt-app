@@ -2,7 +2,7 @@ import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
-import noDataFound from '../../../assets/images/no-data.png';
+import noDataFound from '../../../assets/images/no-search-data.png';
 
 interface Post {
     amount: any,

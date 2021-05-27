@@ -24,7 +24,7 @@ import ReviewInfoBox from '../../common/reviewInfoBox';
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
-import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-search-data.png';
 import noDataFound from '../../assets/images/no-data-found.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import Carousel from 'react-multi-carousel';

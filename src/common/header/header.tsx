@@ -145,6 +145,10 @@ const Header = (props: any) => {
                                         keepMounted
                                         open={Boolean(anchorEl)}
                                         onClose={handleClose}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                          }}
                                     >
                                         {/* <span className="sub_title">{props.tradieProfileData?.userName}</span> */}
                                         <span className="sub_title">

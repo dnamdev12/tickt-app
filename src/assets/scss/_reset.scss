@@ -477,7 +477,7 @@ body.loader_show .full_loader {
         transform: translateY(-50%);
     }
     .rdrDayToday .rdrDayNumber span:after{
-        background: var(--blue);
+        background: transparent !important;
     }
 
     .rdrInRange{

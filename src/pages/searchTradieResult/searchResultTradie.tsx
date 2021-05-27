@@ -8,7 +8,7 @@ import SearchFilters from './searchFilters';
 // import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 // import filterSelected from '../../assets/images/ic-filter-selected.png';
 // import mapIcon from '../../assets/images/map.png';
-import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
 // import BannerSearch from '../shared/bannerSearch'

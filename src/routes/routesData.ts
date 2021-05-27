@@ -127,7 +127,7 @@ const routes = [
             '/new-jobs',
             '/approved-milestones',
             '/mark-milestone',
-            // '/review-builder',
+            '/review-builder',
         ],
         component: JobDashboard,
         authRoute: false,
