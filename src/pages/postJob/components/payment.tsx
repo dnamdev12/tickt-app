@@ -17,27 +17,27 @@ interface Proptypes {
   handleStepComplete: (data: any) => void;
   handleStepBack: () => void;
 }
-
+// "Per hour" and "Fixed price"
 const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 
-  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: 'fixed', amount: '' });
+  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: 'Per hour', amount: '' });
   const [errors, setErrors] = useState({ pay_type: '', amount: '' });
   const [continueClicked, setContinueClicked] = useState(false);
   const [localChanges, setLocationChanges] = useState(false);
-  const [reactSelect, setReactSelect] = useState({ value: "fixed", label: "Fixed Price" });
+  const [reactSelect, setReactSelect] = useState({ value: "Per hour", label: "Per Hour" });
 
   useEffect(() => {
     if (stepCompleted && !localChanges) {
       setPaymentDetails({
-        pay_type: data.pay_type || 'fixed',
+        pay_type: data.pay_type || 'Fixed price',
         amount: data.amount
       });
 
-      if (data.pay_type === 'perHour') {
-        setReactSelect({ value: 'perHour', label: 'Per Hour' });
+      if (data.pay_type === 'Per hour') {
+        setReactSelect({ value: 'Per hour', label: 'Per Hour' });
       } else {
-        setReactSelect({ value: 'fixed', label: 'Fixed Price' });
+        setReactSelect({ value: 'Fixed price', label: 'Fixed Price' });
       }
 
       setLocationChanges(true);
@@ -128,8 +128,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   }
 
   const priceOptions = [
-    { value: 'fixed', label: 'Fixed Price' },
-    { value: 'perHour', label: 'Per Hour' },
+    { value: 'Per hour', label: 'Per Hour' },
+    { value: 'Fixed price', label: 'Fixed Price' },
   ];
 
 

@@ -19,6 +19,7 @@ interface Post {
     totalMilestones: any,
     tradeId: any,
     tradeName: any,
+    tradeImage: any,
     isLoading:any,
     tradieData: any,
 }
@@ -52,6 +53,7 @@ export default function PastJobs(props: any): ReactElement {
                         totalMilestones,
                         tradeId,
                         tradeName,
+                        tradeImage,
                         tradieData,
                     }: Post) => (
                         <div className="flex_col_sm_6">
@@ -64,7 +66,7 @@ export default function PastJobs(props: any): ReactElement {
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradieData?.tradieImage || dummy} alt="traide-img" />
+                                        <img src={tradeImage|| dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
