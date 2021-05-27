@@ -369,16 +369,14 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.appliedStatus ? (
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
-                                            <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                            <button className="fill_btn full_btn btn-effect" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
                                     ) : paramStatus ? (
-                                        <div className="bottom_btn">
                                             <button
-                                                className="fill_btn full_btn"
+                                                className="fill_btn full_btn btn-effect"
                                                 onClick={applyJobClicked}>
                                                 {paramStatus}
                                             </button>
-                                        </div>
                                     ) : null}
                                 </div>
                             </div>
@@ -474,7 +472,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                             <div className="btn_wrap">
                                                 <div className="bottom_btn">
-                                                    <button className="fill_grey_btn full_btn" onClick={() => questionHandler('askQuestion')}>
+                                                    <button className="fill_grey_btn full_btn btn-effect" onClick={() => questionHandler('askQuestion')}>
                                                         {'Ask question'}
                                                     </button>
                                                 </div>
@@ -510,9 +508,9 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                         </div>
                                         <div className="bottom_btn custom_btn">
-                                            {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>
-                                                : <button className="fill_btn full_btn" onClick={() => questionHandler('submitAskQuestion')}>Send</button>}
-                                            <button className="fill_grey_btn" onClick={() => questionHandler('questionCancelBtnClicked')}>Cancel</button>
+                                            {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn btn-effect" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>
+                                                : <button className="fill_btn full_btn btn-effect" onClick={() => questionHandler('submitAskQuestion')}>Send</button>}
+                                            <button className="fill_grey_btn btn-effect" onClick={() => questionHandler('questionCancelBtnClicked')}>Cancel</button>
                                         </div>
                                     </div>
                                 </Modal>
@@ -538,8 +536,8 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'ask'} a question?`}</p>
                                             </div>
                                             <div className="dialog_actions">
-                                                <button className="fill_btn" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>
-                                                <button className="fill_grey_btn" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                                                <button className="fill_btn btn-effect" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>
+                                                <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
                                             </div>
                                         </div>
                                     </>

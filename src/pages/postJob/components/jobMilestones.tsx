@@ -264,12 +264,12 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             {!localMilestones?.length ? (
                                 <React.Fragment>
                                     <div className="form_field">
-                                        <button onClick={() => { handleStepForward(9) }} className="fill_btn fill_grey_btn full_btn">
+                                        <button onClick={() => { handleStepForward(9) }} className="fill_btn fill_grey_btn full_btn btn-effect">
                                             {'Use template'}
                                         </button>
                                     </div>
                                     <div className="form_field">
-                                        <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>
+                                        <button className="fill_btn full_btn btn-effect" onClick={() => handleStepComplete({})}>
                                             {'+ Add milestone'}
                                         </button>
                                     </div>
@@ -277,7 +277,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             ) : (
                                 <React.Fragment>
                                     <div className="form_field">
-                                        <button className="fill_btn full_btn"
+                                        <button className="fill_btn full_btn btn-effect"
                                             onClick={() => {
                                                 if (milestones?.length === 1) {
                                                     newMileStoneScreen(1);
@@ -312,7 +312,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                     setShowToast(true, "Please arrange milestonea date wise.")
                                                 }
                                             }}
-                                            className="fill_btn fill_grey_btn full_btn">
+                                            className="fill_btn fill_grey_btn full_btn btn-effect">
                                             {'Continue'}
                                         </button>
                                     </div>

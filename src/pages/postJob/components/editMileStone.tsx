@@ -313,7 +313,7 @@ export default class EditMilestone extends Component<Props, State> {
                                     <button
                                         onClick={this.handleContinue}
                                         // className="fill_btn full_btn">
-                                        className={`fill_btn full_btn ${check_errors ? 'disable_btn' : ''}`}>
+                                        className={`fill_btn full_btn btn-effect ${check_errors ? 'disable_btn' : ''}`}>
                                         {'Continue'}
                                     </button>
                                 </div>

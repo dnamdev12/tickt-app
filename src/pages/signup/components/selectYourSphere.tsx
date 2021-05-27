@@ -59,7 +59,7 @@ const SelectCategories = (props: Propstype) => {
                     <img src={noData} alt="no-data" />
                 </li>}
             </ul>
-            <button className="fill_btn" onClick={onSubmit}>Next</button>
+            <button className="fill_btn btn-effect" onClick={onSubmit}>Next</button>
         </div>
     )
 }

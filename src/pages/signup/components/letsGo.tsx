@@ -37,7 +37,7 @@ const LetsGo = (props: Propstype) => {
                     <div className="content">
                         <h1 className="title">Congratulations!</h1>
                         <span className="show_label msg">Your account has been created. You are one step closer to growing your business.</span>
-                        <button className="fill_btn full_btn" onClick={goToLogin}>Let’s go</button>
+                        <button className="fill_btn full_btn btn-effect" onClick={goToLogin}>Let’s go</button>
                     </div>
                 </div>
             </figure>

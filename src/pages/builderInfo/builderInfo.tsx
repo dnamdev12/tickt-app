@@ -318,7 +318,7 @@ const BuilderInfo = (props: PropsType) => {
                                             <span className="review_count"> jobs completed</span>
                                         </li>
                                     </ul>
-                                    <button className="fill_btn full_btn">Write a message</button>
+                                    <button className="fill_btn full_btn btn-effect">Write a message</button>
                                 </div>
                             </div>
                         </div>
@@ -567,9 +567,9 @@ const BuilderInfo = (props: PropsType) => {
                             </div>
                             <div className="bottom_btn custom_btn">
                                 {(reviewsData.updateReviewsClicked || reviewsData.updateParentReviews) ?
-                                    <button className="fill_btn full_btn" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Save</button>
-                                    : <button className="fill_btn full_btn" onClick={() => reviewHandler(reviewsData.reviewsClickedType)}>Send</button>}
-                                <button className="fill_grey_btn" onClick={() => reviewHandler('replyCancelBtnClicked')}>Cancel</button>
+                                    <button className="fill_btn full_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Save</button>
+                                    : <button className="fill_btn full_btn btn-effect" onClick={() => reviewHandler(reviewsData.reviewsClickedType)}>Send</button>}
+                                <button className="fill_grey_btn btn-effect" onClick={() => reviewHandler('replyCancelBtnClicked')}>Cancel</button>
                             </div>
                         </div>
                     </>
@@ -596,8 +596,8 @@ const BuilderInfo = (props: PropsType) => {
                                 <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
                             </div>
                             <div className="dialog_actions">
-                                <button className="fill_btn" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
-                                <button className="fill_grey_btn" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                                <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
+                                <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
                             </div>
                         </div>
                     </>

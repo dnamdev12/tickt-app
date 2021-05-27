@@ -372,7 +372,7 @@ const SearchFilter = (props: any) => {
                             </div>
                             <div className="filter_btn">
                                 <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
-                                <button className="fill_btn full_btn" onClick={showResultSearch}>Show Results</button>
+                                <button className="fill_btn full_btn btn-effect" onClick={showResultSearch}>Show Results</button>
                             </div>
                         </div>
                     </>
