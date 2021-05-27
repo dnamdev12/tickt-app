@@ -4,16 +4,20 @@ import HeaderComponent from './header';
 import {
     callTradieProfileData
 } from '../../redux/profile/actions';
+import { getProfileBuilder } from '../../redux/homeSearch/actions'
+
 
 const mapStateToProps = (state: any) => {
     return {
         tradieProfileData: state.profile.tradieProfileData,
+        builderProfile:state.homeSearch.builderProfile
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
-        callTradieProfileData
+        callTradieProfileData,
+        getProfileBuilder
     }, dispatch);
 }
 

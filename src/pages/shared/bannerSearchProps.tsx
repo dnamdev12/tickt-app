@@ -20,7 +20,7 @@ import close from "../../assets/images/icon-close-1.png";
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { getSearchJobList, getRecentSearchList, postHomeSearchData } from '../../redux/homeSearch/actions';
+import { getSearchJobList, getRecentSearchList, postHomeSearchData, getRecentLocationList } from '../../redux/homeSearch/actions';
 import { isHandleChanges } from '../../redux/jobs/actions';
 // @ts-ignore
 import { useDetectClickOutside } from 'react-detect-click-outside';
@@ -55,7 +55,9 @@ interface PropsType {
     postHomeSearchData: (data: any) => void,
     handleChangeToggle?: (data: any) => void,
     getRecentSearchList?: () => void,
-    localInfo: any
+    getRecentLocationList: () => void,
+    localInfo: any,
+    recentLocationData: Array<any>,
 }
 
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
@@ -70,11 +72,12 @@ export function useStateFromProp(initialValue: any) {
 
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
-    const { selectedItem, isHandleChanges, localChanges, getRecentSearchList } = props;
+    const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
 
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
     const [addressText, setAddressText] = useState<any>(null);
+    const [recentLocation, setRecentLocation] = useState<any>([]); // recentLocation
     const [selectedAddress, setSelectedAddress] = useState({});
     const [enableCurrentLocation, setCurrentLocations] = useState<boolean>(false);
     const [errors, setErrors] = useState<any>({});
@@ -175,6 +178,46 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [addressText])
 
+    useEffect(() => {
+        if (getRecentSearchList) {
+            getRecentSearchList();
+        }
+        if (getRecentLocationList) {
+            getRecentLocationList();
+        }
+        getRecentLocationData();
+    }, []);
+
+    useEffect(() => {
+        if (props.recentLocationData?.length &&
+            JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+            getRecentLocationData();
+        }
+    }, [props.recentLocationData, recentLocation])
+
+    const getRecentLocationData = () => {
+        var recentLocationDetails: any = [];
+        props.recentLocationData?.map((item: any, index: number) => {
+            var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
+            var geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ location: latlng }, (results, status) => {
+                if (status == google.maps.GeocoderStatus.OK) {
+                    const formatedCityText = JSON.parse(JSON.stringify(results[0]));
+                    console.log(index, "index");
+                    const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
+                    const newData = {
+                        mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
+                        secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
+                    }
+                    recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
+                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
+                        setRecentLocation(recentLocationDetails);
+                    }
+                }
+            });
+        })
+    }
+
     const checkIfExist = (_id: any) => {
         if (selectedTrade) {
             let isLength = Object.keys(selectedTrade).length;
@@ -227,9 +270,14 @@ const BannerSearch = (props: PropsType) => {
                                                 });
                                                 setSelectedTrade({});
                                             }}>
-                                            <div className="autosuggestion_icon card history">
-                                                <span>{item.name}</span>
-                                                <span className="name">{item.trade_name}</span>
+                                            <div className="card ico_txt_wrap">
+                                                <figure className="ico">
+                                                    <img src={item?.image || residential} alt="icon" />
+                                                </figure>
+                                                <div className="f_column">
+                                                    <span>{item.name}</span>
+                                                    <span className="name">{item.trade_name}</span>
+                                                </div>
                                                 <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
                                                     <img src={close} alt="remove" />
                                                 </span>
@@ -517,7 +565,7 @@ const BannerSearch = (props: PropsType) => {
                                     placeholder='Where?'
                                     ref={locationRefClone}
                                     value={addressText}
-                                    autoComplete="nope"
+                                    autoComplete="off"
                                     className={'line-1'}
                                     onChange={(e: any) => { setAddressText(e.target.value) }}
                                     onFocus={() => {
@@ -565,6 +613,7 @@ const BannerSearch = (props: PropsType) => {
                                                 <input
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
                                                     id="location-input-tag"
+                                                    autoComplete="off"
                                                     ref={locationRef}
                                                     onFocus={() => {
                                                         setInputFocus2(true)
@@ -639,6 +688,21 @@ const BannerSearch = (props: PropsType) => {
                                 You have blocked your location.
                                 To use this, change your location settings in browser.
                               </span>}
+                            <div className="flex_row recent_search auto_loc">
+                                {recentLocation?.length ?
+                                    <span className="name_recent_search">recent search</span>
+                                    : null}
+                                {recentLocation?.map((item: any) => {
+                                    return (
+                                        <div className="flex_col_sm_4"
+                                            onClick={() => setStateData((prevData: any) => ({ ...prevData, location: item.location, selectedMapLocation: item.allText?.mainText, isMapLocationSelected: true }))}>
+                                            <div className="autosuggestion_icon card loc name">
+                                                <span>{item.allText?.mainText}</span>
+                                                <span className="name">{item.allText?.secondaryText}</span>
+                                            </div>
+                                        </div>)
+                                })}
+                            </div>
                         </div>
                         : null}
                     <li>
@@ -706,7 +770,8 @@ const mapStateToProps = (state: any) => {
         recentSearchJobData: state.homeSearch.recentSearchJobData,
         homeSearchJobData: state.homeSearch.homeSearchJobData,
         tradeListData: state.auth.tradeListData,
-        localChanges: state.jobs.localChanges
+        localChanges: state.jobs.localChanges,
+        recentLocationData: state.homeSearch.recentLocationData,
     }
 }
 
@@ -715,7 +780,8 @@ const mapDispatchToProps = (dispatch: any) => {
         getSearchJobList,
         getRecentSearchList,
         postHomeSearchData,
-        isHandleChanges
+        isHandleChanges,
+        getRecentLocationList
     }, dispatch);
 }
 

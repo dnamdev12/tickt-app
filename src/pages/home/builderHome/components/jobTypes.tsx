@@ -20,9 +20,42 @@ const JobTypes = (props: any) => {
         <div className="home_job_categories">
             <div className="custom_container">
                 <OwlCarousel
-                    items={7}
+                    responsiveClass={true}
+                    responsive={{
+                        // breakpoint from 0 up
+                        0: {
+                            items: 4,
+                            margin: 10,
+                            mouseDrag: true,
+                            touchDrag: true
+                        },
+                        450: {
+                            items: 4,
+                            margin: 10,
+                            mouseDrag: true,
+                            touchDrag: true
+                        },
+                        650: {
+                            items: 5,
+                            margin: 10,
+                            mouseDrag: true,
+                            touchDrag: true
+                        },
+                        768: {
+                            items: 6,
+                            margin: 10,
+                            mouseDrag: true,
+                            touchDrag: true
+                        },
+                        1000: {
+                            items: 7,
+                            margin: 10,
+                            mouseDrag: true,
+                            touchDrag: true
+                        }
+                    }
+                    }
                     className='owl-theme'
-                    margin={10}
                 >
                     {tradeListData && tradeListData?.length ?
                         tradeListData.map((item: any, index: any) => (

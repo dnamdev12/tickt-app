@@ -6,7 +6,12 @@ import {
     tradieRemoveReviewReply,
     getTradieProfile,
     getTradieReviewListOnBuilder,
-    getAcceptDeclineTradie
+    getAcceptDeclineTradie,
+    reviewReply,
+    updateReviewReply,
+    removeReviewReply,
+    getTradeReviews,
+    getTradeProfile
 } from '../../redux/jobs/actions';
 
 import { connect } from 'react-redux'
@@ -38,6 +43,8 @@ interface Props {
 }
 
 interface State {
+    tradieInfo: any,
+    tradieReviews: any,
     profileData: any,
     portfolioData: {
         portfolioImageClicked: boolean,
@@ -65,6 +72,8 @@ interface State {
 
 class TradieInfo extends Component<Props, State> {
     state = {
+        tradieInfo: null,
+        tradieReviews: null,
         profileData: {},
         portfolioData: {
             portfolioImageClicked: false,
@@ -94,6 +103,8 @@ class TradieInfo extends Component<Props, State> {
 
     componentWillUnmount() {
         this.setState({
+            tradieInfo: null,
+            tradieReviews: null,
             profileData: {},
             portfolioData: {
                 portfolioImageClicked: false,
@@ -130,13 +141,7 @@ class TradieInfo extends Component<Props, State> {
     }
 
     componentDidMount() {
-        let props: any = this.props;
-        const { getTradieProfile, getTradieReviewListOnBuilder } = props;
-        const { jobId, specializationId, tradeId } = this.getItemsFromLocation();
-        getTradieProfile({ tradieId: tradeId, jobId: jobId });
-        getTradieReviewListOnBuilder({ tradieId: tradeId, page: 1 });
-        // getTradieProfile({ tradieId: '60a35096de60d01d99d3ae56', jobId: '60a35096de60d01d99d3ae56' });
-        // getTradieReviewListOnBuilder({ tradieId: '60a35096de60d01d99d3ae56', page: 1 })
+        this.setItems();
     }
 
     portfolioImageHandler = (data: any) => {
@@ -148,6 +153,7 @@ class TradieInfo extends Component<Props, State> {
     }
 
     reviewHandler = (type: any, reviewId?: any, replyId?: any, reply?: any) => {
+        console.log({type, reviewId})
         if (type === 'reviewReplyClicked') {
             this.setState((prevData: any) => ({
                 reviewsData: {
@@ -205,14 +211,35 @@ class TradieInfo extends Component<Props, State> {
                 }
             }));
         } else if (type === 'hideReviewClicked') {
-            let reviewsData = this.state.reviewsData;
-            const newData = [...reviewsData.replyShownHideList].filter(id => id !== replyId);
-            this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
+            let item_: any = {};
+            let reply_id: any = replyId;
+            item_ = this.state.reviewsData?.replyShownHideList;
+            if (item_[reply_id] === undefined) {
+                item_[reply_id] = true;
+            } else {
+                item_[reply_id] = !item_[reply_id];
+            }
+
+            this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: item_ } }));
+
+            // let reviewsData = this.state.reviewsData;
+            // const newData = [...reviewsData.replyShownHideList].filter(id => id !== replyId);
+            // this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
         } else if (type === 'showReviewClicked') {
-            let reviewsData = this.state.reviewsData;
-            const newData: any = [...reviewsData.replyShownHideList];
-            newData.push(replyId);
-            this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
+            let item_: any = {};
+            let reply_id: any = replyId;
+            item_ = this.state.reviewsData?.replyShownHideList;
+            if (item_[reply_id] === undefined) {
+                item_[reply_id] = true;
+            } else {
+                item_[reply_id] = !item_[reply_id];
+            }
+
+            this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: item_ } }));
+            // let reviewsData = this.state.reviewsData;
+            // const newData: any = [...reviewsData.replyShownHideList];
+            // newData.push(replyId);
+            // this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
         }
     }
 
@@ -227,14 +254,14 @@ class TradieInfo extends Component<Props, State> {
         let profileData: any = this.state.profileData;
         if (['reviewReply', 'updateReviewReply', 'removeReviewReply'].includes(type)) {
             var response;
-            var newData: any = reviewsData.replyShownHideList;
+         
             if (type === 'reviewReply') {
                 const data = {
                     reviewId: reviewsData.reviewId,
                     reply: reviewsData.reviewData
                 }
                 // need to send reply id in response
-                response = await tradieReviewReply(data);
+                response = await reviewReply(data);
             }
             if (type === 'updateReviewReply') {
                 const data = {
@@ -242,23 +269,20 @@ class TradieInfo extends Component<Props, State> {
                     replyId: reviewsData?.replyId,
                     reply: reviewsData.reviewData
                 }
-                response = await tradieUpdateReviewReply(data);
+                response = await updateReviewReply(data);
             }
             if (type === 'removeReviewReply') {
                 const data = {
                     reviewId: reviewsData.reviewId,
                     replyId: reviewsData.replyId
                 }
-                response = await tradieRemoveReviewReply(data);
+                response = await removeReviewReply(data);
             }
+            
             if (response?.success) {
-                const data: any = {
-                    builderId: profileData?.builderId,
-                    page: 1
-                }
-                // this.props.getTradieReviewList(data);
-                newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
+                this.setItems();
             }
+
             this.setState((prevData: any) => ({
                 reviewsData: {
                     ...prevData.reviewsData,
@@ -271,15 +295,29 @@ class TradieInfo extends Component<Props, State> {
                     updateReviewsClicked: false,
                     reviewId: '',
                     reviewData: '',
-                    replyShownHideList: newData
+                    replyShownHideList: []
                 }
             }))
         }
     }
 
+    setItems = async () => {
+        const { jobId, tradeId } = this.getItemsFromLocation();
+        let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
+        console.log({res_profile})
+        if (res_profile.success) {
+            this.setState({ tradieInfo: res_profile.data })
+        }
+        let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: 1 });
+        console.log({res_trade})
+        if (res_trade.success) {
+            this.setState({ tradieReviews: res_trade.data })
+        }
+    }
+
     submitAcceptDeclineRequest = (status: any) => {
         const { getAcceptDeclineTradie } = this.props;
-        const { jobId, specializationId, tradeId } = this.getItemsFromLocation();
+        const { jobId, tradeId } = this.getItemsFromLocation();
         let data = {
             "jobId": jobId,
             "tradieId": tradeId,
@@ -287,18 +325,18 @@ class TradieInfo extends Component<Props, State> {
         };
         getAcceptDeclineTradie(data);
     }
-
+    
     render() {
         let props: any = this.props;
-        let tradieInfo: any = props.tradieInfo;
+        // let tradieInfo: any = props.tradieInfo;
         let { portfolioData } = this.state;
         let reviewsData: any = this.state.reviewsData;
+        let tradieInfo: any = this.state.tradieInfo;
+        let tradieReviews: any = this.state.tradieReviews;
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
         // let setPortfolioData: any = null;
-
-        console.log({ tradieInfo, portfolio, reviewsData, props })
         return (
             <div className="app_wrapper">
                 <div className="section_wrapper">
@@ -479,7 +517,7 @@ class TradieInfo extends Component<Props, State> {
                             {`View all ${profileData?.reviewData?.length} reviews`}</button>
                     </div>
                 </div>
-                {reviewsData.showAllReviewsClicked && props.tradieReviews?.length &&
+                {reviewsData.showAllReviewsClicked && tradieReviews?.length &&
                     <Modal
                         className="ques_ans_modal"
                         open={reviewsData.showAllReviewsClicked}
@@ -497,7 +535,7 @@ class TradieInfo extends Component<Props, State> {
                                 </button>
                             </div>
                             <div className="inner_wrap">
-                                {props.tradieReviews?.map((item: any) => {
+                                {tradieReviews?.map((item: any) => {
                                     let reviewData: any = item.reviewData;
                                     let replyData: any = reviewData.replyData;
                                     let replyId: any = replyData.replyId;
@@ -514,7 +552,32 @@ class TradieInfo extends Component<Props, State> {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.review}</p>
-                                                {Object.keys(replyData).length > 0 &&
+                                                {console.log({item})}
+                                                {Object.keys(reviewsData.replyShownHideList).length &&
+                                                    reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
+                                                    <span
+                                                        className="action link"
+                                                        onClick={() => {
+                                                            reviewHandler('hideReviewClicked', '', item?.reviewData?.reviewId)
+                                                        }}>
+                                                        {'Hide Review'}
+                                                    </span>
+                                                ) : Object.keys(item?.reviewData?.replyData).length ? (
+                                                    <span
+                                                        className="show_hide_ans link"
+                                                        onClick={() => { reviewHandler('showReviewClicked', '', item?.reviewData?.reviewId) }}>
+                                                        {'Show review'}
+                                                    </span>
+                                                ) : (
+                                                    <span
+                                                        className="action link"
+                                                        onClick={() => {
+                                                            reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
+                                                        }}>
+                                                        {'Reply'}
+                                                    </span>
+                                                )}
+                                                {/* {Object.keys(replyData).length > 0 &&
                                                     !(reviewsData?.replyShownHideList.includes(replyId) ||
                                                         reviewsData.replyShownHideList.includes(replyId)) &&
                                                     <span
@@ -522,16 +585,18 @@ class TradieInfo extends Component<Props, State> {
                                                         onClick={() => { reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId) }}>
                                                         {'Show review'}
                                                     </span>}
-                                                {reviewData?.isModifiable && (
+                                                {reviewData?.isModifiable && Object.keys(item?.reviewData?.replyData).length ? (
                                                     <span
                                                         className="action link"
                                                         onClick={() => {
                                                             reviewHandler('reviewReplyClicked', reviewData.reviewId)
                                                         }}>
                                                         {'Reply'}
-                                                    </span>)}
+                                                    </span>) : null} */}
                                             </div>
-                                            {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
+                                            {/* {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) && */}
+                                            {Object.keys(reviewsData.replyShownHideList).length &&
+                                                reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                 <div className="question_ans_card answer">
                                                     <div className="user_detail">
                                                         <figure className="user_img">
@@ -543,19 +608,14 @@ class TradieInfo extends Component<Props, State> {
                                                         </div>
                                                     </div>
                                                     <p>{reviewData?.replyData?.reply}</p>
-                                                    <span
-                                                        className="show_hide_ans link"
-                                                        onClick={() => { reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId) }}>
-                                                        {'Hide review'}
-                                                    </span>
                                                     {reviewData?.replyData?.isModifiable && (
                                                         <span
                                                             className="action link"
                                                             onClick={() => {
                                                                 reviewHandler(
                                                                     'updateReviewReply',
-                                                                    reviewData?.replyData?.reviewId,
-                                                                    reviewData?.replyData?.replyId,
+                                                                    item?.reviewData?.reviewId,
+                                                                    item?.reviewData?.replyData?.replyId,
                                                                     reviewData?.replyData?.reply
                                                                 )
                                                             }}>
@@ -565,11 +625,13 @@ class TradieInfo extends Component<Props, State> {
                                                         <span
                                                             className="action link"
                                                             onClick={() => {
-                                                                reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)
+                                                                reviewHandler('removeReviewReply', item?.reviewData?.reviewId, item?.reviewData?.replyData?.replyId)
                                                             }}>
                                                             {'Delete'}
                                                         </span>}
-                                                </div>}
+                                                </div>
+
+                                            ) : null}
                                         </>
                                     )
                                 })}
@@ -632,7 +694,7 @@ class TradieInfo extends Component<Props, State> {
                     </Modal>
                 }
                 {/* send confirmation yes/no modal */}
-                {/* {(reviewsData.confirmationClicked) &&
+                {(reviewsData.confirmationClicked) &&
                     <Modal
                         className="custom_modal"
                         open={reviewsData.confirmationClicked}
@@ -658,7 +720,7 @@ class TradieInfo extends Component<Props, State> {
                             </div>
                         </>
                     </Modal>
-                } */}
+                }
             </div>
         )
     }

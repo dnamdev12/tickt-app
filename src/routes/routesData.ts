@@ -23,6 +23,7 @@ import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
+import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index'
 
 const routes = [
     {
@@ -93,6 +94,13 @@ const routes = [
         authRoute: false,
         privateRoute: true,
     },
+    {
+        name: 'jobdetail',
+        path: '/job-detail',
+        component: JobDetailsPageBuilder,
+        authRoute: false,
+        privateRoute: true,
+    }, 
     {
         name: 'job-applied-successfully',
         path: '/job-applied-successfully',

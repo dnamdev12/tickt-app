@@ -34,7 +34,7 @@ const SearchResultTradie = (props: any) => {
         console.log({ stateData }, '----')
         let data: any = {
             page: 1,
-            isFiltered: true,
+            isFiltered: false,
         }
         if (stateData?.tradeId) {
             data['tradeId'] = stateData?.tradeId

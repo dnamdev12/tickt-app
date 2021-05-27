@@ -29,7 +29,7 @@ export default function PastJobs(props: any): ReactElement {
     let listData: any = dataItems;
 
     const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
-        props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
+        props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
     }
 
     return (
