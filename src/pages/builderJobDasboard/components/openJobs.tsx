@@ -21,6 +21,7 @@ interface Active {
     tradieListData: any,
     tradeName: any,
     tradieId: any,
+    tradeImage: any,
     tradieImage: any,
 
 }
@@ -78,6 +79,7 @@ class OpenJobs extends Component<Props, State> {
                             tradieListData,
                             tradeName,
                             tradieId,
+                            tradeImage,
                             tradieImage,
                         }: Active) => (
                             <div className="flex_col_sm_6">
@@ -88,7 +90,7 @@ class OpenJobs extends Component<Props, State> {
                                     </span>
                                     <div className="user_wrap">
                                         <figure className="u_img">
-                                            <img src={tradieImage || dummy} alt="traide-img"
+                                            <img src={tradeImage || dummy} alt="traide-img"
                                             />
                                         </figure>
                                         <div className="details">

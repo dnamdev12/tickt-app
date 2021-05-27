@@ -21,11 +21,11 @@ interface Proptypes {
 const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 
-  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: 'fixed', amount: '' });
+  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: 'perHour', amount: '' });
   const [errors, setErrors] = useState({ pay_type: '', amount: '' });
   const [continueClicked, setContinueClicked] = useState(false);
   const [localChanges, setLocationChanges] = useState(false);
-  const [reactSelect, setReactSelect] = useState({ value: "fixed", label: "Fixed Price" });
+  const [reactSelect, setReactSelect] = useState({ value: "perHour", label: "Per Hour" });
 
   useEffect(() => {
     if (stepCompleted && !localChanges) {
@@ -128,8 +128,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   }
 
   const priceOptions = [
-    { value: 'fixed', label: 'Fixed Price' },
     { value: 'perHour', label: 'Per Hour' },
+    { value: 'fixed', label: 'Fixed Price' },
   ];
 
 

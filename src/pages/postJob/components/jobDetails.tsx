@@ -17,6 +17,7 @@ import ReactImageVideoLightbox from 'react-image-video-lightbox';
 interface Proptypes {
     data: any;
     milestones: any;
+    builderProfile: any;
     stepCompleted: Boolean;
     categories: any;
     jobTypes: any;
@@ -57,6 +58,7 @@ const JobDetails = ({
     data,
     milestones,
     categories,
+    builderProfile,
     jobTypes,
     stepCompleted,
     updateDetailScreen,
@@ -107,7 +109,9 @@ const JobDetails = ({
 
     useEffect(() => {
         updateDetailScreen(null);
-        if ((categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.category).length) || (categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.job_type).length)) {
+        if ((categorySelected !== undefined &&
+            categorySelected !== null &&
+            !Object.keys(categorySelected?.category).length) || (categorySelected !== undefined && categorySelected !== null && !Object.keys(categorySelected?.job_type).length)) {
             findSelectedCategory();
         }
     }, [categories, jobTypes, stepCompleted])
@@ -138,7 +142,7 @@ const JobDetails = ({
                     }
 
                     if (videoFormats.includes(item?.format)) {
-                        render_item = <video onClick={() => {console.log({ item }) }} src={item?.url} style={{ height: '400px', width: '800px' }} />
+                        render_item = <video onClick={() => { console.log({ item }) }} src={item?.url} style={{ height: '400px', width: '800px' }} />
                     }
 
                     return (
@@ -346,17 +350,18 @@ const JobDetails = ({
                         <div className="section_wrapper">
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
-
+                            {console.log({builderProfile})}
                                 <div className="flex_col_sm_3">
                                     <div className="tradie_card posted_by view_more ">
                                         <a href="javascript:void(0)" className="chat circle"></a>
                                         <div className="user_wrap">
                                             <figure className="u_img">
-                                                <img src={dummy} alt="traide-img" />
+                                                <img src={builderProfile?.userImage || dummy} alt="traide-img" />
                                             </figure>
                                             <div className="details">
-                                                <span className="name">John</span>
-                                                <span className="prof">Project Manager</span>
+                                                <span className="name">{builderProfile?.userName}</span>
+                                                <span className="rating">{builderProfile?.rating||0} , {builderProfile?.reviews||0} reviews</span>
+                                                {/* <span className="prof">Project Manager</span> */}
                                             </div>
                                         </div>
                                     </div>

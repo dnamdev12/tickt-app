@@ -22,6 +22,7 @@ interface Active {
     tradeName: any,
     tradieId: any,
     tradieImage: any,
+    tradeImage:any,
     setJobLabel: (item: any) => void
 }
 
@@ -74,6 +75,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                         tradieListData,
                         tradeName,
                         tradieId,
+                        tradeImage,
                         tradieImage,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
@@ -85,7 +87,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradieImage || dummy} alt="traide-img" />
+                                        <img src={tradeImage || dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
