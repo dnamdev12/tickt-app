@@ -181,7 +181,7 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
                 </div>
                 <button
                     onClick={onSubmitDecline}
-                    className={`fill_btn full_btn ${isValidCheck() ? 'disable_btn' : ''}`}>Send</button>
+                    className={`fill_btn full_btn btn-effect ${isValidCheck() ? 'disable_btn' : ''}`}>Send</button>
             </div>
         </div>
     )
