@@ -255,7 +255,7 @@ const JobDetails = ({
                                     </div>
                                     <button
                                         onClick={handlePost}
-                                        className="fill_btn full_btn">Post job</button>
+                                        className="fill_btn full_btn btn-effect">Post job</button>
                                 </div>
                             </div>
                         </div>

@@ -375,12 +375,12 @@ class TradieInfo extends Component<Props, State> {
                                         <div className="form_field">
                                             <button
                                                 onClick={() => { submitAcceptDeclineRequest(1) }}
-                                                className="fill_btn full_btn">Accept</button>
+                                                className="fill_btn full_btn btn-effect">Accept</button>
                                         </div>
                                         <div className="form_field">
                                             <button
                                                 onClick={() => { submitAcceptDeclineRequest(2) }}
-                                                className="fill_grey_btn full_btn">Decline</button>
+                                                className="fill_grey_btn full_btn btn-effect">Decline</button>
                                         </div>
                                     </div>
                                 </div>
@@ -674,17 +674,17 @@ class TradieInfo extends Component<Props, State> {
                                 <div className="bottom_btn custom_btn">
                                     {reviewsData.updateReviewsClicked ?
                                         <button
-                                            className="fill_btn full_btn"
+                                            className="fill_btn full_btn btn-effect"
                                             onClick={() => { submitReviewHandler('updateReviewReply') }}>
                                             {'Save'}
                                         </button>
                                         : <button
-                                            className="fill_btn full_btn"
+                                            className="fill_btn full_btn btn-effect"
                                             onClick={() => { reviewHandler('reviewReply') }}>
                                             {'Send'}
                                         </button>}
                                     <button
-                                        className="fill_grey_btn"
+                                        className="fill_grey_btn btn-effect"
                                         onClick={() => { reviewHandler('replyCancelBtnClicked') }}>
                                         {'Cancel'}
                                     </button>
@@ -714,8 +714,8 @@ class TradieInfo extends Component<Props, State> {
                                     <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}reply?`}</p>
                                 </div>
                                 <div className="dialog_actions">
-                                    <button className="fill_btn" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
-                                    <button className="fill_grey_btn" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                                    <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
+                                    <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
                                 </div>
                             </div>
                         </>

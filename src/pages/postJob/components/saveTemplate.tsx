@@ -92,7 +92,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                             <div className="form_field">
                                 <button
                                     onClick={handleContinue}
-                                    className={`fill_btn full_btn ${checkError() ? 'disable_btn' : ''}`}>
+                                    className={`fill_btn full_btn btn-effect ${checkError() ? 'disable_btn' : ''}`}>
                                     {'Save'}
                                 </button>
                             </div>

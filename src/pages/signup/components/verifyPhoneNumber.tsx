@@ -93,7 +93,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
                     <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
                 </div>}
                 <div className="form_field">
-                    <button className="fill_btn">Next</button>
+                    <button className="fill_btn btn-effect">Next</button>
                 </div>
             </form>
         </div>

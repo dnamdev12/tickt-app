@@ -143,7 +143,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
                             <span className="error_msg mtb-15">{error}</span>
                             <div className="form_field">
                                 <button
-                                    className={`fill_btn full_btn ${checkDisable() ? 'disable_btn' : ''}`}
+                                    className={`fill_btn full_btn btn-effect ${checkDisable() ? 'disable_btn' : ''}`}
                                     onClick={handleContinue}>
                                     {'Continue'}
                                 </button>

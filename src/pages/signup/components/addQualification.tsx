@@ -152,7 +152,7 @@ const AddQualification = (props: Propstype) => {
                 </div>
 
                 <div className="form_field">
-                    <button className="fill_btn">Next</button>
+                    <button className="fill_btn btn-effect">Next</button>
                 </div>
                 <div className="form_field text-center">
                     <a className="link" onClick={onSkipQualification}>Skip</a>

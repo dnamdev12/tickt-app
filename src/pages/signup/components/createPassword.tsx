@@ -55,7 +55,7 @@ const CreatePassword = (props: Propstype) => {
                 </div>
 
                 <div className="form_field">
-                    <button className="fill_btn">Next</button>
+                    <button className="fill_btn btn-effect">Next</button>
                 </div>
             </form>
         </div>

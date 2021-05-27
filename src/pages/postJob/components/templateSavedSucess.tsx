@@ -24,7 +24,7 @@ const TemplateSavedSuccess = ({ data, stepCompleted, handleStepForward, handleSt
                         </span>
                         <button
                             onClick={() => { handleStepForward(6) }}
-                            className="fill_btn full_btn">{'OK'}</button>
+                            className="fill_btn full_btn btn-effect">{'OK'}</button>
                     </div>
                 </div>
             </figure>

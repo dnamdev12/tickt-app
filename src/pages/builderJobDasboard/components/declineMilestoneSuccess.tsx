@@ -17,7 +17,7 @@ const DeclineMilestoneSuccess = (props: Props) => {
             <span className="show_label">The tradesperson will review and get in touch with you. 
             </span>
             <div className="btn_wrapr">
-              <button className="fill_btn">OK</button>
+              <button className="fill_btn btn-effect">OK</button>
             </div>
           </div>
         </div>

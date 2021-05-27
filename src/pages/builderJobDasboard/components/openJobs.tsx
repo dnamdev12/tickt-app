@@ -133,7 +133,7 @@ class OpenJobs extends Component<Props, State> {
                                                 this.setToggle();
                                                 setJobLabel('applicantList', jobId, 1, specializationId);
                                             }}
-                                            className="fill_grey_btn full_btn">
+                                            className="fill_grey_btn full_btn btn-effect">
                                             {'Applications'}
                                             {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}

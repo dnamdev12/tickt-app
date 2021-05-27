@@ -251,6 +251,39 @@
 }
 
 
+.btn-effect{
+	position: relative;
+	overflow: hidden;
+	&::before{
+		width: 0%;
+		content: "";
+		background: #ffffff4f;
+		height: 100%;
+		@include position(absolute, auto, auto, 0, auto);
+		opacity: 0;
+		-webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+		transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+		right: 50%;
+	}
+	&::after{
+		width: 0%;
+		content: "";
+		background: #ffffff4f;
+		height: 100%;
+		@include position(absolute, auto, auto, 0, auto);
+		opacity: 0;
+		-webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+		transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+		left: 50%;
+	}
+	&:hover{
+		&::before, &::after{
+			width: 50%;
+			opacity: 1;
+		}
+	}
+}
+
 /*--------------------btn effect close--------------------------*/
 
 

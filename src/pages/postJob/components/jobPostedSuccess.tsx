@@ -31,7 +31,7 @@ const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, han
                                     // handleStepForward(1)
                                 }
                             }}
-                            className="fill_btn full_btn">OK</button>
+                            className="fill_btn full_btn btn-effect">OK</button>
                     </div>
                 </div>
             </figure>
