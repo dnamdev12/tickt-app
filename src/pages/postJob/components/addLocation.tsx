@@ -304,7 +304,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
 
               <div className="form_field">
                 <button
-                  className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}
+                  className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
                   onClick={handleContinue}>Continue</button>
               </div>
             </div>

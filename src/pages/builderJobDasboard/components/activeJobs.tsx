@@ -127,7 +127,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                             setLocalState(true);
                                             setSelectedIndex(index);
                                         }}
-                                        className="fill_grey_btn full_btn">
+                                        className="fill_grey_btn full_btn btn-effect">
                                         {'Approve'}
                                         {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}

@@ -555,7 +555,7 @@ const BannerSearch = (props: PropsType) => {
                         </div>
                     </li>
                     <div className="search_btn">
-                        <button type="button" className="fill_btn" onClick={bannerSearchClicked}>
+                        <button type="button" className="fill_btn btn-effect" onClick={bannerSearchClicked}>
                             <img src={search} alt="search" />
                         </button>
                     </div>

@@ -43,8 +43,8 @@ const MilestoneApprove = ({ backToScreen, milestone, selectedItem }: Props) => {
                     <span className="xs_sub_title">Hours worked in this milestone</span>
                     <span className="show_label">5 hours</span>
                 </div>
-                <button className="fill_btn full_btn">Approve</button>
-                <button onClick={() => { setToggle(true) }} className="fill_grey_btn full_btn mt-16">Decline</button>
+                <button className="fill_btn full_btn btn-effect">Approve</button>
+                <button onClick={() => { setToggle(true) }} className="fill_grey_btn full_btn btn-effect mt-16">Decline</button>
             </div>
         </div>
     )

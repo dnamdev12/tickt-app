@@ -143,7 +143,7 @@ const BuilderHome = (props: any) => {
                                         </div>
                                     </li>
                                     <div className="search_btn">
-                                        <button type="button" className="fill_btn">
+                                        <button type="button" className="fill_btn btn-effect">
                                             <img src={search} alt="search" />
                                         </button>
                                     </div>

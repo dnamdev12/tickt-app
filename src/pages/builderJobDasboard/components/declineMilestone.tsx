@@ -42,7 +42,7 @@ const DeclineMilestone = (props: Props) => {
                         id="upload_img_video"
                     />
                 </div>
-                <button className="fill_btn full_btn">Send</button>
+                <button className="fill_btn full_btn btn-effect">Send</button>
             </div>
         </div>
     )

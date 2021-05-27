@@ -159,7 +159,7 @@ const MarkMilestones = (props: any) => {
                                     </span>
                                     {isActive === 1 ? (
                                         <button
-                                            className="fill_btn full_btn"
+                                            className="fill_btn full_btn btn-effect"
                                             onClick={() => {
                                                 setEnableApprove(true);
                                                 setMilestoneIndex({

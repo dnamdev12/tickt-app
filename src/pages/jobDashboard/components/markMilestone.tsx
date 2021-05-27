@@ -227,7 +227,7 @@ const MarkMilestone = ({
                         </span>
                         {isActive && (
                           <button
-                            className="fill_btn full_btn"
+                            className="fill_btn full_btn btn-effect"
                             onClick={() => {
                               setMilestoneIndex(index);
 
@@ -352,7 +352,7 @@ const MarkMilestone = ({
               <span className="error_msg">{errors.actualHours}</span>
             </div>
             <button
-              className="fill_btn full_btn"
+              className="fill_btn full_btn btn-effect"
               onClick={() => {
                 setStepCompleted((prevValue) => prevValue.concat([3]));
 
@@ -411,7 +411,7 @@ const MarkMilestone = ({
                 receiving your payment, please contact your builder.
               </p>
             </div>
-            <button className="fill_btn full_btn" onClick={() => setStep(5)}>
+            <button className="fill_btn full_btn btn-effect" onClick={() => setStep(5)}>
               Continue
             </button>
           </div>
@@ -474,7 +474,7 @@ const MarkMilestone = ({
               <span className="error_msg">{errors.bsb_number}</span>
             </div>
             <button
-              className="fill_btn full_btn"
+              className="fill_btn full_btn btn-effect"
               onClick={() => {
                 setStepCompleted((prevValue) => prevValue.concat([5]));
 

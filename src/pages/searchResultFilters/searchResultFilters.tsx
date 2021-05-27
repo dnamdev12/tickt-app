@@ -357,7 +357,7 @@ const SearchResultFilters = (props: any) => {
                         </div>
                         <div className="filter_btn">
                             <a className="link" onClick={() => filterChangeHandler('Clear All', 'Clear All')}>Clear All</a>
-                            <button className="fill_btn full_btn" onClick={showResultsByFilter1}>Show Results</button>
+                            <button className="fill_btn full_btn btn-effect" onClick={showResultsByFilter1}>Show Results</button>
                         </div>
                     </div>
                 </Modal>

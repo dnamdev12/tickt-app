@@ -109,7 +109,7 @@ const ResetPassword = (props: Propstype) => {
                     <span className="show_label">Enter the number associated with your account and we will send a code to reset your password.</span>
                 </div>
                 <div className="form_field">
-                    <button className="fill_btn">Next</button>
+                    <button className="fill_btn btn-effect">Next</button>
                 </div>
             </form>
 

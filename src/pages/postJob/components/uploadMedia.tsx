@@ -219,7 +219,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     description: hasDescription ? description : undefined,
                                 })
                             }}
-                            className={`fill_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}>
+                            className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}>
                             {'Submit'}
                         </button>
                     </div>

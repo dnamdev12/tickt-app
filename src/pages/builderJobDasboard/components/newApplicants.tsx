@@ -70,9 +70,9 @@ const NewApplicants = (props: any) => {
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
-                                        <p className="commn_para">{jobDescription}</p>
                                     </div>
                                 </div>
+                                <p className="commn_para line-2">{jobDescription}</p>
                                 <div className="job_info">
                                     <ul>
                                         <li className="icon clock">{timeLeft}</li>
@@ -85,7 +85,7 @@ const NewApplicants = (props: any) => {
                                     onClick={() => {
                                         setJobLabel('applicantList', jobId, 1, specializationId)
                                     }}
-                                    className="fill_grey_btn full_btn">
+                                    className="fill_grey_btn full_btn btn-effect">
                                     {'Applications'}
                                 </button>
 
