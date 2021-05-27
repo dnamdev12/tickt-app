@@ -448,6 +448,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                                 <p>{questionData?.question}</p>
                                                                 {Object.keys(questionData?.answerData).length > 0 && !(questionsData.answerShownHideList.includes(questionData?.questionId)) &&
                                                                     <span className="show_hide_ans link" onClick={() => questionHandler('showAnswerClicked', questionData?.questionId)}>Show answer</span>}
+                                                                {questionsData.answerShownHideList.includes(questionData?.questionId) && <span className="show_hide_ans link" onClick={() => questionHandler('hideAnswerClicked', questionData?.questionId)}>Hide answer</span>}
                                                                 {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
                                                                 {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId, '', index)}>Delete</span>}
                                                             </div>
@@ -463,7 +464,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                                         </div>
                                                                     </div>
                                                                     <p>{questionData?.answerData?.answer}</p>
-                                                                    <span className="show_hide_ans link" onClick={() => questionHandler('hideAnswerClicked', questionData?.questionId)}>Hide answer</span>
                                                                 </div>}
                                                         </div>
                                                     )

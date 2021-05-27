@@ -118,7 +118,7 @@ const RenderMap = (props: any) => {
         <div>
             <GoogleMap
                 mapContainerStyle={mapContainerStyle}
-                zoom={11}
+                zoom={12}
                 center={center}
                 options={options}
                 onClick={onMapClick}

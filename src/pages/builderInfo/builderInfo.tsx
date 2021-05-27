@@ -68,13 +68,12 @@ const portfolioModal = {
 
 const BuilderInfo = (props: PropsType) => {
     const [profileData, setProfileData] = useState<any>('');
+    const [reviewList, setReviewList] = useState<Array<any>>([]);
+    const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
     const [portfolioData, setPortfolioData] = useState<any>({
         portfolioImageClicked: false,
         portfolioDetails: '',
     });
-
-    const [reviewList, setReviewList] = useState<Array<any>>([]);
-    const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
     const [reviewsData, setReviewsData] = useState<any>({
         reviewReplyClicked: false, // reply modal opened
         showAllReviewsClicked: false,
@@ -140,7 +139,7 @@ const BuilderInfo = (props: PropsType) => {
 
     const submitReviewHandler = async (type: string) => {
         if (['reviewReply', 'updateReviewReply', 'removeReviewReply', 'removeReviewBuilder', 'updateReviewBuilder'].includes(type)) {
-            var response;
+            var response: any;
             var data: any;
             var newData: any = reviewsData.replyShownHideList;
             if (type == 'reviewReply') {
@@ -178,13 +177,13 @@ const BuilderInfo = (props: PropsType) => {
                 response = await deleteReviewBuilder(reviewId);
             }
             if (response?.success) {
-                const data: any = {
+                const listData: any = {
                     builderId: profileData?.builderId,
                     page: 1
                 }
-                const res = await getTradieReviewList(data);
+                const res = await getTradieReviewList(listData);
                 setReviewList(res.data);
-                newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
+                // newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
             }
             setReviewsData((prevData: any) => ({
                 ...prevData,
@@ -211,7 +210,7 @@ const BuilderInfo = (props: PropsType) => {
                 ...prevData,
                 reviewReplyClicked: true,
                 showAllReviewsClicked: false,
-                // reviewsClickedType: type,
+                reviewsClickedType: 'reviewReply',
                 reviewId: reviewId,
             }));
         } else if (type == 'reviewReply') {
@@ -279,6 +278,13 @@ const BuilderInfo = (props: PropsType) => {
                 reviewData: userText //review text
             }));
         }
+    }
+
+    const builderAllJobsClicked = () => {
+        props.history?.push({
+            pathname: "/builder-posted-jobs",
+            state: { builderId: profileData?.builderId, totalJobPostedCount: profileData?.totalJobPostedCount }
+        })
     }
 
     return (
@@ -378,7 +384,7 @@ const BuilderInfo = (props: PropsType) => {
                 >
                     <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
-                            <button className="close_btn">
+                            <button className="close_btn" onClick={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
@@ -431,14 +437,8 @@ const BuilderInfo = (props: PropsType) => {
                                 <span>Data not found</span>
                             </div>}
                     </div>
-                    <NavLink to={{
-                        pathname: "/builder-posted-jobs",
-                        state: { jobsPosted: profileData?.jobPostedData, totalJobPostedCount: profileData?.totalJobPostedCount }
-                    }}
-                    >
-                        <button className="fill_grey_btn full_btn m-tb40 view_more" disabled={profileData?.jobPostedData?.length < 1}>
-                            {`View all ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount} jobs` : ''}`}</button>
-                    </NavLink>
+                    <button className="fill_grey_btn full_btn m-tb40 view_more" disabled={profileData?.jobPostedData?.length < 1} onClick={builderAllJobsClicked}>
+                        {`View all ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount} jobs` : ''}`}</button>
                 </div>
             </div >
 
@@ -457,7 +457,7 @@ const BuilderInfo = (props: PropsType) => {
                                 <span>Data not found</span>
                             </div>}
                     </div>
-                    <button className="fill_grey_btn full_btn view_more" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}>{`View all ${profileData?.reviewsCount} reviews`}</button>
+                    <button className="fill_grey_btn full_btn view_more" onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}>{`View all ${profileData?.reviewsCount ? `${profileData?.reviewsCount} reviews` : ''}`}</button>
                 </div>
             </div>
             {/* view All reviews  */}
@@ -471,7 +471,7 @@ const BuilderInfo = (props: PropsType) => {
                 >
                     <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
-                            <span className="sub_title">{`${reviewList?.length || 0} reviews`}</span>
+                            <span className="sub_title">{`${profileData?.reviewsCount || 0} reviews`}</span>
                             <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
                                 <img src={cancel} alt="cancel" />
                             </button>
@@ -480,8 +480,9 @@ const BuilderInfo = (props: PropsType) => {
                             {reviewList?.map((item: any) => {
                                 const { reviewData } = item;
                                 return (
-                                    <div key={reviewsData.reviewId}>
-                                        <div className="question_ans_card" key={reviewData.reviewId}>
+                                    // <div key={reviewsData.reviewId}>
+                                    <div>
+                                        <div className="question_ans_card">
                                             <div className="user_detail">
                                                 <figure className="user_img">
                                                     <img src={reviewData?.userImage || dummy} alt="user-img" />
@@ -508,6 +509,7 @@ const BuilderInfo = (props: PropsType) => {
                                             {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
                                                 <span className="show_hide_ans link"
                                                     onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
+                                            {reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) && <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>}
                                             {!reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
                                             {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('updateReviewBuilder', reviewData?.reviewId, '', reviewData?.review, reviewData?.rating)}>Edit</span>}
                                             {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('removeReviewBuilder', reviewData?.reviewId)}>Delete</span>}
@@ -524,7 +526,6 @@ const BuilderInfo = (props: PropsType) => {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.replyData?.reply}</p>
-                                                <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>
                                                 {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
                                                 {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
                                             </div>}
