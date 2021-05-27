@@ -270,9 +270,14 @@ const BannerSearch = (props: PropsType) => {
                                                 });
                                                 setSelectedTrade({});
                                             }}>
-                                            <div className="autosuggestion_icon card history">
-                                                <span>{item.name}</span>
-                                                <span className="name">{item.trade_name}</span>
+                                            <div className="card ico_txt_wrap">
+                                                <figure className="ico">
+                                                    <img src={item?.image || residential} alt="icon" />
+                                                </figure>
+                                                <div className="f_column">
+                                                    <span>{item.name}</span>
+                                                    <span className="name">{item.trade_name}</span>
+                                                </div>
                                                 <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
                                                     <img src={close} alt="remove" />
                                                 </span>
@@ -560,7 +565,7 @@ const BannerSearch = (props: PropsType) => {
                                     placeholder='Where?'
                                     ref={locationRefClone}
                                     value={addressText}
-                                    autoComplete="nope"
+                                    autoComplete="off"
                                     className={'line-1'}
                                     onChange={(e: any) => { setAddressText(e.target.value) }}
                                     onFocus={() => {
@@ -608,6 +613,7 @@ const BannerSearch = (props: PropsType) => {
                                                 <input
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
                                                     id="location-input-tag"
+                                                    autoComplete="off"
                                                     ref={locationRef}
                                                     onFocus={() => {
                                                         setInputFocus2(true)

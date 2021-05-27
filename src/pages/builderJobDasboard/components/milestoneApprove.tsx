@@ -6,7 +6,7 @@ import { milestoneAcceptOrDecline } from '../../../redux/homeSearch/actions'
 interface Props {
     backToScreen: any,
     data: any,
-    resetStateLocal:any
+    resetStateLocal: any
 }
 
 const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
@@ -35,6 +35,10 @@ const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
             }
         }
 
+        const toggleBack = () => {
+            setToggle(false);
+        }
+
 
         if (isToggle) {
             return (
@@ -42,6 +46,7 @@ const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
                     milestoneAcceptOrDecline={milestoneAcceptOrDecline}
                     jobId={jobId}
                     jobName={jobName}
+                    toggleBack={toggleBack}
                     resetStateLocal={resetStateLocal}
                     milestoneId={item?.milestoneId}
                 />)
@@ -70,13 +75,13 @@ const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
                         : null}
 
                     <div className="form_field">
-                        <span className="xs_sub_title">Discription</span>
+                        <span className="xs_sub_title">Description</span>
                         <p className="commn_para">{description || ''}</p>
                     </div>
 
                     <div className="form_field">
                         <span className="xs_sub_title">Hours worked in this milestone</span>
-                        <span className="show_label">{`${hoursWorked} hours`}</span>
+                        <span className="show_label">{`${hoursWorked || 0} hours`}</span>
                     </div>
                     <button onClick={onSubmitAccept} className="fill_btn full_btn">Approve</button>
                     <button onClick={() => { setToggle(true) }} className="fill_grey_btn full_btn mt-16">Decline</button>

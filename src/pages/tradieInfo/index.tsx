@@ -153,6 +153,7 @@ class TradieInfo extends Component<Props, State> {
     }
 
     reviewHandler = (type: any, reviewId?: any, replyId?: any, reply?: any) => {
+        console.log({type, reviewId})
         if (type === 'reviewReplyClicked') {
             this.setState((prevData: any) => ({
                 reviewsData: {
@@ -571,7 +572,7 @@ class TradieInfo extends Component<Props, State> {
                                                     <span
                                                         className="action link"
                                                         onClick={() => {
-                                                            reviewHandler('reviewReplyClicked', item?.reviewData?.replyData?.replyId)
+                                                            reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
                                                         }}>
                                                         {'Reply'}
                                                     </span>

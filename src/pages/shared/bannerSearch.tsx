@@ -232,7 +232,7 @@ const BannerSearch = (props: PropsType) => {
                                             }}>
                                             <div className="card ico_txt_wrap">
                                                 <figure className="ico">
-                                                    <img src={residential} alt="icon" />
+                                                    <img src={item?.image || residential} alt="icon" />
                                                 </figure>
                                                 <div className="f_column">
                                                     <span>{item.name}</span>

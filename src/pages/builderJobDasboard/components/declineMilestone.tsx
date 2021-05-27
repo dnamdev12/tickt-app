@@ -10,12 +10,13 @@ interface Props {
     jobId: any
     jobName: any,
     milestoneId: any,
+    toggleBack: () => void,
     resetStateLocal:any
 }
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
 
-const DeclineMilestone = ({ milestoneAcceptOrDecline, jobId, jobName, milestoneId, resetStateLocal }: Props) => {
+const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName, milestoneId, resetStateLocal }: Props) => {
     const [reason, setReason] = useState('');
     const [filesUrl, setFilesUrl] = useState([] as any);
     const [localFiles, setLocalFiles] = useState({});
@@ -23,6 +24,12 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, jobId, jobName, milestoneI
 
 
     const onSubmitDecline = async () => {
+
+        if(!filesUrl?.length){
+            setShowToast(true, 'Please attach atleast one media file.')
+            return true;
+        }
+        
         let data = {
             "status": 2,
             "jobId": jobId,
@@ -119,6 +126,7 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, jobId, jobName, milestoneI
         if (!reason?.length || reason?.length > 250) {
             return true;
         }
+
         return false;
     }
 
@@ -127,7 +135,7 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, jobId, jobName, milestoneI
         <div className="flex_row">
             <div className="flex_col_sm_12">
                 <div className="relate">
-                    <button className="back"></button>
+                    <button onClick={toggleBack} className="back"></button>
                     <span className="xs_sub_title">{jobName}</span>
                 </div>
                 <span className="sub_title">Decline milestone</span>
