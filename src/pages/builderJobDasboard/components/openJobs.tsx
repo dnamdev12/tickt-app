@@ -47,7 +47,7 @@ class OpenJobs extends Component<Props, State> {
 
     redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
         console.log({ jobId, tradieId, specializationId });
-        this.props.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
+        this.props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
     }
 
     setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })

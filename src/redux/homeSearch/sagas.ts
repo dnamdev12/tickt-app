@@ -97,6 +97,17 @@ function* resetHomeSearchJobData() {
         yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
 }
 
+function* getProfileBuilder(){
+    commonActions.setLoading(true);
+    const response: FetchResponse = yield NetworkOps.get(Urls.builder)
+    commonActions.setLoading(false);
+    if (response.status_code === 200) {
+        yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: response.result });
+    } else {
+        yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: [] });
+    }
+}
+
 function* authWatcher() {
     // yield takeLatest(actionTypes.GET_JOB_TYPE, getJobType);
     yield takeLatest(actionTypes.GET_SEARCH_JOB_LIST, getSearchJobList);
@@ -107,6 +118,7 @@ function* authWatcher() {
     yield takeLatest(actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, getJobWithJobTypeLatLong);
     yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
     yield takeLatest(actionTypes.RESET_HOME_SEARCH_DATA, resetHomeSearchJobData);
+    yield takeLatest(actionTypes.GET_PROFILE_BUILDER, getProfileBuilder);
 }
 
 export default authWatcher;

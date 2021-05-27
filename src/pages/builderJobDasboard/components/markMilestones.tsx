@@ -52,6 +52,7 @@ const MarkMilestones = (props: any) => {
                 let response: any = await getMilestoneDetails({ milestoneId, jobId });
                 if (response.success) {
                     setMilestone(response.data);
+                    setEnableApprove(true);
                 }
             }
         }
@@ -83,10 +84,9 @@ const MarkMilestones = (props: any) => {
     if (enableApprove) {
         return (
             <MilestoneApprove
+                resetStateLocal={resetStateLocal}
                 backToScreen={backToScreen}
-                milestone={selectedMile}
-                selectedItem={selectedMilestoneIndex}
-
+                data={{ selectedMile, selectedMilestoneIndex, selectedItem, itemDetails }}
             />)
     }
     return (
@@ -161,7 +161,6 @@ const MarkMilestones = (props: any) => {
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={() => {
-                                                setEnableApprove(true);
                                                 setMilestoneIndex({
                                                     index,
                                                     milestoneId,

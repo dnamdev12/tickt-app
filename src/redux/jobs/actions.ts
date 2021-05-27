@@ -305,3 +305,104 @@ export const markMilestoneComplete = (data: any, callback: () => void) => ({
 export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data })
 export const getTradieReviewListOnBuilder = (data: any) => ({ type: actionTypes.GET_TRADIE_REVIEWS_LIST_ON_BUILDER, data })
 export const getAcceptDeclineTradie = (data: any) => ({ type: actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, data })
+
+export const getQuestionsList = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.questionList}?jobId=${data?.jobId}&page=${data?.page}`)
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+
+export const answerQuestion = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.answerQuestion, data)
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+export const updateAnswer = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateAnswer, data)
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+export const deleteAnswer = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(`${Urls.deleteAnswer}?questionId=${data.questionId}&answerId=${data.answerId}`)
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+export const reviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewReply, data)
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+export const updateReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateReviewReply, data)
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+export const removeReviewReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(`${Urls.removeReviewReply}?reviewId=${data.reviewId}&replyId=${data.replyId}`)
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+export const getTradeReviews = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+export const getTradeProfile = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.tradieProfile + `?tradieId=${data.tradieId}&jobId=${data.jobId}`);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+

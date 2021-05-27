@@ -12,6 +12,7 @@ const initialState = {
     homeJobDetailsData: '',
     homeApplyJobData: '',
     error: '',
+    builderProfile: {}
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -72,6 +73,13 @@ const reducer = (state = initialState, action: any) => {
                 ...state,
                 homeApplyJobData: action.payload
             }
+
+        case actionTypes.SET_PROFILE_BUILDER:
+            return {
+                ...state,
+                builderProfile: action.payload
+            }
+
         default: return state
     }
 }

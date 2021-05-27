@@ -145,23 +145,13 @@ const BannerSearch = (props: PropsType) => {
     }, [addressText])
 
     useEffect(() => {
-        console.log({
-            props: props.recentLocationData
-        })
         if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
             getRecentLocationData();
         }
     }, [props.recentLocationData, recentLocation])
 
     const getRecentLocationData = () => {
-        // const tempLocationList: any = [
-        //     { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
-        //     { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
-        //     { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
-        //     { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
-        // ]
         var recentLocationDetails: any = [];
-        // tempLocationList?.map((item: any, index: number) => {
         props.recentLocationData?.map((item: any, index: number) => {
             var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
             var geocoder = new google.maps.Geocoder();
@@ -242,7 +232,7 @@ const BannerSearch = (props: PropsType) => {
                                             }}>
                                             <div className="card ico_txt_wrap">
                                                 <figure className="ico">
-                                                    <img src={residential} alt="icon" />
+                                                    <img src={item?.image || residential} alt="icon" />
                                                 </figure>
                                                 <div className="f_column">
                                                     <span>{item.name}</span>
@@ -487,6 +477,7 @@ const BannerSearch = (props: PropsType) => {
                                         props.getSearchJobList(e.target.value)
                                     }
                                 }}
+                                autoComplete="none"
                                 // readOnly={props?.selectedItem ? true : false}
                                 onFocus={() => { setInputFocus1(true) }}
                             />
@@ -548,7 +539,7 @@ const BannerSearch = (props: PropsType) => {
                                     placeholder='Where?'
                                     ref={locationRefClone}
                                     value={addressText}
-                                    autoComplete="nope"
+                                    autoComplete="off"
                                     className={'line-1'}
                                     onChange={(e: any) => { setAddressText(e.target.value) }}
                                     onFocus={() => {
@@ -673,6 +664,9 @@ const BannerSearch = (props: PropsType) => {
                                 To use this, change your location settings in browser.
                               </span>}
                             <div className="flex_row recent_search auto_loc">
+                                {recentLocation?.length ?
+                                    <span className="name_recent_search">recent search</span>
+                                    : null}
                                 {recentLocation?.map((item: any) => {
                                     return (
                                         <div className="flex_col_sm_4"
@@ -699,6 +693,7 @@ const BannerSearch = (props: PropsType) => {
                                         calenderRange1?.startDate && calenderRange1.endDate ?
                                             `${moment(calenderRange1?.startDate).format('DD MMM')}-${moment(calenderRange1?.endDate).format('DD MMM')}`
                                             : "When?"}
+                                            autoComplete="none"
                                     onFocus={() => setInputFocus3(true)}
                                 />
                                 {calenderRange1?.startDate && inputFocus3 &&

@@ -20,7 +20,7 @@ export default class TradieHome extends Component<Props> {
         }
         let redirectPath = props?.redirectPath;
 
-        if(!data?.length){
+        if (!data?.length) {
             return null;
         }
 
@@ -29,14 +29,16 @@ export default class TradieHome extends Component<Props> {
                 <div className="custom_container">
                     <span className="title">{props.title}</span>
                     <div className="flex_row tradies_row">
-                        {data?.length ? data.splice(0, props.length || data.length - 1).map((item: any, index: number) => (<TradieBox item={item} index={index} />)) : (
-                            <div className="no_record">
-                                <figure className="no_data_img">
-                                    <img src={noDataFound} alt="data not found" />
-                                </figure>
-                                <span>Data not found</span>
-                            </div>
-                        )}
+                        {data?.length ?
+                            data.splice(0, props.length || data.length - 1).map((item: any, index: number) => (<TradieBox item={item} index={index} />)) :
+                            (
+                                <div className="no_record">
+                                    <figure className="no_data_img">
+                                        <img src={noDataFound} alt="data not found" />
+                                    </figure>
+                                    <span>Data not found</span>
+                                </div>
+                            )}
                     </div>
                     <button
                         onClick={() => {

@@ -85,3 +85,16 @@ export const getMilestoneDetails = async (data: any) => {
     }
     return { success: false, data: response.result };
 }
+
+export const milestoneAcceptOrDecline = async (data: any) => {
+    setLoading(true);
+    const response: FetchResponse = await NetworkOps.putToJson(Urls.milestoneApproveDecline,data)
+    setLoading(false);
+    setShowToast(true, response.message);
+    if (response.status_code === 200) {
+        return { success: true, data: response.result };
+    }
+    return { success: false, data: response.result };
+}
+
+export const getProfileBuilder = () => ({type:actionTypes.GET_PROFILE_BUILDER})
