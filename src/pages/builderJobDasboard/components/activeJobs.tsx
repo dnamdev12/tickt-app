@@ -20,6 +20,7 @@ interface Active {
     totalMilestones: any,
     tradieListData: any,
     tradeName: any,
+    location: any,
     tradieId: any,
     tradieImage: any,
     tradeImage:any,
@@ -69,6 +70,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                         specializationName,
                         status,
                         timeLeft,
+                        location,
                         locationName,
                         totalmem,
                         totalMilestones,
@@ -98,7 +100,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                     <ul>
                                         <li className="icon clock">{timeLeft}</li>
                                         <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{locationName}</li>
+                                        <li className="icon location line-1">{location}</li>
                                         <li className="icon calendar">{durations}</li>
                                     </ul>
                                 </div>

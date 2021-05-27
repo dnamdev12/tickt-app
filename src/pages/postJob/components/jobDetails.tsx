@@ -13,7 +13,7 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { setShowToast } from '../../../redux/common/actions';
 // @ts-ignore
-import ReactImageVideoLightbox from 'react-image-video-lightbox';
+// import ReactImageVideoLightbox from 'react-image-video-lightbox';
 interface Proptypes {
     data: any;
     milestones: any;
@@ -249,7 +249,7 @@ const JobDetails = ({
                                                         `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
                                                         : '0 days'}
                                             </li>
-                                            <li className="icon dollar">${data?.amount} {data?.pay_type === "fixed" ? 'fixed' : 'p/h'} </li>
+                                            <li className="icon dollar">${data?.amount} {data?.pay_type === "Fixed price" ? 'f/p' : 'p/h'} </li>
                                             <li className="icon location line-3">{data?.location_name}</li>
                                         </ul>
                                     </div>

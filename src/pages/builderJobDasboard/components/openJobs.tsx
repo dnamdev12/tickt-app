@@ -4,7 +4,7 @@ import approved from '../../../assets/images/approved.png';
 import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
 import noDataFound from '../../../assets/images/no-data.png';
-
+// import {  } from "../../../assets/images/job-type-placeholder.png";
 interface Active {
     amount: any,
     durations: any,
@@ -16,6 +16,7 @@ interface Active {
     status: any,
     timeLeft: any,
     totalmem: any,
+    location:any,
     locationName: any,
     totalMilestones: any,
     tradieListData: any,
@@ -79,6 +80,7 @@ class OpenJobs extends Component<Props, State> {
                             tradieListData,
                             tradeName,
                             tradieId,
+                            location,
                             tradeImage,
                             tradieImage,
                         }: Active) => (
@@ -102,7 +104,7 @@ class OpenJobs extends Component<Props, State> {
                                         <ul>
                                             <li className="icon clock">{timeLeft}</li>
                                             <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{locationName}</li>
+                                            <li className="icon location line-1">{location}</li>
                                             <li className="icon calendar">{durations}</li>
                                         </ul>
                                     </div>

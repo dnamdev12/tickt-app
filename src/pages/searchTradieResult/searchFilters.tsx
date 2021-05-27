@@ -159,7 +159,7 @@ const SearchFilter = (props: any) => {
                 setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: true, specializationId: newSpecialization }))
             }
         } else if (name == 'Clear All') {
-            setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, jobTypes: [], specializationId: [] }))
+            setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, jobTypes: [], specializationId: [] , tradeId: [],}))
         }
     }
 
@@ -225,6 +225,7 @@ const SearchFilter = (props: any) => {
                 }
             } else {
                 if (local_info?.location) {
+                    console.log({local_info})
                     data['location'] = local_info?.location;
                 }
                 delete data.location;
