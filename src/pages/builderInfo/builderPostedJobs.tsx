@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import { getBuildersJob } from '../../redux/jobs/actions';
 
-import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-search-data.png';
 
 interface PropsType {
     location: any,

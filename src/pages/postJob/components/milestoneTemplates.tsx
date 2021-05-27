@@ -7,7 +7,7 @@ import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 import { profileTemplateList, getMileStoneByTempId } from '../../../redux/jobs/actions';
 import moment from 'moment';
-import noData from '../../../assets/images/no-data.png';
+import noData from '../../../assets/images/no-search-data.png';
 
 interface Proptypes {
     data: any;

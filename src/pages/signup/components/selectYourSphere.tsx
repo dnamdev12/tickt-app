@@ -2,7 +2,7 @@ import { useState } from 'react';
 import Constants from '../../../utils/constants';
 import { setShowToast } from '../../../redux/common/actions';
 import spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
-import noData from '../../../assets/images/no-data.png';
+import noData from '../../../assets/images/no-search-data.png';
 
 interface Propstype {
     updateSteps: (num: number, data: any) => void

@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import TradieBox from '../../shared/tradieBox';
 import Menu from '@material-ui/core/Menu';
 import cancel from "../../../assets/images/ic-cancel.png";
-import noDataFound from '../../../assets/images/no-data.png';
+import noDataFound from '../../../assets/images/no-search-data.png';
 interface Props {
     items: any,
     jobid: any,

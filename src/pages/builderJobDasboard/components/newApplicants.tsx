@@ -2,8 +2,8 @@ import React, { ReactElement } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import { withRouter } from 'react-router';
-import noDataFound from '../../../assets/images/no-data-found.png';
-import noData from '../../../assets/images/no-data.png';
+import noDataFound from '../../../assets/images/no-search-data.png';
+import noData from '../../../assets/images/no-search-data.png';
 interface Applicant {
     amount: any,
     builderId: any,
