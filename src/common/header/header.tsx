@@ -137,7 +137,7 @@ const Header = (props: any) => {
                                 <div className="user_profile">
                                     {storageService.getItem("jwtToken") &&
                                         <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                            <img src={dummy} alt="profile-img" />
+                                            <img src={props?.builderProfile?.userImage || dummy} alt="profile-img" />
                                         </figure>}
                                     <Menu className="sub_menu"
                                         id="simple-menu"

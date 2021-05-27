@@ -213,6 +213,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
                     // style={{ display:address.length > 2  ? 'none' : '' }}
                     id="location_search_static"
                     onChange={(e) => setAddress((e.target.value).trimLeft())}
+                    autoComplete="off"
                     onFocus={(x) => {
                       // console.log('Input - 1')
                     }}
