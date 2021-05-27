@@ -120,10 +120,10 @@ const BannerSearch = (props: PropsType) => {
     };
 
     useEffect(() => {
-        if(getRecentSearchList){
+        if (getRecentSearchList) {
             getRecentSearchList();
         }
-        if(getRecentLocationList){
+        if (getRecentLocationList) {
             getRecentLocationList();
         }
         getRecentLocationData();
@@ -146,7 +146,7 @@ const BannerSearch = (props: PropsType) => {
 
     useEffect(() => {
         console.log({
-            props:props.recentLocationData
+            props: props.recentLocationData
         })
         if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
             getRecentLocationData();
@@ -240,9 +240,14 @@ const BannerSearch = (props: PropsType) => {
                                                 // setItemSearch(item);
                                                 // setSelectedTrade({});
                                             }}>
-                                            <div className="autosuggestion_icon card history">
-                                                <span>{item.name}</span>
-                                                <span className="name">{item.trade_name}</span>
+                                            <div className="card ico_txt_wrap">
+                                                <figure className="ico">
+                                                    <img src={residential} alt="icon" />
+                                                </figure>
+                                                <div className="f_column">
+                                                    <span>{item.name}</span>
+                                                    <span className="name">{item.trade_name}</span>
+                                                </div>
                                                 <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
                                                     <img src={close} alt="remove" />
                                                 </span>
@@ -452,7 +457,7 @@ const BannerSearch = (props: PropsType) => {
 
     let custom_name = searchText;
     let condition_location: any = addressText?.length > 2 || (addressText?.length && enableCurrentLocation && Object.keys(selectedAddress).length);
-    console.log({ addressText, enableCurrentLocation, inputFocus2, selectedAddress,  })
+    console.log({ addressText, enableCurrentLocation, inputFocus2, selectedAddress, })
     return (
         <div className="home_search">
             <button

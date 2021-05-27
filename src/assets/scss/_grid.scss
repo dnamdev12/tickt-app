@@ -97,6 +97,11 @@
   display: flex;
 }
 
+.f_column {
+  display: flex;
+  flex-flow: column;
+}
+
 
 .row_wrap{
   display: flex;
