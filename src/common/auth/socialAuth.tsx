@@ -100,7 +100,7 @@ const SocialAuth = (props: Propstype) => {
                 clientId={Constants.SocialAuth.GOOGLE_CLIENT_ID}
                 onSuccess={googleResponse}
                 onFailure={onFailure}
-                render={(renderProps: any) => (<a onClick={renderProps.onClick}>
+                render={(renderProps: any) => (<a className="hvr-ripple-out" onClick={renderProps.onClick}>
                     <img src={gmail} alt="google" />
                 </a>)}
             />
@@ -111,7 +111,7 @@ const SocialAuth = (props: Propstype) => {
                 scope="r_liteprofile r_emailaddress"
                 state="gjhcbf355ESDE"
                 redirectUri={linkedInData.REDIRECT_URI}
-                renderElement={(renderProps: any) => (<a onClick={renderProps.onClick} >
+                renderElement={(renderProps: any) => (<a className="hvr-ripple-out" onClick={renderProps.onClick} >
                     <img src={linkedin} alt="linkedin" />
                 </a>
                 )}
