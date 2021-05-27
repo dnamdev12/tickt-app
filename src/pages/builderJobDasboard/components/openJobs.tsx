@@ -4,7 +4,7 @@ import approved from '../../../assets/images/approved.png';
 import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
 import noDataFound from '../../../assets/images/no-data.png';
-
+// import {  } from "../../../assets/images/job-type-placeholder.png";
 interface Active {
     amount: any,
     durations: any,
@@ -16,11 +16,13 @@ interface Active {
     status: any,
     timeLeft: any,
     totalmem: any,
+    location:any,
     locationName: any,
     totalMilestones: any,
     tradieListData: any,
     tradeName: any,
     tradieId: any,
+    tradeImage: any,
     tradieImage: any,
 
 }
@@ -78,6 +80,8 @@ class OpenJobs extends Component<Props, State> {
                             tradieListData,
                             tradeName,
                             tradieId,
+                            location,
+                            tradeImage,
                             tradieImage,
                         }: Active) => (
                             <div className="flex_col_sm_6">
@@ -88,7 +92,7 @@ class OpenJobs extends Component<Props, State> {
                                     </span>
                                     <div className="user_wrap">
                                         <figure className="u_img">
-                                            <img src={tradieImage || dummy} alt="traide-img"
+                                            <img src={tradeImage || dummy} alt="traide-img"
                                             />
                                         </figure>
                                         <div className="details">
@@ -100,7 +104,7 @@ class OpenJobs extends Component<Props, State> {
                                         <ul>
                                             <li className="icon clock">{timeLeft}</li>
                                             <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{locationName}</li>
+                                            <li className="icon location line-1">{location}</li>
                                             <li className="icon calendar">{durations}</li>
                                         </ul>
                                     </div>
@@ -131,7 +135,7 @@ class OpenJobs extends Component<Props, State> {
                                                 this.setToggle();
                                                 setJobLabel('applicantList', jobId, 1, specializationId);
                                             }}
-                                            className="fill_grey_btn full_btn">
+                                            className="fill_grey_btn full_btn btn-effect">
                                             {'Applications'}
                                             {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}

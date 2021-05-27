@@ -47,6 +47,7 @@ const SearchResultTradie = (props: any) => {
         // specializationId: stateData?.specializations,
 
         if (stateData?.location) {
+            console.log({stateData})
             data['location'] = stateData?.location;
         }
         if (stateData?.calender?.startDate) {
@@ -101,7 +102,7 @@ const SearchResultTradie = (props: any) => {
                         <div className="flex_row mob_srch_option">
                             <div className="flex_col_sm_6"></div>
                             <div className="flex_col_sm_6 text-right">
-                                <button onClick={() => { setToggleSearch(true) }} className="fill_grey_btn">Modify Search</button>
+                                <button onClick={() => { setToggleSearch(true) }} className="fill_grey_btn btn-effect">Modify Search</button>
                             </div>
                         </div>
 

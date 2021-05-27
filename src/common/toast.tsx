@@ -71,7 +71,7 @@ const Toast = (props: any) => {
             </span>
             <div className="wrapppr">
                 <p className="commn_para">{renderToast()}</p>
-                {/* <button className="fill_btn" onClick={hideToast}>Close</button> */}
+                {/* <button className="fill_btn btn-effect" onClick={hideToast}>Close</button> */}
             </div>
         </div>
     ) : null;

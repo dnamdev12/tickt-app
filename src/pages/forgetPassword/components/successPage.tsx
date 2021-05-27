@@ -31,7 +31,7 @@ const SuccessPage = (props: Propstype) => {
                     <div className="content">
                         <h1 className="title">Thanks!</h1>
                         <span className="show_label msg">You have created new password for your account.</span>
-                        <button className="fill_btn full_btn" onClick={goToLogin}>Login</button>
+                        <button className="fill_btn full_btn btn-effect" onClick={goToLogin}>Login</button>
                     </div>
                 </div>
             </figure>

@@ -9,7 +9,7 @@ export default function NotFound() {
             </figure>
             <div className="content">
                 <h1>Page Not Found</h1>
-                <Link to="/" className="fill_btn" title=" Home">Back To Home</Link>
+                <Link to="/" className="fill_btn btn-effect" title=" Home">Back To Home</Link>
             </div>
         </div>
     );

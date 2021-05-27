@@ -208,14 +208,14 @@ const AddMilestone = ({ data, stepCompleted, handleStepForward, handleStepComple
                                 <button
                                     onClick={addAnotherMilestone}
                                     // className={`fill_btn fill_grey_btn full_btn`}>
-                                    className={`fill_btn fill_grey_btn full_btn ${checkErrors() ? 'disable_btn' : ''}`}>
+                                    className={`fill_btn fill_grey_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}>
                                     {'Add milestone'}
                                 </button>
                             </div>
                             <div className="form_field">
                                 <button
                                     // className="fill_btn full_btn">
-                                    className={`fill_btn full_btn disable_btn ${checkErrors() ? 'disable_btn' : ''}`}>
+                                    className={`fill_btn full_btn btn-effect disable_btn ${checkErrors() ? 'disable_btn' : ''}`}>
                                     {'Continue'}
                                 </button>
                             </div>

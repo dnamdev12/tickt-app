@@ -80,7 +80,7 @@ const JobDashboard = ({
     //           Your review will help other tradies find the highest quality builders on Tickt.
     //         </span>
     //         <div className="btn_wrapr">
-    //           <button className="fill_btn">OK</button>
+    //           <button className="fill_btn btn-effect">OK</button>
     //         </div>
     //       </div>
     //     </div>
@@ -100,7 +100,7 @@ const JobDashboard = ({
             </span>
             <div className="btn_wrapr">
               <button
-                className="fill_btn"
+                className="fill_btn btn-effect"
                 onClick={() => {
                   history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
                   setMilestoneComplete(false);
@@ -127,7 +127,7 @@ const JobDashboard = ({
             </span>
             <div className="btn_wrapr">
               <button
-                className="fill_btn"
+                className="fill_btn btn-effect"
                 onClick={() => {
                   history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
                   setJobComplete(false);

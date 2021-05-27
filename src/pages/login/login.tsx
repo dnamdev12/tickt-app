@@ -140,7 +140,7 @@ const LoginPage = (props: Propstype) => {
                         <a className="link" onClick={forgetPasswordClicked}>Forgotten your password?</a>
                     </div>
                     <div className="form_field">
-                        <button className="fill_btn">Log in</button>
+                        <button className="fill_btn btn-effect">Log in</button>
                     </div>
                 </form>
                 <span className="show_label text-center">or continue with</span>

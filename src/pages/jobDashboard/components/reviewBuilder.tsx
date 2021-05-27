@@ -97,7 +97,7 @@ const ReviewBuilder = (props: Proptypes) => {
                     </div>
                 </div>
                 <div className="form_field">
-                    <button className="fill_btn full_btn" onClick={submitReviewClicked}>Leave review</button>
+                    <button className="fill_btn full_btn btn-effect" onClick={submitReviewClicked}>Leave review</button>
                 </div>
             </div>
             <div className="flex_col_sm_6 col_ruler">

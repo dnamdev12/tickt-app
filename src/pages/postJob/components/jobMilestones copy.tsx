@@ -138,10 +138,10 @@ const JobMilestones = ({ data, stepCompleted, handleStepComplete, handleStepBack
                                 </Droppable>
                             </DragDropContext>
                             <div className="form_field">
-                                <button className="fill_btn fill_grey_btn full_btn">+ Add milestone</button>
+                                <button className="fill_btn fill_grey_btn full_btn btn-effect">+ Add milestone</button>
                             </div>
                             <div className="form_field">
-                                <button className="fill_btn full_btn" onClick={() => handleStepComplete({})}>Continue</button>
+                                <button className="fill_btn full_btn btn-effect" onClick={() => handleStepComplete({})}>Continue</button>
                             </div>
                         </div>
                     </div>

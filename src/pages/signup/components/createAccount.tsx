@@ -112,7 +112,7 @@ const CreateAccount = (props: Propstype) => {
                     {!!errors.tnc && <span className="error_msg m-t">{errors.tnc}</span>}
                 </div>
                 <div className="form_field">
-                    <button type="submit" className="fill_btn">Sign up</button>
+                    <button type="submit" className="fill_btn btn-effect">Sign up</button>
                 </div>
                 <span className="show_label text-center">or continue with</span>
                 <SocialAuth onNewAccount={props.onNewAccount}

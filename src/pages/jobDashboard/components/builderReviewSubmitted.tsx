@@ -14,7 +14,7 @@ const BuilderReviewSubmitted = () => {
                         </span>
                         <NavLink to='/past-jobs'>
                             <div className="btn_wrapr">
-                                <button className="fill_btn">OK</button>
+                                <button className="fill_btn btn-effect">OK</button>
                             </div>
                         </NavLink>
                     </div>

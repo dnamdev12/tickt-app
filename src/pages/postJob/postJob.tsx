@@ -26,6 +26,7 @@ interface Proptypes {
     editDetailPage: any;
     isLoading: any,
     history: any,
+    builderProfile:any,
     updateMileStoneIndex: (data: any) => void;
     updateMileStoneTimings: (data: any) => void;
     updateDetailScreen: (data: any) => void;
@@ -41,6 +42,7 @@ const PostJob = (props: Proptypes) => {
         updateDetailScreen,
         editMilestoneTiming,
         editDetailPage,
+        builderProfile,
         editMilestoneId } = props;
     const [categoriesData, setCategoriesData] = useState([]);
     const [step, setStep] = useState(1);
@@ -382,6 +384,7 @@ const PostJob = (props: Proptypes) => {
                     milestones={milestones}
                     categories={tradeListData}
                     jobTypes={categoriesData}
+                    builderProfile={builderProfile}
                     clearParentStates={clearParentStates}
                     stepCompleted={stepsCompleted.includes(14)}
                     handleStepComplete={handleStepComplete}

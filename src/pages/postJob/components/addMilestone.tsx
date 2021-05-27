@@ -323,7 +323,7 @@ export default class AddMilestone extends Component<Props, State> {
                                 <div className="form_field">
                                     <button
                                         onClick={this.addAnotherMilestone}
-                                        className={`fill_grey_btn full_btn ${check_errors ? 'disable_btn' : ''}`}>
+                                        className={`fill_grey_btn full_btn btn-effect ${check_errors ? 'disable_btn' : ''}`}>
                                         {'Add milestone'}
                                     </button>
                                 </div>
@@ -333,7 +333,7 @@ export default class AddMilestone extends Component<Props, State> {
                                             // newMileStoneScreen(milestone_index + 1);
                                             handleStepForward(6)
                                         }}
-                                        className={`fill_btn full_btn ${check_errors ? 'disable_btn' : ''}`}>
+                                        className={`fill_btn full_btn btn-effect ${check_errors ? 'disable_btn' : ''}`}>
                                         {'Continue'}
                                     </button>
                                 </div>

@@ -389,6 +389,8 @@ const BannerSearch = (props: PropsType) => {
             }
 
             if (Object.keys(selectedAddress).length) {
+                console.log({selectedAddress});
+     
                 data['location'] = {
                     "coordinates": [
                         parseFloat(selected_address?.lng),
@@ -435,6 +437,8 @@ const BannerSearch = (props: PropsType) => {
 
             if (sortBy === 2) {
                 if (Object.keys(selected_address)?.length) {
+                    console.log({selected_address})
+              
                     data['location'] = {
                         "coordinates": [
                             +selected_address?.lng,
@@ -754,7 +758,7 @@ const BannerSearch = (props: PropsType) => {
                         </div>
                     </li>
                     <div className="search_btn">
-                        <button type="button" className="fill_btn" onClick={bannerSearchClicked}>
+                        <button type="button" className="fill_btn btn-effect" onClick={bannerSearchClicked}>
                             <img src={search} alt="search" />
                         </button>
                     </div>

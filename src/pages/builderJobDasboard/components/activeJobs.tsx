@@ -20,8 +20,10 @@ interface Active {
     totalMilestones: any,
     tradieListData: any,
     tradeName: any,
+    location: any,
     tradieId: any,
     tradieImage: any,
+    tradeImage:any,
     setJobLabel: (item: any) => void
 }
 
@@ -68,12 +70,14 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                         specializationName,
                         status,
                         timeLeft,
+                        location,
                         locationName,
                         totalmem,
                         totalMilestones,
                         tradieListData,
                         tradeName,
                         tradieId,
+                        tradeImage,
                         tradieImage,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
@@ -85,7 +89,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradieImage || dummy} alt="traide-img" />
+                                        <img src={tradeImage || dummy} alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -96,7 +100,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                     <ul>
                                         <li className="icon clock">{timeLeft}</li>
                                         <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{locationName}</li>
+                                        <li className="icon location line-1">{location}</li>
                                         <li className="icon calendar">{durations}</li>
                                     </ul>
                                 </div>
@@ -127,7 +131,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                             setLocalState(true);
                                             setSelectedIndex(index);
                                         }}
-                                        className="fill_grey_btn full_btn">
+                                        className="fill_grey_btn full_btn btn-effect">
                                         {'Approve'}
                                         {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}
