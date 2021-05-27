@@ -91,7 +91,7 @@ export const createPostJob = async (data: any) => {
   return { success: false };
 }
 
-export const setHomeBuilder = (data: any) => ({ type: actionTypes.FETCH_HOME_BUILDER, data })
+export const setHomeBuilder = (data: any) => ({ type: actionTypes.FETCH_HOME_BUILDER, data });
 
 export const getBuilderHomeData = async (item: any) => {
   let url = `${Urls.home}?lat=${item.lat}&long=${item.long}`
@@ -129,7 +129,7 @@ export const getTradieReviewList = async (data: any) => {
 
 export const postAskQuestion = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(Urls.askQuestion, data)
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.askQuestion, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -141,7 +141,7 @@ export const postAskQuestion = async (data: any) => {
 
 export const deleteQuestion = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.delete(Urls.deleteQuestion, data)
+  const response: FetchResponse = await NetworkOps.delete(Urls.deleteQuestion, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -153,7 +153,7 @@ export const deleteQuestion = async (data: any) => {
 
 export const updateQuestion = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateQuestion, data)
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateQuestion, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -165,7 +165,7 @@ export const updateQuestion = async (data: any) => {
 
 export const reviewBuilder = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewBuilder, data)
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewBuilder, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -177,7 +177,7 @@ export const reviewBuilder = async (data: any) => {
 
 export const updateReviewBuilder = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateReviewBuilder, data)
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateReviewBuilder, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -189,7 +189,7 @@ export const updateReviewBuilder = async (data: any) => {
 
 export const deleteReviewBuilder = async (reviewId: string) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.delete(Urls.removeReviewBuilder + `?reviewId=${reviewId}`)
+  const response: FetchResponse = await NetworkOps.delete(Urls.removeReviewBuilder + `?reviewId=${reviewId}`);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -199,9 +199,20 @@ export const deleteReviewBuilder = async (reviewId: string) => {
   return { success: false };
 }
 
+export const getBuildersJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.getBuildersJob + `?builderId=${data.builderId}&page=${data.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 export const tradieReviewReply = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieReviewReply, data)
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieReviewReply, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -213,7 +224,7 @@ export const tradieReviewReply = async (data: any) => {
 
 export const tradieUpdateReviewReply = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdateReviewReply, data)
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdateReviewReply, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -225,7 +236,7 @@ export const tradieUpdateReviewReply = async (data: any) => {
 
 export const tradieRemoveReviewReply = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.delete(Urls.tradieRemoveReviewReply + `?reviewId=${data.reviewId}&replyId=${data.replyId}`)
+  const response: FetchResponse = await NetworkOps.delete(Urls.tradieRemoveReviewReply + `?reviewId=${data.reviewId}&replyId=${data.replyId}`);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -237,7 +248,7 @@ export const tradieRemoveReviewReply = async (data: any) => {
 
 export const getBuilderProfile = async (builderId: string) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`)
+  const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
