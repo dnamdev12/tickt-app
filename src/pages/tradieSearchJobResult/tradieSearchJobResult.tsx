@@ -9,7 +9,7 @@ import RenderMap from './renderMap';
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import mapIcon from '../../assets/images/map.png';
-import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
 //  <div className="no_record">
@@ -246,6 +246,7 @@ const TradieSearchJobResult = (props: any) => {
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />
                                     </figure>
+                                    <span>No Data Found!</span>
                                 </div>}
                             {<div className="map_col" style={!mapData.showMap ? { display: "none" } : {}}>
                                 <div className="map_stick">
