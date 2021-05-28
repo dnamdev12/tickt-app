@@ -12,11 +12,11 @@ const categoriesjob = {
     },
     tablet: {
         breakpoint: { max: 1024, min: 768 },
-        items: 2
+        items: 4
     },
     mobile: {
         breakpoint: { max: 650, min: 0 },
-        items: 1
+        items: 2
     }
 };
 
@@ -38,14 +38,14 @@ const JobTypeList = (props: any) => {
                     {/* <ul className="job_categories"> */}
                     {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
                         return (
-                            <div className="job_categories">
+                            <ul className="job_categories">
                                 <li key={item._id} className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
                                     <figure className="type_icon">
                                         <img src={item.image} alt="icon" />
                                     </figure>
                                     <span className="name">{item.name}</span>
                                 </li>
-                            </div>
+                            </ul>
                         )
                     }) :
                         <div className="page_loader">

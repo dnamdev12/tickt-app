@@ -1150,7 +1150,7 @@ body {
     }
   }
   .job_categories {
-    .draw{
+    li{
       cursor: auto;
     }
   }
@@ -3496,11 +3496,9 @@ body {
     }
   }
   .job_categories {
-    justify-content: center;
-    @media(max-width: 1024px){
-      justify-content: flex-start;
-    }
-    .draw {
+    display: block;
+    text-align: center;
+    li {
       padding: 20px;
       margin: 0 15px;
       @media(max-width: 1024px){
@@ -3533,7 +3531,7 @@ body {
   display: flex;
   flex-flow: wrap;
   margin-bottom: 40px;
-  .draw {
+  li {
     display: flex;
     justify-content: center;
     align-items: center;
