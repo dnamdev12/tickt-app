@@ -24,7 +24,7 @@ interface Propstype {
 }
 
 const DATA = [
-    { title: 'Welcome to Tickt', subTitle: 'Australia\'s fastest growing network for builders and tradesmen' },
+    { title: 'Welcome to Tickt', subTitle: 'A new marketplace for builders and tradies' },
     { title: 'Create account' },
     { title: 'Phone number' },
     { title: 'Verify your number' },
