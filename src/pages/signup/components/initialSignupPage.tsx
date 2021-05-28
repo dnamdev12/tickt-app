@@ -1,11 +1,11 @@
 import storageService from '../../../utils/storageService';
-
 interface Propstype {
     updateSteps: (num: number, data: any) => void,
     step: number,
     history: any,
     showModal: boolean,
     modalUpdateSteps: (data: any) => void,
+    callTradeList: () => void,
 }
 
 const InitialSignupPage = (props: Propstype) => {
@@ -15,7 +15,10 @@ const InitialSignupPage = (props: Propstype) => {
         if (userType === 'builder') {
             user_type = 2
         }
-        props.updateSteps(props.step + 1, { user_type })
+        props.updateSteps(props.step + 1, { user_type });
+        if (user_type === 1) {
+            props.callTradeList();
+        }
     }
 
     const guestLoginClicked = (e: any) => {

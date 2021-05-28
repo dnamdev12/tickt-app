@@ -15,12 +15,12 @@ interface Props {
     modalUpdateSteps: (data: any) => void,
     setSocialData: (data: any) => void,
     modalLoginBackBtn?: string,
-    // socialId?: string,
+    socialId?: string,
 }
 
 const AuthParent = (props: any) => {
-    const tradieStepsLength = 8;
-    const builderStepsLength = 7;
+    const tradieStepsLength = 7;
+    const builderStepsLength = props?.socialId ? 3 : 4;
 
     return (
         <div className="onboard_wrapper">

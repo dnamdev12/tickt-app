@@ -11,9 +11,7 @@ import AlmostDone from './components/almostDone';
 import AddQualification from './components/addQualification';
 import AddABN from './components/addABN';
 import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
-import Constants from '../../utils/constants';
 import AuthParent from '../../common/auth/authParent';
-import storageService from '../../utils/storageService';
 
 interface Propstype {
     history?: any,
@@ -39,7 +37,7 @@ const DATA = [
 ]
 
 const Signup = (props: Propstype) => {
-    const [steps, setSteps] = useState(0);
+    const [steps, setSteps] = useState<number>(0);
     const [signupData, setSignupData] = useState<any>({
         firstName: '',
         mobileNumber: '',
@@ -64,7 +62,7 @@ const Signup = (props: Propstype) => {
     })
 
     useEffect(() => {
-        props.callTradeList();
+        // props.callTradeList();
         var locationNew: any = {
             location: {
                 type: "Point",
@@ -90,16 +88,20 @@ const Signup = (props: Propstype) => {
 
     const backButtonHandler = () => {
         let minStep = 1;
-        if (steps === 4) {
+        let stateStepsValue = steps;
+        if (stateStepsValue === 4) {
             minStep = 2;
         }
-        if (steps === 2 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
-            minStep = 2
+        if (stateStepsValue === 2 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
+            minStep = 2;
         }
-        if (steps === 5 && signupData.socialId) {
-            minStep = 3
+        if (stateStepsValue === 7 && signupData.user_type === 2) {
+            stateStepsValue = 5;
         }
-        setSteps(steps - minStep);
+        if (stateStepsValue === 5 && signupData.socialId) {
+            minStep = 3;
+        }
+        setSteps(stateStepsValue - minStep);
     }
 
     const updateSteps = (step: number, newData?: any) => {
@@ -115,11 +117,14 @@ const Signup = (props: Propstype) => {
             }
             newStep += 1;
         }
-        if (newStep == 1 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
+        if (newStep === 1 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
             newStep += 1;
         }
         if (newStep === 4 && signupData.socialId) {
             newStep += 1;
+        }
+        if (newStep === 5 && signupData.user_type === 2) {
+            newStep += 2;
         }
         setSteps(newStep);
         if (newData) {
@@ -152,7 +157,9 @@ const Signup = (props: Propstype) => {
         }
         //delete data.companyName;
         if (data.user_type === 2) {
-            delete data.qualification
+            delete data.trade;
+            delete data.specialization;
+            delete data.qualification;
         }
         if (signupData.accountType) {
             delete data.password;
@@ -176,7 +183,7 @@ const Signup = (props: Propstype) => {
     const renderPages = () => {
         switch (steps) {
             case 0:
-                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} />
+                return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} callTradeList={props.callTradeList} />
             case 1:
                 return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:
@@ -212,8 +219,8 @@ const Signup = (props: Propstype) => {
     const isSuccess = signupData.user_type === 2 ? steps === 8 : steps === 9;
 
     return !isSuccess ? (
-        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} >{renderPages()}</AuthParent>
+        <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} socialId={signupData.socialId} >{renderPages()}</AuthParent>
     ) : renderPages()
 }
 
-export default Signup
+export default Signup;
