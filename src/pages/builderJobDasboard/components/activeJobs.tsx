@@ -140,7 +140,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                             </div>
                         </div>
                     )) : !isLoading && (
-                        <div className="no_record">
+                        <div className="no_record  m-t-vh">
                             <figure className="no_img">
                                 <img src={noDataFound} alt="data not found" />
                             </figure>
