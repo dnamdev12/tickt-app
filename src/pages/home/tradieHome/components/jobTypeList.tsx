@@ -7,12 +7,12 @@ import loader from "../../../../assets/images/page-loader.gif";
 const categoriesjob = {
     desktop: {
         breakpoint: { max: 3000, min: 1200 },
-        items: 1,
-        // slidesToSlide: 1, // optional, default to 1.
+        items: 5,
+        slidesToSlide: 1, // optional, default to 1.
     },
     tablet: {
         breakpoint: { max: 1024, min: 768 },
-        items: 1
+        items: 2
     },
     mobile: {
         breakpoint: { max: 650, min: 0 },
@@ -26,15 +26,6 @@ const JobTypeList = (props: any) => {
     }, [])
 
     const jobTypeListClicked = (id: string, jobTypeHeadingName: string) => {
-        // props.history.push({
-        //     pathname: `/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}`,
-        //     state: {
-        //         queryParam: "jobTypeList",
-        //         heading: jobTypeHeadingName,
-        //         // tradeId: [tradeId],
-        //         jobTypes: [id],
-        //     }
-        // })
         props.history.push(`/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}&defaultLat=${props.currentCoordinates?.coordinates[1]}&defaultLong=${props.currentCoordinates?.coordinates[0]}`);
     }
 
@@ -43,26 +34,26 @@ const JobTypeList = (props: any) => {
     return (
         <div className="home_job_categories">
             <div className="custom_container">
-                <Carousel className="item_slider" responsive={categoriesjob} autoPlay={false} arrows={false} showDots={false} >
-                    <div>
-                        <ul className="job_categories">
-                            {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
-                                return (
-                                    <li key={item._id} className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
-                                        <figure className="type_icon">
-                                            <img src={item.image} alt="icon" />
-                                        </figure>
-                                        <span className="name">{item.name}</span>
-                                    </li>
-                                )
-                            }) :
-                                <div className="page_loader">
-                                    <figure>
-                                        <img src={loader} alt="loader" />
+                <Carousel className="item_slider" responsive={categoriesjob} infinite={true} autoPlay={props.jobTypeListData?.length > 5 ? true : false} arrows={false} showDots={props.jobTypeListData?.length > 5 ? true : false} >
+                    {/* <ul className="job_categories"> */}
+                    {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
+                        return (
+                            <div className="job_categories">
+                                <li key={item._id} className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
+                                    <figure className="type_icon">
+                                        <img src={item.image} alt="icon" />
                                     </figure>
-                                </div>}
-                        </ul>
-                    </div>
+                                    <span className="name">{item.name}</span>
+                                </li>
+                            </div>
+                        )
+                    }) :
+                        <div className="page_loader">
+                            <figure>
+                                <img src={loader} alt="loader" />
+                            </figure>
+                        </div>}
+                    {/* </ul> */}
                     {/* <div>SLide 1</div>
                     <div>SLide 2</div>
                     <div>SLide 3</div> */}
