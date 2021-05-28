@@ -168,7 +168,6 @@ export const reviewBuilder = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewBuilder, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message);
     return { success: true };
   }
   setShowToast(true, response.message);

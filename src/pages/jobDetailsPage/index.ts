@@ -7,6 +7,7 @@ import {
 
 const mapStateToProps = (state: any) => {
     return {
+        tradieProfileData: state.profile.tradieProfileData
     }
 }
 
