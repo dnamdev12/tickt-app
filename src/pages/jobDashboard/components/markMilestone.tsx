@@ -190,8 +190,10 @@ const MarkMilestone = ({
                   const prevMilestoneStatus = milestones[index - 1]?.status;
                   const isActive =
                     status === 0 &&
-                    (prevMilestoneStatus === 1 ||
+                    // completed or approved
+                    ([1, 2].includes(prevMilestoneStatus) ||
                       prevMilestoneStatus === undefined);
+                  const isDeclined = status === 3;
                   fromDate = fromDate
                     ? format(new Date(fromDate), 'MMM dd')
                     : '';
@@ -201,7 +203,7 @@ const MarkMilestone = ({
                     <li
                       key={milestoneId}
                       className={
-                        status === 1
+                        [1, 2].includes(status)
                           ? `check`
                           : isActive
                           ? 'active'
@@ -245,6 +247,7 @@ const MarkMilestone = ({
                             Done
                           </button>
                         )}
+                        {isDeclined && 'Declined'}
                       </div>
                     </li>
                   );
