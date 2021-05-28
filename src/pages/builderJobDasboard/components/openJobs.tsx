@@ -16,11 +16,13 @@ interface Active {
     status: any,
     timeLeft: any,
     totalmem: any,
+    location:any,
     locationName: any,
     totalMilestones: any,
     tradieListData: any,
     tradeName: any,
     tradieId: any,
+    tradeImage: any,
     tradieImage: any,
 
 }
@@ -78,6 +80,8 @@ class OpenJobs extends Component<Props, State> {
                             tradieListData,
                             tradeName,
                             tradieId,
+                            location,
+                            tradeImage,
                             tradieImage,
                         }: Active) => (
                             <div className="flex_col_sm_6">
@@ -88,7 +92,7 @@ class OpenJobs extends Component<Props, State> {
                                     </span>
                                     <div className="user_wrap">
                                         <figure className="u_img">
-                                            <img src={tradieImage || dummy} alt="traide-img"
+                                            <img src={tradeImage || dummy} alt="traide-img"
                                             />
                                         </figure>
                                         <div className="details">
@@ -100,7 +104,7 @@ class OpenJobs extends Component<Props, State> {
                                         <ul>
                                             <li className="icon clock">{timeLeft}</li>
                                             <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{locationName}</li>
+                                            <li className="icon location line-1">{location}</li>
                                             <li className="icon calendar">{durations}</li>
                                         </ul>
                                     </div>

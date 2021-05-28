@@ -4,6 +4,9 @@ import PostJobComponent from './postJob';
 import { callTradeList } from '../../redux/auth/actions';
 import { callCategories } from '../../redux/jobs/actions';
 import { updateMileStoneIndex, updateMileStoneTimings, updateDetailScreen } from '../../redux/jobs/actions';
+import { getProfileBuilder } from '../../redux/homeSearch/actions'
+
+
 
 const mapStateToProps = (state: any) => {
   return {
@@ -11,12 +14,20 @@ const mapStateToProps = (state: any) => {
     editMilestoneId: state.jobs.editMilestoneId,
     editMilestoneTiming: state.jobs.editMilestoneTiming,
     editDetailPage: state.jobs.editDetailPage,
-    isLoading: state.common.isLoading
+    isLoading: state.common.isLoading,
+    builderProfile:state.homeSearch.builderProfile
   }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
-  return bindActionCreators({ callTradeList, callCategories, updateMileStoneIndex, updateMileStoneTimings, updateDetailScreen }, dispatch);
+  return bindActionCreators({
+    callTradeList,
+    callCategories,
+    updateMileStoneIndex,
+    updateMileStoneTimings,
+    updateDetailScreen,
+    getProfileBuilder
+  }, dispatch);
 }
 
 const PostJob = connect(

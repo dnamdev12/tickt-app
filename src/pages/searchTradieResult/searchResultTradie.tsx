@@ -47,6 +47,7 @@ const SearchResultTradie = (props: any) => {
         // specializationId: stateData?.specializations,
 
         if (stateData?.location) {
+            console.log({stateData})
             data['location'] = stateData?.location;
         }
         if (stateData?.calender?.startDate) {
