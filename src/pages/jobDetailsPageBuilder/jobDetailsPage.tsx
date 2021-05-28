@@ -436,16 +436,14 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.appliedStatus ? (
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
-                                            <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                            <button className="fill_btn full_btn btn-effect" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
                                     ) : paramStatus ? (
-                                        <div className="bottom_btn">
-                                            <button
-                                                className="fill_btn full_btn"
-                                                onClick={applyJobClicked}>
-                                                {paramStatus}
-                                            </button>
-                                        </div>
+                                        <button
+                                            className="fill_btn full_btn btn-effect"
+                                            onClick={applyJobClicked}>
+                                            {paramStatus}
+                                        </button>
                                     ) : null}
                                 </div>
                             </div>
