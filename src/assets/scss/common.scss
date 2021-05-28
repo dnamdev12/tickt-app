@@ -1150,7 +1150,7 @@ body {
     }
   }
   .job_categories {
-    li{
+    .draw{
       cursor: auto;
     }
   }
@@ -3500,7 +3500,7 @@ body {
     @media(max-width: 1024px){
       justify-content: flex-start;
     }
-    li {
+    .draw {
       padding: 20px;
       margin: 0 15px;
       @media(max-width: 1024px){
@@ -3533,7 +3533,7 @@ body {
   display: flex;
   flex-flow: wrap;
   margin-bottom: 40px;
-  li {
+  .draw {
     display: flex;
     justify-content: center;
     align-items: center;

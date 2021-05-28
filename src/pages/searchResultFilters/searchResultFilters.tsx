@@ -10,6 +10,7 @@ import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import spherePlaceholder from '../../assets/images/ic_categories_placeholder.svg';
+import { Divider } from '@material-ui/core';
 
 
 const SearchResultFilters = (props: any) => {
@@ -323,7 +324,7 @@ const SearchResultFilters = (props: any) => {
                             <div className="form_field">
                                 <span className="xs_sub_title">Job types</span>
                             </div>
-                            <ul className="job_categories">
+                            <Divider className="job_categories">
                                 {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
                                     const active = sortByFilter.jobTypes[0] == _id;
                                     return (
@@ -335,7 +336,7 @@ const SearchResultFilters = (props: any) => {
                                         </li>
                                     )
                                 })}
-                            </ul>
+                            </Divider>
                             <div className="form_field">
                                 <span className="xs_sub_title">Specialisation</span>
                             </div>
