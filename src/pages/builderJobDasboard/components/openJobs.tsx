@@ -4,7 +4,7 @@ import approved from '../../../assets/images/approved.png';
 import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
 import noDataFound from '../../../assets/images/no-search-data.png';
-
+import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 interface Active {
     amount: any,
     durations: any,
@@ -22,7 +22,7 @@ interface Active {
     tradieListData: any,
     tradeName: any,
     tradieId: any,
-    tradeImage: any,
+    tradeSelectedUrl: any,
     tradieImage: any,
 
 }
@@ -47,10 +47,10 @@ class OpenJobs extends Component<Props, State> {
         }
     }
 
-    redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
-        console.log({jobId, tradieId, specializationId, status})
-        if (jobId?.length && tradieId?.length && specializationId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`)
+    redirectToInfo = ({ jobId, status }: any) => {
+        console.log({ jobId, status })
+        if (jobId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
             this.props.history.push(`/job-detail?${urlEncode}`);
         }
     }
@@ -84,18 +84,20 @@ class OpenJobs extends Component<Props, State> {
                             tradeName,
                             tradieId,
                             location,
-                            tradeImage,
+                            tradeSelectedUrl,
                             tradieImage,
                         }: Active) => (
                             <div className="flex_col_sm_6">
                                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                     <span
-                                        onClick={() => { this.redirectToInfo({ jobId, tradieId, specializationId, status }) }}
+                                        onClick={() => { this.redirectToInfo({ jobId, status }) }}
                                         className="more_detail circle">
                                     </span>
                                     <div className="user_wrap">
                                         <figure className="u_img">
-                                            <img src={tradeImage || dummy} alt="traide-img"
+                                            <img
+                                                src={tradeSelectedUrl || jobTypePlaceholder}
+                                                alt="traide-img"
                                             />
                                         </figure>
                                         <div className="details">
@@ -139,7 +141,7 @@ class OpenJobs extends Component<Props, State> {
                                                 className="fill_grey_btn full_btn btn-effect">
                                                 {'Applications'}
                                             </button>
-                                        ): null}
+                                        ) : null}
                                     </div>
                                 </div>
                             </div>

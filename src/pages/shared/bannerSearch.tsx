@@ -451,7 +451,9 @@ const BannerSearch = (props: PropsType) => {
                     setCurrentLocations(true);
                 }
             } else {
-                setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+                if(itemToggle?.state !== "denied"){
+                    setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+                }
             }
         }
     }

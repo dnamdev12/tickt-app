@@ -144,8 +144,8 @@ class TradieInfo extends Component<Props, State> {
         this.setItems();
     }
 
-    componentDidUpdate(){
-        let props:any = this.props;
+    componentDidUpdate() {
+        let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
         if (tradeStatus) {
             props.history.push('/jobs');
@@ -361,8 +361,9 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
-                                        <img src={tradieInfo?.tradieImage} alt="profile-pic"
-                                            onError={(e: any) => { e.src = profilePlaceholder }}
+                                        <img
+                                            src={tradieInfo?.tradieImage || profilePlaceholder}
+                                            alt="profile-pic"
                                         />
                                     </figure>
                                 </div>

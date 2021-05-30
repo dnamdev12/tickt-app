@@ -3,6 +3,7 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
 import noDataFound from '../../../assets/images/no-search-data.png';
+import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 
 interface Post {
     amount: any,
@@ -20,21 +21,20 @@ interface Post {
     tradeId: any,
     tradieId: any,
     tradeName: any,
-    tradeImage: any,
-    isLoading:any,
+    tradeSelectedUrl: any,
+    isLoading: any,
     tradieData: any,
 }
 
 
 export default function PastJobs(props: any): ReactElement {
-    const { dataItems, jobType , isLoading} = props;
+    const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
 
-    const redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
-        if(jobId?.length && tradieId?.length && specializationId?.length && status?.length) {
-            let urlEncode:any = window.btoa(`?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`)
+    const redirectToInfo = ({ jobId, status }: any) => {
+        if (jobId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
             props.history.push(`/job-detail?${urlEncode}`);
-            // props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
         }
     }
 
@@ -59,20 +59,22 @@ export default function PastJobs(props: any): ReactElement {
                         tradeId,
                         tradieId,
                         tradeName,
-                        tradeImage,
+                        tradeSelectedUrl,
                         tradieData,
                     }: Post) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span
                                     onClick={() => {
-                                        redirectToInfo({ jobId, tradieId, specializationId, status })
+                                        redirectToInfo({ jobId, status })
                                     }}
                                     className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradeImage|| dummy} alt="traide-img" />
+                                        <img
+                                            src={jobData?.tradeSelectedUrl || jobTypePlaceholder}
+                                            alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>

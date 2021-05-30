@@ -519,7 +519,9 @@ const BannerSearch = (props: PropsType) => {
                     // this.setState({ currentAddressLatLng: { long, lat }, addressText: address, enableCurrentLocation: true, inputFocus2: true })
                 }
             } else {
-                setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+                if(itemToggle?.state !== "denied"){
+                    setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+                }
             }
         }
     }

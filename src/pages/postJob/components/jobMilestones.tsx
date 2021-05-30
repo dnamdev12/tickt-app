@@ -95,24 +95,24 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         localMilestones.forEach((item_date: any) => {
             let start: any = item_date.from_date;
             let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
-
+            console.log({ start, end, start_selection, end_selection });
             if (start && end) {
                 console.log({ start_selection, end_selection, start, end })
-                if(start_selection && end_selection){
-                    if (moment(start_selection).isAfter(start) || moment(end_selection).isBefore(end)) {
+                if (start_selection && end_selection) {
+                    if (moment(start_selection,'MM-DD-YYYY').isAfter(moment(start,'MM-DD-YYYY')) || moment(end_selection,'MM-DD-YYYY').isBefore(moment(end,'MM-DD-YYYY'))) {
                         item_find = true
                     }
                 }
             }
 
             if (start && !end) {
-                if (moment(start_selection).isAfter(start)) {
+                if (moment(start_selection,'MM-DD-YYYY').isAfter(moment(start,'MM-DD-YYYY'))) {
                     item_find = true; // true;
                 }
             }
 
             if (start_selection && end_selection && !end) {
-                if (moment(start).isSameOrAfter(start_selection) && moment(start).isSameOrBefore(end_selection)) {
+                if (moment(start,'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start,'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
                     item_find = false;
                 } else {
                     item_find = true
@@ -122,7 +122,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         });
         if (item_find) {
             setShowToast(true, 'Please check the milestone dates.');
-            return;
+            return item_find;
         }
 
         return item_find;

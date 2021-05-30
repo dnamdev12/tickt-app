@@ -3,6 +3,7 @@ import Constants from '../../utils/constants';
 import {
     getHomeJobDetails,
     getHomeSaveJob,
+    jobDetailsBuilder,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
 import { getTradieQuestionList } from '../../redux/jobs/actions';
@@ -84,15 +85,26 @@ const JobDetailsPage = (props: PropsType) => {
         (async () => {
             let location_search = window.atob((props.location?.search).substring(1))
             const params = new URLSearchParams(location_search);
-            const data: any = {
-                jobId: params.get('jobId'),
-                tradeId: params.get('tradeId'),
-                specializationId: params.get('specializationId')
+            if (params.get('jobId') && params.get('tradeId') && params.get('specializationId')) {
+                const res1 = await getHomeJobDetails({
+                    jobId: params.get('jobId'),
+                    tradeId: params.get('tradeId'),
+                    specializationId: params.get('specializationId')
+                });
+                if (res1.success) {
+                    setJobDetailsData(res1.data);
+                }
+            } else {
+                if (params.get('jobId')) {
+                    let res = await jobDetailsBuilder({ jobId: params.get('jobId') });
+                    console.log({res},'---->')
+                    if (res.success) {
+                        setJobDetailsData(res.data);
+                    }
+                }
             }
-            const res1 = await getHomeJobDetails(data);
-            if (res1.success) {
-                setJobDetailsData(res1.data);
-            }
+
+
             fetchQuestionsList();
         })();
     }, [])

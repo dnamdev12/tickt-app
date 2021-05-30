@@ -30,11 +30,11 @@ const NewApplicants = (props: any) => {
     console.log({ dataItems })
 
 
-    const redirectToInfo = ({ jobId, tradieId, specializationId }: any) => {
-        console.log({ jobId, tradieId, specializationId });
+    const redirectToInfo = ({ jobId }: any) => {
+        console.log({ jobId });
         const props_: any = props;
-        if(jobId && tradieId && specializationId){
-            props_.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}`);
+        if (jobId) {
+            props_.history.push(`/job-detail?jobId=${jobId}`);
         }
     }
 
@@ -65,7 +65,7 @@ const NewApplicants = (props: any) => {
                         <div className="flex_col_sm_6">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span
-                                    onClick={() => { redirectToInfo({ jobId, tradieId, specializationId }) }}
+                                    onClick={() => { redirectToInfo({ jobId }) }}
                                     className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">

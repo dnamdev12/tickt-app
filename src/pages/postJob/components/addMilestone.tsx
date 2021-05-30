@@ -204,9 +204,9 @@ export default class AddMilestone extends Component<Props, State> {
         const { milestones, handleStepMileStone, newMileStoneScreen, removeMilestoneByIndex } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, errors } = this.state;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
-        console.log({milestone_index,is_remove })
+        console.log({ milestone_index, is_remove })
         if (is_remove) {
-            console.log({milestone_index},'====>')
+            console.log({ milestone_index }, '====>')
             removeMilestoneByIndex(milestone_index);
             return
         } else {
@@ -231,14 +231,14 @@ export default class AddMilestone extends Component<Props, State> {
             let date_from_moment = milestones[milestones.length - 1].from_date;
             let date_to_moment = milestones[milestones.length - 1].to_date;
             if (date_from_moment?.length) {
-                from_date_format = moment(date_from_moment).format('MMM DD');
+                from_date_format = moment(date_from_moment, 'MM-DD-YYYY').format('MMM DD');
             }
 
             if (date_to_moment?.length) {
-                to_date_format = moment(date_to_moment).format('DD');
+                to_date_format = moment(date_to_moment, 'MM-DD-YYYY').format('DD');
             }
         }
-
+        console.log({ from_date_format, to_date_format, mile: milestones[milestones.length - 1] })
         let check_errors = this.checkErrors();
         return (
             <div className="app_wrapper">
@@ -255,11 +255,11 @@ export default class AddMilestone extends Component<Props, State> {
                             </DialogTitle>
                             <DialogActions>
                                 <Button
-                                    onClick={() => { 
-                                        if(check_errors){
-                                            this.setState(defaultStates, () => { 
+                                    onClick={() => {
+                                        if (check_errors) {
+                                            this.setState(defaultStates, () => {
                                                 this.setItems(true);
-                                                handleStepBack(); 
+                                                handleStepBack();
                                             });
                                         }
                                     }}
@@ -349,18 +349,21 @@ export default class AddMilestone extends Component<Props, State> {
                                     <div className="text_field">
                                         <input
                                             onChange={(e) => {
-                                                this.setState({ recommended_hours: (e.target.value).trimLeft() }, () => {
-                                                    this.setItems();
-                                                    let rh_value = this.state.recommended_hours;
-                                                    let error_item = this.state.errors;
-                                                    let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
-                                                    if (!rh_value?.length || rh_value.match(pattern) !== null) {
-                                                        error_item['pattern_error'] = '';
-                                                    } else {
-                                                        error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
-                                                    }
-                                                    this.setState({ errors: error_item });
-                                                });
+                                                if (this.state.recommended_hours?.length < 5) {
+                                                    this.setState({ recommended_hours: (e.target.value).trimLeft() }, () => {
+                                                        this.setItems();
+                                                        let rh_value = this.state.recommended_hours;
+                                                        let error_item = this.state.errors;
+                                                        let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
+                                                        console.log({ match: rh_value.match(pattern) })
+                                                        if (!rh_value?.length || rh_value.match(pattern) !== null) {
+                                                            error_item['pattern_error'] = '';
+                                                        } else {
+                                                            error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
+                                                        }
+                                                        this.setState({ errors: error_item });
+                                                    });
+                                                }
                                             }}
                                             autoComplete='off'
                                             value={recommended_hours}

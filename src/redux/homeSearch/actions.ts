@@ -31,6 +31,17 @@ export const getHomeJobDetails = async (data: any) => {
     return { success: false };
 }
 
+export const jobDetailsBuilder = async (data: any) => {
+    setLoading(true);
+    const response: FetchResponse = await NetworkOps.get(Urls.jobDetailsBuilder + `?jobId=${data.jobId}`);
+    setLoading(false);
+    if (response.status_code === 200) {
+        return { success: true, data: response.result };
+    }
+    setShowToast(true, response.message);
+    return { success: false };
+}
+
 export const getHomeSaveJob = async (data: any) => {
     setLoading(true);
     const response: FetchResponse = await NetworkOps.get(Urls.homeSaveJob + `?jobId=${data.jobId}&tradeId=${data.tradeId}&specializationId=${data.specializationId}&isSave=${data.isSave}`);

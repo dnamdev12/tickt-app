@@ -165,7 +165,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         }
     }
 
-
     return (
         <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
@@ -178,7 +177,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         key={1}
                         sources={['https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg']}
                     /> */}
-                    
+
                     <div className="form_field">
                         <div className="flex_row">
                             <div className={`flex_col_sm_${jobName ? '7' : '6'}`}>
@@ -193,7 +192,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     {para || 'Record a short video or add photos to demonstrate your job and any unique requirements.'}
                                 </p>
                             </div>
-                            {!jobName && (
+                            {!jobName && !filesUrl?.length ? (
                                 <div className="flex_col_sm_5 text-right">
                                     <span
                                         onClick={() => {
@@ -203,7 +202,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                         {'Skip'}
                                     </span>
                                 </div>
-                            )}
+                            ): null}
                         </div>
                     </div>
                     <div className="flex_row">

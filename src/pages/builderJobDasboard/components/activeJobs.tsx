@@ -4,6 +4,7 @@ import approved from '../../../assets/images/approved.png';
 import MarkMilestones from './markMilestones';
 import { withRouter } from 'react-router-dom';
 import noDataFound from '../../../assets/images/no-search-data.png';
+import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 
 interface Active {
     amount: any,
@@ -23,7 +24,7 @@ interface Active {
     location: any,
     tradieId: any,
     tradieImage: any,
-    tradeImage: any,
+    tradeSelectedUrl: any,
     activeType: any,
     setJobLabel: (item: any) => void
 }
@@ -43,9 +44,9 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
         console.log('here!')
     }, [jobType])
 
-    const redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
-        if (jobId?.length && tradieId?.length && specializationId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`)
+    const redirectToInfo = ({ jobId, status }: any) => {
+        if (jobId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
             history.push(`/job-detail?${urlEncode}`);
         }
     }
@@ -81,7 +82,7 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                         tradieListData,
                         tradeName,
                         tradieId,
-                        tradeImage,
+                        tradeSelectedUrl,
                         tradieImage,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
@@ -93,7 +94,9 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradeImage || dummy} alt="traide-img" />
+                                        <img
+                                            src={tradeSelectedUrl || jobTypePlaceholder}
+                                            alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>

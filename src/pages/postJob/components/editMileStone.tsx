@@ -236,7 +236,7 @@ export default class EditMilestone extends Component<Props, State> {
     render() {
         const { handleStepForward, handleStepBack, milestones, editMileStone } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, from_date, to_date, errors } = this.state;
-
+        console.log({from_date, to_date});
         let from_date_format = from_date?.length ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
         let to_date_format = to_date?.length ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
         let check_errors = this.checkErrors();
