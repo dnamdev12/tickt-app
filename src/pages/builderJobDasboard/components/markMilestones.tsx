@@ -79,7 +79,8 @@ const MarkMilestones = (props: any) => {
     const redirectToInfo = ({ jobId, status }: any) => {
         console.log({ jobId });
         let props_: any = props;
-        props_.history.push(`/job-details-page?jobId=${jobId}&status=${status}`);
+        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+        props_.history.push(`/job-detail?${urlEncode}`);
     }
 
     let item_details: any = itemDetails;
