@@ -11,7 +11,7 @@ import noData from '../../../assets/images/no-search-data.png';
 
 interface Proptypes {
     data: any;
-    isLoading:any,
+    isLoading: any,
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
@@ -32,9 +32,43 @@ const MileStoneTemplates = (props: Proptypes) => {
         }
     }
 
+    const formatMilestones = ({ items }: any) => {
+        let miles: any = items?.milestones;
+        if (miles?.length) {
+            return miles.map((item: any) => {
+                if (item?.fromDate) {
+                    item['fromDate'] = moment(item?.fromDate).format('MM-DD-YYYY');
+                }
+
+                if (item?.toDate) {
+                    item['toDate'] = moment(item?.toDate).format('MM-DD-YYYY');
+                }
+
+                return item;
+            })
+        }
+    }
+
     const handleContinue = async (id: any) => {
         let { success, data } = await getMileStoneByTempId(id);
+
         if (success && data) {
+            let { to_date, from_date } = props?.data;
+            let selected_milestone: any = formatMilestones({ items: data });
+
+            // if (selected_milestone?.length) {
+            //     selected_milestone.forEach((item: any) => {
+            //         console.log({
+            //             item,
+            //             fromDate: item?.fromDate,
+            //             from_date,
+            //             check: moment(item?.fromDate, 'DD-MM-YYYY').isSameOrBefore(moment(from_date, 'YYYY-MM-DD'))
+            //         });
+            //     })
+            // }
+            // // console.log({ selected_milestone, from_date })
+            // return
+            
             let filter_milestones = data?.milestones?.map((item: any) => ({
                 from_date: moment(item?.fromDate).format('MM-DD-YYYY'),
                 to_date: item?.toDate?.length ? moment(item?.toDate).format('MM-DD-YYYY') : '',
@@ -50,7 +84,7 @@ const MileStoneTemplates = (props: Proptypes) => {
     useEffect(() => {
         preFetch();
     }, []);
-    
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -77,17 +111,17 @@ const MileStoneTemplates = (props: Proptypes) => {
                                                     <span>milestones</span>
                                                 </div>
                                             </li>
-                                        )) : !isLoading && !list?.length ? (
-                                            <div className="flex_row tradies_row">
-                                                <div className="no_record">
-                                                    <figure className="no_img">
-                                                        <img src={noData} alt="data not found" />
-                                                    </figure>
-                                                </div>
-                                            </div>
-                                        ) : null}
+                                        )) : null}
                                 </ul>
                             </div>
+
+                            {!isLoading && !list?.length ? (
+                                    <div className="no_record">
+                                        <figure className="no_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                    </div>
+                            ) : null}
                         </div>
                     </div>
                 </div>

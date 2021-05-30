@@ -73,7 +73,7 @@ export function useStateFromProp(initialValue: any) {
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
-
+    const [locationStatus, setLocationStatus] = useState(null);
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
     const [addressText, setAddressText] = useState<any>(null);
@@ -389,8 +389,8 @@ const BannerSearch = (props: PropsType) => {
             }
 
             if (Object.keys(selectedAddress).length) {
-                console.log({selectedAddress});
-     
+                console.log({ selectedAddress });
+
                 data['location'] = {
                     "coordinates": [
                         parseFloat(selected_address?.lng),
@@ -437,8 +437,8 @@ const BannerSearch = (props: PropsType) => {
 
             if (sortBy === 2) {
                 if (Object.keys(selected_address)?.length) {
-                    console.log({selected_address})
-              
+                    console.log({ selected_address })
+
                     data['location'] = {
                         "coordinates": [
                             +selected_address?.lng,
@@ -476,8 +476,30 @@ const BannerSearch = (props: PropsType) => {
             // })
         }
     }
+    
+    const filterFromAddress = (response: any) => {
+        let city, state, country = null;
+        for (let i = 0; i < response.results[0].address_components.length; i++) {
+            for (let j = 0; j < response.results[0].address_components[i].types.length; j++) {
+                switch (response.results[0].address_components[i].types[j]) {
+                    case "locality":
+                        city = response.results[0].address_components[i].long_name;
+                        break;
+                    case "administrative_area_level_1":
+                        state = response.results[0].address_components[i].long_name;
+                        break;
+                    case "country":
+                        country = response.results[0].address_components[i].long_name;
+                        break;
+                }
+            }
+        }
+        return { city, state, country: country.toLowerCase() };
+    }
 
     const getCurrentLocation = async () => {
+        let itemToggle: any = await navigator.permissions.query({ name: 'geolocation' });
+        setLocationStatus(itemToggle.state);
         let local_position: any = localStorage.getItem('position');
         let position: any = JSON.parse(local_position);
         console.log({ position, local_position });
@@ -485,21 +507,44 @@ const BannerSearch = (props: PropsType) => {
             let lng = (position[0]).toString();
             let lat = (position[1]).toString();
             let response: any = await Geocode.fromLatLng(lat, lng);
-            if (response?.results && Array.isArray(response.results) && response?.results?.length) {
-                const address = response.results[0].formatted_address;
-                setSelectedAddress({ lat, lng });
-                setAddressText(address);
-                setInputFocus2(true);
-                setCurrentLocations(true);
-                // this.setState({ currentAddressLatLng: { long, lat }, addressText: address, enableCurrentLocation: true, inputFocus2: true })
+            const { city, state, country } = filterFromAddress(response);
+            
+            if (response && ["australia", "au"].includes(country)) {
+                if (response?.results && Array.isArray(response.results) && response?.results?.length) {
+                    const address = response.results[0].formatted_address;
+                    setSelectedAddress({ lat, lng });
+                    setAddressText(address);
+                    setInputFocus2(true);
+                    setCurrentLocations(true);
+                    // this.setState({ currentAddressLatLng: { long, lat }, addressText: address, enableCurrentLocation: true, inputFocus2: true })
+                }
+            } else {
+                setShowToast(true, "Uh oh! we don't provide service currently in your location.");
             }
         }
     }
 
+    const checkPlaceholder = (calenderRange1: any) => {
+        let startDate: any = calenderRange1?.startDate;
+        let endDate: any = calenderRange1?.endDate;
+        let diff = moment().diff(moment(endDate), 'years')
+        let defaultFormat: string = 'DD MMM';
+
+        if (diff < 0) {
+            defaultFormat = 'DD MMM YYYY';
+        }
+        console.log({ startDate, endDate, diff })
+        if (startDate && !endDate) {
+            return `${moment(startDate).format('MMM-DD')}`
+        } else if (startDate && endDate) {
+            return `${moment(startDate).format(defaultFormat)}-${moment(endDate).format(defaultFormat)}`;
+        } else {
+            return 'When?';
+        }
+    }
+
     let state_data: any = stateData;
-
     let length_spec = 0;
-
     if (state_data?.specializationsId?.length) {
         length_spec = state_data?.specializationsId?.length;
     }
@@ -571,7 +616,9 @@ const BannerSearch = (props: PropsType) => {
                                     value={addressText}
                                     autoComplete="off"
                                     className={'line-1'}
-                                    onChange={(e: any) => { setAddressText(e.target.value) }}
+                                    onChange={(e: any) => {
+                                        setAddressText(e.target.value);
+                                    }}
                                     onFocus={() => {
                                         setInputFocus2(true)
                                         console.log('Hard --->', { addressText, inputFocus2 })
@@ -586,9 +633,11 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
+                                    searchOptions={{ componentRestrictions: { country: "au" } }}
                                     onChange={(item: any) => {
-                                        setAddressText(item)
-                                        if (!addressText.length) {
+                                        setAddressText(item);
+                                        console.log({ addressText });
+                                        if (addressText?.length < 3) {
                                             setSelectedAddress({});
                                         }
                                     }}
@@ -638,7 +687,7 @@ const BannerSearch = (props: PropsType) => {
                                                         />
                                                     </span> : null}
                                             </div>
-                                            {suggestions?.length && inputFocus2 ?
+                                            {suggestions?.length && inputFocus2 && addressText?.length ?
                                                 <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                                     <div className="flex_row recent_search auto_loc">
                                                         <div className="flex_col_sm_4">
@@ -688,18 +737,28 @@ const BannerSearch = (props: PropsType) => {
                                     <img src={icgps} alt="" />
                                 </span> Use my current location
                             </span>
-                            {stateData?.locationDenied && <span className="blocked_note">
-                                You have blocked your location.
-                                To use this, change your location settings in browser.
-                              </span>}
+                            {locationStatus === "denied" &&
+                                (<span className="blocked_note">
+                                    You have blocked your location.
+                                    To use this, change your location settings in browser.
+                                </span>)}
                             <div className="flex_row recent_search auto_loc">
                                 {recentLocation?.length ?
-                                    <span className="name_recent_search">recent search</span>
+                                    <span className="name_recent_search">
+                                        {'Recent searches'}
+                                    </span>
                                     : null}
                                 {recentLocation?.map((item: any) => {
                                     return (
                                         <div className="flex_col_sm_4"
-                                            onClick={() => setStateData((prevData: any) => ({ ...prevData, location: item.location, selectedMapLocation: item.allText?.mainText, isMapLocationSelected: true }))}>
+                                            onClick={() => {
+                                                let location_coordinates: any = item.location.coordinates
+                                                setAddressText(item.formatted_address);
+                                                setSelectedAddress({
+                                                    lat: location_coordinates[1],
+                                                    lng: location_coordinates[0]
+                                                });
+                                            }}>
                                             <div className="autosuggestion_icon card loc name">
                                                 <span>{item.allText?.mainText}</span>
                                                 <span className="name">{item.allText?.secondaryText}</span>
@@ -717,11 +776,7 @@ const BannerSearch = (props: PropsType) => {
                                 <span className="detect_icon_ltr calendar"></span>
                                 <input
                                     type="text"
-                                    placeholder={calenderRange1?.startDate && !calenderRange1.endDate ?
-                                        `${moment(calenderRange1?.startDate).format('MMM-DD')}` :
-                                        calenderRange1?.startDate && calenderRange1.endDate ?
-                                            `${moment(calenderRange1?.startDate).format('DD MMM')}-${moment(calenderRange1?.endDate).format('DD MMM')}`
-                                            : "When?"}
+                                    placeholder={checkPlaceholder(calenderRange1)}
                                     onFocus={() => setInputFocus3(true)}
                                 />
                                 {calenderRange1?.startDate && inputFocus3 &&

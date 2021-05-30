@@ -8,6 +8,7 @@ import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
 import { createPostJob } from '../../../redux/jobs/actions';
 import moment from 'moment';
+import jobDummyImage from '../../../assets/images/ic-placeholder-detail.png';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -133,9 +134,9 @@ const JobDetails = ({
                 }
             });
 
+            let filterItems: any = [];
             if (format_items?.length) {
-
-                return format_items.map((item: any) => {
+                format_items.forEach((item: any) => {
                     let render_item: any = null;
                     if (imageFormats.includes(item?.format)) {
                         render_item = <img onClick={() => { console.log({ item }) }} alt="" src={item?.url} />
@@ -144,25 +145,27 @@ const JobDetails = ({
                     if (videoFormats.includes(item?.format)) {
                         render_item = <video onClick={() => { console.log({ item }) }} src={item?.url} style={{ height: '400px', width: '800px' }} />
                     }
-
-                    return (
-                        <div className='item' >
-                            <span
-                                onClick={(e: any) => {
-                                    e.preventDefault();
-                                    handleStepForward(13);
-                                }}
-                                className="edit_icon" title="Edit">
-                                <img src={editIconBlue} alt="edit" />
-                            </span>
-                            {render_item}
-                        </div>
-                    )
+                    if (render_item) {
+                        filterItems.push(
+                            <div className='item' >
+                                <span
+                                    onClick={(e: any) => {
+                                        e.preventDefault();
+                                        handleStepForward(13);
+                                    }}
+                                    className="edit_icon" title="Edit">
+                                    <img src={editIconBlue} alt="edit" />
+                                </span>
+                                {render_item}
+                            </div>
+                        )
+                    }
                 })
             }
+            console.log({ filterItems })
+            return filterItems;
         }
     }
-
 
     const handlePost = async (e: any) => {
         e.preventDefault();
@@ -173,6 +176,11 @@ const JobDetails = ({
                 if (!item?.to_date?.length) {
                     delete item?.to_date;
                 }
+
+                if (!item.recommended_hours?.length) {
+                    delete item.recommended_hours;
+                }
+
                 return item;
             }
         })
@@ -184,6 +192,10 @@ const JobDetails = ({
             delete data_clone?.to_date;
         }
 
+        if (!data_clone?.urls?.length) {
+            delete data_clone?.urls
+        }
+
         let response: any = await createPostJob(data_clone);
         if (response?.success) {
             clearParentStates();
@@ -192,27 +204,10 @@ const JobDetails = ({
         // console.log({data: data_clone, filter_milestones });
     }
 
+    let data_clone: any = data;
+    console.log({ data_clone });
     return (
         <div className="app_wrapper">
-            {/* {isEnablePopup ? 
-            <div id="light-box">
-                <ReactImageVideoLightbox
-                    data={[
-                        { url: 'https://placekitten.com/450/300', type: 'photo', altTag: 'some image' },
-                        { url: 'http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', type: 'video', altTag: 'some video' },
-                        { url: 'https://placekitten.com/550/500', type: 'photo', altTag: 'some other image' },
-                        { url: 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4', type: 'video', altTag: 'some other video' }
-                    ]}
-                    style={{ zIndex: '999', backgroundColor: 'rgb(0 0 0 / 48%)' }}
-                    startIndex={0}
-                    showResourceCount={true}
-                    onCloseCallback={(item: any) => { setPopUp(false); console.log('callback!', { item }) }}
-                    onNavigationCallback={(currentIndex: any) =>
-                        console.log(`Current index: ${currentIndex}`)
-                    }
-                />
-            </div> 
-            : null} */}
             <div className="section_wrapper">
                 <div className="custom_container">
 
@@ -227,9 +222,13 @@ const JobDetails = ({
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
-                                    <OwlCarousel className='owl-theme' {...options}>
-                                        {renderByFileFormat(data)}
-                                    </OwlCarousel>
+                                    {data_clone?.urls?.length ? (
+                                        <OwlCarousel className='owl-theme' {...options}>
+                                            {renderByFileFormat(data)}
+                                        </OwlCarousel>
+                                    ) : (
+                                        <img src={jobDummyImage} alt="item-url" />
+                                    )}
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">
@@ -350,7 +349,7 @@ const JobDetails = ({
                         <div className="section_wrapper">
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
-                            {console.log({builderProfile})}
+                                {console.log({ builderProfile })}
                                 <div className="flex_col_sm_3">
                                     <div className="tradie_card posted_by view_more ">
                                         <a href="javascript:void(0)" className="chat circle"></a>
@@ -360,7 +359,7 @@ const JobDetails = ({
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{builderProfile?.userName}</span>
-                                                <span className="rating">{builderProfile?.rating||0} , {builderProfile?.reviews||0} reviews</span>
+                                                <span className="rating">{builderProfile?.rating || 0} , {builderProfile?.reviews || 0} reviews</span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                             </div>
                                         </div>

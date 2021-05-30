@@ -24,7 +24,7 @@ const initialState = {
   tradieReviewList: [],
   tradieInfo: [],
   tradieReviews: [],
-  tradieRequestStatus: null
+  tradieRequestStatus: false
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -105,24 +105,31 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderActionJobs: action.payload,
+        builderNewApplicants: null,
+        builderNewApplicantsList: null,
       };
 
     case actionTypes.SET_BUILDER_OPEN_JOBS:
       return {
         ...state,
         builderOpenJobs: action.payload,
+        builderNewApplicants: null,
+        builderNewApplicantsList: null,
       };
 
     case actionTypes.SET_BUILDER_PAST_JOBS:
       return {
         ...state,
         builderPastJobs: action.payload,
+        builderNewApplicants: null,
+        builderNewApplicantsList: null,
       };
 
     case actionTypes.SET_BUILDER_NEW_APPLICANTS:
       return {
         ...state,
         builderNewApplicants: action.payload,
+        builderNewApplicantsList: null
       };
 
     case actionTypes.SET_BUILDER_NEW_APPLICANTS_LIST:

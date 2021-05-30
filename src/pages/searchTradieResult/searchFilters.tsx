@@ -30,7 +30,11 @@ const SearchFilter = (props: any) => {
     const [sortingAnchorEl, setSortingAnchorEl] = useState(null);
     const [filterState, setFilterState] = useState({
         page: 1,
-    })
+    });
+
+    const [prevLocal, setPrevLocal] = useState(null);
+
+    console.log({ props });
 
     const [sortByPrice, setSortByPrice] = useState<any>({
         priceFilterClicked: false,
@@ -42,6 +46,7 @@ const SearchFilter = (props: any) => {
     const [sortByFilter, setSortByFilter] = useState<any>({
         sortByFilterClicked: false,
         tradeId: [],
+        sortChanged: false,
         specializationId: [],
         allSpecializationClicked: false,
     })
@@ -55,6 +60,7 @@ const SearchFilter = (props: any) => {
     useEffect(() => {
         props.getJobTypeList();
         props.callTradeList();
+        setPrevLocal(props.localInfo);
     }, [])
 
     useEffect(() => {
@@ -80,7 +86,7 @@ const SearchFilter = (props: any) => {
 
     const sortByFilterClick = (event: any) => {
         setFilterAnchorEl(event.currentTarget);
-        setSortByFilter((prevData: any) => ({ ...prevData, sortByFilterClicked: true }))
+        setSortByFilter((prevData: any) => ({ ...prevData, sortByFilterClicked: true, sortChanged: true }))
     };
 
     const sortByFilterClose = () => {
@@ -159,28 +165,37 @@ const SearchFilter = (props: any) => {
                 setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: true, specializationId: newSpecialization }))
             }
         } else if (name == 'Clear All') {
-            setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, jobTypes: [], specializationId: [] , tradeId: [],}))
+            setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, jobTypes: [], specializationId: [], tradeId: [], }))
         }
+    }
+
+    const checkIfActive = () => {
+        return sortByFilter?.sortChanged;
     }
 
     const renderFilterButtons = () => (
         <ul className="filters_row">
             {/* {'Filter buttons on top'} */}
+            {console.log({ sortByFilter })}
+            {/* specializationId
+            tradeId */}
             <li>
-                <a onClick={sortByFilterClick}>
+                <a className={checkIfActive() ? 'active' : ''} onClick={sortByFilterClick}>
                     <img
-                        src={sortByFilter.sortByFilterClicked ? filterSelected : filterUnselected}
+                        src={checkIfActive() ? filterSelected : filterUnselected}
                         alt="filter" />
                     {'Filter'}
                 </a>
             </li>
             <li>
-                <a onClick={sortBySortingClick}>
-                    {/* {'Sorting'} */}
+                <a className={sortBySorting.sortBy > 0 ? 'active' : ''} onClick={sortBySortingClick}>
+                    {'Sorting'}
+                    {/* 
                     {sortBySorting.sortBy === 0 && 'Sort by'}
                     {sortBySorting.sortBy === 1 && 'Highest rated'}
                     {sortBySorting.sortBy === 2 && 'Closest to me'}
-                    {sortBySorting.sortBy === 3 && 'Most jobs completed'}
+                    {sortBySorting.sortBy === 3 && 'Most jobs completed'} 
+                    */}
                 </a>
             </li>
         </ul>
@@ -218,14 +233,16 @@ const SearchFilter = (props: any) => {
                 specializationId: specializationId,
             }
 
-            let get_position: any = localStorage.getItem('postion');
+            let get_position: any = localStorage.getItem('position');
             if (sort === 2) {
-                data['location'] = {
-                    "coordinates": JSON.parse(get_position)
+                let item_coord:any = local_info?.location?.coordinates?.length ? JSON.parse(get_position).reverse() : local_info?.location?.coordinates;
+                if(item_coord?.length){
+                    data['location'] = {
+                        "coordinates": item_coord,
+                    }
                 }
             } else {
                 if (local_info?.location) {
-                    console.log({local_info})
                     data['location'] = local_info?.location;
                 }
                 delete data.location;

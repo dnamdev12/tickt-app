@@ -197,16 +197,36 @@ export default class EditMilestone extends Component<Props, State> {
         }
     }
 
+    // checkErrors = () => {
+    //     const { milestones, editMileStone } = this.props;
+    //     let from_date = milestones[editMileStone]?.from_date || '';
+    //     let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
+    //     if (milestone_name?.length && recommended_hours?.length) {
+    //         let error_1 = this.isInvalid('milestone_name', milestone_name);
+    //         let error_2 = this.isInvalid('from_date', from_date);
+    //         // let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+
+    //         if (!error_1?.length && !error_2?.length && !pattern_error?.length) {
+    //             return false;
+    //         }
+    //     }
+    //     return true;
+    // }
+
     checkErrors = () => {
-        const { milestones, editMileStone } = this.props;
-        let from_date = milestones[editMileStone]?.from_date || '';
+        const { milestones } = this.props;
+        let milestone_index = milestones.length ? milestones.length - 1 : 0;
+        let from_date = milestones[milestone_index]?.from_date || '';
         let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
-        if (milestone_name?.length && recommended_hours?.length) {
+        if (milestone_name?.length) {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
-            let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+            if (!error_1?.length && !error_2?.length) {
+                let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+                if (recommended_hours?.length && error_3 && !pattern_error?.length) {
+                    return false;
+                }
 
-            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
         }
@@ -291,7 +311,9 @@ export default class EditMilestone extends Component<Props, State> {
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;
                                                     let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
-                                                    if (rh_value.match(pattern) !== null) {
+                                                    console.log({ rh_value,pattern:rh_value.match(pattern) })
+
+                                                    if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
                                                     } else {
                                                         error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
@@ -301,6 +323,7 @@ export default class EditMilestone extends Component<Props, State> {
                                             }}
                                             // onChange={(e) => { this.handleChange('recommended_hours', e.target.value) }}
                                             value={recommended_hours}
+                                            autoComplete="off"
                                             type="text"
                                             placeholder="Enter Recommended hours"
                                             name="recommended_hours" />

@@ -35,6 +35,7 @@ const MarkMilestones = (props: any) => {
     const [selectedMile, setMilestone] = useState(null);
 
     const backToScreen = () => {
+        preFetch();
         setEnableApprove(false);
     }
 

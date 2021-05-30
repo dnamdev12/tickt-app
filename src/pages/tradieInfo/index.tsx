@@ -144,6 +144,14 @@ class TradieInfo extends Component<Props, State> {
         this.setItems();
     }
 
+    componentDidUpdate(){
+        let props:any = this.props;
+        let tradeStatus: any = props.tradieRequestStatus;
+        if (tradeStatus) {
+            props.history.push('/jobs');
+        }
+    }
+
     portfolioImageHandler = (data: any) => {
         this.setState({ portfolioData: { portfolioImageClicked: true, portfolioDetails: data } });
     }
@@ -153,7 +161,7 @@ class TradieInfo extends Component<Props, State> {
     }
 
     reviewHandler = (type: any, reviewId?: any, replyId?: any, reply?: any) => {
-        console.log({type, reviewId})
+        console.log({ type, reviewId })
         if (type === 'reviewReplyClicked') {
             this.setState((prevData: any) => ({
                 reviewsData: {
@@ -254,7 +262,7 @@ class TradieInfo extends Component<Props, State> {
         let profileData: any = this.state.profileData;
         if (['reviewReply', 'updateReviewReply', 'removeReviewReply'].includes(type)) {
             var response;
-         
+
             if (type === 'reviewReply') {
                 const data = {
                     reviewId: reviewsData.reviewId,
@@ -278,7 +286,7 @@ class TradieInfo extends Component<Props, State> {
                 }
                 response = await removeReviewReply(data);
             }
-            
+
             if (response?.success) {
                 this.setItems();
             }
@@ -304,19 +312,20 @@ class TradieInfo extends Component<Props, State> {
     setItems = async () => {
         const { jobId, tradeId } = this.getItemsFromLocation();
         let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
-        console.log({res_profile})
+        console.log({ res_profile })
         if (res_profile.success) {
             this.setState({ tradieInfo: res_profile.data })
         }
         let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: 1 });
-        console.log({res_trade})
+        console.log({ res_trade })
         if (res_trade.success) {
             this.setState({ tradieReviews: res_trade.data })
         }
     }
 
     submitAcceptDeclineRequest = (status: any) => {
-        const { getAcceptDeclineTradie } = this.props;
+        let props: any = this.props;
+        const { getAcceptDeclineTradie } = props;
         const { jobId, tradeId } = this.getItemsFromLocation();
         let data = {
             "jobId": jobId,
@@ -325,7 +334,7 @@ class TradieInfo extends Component<Props, State> {
         };
         getAcceptDeclineTradie(data);
     }
-    
+
     render() {
         let props: any = this.props;
         // let tradieInfo: any = props.tradieInfo;
@@ -552,7 +561,7 @@ class TradieInfo extends Component<Props, State> {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.review}</p>
-                                                {console.log({item})}
+                                                {console.log({ item })}
                                                 {Object.keys(reviewsData.replyShownHideList).length &&
                                                     reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                     <span

@@ -272,9 +272,9 @@ function* getAcceptDeclineTradie({ data }: any) {
   const response: FetchResponse = yield NetworkOps.putToJson(Urls.acceptDeclineRequest, data);
   setShowToast(true, response.message);
   if (response.status_code === 200) {
-    yield put({ type: actionTypes.SET_ACCEPT_DECLINE_TRADIE_REQUEST, payload: response.result });
+    yield put({ type: actionTypes.SET_ACCEPT_DECLINE_TRADIE_REQUEST, payload: true });
   } else {
-    yield put({ type: actionTypes.SET_ACCEPT_DECLINE_TRADIE_REQUEST, payload: [] });
+    yield put({ type: actionTypes.SET_ACCEPT_DECLINE_TRADIE_REQUEST, payload: false });
   }
 }
 

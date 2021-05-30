@@ -23,17 +23,19 @@ interface Active {
     location: any,
     tradieId: any,
     tradieImage: any,
-    tradeImage:any,
+    tradeImage: any,
+    activeType: any,
     setJobLabel: (item: any) => void
 }
 
 
-const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any) => {
+const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLoading }: any) => {
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
 
     const resetStateLocal = () => {
+        setJobLabel(activeType);
         setLocalState(false)
     }
 
@@ -42,8 +44,10 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
     }, [jobType])
 
     const redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
-        console.log({ jobId, tradieId, specializationId });
-        history.push(`/job-detail?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
+        if (jobId?.length && tradieId?.length && specializationId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`)
+            history.push(`/job-detail?${urlEncode}`);
+        }
     }
 
     if (localState && selectedIndex !== null) {

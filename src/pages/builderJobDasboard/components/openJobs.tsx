@@ -16,7 +16,7 @@ interface Active {
     status: any,
     timeLeft: any,
     totalmem: any,
-    location:any,
+    location: any,
     locationName: any,
     totalMilestones: any,
     tradieListData: any,
@@ -48,14 +48,17 @@ class OpenJobs extends Component<Props, State> {
     }
 
     redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
-        console.log({ jobId, tradieId, specializationId });
-        this.props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
+        console.log({jobId, tradieId, specializationId, status})
+        if (jobId?.length && tradieId?.length && specializationId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`)
+            this.props.history.push(`/job-detail?${urlEncode}`);
+        }
     }
 
     setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })
 
     render() {
-        const { setJobLabel, dataItems, applicantsList, jobType, isLoading} = this.props;
+        const { setJobLabel, dataItems, applicantsList, jobType, isLoading } = this.props;
         let listData: any = dataItems
         let { isToggleApplicants } = this.state;
         console.log({ applicantsList, isToggleApplicants })
@@ -116,9 +119,6 @@ class OpenJobs extends Component<Props, State> {
                                             <span className="approval_info">
                                                 {status === "Approved" && <img src={approved} alt="icon" />}
                                                 {status}
-                                                {/* {'Approved'} */} {/* Awating */}
-                                                {/* <img src={waiting} alt="icon" /> */}
-                                                {/* Need approval */}
                                             </span>
                                             <span className="progress_bar">
                                                 <input
@@ -130,16 +130,16 @@ class OpenJobs extends Component<Props, State> {
                                                 />
                                             </span>
                                         </div>
-                                        <button
-                                            onClick={() => {
-                                                this.setToggle();
-                                                setJobLabel('applicantList', jobId, 1, specializationId);
-                                            }}
-                                            className="fill_grey_btn full_btn btn-effect">
-                                            {'Applications'}
-                                            {/* <img src={rateStar} alt="rating-star" />
-                                        {'Rate this job'} */}
-                                        </button>
+                                        {tradieId?.length ? (
+                                            <button
+                                                onClick={() => {
+                                                    this.setToggle();
+                                                    setJobLabel('applicantList', jobId, 1, specializationId);
+                                                }}
+                                                className="fill_grey_btn full_btn btn-effect">
+                                                {'Applications'}
+                                            </button>
+                                        ): null}
                                     </div>
                                 </div>
                             </div>

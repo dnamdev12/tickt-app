@@ -82,7 +82,8 @@ const JobDetailsPage = (props: PropsType) => {
 
     useEffect(() => {
         (async () => {
-            const params = new URLSearchParams(props.location?.search);
+            let location_search = window.atob((props.location?.search).substring(1))
+            const params = new URLSearchParams(location_search);
             const data: any = {
                 jobId: params.get('jobId'),
                 tradeId: params.get('tradeId'),
@@ -98,7 +99,8 @@ const JobDetailsPage = (props: PropsType) => {
 
 
     const fetchQuestionsList = async (isTrue?: boolean) => {
-        const params = new URLSearchParams(props.location?.search);
+        let location_search = window.atob((props.location?.search).substring(1))
+        const params = new URLSearchParams(location_search);
         const questionData: any = {
             jobId: params.get('jobId'),
             page: 1
@@ -158,6 +160,8 @@ const JobDetailsPage = (props: PropsType) => {
 
     const loadMoreQuestionHandler = async () => {
         // will handle the pagination later
+        let location_search = window.atob((props.location?.search).substring(1))
+        const params = new URLSearchParams(location_search);
         const data: any = {
             jobId: params.get('jobId'),
             page: questionListPageNo + 1
@@ -213,54 +217,6 @@ const JobDetailsPage = (props: PropsType) => {
                 fetchQuestionsList(true);
             }
 
-            // if (response?.success) {
-            //     if (type == 'askQuestion' && response.data?.questionData?.question) {
-            //         const askData: any = {
-            //             jobId: jobDetailsData?.jobId,
-            //             page: 1
-            //         }
-            //         const res = await getTradieQuestionList(askData);
-            //         if (res.success) {
-            //             setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
-            //         }
-            //         setQuestionList(res.data);
-            //         setQuestionListPageNo(1);
-            //         // var updatedQuestionList = [...questionList];
-            //         // updatedQuestionList.unshift(response.data);
-            //         // updatedQuestionList.pop();
-            //         // setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
-            //         // setQuestionList(updatedQuestionList);
-            //     }
-
-            //     if (type === 'updateQuestion' && response.data?.question) {
-            //         var updatedQuestionList = [...questionList];
-            //         var newList = updatedQuestionList.find((item: any) => item.questionData.questionId == response.data?.questionId);
-            //         newList.questionData.question = response.data?.question;
-            //         newList.questionData.answerData.answer = response.data?.question;
-            //         setQuestionList(updatedQuestionList);
-            //     }
-
-            //     if (type === 'deleteQuestion') {
-            //         setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount - 1 }));
-            //         var updatedQuestionList = [...questionList]
-            //         updatedQuestionList.splice(questionsData.questionIndex, 1);
-            //         setQuestionList(updatedQuestionList);
-            //     }
-            //     setQuestionsData((prevData: any) => ({
-            //         ...prevData,
-            //         submitQuestionsClicked: false,
-            //         askQuestionsClicked: false,
-            //         showAllQuestionsClicked: true,
-            //         confirmationClicked: false,
-            //         questionsClickedType: '',
-            //         deleteQuestionsClicked: false,
-            //         updateQuestionsClicked: false,
-            //         questionId: '',
-            //         questionData: '',
-            //         showQuestionAnswer: false,
-            //         questionIndex: null
-            //     }));
-            // }
         }
     }
 
@@ -382,10 +338,13 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    const params = new URLSearchParams(props.location?.search);
     let paramStatus: any = '';
-    if (params.get('status')) {
-        paramStatus = params.get('status');
+    if (props.location?.search) {
+        let location_search = window.atob((props.location?.search).substring(1))
+        const params = new URLSearchParams(location_search);
+        if (params.get('status')) {
+            paramStatus = params.get('status');
+        }
     }
     // console.log(questionsData, 'show ---------------------->')
     return (
@@ -433,16 +392,15 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon location line-3">{jobDetailsData.locationName}</li>
                                         </ul>
                                     </div>
-                                    {jobDetailsData?.appliedStatus ? (
+                                    {/* {jobDetailsData?.appliedStatus ? (
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
                                             <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
-                                        </div>
-                                    ) : paramStatus ? (
+                                        </div> */}
+                                    {paramStatus ? (
                                         <div className="bottom_btn">
                                             <button
-                                                className="fill_btn full_btn"
-                                                onClick={applyJobClicked}>
+                                                className="fill_btn full_btn btn-effect">
                                                 {paramStatus}
                                             </button>
                                         </div>

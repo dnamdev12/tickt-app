@@ -18,6 +18,7 @@ interface Post {
     toDate: any,
     totalMilestones: any,
     tradeId: any,
+    tradieId: any,
     tradeName: any,
     tradeImage: any,
     isLoading:any,
@@ -29,8 +30,12 @@ export default function PastJobs(props: any): ReactElement {
     const { dataItems, jobType , isLoading} = props;
     let listData: any = dataItems;
 
-    const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
-        props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
+    const redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
+        if(jobId?.length && tradieId?.length && specializationId?.length && status?.length) {
+            let urlEncode:any = window.btoa(`?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`)
+            props.history.push(`/job-detail?${urlEncode}`);
+            // props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
+        }
     }
 
     return (
@@ -52,6 +57,7 @@ export default function PastJobs(props: any): ReactElement {
                         toDate,
                         totalMilestones,
                         tradeId,
+                        tradieId,
                         tradeName,
                         tradeImage,
                         tradieData,
@@ -60,7 +66,7 @@ export default function PastJobs(props: any): ReactElement {
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span
                                     onClick={() => {
-                                        redirectToInfo({ jobId, tradeId, specializationId, status })
+                                        redirectToInfo({ jobId, tradieId, specializationId, status })
                                     }}
                                     className="more_detail circle">
                                 </span>

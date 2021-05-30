@@ -1,6 +1,12 @@
 import React, { Component, useEffect, useState } from 'react';
 import moment from 'moment';
 import { values } from 'lodash';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 // Please add a unique date
 interface Props {
@@ -16,6 +22,7 @@ interface Props {
     milestones: any;
 }
 interface State {
+    isToggleOpen: boolean,
     milestone_name: string,
     isPhotoevidence: boolean,
     from_date: string,
@@ -25,6 +32,7 @@ interface State {
 }
 
 const defaultStates = {
+    isToggleOpen: false,
     milestone_name: '',
     isPhotoevidence: false,
     from_date: '',
@@ -42,6 +50,7 @@ export default class AddMilestone extends Component<Props, State> {
     constructor(props: any) {
         super(props)
         this.state = {
+            isToggleOpen: false,
             milestone_name: '',
             isPhotoevidence: false,
             from_date: '',
@@ -56,6 +65,7 @@ export default class AddMilestone extends Component<Props, State> {
         }
     }
 
+    toggleOpen = () => { this.setState({ isToggleOpen: !this.state.isToggleOpen }) }
 
     componentDidUpdate(prevProps: any) {
         let nextProps = this.props;
@@ -175,11 +185,15 @@ export default class AddMilestone extends Component<Props, State> {
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
         let from_date = milestones[milestone_index]?.from_date || '';
         let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
-        if (milestone_name?.length && recommended_hours?.length) {
+        if (milestone_name?.length) {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
-            let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
+            if (!error_1?.length && !error_2?.length) {
+                let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+                if (recommended_hours?.length && error_3 && !pattern_error?.length) {
+                    return false;
+                }
+
                 return false;
             }
         }
@@ -190,7 +204,9 @@ export default class AddMilestone extends Component<Props, State> {
         const { milestones, handleStepMileStone, newMileStoneScreen, removeMilestoneByIndex } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, errors } = this.state;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
+        console.log({milestone_index,is_remove })
         if (is_remove) {
+            console.log({milestone_index},'====>')
             removeMilestoneByIndex(milestone_index);
             return
         } else {
@@ -206,7 +222,7 @@ export default class AddMilestone extends Component<Props, State> {
 
     render() {
         const { newMileStoneScreen, handleStepForward, handleStepBack, milestones } = this.props;
-        let { milestone_name, isPhotoevidence, recommended_hours, errors } = this.state;
+        let { milestone_name, isPhotoevidence, recommended_hours, errors, isToggleOpen } = this.state;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
 
         let from_date_format = '';
@@ -228,6 +244,36 @@ export default class AddMilestone extends Component<Props, State> {
             <div className="app_wrapper">
                 <div className="section_wrapper">
                     <div className="custom_container">
+                        <Dialog
+                            open={isToggleOpen}
+                            // onClose={handleClose}
+                            aria-labelledby="alert-dialog-title"
+                            aria-describedby="alert-dialog-description"
+                        >
+                            <DialogTitle id="alert-dialog-title">
+                                {"Unsaved data will be lost. Do you want to continue?"}
+                            </DialogTitle>
+                            <DialogActions>
+                                <Button
+                                    onClick={() => { 
+                                        if(check_errors){
+                                            this.setState(defaultStates, () => { 
+                                                this.setItems(true);
+                                                handleStepBack(); 
+                                            });
+                                        }
+                                    }}
+                                    color="primary" autoFocus>
+                                    {'Yes'}
+                                </Button>
+                                <Button
+                                    onClick={() => { this.toggleOpen() }}
+                                    color="primary">
+                                    {'No'}
+                                </Button>
+                            </DialogActions>
+                        </Dialog>
+
                         <div className="form_field">
                             <div className="flex_row">
                                 <div className="flex_col_sm_5">
@@ -236,12 +282,17 @@ export default class AddMilestone extends Component<Props, State> {
                                             className="back"
                                             onClick={() => {
                                                 if (check_errors) {
-                                                    this.setState(defaultStates, () => {
-                                                        this.setItems(true);
-                                                        handleStepBack()
-                                                    })
+                                                    if (milestone_name?.length || isPhotoevidence == true || recommended_hours?.length || from_date_format?.length) {
+                                                        this.toggleOpen()
+                                                    } else {
+                                                        handleStepBack();
+                                                    }
                                                 } else {
-                                                    handleStepBack()
+                                                    if (milestone_name?.length || isPhotoevidence == true || recommended_hours?.length || from_date_format?.length) {
+                                                        this.toggleOpen()
+                                                    } else {
+                                                        handleStepBack()
+                                                    }
                                                 }
                                             }}>
                                         </button>
@@ -303,7 +354,7 @@ export default class AddMilestone extends Component<Props, State> {
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;
                                                     let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
-                                                    if (rh_value.match(pattern) !== null) {
+                                                    if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
                                                     } else {
                                                         error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
@@ -311,6 +362,7 @@ export default class AddMilestone extends Component<Props, State> {
                                                     this.setState({ errors: error_item });
                                                 });
                                             }}
+                                            autoComplete='off'
                                             value={recommended_hours}
                                             type="text"
                                             placeholder="Enter Recommended Hours"
