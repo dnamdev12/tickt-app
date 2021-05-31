@@ -420,11 +420,11 @@ const JobDetailsPage = (props: PropsType) => {
                                         </ul>
                                     </div>
                 
-                                    {paramStatus ? (
+                                    {paramStatus || jobDetailsData?.status ? (
                                         <div className="bottom_btn">
                                             <button
                                                 className="fill_btn full_btn btn-effect">
-                                                {paramStatus}
+                                                {paramStatus || jobDetailsData?.status}
                                             </button>
                                         </div>
                                     ) : null}
