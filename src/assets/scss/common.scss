@@ -1598,13 +1598,36 @@ body {
     font-size: 14px;
     font-weight: bold;
     line-height: 1.29;
-    color: var(--orange);
+    color: var(--blue);
   }
+  .vouch{
+    margin-top: 15px;
+    .vouch_icon{
+      width: 18px;
+      height: 18px;
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 6px;
+      img{
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .link{
+      font-size: 12px;
+    }
+  }
+  
 }
 
 .rating_star {
   @include position(absolute, 8px, 16px, auto, auto);
   font-size: 14px;
+  .react-stars {
+    span{
+      margin: 0;
+    }
+  }
 }
 
 
@@ -3226,7 +3249,6 @@ body {
 	.user_wrap {
 		display: flex;
 		margin: 0 0 24px;
-    align-items: center;
 		.u_img {
 			width: 40px;
 			height: 40px;
@@ -3462,6 +3484,18 @@ body {
 .home_job_categories {
   padding: 40px 0;
   position: relative;
+  .page_loader{
+    width: 1216px;
+    @media (max-width: 1366px) {
+      max-width: 1150px;
+    }
+    @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      max-width: 1150px;
+    }
+    @media (max-width: 1200px) {
+      max-width: 95%;
+    }
+  }
   .react-multi-carousel-list {
     // justify-content: center;
     @media(max-width: 1024px){
@@ -3474,10 +3508,8 @@ body {
     }
   }
   .job_categories {
-    justify-content: center;
-    @media(max-width: 1024px){
-      justify-content: flex-start;
-    }
+    display: block;
+    text-align: center;
     li {
       padding: 20px;
       margin: 0 15px;
@@ -4067,7 +4099,7 @@ body {
 		}
 	}
   .no_data_img{
-		height: 115px;
+		height: 80px;
 		margin: 0 auto 5px;
 		width: 100%;
     img{
@@ -4245,7 +4277,7 @@ body {
           background: url("../images/date-1.png") center no-repeat;
         }
       }
-      &.new {
+      &.new, &.open {
         &::before {
           background: url("../images/ic-job.png") center no-repeat;
         }
@@ -4253,6 +4285,11 @@ body {
       &.approved {
         &::before {
           background: url("../images/ic-template.png") center no-repeat;
+        }
+      }
+      &.applicants {
+        &::before {
+          background: url("../images/ic-profile.png") center no-repeat;
         }
       }
       .menu_txt{
@@ -4439,7 +4476,7 @@ body {
   }
 }
 
-.applicatns_row{
+.applicants_row{
   .flex_col_sm_4{
     width: 50%;
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
@@ -4549,6 +4586,13 @@ body {
           border-radius: 50%;
          }
       }
+      &::before{
+        display: none;
+      }
+      .full_btn{
+        margin-top: 16px;
+        width: 250px;
+      }
     }
     &.check{
       &::before{
@@ -4606,8 +4650,22 @@ body {
         display: block;
         font-size: 14px;
       }
-      .full_btn{
-        margin-top: 16px;
+    }
+  }
+}
+
+.reason_wrap{
+  margin-bottom: 40px;
+  .f_spacebw{
+    align-items: initial;
+    margin-bottom: 24px;
+    .checkbox_wrap{
+      flex: 1;
+      label{
+        font-size: 16px;
+        color: var(--blue);
+        font-family: 'Neue Haas Grotesk Text Pro Medium';
+        margin: 0;
       }
     }
   }

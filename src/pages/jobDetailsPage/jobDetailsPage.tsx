@@ -27,6 +27,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 interface PropsType {
     history: any,
     location: any,
+    tradieProfileData: any,
 }
 
 const options = {
@@ -55,6 +56,11 @@ const options = {
 const JobDetailsPage = (props: PropsType) => {
     const [errors, setErrors] = useState<any>({});
     const [jobDetailsData, setJobDetailsData] = useState<any>('');
+    const [jobConfirmation, setJobConfirmation] = useState<any>({
+        isJobModalOpen: false,
+        tradieTradeId: '',
+        isJobModalAuthorized: false
+    });
     const [questionList, setQuestionList] = useState<Array<any>>([]);
     const [questionListPageNo, setQuestionListPageNo] = useState<number>(1);
     const [questionsData, setQuestionsData] = useState<any>({
@@ -72,7 +78,7 @@ const JobDetailsPage = (props: PropsType) => {
         questionIndex: null
     })
 
-    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo');
+    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation");
 
     useEffect(() => {
         (async () => {
@@ -95,19 +101,31 @@ const JobDetailsPage = (props: PropsType) => {
                 setQuestionList(res2.data);
             }
         })();
-    }, [])
+    }, []);
 
+    useEffect(() => {
+        if (props.tradieProfileData?.trade?.length > 0) {
+            setJobConfirmation((prevData: any) => ({ ...prevData, tradieTradeId: props.tradieProfileData?.trade[0] }));
+        }
+    }, [props.tradieProfileData]);
 
     const applyJobClicked = async () => {
-        const data = {
-            jobId: jobDetailsData?.jobId,
-            builderId: jobDetailsData?.postedBy?.builderId,
-            tradeId: jobDetailsData?.tradeId,
-            specializationId: jobDetailsData?.specializationId
+        var isValid = true;
+        if (jobConfirmation.tradieTradeId !== jobDetailsData?.tradeId && !jobConfirmation.isJobModalAuthorized) {
+            setJobConfirmation((prevData: any) => ({ ...prevData, isJobModalOpen: true, isJobModalAuthorized: true }))
+            isValid = false;
         }
-        const res = await postHomeApplyJob(data);
-        if (res.success) {
-            props.history.push('job-applied-successfully');
+        if (isValid) {
+            const data = {
+                jobId: jobDetailsData?.jobId,
+                builderId: jobDetailsData?.postedBy?.builderId,
+                tradeId: jobDetailsData?.tradeId,
+                specializationId: jobDetailsData?.specializationId
+            }
+            const res = await postHomeApplyJob(data);
+            if (res.success) {
+                props.history.push('job-applied-successfully');
+            }
         }
     }
 
@@ -289,6 +307,10 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
+    const closeApplyJobModal = () => {
+        setJobConfirmation((prevData: any) => ({ ...prevData, isJobModalOpen: false, isJobModalAuthorized: false }));
+    }
+
 
     const renderBuilderAvatar = (item: any) => {
         let postedBy: any = jobDetailsData?.postedBy;
@@ -348,6 +370,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         key={`${image}${index}`}
                                                         src={image?.link}
                                                         style={{ height: '400px', width: '800px' }}
+                                                        controls
                                                     />
                                                 )
                                             }) : <img alt="" src={jobDummyImage} />}
@@ -356,14 +379,14 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
+                                    <span className="title line-3" title={jobDetailsData?.jobName}>{jobDetailsData?.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{jobDetailsData.time}</li>
-                                            <li className="icon dollar">{jobDetailsData.amount}</li>
-                                            <li className="icon calendar">{jobDetailsData.duration}</li>
-                                            <li className="icon location line-3">{jobDetailsData.locationName}</li>
+                                            <li className="icon clock">{jobDetailsData?.time}</li>
+                                            <li className="icon dollar">{jobDetailsData?.amount}</li>
+                                            <li className="icon calendar">{jobDetailsData?.duration}</li>
+                                            <li className="icon location line-3">{jobDetailsData?.locationName}</li>
                                         </ul>
                                     </div>
                                     {jobDetailsData?.appliedStatus ? (
@@ -372,20 +395,43 @@ const JobDetailsPage = (props: PropsType) => {
                                             <button className="fill_btn full_btn btn-effect" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
                                     ) : paramStatus ? (
-                                            <button
-                                                className="fill_btn full_btn btn-effect"
-                                                onClick={applyJobClicked}>
-                                                {paramStatus}
-                                            </button>
+                                        <button
+                                            className="fill_btn full_btn btn-effect"
+                                            onClick={applyJobClicked}>
+                                            {paramStatus}
+                                        </button>
                                     ) : null}
                                 </div>
                             </div>
                         </div>
+                        {<Modal
+                            className="custom_modal"
+                            open={jobConfirmation.isJobModalOpen}
+                            onClose={closeApplyJobModal}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                <div className="heading">
+                                    <span className="sub_title">Apply Job Confirmation</span>
+                                    <button className="close_btn" onClick={closeApplyJobModal}>
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                <div className="modal_message">
+                                    <p>This job doesn't matches to your Category, Are you still want to proceed?</p>
+                                </div>
+                                <div className="dialog_actions">
+                                    <button className="fill_btn btn-effect" onClick={applyJobClicked}>Yes</button>
+                                    <button className="fill_grey_btn btn-effect" onClick={closeApplyJobModal}>No</button>
+                                </div>
+                            </div>
+                        </Modal>}
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <div className="description">
                                     <span className="sub_title">Details</span>
-                                    <p className="commn_para">{jobDetailsData.details}</p>
+                                    <p className="commn_para">{jobDetailsData?.details}</p>
                                 </div>
                             </div>
                         </div>
@@ -502,9 +548,9 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <label className="form_label">Your question</label>
                                                 <div className="text_field">
                                                     <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
+                                                    <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                                 </div>
                                                 {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
-                                                <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                             </div>
                                         </div>
                                         <div className="bottom_btn custom_btn">
@@ -524,23 +570,21 @@ const JobDetailsPage = (props: PropsType) => {
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
-                                    <>
-                                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                                            <div className="heading">
-                                                <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
-                                                <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
-                                                    <img src={cancel} alt="cancel" />
-                                                </button>
-                                            </div>
-                                            <div className="modal_message">
-                                                <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'ask'} a question?`}</p>
-                                            </div>
-                                            <div className="dialog_actions">
-                                                <button className="fill_btn btn-effect" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>
-                                                <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
-                                            </div>
+                                    <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                        <div className="heading">
+                                            <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
+                                            <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
+                                                <img src={cancel} alt="cancel" />
+                                            </button>
                                         </div>
-                                    </>
+                                        <div className="modal_message">
+                                            <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'ask'} a question?`}</p>
+                                        </div>
+                                        <div className="dialog_actions">
+                                            <button className="fill_btn btn-effect" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>
+                                            <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                                        </div>
+                                    </div>
                                 </Modal>
                             }
                             <div className="flex_col_sm_8">

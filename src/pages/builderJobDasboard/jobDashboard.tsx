@@ -198,7 +198,7 @@ class JobDashboard extends Component<Props, State> {
                                         </span>
                                     </li>
                                     <li>
-                                        <span className={`icon applied ${activeType === "open" ? 'active' : ''}`}>
+                                        <span className={`icon open ${activeType === "open" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('open') }}
                                                 className="menu_txt">Open jobs</span>
@@ -213,7 +213,7 @@ class JobDashboard extends Component<Props, State> {
                                     </li>
                                     <hr></hr>
                                     <li>
-                                        <span className={`icon new ${activeType === "applicant" ? 'active' : ''}`}>
+                                        <span className={`icon applicants ${activeType === "applicant" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('applicant') }}
                                                 className="menu_txt">

@@ -1,11 +1,30 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { format } from 'date-fns';
+
+import Carousel from 'react-multi-carousel';
+import "react-multi-carousel/lib/styles.css";
 import UploadMedia from '../../postJob/components/uploadMedia';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
+
+const declinedImages = {
+  desktop: {
+    breakpoint: { max: 3000, min: 1200 },
+    items: 2,
+    slidesToSlide: 1, // optional, default to 1.
+  },
+  tablet: {
+    breakpoint: { max: 1024, min: 768 },
+    items: 1
+  },
+  mobile: {
+    breakpoint: { max: 650, min: 0 },
+    items: 1
+  }
+};
 
 interface BuilderDetails {
   builderId: string;
@@ -149,7 +168,7 @@ const MarkMilestone = ({
   const { builderId, builderImage, builderName, reviews } = postedBy || {};
 
   const hoursMinutes = data.actualHours.split(':').map((key: string) => parseInt(key));
-  const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1]/60));
+  const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
 
   let page = null;
   switch (step) {
@@ -184,14 +203,17 @@ const MarkMilestone = ({
                     status,
                     fromDate,
                     toDate,
+                    declinedReason,
                   },
                   index
                 ) => {
                   const prevMilestoneStatus = milestones[index - 1]?.status;
                   const isActive =
                     status === 0 &&
-                    (prevMilestoneStatus === 1 ||
+                    // completed or approved
+                    ([1, 2].includes(prevMilestoneStatus) ||
                       prevMilestoneStatus === undefined);
+                  const isDeclined = status === 3;
                   fromDate = fromDate
                     ? format(new Date(fromDate), 'MMM dd')
                     : '';
@@ -201,33 +223,86 @@ const MarkMilestone = ({
                     <li
                       key={milestoneId}
                       className={
-                        status === 1
+                        [1, 2].includes(status)
                           ? `check`
                           : isActive
-                          ? 'active'
-                          : 'disabled'
+                            ? 'active'
+                            : status === 3
+                              ? ''
+                              : 'disabled'
                       }
                     >
                       <div className="circle_stepper">
                         <span></span>
                       </div>
                       <div className="info">
-                        <label>{milestoneName}</label>
+                        <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
                         {isPhotoevidence && (
                           <span>Photo evidence required</span>
                         )}
                         <span>
                           {fromDate}
                           {toDate &&
-                            ` - ${
-                              fromDate.startsWith(toDate.split(' ')[0])
-                                ? toDate.split(' ')[1]
-                                : toDate
+                            ` - ${fromDate.startsWith(toDate.split(' ')[0])
+                              ? toDate.split(' ')[1]
+                              : toDate
                             }`}
                         </span>
-                        {isActive && (
+                      </div>
+                      {isActive && (
+                        <button
+                          className="fill_btn full_btn btn-effect"
+                          onClick={() => {
+                            setMilestoneIndex(index);
+
+                            if (index === milestones?.length - 1) {
+                              setIsLastMilestone(true);
+                            }
+
+                            if (isPhotoevidence) {
+                              setStep(2);
+                            } else {
+                              setStep(3);
+                            }
+                          }}
+                        >
+                          Done
+                        </button>
+                      )}
+                      {isDeclined && (
+                        <>
+                          <div className="flex_row">
+                            <div className="flex_col_sm_7">
+                              <div className="form_field">
+                                <label className="form_label">Decline reason</label>
+                                <div className="text_field">
+                                  <textarea
+                                    value={declinedReason?.reason}
+                                    readOnly
+                                  ></textarea>
+                                </div>
+                              </div>
+                            </div>
+                            <div className="upload_img_video">
+                              {/* {declinedReason?.url?.length && <Carousel className="" responsive={declinedImages} autoPlay={true} arrows={false} > */}
+                              {declinedReason?.url?.map((image: string) => {
+                                return (
+                                  <div>
+                                    <li>
+                                      <figure className="img_video">
+                                        <img src={image} alt="media" />
+                                      </figure>
+                                    </li>
+                                  </div>
+                                )
+                              })}
+                              {/* <div>SLide 1</div>
+                                    <div>SLide 2</div>
+                                    <div>SLide 3</div>
+                                  </Carousel>} */}
+                            </div>
+                          </div>
                           <button
-                            className="fill_btn full_btn btn-effect"
                             onClick={() => {
                               setMilestoneIndex(index);
 
@@ -241,11 +316,9 @@ const MarkMilestone = ({
                                 setStep(3);
                               }
                             }}
-                          >
-                            Done
-                          </button>
-                        )}
-                      </div>
+                            className='fill_btn full_btn btn-effect' >Remark as Complete</button>
+                        </>
+                      )}
                     </li>
                   );
                 }
@@ -294,7 +367,7 @@ const MarkMilestone = ({
           stepCompleted={stepCompleted.includes(2)}
           data={data}
           handleStepBack={() => setStep(1)}
-          handleStepForward={() => {}}
+          handleStepForward={() => { }}
           handleStepComplete={(stepData: any) => {
             setData((prevData: any) => ({
               ...prevData,

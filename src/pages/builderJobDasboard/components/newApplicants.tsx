@@ -115,7 +115,7 @@ const NewApplicants = (props: any) => {
                         </div>
                     )) :
                     !isLoading && (
-                        <div className="no_record">
+                        <div className="no_record  m-t-vh">
                             <figure className="no_img">
                                 <img src={noData} alt="data not found" />
                             </figure>

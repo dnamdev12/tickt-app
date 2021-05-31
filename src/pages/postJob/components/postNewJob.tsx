@@ -56,9 +56,9 @@ const PostNewJob = ({
   const handleChange = ({ target: { value, name } }: { target: { value: string, name: string } }) => {
     let valueElem: any = (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "");
     if (name === "jobName") {
-      console.log({valueElem},'before')
+      console.log({ valueElem }, 'before')
       valueElem = valueElem.charAt(0).toUpperCase() + valueElem.substring(1);
-      console.log({valueElem},'after')
+      console.log({ valueElem }, 'after')
     }
 
     // if (stepCompleted || continueClicked) {
@@ -161,18 +161,18 @@ const PostNewJob = ({
                     {`character length : ${job_description.length}`}
                   </span>
                   : ''}
-                <span className="error_msg">{errors.job_description}</span>
               </div>
-              <div className="form_field">
-                <button
-                  className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
-                  onClick={handleContinue}>{'Continue'}</button>
-              </div>
+
+              <span className="error_msg">{errors.job_description}</span>
+            </div>
+            <div className="form_field">
+              <button
+                className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
+                onClick={handleContinue}>{'Continue'}</button>
             </div>
           </div>
         </div>
       </div>
-
     </div>
   )
 }

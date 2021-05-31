@@ -11,14 +11,12 @@ import {
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import Modal from '@material-ui/core/Modal';
 import ReviewInfoBox from '../../common/reviewInfoBox';
-import { NavLink } from 'react-router-dom';
 // @ts-ignore
 import ReactStars from "react-rating-stars-component";
 
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
-import noData from '../../assets/images/no-search-data.png';
 import noDataFound from '../../assets/images/no-search-data.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import Carousel from 'react-multi-carousel';
@@ -561,8 +559,8 @@ const BuilderInfo = (props: PropsType) => {
                                     <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
                                     <div className="text_field">
                                         <textarea placeholder="Text" value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
+                                        <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                     </div>
-                                    <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                 </div>
                             </div>
                             <div className="bottom_btn custom_btn">
@@ -584,7 +582,6 @@ const BuilderInfo = (props: PropsType) => {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <>
                         <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
                                 {reviewsData.deleteReviewsClicked && <span className="sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>}
@@ -600,7 +597,6 @@ const BuilderInfo = (props: PropsType) => {
                                 <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
                             </div>
                         </div>
-                    </>
                 </Modal>
             }
         </div >

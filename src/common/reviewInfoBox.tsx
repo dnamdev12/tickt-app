@@ -2,6 +2,8 @@
 import ReactStars from "react-rating-stars-component";
 
 import dummy from '../assets/images/u_placeholder.jpg';
+import vouch from '../assets/images/ic-template.png';
+
 
 const ReviewInfoBox = (props: any) => {
     const { item } = props;
@@ -31,6 +33,12 @@ const ReviewInfoBox = (props: any) => {
                     </div>
                 </div>
                 <p className="commn_para" title="">{item.review}</p>
+                {/* <div className="vouch">
+                    <figure className="vouch_icon">
+                        <img src={vouch} alt="vouch" />
+                    </figure>
+                    <a className="link">Vouch for John Oldman</a>
+                </div> */}
             </div>
         </div>
     )

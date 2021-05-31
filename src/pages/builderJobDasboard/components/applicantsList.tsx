@@ -116,7 +116,7 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
                 </React.Fragment>
             </div>
 
-            <div className="flex_row applicatns_row">
+            <div className="flex_row applicants_row">
                 {console.log({ items }, '------------>')}
                 {items?.length ?
                     items.map((item: any, index: any) => (
@@ -129,7 +129,7 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
                     ))
                     :
                     !isLoading && (
-                        <div className="no_record">
+                        <div className="no_record m-t-vh">
                             <figure className="no_img">
                                 <img src={noDataFound} alt="data not found" />
                             </figure>

@@ -681,8 +681,8 @@ class TradieInfo extends Component<Props, State> {
                                                     handleChange(e, 'reviewData')
                                                 }}>
                                             </textarea>
-                                        </div>
                                         <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                                        </div>
                                     </div>
                                 </div>
                                 <div className="bottom_btn custom_btn">

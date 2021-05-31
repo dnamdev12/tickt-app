@@ -196,7 +196,7 @@ const TradieSearchJobResult = (props: any) => {
                 <BannerSearch {...props} paramsData={paramsData} cleanFiltersHandler={cleanFiltersHandler} />
             </div>
             <div className="search_result">
-                <div className="section_wrapper bg_gray">
+                <div className="section_wrapper">
                     <div className="custom_container">
 
                         <div className="flex_row mob_srch_option">
