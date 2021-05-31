@@ -155,21 +155,21 @@ const PostNewJob = ({
                 <label className="form_label">Job Details</label>
                 <div className="text_field">
                   <textarea placeholder="This Job..." name="job_description" value={job_description} onChange={handleChange} />
+                  {job_description.length ?
+                    <span className="char_count">
+                      {`character length : ${job_description.length}`}
+                    </span>
+                    : ''}
                 </div>
-                {job_description.length ?
-                  <span className="char_count">
-                    {`character length : ${job_description.length}`}
-                  </span>
-                  : ''}
+                <span className="error_msg">{errors.job_description}</span>
               </div>
+              <div className="form_field">
+                <button
+                  className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
+                  onClick={handleContinue}>{'Continue'}</button>
+              </div>
+            </div>
 
-              <span className="error_msg">{errors.job_description}</span>
-            </div>
-            <div className="form_field">
-              <button
-                className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
-                onClick={handleContinue}>{'Continue'}</button>
-            </div>
           </div>
         </div>
       </div>

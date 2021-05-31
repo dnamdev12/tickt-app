@@ -421,12 +421,10 @@ const JobDetailsPage = (props: PropsType) => {
                                     </div>
                 
                                     {paramStatus || jobDetailsData?.status ? (
-                                        <div className="bottom_btn">
                                             <button
                                                 className="fill_btn full_btn btn-effect">
                                                 {paramStatus || jobDetailsData?.status}
                                             </button>
-                                        </div>
                                     ) : null}
                                 </div>
                             </div>
@@ -441,8 +439,9 @@ const JobDetailsPage = (props: PropsType) => {
                         </div>
                         <div className="flex_row">
                             <div className="flex_col_sm_4">
-                                <span className="sub_title">
-                                    <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`}
+                                <span className="sub_title">Job Milestones
+                                    {/* <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`} */}
+                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber} `}{`of ${jobDetailsData?.totalMilestones}`} </b>
                                 </span>
 
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
