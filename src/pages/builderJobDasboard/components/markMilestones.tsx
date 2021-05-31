@@ -157,7 +157,8 @@ const MarkMilestones = (props: any) => {
                                                 : toDate
                                             }`}
                                     </span>
-                                    {isActive === 1 ? (
+                                </div>
+                                {isActive === 1 ? (
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={() => {
@@ -181,7 +182,6 @@ const MarkMilestones = (props: any) => {
                                             {'Check and Approve'}
                                         </button>
                                     ) : null}
-                                </div>
                             </li>
                         );
                     }

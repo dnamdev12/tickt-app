@@ -8,7 +8,7 @@ const categoriesjob = {
     desktop: {
         breakpoint: { max: 3000, min: 1200 },
         items: 5,
-        slidesToSlide: 1, // optional, default to 1.
+        slidesToSlide: 5, // optional, default to 1.
     },
     tablet: {
         breakpoint: { max: 1024, min: 768 },
