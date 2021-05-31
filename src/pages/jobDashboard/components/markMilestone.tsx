@@ -227,7 +227,8 @@ const MarkMilestone = ({
                                 : toDate
                             }`}
                         </span>
-                        {isActive && (
+                      </div>
+                      {isActive && (
                           <button
                             className="fill_btn full_btn btn-effect"
                             onClick={() => {
@@ -248,7 +249,6 @@ const MarkMilestone = ({
                           </button>
                         )}
                         {isDeclined && 'Declined'}
-                      </div>
                     </li>
                   );
                 }

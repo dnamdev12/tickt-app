@@ -4586,6 +4586,13 @@ body {
           border-radius: 50%;
          }
       }
+      &::before{
+        display: none;
+      }
+      .full_btn{
+        margin-top: 16px;
+        width: 250px;
+      }
     }
     &.check{
       &::before{
@@ -4642,9 +4649,6 @@ body {
         margin: 3px 0;
         display: block;
         font-size: 14px;
-      }
-      .full_btn{
-        margin-top: 16px;
       }
     }
   }
