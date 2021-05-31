@@ -581,7 +581,6 @@ const MarkMilestone = ({
 
                 const callback = (jobCompletedCount: number) => {
                   if (isLastMilestone) {
-                    showJobCompletePage();
                     showJobCompletePage(jobCompletedCount);
                   } else {
                     setStepCompleted([]);
