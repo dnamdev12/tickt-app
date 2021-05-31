@@ -13,8 +13,9 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { setShowToast } from '../../../redux/common/actions';
-// @ts-ignore
-// import ReactImageVideoLightbox from 'react-image-video-lightbox';
+
+//@ts-ignore
+import FsLightbox from 'fslightbox-react';
 interface Proptypes {
     data: any;
     milestones: any;
@@ -69,6 +70,10 @@ const JobDetails = ({
     handleStepBack }: Proptypes) => {
     const [categorySelected, setSelected] = useState<{ [index: string]: any }>({ category: {}, job_type: {} });
     const [isEnablePopup, setPopUp] = useState(false);
+    const [toggler, setToggler] = useState(false);
+    const [selectedSlide, setSelectSlide] = useState(1);
+
+
 
     const findSelectedCategory = () => {
         let preSelectedItem: any = null;
@@ -136,15 +141,32 @@ const JobDetails = ({
 
             let filterItems: any = [];
             if (format_items?.length) {
-                format_items.forEach((item: any) => {
+                format_items.forEach((item: any, index: number) => {
                     let render_item: any = null;
                     if (imageFormats.includes(item?.format)) {
-                        render_item = <img onClick={() => { console.log({ item }) }} alt="" src={item?.url} />
+                        render_item = (
+                            <img
+                                onClick={() => {
+                                    setToggler((prev: any) => !prev);
+                                    setSelectSlide(index + 1);
+                                }}
+                                alt=""
+                                src={item?.url}
+                            />)
                     }
 
                     if (videoFormats.includes(item?.format)) {
-                        render_item = <video onClick={() => { console.log({ item }) }} src={item?.url} style={{ height: '400px', width: '800px' }} />
+                        render_item = (
+                            <video
+                                onClick={() => {
+                                    setToggler((prev: any) => !prev);
+                                    setSelectSlide(index + 1);
+                                }}
+                                src={item?.url}
+                                style={{ height: '400px', width: '800px' }}
+                            />)
                     }
+
                     if (render_item) {
                         filterItems.push(
                             <div className='item' >
@@ -207,10 +229,40 @@ const JobDetails = ({
 
     let data_clone: any = data;
     console.log({ data_clone });
+
+    const renderFilteredItems = () => {
+        let sources: any = [];
+        let types: any = [];
+
+        if (data_clone?.urls?.length) {
+            data_clone?.urls.forEach((item: any) => {
+                if (item?.mediaType === 2) {
+                    sources.push(item.link);
+                    types.push('video');
+                }
+                if (item?.mediaType === 1) {
+                    sources.push(item.link);
+                    types.push('image');
+                }
+            })
+        }
+
+        return { sources, types };
+    }
+
+    const { sources, types } = renderFilteredItems();
+    console.log({sources, types })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+
+                    <FsLightbox
+                        toggler={toggler}
+                        slide={selectedSlide}
+                        sources={sources}
+                        types={types}
+                    />
 
                     <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
