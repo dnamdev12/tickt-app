@@ -71,12 +71,15 @@ const ChooseTimingMileStone = ({
         let item_index = null;
         console.log({timings, range})
         item_index = milestones.length ? milestones.length - 1 : 0;
+
+        console.log({editMileStone, timings, item_index});
+      
         if (editMileStone == null) {
             addTimeToMileStone(timings, item_index);
             handleStepBack();
         } else {
             updateMileStoneTimings(timings);
-            addTimeToMileStone(timings, item_index);
+            addTimeToMileStone(timings, editMileStone);
             handleStepForward(15);
         }
         // handleStepComplete(formattedDates);

@@ -3,26 +3,29 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
-import noDataFound from '../../../assets/images/no-data.png';
-// import {  } from "../../../assets/images/job-type-placeholder.png";
+import noDataFound from '../../../assets/images/no-search-data.png';
+import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
+import moment from 'moment';
 interface Active {
     amount: any,
     durations: any,
     jobId: any,
     jobName: any,
+    fromDate: any,
+    toDate: any,
     milestoneNumber: any,
     specializationId: any,
     specializationName: any,
     status: any,
     timeLeft: any,
     totalmem: any,
-    location:any,
+    location: any,
     locationName: any,
     totalMilestones: any,
     tradieListData: any,
     tradeName: any,
     tradieId: any,
-    tradeImage: any,
+    tradeSelectedUrl: any,
     tradieImage: any,
 
 }
@@ -47,15 +50,29 @@ class OpenJobs extends Component<Props, State> {
         }
     }
 
-    redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
-        console.log({ jobId, tradieId, specializationId });
-        this.props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
+    redirectToInfo = ({ jobId, status }: any) => {
+        console.log({ jobId, status })
+        if (jobId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+            this.props.history.push(`/job-detail?${urlEncode}`);
+        }
     }
 
-    setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })
+    setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants });
+
+
+    renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
+        }
+
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+        }
+    }
 
     render() {
-        const { setJobLabel, dataItems, applicantsList, jobType, isLoading} = this.props;
+        const { setJobLabel, dataItems, applicantsList, jobType, isLoading } = this.props;
         let listData: any = dataItems
         let { isToggleApplicants } = this.state;
         console.log({ applicantsList, isToggleApplicants })
@@ -69,6 +86,8 @@ class OpenJobs extends Component<Props, State> {
                             durations,
                             jobId,
                             jobName,
+                            fromDate,
+                            toDate,
                             milestoneNumber,
                             specializationId,
                             specializationName,
@@ -81,18 +100,20 @@ class OpenJobs extends Component<Props, State> {
                             tradeName,
                             tradieId,
                             location,
-                            tradeImage,
+                            tradeSelectedUrl,
                             tradieImage,
                         }: Active) => (
                             <div className="flex_col_sm_6">
                                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                     <span
-                                        onClick={() => { this.redirectToInfo({ jobId, tradieId, specializationId, status }) }}
+                                        onClick={() => { this.redirectToInfo({ jobId, status }) }}
                                         className="more_detail circle">
                                     </span>
                                     <div className="user_wrap">
                                         <figure className="u_img">
-                                            <img src={tradeImage || dummy} alt="traide-img"
+                                            <img
+                                                src={tradeSelectedUrl || jobTypePlaceholder}
+                                                alt="traide-img"
                                             />
                                         </figure>
                                         <div className="details">
@@ -102,7 +123,9 @@ class OpenJobs extends Component<Props, State> {
                                     </div>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{timeLeft}</li>
+                                            <li className="icon clock">
+                                                {this.renderTime({ fromDate, toDate })}
+                                            </li>
                                             <li className="icon dollar">{amount}</li>
                                             <li className="icon location line-1">{location}</li>
                                             <li className="icon calendar">{durations}</li>
@@ -116,9 +139,6 @@ class OpenJobs extends Component<Props, State> {
                                             <span className="approval_info">
                                                 {status === "Approved" && <img src={approved} alt="icon" />}
                                                 {status}
-                                                {/* {'Approved'} */} {/* Awating */}
-                                                {/* <img src={waiting} alt="icon" /> */}
-                                                {/* Need approval */}
                                             </span>
                                             <span className="progress_bar">
                                                 <input
@@ -130,21 +150,21 @@ class OpenJobs extends Component<Props, State> {
                                                 />
                                             </span>
                                         </div>
-                                        <button
-                                            onClick={() => {
-                                                this.setToggle();
-                                                setJobLabel('applicantList', jobId, 1, specializationId);
-                                            }}
-                                            className="fill_grey_btn full_btn btn-effect">
-                                            {'Applications'}
-                                            {/* <img src={rateStar} alt="rating-star" />
-                                        {'Rate this job'} */}
-                                        </button>
+                                        {tradieId?.length ? (
+                                            <button
+                                                onClick={() => {
+                                                    this.setToggle();
+                                                    setJobLabel('applicantList', jobId, 1, specializationId);
+                                                }}
+                                                className="fill_grey_btn full_btn btn-effect">
+                                                {'Applications'}
+                                            </button>
+                                        ) : null}
                                     </div>
                                 </div>
                             </div>
                         )) : !isLoading && (
-                            <div className="no_record">
+                            <div className="no_record  m-t-vh">
                                 <figure className="no_img">
                                     <img src={noDataFound} alt="data not found" />
                                 </figure>

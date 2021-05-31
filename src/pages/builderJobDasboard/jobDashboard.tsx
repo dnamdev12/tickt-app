@@ -74,7 +74,7 @@ class JobDashboard extends Component<Props, State> {
         let nextProps: any = this.props;
         let { activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs } = nextProps;
         let { selectedItem: { jobtype } } = this.state;
-        if (jobtype === 'active' && activeJobs?.active?.length && activeJobs?.active?.length !== this.state.activeJobs.length) {
+        if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state.activeJobs)) {
             let { active, needApprovalCount, newApplicantsCount } = activeJobs;
             this.setState({
                 activeJobs: active,
@@ -85,7 +85,7 @@ class JobDashboard extends Component<Props, State> {
             });
         }
 
-        if (jobtype === 'past' && pastJobs?.past?.length && pastJobs?.past?.length !== this.state.pastJobs.length) {
+        if (jobtype === 'past' && JSON.stringify(pastJobs?.past) !== JSON.stringify(this.state.pastJobs)) {
             let { past, needApprovalCount, newApplicantsCount } = pastJobs;
             this.setState({
                 pastJobs: past,
@@ -95,9 +95,10 @@ class JobDashboard extends Component<Props, State> {
                 }
             });
         }
-
-        if (jobtype === 'open' && openJobs?.open?.length && openJobs?.open?.length !== this.state.openJobs.length) {
+      
+        if (jobtype === 'open' && JSON.stringify(openJobs?.open) !== JSON.stringify(this.state.openJobs)) {
             let { open, needApprovalCount, newApplicantsCount } = openJobs;
+            console.log({ open, needApprovalCount, newApplicantsCount })
             this.setState({
                 openJobs: open,
                 count: {
@@ -107,13 +108,13 @@ class JobDashboard extends Component<Props, State> {
             });
         }
 
-        if (jobtype === 'applicantList' && applicantsListJobs?.length && applicantsListJobs?.length !== this.state.applicantsListJobs?.length) {
+        if (jobtype === 'applicantList' && JSON.stringify(applicantsListJobs) !== JSON.stringify(this.state.applicantsListJobs)) {
             this.setState({
                 applicantsListJobs
             });
         }
 
-        if (jobtype === 'applicant' && applicantJobs?.length && applicantJobs?.length !== this.state.applicantJobs?.length) {
+        if (jobtype === 'applicant' && JSON.stringify(applicantJobs) !== JSON.stringify(this.state.applicantJobs)) {
             this.setState({ applicantJobs })
         }
 
@@ -168,7 +169,6 @@ class JobDashboard extends Component<Props, State> {
         const { toggleSidebar, setSelected } = this;
         let props: any = this.props;
         let isLoading: any = props.isLoading;
-        console.log({ activeJobs, pastJobs, openJobs, applicantJobs, jobtype, history: props.history })
         return (
             <div className="app_wrapper">
                 <div className="custom_container">
@@ -198,7 +198,7 @@ class JobDashboard extends Component<Props, State> {
                                         </span>
                                     </li>
                                     <li>
-                                        <span className={`icon applied ${activeType === "open" ? 'active' : ''}`}>
+                                        <span className={`icon open ${activeType === "open" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('open') }}
                                                 className="menu_txt">Open jobs</span>
@@ -213,7 +213,7 @@ class JobDashboard extends Component<Props, State> {
                                     </li>
                                     <hr></hr>
                                     <li>
-                                        <span className={`icon new ${activeType === "applicant" ? 'active' : ''}`}>
+                                        <span className={`icon applicants ${activeType === "applicant" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('applicant') }}
                                                 className="menu_txt">
@@ -244,13 +244,48 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
                         <div className="detail_col">
-                            {jobtype === 'past' && <PastJobsComponent isLoading={isLoading} dataItems={pastJobs} jobType={jobtype} history={props.history} />}
-                            {jobtype === 'active' && <ActiveJobsComponent isLoading={isLoading} dataItems={activeJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
-                            {jobtype === 'open' && <OpenJobsComponent isLoading={isLoading} dataItems={openJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
-                            {jobtype === 'applicant' && <NewApplicantComponent isLoading={isLoading} dataItems={applicantJobs} jobType={jobtype} setJobLabel={setSelected} history={props.history} />}
-                            {jobtype === 'applicantList' && <ApplicantsList isLoading={isLoading} items={applicantsListJobs} jobid={jobid} specializationId={specializationId} setJobLabel={setSelected} activeType={activeType} history={props.history} />}
-                            {/* <DeclineMilestone /> */}
-                            {/* <DeclineMilestoneSuccess /> */}
+                            {jobtype === 'past' && (
+                                <PastJobsComponent
+                                    isLoading={isLoading}
+                                    dataItems={pastJobs}
+                                    jobType={jobtype}
+                                    history={props.history}
+                                />)}
+                            {jobtype === 'active' && (
+                                <ActiveJobsComponent
+                                    isLoading={isLoading}
+                                    dataItems={activeJobs}
+                                    jobType={jobtype}
+                                    activeType={activeType}
+                                    setJobLabel={setSelected}
+                                    history={props.history}
+                                />)}
+                            {jobtype === 'open' && (
+                                <OpenJobsComponent
+                                    isLoading={isLoading}
+                                    dataItems={openJobs}
+                                    jobType={jobtype}
+                                    setJobLabel={setSelected}
+                                    history={props.history}
+                                />)}
+                            {jobtype === 'applicant' && (
+                                <NewApplicantComponent
+                                    isLoading={isLoading}
+                                    dataItems={applicantJobs}
+                                    jobType={jobtype}
+                                    setJobLabel={setSelected}
+                                    history={props.history}
+                                />)}
+                            {jobtype === 'applicantList' && (
+                                <ApplicantsList
+                                    isLoading={isLoading}
+                                    items={applicantsListJobs}
+                                    jobid={jobid}
+                                    specializationId={specializationId}
+                                    setJobLabel={setSelected}
+                                    activeType={activeType}
+                                    history={props.history}
+                                />)}
                         </div>
                     </div>
                 </div>

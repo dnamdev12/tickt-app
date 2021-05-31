@@ -60,7 +60,7 @@ const PastJobs = (props: Proptypes) => {
                     </span>
                   </div>
                 </div>
-                <NavLink to={{
+                {!item?.isRated && <NavLink to={{
                   pathname: "/review-builder",
                   state: { item: item }
                 }}
@@ -68,7 +68,7 @@ const PastJobs = (props: Proptypes) => {
                   <button className="fill_grey_btn full_btn">
                     <img src={rateStar} alt="rating-star" /> Rate this job
                 </button>
-                </NavLink>
+                </NavLink>}
               </div>
             </div>)
         })}

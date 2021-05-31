@@ -19,6 +19,7 @@
     "@types/react-otp-input": "^2.0.0",
     "aos": "^2.3.4",
     "date-fns": "^2.21.1",
+    "fslightbox-react": "^1.6.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",
     "node-sass": "^5.0.0",
@@ -72,6 +73,7 @@
   },
   "devDependencies": {
     "@types/aos": "^3.0.3",
+    "@types/fslightbox-react": "^1.4.0",
     "@types/googlemaps": "^3.43.3",
     "@types/lodash": "^4.14.168",
     "@types/react-geocode": "^0.2.0",

@@ -9,7 +9,7 @@ import RenderMap from './renderMap';
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import mapIcon from '../../assets/images/map.png';
-import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
 //  <div className="no_record">
@@ -196,7 +196,7 @@ const TradieSearchJobResult = (props: any) => {
                 <BannerSearch {...props} paramsData={paramsData} cleanFiltersHandler={cleanFiltersHandler} />
             </div>
             <div className="search_result">
-                <div className="section_wrapper bg_gray">
+                <div className="section_wrapper">
                     <div className="custom_container">
 
                         <div className="flex_row mob_srch_option">
@@ -220,7 +220,7 @@ const TradieSearchJobResult = (props: any) => {
                                         cleanFiltersHandler={cleanFiltersHandler}
                                     />
                                 </div>
-                                {renderJobsData()?.length > 0 && <div className="flex_col_sm_4 text-right">
+                                {renderJobsData()?.length > 0 && !mapData.showMap && <div className="flex_col_sm_4 text-right">
                                     <a className="map_btn" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
                                         <img src={mapIcon} alt="map" /> Map
                                     </a>
@@ -246,6 +246,7 @@ const TradieSearchJobResult = (props: any) => {
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />
                                     </figure>
+                                    <span>No Data Found!</span>
                                 </div>}
                             {<div className="map_col" style={!mapData.showMap ? { display: "none" } : {}}>
                                 <div className="map_stick">

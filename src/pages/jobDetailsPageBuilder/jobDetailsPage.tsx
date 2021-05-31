@@ -3,6 +3,7 @@ import Constants from '../../utils/constants';
 import {
     getHomeJobDetails,
     getHomeSaveJob,
+    jobDetailsBuilder,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
 import { getTradieQuestionList } from '../../redux/jobs/actions';
@@ -24,6 +25,9 @@ import question from '../../assets/images/ic-question.png';
 import leftIcon from '../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../assets/images/ic-next-arrow-line.png'
 import moment from 'moment';
+import approved from '../../assets/images/approved.png';
+import waiting from '../../assets/images/exclamation.png';
+
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -82,23 +86,36 @@ const JobDetailsPage = (props: PropsType) => {
 
     useEffect(() => {
         (async () => {
-            const params = new URLSearchParams(props.location?.search);
-            const data: any = {
-                jobId: params.get('jobId'),
-                tradeId: params.get('tradeId'),
-                specializationId: params.get('specializationId')
+            let location_search = window.atob((props.location?.search).substring(1))
+            const params = new URLSearchParams(location_search);
+            if (params.get('jobId') && params.get('tradeId') && params.get('specializationId')) {
+                const res1 = await getHomeJobDetails({
+                    jobId: params.get('jobId'),
+                    tradeId: params.get('tradeId'),
+                    specializationId: params.get('specializationId')
+                });
+                if (res1.success) {
+                    setJobDetailsData(res1.data);
+                }
+            } else {
+                if (params.get('jobId')) {
+                    let res = await jobDetailsBuilder({ jobId: params.get('jobId') });
+                    console.log({ res }, '---->')
+                    if (res.success) {
+                        setJobDetailsData(res.data);
+                    }
+                }
             }
-            const res1 = await getHomeJobDetails(data);
-            if (res1.success) {
-                setJobDetailsData(res1.data);
-            }
+
+
             fetchQuestionsList();
         })();
     }, [])
 
 
     const fetchQuestionsList = async (isTrue?: boolean) => {
-        const params = new URLSearchParams(props.location?.search);
+        let location_search = window.atob((props.location?.search).substring(1))
+        const params = new URLSearchParams(location_search);
         const questionData: any = {
             jobId: params.get('jobId'),
             page: 1
@@ -158,6 +175,8 @@ const JobDetailsPage = (props: PropsType) => {
 
     const loadMoreQuestionHandler = async () => {
         // will handle the pagination later
+        let location_search = window.atob((props.location?.search).substring(1))
+        const params = new URLSearchParams(location_search);
         const data: any = {
             jobId: params.get('jobId'),
             page: questionListPageNo + 1
@@ -213,54 +232,6 @@ const JobDetailsPage = (props: PropsType) => {
                 fetchQuestionsList(true);
             }
 
-            // if (response?.success) {
-            //     if (type == 'askQuestion' && response.data?.questionData?.question) {
-            //         const askData: any = {
-            //             jobId: jobDetailsData?.jobId,
-            //             page: 1
-            //         }
-            //         const res = await getTradieQuestionList(askData);
-            //         if (res.success) {
-            //             setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
-            //         }
-            //         setQuestionList(res.data);
-            //         setQuestionListPageNo(1);
-            //         // var updatedQuestionList = [...questionList];
-            //         // updatedQuestionList.unshift(response.data);
-            //         // updatedQuestionList.pop();
-            //         // setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
-            //         // setQuestionList(updatedQuestionList);
-            //     }
-
-            //     if (type === 'updateQuestion' && response.data?.question) {
-            //         var updatedQuestionList = [...questionList];
-            //         var newList = updatedQuestionList.find((item: any) => item.questionData.questionId == response.data?.questionId);
-            //         newList.questionData.question = response.data?.question;
-            //         newList.questionData.answerData.answer = response.data?.question;
-            //         setQuestionList(updatedQuestionList);
-            //     }
-
-            //     if (type === 'deleteQuestion') {
-            //         setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount - 1 }));
-            //         var updatedQuestionList = [...questionList]
-            //         updatedQuestionList.splice(questionsData.questionIndex, 1);
-            //         setQuestionList(updatedQuestionList);
-            //     }
-            //     setQuestionsData((prevData: any) => ({
-            //         ...prevData,
-            //         submitQuestionsClicked: false,
-            //         askQuestionsClicked: false,
-            //         showAllQuestionsClicked: true,
-            //         confirmationClicked: false,
-            //         questionsClickedType: '',
-            //         deleteQuestionsClicked: false,
-            //         updateQuestionsClicked: false,
-            //         questionId: '',
-            //         questionData: '',
-            //         showQuestionAnswer: false,
-            //         questionIndex: null
-            //     }));
-            // }
         }
     }
 
@@ -382,12 +353,25 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    const params = new URLSearchParams(props.location?.search);
     let paramStatus: any = '';
-    if (params.get('status')) {
-        paramStatus = params.get('status');
+    if (props.location?.search) {
+        let location_search = window.atob((props.location?.search).substring(1))
+        const params = new URLSearchParams(location_search);
+        if (params.get('status')) {
+            paramStatus = params.get('status');
+        }
     }
-    // console.log(questionsData, 'show ---------------------->')
+
+    const renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
+        }
+
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+        }
+    }
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -427,25 +411,20 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{jobDetailsData.time}</li>
+                                            <li className="icon clock">
+                                                {jobDetailsData?.time ? jobDetailsData.time : renderTime({ fromDate: jobDetailsData.fromDate, toDate: jobDetailsData?.toDate })}
+                                            </li>
                                             <li className="icon dollar">{jobDetailsData.amount}</li>
                                             <li className="icon calendar">{jobDetailsData.duration}</li>
                                             <li className="icon location line-3">{jobDetailsData.locationName}</li>
                                         </ul>
                                     </div>
-                                    {jobDetailsData?.appliedStatus ? (
-                                        <div className="bottom_btn">
-                                            <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
-                                            <button className="fill_btn full_btn" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
-                                        </div>
-                                    ) : paramStatus ? (
-                                        <div className="bottom_btn">
+                
+                                    {paramStatus || jobDetailsData?.status ? (
                                             <button
-                                                className="fill_btn full_btn"
-                                                onClick={applyJobClicked}>
-                                                {paramStatus}
+                                                className="fill_btn full_btn btn-effect">
+                                                {paramStatus || jobDetailsData?.status}
                                             </button>
-                                        </div>
                                     ) : null}
                                 </div>
                             </div>
@@ -460,7 +439,30 @@ const JobDetailsPage = (props: PropsType) => {
                         </div>
                         <div className="flex_row">
                             <div className="flex_col_sm_4">
-                                <span className="sub_title">Job milestones</span>
+                                <span className="sub_title">Job Milestones
+                                    {/* <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`} */}
+                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber} `}{`of ${jobDetailsData?.totalMilestones}`} </b>
+                                </span>
+
+                                <div className="job_progress_wrap" id="scroll-progress-bar">
+                                    <div className="progress_wrapper">
+                                        <span className="approval_info" id="digit-progress">
+                                            {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
+                                            {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
+                                            {jobDetailsData?.status}
+                                        </span>
+                                        <span className="progress_bar">
+                                            <input
+                                                className="done_progress"
+                                                id="progress-bar"
+                                                type="range"
+                                                min="0"
+                                                value={jobDetailsData?.milestoneNumber > 0 ? jobDetailsData?.milestoneNumber / jobDetailsData?.totalMilestones * 100 : 0}
+                                            />
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <ul className="job_milestone">
                                     {jobDetailsData && jobDetailsData?.jobMilestonesData?.map((item: any, index: number) => {
                                         return (
@@ -614,15 +616,13 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <img src={cancel} alt="cancel" />
                                             </button>
                                         </div>
-                                        <div className="inner_wrap">
-                                            <div className="form_field">
-                                                <label className="form_label">Your answer</label>
-                                                <div className="text_field">
-                                                    <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
-                                                </div>
-                                                {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
-                                                <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
+                                        <div className="form_field">
+                                            <label className="form_label">Your answer</label>
+                                            <div className="text_field">
+                                                <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                             </div>
+                                            {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
+                                            <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                         </div>
                                         <div className="bottom_btn custom_btn">
                                             {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>

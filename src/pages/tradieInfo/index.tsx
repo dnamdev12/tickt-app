@@ -24,7 +24,7 @@ import ReviewInfoBox from '../../common/reviewInfoBox';
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
-import noData from '../../assets/images/no-data.png';
+import noData from '../../assets/images/no-search-data.png';
 import noDataFound from '../../assets/images/no-data-found.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import Carousel from 'react-multi-carousel';
@@ -144,6 +144,14 @@ class TradieInfo extends Component<Props, State> {
         this.setItems();
     }
 
+    componentDidUpdate() {
+        let props: any = this.props;
+        let tradeStatus: any = props.tradieRequestStatus;
+        if (tradeStatus) {
+            props.history.push('/jobs');
+        }
+    }
+
     portfolioImageHandler = (data: any) => {
         this.setState({ portfolioData: { portfolioImageClicked: true, portfolioDetails: data } });
     }
@@ -153,7 +161,7 @@ class TradieInfo extends Component<Props, State> {
     }
 
     reviewHandler = (type: any, reviewId?: any, replyId?: any, reply?: any) => {
-        console.log({type, reviewId})
+        console.log({ type, reviewId })
         if (type === 'reviewReplyClicked') {
             this.setState((prevData: any) => ({
                 reviewsData: {
@@ -254,7 +262,7 @@ class TradieInfo extends Component<Props, State> {
         let profileData: any = this.state.profileData;
         if (['reviewReply', 'updateReviewReply', 'removeReviewReply'].includes(type)) {
             var response;
-         
+
             if (type === 'reviewReply') {
                 const data = {
                     reviewId: reviewsData.reviewId,
@@ -278,7 +286,7 @@ class TradieInfo extends Component<Props, State> {
                 }
                 response = await removeReviewReply(data);
             }
-            
+
             if (response?.success) {
                 this.setItems();
             }
@@ -304,19 +312,20 @@ class TradieInfo extends Component<Props, State> {
     setItems = async () => {
         const { jobId, tradeId } = this.getItemsFromLocation();
         let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
-        console.log({res_profile})
+        console.log({ res_profile })
         if (res_profile.success) {
             this.setState({ tradieInfo: res_profile.data })
         }
         let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: 1 });
-        console.log({res_trade})
+        console.log({ res_trade })
         if (res_trade.success) {
             this.setState({ tradieReviews: res_trade.data })
         }
     }
 
     submitAcceptDeclineRequest = (status: any) => {
-        const { getAcceptDeclineTradie } = this.props;
+        let props: any = this.props;
+        const { getAcceptDeclineTradie } = props;
         const { jobId, tradeId } = this.getItemsFromLocation();
         let data = {
             "jobId": jobId,
@@ -325,7 +334,7 @@ class TradieInfo extends Component<Props, State> {
         };
         getAcceptDeclineTradie(data);
     }
-    
+
     render() {
         let props: any = this.props;
         // let tradieInfo: any = props.tradieInfo;
@@ -352,8 +361,9 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
-                                        <img src={tradieInfo?.tradieImage} alt="profile-pic"
-                                            onError={(e: any) => { e.src = profilePlaceholder }}
+                                        <img
+                                            src={tradieInfo?.tradieImage || profilePlaceholder}
+                                            alt="profile-pic"
                                         />
                                     </figure>
                                 </div>
@@ -406,33 +416,34 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                 </div>
-
-                <div className="section_wrapper">
-                    <div className="custom_container">
-                        <span className="sub_title">Portfolio</span>
-                        {/* <ul className="portfolio_wrappr"> */}
-                        {portfolio && (<Carousel
-                            responsive={portfolio}
-                            showDots={false}
-                            arrows={true}
-                            infinite={true}
-                            className="portfolio_wrappr"
-                            partialVisbile
-                        >
-                            {tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
-                                return (
-                                    <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
-                                        <figure className="portfolio_img">
-                                            <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
-                                            <span className="xs_sub_title">{item.jobName}</span>
-                                        </figure>
-                                    </div>
-                                )
-                            }) : <img alt="" src={portfolioPlaceholder} />}
-                        </Carousel>)}
-                        {/* </ul> */}
+                {tradieInfo?.portfolio?.length ?
+                    <div className="section_wrapper">
+                        <div className="custom_container">
+                            <span className="sub_title">Portfolio</span>
+                            {/* <ul className="portfolio_wrappr"> */}
+                            {portfolio && (<Carousel
+                                responsive={portfolio}
+                                showDots={false}
+                                arrows={true}
+                                infinite={true}
+                                className="portfolio_wrappr"
+                                partialVisbile
+                            >
+                                {tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
+                                    return (
+                                        <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
+                                            <figure className="portfolio_img">
+                                                <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
+                                                <span className="xs_sub_title">{item.jobName}</span>
+                                            </figure>
+                                        </div>
+                                    )
+                                }) : <img alt="" src={portfolioPlaceholder} />}
+                            </Carousel>)}
+                            {/* </ul> */}
+                        </div>
                     </div>
-                </div>
+                    : null}
                 {/* portfolio Image modal desc */}
                 {portfolioData?.portfolioImageClicked &&
                     <Modal
@@ -490,33 +501,36 @@ class TradieInfo extends Component<Props, State> {
                     </Modal>}
 
 
-                <div className="section_wrapper">
-                    <div className="custom_container">
-                        <span className="sub_title">Reviews</span>
-                        <div className="flex_row review_parent">
-                            {profileData?.reviewData?.length > 0 ?
-                                (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
-                                    return <ReviewInfoBox item={jobData} {...props} />
-                                })) :
-                                <div className="no_record">
-                                    <figure className="no_data_img">
-                                        <img src={noDataFound} alt="data not found" />
-                                    </figure>
-                                    <span>Data not found</span>
-                                </div>}
+                {profileData?.reviewData?.length ?
+                    <div className="section_wrapper">
+                        <div className="custom_container">
+                            <span className="sub_title">Reviews</span>
+                            <div className="flex_row review_parent">
+                                {profileData?.reviewData?.length > 0 ?
+                                    (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                        return <ReviewInfoBox item={jobData} {...props} />
+                                    })) :
+                                    <div className="no_record">
+                                        <figure className="no_data_img">
+                                            <img src={noDataFound} alt="data not found" />
+                                        </figure>
+                                        <span>Data not found</span>
+                                    </div>}
+                            </div>
+                            <button
+                                className="fill_grey_btn full_btn view_more"
+                                onClick={() => {
+                                    this.setState((prevData: any) => ({
+                                        reviewsData: {
+                                            ...prevData.reviewsData, showAllReviewsClicked: true
+                                        }
+                                    }))
+                                }}>
+                                {`View all ${profileData?.reviewData?.length} reviews`}</button>
                         </div>
-                        <button
-                            className="fill_grey_btn full_btn view_more"
-                            onClick={() => {
-                                this.setState((prevData: any) => ({
-                                    reviewsData: {
-                                        ...prevData.reviewsData, showAllReviewsClicked: true
-                                    }
-                                }))
-                            }}>
-                            {`View all ${profileData?.reviewData?.length} reviews`}</button>
                     </div>
-                </div>
+                : null}
+
                 {reviewsData.showAllReviewsClicked && tradieReviews?.length &&
                     <Modal
                         className="ques_ans_modal"
@@ -552,7 +566,7 @@ class TradieInfo extends Component<Props, State> {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.review}</p>
-                                                {console.log({item})}
+                                                {console.log({ item })}
                                                 {Object.keys(reviewsData.replyShownHideList).length &&
                                                     reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                     <span
@@ -656,19 +670,17 @@ class TradieInfo extends Component<Props, State> {
                                         <img src={cancel} alt="cancel" />
                                     </button>
                                 </div>
-                                <div className="inner_wrap">
-                                    <div className="form_field">
-                                        <label className="form_label">Your reply</label>
-                                        <div className="text_field">
-                                            <textarea
-                                                placeholder="Text"
-                                                value={reviewsData.reviewData}
-                                                onChange={(e) => {
-                                                    handleChange(e, 'reviewData')
-                                                }}>
-                                            </textarea>
-                                        </div>
-                                        <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                                <div className="form_field">
+                                    <label className="form_label">Your reply</label>
+                                    <div className="text_field">
+                                        <textarea
+                                            placeholder="Text"
+                                            value={reviewsData.reviewData}
+                                            onChange={(e) => {
+                                                handleChange(e, 'reviewData')
+                                            }}>
+                                        </textarea>
+                                    <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                     </div>
                                 </div>
                                 <div className="bottom_btn custom_btn">

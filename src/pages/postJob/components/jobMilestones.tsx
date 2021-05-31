@@ -81,6 +81,54 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         return JSON.stringify(item) === JSON.stringify(newarr);
     }
 
+    const checkIfDatesValid = () => {
+        let start_selection: any = moment(data?.from_date).format('MM-DD-YYYY');
+        let end_selection: any = null;
+        if (moment(data?.to_date).isValid()) {
+            if (!moment(data?.to_date).isSame(data?.from_date)) {
+                end_selection = moment(data?.to_date).format('MM-DD-YYYY');
+            }
+        }
+
+        let item_find: any = false;
+
+        localMilestones.forEach((item_date: any) => {
+            let start: any = moment(item_date.from_date).isValid() ? item_date.from_date : null;
+            let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
+            if (start !== null) {
+                if (start && end) {
+                    console.log({ start_selection, end_selection, start, end })
+                    if (start_selection && end_selection) {
+                        if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
+                            item_find = true
+                        }
+                    }
+                }
+
+                if (start && !end) {
+                    if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
+                        item_find = true; // true;
+                    }
+                }
+
+                if (start_selection && end_selection && !end) {
+                    if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                        item_find = false;
+                    } else {
+                        item_find = true
+                    }
+                }
+            }
+        });
+
+        if (item_find) {
+            setShowToast(true, 'Please check the milestone dates.');
+            return item_find;
+        }
+
+        return item_find;
+    }
+
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
         // dropped outside the list
@@ -94,7 +142,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 source.index,
                 destination.index
             );
-            setLocalMilestones(reOrderedMilestones);
+            let checkIfItem: boolean = checkIfDatesValid();
             let isValid = checkIfValidDates(reOrderedMilestones);
             if (!isValid) {
                 setShowToast(true, "Please arrange milestonea date wise.")
@@ -155,16 +203,19 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             {localMilestones?.length ? (
                                 <div
                                     onClick={() => {
-                                        let check: boolean = checkIfValidDates(localMilestones);
-                                        if (check) {
-                                            handleCombineMileStones(localMilestones);
-                                            handleStepForward(10)
-                                        } else {
-                                            setShowToast(true, "Please arrange milestonea date wise.")
+                                        let checkIfItem: boolean = checkIfDatesValid();
+                                        if (!checkIfItem) {
+                                            let check: boolean = checkIfValidDates(localMilestones);
+                                            if (check) {
+                                                handleCombineMileStones(localMilestones);
+                                                handleStepForward(10)
+                                            } else {
+                                                setShowToast(true, "Please arrange milestonea date wise.")
+                                            }
                                         }
                                     }}
                                     className="flex_col_sm_5 text-right">
-                                    <a href="javascript:void(0)" className="link">Save as template</a>
+                                    <span className="link">Save as template</span>
                                 </div>
                             ) : null}
                         </div>
@@ -238,8 +289,9 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                             <span>{'Photo evidence required'}</span>
                                                                             : <span></span>}
                                                                         <span>
-                                                                            {from_date?.length && !to_date?.length ? `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
-                                                                                : from_date?.length && to_date?.length ?
+                                                                            {moment(from_date).isValid() && moment(to_date).isValid() ?
+                                                                                `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
+                                                                                : moment(from_date).isValid() && moment(to_date).isValid() ?
                                                                                     `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}` : ''}
                                                                         </span>
                                                                         <span>
@@ -300,16 +352,19 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                     <div className="form_field">
                                         <button
                                             onClick={() => {
-                                                let check: boolean = checkIfValidDates(localMilestones);
-                                                if (check) {
-                                                    handleCombineMileStones(localMilestones);
-                                                    if (editDetailPage?.currentScreen) {
-                                                        handleStepForward(14)
+                                                let checkIfItem: boolean = checkIfDatesValid();
+                                                if (!checkIfItem) {
+                                                    let check: boolean = checkIfValidDates(localMilestones);
+                                                    if (check) {
+                                                        handleCombineMileStones(localMilestones);
+                                                        if (editDetailPage?.currentScreen) {
+                                                            handleStepForward(14)
+                                                        } else {
+                                                            handleStepForward(13)
+                                                        }
                                                     } else {
-                                                        handleStepForward(13)
+                                                        setShowToast(true, "Please arrange milestonea date wise.")
                                                     }
-                                                } else {
-                                                    setShowToast(true, "Please arrange milestonea date wise.")
                                                 }
                                             }}
                                             className="fill_btn fill_grey_btn full_btn btn-effect">

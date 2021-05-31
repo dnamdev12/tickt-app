@@ -168,7 +168,6 @@ export const reviewBuilder = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewBuilder, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message);
     return { success: true };
   }
   setShowToast(true, response.message);
@@ -304,7 +303,7 @@ export const markMilestoneComplete = (data: any, callback: () => void) => ({
 
 export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data })
 export const getTradieReviewListOnBuilder = (data: any) => ({ type: actionTypes.GET_TRADIE_REVIEWS_LIST_ON_BUILDER, data })
-export const getAcceptDeclineTradie = (data: any) => ({ type: actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, data })
+export const getAcceptDeclineTradie = (data: any) => ({ type: actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, data });
 
 export const getQuestionsList = async (data: any) => {
   setLoading(true);
