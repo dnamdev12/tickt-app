@@ -223,7 +223,7 @@ export default class EditMilestone extends Component<Props, State> {
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
             // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
-                // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
+            // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
             if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
@@ -235,8 +235,8 @@ export default class EditMilestone extends Component<Props, State> {
         const { handleStepForward, handleStepBack, milestones, editMileStone } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, from_date, to_date, errors } = this.state;
         console.log({ from_date, to_date });
-        let from_date_format = from_date?.length ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
-        let to_date_format = to_date?.length ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
+        let from_date_format = from_date?.length && from_date !== 'Invalid date' ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
+        let to_date_format = to_date?.length && to_date !== 'Invalid date' ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
         let check_errors = this.checkErrors();
 
         return (
@@ -308,8 +308,7 @@ export default class EditMilestone extends Component<Props, State> {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;
-                                                    let pattern = "([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}";
-                                                    console.log({ rh_value, pattern: rh_value.match(pattern) })
+                                                    let pattern = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
 
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
