@@ -416,33 +416,34 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                 </div>
-
-                <div className="section_wrapper">
-                    <div className="custom_container">
-                        <span className="sub_title">Portfolio</span>
-                        {/* <ul className="portfolio_wrappr"> */}
-                        {portfolio && (<Carousel
-                            responsive={portfolio}
-                            showDots={false}
-                            arrows={true}
-                            infinite={true}
-                            className="portfolio_wrappr"
-                            partialVisbile
-                        >
-                            {tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
-                                return (
-                                    <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
-                                        <figure className="portfolio_img">
-                                            <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
-                                            <span className="xs_sub_title">{item.jobName}</span>
-                                        </figure>
-                                    </div>
-                                )
-                            }) : <img alt="" src={portfolioPlaceholder} />}
-                        </Carousel>)}
-                        {/* </ul> */}
+                {tradieInfo?.portfolio?.length ?
+                    <div className="section_wrapper">
+                        <div className="custom_container">
+                            <span className="sub_title">Portfolio</span>
+                            {/* <ul className="portfolio_wrappr"> */}
+                            {portfolio && (<Carousel
+                                responsive={portfolio}
+                                showDots={false}
+                                arrows={true}
+                                infinite={true}
+                                className="portfolio_wrappr"
+                                partialVisbile
+                            >
+                                {tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
+                                    return (
+                                        <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
+                                            <figure className="portfolio_img">
+                                                <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
+                                                <span className="xs_sub_title">{item.jobName}</span>
+                                            </figure>
+                                        </div>
+                                    )
+                                }) : <img alt="" src={portfolioPlaceholder} />}
+                            </Carousel>)}
+                            {/* </ul> */}
+                        </div>
                     </div>
-                </div>
+                    : null}
                 {/* portfolio Image modal desc */}
                 {portfolioData?.portfolioImageClicked &&
                     <Modal
@@ -500,33 +501,36 @@ class TradieInfo extends Component<Props, State> {
                     </Modal>}
 
 
-                <div className="section_wrapper">
-                    <div className="custom_container">
-                        <span className="sub_title">Reviews</span>
-                        <div className="flex_row review_parent">
-                            {profileData?.reviewData?.length > 0 ?
-                                (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
-                                    return <ReviewInfoBox item={jobData} {...props} />
-                                })) :
-                                <div className="no_record">
-                                    <figure className="no_data_img">
-                                        <img src={noDataFound} alt="data not found" />
-                                    </figure>
-                                    <span>Data not found</span>
-                                </div>}
+                {profileData?.reviewData?.length ?
+                    <div className="section_wrapper">
+                        <div className="custom_container">
+                            <span className="sub_title">Reviews</span>
+                            <div className="flex_row review_parent">
+                                {profileData?.reviewData?.length > 0 ?
+                                    (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                        return <ReviewInfoBox item={jobData} {...props} />
+                                    })) :
+                                    <div className="no_record">
+                                        <figure className="no_data_img">
+                                            <img src={noDataFound} alt="data not found" />
+                                        </figure>
+                                        <span>Data not found</span>
+                                    </div>}
+                            </div>
+                            <button
+                                className="fill_grey_btn full_btn view_more"
+                                onClick={() => {
+                                    this.setState((prevData: any) => ({
+                                        reviewsData: {
+                                            ...prevData.reviewsData, showAllReviewsClicked: true
+                                        }
+                                    }))
+                                }}>
+                                {`View all ${profileData?.reviewData?.length} reviews`}</button>
                         </div>
-                        <button
-                            className="fill_grey_btn full_btn view_more"
-                            onClick={() => {
-                                this.setState((prevData: any) => ({
-                                    reviewsData: {
-                                        ...prevData.reviewsData, showAllReviewsClicked: true
-                                    }
-                                }))
-                            }}>
-                            {`View all ${profileData?.reviewData?.length} reviews`}</button>
                     </div>
-                </div>
+                : null}
+
                 {reviewsData.showAllReviewsClicked && tradieReviews?.length &&
                     <Modal
                         className="ques_ans_modal"

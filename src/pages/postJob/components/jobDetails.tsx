@@ -177,13 +177,14 @@ const JobDetails = ({
                     delete item?.to_date;
                 }
 
-                if (!item.recommended_hours?.length) {
-                    delete item.recommended_hours;
+                if (!item?.from_date?.length || item?.from_date === "Invalid date") {
+                    delete item?.from_date;
                 }
 
                 return item;
             }
-        })
+        });
+
         data_clone['milestones'] = filter_milestones;
         let from_date = data_clone?.from_date;
         let to_date = data_clone?.to_date;

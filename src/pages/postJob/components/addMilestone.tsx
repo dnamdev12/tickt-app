@@ -190,7 +190,8 @@ export default class AddMilestone extends Component<Props, State> {
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
             // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
-            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
+            // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
+            if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
         }

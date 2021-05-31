@@ -97,7 +97,7 @@ const JobDetailsPage = (props: PropsType) => {
             } else {
                 if (params.get('jobId')) {
                     let res = await jobDetailsBuilder({ jobId: params.get('jobId') });
-                    console.log({res},'---->')
+                    console.log({ res }, '---->')
                     if (res.success) {
                         setJobDetailsData(res.data);
                     }
@@ -358,7 +358,17 @@ const JobDetailsPage = (props: PropsType) => {
             paramStatus = params.get('status');
         }
     }
-    // console.log(questionsData, 'show ---------------------->')
+
+    const renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
+        }
+
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+        }
+    }
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -398,7 +408,9 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{jobDetailsData.time}</li>
+                                            <li className="icon clock">
+                                                {jobDetailsData?.time ? jobDetailsData.time : renderTime({ fromDate: jobDetailsData.fromDate, toDate: jobDetailsData?.toDate })}
+                                            </li>
                                             <li className="icon dollar">{jobDetailsData.amount}</li>
                                             <li className="icon calendar">{jobDetailsData.duration}</li>
                                             <li className="icon location line-3">{jobDetailsData.locationName}</li>
@@ -430,7 +442,28 @@ const JobDetailsPage = (props: PropsType) => {
                         </div>
                         <div className="flex_row">
                             <div className="flex_col_sm_4">
-                                <span className="sub_title">Job milestones</span>
+                                <span className="sub_title">
+                                    <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`}
+                                </span>
+
+                                <div className="job_progress_wrap" id="scroll-progress-bar">
+                                    <div className="progress_wrapper">
+                                        <span className="completed-digit" id="digit-progress">
+                                            {/* {jobDetailsData?.status} */}
+                                            {'NEED APPROVAL'}
+                                        </span>
+                                        <span className="progress_bar">
+                                            <input
+                                                className="done_progress"
+                                                id="progress-bar"
+                                                type="range"
+                                                min="0"
+                                                value={jobDetailsData?.milestoneNumber > 0 ? jobDetailsData?.milestoneNumber / jobDetailsData?.totalMilestones * 100 : 0}
+                                            />
+                                        </span>
+                                    </div>
+                                </div>
+
                                 <ul className="job_milestone">
                                     {jobDetailsData && jobDetailsData?.jobMilestonesData?.map((item: any, index: number) => {
                                         return (

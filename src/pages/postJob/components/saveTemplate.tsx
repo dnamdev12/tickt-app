@@ -35,10 +35,10 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                 if (!item?.to_date?.length) {
                     delete item.to_date;
                 }
-
-                // if (!item.recommended_hours?.length) {
-                //     delete item.recommended_hours;
-                // }
+                
+                if (!item?.from_date?.length || item?.from_date === "Invalid date") {
+                    delete item?.from_date;
+                }
 
                 return item
             }

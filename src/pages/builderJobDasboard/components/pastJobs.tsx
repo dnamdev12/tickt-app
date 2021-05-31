@@ -4,7 +4,7 @@ import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
 import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
-
+import moment from 'moment';
 interface Post {
     amount: any,
     fromDate: any,
@@ -35,6 +35,16 @@ export default function PastJobs(props: any): ReactElement {
         if (jobId?.length && status?.length) {
             let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
             props.history.push(`/job-detail?${urlEncode}`);
+        }
+    }
+
+    const renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
+        }
+
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
         }
     }
 
@@ -83,7 +93,7 @@ export default function PastJobs(props: any): ReactElement {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{`${0} minutes ago`}</li>
+                                        <li className="icon clock">{renderTime({fromDate,toDate})}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
                                         {/* <li className="icon calendar">{'0 days'}</li> */}

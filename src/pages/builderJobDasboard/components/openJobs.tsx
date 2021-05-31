@@ -5,11 +5,14 @@ import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
 import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
+import moment from 'moment';
 interface Active {
     amount: any,
     durations: any,
     jobId: any,
     jobName: any,
+    fromDate: any,
+    toDate: any,
     milestoneNumber: any,
     specializationId: any,
     specializationName: any,
@@ -55,7 +58,18 @@ class OpenJobs extends Component<Props, State> {
         }
     }
 
-    setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })
+    setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants });
+
+
+    renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
+        }
+
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+        }
+    }
 
     render() {
         const { setJobLabel, dataItems, applicantsList, jobType, isLoading } = this.props;
@@ -72,6 +86,8 @@ class OpenJobs extends Component<Props, State> {
                             durations,
                             jobId,
                             jobName,
+                            fromDate,
+                            toDate,
                             milestoneNumber,
                             specializationId,
                             specializationName,
@@ -107,7 +123,9 @@ class OpenJobs extends Component<Props, State> {
                                     </div>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{timeLeft}</li>
+                                            <li className="icon clock">
+                                                {this.renderTime({ fromDate, toDate })}
+                                            </li>
                                             <li className="icon dollar">{amount}</li>
                                             <li className="icon location line-1">{location}</li>
                                             <li className="icon calendar">{durations}</li>
