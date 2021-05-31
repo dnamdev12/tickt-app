@@ -1725,6 +1725,12 @@ body {
 		margin: 15px auto;
     padding: 18px 15px;
 	}
+  textarea {
+    min-height: 242px;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    min-height: 130px;
+  }
+  }
   &.ask_ques{
     width: 864px;
 	  max-width: 864px;
@@ -1932,12 +1938,6 @@ body {
     overflow-x: hidden;
     @media (max-width: 1500px){
       max-height: 350px;
-    }
-    textarea {
-      min-height: 242px;
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      min-height: 130px;
-    }
     }
   }
   .fill_btn {
@@ -4028,7 +4028,7 @@ body {
 .map_stick {
 	height: 100vh;
 	position: fixed;
-	top: 170px;
+	top: 206px;
 	right: 0;
 	width: 40%;
 	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
