@@ -99,7 +99,7 @@ const MarkMilestone = ({
     account_number: '',
     bsb_number: '',
   });
-  const [step, setStep] = useState(5);
+  const [step, setStep] = useState(1);
   const [stepCompleted, setStepCompleted] = useState<Array<number>>([]);
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
