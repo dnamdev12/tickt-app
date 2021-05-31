@@ -115,7 +115,7 @@ const MarkMilestone = ({
 
   const validateActualHours = (value: any) => {
     if (!value) {
-      return 'This field is required';
+      return 'Time spent is required';
     }
 
     let pattern =
@@ -134,9 +134,9 @@ const MarkMilestone = ({
 
     switch (name) {
       case 'account_number':
-        return value.length > 10 ? 'Maximum 10 digits are allowed' : '';
+        return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 4 ? 'Minimum 4 digits are required' : '';
       case 'bsb_number':
-        return value.length > 6 ? 'Maximum 6 digits are allowed' : '';
+        return value.length !== 6 ? 'BSB number should be of 6 digits' : '';
     }
 
     return '';

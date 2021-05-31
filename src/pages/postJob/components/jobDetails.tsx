@@ -251,7 +251,7 @@ const JobDetails = ({
     }
 
     const { sources, types } = renderFilteredItems();
-    console.log({sources, types })
+    console.log({ sources, types })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">

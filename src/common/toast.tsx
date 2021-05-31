@@ -66,9 +66,9 @@ const Toast = (props: any) => {
 
     return !!props.showToast ? (
         <div className={`body-message active ${props.toastType}`}>
-            <span className="cross-icon" >
+            {/* <span className="cross-icon" >
                 <img src={close} alt="close" onClick={hideToast} />
-            </span>
+            </span> */}
             <div className="wrapppr">
                 <p className="commn_para">{renderToast()}</p>
                 {/* <button className="fill_btn btn-effect" onClick={hideToast}>Close</button> */}

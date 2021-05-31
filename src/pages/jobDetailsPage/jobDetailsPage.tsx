@@ -384,7 +384,7 @@ const JobDetailsPage = (props: PropsType) => {
                         sources={sources}
                         types={types}
                     />
-                    
+
                     <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
@@ -436,7 +436,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.appliedStatus ? (
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
-                                            <button className="fill_btn full_btn btn-effect" disabled={jobDetailsData?.appliedStatus == 'APPLIED'} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                            <button className={`fill_btn full_btn btn-effect${['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus) ? ' disable_btn' : ''}`} disabled={['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus)} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
                                     ) : paramStatus ? (
                                         <button
@@ -587,15 +587,13 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <img src={cancel} alt="cancel" />
                                             </button>
                                         </div>
-                                        <div className="inner_wrap">
-                                            <div className="form_field">
-                                                <label className="form_label">Your question</label>
-                                                <div className="text_field">
-                                                    <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
-                                                    <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
-                                                </div>
-                                                {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
+                                        <div className="form_field">
+                                            <label className="form_label">Your question</label>
+                                            <div className="text_field">
+                                                <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
+                                                <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                             </div>
+                                            {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
                                         </div>
                                         <div className="bottom_btn custom_btn">
                                             {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn btn-effect" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>

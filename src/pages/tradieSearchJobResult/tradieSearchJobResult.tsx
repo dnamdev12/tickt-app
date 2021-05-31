@@ -220,7 +220,7 @@ const TradieSearchJobResult = (props: any) => {
                                         cleanFiltersHandler={cleanFiltersHandler}
                                     />
                                 </div>
-                                {renderJobsData()?.length > 0 && <div className="flex_col_sm_4 text-right">
+                                {renderJobsData()?.length > 0 && !mapData.showMap && <div className="flex_col_sm_4 text-right">
                                     <a className="map_btn" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
                                         <img src={mapIcon} alt="map" /> Map
                                     </a>

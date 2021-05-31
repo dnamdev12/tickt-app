@@ -554,13 +554,11 @@ const BuilderInfo = (props: PropsType) => {
                                     <img src={cancel} alt="cancel" />
                                 </button>
                             </div>
-                            <div className="inner_wrap">
-                                <div className="form_field">
-                                    <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
-                                    <div className="text_field">
-                                        <textarea placeholder="Text" value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
-                                        <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
-                                    </div>
+                            <div className="form_field">
+                                <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
+                                <div className="text_field">
+                                    <textarea placeholder="Text" value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
+                                    <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                 </div>
                             </div>
                             <div className="bottom_btn custom_btn">

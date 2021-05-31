@@ -1717,14 +1717,17 @@ body {
 	@media (max-width: 768px) {
 		width: 95% !important;
 		height: 100% !important;
-		max-height: 85%;
+		max-height: 90% !important;
 	}
 	@media (max-width: 650px) {
-		height: 100%;
-		max-height: 70% !important;
-		margin: 15px auto;
     padding: 18px 15px;
 	}
+  textarea {
+    min-height: 242px;
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    min-height: 130px;
+  }
+  }
   &.ask_ques{
     width: 864px;
 	  max-width: 864px;
@@ -1801,14 +1804,6 @@ body {
     max-width: 864px;
     height: 378px;
     max-height: 378px;
-    .flex_col_sm_6{
-      @media(max-width: 768px){
-        width: 50%;
-      }
-      @media(max-width: 650px){
-        width: 100%;
-      }
-    }
     .heading{
       margin: 0;
       @media(max-width: 650px){
@@ -1839,7 +1834,6 @@ body {
       }
     }
     .portfolio_wrappr {
-      margin-bottom: 0;
       @media(max-width: 650px){
         margin-bottom: 15px;
       }
@@ -1933,11 +1927,8 @@ body {
     @media (max-width: 1500px){
       max-height: 350px;
     }
-    textarea {
-      min-height: 242px;
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      min-height: 130px;
-    }
+    @media (max-width: 768px){
+      max-height: 90%;
     }
   }
   .fill_btn {
@@ -3503,39 +3494,21 @@ body {
       max-width: 1150px;
     }
     @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      max-width: 1150px;
+      max-width: 1020px;
     }
-    @media (max-width: 1200px) {
-      max-width: 95%;
+    @media (max-width: 768px) {
+      max-width: 750px;
     }
-  }
-  .react-multi-carousel-list {
-    // justify-content: center;
-    @media(max-width: 1024px){
-      justify-content: flex-start;
-    }
-  }
-  .react-multi-carousel-item{
-    @media(max-width: 1024px){
-      width: 100% !important;
+    @media (max-width: 650px) {
+      max-width: 350px;
     }
   }
   .job_categories {
     display: block;
     text-align: center;
-    li {
+    .draw {
       padding: 20px;
       margin: 0 15px;
-      @media(max-width: 1024px){
-        width: 30%;
-        padding: 17px;
-        margin: 10px;
-      }
-      @media(max-width: 650px){
-        padding: 15px;
-        margin: 5px;
-        width: 47%;
-      }
       .name {
         font-size: 18px;
         @media(max-width: 650px){
@@ -3569,8 +3542,8 @@ body {
 	// 	margin: 0;
 	// }
     @media (max-width: 650px) {
-      margin: 0px 10px 10px 0;
-      padding: 10px 5px;
+      margin: 0px 10px 10px 0 !important;
+      padding: 10px 5px !important;
     }
     border: 2px solid #dfe5ef;
     &.active {
@@ -4028,7 +4001,7 @@ body {
 .map_stick {
 	height: 100vh;
 	position: fixed;
-	top: 170px;
+	top: 206px;
 	right: 0;
 	width: 40%;
 	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);

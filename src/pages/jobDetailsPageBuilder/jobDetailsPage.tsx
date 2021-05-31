@@ -682,15 +682,13 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <img src={cancel} alt="cancel" />
                                             </button>
                                         </div>
-                                        <div className="inner_wrap">
-                                            <div className="form_field">
-                                                <label className="form_label">Your answer</label>
-                                                <div className="text_field">
-                                                    <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
-                                                </div>
-                                                {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
+                                        <div className="form_field">
+                                            <label className="form_label">Your answer</label>
+                                            <div className="text_field">
+                                                <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                                 <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                             </div>
+                                            {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
                                         </div>
                                         <div className="bottom_btn custom_btn">
                                             {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>
