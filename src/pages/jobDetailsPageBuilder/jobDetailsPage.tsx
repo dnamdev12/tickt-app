@@ -399,12 +399,12 @@ const JobDetailsPage = (props: PropsType) => {
 
     }
 
-    const renderFilteredItems = () => {
+    const renderFilteredItems = (itemsMedia: any) => {
         let sources: any = [];
         let types: any = [];
 
-        if (jobDetailsData?.photos?.length) {
-            jobDetailsData?.photos.filter((itemP: any) => itemP.mediaType !== 3).forEach((item: any) => {
+        if (itemsMedia && Array.isArray(itemsMedia) && itemsMedia.length) {
+            itemsMedia.forEach((item: any) => {
                 if (item?.mediaType === 2) {
                     sources.push(item.link);
                     types.push('video');
@@ -418,7 +418,11 @@ const JobDetailsPage = (props: PropsType) => {
 
         return { sources, types };
     }
-    const { sources, types } = renderFilteredItems();
+    let itemsMedia: any = [];
+    if (jobDetailsData?.photos?.length) {
+        itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
+    }
+    const { sources, types } = renderFilteredItems(itemsMedia);
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -441,9 +445,9 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
                                     <OwlCarousel className='owl-theme' {...options}>
-                                        {/* {console.log({ jobDetailsData })} */}
-                                        {jobDetailsData?.photos?.length ?
-                                            jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3).map((image: any, index: number) => {
+                                        {itemsMedia.length ?
+                                            itemsMedia.map((image: any, index: number) => {
+                                                console.log({ image }, '---?')
                                                 return image?.mediaType === 1 ? (
                                                     <img
                                                         key={`${image}${index}`}

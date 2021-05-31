@@ -137,9 +137,10 @@ const JobDetails = ({
                 if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
                     return { url: item.link, format: get_split_fromat };
                 }
-            });
+            }).filter((item:any) => item! !== undefined);
 
             let filterItems: any = [];
+            console.log({ format_items });
             if (format_items?.length) {
                 format_items.forEach((item: any, index: number) => {
                     let render_item: any = null;
@@ -163,7 +164,6 @@ const JobDetails = ({
                                     setSelectSlide(index + 1);
                                 }}
                                 src={item?.url}
-                                style={{ height: '400px', width: '800px' }}
                             />)
                     }
 
@@ -183,6 +183,20 @@ const JobDetails = ({
                         )
                     }
                 })
+            } else {
+                filterItems.push(
+                    <div className='item' >
+                        <span
+                            onClick={(e: any) => {
+                                e.preventDefault();
+                                handleStepForward(13);
+                            }}
+                            className="edit_icon" title="Edit">
+                            <img src={editIconBlue} alt="edit" />
+                        </span>
+                        {<img src={jobDummyImage} alt="item-url" />}
+                    </div>
+                )
             }
             console.log({ filterItems })
             return filterItems;
@@ -338,9 +352,9 @@ const JobDetails = ({
                                         milestones.map((item: any, index: any) => item?.milestone_name && (
                                             <li>
                                                 <span>{`${index + 1}. ${item?.milestone_name}`}</span>
-                                                <span>{item?.from_date?.length && !item?.to_date?.length ?
+                                                <span>{item?.from_date?.length && item?.from_date !== 'Invalid date' && !item?.to_date?.length ?
                                                     `${moment(item?.from_date).format('MMM-DD')}` :
-                                                    item?.from_date?.length && item?.to_date?.length ?
+                                                    item?.from_date !== 'Invalid date' && item?.from_date?.length && item?.to_date?.length && item?.to_date !== 'Invalid date' ?
                                                         `${moment(item?.from_date).format('MMM-DD')}-${moment(item?.to_date).format('DD')}` : ''
                                                 }</span>
                                             </li>
