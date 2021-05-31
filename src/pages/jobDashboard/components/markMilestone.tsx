@@ -248,6 +248,48 @@ const MarkMilestone = ({
                               : toDate
                             }`}
                         </span>
+                        {isDeclined && (
+                          <>
+                            <div className="form_field">
+                              <label className="form_label">Decline reason</label>
+                              <div className="text_field">
+                                <textarea
+                                  value={declinedReason?.reason}
+                                  readOnly
+                                ></textarea>
+                              </div>
+                            </div>
+                            <div className="upload_img_video">
+                              {/* {declinedReason?.url?.length && <Carousel className="" responsive={declinedImages} autoPlay={true} arrows={false} > */}
+                              {declinedReason?.url?.map((image: string) => {
+                                return (
+                                  <figure className="img_video">
+                                    <img src={image} alt="media" />
+                                  </figure>
+                                )
+                              })}
+                              {/* <div>SLide 1</div>
+                                    <div>SLide 2</div>
+                                    <div>SLide 3</div>
+                                  </Carousel>} */}
+                            </div>
+                            <button
+                              onClick={() => {
+                                setMilestoneIndex(index);
+
+                                if (index === milestones?.length - 1) {
+                                  setIsLastMilestone(true);
+                                }
+
+                                if (isPhotoevidence) {
+                                  setStep(2);
+                                } else {
+                                  setStep(3);
+                                }
+                              }}
+                              className='fill_btn full_btn btn-effect' >Remark as Complete</button>
+                          </>
+                        )}
                       </div>
                       {isActive && (
                         <button
@@ -269,56 +311,7 @@ const MarkMilestone = ({
                           Done
                         </button>
                       )}
-                      {isDeclined && (
-                        <>
-                          <div className="flex_row">
-                            <div className="flex_col_sm_7">
-                              <div className="form_field">
-                                <label className="form_label">Decline reason</label>
-                                <div className="text_field">
-                                  <textarea
-                                    value={declinedReason?.reason}
-                                    readOnly
-                                  ></textarea>
-                                </div>
-                              </div>
-                            </div>
-                            <div className="upload_img_video">
-                              {/* {declinedReason?.url?.length && <Carousel className="" responsive={declinedImages} autoPlay={true} arrows={false} > */}
-                              {declinedReason?.url?.map((image: string) => {
-                                return (
-                                  <div>
-                                    <li>
-                                      <figure className="img_video">
-                                        <img src={image} alt="media" />
-                                      </figure>
-                                    </li>
-                                  </div>
-                                )
-                              })}
-                              {/* <div>SLide 1</div>
-                                    <div>SLide 2</div>
-                                    <div>SLide 3</div>
-                                  </Carousel>} */}
-                            </div>
-                          </div>
-                          <button
-                            onClick={() => {
-                              setMilestoneIndex(index);
 
-                              if (index === milestones?.length - 1) {
-                                setIsLastMilestone(true);
-                              }
-
-                              if (isPhotoevidence) {
-                                setStep(2);
-                              } else {
-                                setStep(3);
-                              }
-                            }}
-                            className='fill_btn full_btn btn-effect' >Remark as Complete</button>
-                        </>
-                      )}
                     </li>
                   );
                 }
