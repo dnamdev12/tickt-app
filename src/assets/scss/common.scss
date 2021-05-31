@@ -3484,6 +3484,18 @@ body {
 .home_job_categories {
   padding: 40px 0;
   position: relative;
+  .page_loader{
+    width: 1216px;
+    @media (max-width: 1366px) {
+      max-width: 1150px;
+    }
+    @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      max-width: 1150px;
+    }
+    @media (max-width: 1200px) {
+      max-width: 95%;
+    }
+  }
   .react-multi-carousel-list {
     // justify-content: center;
     @media(max-width: 1024px){
