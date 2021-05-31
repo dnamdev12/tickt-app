@@ -65,6 +65,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         }
     }, [milestones, removeMilestoneByIndex]);
 
+    useEffect(() => {
+        console.log({ localMilestones }, '---->')
+    }, [localMilestones])
+
     const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
@@ -74,11 +78,30 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     };
 
     const checkIfValidDates = (item: any) => {
-        const newarr: any = localMilestones.slice().sort((a, b) => {
-            return moment(a.from_date).diff(b.from_date);
+        let isfilter = localMilestones.filter((item_: any) => {
+            if (item_.hasOwnProperty('from_date')) {
+                if (item_?.from_date !== "Invalid date" || !item_?.from_date?.length) {
+                    return item_;
+                }
+            }
         });
-        setSortedItems(newarr);
-        return JSON.stringify(item) === JSON.stringify(newarr);
+        if (!isfilter?.length) {
+            return true;
+        } else {
+            const newarr: any = isfilter.slice().sort((a, b) => {
+                return moment(a.from_date).diff(b.from_date);
+            });
+            let filteredItem: any = item.filter((item_reorder: any) => {
+                if (item_reorder.hasOwnProperty('from_date')) {
+                    if (item_reorder?.from_date !== "Invalid date" || !item_reorder?.from_date?.length) {
+                        return item_reorder;
+                    }
+                }
+            });
+            setSortedItems(newarr);
+            console.log({ newarr, filteredItem });
+            return JSON.stringify(newarr) === JSON.stringify(filteredItem);
+        }
     }
 
     const checkIfDatesValid = () => {
@@ -91,11 +114,19 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         }
 
         let item_find: any = false;
+        let filteredItem = localMilestones.filter((item: any) => {
+            if (item.hasOwnProperty('from_date')) {
+                if (!item?.from_date?.length || item?.from_date !== "Invalid date") {
+                    return item;
+                }
+            }
+        });
+        console.log({ localMilestones, filteredItem })
+        if (filteredItem?.length) {
+            filteredItem.forEach((item_date: any) => {
+                let start: any = moment(item_date.from_date).isValid() ? item_date.from_date : null;
+                let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
 
-        localMilestones.forEach((item_date: any) => {
-            let start: any = moment(item_date.from_date).isValid() ? item_date.from_date : null;
-            let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
-            if (start !== null) {
                 if (start && end) {
                     console.log({ start_selection, end_selection, start, end })
                     if (start_selection && end_selection) {
@@ -118,9 +149,9 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                         item_find = true
                     }
                 }
-            }
-        });
-
+            });
+        }
+        console.log({ item_find })
         if (item_find) {
             setShowToast(true, 'Please check the milestone dates.');
             return item_find;
@@ -136,18 +167,15 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             return;
         }
 
-        if (source.droppableId === destination.droppableId) {
-            const reOrderedMilestones = reorder(
-                localMilestones,
-                source.index,
-                destination.index
-            );
-            let checkIfItem: boolean = checkIfDatesValid();
-            let isValid = checkIfValidDates(reOrderedMilestones);
-            if (!isValid) {
-                setShowToast(true, "Please arrange milestonea date wise.")
-            }
-        }
+        // if (source.droppableId === destination.droppableId) {
+        const reOrderedMilestones = reorder(
+            localMilestones,
+            source.index,
+            destination.index
+        );
+        setLocalMilestones(reOrderedMilestones);
+        checkIfDatesValid();
+        checkIfValidDates(reOrderedMilestones);
     };
 
     const checkOnClick = (e: any, index: any) => {
@@ -158,12 +186,11 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
 
 
     const renderTimeItem = ({ from_date, to_date }: any) => {
-        console.log({ from_date, to_date })
         if (from_date?.length && from_date !== 'Invalid date' && (!to_date?.length || to_date !== 'Invalid date')) {
             return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
         }
 
-        if (from_date?.length && from_date !== 'Invalid date' && to_date?.length && to_date !== 'Invalid date' ) {
+        if (from_date?.length && from_date !== 'Invalid date' && to_date?.length && to_date !== 'Invalid date') {
             return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}`
         }
     }
@@ -362,8 +389,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                         <button
                                             onClick={() => {
                                                 let checkIfItem: boolean = checkIfDatesValid();
+                                                console.log({ checkIfItem }, '---------------->');
                                                 if (!checkIfItem) {
                                                     let check: boolean = checkIfValidDates(localMilestones);
+                                                    console.log({ check }, '---------------->');
                                                     if (check) {
                                                         handleCombineMileStones(localMilestones);
                                                         if (editDetailPage?.currentScreen) {
