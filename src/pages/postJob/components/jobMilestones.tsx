@@ -156,6 +156,18 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         setEditItems((prev) => ({ ...prev, ...edit_item_clone }));
     }
 
+
+    const renderTimeItem = ({ from_date, to_date }: any) => {
+        console.log({ from_date, to_date })
+        if (from_date?.length && from_date !== 'Invalid date' && (!to_date?.length || to_date !== 'Invalid date')) {
+            return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
+        }
+
+        if (from_date?.length && from_date !== 'Invalid date' && to_date?.length && to_date !== 'Invalid date' ) {
+            return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}`
+        }
+    }
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -289,10 +301,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                             <span>{'Photo evidence required'}</span>
                                                                             : <span></span>}
                                                                         <span>
-                                                                            {moment(from_date).isValid() && moment(to_date).isValid() ?
-                                                                                `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
-                                                                                : moment(from_date).isValid() && moment(to_date).isValid() ?
-                                                                                    `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}` : ''}
+                                                                            {renderTimeItem({ from_date, to_date })}
                                                                         </span>
                                                                         <span>
                                                                             {recommended_hours}

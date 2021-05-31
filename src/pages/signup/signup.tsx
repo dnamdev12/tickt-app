@@ -52,8 +52,8 @@ const Signup = (props: Propstype) => {
         location: {
             type: "Point",
             coordinates: [
-                144.946457, //long
-                -37.840935 //lat
+                144.9631, //long
+                37.8136 //lat
             ]
         }
         // companyName: '',
@@ -67,8 +67,8 @@ const Signup = (props: Propstype) => {
             location: {
                 type: "Point",
                 coordinates: [
-                    144.946457, //long
-                    -37.840935 //lat
+                    144.9631, //long
+                    37.8136 //lat
                 ]
             }
         }

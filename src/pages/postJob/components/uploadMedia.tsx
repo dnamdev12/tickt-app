@@ -35,7 +35,11 @@ const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localFiles, setLocalFiles] = useState({});
     const [update, forceUpdate] = useState({});
-    const [filesUrl, setFilesUrl] = useState([] as any);
+    const [filesUrl, setFilesUrl] = useState([
+        { mediaType: 2, link: 'https://appinventiv-development.s3.amazonaws.com/1622457869610SampleVideo_1280x720_5mb.mp4' },
+        { mediaType: 2, link: "https://appinventiv-development.s3.amazonaws.com/1622456375426SampleVideo_1280x720_1mb%20%282%29.mp4" },
+        { mediaType: 1, link: "https://appinventiv-development.s3.amazonaws.com/1622456403078sample_640%C3%97426.jpeg" }
+    ] as any);
     const [description, setDescription] = useState('');
     const [submitClicked, setSubmitClicked] = useState(false);
     const [toggler, setToggler] = useState(false);
@@ -129,8 +133,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
 
     const setItemToggle = (index: any) => {
-        setToggler(!toggler)
-        // setSelectSlide(index + 1);
+        setToggler((prev: boolean) => !prev);
+        setSelectSlide(index + 1);
     }
 
     const renderbyFileFormat = (item: any, index: any) => {
@@ -165,18 +169,42 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         }
     }
 
+    const renderFilteredItems = () => {
+        let sources: any = [];
+        let types: any = [];
+
+        if (filesUrl?.length) {
+            filesUrl.forEach((item: any) => {
+                if (item?.mediaType === 2) {
+                    sources.push(item.link);
+                    types.push('video');
+                }
+                if (item?.mediaType === 1) {
+                    sources.push(item.link);
+                    types.push('image');
+                }
+                if (item?.mediaType === 3) {
+                    sources.push(docThumbnail);
+                    types.push('image');
+                }
+            })
+        }
+
+        return { sources, types };
+    }
+
+    const { sources, types } = renderFilteredItems();
     return (
         <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
                 <div className="custom_container">
 
-                    {/* <button onClick={() => { setToggler((prev:any) => !prev) }}>{'toggle'}</button>
                     <FsLightbox
                         toggler={toggler}
-                        // slide={selectedSlide}
-                        key={1}
-                        sources={['https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg']}
-                    /> */}
+                        slide={selectedSlide}
+                        sources={sources}
+                        types={types}
+                    />
 
                     <div className="form_field">
                         <div className="flex_row">
@@ -202,7 +230,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                         {'Skip'}
                                     </span>
                                 </div>
-                            ): null}
+                            ) : null}
                         </div>
                     </div>
                     <div className="flex_row">

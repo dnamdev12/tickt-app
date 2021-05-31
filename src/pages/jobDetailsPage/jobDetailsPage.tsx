@@ -24,6 +24,8 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
+//@ts-ignore
+import FsLightbox from 'fslightbox-react';
 interface PropsType {
     history: any,
     location: any,
@@ -77,6 +79,11 @@ const JobDetailsPage = (props: PropsType) => {
         answerShownHideList: [],
         questionIndex: null
     })
+
+
+    const [toggler, setToggler] = useState(false);
+    const [selectedSlide, setSelectSlide] = useState(1);
+
 
     console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation");
 
@@ -344,10 +351,40 @@ const JobDetailsPage = (props: PropsType) => {
     if (params.get('status')) {
         paramStatus = params.get('status');
     }
+
+    const renderFilteredItems = () => {
+        let sources: any = [];
+        let types: any = [];
+
+        if (jobDetailsData?.photos?.length) {
+            jobDetailsData?.photos.filter((itemP: any) => itemP.mediaType !== 3).forEach((item: any) => {
+                if (item?.mediaType === 2) {
+                    sources.push(item.link);
+                    types.push('video');
+                }
+                if (item?.mediaType === 1) {
+                    sources.push(item.link);
+                    types.push('image');
+                }
+            })
+        }
+
+        return { sources, types };
+    }
+    const { sources, types } = renderFilteredItems();
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+
+                    <FsLightbox
+                        toggler={toggler}
+                        slide={selectedSlide}
+                        sources={sources}
+                        types={types}
+                    />
+
                     <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
@@ -359,17 +396,25 @@ const JobDetailsPage = (props: PropsType) => {
                                 <figure className="vid_img_thumb">
                                     <OwlCarousel className='owl-theme' {...options}>
                                         {jobDetailsData?.photos?.length ?
-                                            jobDetailsData?.photos?.map((image: any, index: number) => {
+                                            jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3).map((image: any, index: number) => {
                                                 return image?.mediaType === 1 ? (
                                                     <img
                                                         key={`${image}${index}`}
+                                                        onClick={() => {
+                                                            setToggler((prev: any) => !prev);
+                                                            setSelectSlide(index + 1);
+                                                        }}
                                                         alt=""
                                                         src={image?.link ? image?.link : jobDummyImage}
                                                     />) : (
                                                     <video
                                                         key={`${image}${index}`}
+                                                        onClick={() => {
+                                                            setToggler((prev: any) => !prev);
+                                                            setSelectSlide(index + 1);
+                                                        }}
                                                         src={image?.link}
-                                                        controls
+                                                        style={{ height: '410px', width: '800px' }}
                                                     />
                                                 )
                                             }) : <img alt="" src={jobDummyImage} />}
