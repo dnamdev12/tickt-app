@@ -143,7 +143,7 @@ const JobDetails = ({
                     }
 
                     if (videoFormats.includes(item?.format)) {
-                        render_item = <video onClick={() => { console.log({ item }) }} src={item?.url} style={{ height: '400px', width: '800px' }} />
+                        render_item = <video onClick={() => { console.log({ item }) }} src={item?.url} />
                     }
                     if (render_item) {
                         filterItems.push(

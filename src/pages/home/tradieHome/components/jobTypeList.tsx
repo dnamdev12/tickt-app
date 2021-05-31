@@ -12,7 +12,7 @@ const categoriesjob = {
     },
     tablet: {
         breakpoint: { max: 1024, min: 768 },
-        items: 4
+        items: 3
     },
     mobile: {
         breakpoint: { max: 650, min: 0 },
@@ -35,7 +35,6 @@ const JobTypeList = (props: any) => {
         <div className="home_job_categories">
             <div className="custom_container">
                 <Carousel className="item_slider" responsive={categoriesjob} infinite={true} autoPlay={props.jobTypeListData?.length > 5 ? true : false} arrows={false} showDots={props.jobTypeListData?.length > 5 ? true : false} >
-                    {/* <ul className="job_categories"> */}
                     {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
                         return (
                             <ul className="job_categories">
@@ -53,10 +52,6 @@ const JobTypeList = (props: any) => {
                                 <img src={loader} alt="loader" />
                             </figure>
                         </div>}
-                    {/* </ul> */}
-                    {/* <div>SLide 1</div>
-                    <div>SLide 2</div>
-                    <div>SLide 3</div> */}
                 </Carousel>
             </div>
         </div >
