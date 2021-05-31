@@ -35,11 +35,7 @@ const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localFiles, setLocalFiles] = useState({});
     const [update, forceUpdate] = useState({});
-    const [filesUrl, setFilesUrl] = useState([
-        { mediaType: 2, link: 'https://appinventiv-development.s3.amazonaws.com/1622457869610SampleVideo_1280x720_5mb.mp4' },
-        { mediaType: 2, link: "https://appinventiv-development.s3.amazonaws.com/1622456375426SampleVideo_1280x720_1mb%20%282%29.mp4" },
-        { mediaType: 1, link: "https://appinventiv-development.s3.amazonaws.com/1622456403078sample_640%C3%97426.jpeg" }
-    ] as any);
+    const [filesUrl, setFilesUrl] = useState([] as any);
     const [description, setDescription] = useState('');
     const [submitClicked, setSubmitClicked] = useState(false);
     const [toggler, setToggler] = useState(false);
