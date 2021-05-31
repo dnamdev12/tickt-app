@@ -369,7 +369,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <video
                                                         key={`${image}${index}`}
                                                         src={image?.link}
-                                                        style={{ height: '400px', width: '800px' }}
                                                         controls
                                                     />
                                                 )
