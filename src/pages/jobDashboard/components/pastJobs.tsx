@@ -3,6 +3,7 @@ import { NavLink, Link } from 'react-router-dom';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import rateStar from '../../../assets/images/ic-star-fill.png';
 import more from '../../assets/images/icon-direction-right.png';
+import { format } from 'date-fns';
 
 interface Proptypes {
   getPastJobList: (page: number) => void,
@@ -20,6 +21,13 @@ const PastJobs = (props: Proptypes) => {
       <span className="sub_title">Past Jobs</span>
       <div className="flex_row tradies_row">
         {props.pastJobList?.map((item: any) => {
+          let fromDate = item.fromDate;
+          let toDate = item.toDate;
+          fromDate = fromDate
+            ? format(new Date(fromDate), 'MMM dd')
+            : '';
+            toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
+
           return (
             <div className="flex_col_sm_6" key={item.jobId}>
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
@@ -35,7 +43,15 @@ const PastJobs = (props: Proptypes) => {
                 </div>
                 <div className="job_info">
                   <ul>
-                    <li className="icon clock">{item.time}</li>
+                    <li className="icon clock">
+                      {fromDate}
+                      {toDate &&
+                        ` - ${
+                          fromDate.startsWith(toDate.split(' ')[0])
+                            ? toDate.split(' ')[1]
+                            : toDate
+                        }`}
+                    </li>
                     <li className="icon dollar">{item.amount}</li>
                     <li className="icon location line-1">{item.locationName}</li>
                     {item.durations ? <li className="icon calendar">{item.durations}</li> : <li><span className="job_status">{item.status}</span></li>}

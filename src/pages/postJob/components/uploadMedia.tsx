@@ -183,7 +183,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             <div className={`flex_col_sm_${jobName ? '7' : '6'}`}>
                                 <div className="relate">
                                     <button
-                                        onClick={() => { handleStepForward(6) }}
+                                        onClick={() => { hasDescription ? handleStepBack() : handleStepForward(6) }}
                                         className="back"></button>
                                     <span className={jobName ? "xs_sub_title" : "title"}>{jobName || 'Video upload or add photos'}</span>
                                 </div>
@@ -234,7 +234,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         <div className="text_field">
                             <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
                         </div>
-                        <span className="error_msg">{submitClicked && !description ? 'This field is required' : ''}</span>
+                        <span className="error_msg">{submitClicked && !description ? 'Description is required' : ''}</span>
                     </div>}
                     <div className="form_field">
                         <button
