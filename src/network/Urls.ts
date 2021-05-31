@@ -66,6 +66,7 @@ const Urls = {
     addBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}addBankDetails`,
     updateBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}updateBankDetails`,
     getBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getBankDetails`,
+    removeBankDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}removeBankDetails`,
     reviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewBuilder`,
     getBuildersJob: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}getBuildersJob`,
     updateReviewBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewBuilder`,
