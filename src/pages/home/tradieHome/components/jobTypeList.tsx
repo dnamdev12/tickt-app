@@ -42,7 +42,7 @@ const JobTypeList = (props: any) => {
                                     <figure className="type_icon">
                                         <img src={item.image} alt="icon" />
                                     </figure>
-                                    <span className="name">{item.name}</span>
+                                    <span className="name line-1">{item.name}</span>
                                 </li>
                             </ul>
                         )

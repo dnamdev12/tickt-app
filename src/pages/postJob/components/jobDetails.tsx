@@ -163,7 +163,6 @@ const JobDetails = ({
                                     setSelectSlide(index + 1);
                                 }}
                                 src={item?.url}
-                                style={{ height: '400px', width: '800px' }}
                             />)
                     }
 
