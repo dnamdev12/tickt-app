@@ -7,6 +7,7 @@ import "react-multi-carousel/lib/styles.css";
 import UploadMedia from '../../postJob/components/uploadMedia';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
+import removeIconBlue from '../../../assets/images/ic-cancel-blue.png';
 import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
 
@@ -51,14 +52,15 @@ interface Proptypes {
   getMilestoneList: (jobId: string) => void;
   milestoneList: JobDetails;
   showMilestoneCompletePage: () => void;
-  showJobCompletePage: () => void;
-  addBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  showJobCompletePage: (jobCompletedCount: number) => void;
+  addBankDetails: (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => void;
   updateBankDetails: (
     data: any,
     milestoneData: any,
-    callback: () => void
+    callback: (jobCompletedCount: number) => void
   ) => void;
   getBankDetails: () => void;
+  removeBankDetails: () => void;
   bankDetails: BankDetails;
 }
 
@@ -70,6 +72,7 @@ const MarkMilestone = ({
   getBankDetails,
   addBankDetails,
   updateBankDetails,
+  removeBankDetails,
   bankDetails,
 }: Proptypes) => {
   const history = useHistory();
@@ -96,10 +99,11 @@ const MarkMilestone = ({
     account_number: '',
     bsb_number: '',
   });
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(5);
   const [stepCompleted, setStepCompleted] = useState<Array<number>>([]);
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
+  const [readOnly, setReadOnly] = useState(false);
 
   useEffect(() => {
     getMilestoneList(params.jobId);
@@ -111,6 +115,10 @@ const MarkMilestone = ({
       ...prevData,
       ...bankDetails,
     }));
+
+    console.log(bankDetails);
+
+    setReadOnly(!!bankDetails?.userId);
   }, [bankDetails]);
 
   const validateActualHours = (value: any) => {
@@ -462,7 +470,7 @@ const MarkMilestone = ({
               </div>
             )}
             <button className="fill_grey_btn bank_btn">
-              <img src={check} alt="check" /> Bank account
+              {data.userId && <img src={check} alt="check" />} Bank account
             </button>
           </div>
           <div className="flex_col_sm_9">
@@ -478,7 +486,7 @@ const MarkMilestone = ({
               </p>
             </div>
             <button className="fill_btn full_btn btn-effect" onClick={() => setStep(5)}>
-              Continue
+              {data.userId ? 'Continue' : 'Add Details'} 
             </button>
           </div>
         </div>
@@ -491,6 +499,16 @@ const MarkMilestone = ({
             <div className="relate">
               <button className="back" onClick={() => setStep(4)}></button>
               <span className="xs_sub_title">{jobName}</span>
+              {data?.userId && readOnly && (
+                <>
+                  <span className="edit_icon" title="Edit">
+                    <img src={editIconBlue} alt="edit" onClick={() => setReadOnly(!readOnly)} />
+                  </span>
+                  <span className="edit_icon remove_icon" title="Remove" onClick={() => removeBankDetails()} >
+                    <img src={removeIconBlue} alt="remove" />
+                  </span>
+                </>
+              )}
             </div>
             <span className="sub_title">Payment Details</span>
             <p className="commn_para">Enter your bank account details</p>
@@ -505,6 +523,7 @@ const MarkMilestone = ({
                   value={data.account_name}
                   onChange={handleChange}
                   maxLength={50}
+                  readOnly={readOnly}
                 />
               </div>
               <span className="error_msg">{errors.account_name}</span>
@@ -520,6 +539,7 @@ const MarkMilestone = ({
                   onChange={handleChange}
                   maxLength={10}
                   max={9999999999}
+                  readOnly={readOnly}
                 />
               </div>
               <span className="error_msg">{errors.account_number}</span>
@@ -535,6 +555,7 @@ const MarkMilestone = ({
                   onChange={handleChange}
                   maxLength={6}
                   max={999999}
+                  readOnly={readOnly}
                 />
               </div>
               <span className="error_msg">{errors.bsb_number}</span>
@@ -558,9 +579,10 @@ const MarkMilestone = ({
                   return prevValue || error;
                 }, '');
 
-                const callback = () => {
+                const callback = (jobCompletedCount: number) => {
                   if (isLastMilestone) {
                     showJobCompletePage();
+                    showJobCompletePage(jobCompletedCount);
                   } else {
                     setStepCompleted([]);
                     setData(defaultData);
