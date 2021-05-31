@@ -11,8 +11,8 @@ const TradieHome = (props: any) => {
     const [tradieHomeData, setTradieHomeData] = useState<any>({
         location: {
             coordinates: [
-                144.946457,
-                -37.840935
+                144.9631,
+                37.8136
             ]
         },
     });
