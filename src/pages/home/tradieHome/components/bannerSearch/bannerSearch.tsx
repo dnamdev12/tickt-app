@@ -53,7 +53,7 @@ const BannerSearch = (props: PropsType) => {
         location: {
             coordinates: [
                 144.9631, //long
-                37.8136 //lat
+                37.8136, //lat
             ]
         },
         bannerLocation: '',
@@ -181,31 +181,25 @@ const BannerSearch = (props: PropsType) => {
     }
 
     useEffect(() => {
-        const tempLocationList: any = [
-            { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
-            { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
-            { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
-            { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
-        ]
         if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
             getRecentLocationData();
         }
-    }, [props.recentLocationData, recentLocation])
+    }, [props.recentLocationData, recentLocation]);
 
     const handleCalenderRange = (item: any) => {
-        setCalenderRange1(item.selection1)
+        setCalenderRange1(item.selection1);
     };
 
     console.log(stateData, "stateData", recentLocation, "recentLocation")
 
     const checkInputValidation = (e: any) => {
-        const alphaRegex = new RegExp(regex.alphaSpecial)
-        return alphaRegex.test(e.target.value)
+        const alphaRegex = new RegExp(regex.alphaSpecial);
+        return alphaRegex.test(e.target.value);
     }
 
     const handleJobChange = (e: any) => {
-        e.target.value.length >= 3 && props.getSearchJobList(e.target.value)
-        setStateData((prevData: any) => ({ ...prevData, searchedJob: e.target.value, isSearchedJobSelected: false }))
+        e.target.value.length >= 3 && props.getSearchJobList(e.target.value);
+        setStateData((prevData: any) => ({ ...prevData, searchedJob: e.target.value, isSearchedJobSelected: false }));
     }
 
     const cleanInputData = (item: string) => {
@@ -254,9 +248,14 @@ const BannerSearch = (props: PropsType) => {
                         {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.map((item: any) => {
                             return (
                                 <div className="flex_col_sm_3" key={item._id}>
-                                    <div className="autosuggestion_icon card history" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
-                                        <span>{item.name}</span>
-                                        <span className="name">{item.trade_name}</span>
+                                    <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
+                                        <figure className="ico">
+                                            <img src={item?.image || residential} alt="icon" />
+                                        </figure>
+                                        <div className="f_column">
+                                            <span>{item.name}</span>
+                                            <span className="name">{item.trade_name}</span>
+                                        </div>
                                         <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
                                             <img src={close} alt="remove" />
                                         </span>
