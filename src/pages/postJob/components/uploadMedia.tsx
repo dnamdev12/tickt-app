@@ -252,7 +252,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             </div>
                         </div>
                     </div>
-                    {hasDescription && <div className="form_field">
+                    <div className="flex_row">
+                        <div className="flex_col_sm_8">
+                        {hasDescription && <div className="form_field">
                         <label className="form_label">Photo description</label>
                         <div className="text_field">
                             <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
@@ -273,6 +275,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             {'Submit'}
                         </button>
                     </div>
+                        </div>
+                        </div>
+                    
                 </div>
             </div>
 
