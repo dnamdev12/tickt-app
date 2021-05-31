@@ -1386,6 +1386,14 @@ body {
       }
     }
   }
+  .job_progress_wrap{
+    max-width: 345px;
+    .approval_info{
+      right: auto;
+      left: 0;
+      top: -20px;
+    }
+  }
 }
 
 

@@ -447,7 +447,7 @@ const JobDetailsPage = (props: PropsType) => {
 
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
                                     <div className="progress_wrapper">
-                                        <span className="completed-digit" id="digit-progress">
+                                        <span className="approval_info" id="digit-progress">
                                             {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
                                             {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
                                             {jobDetailsData?.status}
