@@ -32,6 +32,8 @@ import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
+//@ts-ignore
+import FsLightbox from 'fslightbox-react';
 interface PropsType {
     history: any,
     location: any,
@@ -81,6 +83,10 @@ const JobDetailsPage = (props: PropsType) => {
         showHideAnswer: {},
         questionIndex: null
     })
+
+    const [toggler, setToggler] = useState(false);
+    const [selectedSlide, setSelectSlide] = useState(1);
+
 
     // console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo');
 
@@ -372,10 +378,59 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
+    const renderByStatus = ({ status }: any) => {
+        if (status) {
+            return (
+                <>
+                    {status === "APPROVED" && <img src={approved} alt="icon" />}
+                    {status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
+                    {status}
+                </>
+            )
+        } else {
+            return (
+                <>
+                    { jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
+                    { jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
+                    { jobDetailsData?.status}
+                </>
+            )
+        }
+
+    }
+
+    const renderFilteredItems = () => {
+        let sources: any = [];
+        let types: any = [];
+
+        if (jobDetailsData?.photos?.length) {
+            jobDetailsData?.photos.filter((itemP: any) => itemP.mediaType !== 3).forEach((item: any) => {
+                if (item?.mediaType === 2) {
+                    sources.push(item.link);
+                    types.push('video');
+                }
+                if (item?.mediaType === 1) {
+                    sources.push(item.link);
+                    types.push('image');
+                }
+            })
+        }
+
+        return { sources, types };
+    }
+    const { sources, types } = renderFilteredItems();
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+
+                    <FsLightbox
+                        toggler={toggler}
+                        slide={selectedSlide}
+                        sources={sources}
+                        types={types}
+                    />
+
                     <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
@@ -388,15 +443,23 @@ const JobDetailsPage = (props: PropsType) => {
                                     <OwlCarousel className='owl-theme' {...options}>
                                         {/* {console.log({ jobDetailsData })} */}
                                         {jobDetailsData?.photos?.length ?
-                                            jobDetailsData?.photos?.map((image: any, index: number) => {
+                                            jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3).map((image: any, index: number) => {
                                                 return image?.mediaType === 1 ? (
                                                     <img
                                                         key={`${image}${index}`}
+                                                        onClick={() => {
+                                                            setToggler((prev: any) => !prev);
+                                                            setSelectSlide(index + 1);
+                                                        }}
                                                         alt=""
                                                         src={image?.link ? image?.link : jobDummyImage}
                                                     />) : (
                                                     <video
                                                         key={`${image}${index}`}
+                                                        onClick={() => {
+                                                            setToggler((prev: any) => !prev);
+                                                            setSelectSlide(index + 1);
+                                                        }}
                                                         src={image?.link}
                                                         style={{ height: '410px', width: '800px' }}
                                                     />
@@ -419,12 +482,17 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon location line-3">{jobDetailsData.locationName}</li>
                                         </ul>
                                     </div>
-                
-                                    {paramStatus || jobDetailsData?.status ? (
-                                            <button
-                                                className="fill_btn full_btn btn-effect">
-                                                {paramStatus || jobDetailsData?.status}
-                                            </button>
+
+                                    {paramStatus ? (
+                                        <button
+                                            className="fill_btn full_btn btn-effect">
+                                            {paramStatus}
+                                        </button>
+                                    ) : jobDetailsData?.status ? (
+                                        <button
+                                            className="fill_btn full_btn btn-effect">
+                                            {jobDetailsData?.status}
+                                        </button>
                                     ) : null}
                                 </div>
                             </div>
@@ -447,9 +515,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
                                     <div className="progress_wrapper">
                                         <span className="approval_info" id="digit-progress">
-                                            {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
-                                            {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
-                                            {jobDetailsData?.status}
+                                            {renderByStatus({ status: paramStatus })}
                                         </span>
                                         <span className="progress_bar">
                                             <input
@@ -620,9 +686,9 @@ const JobDetailsPage = (props: PropsType) => {
                                             <label className="form_label">Your answer</label>
                                             <div className="text_field">
                                                 <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
+                                                <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                             </div>
                                             {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
-                                            <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
                                         </div>
                                         <div className="bottom_btn custom_btn">
                                             {questionsData.updateQuestionsClicked ? <button className="fill_btn full_btn" onClick={() => submitQuestionHandler('updateQuestion')}>Save</button>
