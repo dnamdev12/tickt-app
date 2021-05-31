@@ -544,6 +544,8 @@ body.loader_show .full_loader {
     font-size: 12px;
     padding: 5px 0px;
     color: var(--greyish-brown);
+    position: absolute;
+    right: 0;
 }
 
 .autocomplete-drop-down-map-container {

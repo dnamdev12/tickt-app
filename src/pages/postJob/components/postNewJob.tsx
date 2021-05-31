@@ -140,12 +140,13 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                 <label className="form_label">Job details</label>
                 <div className="text_field">
                   <textarea placeholder="This job..." name="job_description" value={job_description} onChange={handleChange} />
-                </div>
                 {job_description.length ?
                   <span className="char_count">
                     {`character length : ${job_description.length}`}
                   </span>
                   : ''}
+                </div>
+                
                 <span className="error_msg">{errors.job_description}</span>
               </div>
               <div className="form_field">

@@ -559,8 +559,8 @@ const BuilderInfo = (props: PropsType) => {
                                     <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
                                     <div className="text_field">
                                         <textarea placeholder="Text" value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
+                                        <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                     </div>
-                                    <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                 </div>
                             </div>
                             <div className="bottom_btn custom_btn">

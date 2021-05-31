@@ -3496,10 +3496,8 @@ body {
     }
   }
   .job_categories {
-    justify-content: center;
-    @media(max-width: 1024px){
-      justify-content: flex-start;
-    }
+    display: block;
+    text-align: center;
     li {
       padding: 20px;
       margin: 0 15px;
