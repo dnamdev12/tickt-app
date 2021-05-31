@@ -36,9 +36,9 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                     delete item.to_date;
                 }
 
-                if (!item.recommended_hours?.length) {
-                    delete item.recommended_hours;
-                }
+                // if (!item.recommended_hours?.length) {
+                //     delete item.recommended_hours;
+                // }
 
                 return item
             }

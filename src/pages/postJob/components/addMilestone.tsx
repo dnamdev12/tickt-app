@@ -188,12 +188,9 @@ export default class AddMilestone extends Component<Props, State> {
         if (milestone_name?.length) {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
-            if (!error_1?.length && !error_2?.length) {
-                let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-                if (recommended_hours?.length && error_3 && !pattern_error?.length) {
-                    return false;
-                }
-
+            let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+            // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
+            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
         }
