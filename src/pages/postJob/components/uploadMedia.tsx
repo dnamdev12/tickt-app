@@ -9,6 +9,8 @@ import videoThumbnail from '../../../assets/images/add-video.png';
 import docThumbnail from '../../../assets/images/add-document.png'
 import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
+//@ts-ignore
+import FsLightbox from 'fslightbox-react';
 
 interface Proptypes {
     jobName?: string;
@@ -24,8 +26,8 @@ interface Proptypes {
 
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
-const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
-const docformats: Array<any> = ["pdf", "doc", "docx"];
+const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi", "pdf", "doc", "docx", "msword"];
+const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
 // 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4'
 // 'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
@@ -36,6 +38,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [filesUrl, setFilesUrl] = useState([] as any);
     const [description, setDescription] = useState('');
     const [submitClicked, setSubmitClicked] = useState(false);
+    const [toggler, setToggler] = useState(false);
+    const [selectedSlide, setSelectSlide] = useState(1);
+
+
 
     useEffect(() => {
         if (stepCompleted) {
@@ -85,8 +91,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
-
-        if (imageFormats.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+        console.log({ selectedFileSize, fileType })
+        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
             setShowToast(true, "The file must be in proper format or size.")
             return;
         }
@@ -95,11 +101,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             setShowToast(true, "The image file size must be below 10 MB.")
             return;
         }
-
-        // if (docformats.includes(fileType) && selectedFileSize > 10) { // doc validations
-        //     setShowToast(true, "The file size must be below 10 MB.")
-        //     return;
-        // }
 
         if (videoFormats.includes(fileType)) { // video validations
             if (selectedFileSize > 10) {
@@ -122,8 +123,14 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 "mediaType": check_type,
                 "link": link
             }]);
-            setLocalFiles((prev: any) => ({ ...prev, newFile }));
+            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
         }
+    }
+
+
+    const setItemToggle = (index: any) => {
+        setToggler(!toggler)
+        // setSelectSlide(index + 1);
     }
 
     const renderbyFileFormat = (item: any, index: any) => {
@@ -135,16 +142,16 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         let image_render: any = null;
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
-                image_render = <img title={get_split_name} src={item} alt="media" />
+                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={item} alt="media" />
             }
 
             if (videoFormats.includes(get_split_fromat)) {
-                image_render = <img title={get_split_name} src={videoThumbnail} alt="media" style={{ padding: '17px' }} />
+                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={videoThumbnail} alt="media" style={{ padding: '17px' }} />
             }
 
-            // if (docformats.includes(get_split_fromat)) {
-            //     image_render = <img title={get_split_name} src={docThumbnail} alt="media" />
-            // }
+            if (docformats.includes(get_split_fromat)) {
+                image_render = <img title={get_split_name} src={docThumbnail} alt="media" />
+            }
 
             return (
                 <figure className="img_video">
@@ -162,6 +169,15 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
                 <div className="custom_container">
+
+                    {/* <button onClick={() => { setToggler((prev:any) => !prev) }}>{'toggle'}</button>
+                    <FsLightbox
+                        toggler={toggler}
+                        // slide={selectedSlide}
+                        key={1}
+                        sources={['https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg']}
+                    /> */}
+
                     <div className="form_field">
                         <div className="flex_row">
                             <div className={`flex_col_sm_${jobName ? '7' : '6'}`}>
@@ -176,6 +192,17 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     {para || 'Record a short video or add photos to demonstrate your job and any unique requirements.'}
                                 </p>
                             </div>
+                            {!jobName && !filesUrl?.length ? (
+                                <div className="flex_col_sm_5 text-right">
+                                    <span
+                                        onClick={() => {
+                                            handleStepForward(14)
+                                        }}
+                                        className="link">
+                                        {'Skip'}
+                                    </span>
+                                </div>
+                            ): null}
                         </div>
                     </div>
                     <div className="flex_row">

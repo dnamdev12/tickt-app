@@ -74,7 +74,7 @@ export function useStateFromProp(initialValue: any) {
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
-
+    const [locationStatus, setLocationStatus] = useState(null);
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
     const [addressText, setAddressText] = useState<any>('');
@@ -116,6 +116,7 @@ const BannerSearch = (props: PropsType) => {
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
     const handleCalenderRange = (item: any) => {
+        console.log({ item }, '---->')
         setCalenderRange1(item.selection1)
     };
 
@@ -410,20 +411,49 @@ const BannerSearch = (props: PropsType) => {
         }
     }
 
+    const filterFromAddress = (response: any) => {
+        let city, state, country = null;
+        for (let i = 0; i < response.results[0].address_components.length; i++) {
+            for (let j = 0; j < response.results[0].address_components[i].types.length; j++) {
+                switch (response.results[0].address_components[i].types[j]) {
+                    case "locality":
+                        city = response.results[0].address_components[i].long_name;
+                        break;
+                    case "administrative_area_level_1":
+                        state = response.results[0].address_components[i].long_name;
+                        break;
+                    case "country":
+                        country = response.results[0].address_components[i].long_name;
+                        break;
+                }
+            }
+        }
+        return { city, state, country: country.toLowerCase() };
+    }
+
     const getCurrentLocation = async () => {
+        let itemToggle: any = await navigator.permissions.query({ name: 'geolocation' });
+        setLocationStatus(itemToggle.state);
         let local_position: any = localStorage.getItem('position');
         let position: any = JSON.parse(local_position);
         if (position?.length) {
             let long = (position[0]).toString();
             let lat = (position[1]).toString();
             let response: any = await Geocode.fromLatLng(lat, long);
-            if (response?.results && Array.isArray(response.results) && response?.results?.length) {
-                const address = response.results[0].formatted_address;
-                setSelectedAddress({ lat, long });
-                setAddressText(address);
-                setInputFocus2(true);
-                setCurrentLocations(true);
-                // this.setState({ currentAddressLatLng: { long, lat }, addressText: address, enableCurrentLocation: true, inputFocus2: true })
+            const { city, state, country } = filterFromAddress(response);
+            console.log({ response, city, state, country }, '65')
+            if (response && ["australia", "au"].includes(country)) {
+                if (response?.results && Array.isArray(response.results) && response?.results?.length) {
+                    const address = response.results[0].formatted_address;
+                    setSelectedAddress({ lat, long });
+                    setAddressText(address);
+                    setInputFocus2(true);
+                    setCurrentLocations(true);
+                }
+            } else {
+                if(itemToggle?.state !== "denied"){
+                    setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+                }
             }
         }
     }
@@ -441,6 +471,25 @@ const BannerSearch = (props: PropsType) => {
             if (stateData?.specializationsId?.length) {
                 length_spec = 1;
             }
+        }
+    }
+
+    const checkPlaceholder = (calenderRange1: any) => {
+        let startDate: any = calenderRange1?.startDate;
+        let endDate: any = calenderRange1?.endDate;
+        let diff = moment().diff(moment(endDate), 'years')
+        let defaultFormat: string = 'DD MMM';
+
+        if (diff < 0) {
+            defaultFormat = 'DD MMM YYYY';
+        }
+        console.log({ startDate, endDate, diff })
+        if (startDate && !endDate) {
+            return `${moment(startDate).format('MMM-DD')}`
+        } else if (startDate && endDate) {
+            return `${moment(startDate).format(defaultFormat)}-${moment(endDate).format(defaultFormat)}`;
+        } else {
+            return 'When?';
         }
     }
 
@@ -555,6 +604,7 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
+                                    searchOptions={{ componentRestrictions: { country: "au" } }}
                                     onChange={(item: any) => {
                                         setAddressText(item)
                                         if (!addressText.length) {
@@ -659,18 +709,28 @@ const BannerSearch = (props: PropsType) => {
                                     <img src={icgps} alt="" />
                                 </span> Use my current location
                             </span>
-                            {stateData?.locationDenied && <span className="blocked_note">
-                                You have blocked your location.
-                                To use this, change your location settings in browser.
-                              </span>}
+                            {locationStatus === "denied" &&
+                                (<span className="blocked_note">
+                                    You have blocked your location.
+                                    To use this, change your location settings in browser.
+                                </span>)}
                             <div className="flex_row recent_search auto_loc">
                                 {recentLocation?.length ?
-                                    <span className="name_recent_search">recent search</span>
+                                    <span className="name_recent_search">
+                                        {'Recent searches'}
+                                    </span>
                                     : null}
                                 {recentLocation?.map((item: any) => {
                                     return (
                                         <div className="flex_col_sm_4"
-                                            onClick={() => setStateData((prevData: any) => ({ ...prevData, location: item.location, selectedMapLocation: item.allText?.mainText, isMapLocationSelected: true }))}>
+                                            onClick={() => {
+                                                let location_coordinates: any = item.location.coordinates
+                                                setAddressText(item.formatted_address);
+                                                setSelectedAddress({
+                                                    lat: location_coordinates[1],
+                                                    lng: location_coordinates[0]
+                                                });
+                                            }}>
                                             <div className="autosuggestion_icon card loc name">
                                                 <span>{item.allText?.mainText}</span>
                                                 <span className="name">{item.allText?.secondaryText}</span>
@@ -680,7 +740,7 @@ const BannerSearch = (props: PropsType) => {
                             </div>
                         </div>
                         : null}
-                    <li className="date_box">
+                    <li className={`date_box ${calenderRange1?.startDate ? 'date_value' : ''}`}>
                         <div
                             ref={calenderRef}
                             className="custom_date_range" id="date-range-div">
@@ -688,12 +748,9 @@ const BannerSearch = (props: PropsType) => {
                                 <span className="detect_icon_ltr calendar"></span>
                                 <input
                                     type="text"
-                                    placeholder={calenderRange1?.startDate && !calenderRange1.endDate ?
-                                        `${moment(calenderRange1?.startDate).format('MMM-DD')}` :
-                                        calenderRange1?.startDate && calenderRange1.endDate ?
-                                            `${moment(calenderRange1?.startDate).format('DD MMM')}-${moment(calenderRange1?.endDate).format('DD MMM')}`
-                                            : "When?"}
-                                            autoComplete="none"
+                                    id="calender-input"
+                                    placeholder={checkPlaceholder(calenderRange1)}
+                                    autoComplete="none"
                                     onFocus={() => setInputFocus3(true)}
                                 />
                                 {calenderRange1?.startDate && inputFocus3 &&

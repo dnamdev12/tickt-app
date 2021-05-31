@@ -3,7 +3,8 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
 import noDataFound from '../../../assets/images/no-search-data.png';
-
+import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
+import moment from 'moment';
 interface Post {
     amount: any,
     fromDate: any,
@@ -18,19 +19,33 @@ interface Post {
     toDate: any,
     totalMilestones: any,
     tradeId: any,
+    tradieId: any,
     tradeName: any,
-    tradeImage: any,
-    isLoading:any,
+    tradeSelectedUrl: any,
+    isLoading: any,
     tradieData: any,
 }
 
 
 export default function PastJobs(props: any): ReactElement {
-    const { dataItems, jobType , isLoading} = props;
+    const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
 
-    const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
-        props.history.push(`/job-detail?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
+    const redirectToInfo = ({ jobId, status }: any) => {
+        if (jobId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+            props.history.push(`/job-detail?${urlEncode}`);
+        }
+    }
+
+    const renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
+        }
+
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+        }
     }
 
     return (
@@ -52,21 +67,24 @@ export default function PastJobs(props: any): ReactElement {
                         toDate,
                         totalMilestones,
                         tradeId,
+                        tradieId,
                         tradeName,
-                        tradeImage,
+                        tradeSelectedUrl,
                         tradieData,
                     }: Post) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span
                                     onClick={() => {
-                                        redirectToInfo({ jobId, tradeId, specializationId, status })
+                                        redirectToInfo({ jobId, status })
                                     }}
                                     className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradeImage|| dummy} alt="traide-img" />
+                                        <img
+                                            src={jobData?.tradeSelectedUrl || jobTypePlaceholder}
+                                            alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -75,7 +93,7 @@ export default function PastJobs(props: any): ReactElement {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{`${0} minutes ago`}</li>
+                                        <li className="icon clock">{renderTime({fromDate,toDate})}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
                                         {/* <li className="icon calendar">{'0 days'}</li> */}

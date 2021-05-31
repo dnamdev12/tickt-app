@@ -1,9 +1,11 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import dummy from "../../../assets/images/u_placeholder.jpg";
 import approved from '../../../assets/images/approved.png';
+import waiting from '../../../assets/images/exclamation.png';
 import MarkMilestones from './markMilestones';
 import { withRouter } from 'react-router-dom';
 import noDataFound from '../../../assets/images/no-search-data.png';
+import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 
 interface Active {
     amount: any,
@@ -23,17 +25,19 @@ interface Active {
     location: any,
     tradieId: any,
     tradieImage: any,
-    tradeImage:any,
+    tradeSelectedUrl: any,
+    activeType: any,
     setJobLabel: (item: any) => void
 }
 
 
-const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any) => {
+const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLoading }: any) => {
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
 
     const resetStateLocal = () => {
+        setJobLabel(activeType);
         setLocalState(false)
     }
 
@@ -41,9 +45,11 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
         console.log('here!')
     }, [jobType])
 
-    const redirectToInfo = ({ jobId, tradieId, specializationId, status }: any) => {
-        console.log({ jobId, tradieId, specializationId });
-        history.push(`/job-detail?jobId=${jobId}&tradeId=${tradieId}&specializationId=${specializationId}&status=${status}`);
+    const redirectToInfo = ({ jobId, status }: any) => {
+        if (jobId?.length && status?.length) {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+            history.push(`/job-detail?${urlEncode}`);
+        }
     }
 
     if (localState && selectedIndex !== null) {
@@ -77,7 +83,7 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                         tradieListData,
                         tradeName,
                         tradieId,
-                        tradeImage,
+                        tradeSelectedUrl,
                         tradieImage,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
@@ -89,7 +95,9 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradeImage || dummy} alt="traide-img" />
+                                        <img
+                                            src={tradeSelectedUrl || jobTypePlaceholder}
+                                            alt="traide-img" />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>
@@ -110,11 +118,9 @@ const ActiveJobs = ({ setJobLabel, history, dataItems, jobType, isLoading }: any
                                             <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
                                         </span>
                                         <span className="approval_info">
-                                            {status === "Approved" && <img src={approved} alt="icon" />}
+                                            {status === "APPROVED" && <img src={approved} alt="icon" />}
+                                            {status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
                                             {status}
-                                            {/* {'Approved'} */} {/* Awating */}
-                                            {/* <img src={waiting} alt="icon" /> */}
-                                            {/* Need approval */}
                                         </span>
                                         <span className="progress_bar">
                                             <input

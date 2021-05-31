@@ -14,6 +14,7 @@ import {
     getMilestoneList,
     getMilestoneDetails
 } from '../../../redux/homeSearch/actions';
+import { setShowToast } from '../../../redux/common/actions';
 
 interface Props {
 
@@ -35,6 +36,7 @@ const MarkMilestones = (props: any) => {
     const [selectedMile, setMilestone] = useState(null);
 
     const backToScreen = () => {
+        preFetch();
         setEnableApprove(false);
     }
 
@@ -74,10 +76,11 @@ const MarkMilestones = (props: any) => {
     }
 
 
-    const redirectToInfo = ({ jobId, tradeId, specializationId, status }: any) => {
-        console.log({ jobId, tradeId, specializationId });
+    const redirectToInfo = ({ jobId, status }: any) => {
+        console.log({ jobId });
         let props_: any = props;
-        props_.history.push(`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}&status=${status}`);
+        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+        props_.history.push(`/job-detail?${urlEncode}`);
     }
 
     let item_details: any = itemDetails;
@@ -162,11 +165,12 @@ const MarkMilestones = (props: any) => {
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={() => {
-                                                setMilestoneIndex({
-                                                    index,
-                                                    milestoneId,
-                                                    jobId: item_details?.jobId
-                                                });
+                                                setShowToast(true, 'under development.')
+                                                // setMilestoneIndex({
+                                                //     index,
+                                                //     milestoneId,
+                                                //     jobId: item_details?.jobId
+                                                // });
 
                                                 if (index === item_details?.milestones?.length - 1) {
                                                     // setIsLastMilestone(true);
@@ -210,7 +214,7 @@ const MarkMilestones = (props: any) => {
                         title="More"
                         onClick={() => {
                             let { jobId, tradeId, specializationId, status } = selectedItem;
-                            redirectToInfo({ jobId, tradeId, specializationId, status })
+                            redirectToInfo({ jobId, status })
                         }}>
                         <img src={more} alt="more" />
                     </span>

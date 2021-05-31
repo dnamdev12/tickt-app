@@ -49,7 +49,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
             let start_selection: any = moment(item.selection.startDate).format('MM-DD-YYYY');
             let end_selection: any = moment(item.selection.endDate).isValid() ? moment(item.selection.endDate).format('MM-DD-YYYY') : null;
             let item_find: any = false;
-            
+
             mile.forEach((item_date: any) => {
                 let start: any = item_date.from_date;
                 let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
@@ -58,7 +58,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
                     console.log({ start_selection, end_selection, start, end })
                     if (moment(start_selection).isAfter(start) || moment(end_selection).isBefore(end)) {
                         item_find = true
-                    } 
+                    }
                 }
 
                 if (start && !end) {

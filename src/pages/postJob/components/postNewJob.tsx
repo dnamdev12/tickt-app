@@ -1,3 +1,4 @@
+import id from 'date-fns/esm/locale/id/index.js';
 import { isError } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Constants from '../../../utils/constants';
@@ -11,7 +12,14 @@ interface Proptypes {
   handleStepForward: (data: any) => void,
 }
 
-const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate, handleStepForward, handleStepComplete }: Proptypes) => {
+const PostNewJob = ({
+  data,
+  editDetailPage,
+  stepCompleted,
+  handleStepJustUpdate,
+  handleStepForward,
+  handleStepComplete
+}: Proptypes) => {
   const { errorStrings } = Constants;
 
   const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>({ jobName: '', job_description: '' });
@@ -46,16 +54,23 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
   // return isEmpty(name, value);
 
   const handleChange = ({ target: { value, name } }: { target: { value: string, name: string } }) => {
+    let valueElem: any = (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "");
+    if (name === "jobName") {
+      console.log({ valueElem }, 'before')
+      valueElem = valueElem.charAt(0).toUpperCase() + valueElem.substring(1);
+      console.log({ valueElem }, 'after')
+    }
+
     // if (stepCompleted || continueClicked) {
     setErrors((prevErrors) => ({
       ...prevErrors,
-      [name]: isInvalid(name, (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "")),
+      [name]: isInvalid(name, valueElem),
     }));
     // }
 
     setBasicDetails((prevDetails) => ({
       ...prevDetails,
-      [name]: (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, ""),
+      [name]: valueElem,
     }));
   };
 
@@ -132,21 +147,20 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
               <div className="form_field">
                 <label className="form_label">Job Name</label>
                 <div className="text_field">
-                  <input type="text" className="capitalize" placeholder="Enter Job Name" name="jobName" value={jobName} onChange={handleChange} />
+                  <input type="text" placeholder="Enter Job Name" name="jobName" value={jobName} onChange={handleChange} />
                 </div>
                 <span className="error_msg">{errors.jobName}</span>
               </div>
               <div className="form_field">
-                <label className="form_label">Job details</label>
+                <label className="form_label">Job Details</label>
                 <div className="text_field">
-                  <textarea placeholder="This job..." name="job_description" value={job_description} onChange={handleChange} />
-                {job_description.length ?
-                  <span className="char_count">
-                    {`character length : ${job_description.length}`}
-                  </span>
-                  : ''}
+                  <textarea placeholder="This Job..." name="job_description" value={job_description} onChange={handleChange} />
+                  {job_description.length ?
+                    <span className="char_count">
+                      {`character length : ${job_description.length}`}
+                    </span>
+                    : ''}
                 </div>
-                
                 <span className="error_msg">{errors.job_description}</span>
               </div>
               <div className="form_field">
@@ -155,10 +169,10 @@ const PostNewJob = ({ data, editDetailPage, stepCompleted, handleStepJustUpdate,
                   onClick={handleContinue}>{'Continue'}</button>
               </div>
             </div>
+
           </div>
         </div>
       </div>
-
     </div>
   )
 }

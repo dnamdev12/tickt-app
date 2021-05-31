@@ -18,7 +18,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
     const [error, setError] = useState('' as any);
 
     const checkError = () => {
-        if(!error?.length && templateName?.length){
+        if (!error?.length && templateName?.length) {
             return false;
         }
         return true;
@@ -35,9 +35,14 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                 if (!item?.to_date?.length) {
                     delete item.to_date;
                 }
+                
+                if (!item?.from_date?.length || item?.from_date === "Invalid date") {
+                    delete item?.from_date;
+                }
+
                 return item
             }
-        })
+        });
 
         let { success, data } = await addTemplate({
             template_name: templateName,
@@ -50,7 +55,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
     }
 
     const handleChange = (value: any) => {
-         if (templateName?.length && templateName?.length > 50) {
+        if (templateName?.length && templateName?.length > 50) {
             setError('Maximum 50 characters are allowed.');
         } else {
             setError('');
@@ -58,7 +63,7 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
         setTemplateName((value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, ""))
     }
 
-    console.log({error})
+    console.log({ error })
     return (
         <div className="app_wrapper">
 

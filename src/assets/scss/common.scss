@@ -48,6 +48,11 @@ body {
   font-family: "Neue Haas Grotesk Text Pro Roman", sans-serif !important;
 }
 
+.ft_normal{
+  font-family: 'Neue Haas Grotesk Text Pro Roman';
+  font-weight: normal;
+}
+
 .app_wrapper {
   position: relative;
   min-height: 100%;
@@ -1384,6 +1389,14 @@ body {
           width: 100%;
         }
       }
+    }
+  }
+  .job_progress_wrap{
+    max-width: 345px;
+    .approval_info{
+      right: auto;
+      left: 0;
+      top: -22px;
     }
   }
 }
