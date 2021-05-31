@@ -52,8 +52,8 @@ const BannerSearch = (props: PropsType) => {
         searchedJobId: null,
         location: {
             coordinates: [
-                144.946457, //long
-                -37.840935 //lat
+                144.9631, //long
+                37.8136 //lat
             ]
         },
         bannerLocation: '',
