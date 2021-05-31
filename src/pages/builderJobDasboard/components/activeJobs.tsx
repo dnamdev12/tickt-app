@@ -1,6 +1,7 @@
 import React, { ReactElement, useState, useEffect } from 'react'
 import dummy from "../../../assets/images/u_placeholder.jpg";
 import approved from '../../../assets/images/approved.png';
+import waiting from '../../../assets/images/exclamation.png';
 import MarkMilestones from './markMilestones';
 import { withRouter } from 'react-router-dom';
 import noDataFound from '../../../assets/images/no-search-data.png';
@@ -117,11 +118,9 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                             <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
                                         </span>
                                         <span className="approval_info">
-                                            {status === "Approved" && <img src={approved} alt="icon" />}
+                                            {status === "APPROVED" && <img src={approved} alt="icon" />}
+                                            {status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
                                             {status}
-                                            {/* {'Approved'} */} {/* Awating */}
-                                            {/* <img src={waiting} alt="icon" /> */}
-                                            {/* Need approval */}
                                         </span>
                                         <span className="progress_bar">
                                             <input

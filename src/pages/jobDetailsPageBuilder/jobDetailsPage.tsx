@@ -25,6 +25,9 @@ import question from '../../assets/images/ic-question.png';
 import leftIcon from '../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../assets/images/ic-next-arrow-line.png'
 import moment from 'moment';
+import approved from '../../assets/images/approved.png';
+import waiting from '../../assets/images/exclamation.png';
+
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -449,8 +452,9 @@ const JobDetailsPage = (props: PropsType) => {
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
                                     <div className="progress_wrapper">
                                         <span className="completed-digit" id="digit-progress">
-                                            {/* {jobDetailsData?.status} */}
-                                            {'NEED APPROVAL'}
+                                            {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
+                                            {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
+                                            {jobDetailsData?.status}
                                         </span>
                                         <span className="progress_bar">
                                             <input
