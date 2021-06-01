@@ -134,7 +134,7 @@ export default class AddMilestone extends Component<Props, State> {
     }
 
     handleChange = (name: string, value: any) => {
-        console.log({ name })
+        
         let error_clone: any = this.state.errors;
 
         if (name === "milestone_name") {
@@ -202,9 +202,8 @@ export default class AddMilestone extends Component<Props, State> {
         const { milestones, handleStepMileStone, newMileStoneScreen, removeMilestoneByIndex } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, errors } = this.state;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
-        console.log({ milestone_index, is_remove })
+        
         if (is_remove) {
-            console.log({ milestone_index }, '====>')
             removeMilestoneByIndex(milestone_index);
             return
         } else {
@@ -236,7 +235,7 @@ export default class AddMilestone extends Component<Props, State> {
                 to_date_format = moment(date_to_moment, 'MM-DD-YYYY').format('DD');
             }
         }
-        console.log({ from_date_format, to_date_format, mile: milestones[milestones.length - 1] })
+        
         let check_errors = this.checkErrors();
         return (
             <div className="app_wrapper">
@@ -347,8 +346,6 @@ export default class AddMilestone extends Component<Props, State> {
                                     <div className="text_field">
                                         <input
                                             onChange={(e) => {
-                                                console.log({ length: this.state.recommended_hours?.length })
-
                                                 this.setState({ recommended_hours: (e.target.value).trimLeft() }, () => {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;

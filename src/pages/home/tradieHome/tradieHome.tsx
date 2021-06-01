@@ -12,7 +12,7 @@ const TradieHome = (props: any) => {
         location: {
             coordinates: [
                 144.9631,
-                37.8136
+                -37.8136
             ]
         },
     });

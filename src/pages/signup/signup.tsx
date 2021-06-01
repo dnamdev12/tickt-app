@@ -53,7 +53,7 @@ const Signup = (props: Propstype) => {
             type: "Point",
             coordinates: [
                 144.9631,
-                37.8136
+                -37.8136
             ]
         }
         // companyName: '',

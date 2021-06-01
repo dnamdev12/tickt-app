@@ -120,9 +120,6 @@ const SearchResultTradie = (props: any) => {
 
     let homeSearchJobData = props.homeSearchJobData;
     let seleted_item: any = selectedItem;
-    console.log({
-        seleted_item
-    })
     let length_items = 0;
     if (seleted_item?.data?.specializationId?.length) {
         length_items = seleted_item?.data?.specializationId?.length - 1;

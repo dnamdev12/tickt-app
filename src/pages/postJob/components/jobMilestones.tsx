@@ -56,7 +56,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     }
 
     useEffect(() => {
-        console.log({ localMilestones, milestones }, '------------------------------------------------->')
         if (!localMilestones?.length !== milestones?.length) {
             let filter_milestones = milestones.filter((item: any) => Object.keys(item).length && item);
             setLocalMilestones(filter_milestones); // set milestoner here!
@@ -99,7 +98,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
             });
             setSortedItems(newarr);
-            console.log({ newarr, filteredItem });
             return JSON.stringify(newarr) === JSON.stringify(filteredItem);
         }
     }
@@ -121,14 +119,13 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
             }
         });
-        console.log({ localMilestones, filteredItem })
+
         if (filteredItem?.length) {
             filteredItem.forEach((item_date: any) => {
                 let start: any = moment(item_date.from_date).isValid() ? item_date.from_date : null;
                 let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
 
                 if (start && end) {
-                    console.log({ start_selection, end_selection, start, end })
                     if (start_selection && end_selection) {
                         if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
                             item_find = true
@@ -151,7 +148,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
             });
         }
-        console.log({ item_find })
+        
         if (item_find) {
             setShowToast(true, 'Please check the milestone dates.');
             return item_find;
@@ -373,7 +370,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                     let item = milestones[milestones?.length - 1];
                                                     if (Object.keys(item).length) {
                                                         if (!item?.milestone_name?.length && !item?.recommended_hours?.length && !item?.date_from?.length) {
-                                                            console.log({ item })
                                                             console.log('Already have!')
                                                         } else {
                                                             newMileStoneScreen(milestones?.length);
@@ -389,10 +385,8 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                         <button
                                             onClick={() => {
                                                 let checkIfItem: boolean = checkIfDatesValid();
-                                                console.log({ checkIfItem }, '---------------->');
                                                 if (!checkIfItem) {
                                                     let check: boolean = checkIfValidDates(localMilestones);
-                                                    console.log({ check }, '---------------->');
                                                     if (check) {
                                                         handleCombineMileStones(localMilestones);
                                                         if (editDetailPage?.currentScreen) {

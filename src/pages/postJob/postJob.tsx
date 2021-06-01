@@ -113,10 +113,8 @@ const PostJob = (props: Proptypes) => {
     const addTimeToMileStone = (time: any, index: any, skip: any) => {
         let milestone_clone: any = milestones;
         let checkIsValid: any = true;
-        console.log({ time, index, skip, milestone_clone });
         if (!skip && milestone_clone?.length) {
             let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
-            console.log({filter_milestone})
             if (filter_milestone?.length) {
                 filter_milestone.forEach((mile: any) => {
                     let validStart = moment(mile.from_date).isValid();
@@ -166,7 +164,7 @@ const PostJob = (props: Proptypes) => {
             setShowToast(true, 'Please add unique date.');
             return;
         }
-        console.log({milestone_clone,checkIsValid, time })
+        
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
         setMileStones(milestone_clone);

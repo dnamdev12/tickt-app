@@ -53,7 +53,7 @@ const BannerSearch = (props: PropsType) => {
         location: {
             coordinates: [
                 144.9631, //long
-                37.8136, //lat
+                -37.8136, //lat
             ]
         },
         bannerLocation: '',
