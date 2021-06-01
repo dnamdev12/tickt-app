@@ -91,7 +91,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
-        console.log({ selectedFileSize, fileType })
+
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
             setShowToast(true, "The file must be in proper format or size.")
             return;
@@ -264,7 +264,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     <div className="form_field">
                         <button
                             onClick={() => {
-                                console.log({ filesUrl, description })
                                 setSubmitClicked(true);
                                 handleStepComplete({
                                     urls: filesUrl,

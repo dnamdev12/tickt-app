@@ -211,7 +211,7 @@ class JobDashboard extends Component<Props, State> {
                                                 className="menu_txt">Past jobs</span>
                                         </span>
                                     </li>
-                                    <hr></hr>
+                                    {/* <hr></hr> */}
                                     <li>
                                         <span className={`icon applicants ${activeType === "applicant" ? 'active' : ''}`}>
                                             <span

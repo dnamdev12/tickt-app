@@ -13,7 +13,6 @@ import { callTradeList } from '../../../redux/auth/actions';
 import { setHomeBuilder } from '../../../redux/jobs/actions';
 
 const mapStateToProps = (state: any) => {
-    console.log({ bh: state.jobs.builderHome }, '------------------------------------------------------------>')
     return {
         tradeListData: state.auth.tradeListData,
         searchJobListData: state.homeSearch.searchJobListData,

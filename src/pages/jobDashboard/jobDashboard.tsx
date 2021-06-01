@@ -183,7 +183,7 @@ const JobDashboard = ({
                     <span className="menu_txt">Past jobs</span>
                   </NavLink>
                 </li>
-                <hr></hr>
+                {/* <hr></hr> */}
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
                     <span className="menu_txt">New jobs

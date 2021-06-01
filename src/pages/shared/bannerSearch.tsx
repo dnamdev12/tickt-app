@@ -116,7 +116,6 @@ const BannerSearch = (props: PropsType) => {
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
     const handleCalenderRange = (item: any) => {
-        console.log({ item }, '---->')
         setCalenderRange1(item.selection1)
     };
 
@@ -149,7 +148,13 @@ const BannerSearch = (props: PropsType) => {
         if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
             getRecentLocationData();
         }
-    }, [props.recentLocationData, recentLocation])
+    }, [props.recentLocationData, recentLocation]);
+
+    useEffect(() => {
+        if (searchText?.length > 2) {
+            props.getSearchJobList(searchText);
+        }
+    }, [searchText])
 
     const getRecentLocationData = () => {
         var recentLocationDetails: any = [];
@@ -159,7 +164,6 @@ const BannerSearch = (props: PropsType) => {
             geocoder.geocode({ location: latlng }, (results, status) => {
                 if (status == google.maps.GeocoderStatus.OK) {
                     const formatedCityText = JSON.parse(JSON.stringify(results[0]));
-                    console.log(index, "index");
                     const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
                     const newData = {
                         mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
@@ -441,7 +445,7 @@ const BannerSearch = (props: PropsType) => {
             let lat = (position[1]).toString();
             let response: any = await Geocode.fromLatLng(lat, long);
             const { city, state, country } = filterFromAddress(response);
-            console.log({ response, city, state, country }, '65')
+
             if (response && ["australia", "au"].includes(country)) {
                 if (response?.results && Array.isArray(response.results) && response?.results?.length) {
                     const address = response.results[0].formatted_address;
@@ -451,7 +455,7 @@ const BannerSearch = (props: PropsType) => {
                     setCurrentLocations(true);
                 }
             } else {
-                if(itemToggle?.state !== "denied"){
+                if (itemToggle?.state !== "denied") {
                     setShowToast(true, "Uh oh! we don't provide service currently in your location.");
                 }
             }
@@ -459,12 +463,13 @@ const BannerSearch = (props: PropsType) => {
     }
 
     let selected_trade: any = selectedTrade;
-
     let length_spec = 0;
 
     if (props?.selectedItem) {
         let sProps = props?.selectedItem;
-        length_spec = sProps?.selectedTrade?.specialisations?.length
+        if(Array.isArray(sProps?.selectedTrade?.specialisations)){
+            length_spec = sProps?.selectedTrade?.specialisations?.length
+        }
     } else {
         length_spec = selected_trade?.specialisations?.length;
         if (!length_spec) {
@@ -483,7 +488,7 @@ const BannerSearch = (props: PropsType) => {
         if (diff < 0) {
             defaultFormat = 'DD MMM YYYY';
         }
-        console.log({ startDate, endDate, diff })
+
         if (startDate && !endDate) {
             return `${moment(startDate).format('MMM-DD')}`
         } else if (startDate && endDate) {
@@ -495,8 +500,6 @@ const BannerSearch = (props: PropsType) => {
 
 
     let custom_name = searchText;
-    let condition_location: any = addressText?.length > 2 || (addressText?.length && enableCurrentLocation && Object.keys(selectedAddress).length);
-    console.log({ addressText, enableCurrentLocation, inputFocus2, selectedAddress, })
     return (
         <div className="home_search">
             <button
@@ -520,11 +523,7 @@ const BannerSearch = (props: PropsType) => {
                                 value={length_spec > 1 ? `${custom_name} +${length_spec - 1}` : (custom_name)}
                                 onChange={(e) => {
                                     // isHandleChanges(true)
-                                    setSearchText(e.target.value);
-                                    setSelectedTrade({})
-                                    if (searchText?.length > 3) {
-                                        props.getSearchJobList(e.target.value)
-                                    }
+                                    setSearchText((e.target.value).trimLeft());
                                 }}
                                 autoComplete="none"
                                 // readOnly={props?.selectedItem ? true : false}
@@ -552,36 +551,12 @@ const BannerSearch = (props: PropsType) => {
                         {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>}
                     </li>
                     {!searchText?.length && inputFocus1 ? recentJobSearches() : null}
-                    {searchText?.length > 3 && inputFocus1 ? renderJobResult() : null}
+                    {searchText?.length > 2 && inputFocus1 ? renderJobResult() : null}
 
                     {/* {'location search start here!'} */}
                     <li className="loc_box">
                         <div id="location-text-field-div">
-
-                            {/* <div
-                                style={{ display: !enableCurrentLocation ? 'none' : '' }}
-                                className="text_field">
-                                <input
-                                    type="text"
-                                    placeholder="Where?"
-                                    className="line-1"
-                                    id="location-input-tag_1"
-                                    onChange={(e) => {
-                                        setCurrentLocations(false);
-                                        setAddressText(e.target.value);
-                                    }}
-                                    onFocus={() => {
-                                        setCurrentLocations(false);
-                                        setInputFocus2(true);
-                                    }}
-                                    value={addressText} />
-                                <span className="detect_icon_ltr">
-                                    <img src={Location} alt="location" />
-                                </span>
-                            </div> */}
-
                             <div
-
                                 className={`text_field ${addressText?.length > 2 ? 'none' : ''}`}>
                                 <input
                                     id="location_search_static"
@@ -590,10 +565,9 @@ const BannerSearch = (props: PropsType) => {
                                     value={addressText}
                                     autoComplete="off"
                                     className={'line-1'}
-                                    onChange={(e: any) => { setAddressText(e.target.value) }}
+                                    onChange={(e: any) => { setAddressText((e.target.value).trimLeft()) }}
                                     onFocus={() => {
                                         setInputFocus2(true)
-                                        console.log('Hard --->', { addressText, inputFocus2 })
                                     }}
                                 />
                                 <span className="detect_icon_ltr">
@@ -699,7 +673,7 @@ const BannerSearch = (props: PropsType) => {
                     </li>
 
                     {/* {'location search end here!'} */}
-                    {console.log({ addressText, inputFocus2, isCheck: addressText?.length && inputFocus2 })}
+
                     {!addressText?.length && inputFocus2 ?
                         <div className="custom_autosuggestion location" id="current-location-search-div">
                             <span
@@ -716,7 +690,7 @@ const BannerSearch = (props: PropsType) => {
                                 </span>)}
                             <div className="flex_row recent_search auto_loc">
                                 {recentLocation?.length ?
-                                    <span className="name_recent_search">
+                                    <span className="sub_title">
                                         {'Recent searches'}
                                     </span>
                                     : null}

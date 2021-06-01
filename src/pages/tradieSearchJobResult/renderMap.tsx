@@ -34,8 +34,8 @@ const RenderMap = (props: any) => {
         }
         console.log(mapCenterCoordinates, "mapCenterCoordinates");
         const newCenter = {
-            lat: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[1] : 37.8136, //lat
-            lng: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[0] :  144.9631//lng
+            lat: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[1] : -37.8136, //lat
+            lng: mapCenterCoordinates?.length > 0 ? mapCenterCoordinates[0]?.location?.coordinates[0] : 144.9631//lng
         }
         if (JSON.stringify(center) == JSON.stringify(newCenter)) {
             return;

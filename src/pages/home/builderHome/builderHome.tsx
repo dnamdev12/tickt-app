@@ -50,11 +50,11 @@ const BuilderHome = (props: any) => {
         }
 
         const postionError = (error: any) => {
-            const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
+            const jobType = { lat: '-37.8136', long: '144.9631', jobType: '', tradie: true };
             setHomeBuilder(jobType);
-            setPosition({ lat: '37.8136', long: '144.9631' });
-            localStorage.setItem('position', '[37.8136, 144.9631]');
-            Geocode.fromLatLng('37.8136', '144.9631').then(
+            setPosition({ lat: '-37.8136', long: '144.9631' });
+            localStorage.setItem('position', '[-37.8136, 144.9631]');
+            Geocode.fromLatLng('-37.8136', '144.9631').then(
                 (response) => {
                     const address = response.results[0].formatted_address;
                     setAddressItem(address)
@@ -80,14 +80,9 @@ const BuilderHome = (props: any) => {
         if (!data || !Object.keys(data)?.length || !data?.saved_tradespeople?.length) {
             checkPermission();
         }
-        // const jobType = { lat: '37.8136', long: '144.9631', jobType: '', tradie: true };
-        // props.setHomeBuilder(jobType);
     }, []);
 
-    // console.log({ builderHome }, 'home_data', props.testBuilderHome)
     let home_data: any = props.testBuilderHome || null;
-    // let recomended_tradespeople: any = home_data?.recomended_tradespeople || [];
-    // let saved_tradespeople: any = home_data?.saved_tradespeople || [];
     return (
         <div className="app_wrapper" >
             <Banner

@@ -25,13 +25,13 @@ const SearchResultTradie = (props: any) => {
     const location: any = useLocation();
     const [stateData, setStateData] = useState(location.state);
     const [isToggle, setToggleSearch] = useState(false);
-    const [localInfo, setLocalInfo] = useState({});
+    const [localInfo, setLocalInfo] = useState({}); // localInfo
     const [loading, setLoading] = useState(false);
     const [localData, setLocalData] = useState([]);
 
     useEffect(() => {
         props.getRecentSearchList();
-        console.log({ stateData }, '----')
+
         let data: any = {
             page: 1,
             isFiltered: false,
@@ -47,7 +47,7 @@ const SearchResultTradie = (props: any) => {
         // specializationId: stateData?.specializations,
 
         if (stateData?.location) {
-            console.log({stateData})
+    
             data['location'] = stateData?.location;
         }
         if (stateData?.calender?.startDate) {
@@ -61,14 +61,15 @@ const SearchResultTradie = (props: any) => {
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
             tradeId: data.tradeId,
-            specializationId: data.specializationId
+            specializationId: data.specializationId,
+            doingLocalChanges:false,
+
         })
         props.postHomeSearchData(data);
     }, []);
 
     const getTitleInfo = (info: any) => {
         setLocalInfo(info)
-        console.log({ info });
     }
 
     useEffect(() => {
@@ -85,7 +86,7 @@ const SearchResultTradie = (props: any) => {
     let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
     let isLoading: any = props.isLoading;
-    console.log('enter ----------->', { isLoading: props.isLoading, length: homeSearchJobData?.length })
+    
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>

@@ -53,7 +53,7 @@ const BannerSearch = (props: PropsType) => {
         location: {
             coordinates: [
                 144.9631, //long
-                37.8136, //lat
+                -37.8136, //lat
             ]
         },
         bannerLocation: '',
@@ -491,8 +491,8 @@ const BannerSearch = (props: PropsType) => {
                                 shouldFetchSuggestions={true}
                                 onSelect={locationSelectedHandler}
                                 highlightFirstSuggestion={true}
-                            // searchOptions={{ types: ['(cities)','address'] }}
-                            // searchOptions={{ componentRestrictions: { country: "au" } }}
+                                // searchOptions={{ types: ['(cities)','address'] }}
+                                searchOptions={{ componentRestrictions: { country: "au" } }}
                             // debounce={400}
                             >
                                 {renderPlacesData}
@@ -511,7 +511,7 @@ const BannerSearch = (props: PropsType) => {
                               </span>}
                                 <div className="flex_row recent_search auto_loc">
                                     {recentLocation?.length ?
-                                        <span className="name_recent_search">recent search</span>
+                                        <span className="sub_title">Recent searches</span>
                                         : null}
                                     {recentLocation?.map((item: any) => {
                                         return (

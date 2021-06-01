@@ -6,17 +6,9 @@ import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import SearchResultFilters from '../searchResultFilters/index';
 import RenderMap from './renderMap';
 
-import filterUnselected from '../../assets/images/ic-filter-unselected.png';
-import filterSelected from '../../assets/images/ic-filter-selected.png';
 import mapIcon from '../../assets/images/map.png';
 import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
-
-//  <div className="no_record">
-// <figure className="no_img">
-// <img src={noData} alt="data not found" />
-// </figure>
-// </div>
 
 const TradieSearchJobResult = (props: any) => {
     const [searchResultData, setSearchResultData] = useState({

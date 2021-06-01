@@ -1,7 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-// @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
-// @import url('http://fonts.cdnfonts.com/css/neue-haas-grotesk-text-pro');
 html,
 body {
   height: 100%;
@@ -230,7 +228,6 @@ body {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    // background-size: contain !important;
   }
 }
 
@@ -1186,9 +1183,6 @@ body {
     @include border-radius(3px);
     background-color: rgba(18, 14, 36, 0.3);
     height: 400px;
-    // @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    //   height: 300px;
-    // }
     @media (max-width: 768px) {
       margin-bottom: 20px;
     }
@@ -2596,7 +2590,7 @@ body {
   top: 0;
   margin: 15px 0;
   display: flex;
-  background-color: #f0f3fa;
+  background-color: #f0f3fa !important;
   box-shadow: 0 0 5px #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -2611,36 +2605,16 @@ body {
     visibility: visible;
   }
   &.success {
-    // background: var(--white) url('../images/check.png') no-repeat;
-    // background-size: 45%;
-    // background-position: -18% 70%;
-    .fill_btn {
-      background-color: var(--green);
-    }
+    background-color: var(--green);
   }
   &.failed {
-    // background: var(--white) url('../images/close.png') no-repeat;
-    // background-size: 35%;
-    // background-position: -15% 50%;
-    .fill_btn {
-      background-color: #ed1c24;
-    }
+    background-color: #ed1c24;
   }
   &.warning {
-    // background: var(--white) url('../images/warning.png') no-repeat;
-    // background-size: 45%;
-    // background-position: -18% 70%;
-    .fill_btn {
-      background-color: #e0d861;
-    }
+    background-color: #e0d861;
   }
   &.info {
-    // background: var(--white) url('../images/info-button.png') no-repeat;
-    // background-size: 45%;
-    // background-position: -18% 70%;
-    .fill_btn {
-      background-color: var(--blue-two);
-    }
+    background-color: var(--blue-two);
   }
   .wrapppr {
     width: 100%;
@@ -4563,6 +4537,14 @@ body {
         display: none;
       }
     }
+    &.inactive{
+      &::before{
+        display: none;
+      }
+      .full_btn{
+        width: 327px;
+      }
+    }
     &.active{
       .circle_stepper{
         span{
@@ -4639,6 +4621,48 @@ body {
         display: block;
         font-size: 14px;
       }
+    }
+  }
+}
+
+.decline_reason{
+  background-color: #f6f7f9;
+  margin: 15px 0;
+  padding: 30px 10px 33px 15px;
+  max-width: 327px;
+  .form_label{
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+  }
+  .decline_media{
+    li{
+      margin: 0;
+      &::before{
+        display: none;
+      }
+    }
+    .react-multiple-carousel__arrow{
+      min-width: 30px;
+      min-height: 30px;
+      &.react-multiple-carousel__arrow--left{
+        &::before{
+          width: 18px;
+          height: 18px;
+        }
+      }
+      &.react-multiple-carousel__arrow--right{
+        &::before{
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+  .upload_img_video{
+    margin: 0;
+    .img_video{
+      width: 140px;
+      height: 122px;
+      margin: 0;
     }
   }
 }
@@ -4780,25 +4804,4 @@ div#light-box div {
 //----------------------Utilities-------------------------//
 .padding_0 {
   padding: 0px;
-}
-
-.common-btn {
-  font-size: 14px;
-    font-family: 'Neue Haas Grotesk Text Pro Medium';
-    line-height: 1.43;
-    color: var(--blue);
-    padding: 13px 15px;
-    border-radius: 6px;
-    border: 1px solid #dfe5ef;
-    background-color: #dfe5ef;
-    display: flex;
-    align-items: center;
-}
-
-
-.name_recent_search {
-  padding-top: 15px;
-  padding-left: 15px;
-  font-weight: bold;
-  font-size: 16px;
 }

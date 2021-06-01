@@ -148,7 +148,7 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const modalCloseHandler = (modalType: string) => {
-        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, answerShownHideList: [] }));
+        setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, answerShownHideList: [], questionData: '' }));
         setErrors({});
     }
 
@@ -467,7 +467,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </button>
                                 </div>
                                 <div className="modal_message">
-                                    <p>This job doesn't matches to your Category, Are you still want to proceed?</p>
+                                    <p>This job search doesn't match with your category. Are you sure you still want to proceed?</p>
                                 </div>
                                 <div className="dialog_actions">
                                     <button className="fill_btn btn-effect" onClick={applyJobClicked}>Yes</button>
@@ -594,8 +594,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         <div className="form_field">
                                             <label className="form_label">Your question</label>
                                             <div className="text_field">
-                                                <textarea placeholder="Text" value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
-                                                <span className="char_count">{`${questionsData.questionData.trim().length}/250`}</span>
+                                                <textarea placeholder="Text" maxLength={250} value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
+                                                <span className="char_count">{`${questionsData.questionData.length}/250`}</span>
                                             </div>
                                             {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}
                                         </div>
