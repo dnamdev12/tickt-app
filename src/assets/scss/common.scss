@@ -3644,6 +3644,29 @@ body {
   height: 50px;
   display: block !important;
 }
+.edit_delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  span {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    cursor: pointer;
+    z-index: 9;
+  }
+  .edit {
+    background: url("../images/ic-edit-blue.png") center no-repeat;
+    background-size: contain;
+  }
+  .delete {
+    background: url("../images/ic-cancel-blue.png") center no-repeat;
+    background-size: contain;
+  }
+}
 .milestones {
   margin-bottom: 30px;
   li {
@@ -3655,28 +3678,6 @@ body {
     margin-bottom: 16px;
     &:hover {
       box-shadow: 0 5px 30px 0 rgba(79, 79, 118, 0.15);
-    }
-    .edit_delete {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      display: flex;
-      align-items: center;
-      span {
-        margin-left: 10px;
-        width: 24px;
-        height: 24px;
-        display: inline-block;
-        cursor: pointer;
-      }
-      .edit {
-        background: url("../images/ic-edit-blue.png") center no-repeat;
-        background-size: contain;
-      }
-      .delete {
-        background: url("../images/ic-cancel-blue.png") center no-repeat;
-        background-size: contain;
-      }
     }
     // &:last-child{
     // 	margin-bottom: 0;
@@ -4383,8 +4384,12 @@ body {
     .xs_sub_title{
       font-size: 16px;
       padding-left: 30px;
-      max-width: 93%;
+      max-width: 86%;
     }
+    .edit_delete {
+      top: 0px;
+      right: 0px;
+  }
   }
   hr{
     width: 1px;
