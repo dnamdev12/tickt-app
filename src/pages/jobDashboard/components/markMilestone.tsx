@@ -258,23 +258,25 @@ const MarkMilestone = ({
                               : toDate
                             }`}
                         </span>
-                        {isDeclined && (
-                          <>
-                            <div className="form_field">
-                              <label className="form_label">Decline reason</label>
-                              <div className="text_field">
-                                <textarea
-                                  value={declinedReason?.reason}
-                                  readOnly
-                                ></textarea>
-                              </div>
+                      </div>
+                      {isDeclined && (
+                        <>
+                          <div className="decline_reason">
+                            <label className="form_label">Decline reason:</label>
+                            <div className="text_field">
+                              {/* <textarea
+                                value={declinedReason?.reason}
+                                readOnly
+                              ></textarea> */}
+                              <p className="commn_para">{declinedReason?.reason}</p>
                             </div>
+
                             {declinedReason?.url?.length > 0 &&
                               <Carousel
-                                className=""
+                                className="decline_media"
                                 responsive={declinedImages}
-                                showDots={true}
-                                arrows={false}
+                                showDots={false}
+                                arrows={true}
                               >
                                 {declinedReason?.url?.map((image: string) => {
                                   return (
@@ -286,28 +288,28 @@ const MarkMilestone = ({
                                 })}
                               </Carousel>
                             }
-                            <button
-                              onClick={() => {
-                                if (declinedCount >= 5) {
-                                  setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
-                                  return;
-                                }
-                                setMilestoneIndex(index);
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (declinedCount >= 5) {
+                                setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
+                                return;
+                              }
+                              setMilestoneIndex(index);
 
-                                if (index === milestones?.length - 1) {
-                                  setIsLastMilestone(true);
-                                }
+                              if (index === milestones?.length - 1) {
+                                setIsLastMilestone(true);
+                              }
 
-                                if (isPhotoevidence) {
-                                  setStep(2);
-                                } else {
-                                  setStep(3);
-                                }
-                              }}
-                              className='fill_btn full_btn btn-effect' >Remark as Complete</button>
-                          </>
-                        )}
-                      </div>
+                              if (isPhotoevidence) {
+                                setStep(2);
+                              } else {
+                                setStep(3);
+                              }
+                            }}
+                            className='fill_btn full_btn btn-effect' >Remark as Complete</button>
+                        </>
+                      )}
                       {isActive && (
                         <button
                           className="fill_btn full_btn btn-effect"
