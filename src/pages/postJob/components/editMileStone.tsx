@@ -50,7 +50,6 @@ export default class EditMilestone extends Component<Props, State> {
 
     checkIsDateValid = (milestones: any, time: any) => {
         const { editMileStone, editMilestoneTiming } = this.props;
-        console.log({ editMileStone, milestones, editMilestoneTiming })
         let checkIsValid: any = true;
         let isSkip: any = true;
 
@@ -65,7 +64,6 @@ export default class EditMilestone extends Component<Props, State> {
                 let validStartInput = moment(time.from_date).isValid();
                 let validEndInput = moment(time.to_date).isValid();
 
-                console.log({ validStart, validEnd, validStartInput, validEndInput })
                 if (validStart && validEnd) {
                     if (validStartInput && validEndInput) {
                         if (moment(time.from_date).isSameOrAfter(mile.from_date) && (moment(time.to_date).isSameOrBefore(mile.to_date) ||
@@ -129,7 +127,7 @@ export default class EditMilestone extends Component<Props, State> {
                     }
                 }
             }
-            console.log({ isValid, isSkip, editMilestoneTiming, from_date, to_date });
+            
             this.setState({
                 from_date: from_date,
                 isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
@@ -234,7 +232,7 @@ export default class EditMilestone extends Component<Props, State> {
     render() {
         const { handleStepForward, handleStepBack, milestones, editMileStone } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, from_date, to_date, errors } = this.state;
-        console.log({ from_date, to_date });
+        
         let from_date_format = from_date?.length && from_date !== 'Invalid date' ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
         let to_date_format = to_date?.length && to_date !== 'Invalid date' ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
         let check_errors = this.checkErrors();

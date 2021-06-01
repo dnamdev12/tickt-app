@@ -34,8 +34,6 @@ const SearchFilter = (props: any) => {
 
     const [prevLocal, setPrevLocal] = useState(null);
 
-    console.log({ props });
-
     const [sortByPrice, setSortByPrice] = useState<any>({
         priceFilterClicked: false,
         payTypeClicked: false,
@@ -64,7 +62,6 @@ const SearchFilter = (props: any) => {
     }, [])
 
     useEffect(() => {
-        console.log({ localInfo: props.localInfo, tradeId: sortByFilter.tradeId?.length }, '-->', { sortByFilter })
         if (props?.localInfo?.tradeId?.length) {
             setSortByFilter((prev: any) => ({
                 ...prev,
@@ -176,7 +173,6 @@ const SearchFilter = (props: any) => {
     const renderFilterButtons = () => (
         <ul className="filters_row">
             {/* {'Filter buttons on top'} */}
-            {console.log({ sortByFilter })}
             {/* specializationId
             tradeId */}
             <li>
@@ -216,7 +212,7 @@ const SearchFilter = (props: any) => {
         const { specializationId, tradeId } = sortByFilter;
         if (specializationId?.length) {
             let filteredItem: any = []
-            let name = specializationList[0].name;
+            // let name = specializationList[0].name;
             if (specializationList?.length) {
                 filteredItem = specializationList.filter((item: any) => {
                     if (specializationId.includes(item._id)) {
@@ -224,6 +220,7 @@ const SearchFilter = (props: any) => {
                     }
                 });
             }
+            let name = filteredItem[0].name;
 
             let data: any = {
                 page: 1,
@@ -256,9 +253,9 @@ const SearchFilter = (props: any) => {
                 data['to_date'] = local_info?.to_date;
             }
 
-            props.postHomeSearchData(data)
-            props.getTitleInfo((prev: any) => ({
-                ...prev,
+            console.log({
+                data,
+                filteredItem,
                 name: name,
                 count: specializationId?.length,
                 tradeId: data.tradeId,
@@ -266,7 +263,19 @@ const SearchFilter = (props: any) => {
                 sortBy: data.sortBy,
                 to_date: local_info?.to_date,
                 from_date: local_info?.from_date
-            }))
+            })
+            
+            props.postHomeSearchData(data)
+            props.getTitleInfo({
+                name: name,
+                count: specializationId?.length,
+                tradeId: data.tradeId,
+                specializationId: data.specializationId,
+                sortBy: data.sortBy,
+                to_date: local_info?.to_date,
+                from_date: local_info?.from_date,
+                doingLocalChanges:false
+            })
             // props.updateSearchName(filteredItem);
         }
     }

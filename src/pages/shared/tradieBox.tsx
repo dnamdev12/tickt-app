@@ -15,11 +15,14 @@ type PropsType = RouteComponentProps & {
     specializationId?: any
 }
 
+const randomRating  = Math.floor(Math.random() * 5) + 1;
+const randomReview = Math.floor(Math.random() * 200) + 50;
+
 class TradieBox extends Component<PropsType, State> {
     constructor(props: any) {
         super(props);
         this.state = {
-            isItemSpec: {}
+            isItemSpec: {},
         }
     }
 
@@ -36,7 +39,7 @@ class TradieBox extends Component<PropsType, State> {
 
     redirectPath = (item: any) => {
         const { jobId, specializationId, history } = this.props;
-        if(specializationId && jobId){
+        if (specializationId && jobId) {
             history.push(`tradie-info?jobId=${jobId}&specializationId=${specializationId}&tradeId=${item?.tradieId}`)
         }
     }
@@ -64,7 +67,7 @@ class TradieBox extends Component<PropsType, State> {
                         </figure>
                         <div className="details">
                             <span className="name">{item?.tradieName}</span>
-                            <span className="rating">{item?.ratings || Math.floor(Math.random() * 5) + 1} , {item?.reviews || Math.floor(Math.random() * 200) + 50} reviews </span>
+                            <span className="rating">{item?.ratings || randomRating} , {item?.reviews || randomReview} reviews </span>
                         </div>
                     </div>
                     <div className="tags_wrap">

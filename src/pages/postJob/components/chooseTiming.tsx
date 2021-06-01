@@ -55,7 +55,6 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
                 let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
 
                 if (start && end) {
-                    console.log({ start_selection, end_selection, start, end })
                     if (moment(start_selection).isAfter(start) || moment(end_selection).isBefore(end)) {
                         item_find = true
                     }

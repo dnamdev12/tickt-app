@@ -140,7 +140,7 @@ const JobDetails = ({
             }).filter((item:any) => item! !== undefined);
 
             let filterItems: any = [];
-            console.log({ format_items });
+            
             if (format_items?.length) {
                 format_items.forEach((item: any, index: number) => {
                     let render_item: any = null;
@@ -198,7 +198,7 @@ const JobDetails = ({
                     </div>
                 )
             }
-            console.log({ filterItems })
+            
             return filterItems;
         }
     }
@@ -242,8 +242,6 @@ const JobDetails = ({
     }
 
     let data_clone: any = data;
-    console.log({ data_clone });
-
     const renderFilteredItems = () => {
         let sources: any = [];
         let types: any = [];
@@ -265,7 +263,6 @@ const JobDetails = ({
     }
 
     const { sources, types } = renderFilteredItems();
-    console.log({ sources, types })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -416,7 +413,6 @@ const JobDetails = ({
                         <div className="section_wrapper">
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
-                                {console.log({ builderProfile })}
                                 <div className="flex_col_sm_3">
                                     <div className="tradie_card posted_by view_more ">
                                         <a href="javascript:void(0)" className="chat circle"></a>

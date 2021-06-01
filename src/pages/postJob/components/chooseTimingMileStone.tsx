@@ -69,11 +69,8 @@ const ChooseTimingMileStone = ({
         }
 
         let item_index = null;
-        console.log({timings, range})
         item_index = milestones.length ? milestones.length - 1 : 0;
 
-        console.log({editMileStone, timings, item_index});
-      
         if (editMileStone == null) {
             addTimeToMileStone(timings, item_index);
             handleStepBack();
@@ -92,7 +89,7 @@ const ChooseTimingMileStone = ({
         }
         return true;
     }
-    console.log({ from_date: data?.from_date, to_date: data?.to_date })
+    
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
