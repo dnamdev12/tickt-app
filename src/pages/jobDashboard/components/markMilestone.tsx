@@ -268,8 +268,7 @@ const MarkMilestone = ({
                                 value={declinedReason?.reason}
                                 readOnly
                               ></textarea> */}
-                              <p className="commn_para">Lorem, ipsum dolor sit amet consectetur adipisicing elit. Hic est aliquam repellendus aspernatur placeat molestias natus architecto voluptate voluptates aperiam. Omnis iste ea quo magni expedita quas minima illo rem.</p>
-                              {/* <p className="commn_para">{declinedReason?.reason}</p> */}
+                              <p className="commn_para">{declinedReason?.reason}</p>
                             </div>
 
                             {declinedReason?.url?.length > 0 &&
