@@ -1,7 +1,5 @@
 /* You can add global styles to this file, and also import other style files */
 
-// @import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap");
-// @import url('http://fonts.cdnfonts.com/css/neue-haas-grotesk-text-pro');
 html,
 body {
   height: 100%;
@@ -230,7 +228,6 @@ body {
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    // background-size: contain !important;
   }
 }
 
@@ -1186,9 +1183,6 @@ body {
     @include border-radius(3px);
     background-color: rgba(18, 14, 36, 0.3);
     height: 400px;
-    // @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    //   height: 300px;
-    // }
     @media (max-width: 768px) {
       margin-bottom: 20px;
     }
@@ -2596,7 +2590,7 @@ body {
   top: 0;
   margin: 15px 0;
   display: flex;
-  background-color: #f0f3fa;
+  background-color: #f0f3fa !important;
   box-shadow: 0 0 5px #ccc;
   border-radius: 5px;
   padding: 10px;
@@ -4543,6 +4537,14 @@ body {
         display: none;
       }
     }
+    &.inactive{
+      &::before{
+        display: none;
+      }
+      .full_btn{
+        width: 327px;
+      }
+    }
     &.active{
       .circle_stepper{
         span{
@@ -4619,6 +4621,48 @@ body {
         display: block;
         font-size: 14px;
       }
+    }
+  }
+}
+
+.decline_reason{
+  background-color: #f6f7f9;
+  margin: 15px 0;
+  padding: 30px 10px 33px 15px;
+  max-width: 327px;
+  .form_label{
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+  }
+  .decline_media{
+    li{
+      margin: 0;
+      &::before{
+        display: none;
+      }
+    }
+    .react-multiple-carousel__arrow{
+      min-width: 30px;
+      min-height: 30px;
+      &.react-multiple-carousel__arrow--left{
+        &::before{
+          width: 18px;
+          height: 18px;
+        }
+      }
+      &.react-multiple-carousel__arrow--right{
+        &::before{
+          width: 18px;
+          height: 18px;
+        }
+      }
+    }
+  }
+  .upload_img_video{
+    margin: 0;
+    .img_video{
+      width: 140px;
+      height: 122px;
+      margin: 0;
     }
   }
 }
