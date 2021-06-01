@@ -511,7 +511,7 @@ const BannerSearch = (props: PropsType) => {
                               </span>}
                                 <div className="flex_row recent_search auto_loc">
                                     {recentLocation?.length ?
-                                        <span className="name_recent_search">recent search</span>
+                                        <span className="sub_title">Recent searches</span>
                                         : null}
                                     {recentLocation?.map((item: any) => {
                                         return (

@@ -2,7 +2,7 @@ import React, { Component, useState } from 'react'
 import Location from "../../assets/images/ic-location.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
 import TradieBox from './tradieBox';
-import noDataFound from '../../assets/images/no-data-found.png';
+import noData from '../../assets/images/no-search-data.png';
 
 interface Props {
     data: any,
@@ -33,11 +33,11 @@ export default class TradieHome extends Component<Props> {
                             data.splice(0, props.length || data.length - 1).map((item: any, index: number) => (<TradieBox item={item} index={index} />)) :
                             (
                                 <div className="no_record">
-                                    <figure className="no_data_img">
-                                        <img src={noDataFound} alt="data not found" />
-                                    </figure>
-                                    <span>Data not found</span>
-                                </div>
+                                        <figure className="no_data_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                        <span>Data not found</span>
+                                    </div>
                             )}
                     </div>
                     <button
