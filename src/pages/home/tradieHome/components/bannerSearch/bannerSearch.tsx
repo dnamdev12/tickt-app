@@ -491,8 +491,8 @@ const BannerSearch = (props: PropsType) => {
                                 shouldFetchSuggestions={true}
                                 onSelect={locationSelectedHandler}
                                 highlightFirstSuggestion={true}
-                            // searchOptions={{ types: ['(cities)','address'] }}
-                            // searchOptions={{ componentRestrictions: { country: "au" } }}
+                                // searchOptions={{ types: ['(cities)','address'] }}
+                                searchOptions={{ componentRestrictions: { country: "au" } }}
                             // debounce={400}
                             >
                                 {renderPlacesData}

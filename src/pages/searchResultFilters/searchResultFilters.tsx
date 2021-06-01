@@ -1,17 +1,13 @@
 import { useState, useEffect } from 'react';
 import Constants from '../../utils/constants';
 import { setShowToast } from '../../redux/common/actions';
-import regex from '../../utils/regex';
 import Menu from '@material-ui/core/Menu';
 import Modal from '@material-ui/core/Modal';
-import MenuItem from '@material-ui/core/MenuItem';
 
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import spherePlaceholder from '../../assets/images/ic_categories_placeholder.svg';
-import { Divider } from '@material-ui/core';
-
 
 const SearchResultFilters = (props: any) => {
     const { paramsData } = props;
@@ -123,13 +119,11 @@ const SearchResultFilters = (props: any) => {
         delete errors.maxBudget;
     };
 
-    const sortByFilterClick = (event: any) => {
-        setFilterAnchorEl(event.currentTarget);
+    const sortByFilterClick = () => {
         setSortByFilter((prevData: any) => ({ ...prevData, sortByFilterClicked: true }))
     };
 
     const sortByFilterClose = () => {
-        setFilterAnchorEl(null);
         setSortByFilter((prevData: any) => ({ ...prevData, sortByFilterClicked: false }))
     };
 
@@ -324,7 +318,7 @@ const SearchResultFilters = (props: any) => {
                             <div className="form_field">
                                 <span className="xs_sub_title">Job types</span>
                             </div>
-                            <Divider className="job_categories">
+                            <ul className="job_categories">
                                 {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
                                     const active = sortByFilter.jobTypes[0] == _id;
                                     return (
@@ -336,7 +330,7 @@ const SearchResultFilters = (props: any) => {
                                         </li>
                                     )
                                 })}
-                            </Divider>
+                            </ul>
                             <div className="form_field">
                                 <span className="xs_sub_title">Specialisation</span>
                             </div>
