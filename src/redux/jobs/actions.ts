@@ -292,7 +292,7 @@ export const getMilestoneList = (jobId: string) => ({
   jobId,
 });
 
-export const markMilestoneComplete = (data: any, callback: () => void) => ({
+export const markMilestoneComplete = (data: any, callback: (jobCompletedCount: number) => void) => ({
   type: actionTypes.MARK_MILESTONE_COMPLETE,
   data,
   callback,

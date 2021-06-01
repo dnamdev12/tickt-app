@@ -23,8 +23,23 @@ const reducer = (state = initialState, action: any) => {
         bankDetails: action.payload,
       };
 
-    default:
-      return state;
+    case actionTypes.REMOVE_BANK_DETAILS_END:
+      if (action.payload.success) {
+        return {
+          ...state,
+          bankDetails: {
+            userId: undefined,
+            account_name: '',
+            account_number: '',
+            bsb_number: '',
+          }, 
+        }
+      } else {
+        return state;
+      }
+
+      default:
+        return state;
   }
 };
 

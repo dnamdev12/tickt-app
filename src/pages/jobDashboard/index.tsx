@@ -13,6 +13,7 @@ import {
   getBankDetails,
   addBankDetails,
   updateBankDetails,
+  removeBankDetails,
 } from '../../redux/profile/actions';
 
 const mapStateToProps = (state: any) => {
@@ -57,6 +58,7 @@ const mapDispatchToProps = (dispatch: any) => {
       getBankDetails,
       addBankDetails,
       updateBankDetails,
+      removeBankDetails,
     },
     dispatch
   );
