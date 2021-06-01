@@ -29,9 +29,10 @@ interface Proptypes {
   milestoneList: any;
   milestonesCount: number;
   newJobsCount: number;
-  addBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
-  updateBankDetails: (data: any, milestoneData: any, callback: () => void) => void;
+  addBankDetails: (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => void;
+  updateBankDetails: (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => void;
   getBankDetails: () => void;
+  removeBankDetails: () => void;
   bankDetails: any;
 }
 
@@ -53,6 +54,7 @@ const JobDashboard = ({
   addBankDetails,
   updateBankDetails,
   getBankDetails,
+  removeBankDetails,
   bankDetails,
 }: Proptypes) => {
   const history = useHistory();
@@ -65,7 +67,7 @@ const JobDashboard = ({
 
   const [openSidebar, setOpenSidebar] = useState(false);
   const [milestoneComplete, setMilestoneComplete] = useState(false);
-  const [jobComplete, setJobComplete] = useState(false);
+  const [jobComplete, setJobComplete] = useState<boolean | number>(false);
 
   return milestoneComplete ? (
 
@@ -113,13 +115,13 @@ const JobDashboard = ({
         </div>
       </figure>
     </div>
-  ) : jobComplete ? (
+  ) : !!jobComplete ? (
     <div className="img_text_wrap">
       <figure className="full_image">
         <img src={templateImage} alt="template-image" />
         <div className="short_info">
           <div className="content">
-            <h1 className="title">Your 7th job is completed!</h1>
+            <h1 className="title">Your {jobComplete}th job is completed!</h1>
             <span className="show_label">
               You have completed your 7th Job using Tickt! Click here to view
               your completed jobs or leave a review. You will be paid as soon as
@@ -268,10 +270,11 @@ const JobDashboard = ({
                     getMilestoneList={getMilestoneList}
                     milestoneList={milestoneList}
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
-                    showJobCompletePage={() => setJobComplete(true)}
+                    showJobCompletePage={(jobCompletedCount) => setJobComplete(jobCompletedCount)}
                     getBankDetails={getBankDetails}
                     addBankDetails={addBankDetails}
                     updateBankDetails={updateBankDetails}
+                    removeBankDetails={removeBankDetails}
                     bankDetails={bankDetails}
                     {...props}
                   />

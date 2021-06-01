@@ -467,7 +467,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </button>
                                 </div>
                                 <div className="modal_message">
-                                    <p>This job doesn't matches to your Category, Are you still want to proceed?</p>
+                                    <p>This job search doesn't match with your category. Are you sure you still want to proceed?</p>
                                 </div>
                                 <div className="dialog_actions">
                                     <button className="fill_btn btn-effect" onClick={applyJobClicked}>Yes</button>

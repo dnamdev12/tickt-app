@@ -64,6 +64,26 @@ function* updateBankDetails({ data, milestoneData, callback }: any) {
   yield put({ type: actionTypes.UPDATE_BANK_DETAILS_END, payload: data });
 }
 
+function* removeBankDetails() {
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.delete(
+    Urls.removeBankDetails,
+  );
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    yield put({
+      type: actionTypes.REMOVE_BANK_DETAILS_END,
+      payload: { success: true }
+    });
+
+    return;
+  }
+
+  setShowToast(true, response.message);
+  yield put({ type: actionTypes.REMOVE_BANK_DETAILS_END, payload: { success: false } });
+}
+
 function* getBankDetails() {
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.getBankDetails);
@@ -86,6 +106,7 @@ function* authWatcher() {
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE_DATA, callTradieProfileData);
   yield takeLatest(actionTypes.ADD_BANK_DETAILS_START, addBankDetails);
   yield takeLatest(actionTypes.UPDATE_BANK_DETAILS_START, updateBankDetails);
+  yield takeLatest(actionTypes.REMOVE_BANK_DETAILS_START, removeBankDetails);
   yield takeLatest(actionTypes.GET_BANK_DETAILS_START, getBankDetails);
 }
 

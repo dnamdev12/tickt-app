@@ -159,6 +159,7 @@ function* markMilestoneComplete({ data, callback }: any) {
   if (response.status_code === 200) {
     if (callback) {
       yield call(callback);
+      yield call(callback, response.result?.jobCompletedCount);
     }
 
     return;
