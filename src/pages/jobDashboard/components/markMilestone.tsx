@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { format } from 'date-fns';
+import { setShowToast } from '../../../redux/common/actions';
 
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
@@ -212,6 +213,7 @@ const MarkMilestone = ({
                     fromDate,
                     toDate,
                     declinedReason,
+                    declinedCount,
                   },
                   index
                 ) => {
@@ -267,22 +269,29 @@ const MarkMilestone = ({
                                 ></textarea>
                               </div>
                             </div>
-                            <div className="upload_img_video">
-                              {/* {declinedReason?.url?.length && <Carousel className="" responsive={declinedImages} autoPlay={true} arrows={false} > */}
-                              {declinedReason?.url?.map((image: string) => {
-                                return (
-                                  <figure className="img_video">
-                                    <img src={image} alt="media" />
-                                  </figure>
-                                )
-                              })}
-                              {/* <div>SLide 1</div>
-                                    <div>SLide 2</div>
-                                    <div>SLide 3</div>
-                                  </Carousel>} */}
-                            </div>
+                            {declinedReason?.url?.length > 0 &&
+                              <Carousel
+                                className=""
+                                responsive={declinedImages}
+                                showDots={true}
+                                arrows={false}
+                              >
+                                {declinedReason?.url?.map((image: string) => {
+                                  return (
+                                    <div className="upload_img_video">
+                                      <figure className="img_video">
+                                        <img src={image} alt="image" />
+                                      </figure>
+                                    </div>)
+                                })}
+                              </Carousel>
+                            }
                             <button
                               onClick={() => {
+                                if (declinedCount >= 5) {
+                                  setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
+                                  return;
+                                }
                                 setMilestoneIndex(index);
 
                                 if (index === milestones?.length - 1) {
@@ -486,7 +495,7 @@ const MarkMilestone = ({
               </p>
             </div>
             <button className="fill_btn full_btn btn-effect" onClick={() => setStep(5)}>
-              {data.userId ? 'Continue' : 'Add Details'} 
+              {data.userId ? 'Continue' : 'Add Details'}
             </button>
           </div>
         </div>
