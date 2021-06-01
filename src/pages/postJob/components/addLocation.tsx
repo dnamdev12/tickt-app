@@ -106,7 +106,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
     e.preventDefault();
     setActiveCurrent(true);
     let permission_web = await navigator.permissions.query({ name: 'geolocation' });
-    
+
     if (permission_web.state !== 'denied') {
       setLoading(true)
       let item_position: any = localStorage.getItem('position');
@@ -116,7 +116,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
       try {
         let response: any = await Geocode.fromLatLng(latitude, longitude);
         const { city, state, country } = filterFromAddress(response);
-        
+
         if (response && ["australia", "au"].includes(country)) {
           const address = response.results[0].formatted_address;
           let coordinates_values = [latitude, longitude];
@@ -124,7 +124,6 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
           setLoading(false);
         } else {
           setShowToast(true, "Uh oh! we don't provide service currently in your location.");
-          // setLocation({ coordinates: [144.9631, -37.8136], address: '325 Little Bourke Street, Melbourne CBD, Melbourne, Australia' })
           setLoading(false);
         }
       } catch (err) {
