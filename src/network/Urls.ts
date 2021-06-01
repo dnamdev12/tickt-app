@@ -1,5 +1,5 @@
-const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
-// const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
+// const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
+const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
 // const ACTIVE_HOST = 'https://ticktstgapi.appskeeper.in';  // stg env
 
 const versions = {
