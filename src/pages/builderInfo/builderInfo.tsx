@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Constants from '../../utils/constants';
 import {
     getBuilderProfile,
     getTradieReviewList,
@@ -65,6 +66,7 @@ const portfolioModal = {
 
 
 const BuilderInfo = (props: PropsType) => {
+    const [errors, setErrors] = useState<any>({});
     const [profileData, setProfileData] = useState<any>('');
     const [reviewList, setReviewList] = useState<Array<any>>([]);
     const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
@@ -120,7 +122,8 @@ const BuilderInfo = (props: PropsType) => {
     }
 
     const modalCloseHandler = (modalType: string) => {
-        setReviewsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteReviewsClicked: false }))
+        setReviewsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteReviewsClicked: false, reviewData: '' }));
+        setErrors({});
     }
 
     const loadMoreReviewHandler = async () => {
@@ -135,15 +138,28 @@ const BuilderInfo = (props: PropsType) => {
         }
     }
 
+    const validateForm = (type: string) => {
+        if (type === 'removeReviewReply' || type === 'removeReviewBuilder') return true;
+        const newErrors: any = {};
+        if (!reviewsData.reviewData.trim()?.length) {
+            newErrors.reviewData = type === 'updateReviewBuilder' ? Constants.errorStrings.askReview : Constants.errorStrings.askReply;
+        }
+        setErrors(newErrors);
+        return !Object.keys(newErrors).length;
+    }
+
     const submitReviewHandler = async (type: string) => {
         if (['reviewReply', 'updateReviewReply', 'removeReviewReply', 'removeReviewBuilder', 'updateReviewBuilder'].includes(type)) {
+            if (!validateForm(type)) {
+                return;
+            }
             var response: any;
             var data: any;
             var newData: any = reviewsData.replyShownHideList;
             if (type == 'reviewReply') {
                 data = {
                     reviewId: reviewsData.reviewId,
-                    reply: reviewsData.reviewData
+                    reply: reviewsData.reviewData.trim()
                 }
                 response = await tradieReviewReply(data);
             }
@@ -151,7 +167,7 @@ const BuilderInfo = (props: PropsType) => {
                 data = {
                     reviewId: reviewsData.reviewId,
                     replyId: reviewsData.replyId,
-                    reply: reviewsData.reviewData
+                    reply: reviewsData.reviewData.trim()
                 }
                 response = await tradieUpdateReviewReply(data);
             }
@@ -166,7 +182,7 @@ const BuilderInfo = (props: PropsType) => {
                 data = {
                     reviewId: reviewsData.reviewId,
                     rating: reviewsData.rating,
-                    review: reviewsData.reviewData
+                    review: reviewsData.reviewData.trim()
                 }
                 response = await updateReviewBuilder(data);
             }
@@ -182,6 +198,7 @@ const BuilderInfo = (props: PropsType) => {
                 const res = await getTradieReviewList(listData);
                 setReviewList(res.data);
                 // newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
+                setReviewListPageNo(1);
             }
             setReviewsData((prevData: any) => ({
                 ...prevData,
@@ -211,7 +228,7 @@ const BuilderInfo = (props: PropsType) => {
                 reviewsClickedType: 'reviewReply',
                 reviewId: reviewId,
             }));
-        } else if (type == 'reviewReply') {
+        } else if (type == 'reviewReply' && validateForm(type)) {
             setReviewsData((prevData: any) => ({
                 ...prevData,
                 submitReviewsClicked: true,
@@ -249,6 +266,7 @@ const BuilderInfo = (props: PropsType) => {
                 reviewsClickedType: '',
                 reviewId: '',
             }));
+            setErrors({});
         } else if (type == 'hideReviewClicked') {
             const newData = [...reviewsData.replyShownHideList].filter(id => id !== replyId);
             setReviewsData((prevData: any) => ({ ...prevData, replyShownHideList: newData }));
@@ -364,9 +382,11 @@ const BuilderInfo = (props: PropsType) => {
                                 </div>
                             )
                         }) :
-                            <figure className="portfolio_img">
-                                <img src={portfolioPlaceholder} alt="portfolio-images" />
-                            </figure>}
+                            <div className="media">
+                                <figure className="portfolio_img">
+                                    <img src={portfolioPlaceholder} alt="portfolio-images" />
+                                </figure>
+                            </div>}
                     </Carousel>
                     {/* </ul> */}
                 </div>
@@ -410,10 +430,10 @@ const BuilderInfo = (props: PropsType) => {
                             <div className="flex_col_sm_6">
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
-                                    <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
+                                    {/* <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
                                     Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
-                                    {/* <p>{portfolioData?.portfolioDetails?.jobDescription}</p> */}
+                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p> */}
+                                    <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
                                 </div>
                             </div>
                         </div>
@@ -557,9 +577,10 @@ const BuilderInfo = (props: PropsType) => {
                             <div className="form_field">
                                 <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
                                 <div className="text_field">
-                                    <textarea placeholder="Text" value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
+                                    <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
                                     <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                 </div>
+                                {!!errors.reviewData && <span className="error_msg">{errors.reviewData}</span>}
                             </div>
                             <div className="bottom_btn custom_btn">
                                 {(reviewsData.updateReviewsClicked || reviewsData.updateParentReviews) ?
@@ -580,21 +601,21 @@ const BuilderInfo = (props: PropsType) => {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                            <div className="heading">
-                                {reviewsData.deleteReviewsClicked && <span className="sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>}
-                                <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
-                                    <img src={cancel} alt="cancel" />
-                                </button>
-                            </div>
-                            <div className="modal_message">
-                                <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
-                            </div>
-                            <div className="dialog_actions">
-                                <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
-                                <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
-                            </div>
+                    <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading">
+                            {reviewsData.deleteReviewsClicked && <span className="sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>}
+                            <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
+                                <img src={cancel} alt="cancel" />
+                            </button>
                         </div>
+                        <div className="modal_message">
+                            <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
+                        </div>
+                        <div className="dialog_actions">
+                            <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
+                            <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                        </div>
+                    </div>
                 </Modal>
             }
         </div >
