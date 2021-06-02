@@ -4253,6 +4253,26 @@ body {
           background: url("../images/ic-profile.png") center no-repeat;
         }
       }
+      &.wallet {
+        &::before {
+          background: url("../images/ic-wallet.png") center no-repeat;
+        }
+      }
+      &.settings {
+        &::before {
+          background: url("../images/ic-setting.png") center no-repeat;
+        }
+      }
+      &.chat {
+        &::before {
+          background: url("../images/ic-message.png") center no-repeat;
+        }
+      }
+      &.tnc {
+        &::before {
+          background: url("../images/ico-terms.png") center no-repeat;
+        }
+      }
       .menu_txt{
         position: relative;
         white-space: pre-wrap;
@@ -4440,6 +4460,38 @@ body {
     margin-bottom: 30px;
     .img_video{
       margin: 0 20px 0px 0;
+    }
+  }
+
+  &.profile_info{
+    .title{
+      position: relative;
+      margin-bottom: 12px;
+      .edit_icon {
+        top: auto;
+      }
+    }
+    .tagg{
+      color: var(--blue);
+    }
+    .review_job {
+      li {
+        width: 156px;
+      }
+    }
+    .tags_wrap{
+      ul{
+        margin: 0;
+      }
+    }
+    .portfolio_wrappr{
+      .media{
+        margin: 0 20px 20px 0;
+        .portfolio_img {
+          width: 176px;
+          height: 176px;
+        }
+      }
     }
   }
 }
