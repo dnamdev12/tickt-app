@@ -512,12 +512,16 @@ const MarkMilestone = ({
               <span className="xs_sub_title">{jobName}</span>
               {data?.userId && readOnly && (
                 <>
-                  <span className="edit_icon" title="Edit">
+                  {/* <span className="edit_icon" title="Edit">
                     <img src={editIconBlue} alt="edit" onClick={() => setReadOnly(!readOnly)} />
                   </span>
                   <span className="edit_icon remove_icon" title="Remove" onClick={() => removeBankDetails()} >
                     <img src={removeIconBlue} alt="remove" />
-                  </span>
+                  </span> */}
+                  <div className="edit_delete">
+                    <span className="edit" title="Edit" onClick={() => setReadOnly(!readOnly)}></span>
+                    <span className="delete" title="Remove" onClick={() => removeBankDetails()}></span>
+                  </div>
                 </>
               )}
             </div>
