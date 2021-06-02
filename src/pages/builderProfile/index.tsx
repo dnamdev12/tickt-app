@@ -1,7 +1,7 @@
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
-// import cameraGradient from '../../assets/images/camera-gradient.png';
+import cameraGradient from '../../assets/images/Camera-gradient.png';
 import editIconBlue from '../../assets/images/ic-edit-blue.png';
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 
@@ -63,7 +63,7 @@ const BuilderProfile = () => {
                                         <img src={dummy} alt="Profile-pic" />
                                     </figure>
                                     <label className="camera" htmlFor="upload_profile_pic">
-                                        {/* <img src={cameraGradient} alt="camera" /> */}
+                                        <img src={cameraGradient} alt="camera" />
                                     </label>
                                     <input
                                         type="file"
@@ -79,7 +79,7 @@ const BuilderProfile = () => {
                                         <img src={editIconBlue} alt="edit" />
                                     </span>
                                 </span>
-                                <span className="tagg">Tradie</span>
+                                <span className="tagg">Tradesperson</span>
                                 <ul className="review_job">
                                     <li>
                                         <span className="icon reviews">4.5</span>
@@ -119,7 +119,7 @@ const BuilderProfile = () => {
                                     <img src={editIconBlue} alt="edit" />
                                 </span>
                             </span>
-                            <button className="fill_grey_btn full_btn">Add info about you</button>
+                            {/* <button className="fill_grey_btn full_btn">Add info about you</button> */}
                             <p className="commn_para">
                                 ** Currently on holiday, back Jan 10! ** Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. If that sounds good to you, flick me a message and I’ll reply ASAP! Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. Just finished up my Electricians apprenticeship working on large project sites around Melbourne.
                             </p>
@@ -131,7 +131,7 @@ const BuilderProfile = () => {
                                     <img src={editIconBlue} alt="edit" />
                                 </span>
                             </span>
-                            <button className="fill_grey_btn full_btn">Add portfolio</button>
+                            {/* <button className="fill_grey_btn full_btn">Add portfolio</button> */}
                             <ul className="portfolio_wrappr">
                                 <li className="media">
                                     <figure className="portfolio_img">

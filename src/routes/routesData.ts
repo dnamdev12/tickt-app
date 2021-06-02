@@ -25,7 +25,6 @@ import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index'
 import BuilderProfile from '../pages/builderProfile';
-import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile/tradieEditProfile';
 
 const routes = [
