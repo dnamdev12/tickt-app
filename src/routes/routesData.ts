@@ -23,7 +23,8 @@ import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
-import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index'
+import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
+import TradieEditProfile from '../pages/tradieEditProfile/tradieEditProfile';
 
 const routes = [
     {
@@ -100,7 +101,7 @@ const routes = [
         component: JobDetailsPageBuilder,
         authRoute: false,
         privateRoute: true,
-    }, 
+    },
     {
         name: 'job-applied-successfully',
         path: '/job-applied-successfully',
@@ -144,6 +145,13 @@ const routes = [
         name: 'builderpostedjobs',
         path: '/builder-posted-jobs',
         component: BuilderPostedJobs,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'tradieUpdateProfile',
+        path: '/tradie-update-profile',
+        component: TradieEditProfile,
         authRoute: false,
         privateRoute: true,
     },
