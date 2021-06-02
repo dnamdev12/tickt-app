@@ -24,6 +24,7 @@ import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderRevi
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index'
+import BuilderProfile from '../pages/builderProfile';
 
 const routes = [
     {
@@ -53,6 +54,12 @@ const routes = [
         path: '/reset-password',
         component: ForgerPassword,
         authRoute: true,
+    },
+    {
+        name: 'myprofile',
+        path: '/my-profile',
+        component: BuilderProfile,
+        // authRoute: true,
     },
     {
         name: 'postnewjob',
