@@ -44,7 +44,17 @@ export default function PastJobs(props: any): ReactElement {
         }
 
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
+            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+            if (yearDiff > 0) {
+                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+            }
+            if (monthDiff > 0) {
+                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            }
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
     }
 
@@ -93,11 +103,15 @@ export default function PastJobs(props: any): ReactElement {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{renderTime({fromDate,toDate})}</li>
+                                        <li className="icon clock">{renderTime({ fromDate, toDate })}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
-                                        {/* <li className="icon calendar">{'0 days'}</li> */}
                                         <li className="job_status">{status}</li>
+
+                                        {/* <li className="icon clock">{renderTime({fromDate,toDate})}</li>
+                                        <li className="icon dollar">{amount}</li>
+                                        <li className="icon location line-1">{locationName}</li>
+                                        <li className="job_status">{status}</li> */}
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">

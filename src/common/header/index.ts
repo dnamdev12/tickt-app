@@ -4,13 +4,13 @@ import HeaderComponent from './header';
 import {
     callTradieProfileData
 } from '../../redux/profile/actions';
-import { getProfileBuilder } from '../../redux/homeSearch/actions'
+import { getProfileBuilder } from '../../redux/profile/actions'
 
 
 const mapStateToProps = (state: any) => {
     return {
         tradieProfileData: state.profile.tradieProfileData,
-        builderProfile:state.homeSearch.builderProfile
+        builderProfile:state.profile.builderProfile
     }
 }
 

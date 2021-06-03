@@ -18,6 +18,7 @@ interface Active {
     status: any,
     timeLeft: any,
     locationName: any,
+    total:any,
     totalmem: any,
     totalMilestones: any,
     tradieListData: any,
@@ -78,6 +79,7 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                         timeLeft,
                         location,
                         locationName,
+                        total,
                         totalmem,
                         totalMilestones,
                         tradieListData,
@@ -106,10 +108,15 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{timeLeft}</li>
+                                        <li className="icon dollar">{amount}</li>
+                                        <li className="bold-text">{total}</li>
+                                        <li className="icon calendar">{durations}</li>
+                                        <li className="bold-text">{timeLeft}</li>
+
+                                        {/* <li className="icon clock">{durations}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{location}</li>
-                                        <li className="icon calendar">{durations}</li>
+                                        <li className="icon calendar">{timeLeft}</li> */}
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
