@@ -134,8 +134,8 @@ class JobDashboard extends Component<Props, State> {
             dataItemsAddons['location'] = {
                 "type": "Point",
                 "coordinates": [
-                    locationLocal[0],
-                    locationLocal[1]
+                    locationLocal[1],
+                    locationLocal[0]
                 ]
             };
         }

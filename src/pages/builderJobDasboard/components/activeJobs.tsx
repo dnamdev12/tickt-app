@@ -18,7 +18,7 @@ interface Active {
     status: any,
     timeLeft: any,
     locationName: any,
-    total:any,
+    total: any,
     totalmem: any,
     totalMilestones: any,
     tradieListData: any,
@@ -109,9 +109,17 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                 <div className="job_info">
                                     <ul>
                                         <li className="icon dollar">{amount}</li>
-                                        <li className="bold-text">{total}</li>
+                                        <li className="">
+                                            <span>
+                                                {total}
+                                            </span>
+                                        </li>
                                         <li className="icon calendar">{durations}</li>
-                                        <li className="bold-text">{timeLeft}</li>
+                                        <li className="">
+                                            <span>
+                                                {timeLeft}
+                                            </span>
+                                        </li>
 
                                         {/* <li className="icon clock">{durations}</li>
                                         <li className="icon dollar">{amount}</li>

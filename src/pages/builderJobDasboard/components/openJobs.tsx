@@ -68,11 +68,13 @@ class OpenJobs extends Component<Props, State> {
         }
 
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            let yearEnd = moment('31-12-2021','DD-MM-YYYY');
             let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
             let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
             let monthDiff = parseInt(item.toString());
             let yearDiff = parseInt(item_year.toString());
-            if (yearDiff > 0) {
+        
+            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
                 return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
             }
             if (monthDiff > 0) {
@@ -136,11 +138,19 @@ class OpenJobs extends Component<Props, State> {
                                     <div className="job_info">
                                         <ul>
                                             <li className="icon dollar">{amount}</li>
-                                            <li className="bold-text">{total}</li>
+                                            <li className="">
+                                                <span>
+                                                    {total}
+                                                </span>
+                                            </li>
                                             <li className="icon calendar">
                                                 {this.renderTime({ fromDate, toDate })}
                                             </li>
-                                            <li className="bold-text">{timeLeft}</li>
+                                            <li className="">
+                                                <span>
+                                                    {timeLeft}
+                                                </span>
+                                            </li>
                                             {/* <li className="icon clock">
                                                 
                                             </li>
