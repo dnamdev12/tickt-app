@@ -18,6 +18,7 @@ interface Active {
     specializationName: any,
     status: any,
     timeLeft: any,
+    total: any,
     totalmem: any,
     location: any,
     locationName: any,
@@ -67,7 +68,22 @@ class OpenJobs extends Component<Props, State> {
         }
 
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate).endOf("month").toISOString();
+        
+            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
+            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+        
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+        
+            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
+                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+            }
+            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
+                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            }
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
     }
 
@@ -94,6 +110,7 @@ class OpenJobs extends Component<Props, State> {
                             locationName,
                             status,
                             timeLeft,
+                            total,
                             totalmem,
                             totalMilestones,
                             tradieListData,
@@ -123,12 +140,26 @@ class OpenJobs extends Component<Props, State> {
                                     </div>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">
+                                            <li className="icon dollar">{amount}</li>
+                                            <li className="">
+                                                <span>
+                                                    {total}
+                                                </span>
+                                            </li>
+                                            <li className="icon calendar">
                                                 {this.renderTime({ fromDate, toDate })}
+                                            </li>
+                                            <li className="">
+                                                <span>
+                                                    {timeLeft}
+                                                </span>
+                                            </li>
+                                            {/* <li className="icon clock">
+                                                
                                             </li>
                                             <li className="icon dollar">{amount}</li>
                                             <li className="icon location line-1">{location}</li>
-                                            <li className="icon calendar">{durations}</li>
+                                            <li className="icon calendar">{durations}</li> */}
                                         </ul>
                                     </div>
                                     <div className="job_progress_wrap" id="scroll-progress-bar">

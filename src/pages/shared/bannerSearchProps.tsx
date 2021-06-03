@@ -218,28 +218,42 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [searchText])
 
-    const getRecentLocationData = () => {
+    const getRecentLocationData = async () => {
         var recentLocationDetails: any = [];
-        props.recentLocationData?.map((item: any, index: number) => {
-            var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ location: latlng }, (results, status) => {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    const formatedCityText = JSON.parse(JSON.stringify(results[0]));
-                    console.log(index, "index");
-                    const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
-                    const newData = {
-                        mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-                        secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-                    }
-                    recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
-                        setRecentLocation(recentLocationDetails);
-                    }
+
+        let recentLocationData = props.recentLocationData
+        for (let index = 0; index < recentLocationData.length; index++) {
+            let item = recentLocationData[index];
+            try {
+                let lat = item.location.coordinates[1];
+                let long = item.location.coordinates[0];
+                let response = await Geocode.fromLatLng(lat, long);
+                let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
+                let cityText: any = null;
+                if (formatedCityText?.formatted_address.includes(',')) {
+                    cityText = formatedCityText?.formatted_address.split(',')
+                } else {
+                    cityText = formatedCityText?.formatted_address.split('-');
                 }
-            });
-        })
+                const newData = {
+                    mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
+                    secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
+                }
+                recentLocationDetails[index] = {
+                    formatted_address: formatedCityText?.formatted_address,
+                    location: { coordinates: item?.location?.coordinates },
+                    allText: newData
+                };
+
+                if (recentLocationDetails?.length === props.recentLocationData?.length) {
+                    setRecentLocation(recentLocationDetails);
+                }
+            } catch (err) {
+                console.log({ err });
+            }
+        }
     }
+
 
     const checkIfExist = (_id: any) => {
         if (selectedTrade) {
@@ -465,7 +479,7 @@ const BannerSearch = (props: PropsType) => {
                 location: data.location,
                 from_date: data?.from_date,
                 to_date: data?.to_date,
-                doingLocalChanges:true
+                doingLocalChanges: true
             })
             props.postHomeSearchData(data);
         }
@@ -496,7 +510,7 @@ const BannerSearch = (props: PropsType) => {
         setLocationStatus(itemToggle.state);
         let local_position: any = localStorage.getItem('position');
         let position: any = JSON.parse(local_position);
-        
+
         if (position?.length) {
             let lng = (position[0]).toString();
             let lat = (position[1]).toString();
@@ -529,7 +543,7 @@ const BannerSearch = (props: PropsType) => {
         if (diff < 0) {
             defaultFormat = 'DD MMM YYYY';
         }
-   
+
         if (startDate && !endDate) {
             return `${moment(startDate).format('MMM-DD')}`
         } else if (startDate && endDate) {
