@@ -535,22 +535,36 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const checkPlaceholder = (calenderRange1: any) => {
-        let startDate: any = calenderRange1?.startDate;
-        let endDate: any = calenderRange1?.endDate;
-        let diff = moment().diff(moment(endDate), 'years')
-        let defaultFormat: string = 'DD MMM';
+        let fromDate: any = calenderRange1?.startDate;
+        let toDate: any = calenderRange1?.endDate;
+        return renderTime({ fromDate, toDate });
+    }
 
-        if (diff < 0) {
-            defaultFormat = 'DD MMM YYYY';
+    const renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
         }
 
-        if (startDate && !endDate) {
-            return `${moment(startDate).format('MMM-DD')}`
-        } else if (startDate && endDate) {
-            return `${moment(startDate).format(defaultFormat)}-${moment(endDate).format(defaultFormat)}`;
-        } else {
-            return 'When?';
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate).endOf("month").toISOString();
+
+            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
+            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
+                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+            }
+            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
+                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            }
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
+
+        return 'when ?'
     }
 
     let state_data: any = stateData;
