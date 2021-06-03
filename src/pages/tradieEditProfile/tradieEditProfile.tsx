@@ -7,6 +7,7 @@ import dummy from '../../assets/images/u_placeholder.jpg';
 import cameraBlack from '../../assets/images/camera-black.png';
 import editIconBlue from '../../assets/images/ic-edit-blue.png';
 import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
+import cancel from "../../assets/images/ic-cancel.png";
 
 const TradieEditProfile = () => {
     const [stateData, setStateData] = useState({
@@ -104,7 +105,6 @@ const TradieEditProfile = () => {
                                     </ul>
                                 </div>
                             </div>
-
                             {<Modal
                                 className="custom_modal"
                                 open={stateData.profileModalClicked}
@@ -112,11 +112,76 @@ const TradieEditProfile = () => {
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
-                                <div className="custom_wh ask_ques">
-                                    Edit profile modal
+                                <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                    <div className="heading">
+                                        <span className="sub_title">Edit Profile</span>
+                                        <button className="close_btn">
+                                            <img src={cancel} alt="cancel" />
+                                        </button>
+                                    </div>
+                                    <div className="inner_wrap">
+                                        <div className="inner_wrappr">
+                                            <div className="form_field">
+                                                <label className="form_label">Full Name</label>
+                                                <div className="text_field">
+                                                    <input type="text" placeholder="Enter Full Name" />
+                                                </div>
+                                            </div>
+                                            <div className="form_field">
+                                                <label className="form_label">Mobile Number</label>
+                                                <div className="text_field">
+                                                    <input type="number" placeholder="Enter Mobile Number" />
+                                                </div>
+                                            </div>
+                                            <div className="form_field">
+                                                <label className="form_label">Email</label>
+                                                <div className="text_field">
+                                                    <input type="text" placeholder="Enter Email" />
+                                                </div>
+                                            </div>
+                                            <div className="form_field">
+                                                <a className="link">Change password</a>
+                                            </div>
+                                            <div className="form_field">
+                                                <label className="form_label">Qualification documents </label>
+                                            </div>
+                                            <div className="form_field">
+                                                <div className="relate">
+                                                    <div className="checkbox_wrap agree_check">
+                                                        <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc1" />
+                                                        <label htmlFor="doc1" className="line-1">White Card</label>
+                                                    </div>
+                                                    <div className="edit_delete tr">
+                                                        <span className="edit" title="Edit"></span>
+                                                        <span className="remove" title="Remove"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div className="form_field">
+                                                <div className="relate">
+                                                    <div className="checkbox_wrap agree_check">
+                                                        <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc2" />
+                                                        <label htmlFor="doc2" className="line-1">First Aid</label>
+                                                    </div>
+                                                    <div className="edit_delete tr">
+                                                        <span className="edit" title="Edit"></span>
+                                                        <span className="remove" title="Remove"></span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="form_field">
+                                            <button className="fill_grey_btn full_btn btn-effect">Add qualification documents </button>
+                                        </div>
+                                        <span className="info_note">Don’t worry, nobody will see it. This is for verification only!</span>
+                                    </div>
+                                    <div className="btn_wrap">
+                                        <div className="bottom_btn">
+                                            <button className="fill_btn full_btn btn-effect">Save changes</button>
+                                        </div>
+                                    </div>
                                 </div>
                             </Modal>}
-
                             <div className="section_wrapper">
                                 <span className="sub_title">Areas of specialisation
                             <span className="edit_icon" title="Edit" onClick={() => setStateData((prevData: any) => ({ ...prevData, areasOfSpecsModalClicked: true }))}>
@@ -168,8 +233,21 @@ const TradieEditProfile = () => {
                                 aria-labelledby="simple-modal-title"
                                 aria-describedby="simple-modal-description"
                             >
-                                <div className="custom_wh ask_ques">
-                                    About
+                                <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                    <div className="heading">
+                                        <span className="sub_title">About</span>
+                                        <button className="close_btn">
+                                            <img src={cancel} alt="cancel" />
+                                        </button>
+                                    </div>
+                                    <div className="form_field">
+                                        <label className="form_label">Description</label>
+                                        <div className="text_field">
+                                            <textarea placeholder="Enter Description"></textarea>
+                                        </div>
+                                    </div>
+                                    <button className="fill_btn full_btn btn-effect">Save changes</button>
+                                    <button className="fill_grey_btn btn-effect">Cancel</button>
                                 </div>
                             </Modal>}
 

@@ -1867,12 +1867,43 @@ body {
       }
     }
   }
+  &.profile_modal{
+    width: 686px;
+    max-width: 686px;
+    .inner_wrappr{
+      max-width: 606px;
+    }
+    textarea {
+      min-height: 280px;
+      margin-bottom: 150px;
+      @media (max-width: 1500px) {
+        margin-bottom: 40px;
+      }
+      @media (max-width: 1366px) {
+        margin-bottom: 50px;
+      }
+      @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        margin-bottom: 50px;
+      }
+    }
+    .checkbox_wrap{   
+      label{
+        font-size: 16px;
+        font-family: 'Neue Haas Grotesk Text Pro Medium';
+        max-width: 550px;
+      }
+    }
+  }
+
+
 }
+
+
+
 .ques_ans_modal,
 .custom_modal {
   position: relative;
   background-color: rgba(22, 29, 74, 0.7);
-
   [aria-hidden="true"] {
     background-color: transparent !important;
   }
@@ -3650,6 +3681,10 @@ body {
   right: 12px;
   display: flex;
   align-items: center;
+  &.tr{
+    top: 0;
+    right: 0;
+  }
   span {
     margin-left: 10px;
     width: 24px;
@@ -3664,6 +3699,10 @@ body {
   }
   .delete {
     background: url("../images/ic-cancel-blue.png") center no-repeat;
+    background-size: contain;
+  }
+  .remove {
+    background: url("../images/ic-bin.png") center no-repeat;
     background-size: contain;
   }
 }
@@ -4409,7 +4448,7 @@ body {
     .edit_delete {
       top: 0px;
       right: 0px;
-  }
+    }
   }
   hr{
     width: 1px;
