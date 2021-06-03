@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { format } from 'date-fns';
+import { setShowToast } from '../../../redux/common/actions';
 
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
@@ -212,6 +213,7 @@ const MarkMilestone = ({
                     fromDate,
                     toDate,
                     declinedReason,
+                    declinedCount,
                   },
                   index
                 ) => {
@@ -256,49 +258,58 @@ const MarkMilestone = ({
                               : toDate
                             }`}
                         </span>
-                        {isDeclined && (
-                          <>
-                            <div className="form_field">
-                              <label className="form_label">Decline reason</label>
-                              <div className="text_field">
-                                <textarea
-                                  value={declinedReason?.reason}
-                                  readOnly
-                                ></textarea>
-                              </div>
-                            </div>
-                            <div className="upload_img_video">
-                              {/* {declinedReason?.url?.length && <Carousel className="" responsive={declinedImages} autoPlay={true} arrows={false} > */}
-                              {declinedReason?.url?.map((image: string) => {
-                                return (
-                                  <figure className="img_video">
-                                    <img src={image} alt="media" />
-                                  </figure>
-                                )
-                              })}
-                              {/* <div>SLide 1</div>
-                                    <div>SLide 2</div>
-                                    <div>SLide 3</div>
-                                  </Carousel>} */}
-                            </div>
-                            <button
-                              onClick={() => {
-                                setMilestoneIndex(index);
-
-                                if (index === milestones?.length - 1) {
-                                  setIsLastMilestone(true);
-                                }
-
-                                if (isPhotoevidence) {
-                                  setStep(2);
-                                } else {
-                                  setStep(3);
-                                }
-                              }}
-                              className='fill_btn full_btn btn-effect' >Remark as Complete</button>
-                          </>
-                        )}
                       </div>
+                      {isDeclined && (
+                        <>
+                          <div className="decline_reason">
+                            <label className="form_label">Decline reason:</label>
+                            <div className="text_field">
+                              {/* <textarea
+                                value={declinedReason?.reason}
+                                readOnly
+                              ></textarea> */}
+                              <p className="commn_para">{declinedReason?.reason}</p>
+                            </div>
+
+                            {declinedReason?.url?.length > 0 &&
+                              <Carousel
+                                className="decline_media"
+                                responsive={declinedImages}
+                                showDots={false}
+                                arrows={true}
+                              >
+                                {declinedReason?.url?.map((image: string) => {
+                                  return (
+                                    <div className="upload_img_video">
+                                      <figure className="img_video">
+                                        <img src={image} alt="image" />
+                                      </figure>
+                                    </div>)
+                                })}
+                              </Carousel>
+                            }
+                          </div>
+                          <button
+                            onClick={() => {
+                              if (declinedCount >= 5) {
+                                setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
+                                return;
+                              }
+                              setMilestoneIndex(index);
+
+                              if (index === milestones?.length - 1) {
+                                setIsLastMilestone(true);
+                              }
+
+                              if (isPhotoevidence) {
+                                setStep(2);
+                              } else {
+                                setStep(3);
+                              }
+                            }}
+                            className='fill_btn full_btn btn-effect' >Remark as Complete</button>
+                        </>
+                      )}
                       {isActive && (
                         <button
                           className="fill_btn full_btn btn-effect"
@@ -486,7 +497,7 @@ const MarkMilestone = ({
               </p>
             </div>
             <button className="fill_btn full_btn btn-effect" onClick={() => setStep(5)}>
-              {data.userId ? 'Continue' : 'Add Details'} 
+              {data.userId ? 'Continue' : 'Add Details'}
             </button>
           </div>
         </div>
@@ -501,12 +512,16 @@ const MarkMilestone = ({
               <span className="xs_sub_title">{jobName}</span>
               {data?.userId && readOnly && (
                 <>
-                  <span className="edit_icon" title="Edit">
+                  {/* <span className="edit_icon" title="Edit">
                     <img src={editIconBlue} alt="edit" onClick={() => setReadOnly(!readOnly)} />
                   </span>
                   <span className="edit_icon remove_icon" title="Remove" onClick={() => removeBankDetails()} >
                     <img src={removeIconBlue} alt="remove" />
-                  </span>
+                  </span> */}
+                  <div className="edit_delete">
+                    <span className="edit" title="Edit" onClick={() => setReadOnly(!readOnly)}></span>
+                    <span className="delete" title="Remove" onClick={() => removeBankDetails()}></span>
+                  </div>
                 </>
               )}
             </div>
