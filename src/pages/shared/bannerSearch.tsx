@@ -32,6 +32,8 @@ import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
+Geocode.setRegion("au");
+// Geocode.setLocationType("ROOFTOP");
 
 interface PropsType {
     history: any,
@@ -156,26 +158,40 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [searchText])
 
-    const getRecentLocationData = () => {
+    const getRecentLocationData = async () => {
         var recentLocationDetails: any = [];
-        props.recentLocationData?.map((item: any, index: number) => {
-            var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ location: latlng }, (results, status) => {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    const formatedCityText = JSON.parse(JSON.stringify(results[0]));
-                    const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
-                    const newData = {
-                        mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-                        secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-                    }
-                    recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
-                        setRecentLocation(recentLocationDetails);
-                    }
+
+        let recentLocationData = props.recentLocationData
+        for (let index = 0; index < recentLocationData.length; index++) {
+            let item = recentLocationData[index];
+            try {
+                let lat = item.location.coordinates[1];
+                let long = item.location.coordinates[0];
+                let response = await Geocode.fromLatLng(lat, long);
+                let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
+                let cityText: any = null;
+                if (formatedCityText?.formatted_address.includes(',')) {
+                    cityText = formatedCityText?.formatted_address.split(',')
+                } else {
+                    cityText = formatedCityText?.formatted_address.split('-');
                 }
-            });
-        })
+                const newData = {
+                    mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
+                    secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
+                }
+                recentLocationDetails[index] = {
+                    formatted_address: formatedCityText?.formatted_address,
+                    location: { coordinates: item?.location?.coordinates },
+                    allText: newData
+                };
+
+                if (recentLocationDetails?.length === props.recentLocationData?.length) {
+                    setRecentLocation(recentLocationDetails);
+                }
+            } catch (err) {
+                console.log({ err });
+            }
+        }
     }
 
     const checkIfExist = (_id: any) => {
@@ -467,7 +483,7 @@ const BannerSearch = (props: PropsType) => {
 
     if (props?.selectedItem) {
         let sProps = props?.selectedItem;
-        if(Array.isArray(sProps?.selectedTrade?.specialisations)){
+        if (Array.isArray(sProps?.selectedTrade?.specialisations)) {
             length_spec = sProps?.selectedTrade?.specialisations?.length
         }
     } else {
@@ -480,22 +496,36 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const checkPlaceholder = (calenderRange1: any) => {
-        let startDate: any = calenderRange1?.startDate;
-        let endDate: any = calenderRange1?.endDate;
-        let diff = moment().diff(moment(endDate), 'years')
-        let defaultFormat: string = 'DD MMM';
+        let fromDate: any = calenderRange1?.startDate;
+        let toDate: any = calenderRange1?.endDate;
+        return renderTime({ fromDate, toDate });
+    }
 
-        if (diff < 0) {
-            defaultFormat = 'DD MMM YYYY';
+    const renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
         }
 
-        if (startDate && !endDate) {
-            return `${moment(startDate).format('MMM-DD')}`
-        } else if (startDate && endDate) {
-            return `${moment(startDate).format(defaultFormat)}-${moment(endDate).format(defaultFormat)}`;
-        } else {
-            return 'When?';
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate).endOf("month").toISOString();
+
+            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
+            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
+                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+            }
+            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
+                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            }
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
+
+        return 'when ?'
     }
 
 

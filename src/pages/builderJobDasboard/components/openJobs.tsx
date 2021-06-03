@@ -68,16 +68,19 @@ class OpenJobs extends Component<Props, State> {
         }
 
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-            let yearEnd = moment('31-12-2021','DD-MM-YYYY');
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate).endOf("month").toISOString();
+        
             let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
             let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+        
             let monthDiff = parseInt(item.toString());
             let yearDiff = parseInt(item_year.toString());
         
             if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
                 return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
             }
-            if (monthDiff > 0) {
+            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
                 return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
             }
             return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
