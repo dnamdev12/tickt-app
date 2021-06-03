@@ -1876,6 +1876,9 @@ body {
     textarea {
       min-height: 280px;
       margin-bottom: 140px;
+      @media (max-width: 1500px) {
+        margin-bottom: 40px;
+      }
       @media (max-width: 1366px) {
         margin-bottom: 50px;
       }
