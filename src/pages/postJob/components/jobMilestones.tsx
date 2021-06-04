@@ -148,7 +148,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
             });
         }
-        
+
         if (item_find) {
             setShowToast(true, 'Please check the milestone dates.');
             return item_find;
@@ -182,13 +182,41 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     }
 
 
-    const renderTimeItem = ({ from_date, to_date }: any) => {
-        if (from_date?.length && from_date !== 'Invalid date' && (!to_date?.length || to_date !== 'Invalid date')) {
-            return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
+    // const renderTimeItem = ({ from_date, to_date }: any) => {
+    //     console.log({ from_date, to_date })
+    //     if (from_date?.length && from_date !== 'Invalid date' && (!to_date?.length || to_date !== 'Invalid date')) {
+    //         return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
+    //     }
+
+    //     if (from_date?.length && from_date !== 'Invalid date' && to_date?.length && to_date !== 'Invalid date') {
+    //         return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}`
+    //     }
+    // }
+
+    const renderTimeItem = ({ fromDate, toDate }: any) => {
+        console.log({ fromDate, toDate })
+        const default_format = 'MM-DD-YYYY';
+        if (moment(fromDate, default_format).isValid() && !moment(toDate, default_format).isValid()) {
+            return `${moment(fromDate, default_format).format('DD MMM')}`
         }
 
-        if (from_date?.length && from_date !== 'Invalid date' && to_date?.length && to_date !== 'Invalid date') {
-            return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}`
+        if (moment(fromDate, default_format).isValid() && moment(toDate, default_format).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate, default_format).endOf("month").toISOString();
+
+            let item: any = moment(toDate, default_format).diff(moment(fromDate, default_format), 'months', true);
+            let item_year: any = moment(toDate, default_format).diff(moment(fromDate, default_format), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate, default_format).isAfter(yearEnd) || moment(toDate, default_format).isAfter(yearEnd)) {
+                return `${moment(fromDate, default_format).format('DD MMM YY')} - ${moment(toDate, default_format).format('DD MMM YY')}`
+            }
+            if (monthDiff > 0 || moment(toDate, default_format).isAfter(monthEnd)) {
+                return `${moment(fromDate, default_format).format('DD MMM')} - ${moment(toDate, default_format).format('DD MMM')}`
+            }
+            return `${moment(fromDate, default_format).format('DD MMM')} - ${moment(toDate, default_format).format('DD')}`
         }
     }
 
@@ -325,7 +353,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                             <span>{'Photo evidence required'}</span>
                                                                             : <span></span>}
                                                                         <span>
-                                                                            {renderTimeItem({ from_date, to_date })}
+                                                                            {renderTimeItem({
+                                                                                fromDate: from_date,
+                                                                                toDate: to_date
+                                                                            })}
                                                                         </span>
                                                                         <span>
                                                                             {recommended_hours}
