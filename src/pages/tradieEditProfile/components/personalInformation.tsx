@@ -2,6 +2,7 @@ import { Component } from 'react'
 import Modal from '@material-ui/core/Modal';
 import NumberFormat from 'react-number-format';
 import _ from 'lodash';
+import { updateTradieProfileDetails } from '../../../redux/profile/actions';
 
 import menu from '../../../assets/images/menu-line-blue.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
@@ -125,6 +126,17 @@ export class PersonalInformation extends Component<Props, State> {
         }
         else if (name == 'Clear All') {
             this.setState({ allSpecializationSelected: false, trade: [], specialization: [] });
+        }
+    }
+
+    tradeSubmitHandler = async () => {
+        const data: any = {
+            trade: this.state.trade,
+            specialization: this.state.specialization
+        }
+        const res = await updateTradieProfileDetails(data);
+        if (res.success) {
+            this.setState({ areasOfSpecsModalClicked: false });
         }
     }
 
@@ -293,7 +305,7 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal>
 
                 <div className="section_wrapper">
-                    <span className="sub_title">Areas of specialization,
+                    <span className="sub_title">Areas of specialisation
                                     <span className="edit_icon" title="Edit" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
                             <img src={editIconBlue} alt="edit" />
                         </span>
@@ -303,11 +315,6 @@ export class PersonalInformation extends Component<Props, State> {
                             <li className="main">
                                 <img src={profileView?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="icon" />{profileView?.areasOfSpecialization?.tradeData[0]?.tradeName}
                             </li>
-                            {/* <li>Electrical Instrumentation</li>
-                            <li>Security and Fire Alarm Installation</li>
-                            <li>Electrical Instrumentation</li>
-                            <li>Security and Fire Alarm Installation</li>
-                            <li>More</li> */}
                             {
                                 profileView?.areasOfSpecialization?.specializationData?.map(({ specializationId, specializationName }: { specializationId: string, specializationName: string }) => {
                                     return <li key={specializationId}>{specializationName}</li>
@@ -327,7 +334,7 @@ export class PersonalInformation extends Component<Props, State> {
                     <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
                             <span className="sub_title">What is your trade?</span>
-                            <button className="close_btn" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
+                            <button className="close_btn" onClick={() => this.setState({ areasOfSpecsModalClicked: false })}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
@@ -385,7 +392,9 @@ export class PersonalInformation extends Component<Props, State> {
                         </div>
                         <div className="filter_btn">
                             <a className={`link ${(trade.length && specialization.length) ? '' : 'disable_link'}`} onClick={() => this.tradeHandler('Clear All', 'Clear All')}>Clear All</a>
-                            <button className={`fill_btn full_btn btn-effect ${(trade.length && specialization.length) ? '' : 'disable_btn'}`}>Show Results</button>
+                            <button className={`fill_btn full_btn btn-effect ${(trade.length && specialization.length) ? '' : 'disable_btn'}`}
+                                onClick={this.tradeSubmitHandler}
+                            >Show Results</button>
                         </div>
                     </div>
                 </Modal>
