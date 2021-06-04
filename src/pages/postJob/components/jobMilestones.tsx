@@ -194,7 +194,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     // }
 
     const renderTimeItem = ({ fromDate, toDate }: any) => {
-        console.log({ fromDate, toDate })
+
         const default_format = 'MM-DD-YYYY';
         if (moment(fromDate, default_format).isValid() && !moment(toDate, default_format).isValid()) {
             return `${moment(fromDate, default_format).format('DD MMM')}`
