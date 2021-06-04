@@ -2,6 +2,10 @@ import * as actionTypes from './constants';
 
 export const callTradieProfileData = () => ({ type: actionTypes.GET_TRADIE_PROFILE_DATA });
 
+export const getTradieProfileView = () => ({ type: actionTypes.GET_TRADIE_PROFILE_VIEW });
+
+export const getTradieBasicDetails = () => ({ type: actionTypes.GET_TRADIE_BASIC_DETAILS });
+
 export const getBankDetails = () => ({
   type: actionTypes.GET_BANK_DETAILS_START,
 });

@@ -556,7 +556,7 @@ const BannerSearch = (props: PropsType) => {
             let yearDiff = parseInt(item_year.toString());
 
             if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
-                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+                return `${moment(fromDate).format('DD MMM YYYY')} - ${moment(toDate).format('DD MMM YYYY')}`
             }
             if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
                 return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
