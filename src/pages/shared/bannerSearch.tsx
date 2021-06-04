@@ -76,6 +76,9 @@ export function useStateFromProp(initialValue: any) {
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
+
+    const [checkOnChange, setOnChange] = useState(false);
+
     const [locationStatus, setLocationStatus] = useState(null);
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
@@ -92,7 +95,10 @@ const BannerSearch = (props: PropsType) => {
 
     const [calenderRange1, setCalenderRange1] = useState<any>(example_calender);
 
-    const handleOnOutsideSearch = () => setInputFocus1(false);
+    const handleOnOutsideSearch = () => {
+        setOnChange(false);
+        setInputFocus1(false)
+    };
     const handleOnOutsideLocation = () => {
         setInputFocus2(false)
     };
@@ -155,6 +161,9 @@ const BannerSearch = (props: PropsType) => {
     useEffect(() => {
         if (searchText?.length > 2) {
             props.getSearchJobList(searchText);
+        }
+        if(!searchText?.length){
+            setSelectedTrade({});
         }
     }, [searchText])
 
@@ -517,7 +526,7 @@ const BannerSearch = (props: PropsType) => {
             let yearDiff = parseInt(item_year.toString());
 
             if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
-                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+                return `${moment(fromDate).format('DD MMM YYYY')} - ${moment(toDate).format('DD MMM YYYY')}`
             }
             if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
                 return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
@@ -530,6 +539,13 @@ const BannerSearch = (props: PropsType) => {
 
 
     let custom_name = searchText;
+
+    if (!checkOnChange) {
+        if (length_spec > 1) {
+            custom_name = `${custom_name} +${length_spec - 1}`;
+        }
+    }
+
     return (
         <div className="home_search">
             <button
@@ -550,9 +566,10 @@ const BannerSearch = (props: PropsType) => {
                                 type="text"
                                 ref={searchRef}
                                 placeholder="What jobs are you after?"
-                                value={length_spec > 1 ? `${custom_name} +${length_spec - 1}` : (custom_name)}
+                                value={custom_name}
                                 onChange={(e) => {
                                     // isHandleChanges(true)
+                                    setOnChange(true);
                                     setSearchText((e.target.value).trimLeft());
                                 }}
                                 autoComplete="none"
@@ -571,6 +588,7 @@ const BannerSearch = (props: PropsType) => {
                                         onClick={() => {
                                             // clear here
                                             // isHandleChanges(true)
+                                            setOnChange(false);
                                             setSearchText('');
                                             setStateData({});
                                             setSelectedTrade({})

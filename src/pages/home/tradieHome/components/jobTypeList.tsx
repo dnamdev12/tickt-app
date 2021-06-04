@@ -40,7 +40,7 @@ const JobTypeList = (props: any) => {
                             <ul className="job_categories">
                                 <li key={item._id} className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
                                     <figure className="type_icon">
-                                        <img src={item.image} alt="icon" />
+                                        <img src={item.image} alt="" />
                                     </figure>
                                     <span className="name line-1">{item.name}</span>
                                 </li>

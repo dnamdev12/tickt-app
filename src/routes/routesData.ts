@@ -24,7 +24,7 @@ import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderRevi
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
-import TradieEditProfile from '../pages/tradieEditProfile/tradieEditProfile';
+import TradieEditProfile from '../pages/tradieEditProfile';
 
 const routes = [
     {
@@ -149,8 +149,8 @@ const routes = [
         privateRoute: true,
     },
     {
-        name: 'tradieUpdateProfile',
-        path: '/tradie-update-profile',
+        name: 'UpdateProfile',
+        path: '/update-profile',
         component: TradieEditProfile,
         authRoute: false,
         privateRoute: true,
