@@ -12,6 +12,8 @@ import cancel from "../../../assets/images/ic-cancel.png";
 import remove from "../../../assets/images/icon-close-1.png";
 import addMedia from "../../../assets/images/add-image.png";
 import editIconWhite from '../../../assets/images/ic-edit-white.png';
+import eyeIconClose from '../../../assets/images/icon-eye-closed.png';
+import eyeIconOpen from '../../../assets/images/icon-eye-open.png';
 
 
 interface Props {
@@ -228,10 +230,58 @@ export class PersonalInformation extends Component<Props, State> {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <div className="custom_wh profile_modal">
-                        Password Modal
-                    </div>
-                </Modal>
+                    <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading form_field">
+                            <div className="relate">
+                                <button className="back"></button>
+                                <div className="md_heading">
+                                    <span className="sub_title">Change password</span>
+                                </div>
+                            </div>
+                            <button className="close_btn">
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
+                        <div className="inner_wrappr">
+                            <div className="form_field">
+                                <label className="form_label">Password</label>
+                                <div className="text_field">
+                                    <input type="password" className="detect_input" placeholder="Enter Password" />
+                                    <span className="detect_icon">
+                                        {/* <img src={showPassword ? eyeIconOpen : eyeIconClose} /> */}
+                                        <img src={eyeIconClose} />
+                                    </span>
+                                </div>
+                                <span className="error_msg"></span>
+                            </div>
+                            <div className="form_field">
+                                <label className="form_label">New Password</label>
+                                <div className="text_field">
+                                    <input type="password" className="detect_input" placeholder="Enter New Password" />
+                                    <span className="detect_icon">
+                                        {/* <img src={showPassword ? eyeIconOpen : eyeIconClose} /> */}
+                                        <img src={eyeIconClose} />
+                                    </span>
+                                </div>
+                                <span className="error_msg"></span>
+                            </div>
+                            <div className="form_field">
+                                <label className="form_label">Confirm New Password</label>
+                                <div className="text_field">
+                                    <input type="password" className="detect_input" placeholder="Enter Confirm New Password" />
+                                    <span className="detect_icon">
+                                        {/* <img src={showPassword ? eyeIconOpen : eyeIconClose} /> */}
+                                        <img src={eyeIconClose} />
+                                    </span>
+                                </div>
+                                <span className="error_msg"></span>
+                            </div>
+                        </div>
+                        <div className="bottom_btn custom_btn">
+                            <button className="fill_btn full_btn btn-effect">Save changes</button>
+                        </div>
+                    </div >
+                </Modal >
 
                 <div className="section_wrapper">
                     <span className="sub_title">Areas of specialisation
@@ -276,7 +326,7 @@ export class PersonalInformation extends Component<Props, State> {
                             <img src={editIconBlue} alt="edit" />
                         </span>
                     </span>
-                    <button className="fill_grey_btn full_btn">Add info about you</button>
+                    <button className="fill_grey_btn full_btn btn-effect">Add info about you</button>
                     {/* <p className="commn_para">** Currently on holiday, back Jan 10! ** Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. If that sounds good to you, flick me a message and I’ll reply ASAP! Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. Just finished up my Electricians apprenticeship working on large project sites around Melbourne.</p> */}
                     <p className="commn_para">{profileView?.about}</p>
                 </div>
@@ -301,8 +351,10 @@ export class PersonalInformation extends Component<Props, State> {
                                 <textarea placeholder="Enter Description"></textarea>
                             </div>
                         </div>
-                        <button className="fill_btn full_btn btn-effect">Save changes</button>
-                        <button className="fill_grey_btn btn-effect">Cancel</button>
+                        <div className="bottom_btn custom_btn">
+                            <button className="fill_btn full_btn btn-effect">Save changes</button>
+                            <button className="fill_grey_btn btn-effect">Cancel</button>
+                        </div>
                     </div>
                 </Modal>
 
@@ -312,7 +364,7 @@ export class PersonalInformation extends Component<Props, State> {
                             <img src={editIconBlue} alt="edit" />
                         </span>
                     </span>
-                    <button className="fill_grey_btn full_btn">Add portfolio</button>
+                    <button className="fill_grey_btn full_btn btn-effect">Add portfolio</button>
                     <ul className="portfolio_wrappr">
                         {/* jon name ismissing in portfolio */}
                         {
@@ -424,9 +476,10 @@ export class PersonalInformation extends Component<Props, State> {
                     {/* job detail edit close */}
 
                 </Modal>
-
-                <button className="fill_btn full_btn">Save changes</button>
-            </div>
+                <div className="section_wrapper">
+                    <button className="fill_btn full_btn btn-effect">Save changes</button>
+                </div>
+            </div >
         )
     }
 }
