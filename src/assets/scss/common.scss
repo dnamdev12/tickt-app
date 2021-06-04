@@ -2841,7 +2841,12 @@ body {
  input::placeholder{
     color: var(--blue);
   }
+  #calender-input::placeholder {
+    opacity: 1;
+  }
 }
+
+
 
 .home_search {
 	margin-bottom: 55px;
