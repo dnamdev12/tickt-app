@@ -1896,6 +1896,9 @@ body {
   .back{
     top: 5px;
     transform: initial;
+    @media(max-width: 650px){
+      top: 0;
+    }
   }
   .md_heading{
     padding-left: 40px;
@@ -4541,6 +4544,22 @@ body {
         width: 176px;
         height: 176px;
       }
+    }
+  }
+  .flex_col_sm_8{
+    @media(max-width: 1024px){
+      width: 58.333333%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+  .flex_col_sm_4{
+    @media(max-width: 1024px){
+      width: 41.666667%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
     }
   }
 }

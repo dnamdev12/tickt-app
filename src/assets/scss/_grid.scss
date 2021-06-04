@@ -80,6 +80,12 @@
   align-items: flex-end;
 }
 
+.f_col{
+  @media (max-width: 650px) {
+    flex-flow: column;
+  }
+}
+
 .f_reverse{
   @media (max-width: 650px) {
     flex-flow: column-reverse;

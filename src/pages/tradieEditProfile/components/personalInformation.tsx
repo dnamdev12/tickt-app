@@ -163,7 +163,7 @@ export class PersonalInformation extends Component<Props, State> {
 
         return (
             <div>
-                <div className="flex_row">
+                <div className="flex_row f_col">
                     <div className="flex_col_sm_4">
                         <div className="upload_profile_pic">
                             <figure className="user_img">
