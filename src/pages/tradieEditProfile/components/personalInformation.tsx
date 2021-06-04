@@ -12,13 +12,16 @@ import cancel from "../../../assets/images/ic-cancel.png";
 import remove from "../../../assets/images/icon-close-1.png";
 import addMedia from "../../../assets/images/add-image.png";
 import editIconWhite from '../../../assets/images/ic-edit-white.png';
+import spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
 
 
 interface Props {
     tradieProfileViewData: any,
     tradieBasicDetailsData: any,
+    tradeListData: any,
     getTradieProfileView: () => void,
     getTradieBasicDetails: () => void,
+    callTradeList: () => void,
 }
 
 interface State {
@@ -31,6 +34,11 @@ interface State {
     jobDescModalClicked: boolean,
     passwordModalClicked: boolean,
     basicDetails: any,
+    trade: Array<any>,
+    specialization: Array<any>,
+    allSpecializationSelected: boolean,
+    portfolio: Array<any>,
+    about: string,
 }
 
 export class PersonalInformation extends Component<Props, State> {
@@ -52,13 +60,20 @@ export class PersonalInformation extends Component<Props, State> {
                 mobileNumber: '',
                 email: '',
                 qualificationDoc: []
-            }
+            },
+            trade: [],
+            specialization: [],
+            allSpecializationSelected: false,
+            portfolio: [],
+            about: '',
         }
     }
 
     componentDidMount() {
         this.props.getTradieProfileView();
         this.props.getTradieBasicDetails();
+        if (!this.props.tradeListData.length) { this.props.callTradeList(); }
+
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
@@ -74,6 +89,45 @@ export class PersonalInformation extends Component<Props, State> {
 
     toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
 
+    tradeHandler = (id: any, name: string) => {
+        if (name == 'trade') {
+            if (this.state.trade.length && this.state.trade[0] == id) {
+                this.setState({ trade: [], specialization: [], allSpecializationSelected: false });
+            } else {
+                this.setState({ trade: [id], specialization: [], allSpecializationSelected: false });
+            }
+        } else if (name === 'specializationId') {
+            this.setState((state: any) => {
+                var newData = [...state.specialization];
+                console.log(newData, "newData----------");
+                if (state.allSpecializationSelected) {
+                    newData = [];
+                }
+                const itemIndex = newData.indexOf(id);
+                if (newData.indexOf(id) < 0) {
+                    newData.push(id);
+                } else {
+                    newData.splice(itemIndex, 1);
+                }
+                console.log(newData, "newData----------");
+                return {
+                    specialization: newData,
+                    allSpecializationSelected: false
+                }
+            })
+        } else if (name == 'All Clicked') {
+            if (this.state.allSpecializationSelected) {
+                this.setState({ allSpecializationSelected: false, specialization: [] });
+            } else {
+                const newSpecialization = id.map(({ _id }: { _id: string }) => _id)
+                this.setState({ allSpecializationSelected: true, specialization: newSpecialization });
+            }
+        }
+        else if (name == 'Clear All') {
+            this.setState({ allSpecializationSelected: false, trade: [], specialization: [] });
+        }
+    }
+
     render() {
         let props: any = this.props;
         console.log(this.state, "state--------------", props, "props------------");
@@ -84,9 +138,14 @@ export class PersonalInformation extends Component<Props, State> {
             portfolioModalClicked,
             passwordModalClicked,
             basicDetails,
+            trade,
+            specialization,
+            allSpecializationSelected,
         } = this.state;
 
-        let profileView: any = props.tradieProfileViewData;
+        const profileView: any = props.tradieProfileViewData;
+        const tradeList: any = props.tradeListData;
+        const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === trade[0])?.specialisations;
 
         return (
             <div>
@@ -234,7 +293,7 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal>
 
                 <div className="section_wrapper">
-                    <span className="sub_title">Areas of specialisation
+                    <span className="sub_title">Areas of specialization,
                                     <span className="edit_icon" title="Edit" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
                             <img src={editIconBlue} alt="edit" />
                         </span>
@@ -244,11 +303,11 @@ export class PersonalInformation extends Component<Props, State> {
                             <li className="main">
                                 <img src={profileView?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="icon" />{profileView?.areasOfSpecialization?.tradeData[0]?.tradeName}
                             </li>
-                            <li>Electrical Instrumentation</li>
+                            {/* <li>Electrical Instrumentation</li>
                             <li>Security and Fire Alarm Installation</li>
                             <li>Electrical Instrumentation</li>
                             <li>Security and Fire Alarm Installation</li>
-                            <li>More</li>
+                            <li>More</li> */}
                             {
                                 profileView?.areasOfSpecialization?.specializationData?.map(({ specializationId, specializationName }: { specializationId: string, specializationName: string }) => {
                                     return <li key={specializationId}>{specializationName}</li>
@@ -265,8 +324,69 @@ export class PersonalInformation extends Component<Props, State> {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <div className="custom_wh ask_ques">
-                        Areas of specialisation
+                    <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading">
+                            <span className="sub_title">What is your trade?</span>
+                            <button className="close_btn" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
+
+                        <div className="inner_wrap">
+                            <div className="form_field">
+                                <span className="xs_sub_title">Categories</span>
+                            </div>
+                            <div className="select_sphere">
+                                <ul>
+                                    {tradeList?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) => {
+                                        const active = trade[0] === _id;
+                                        return (
+                                            <li key={_id} className={active ? 'active' : ''} onClick={() => this.tradeHandler(_id, 'trade')}>
+                                                <figure>
+                                                    <img src={selected_url ? selected_url : spherePlaceholder} />
+                                                </figure>
+                                                <span className="name">{trade_name}</span>
+                                            </li>
+                                        )
+                                    })}
+                                </ul>
+                                {/* <span className="error_msg">{errors.categories}</span> */}
+                            </div>
+                            {/* <div className="form_field">
+                                <span className="xs_sub_title">Job types</span>
+                            </div>
+                            <ul className="job_categories">
+                                {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
+                                    const active = sortByFilter.jobTypes[0] == _id;
+                                    return (
+                                        <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => this.tradeHandler(_id, 'jobTypes')}>
+                                            <figure className="type_icon">
+                                                <img src={image} alt="" />
+                                            </figure>
+                                            <span className="name">{name}</span>
+                                        </li>
+                                    )
+                                })}
+                            </ul> */}
+                            <div className="form_field">
+                                <span className="xs_sub_title">Specialisation</span>
+                            </div>
+                            <div className="tags_wrap">
+                                <ul>
+                                    {specializationList?.length > 0 &&
+                                        <li className={allSpecializationSelected ? 'selected' : ''}
+                                            onClick={() => this.tradeHandler(specializationList, 'All Clicked')}>All</li>}
+                                    {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
+                                        const active = specialization?.indexOf(_id) >= 0;
+                                        return <li key={_id} className={active && !allSpecializationSelected ? 'selected' : ''} onClick={() => this.tradeHandler(_id, 'specializationId')}>{name}</li>
+                                    })}
+                                </ul>
+                            </div>
+                        </div>
+                        <div className="filter_btn">
+                            <a className={`link ${(trade.length && specialization.length) ? '' : 'disable_link'}`} onClick={() => this.tradeHandler('Clear All', 'Clear All')}>Clear All</a>
+                            <button className={`fill_btn full_btn btn-effect ${(trade.length && specialization.length) ? '' : 'disable_btn'}`}>Show Results</button>
+                        </div>
                     </div>
                 </Modal>
 
