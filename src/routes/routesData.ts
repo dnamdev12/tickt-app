@@ -109,11 +109,11 @@ const routes = [
         authRoute: false,
         privateRoute: true,
     },
-    {
-        name: 'builderinfo',
-        path: '/builder-info',
-        component: BuilderInfo,
-    },
+    // {
+    //     name: 'builderinfo',
+    //     path: '/builder-info',
+    //     component: BuilderInfo,
+    // },
     {
         name: 'tradieinfo',
         path: '/tradie-info',
@@ -128,7 +128,7 @@ const routes = [
             '/new-jobs',
             '/approved-milestones',
             '/mark-milestone',
-            '/review-builder',
+            // '/review-builder',
         ],
         component: JobDashboard,
         authRoute: false,

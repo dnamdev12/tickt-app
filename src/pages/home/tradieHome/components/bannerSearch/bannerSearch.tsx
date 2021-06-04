@@ -214,7 +214,7 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const searchedJobClicked = (item: any, isRecentSearchesClicked?: string) => {
-        setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: [item._id], specializationId: [item.specializationsId], isSearchedJobSelected: true }));
+        setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: [item._id], specializationId: [item.specializationsId], isSearchedJobSelected: true, isFirstJobSelectedCount: 1 }));
         setInputFocus1(false);
         if (isRecentSearchesClicked == 'isRecentSearchesClicked') {
             const newSearchData = {
@@ -241,36 +241,38 @@ const BannerSearch = (props: PropsType) => {
 
     const recentJobSearches = () => {
         return (
-            <>
-                {props.recentSearchJobData?.length > 0 && <div className="custom_autosuggestion" id="recent-job-search-div">
-                    <span className="sub_title">Recent searches</span>
-                    <div className="flex_row recent_search">
-                        {props.recentSearchJobData?.length > 0 && props.recentSearchJobData?.map((item: any) => {
-                            return (
-                                <div className="flex_col_sm_3" key={item._id}>
-                                    <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
-                                        <figure className="ico">
-                                            <img src={item?.image || residential} alt="icon" />
-                                        </figure>
-                                        <div className="f_column">
-                                            <span>{item.name}</span>
-                                            <span className="name">{item.trade_name}</span>
+            <div className="custom_autosuggestion" id="recent-job-search-div">
+                {props.recentSearchJobData?.length > 0 &&
+                    <React.Fragment>
+                        <span className="sub_title">Recent searches</span>
+                        <div className="flex_row recent_search">
+                            {props.recentSearchJobData?.map((item: any) => {
+                                return (
+                                    <div className="flex_col_sm_3" key={item._id}>
+                                        <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
+                                            <figure className="ico">
+                                                <img src={item?.image || residential} alt="icon" />
+                                            </figure>
+                                            <div className="f_column">
+                                                <span>{item.name}</span>
+                                                <span className="name">{item.trade_name}</span>
+                                            </div>
+                                            <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
+                                                <img src={close} alt="remove" />
+                                            </span>
                                         </div>
-                                        <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
-                                            <img src={close} alt="remove" />
-                                        </span>
-                                    </div>
-                                </div>)
-                        })}
-                    </div>
-                </div >}
-            </>
+                                    </div>)
+                            })}
+                        </div>
+                    </React.Fragment>}
+            </div>
         )
     }
 
     const renderJobResult = () => {
         return (
-            (props.searchJobListData?.length && stateData.searchedJob.length >= 3) && <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
+            (props.searchJobListData?.length > 0 && stateData.searchedJob.length >= 3) &&
+            <div className="custom_autosuggestion" id="fetched-custom-job-category-div">
                 <div className="recent_search">
                     <ul className="drop_data">
                         {props.searchJobListData?.map((item: any) => {
@@ -306,6 +308,26 @@ const BannerSearch = (props: PropsType) => {
         setInputFocus2(false);
     }
 
+    const filterFromAddress = (results: any) => {
+        let city, state, country = null;
+        for (let i = 0; i < results[0].address_components.length; i++) {
+            for (let j = 0; j < results[0].address_components[i].types.length; j++) {
+                switch (results[0].address_components[i].types[j]) {
+                    case "locality":
+                        city = results[0].address_components[i].long_name;
+                        break;
+                    case "administrative_area_level_1":
+                        state = results[0].address_components[i].long_name;
+                        break;
+                    case "country":
+                        country = results[0].address_components[i].long_name;
+                        break;
+                }
+            }
+        }
+        return { city, state, country: country.toLowerCase() };
+    }
+
     const getCurrentLocation = (e: any) => {
         e.preventDefault();
         const showPosition = (position: any) => {
@@ -321,8 +343,14 @@ const BannerSearch = (props: PropsType) => {
                     alert(status);
                 }
                 if (status == google.maps.GeocoderStatus.OK) {
-                    setInputFocus2(false);
-                    setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: results[0].formatted_address, isMapLocationSelected: true, locationDenied: false }));
+                    const { city, state, country } = filterFromAddress(results);
+                    if (["australia", "au"].includes(country)) {
+                        setInputFocus2(false);
+                        setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: results[0].formatted_address, isMapLocationSelected: true, locationDenied: false }));
+                    } else {
+                        setInputFocus2(false);
+                        setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+                    }
                 }
             });
         }
@@ -465,7 +493,7 @@ const BannerSearch = (props: PropsType) => {
             <button className="modal_srch_close">
                 <img src={close} alt="close" />
             </button>
-            <form className={`search_wrapr ${stateData?.isSearchedJobSelected ? '' : 'first_input'}`}>
+            <form className={`search_wrapr ${props.history?.location?.pathname === '/' ? stateData?.isFirstJobSelectedCount ? '' : 'first_input' : ''}`}>
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
