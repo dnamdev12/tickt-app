@@ -73,6 +73,9 @@ export function useStateFromProp(initialValue: any) {
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
+    
+    const [checkOnChange, setOnChange] = useState(false);
+
     const [locationStatus, setLocationStatus] = useState(null);
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
@@ -90,7 +93,7 @@ const BannerSearch = (props: PropsType) => {
     const [calenderRange1, setCalenderRange1] = useState<any>(example_calender);
 
     const handleOnOutsideSearch = () => {
-        console.log('Here!')
+        setOnChange(false);
         setInputFocus1(false);
     };
     const handleOnOutsideLocation = () => setInputFocus2(false);
@@ -215,6 +218,9 @@ const BannerSearch = (props: PropsType) => {
         updateGetTitleInfo();
         if (searchText?.length > 2) {
             props.getSearchJobList(searchText);
+        }
+        if(!searchText?.length){
+            setSelectedTrade({});
         }
     }, [searchText])
 
@@ -574,7 +580,12 @@ const BannerSearch = (props: PropsType) => {
     }
 
     let custom_name = searchText;
-    let condition_location: any = addressText?.length > 2 || (addressText?.length && enableCurrentLocation && Object.keys(selectedAddress).length);
+    if (!checkOnChange) {
+        if (length_spec > 1) {
+            custom_name = `${custom_name} +${length_spec - 1}`;
+        }
+    }
+
     return (
         <div className="home_search">
             <button
@@ -594,9 +605,10 @@ const BannerSearch = (props: PropsType) => {
                                 type="text"
                                 ref={searchRef}
                                 placeholder="What jobs are you after?"
-                                value={length_spec > 1 ? `${custom_name} +${length_spec - 1}` : (custom_name)}
+                                value={custom_name}
                                 onChange={(e) => {
                                     isHandleChanges(true)
+                                    setOnChange(true);
                                     setSearchText((e.target.value).trimLeft());
                                 }}
                                 // readOnly={props?.selectedItem ? true : false}
@@ -617,6 +629,7 @@ const BannerSearch = (props: PropsType) => {
                                             setSelectedTrade({});
                                             isHandleChanges(true)
                                             setSearchText('');
+                                            setOnChange(false);
                                         }} />
                                 </span>
                             ) : null}

@@ -14,8 +14,7 @@ class TradieListData extends Component<TradieListData & RouteProps, Props> {
         const { jobDataWithJobTypeLatLong } = props;
         let home_data: any = jobDataWithJobTypeLatLong;
         let { recomended_tradespeople, saved_tradespeople } = home_data;
-        console.log({recomended_tradespeople, saved_tradespeople, props })
-
+ 
         return (
             <div className={'app_wrapper'} >
                 <div className="section_wrapper bg_gray">

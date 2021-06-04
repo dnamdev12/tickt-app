@@ -6,10 +6,13 @@ import {
     getTradieBasicDetails,
 } from './../../redux/profile/actions';
 
+import { callTradeList } from '../../redux/auth/actions';
+
 const mapStateToProps = (state: any) => {
     return {
         tradieProfileViewData: state.profile.tradieProfileViewData,
         tradieBasicDetailsData: state.profile.tradieBasicDetailsData,
+        tradeListData: state.auth.tradeListData,
         isLoading: state.common.isLoading
     }
 }
@@ -17,7 +20,8 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         getTradieProfileView,
-        getTradieBasicDetails
+        getTradieBasicDetails,
+        callTradeList,
     }, dispatch);
 }
 
