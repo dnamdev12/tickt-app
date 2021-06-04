@@ -70,15 +70,16 @@ const RateThisJob = (props: Proptypes) => {
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
-                <div className="relate">
+                <div className="form_field relate">
                     <button className="back" onClick={() => props?.history?.goBack()}></button>
-                    <span className="xs_sub_title">{item?.jobName}</span>
+                    {/* <span className="xs_sub_title">{item?.jobName}</span> */}
+                    <span className="xs_sub_title">Review the tradesperson</span>
                 </div>
-                <div className="form_field">
+                {/* <div className="form_field">
                     <span className="sub_title">
                         {'Review the tradesperson '}
                     </span>
-                </div>
+                </div> */}
                 <span className="inner_title">
                     {'Rate this tradie'}
                 </span>
