@@ -175,73 +175,72 @@ const PostJob = (props: Proptypes) => {
         const default_format = 'MM-DD-YYYY';
         let milestone_clone: any = milestones;
         let checkIsValid: any = true;
-
+    
         if (!skip && milestone_clone?.length) {
-
+    
             let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
-
+    
             if (filter_milestone?.length) {
                 filter_milestone.forEach((mile: any) => {
-                    let msw = moment(mile.from_date).isValid();
-                    let mew = moment(mile.to_date).isValid();
-
-                    let tsw = moment(time.from_date).isValid();
-                    let tew = moment(time.to_date).isValid();
-
+                    let msw = moment(mile.from_date, default_format).isValid();
+                    let mew = moment(mile.to_date, default_format).isValid();
+    
+                    let tsw = moment(time.from_date, default_format).isValid();
+                    let tew = moment(time.to_date, default_format).isValid();
+    
                     let mile_start = mile.from_date;
                     let mile_end = mile.to_date;
-
+    
                     let time_start = time.from_date;
                     let time_end = time.to_date;
-
+    
                     if (msw && mew) {
                         if (tsw && tew) {
                             let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
-
+    
                             if (checkIfSame) {
                                 checkIsValid = true;
                             }
-
+    
                             if (!checkIfSame) {
                                 if (
                                     moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
-                                    moment(time_start, default_format).isSameOrBefore(moment(mile_end, default_format)) 
-                                 ) {
+                                    moment(time_start, default_format).isSameOrBefore(moment(mile_end, default_format))
+                                ) {
                                     checkIsValid = false;
-                                 }
-
-                                 if (
+                                }
+    
+                                if (
                                     moment(time_end, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
-                                    moment(time_end, default_format).isSameOrBefore(moment(mile_end, default_format)) 
-                                 ) {
+                                    moment(time_end, default_format).isSameOrBefore(moment(mile_end, default_format))
+                                ) {
                                     checkIsValid = false;
-                                 }
+                                }
                             }
                         }
-
+    
                         if (!tew) {
                             if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
                                 checkIsValid = false;
                             }
                         }
                     }
-
+    
                     // here conditions
                 })
             }
         }
-
+    
         if (!checkIsValid) {
             setShowToast(true, 'Please add unique date.');
             return;
         }
-
+    
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
         setMileStones(milestone_clone);
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
-
     const handleCombineMileStones = (item: any) => {
         let milestone_clone: any = milestones;
         let data_clone: any = data;

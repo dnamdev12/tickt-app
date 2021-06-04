@@ -76,6 +76,62 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         return result;
     };
 
+    const checkIfDatesValid = () => {
+        console.log({ data })
+        let start_selection: any = moment(data?.from_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
+        let end_selection: any = null;
+        if (moment(data?.to_date, 'YYYY-MM-DD').isValid()) {
+            if (!moment(data?.to_date, 'YYYY-MM-DD').isSame(moment(data?.from_date, 'YYYY-MM-DD'))) {
+                end_selection = moment(data?.to_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
+            }
+        }
+    
+        let item_find: any = false;
+        let filteredItem = localMilestones.filter((item: any) => {
+            if (item.hasOwnProperty('from_date')) {
+                if (!item?.from_date?.length || item?.from_date !== "Invalid date") {
+                    return item;
+                }
+            }
+        });
+    
+        if (filteredItem?.length) {
+            filteredItem.forEach((item_date: any) => {
+                let start: any = moment(item_date.from_date, 'MM-DD-YYYY').isValid() ? item_date.from_date : null;
+                let end: any = moment(item_date.to_date, 'MM-DD-YYYY').isValid() ? item_date.to_date : null;
+    
+                if (start && end) {
+                    if (start_selection && end_selection) {
+                        if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
+                            item_find = true
+                        }
+                    }
+                }
+    
+                if (start && !end) {
+                    if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
+                        item_find = true; // true;
+                    }
+                }
+    
+                if (start_selection && end_selection && !end) {
+                    if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                        item_find = false;
+                    } else {
+                        item_find = true
+                    }
+                }
+            });
+        }
+    
+        if (item_find) {
+            setShowToast(true, 'Please check the milestone dates.');
+            return item_find;
+        }
+    
+        return item_find;
+    }
+    
     const checkIfValidDates = (item: any) => {
         let isfilter = localMilestones.filter((item_: any) => {
             if (item_.hasOwnProperty('from_date')) {
@@ -88,7 +144,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             return true;
         } else {
             const newarr: any = isfilter.slice().sort((a, b) => {
-                return moment(a.from_date).diff(b.from_date);
+                return moment(a.from_date, 'MM-DD-YYYY').diff(moment(b.from_date, 'MM-DD-YYYY'));
             });
             let filteredItem: any = item.filter((item_reorder: any) => {
                 if (item_reorder.hasOwnProperty('from_date')) {
@@ -98,63 +154,12 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
             });
             setSortedItems(newarr);
+            console.log({
+                newarr,
+                filteredItem
+            })
             return JSON.stringify(newarr) === JSON.stringify(filteredItem);
         }
-    }
-
-    const checkIfDatesValid = () => {
-        let start_selection: any = moment(data?.from_date).format('MM-DD-YYYY');
-        let end_selection: any = null;
-        if (moment(data?.to_date).isValid()) {
-            if (!moment(data?.to_date).isSame(data?.from_date)) {
-                end_selection = moment(data?.to_date).format('MM-DD-YYYY');
-            }
-        }
-
-        let item_find: any = false;
-        let filteredItem = localMilestones.filter((item: any) => {
-            if (item.hasOwnProperty('from_date')) {
-                if (!item?.from_date?.length || item?.from_date !== "Invalid date") {
-                    return item;
-                }
-            }
-        });
-
-        if (filteredItem?.length) {
-            filteredItem.forEach((item_date: any) => {
-                let start: any = moment(item_date.from_date).isValid() ? item_date.from_date : null;
-                let end: any = moment(item_date.to_date).isValid() ? item_date.to_date : null;
-
-                if (start && end) {
-                    if (start_selection && end_selection) {
-                        if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
-                            item_find = true
-                        }
-                    }
-                }
-
-                if (start && !end) {
-                    if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
-                        item_find = true; // true;
-                    }
-                }
-
-                if (start_selection && end_selection && !end) {
-                    if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
-                        item_find = false;
-                    } else {
-                        item_find = true
-                    }
-                }
-            });
-        }
-
-        if (item_find) {
-            setShowToast(true, 'Please check the milestone dates.');
-            return item_find;
-        }
-
-        return item_find;
     }
 
     const onDragEnd = (result: DropResult) => {
