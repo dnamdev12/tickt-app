@@ -5,6 +5,8 @@ import rateStar from '../../../assets/images/ic-star-fill.png';
 import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 import moment from 'moment';
+import RateThisJob from './ratethisJob/index';
+
 interface Post {
     amount: any,
     fromDate: any,
@@ -46,13 +48,13 @@ export default function PastJobs(props: any): ReactElement {
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
             let yearEnd = moment().endOf("year").toISOString();
             let monthEnd = moment(fromDate).endOf("month").toISOString();
-        
+
             let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
             let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
-        
+
             let monthDiff = parseInt(item.toString());
             let yearDiff = parseInt(item_year.toString());
-        
+
             if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
                 return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
             }
@@ -62,6 +64,13 @@ export default function PastJobs(props: any): ReactElement {
             return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
     }
+
+    return (
+        <RateThisJob
+            history={null}
+            location={null}
+        />
+    )
 
     return (
         <React.Fragment>

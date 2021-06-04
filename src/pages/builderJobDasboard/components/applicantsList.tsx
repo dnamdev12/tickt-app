@@ -45,14 +45,14 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
                 <React.Fragment>
                     <div className="flex_col_sm_6">
                         <div className="relate">
+                            <span className="xs_sub_title">
+                                {'New applicants'}
+                            </span>
                             <button
                                 className="back"
                                 onClick={() => { setJobLabel(activeType) }}
                             >
                             </button>
-                            <span className="xs_sub_title">
-                                {'New applicants'}
-                            </span>
                         </div>
                     </div>
 
