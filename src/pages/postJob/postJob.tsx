@@ -26,7 +26,7 @@ interface Proptypes {
     editDetailPage: any;
     isLoading: any,
     history: any,
-    builderProfile:any,
+    builderProfile: any,
     updateMileStoneIndex: (data: any) => void;
     updateMileStoneTimings: (data: any) => void;
     updateDetailScreen: (data: any) => void;
@@ -110,52 +110,123 @@ const PostJob = (props: Proptypes) => {
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
 
+    // const addTimeToMileStone = (time: any, index: any, skip: any) => {
+    //     let milestone_clone: any = milestones;
+    //     let checkIsValid: any = true;
+    //     if (!skip && milestone_clone?.length) {
+    //         let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
+    //         if (filter_milestone?.length) {
+    //             filter_milestone.forEach((mile: any) => {
+    //                 let validStart = moment(mile.from_date).isValid();
+    //                 let validEnd = moment(mile.to_date).isValid();
+
+    //                 let validStartInput = moment(time.from_date).isValid();
+    //                 let validEndInput = moment(time.to_date).isValid();
+
+    //                 if (validStart && validEnd) {
+    //                     if (validStartInput && validEndInput) {
+    //                         if (moment(time.from_date).isSameOrAfter(mile.from_date) && moment(time.to_date).isSameOrBefore(mile.to_date)) {
+    //                             checkIsValid = false
+    //                         }
+    //                     }
+
+    //                     if (validStartInput) {
+    //                         // if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+    //                         if (moment(time.from_date).isSameOrAfter(mile.from_date) && moment(time.from_date).isSameOrBefore(mile.to_date)) {
+    //                             checkIsValid = false
+    //                         }
+    //                     }
+
+    //                     if (validEndInput) {
+    //                         // if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
+    //                         if (moment(time.to_date).isSameOrAfter(mile.from_date) && moment(time.to_date).isSameOrBefore(mile.to_date)) {
+    //                             checkIsValid = false
+    //                         }
+    //                     }
+    //                 }
+
+    //                 if (validStart && validStartInput && !validEnd) {
+    //                     if (moment(time.from_date).isSame(mile.from_date)) {
+    //                         checkIsValid = false
+    //                     }
+    //                 }
+
+    //                 if (validEnd && validEndInput && !validStart) {
+    //                     if (moment(time.to_date).isSame(mile.to_date)) {
+    //                         checkIsValid = false
+    //                     }
+    //                 }
+    //             })
+    //         }
+    //     }
+
+    //     if (!checkIsValid) {
+    //         setShowToast(true, 'Please add unique date.');
+    //         return;
+    //     }
+
+    //     milestone_clone[index]['from_date'] = time.from_date;
+    //     milestone_clone[index]['to_date'] = time.to_date;
+    //     setMileStones(milestone_clone);
+    //     Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
+    // }
+
     const addTimeToMileStone = (time: any, index: any, skip: any) => {
+        const default_format = 'MM-DD-YYYY';
         let milestone_clone: any = milestones;
         let checkIsValid: any = true;
+
         if (!skip && milestone_clone?.length) {
+
             let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
+
             if (filter_milestone?.length) {
                 filter_milestone.forEach((mile: any) => {
-                    let validStart = moment(mile.from_date).isValid();
-                    let validEnd = moment(mile.to_date).isValid();
+                    let msw = moment(mile.from_date).isValid();
+                    let mew = moment(mile.to_date).isValid();
 
-                    let validStartInput = moment(time.from_date).isValid();
-                    let validEndInput = moment(time.to_date).isValid();
+                    let tsw = moment(time.from_date).isValid();
+                    let tew = moment(time.to_date).isValid();
 
-                    if (validStart && validEnd) {
-                        if (validStartInput && validEndInput) {
-                            if (moment(time.from_date).isSameOrAfter(mile.from_date) && moment(time.to_date).isSameOrBefore(mile.to_date)) {
-                                checkIsValid = false
+                    let mile_start = mile.from_date;
+                    let mile_end = mile.to_date;
+
+                    let time_start = time.from_date;
+                    let time_end = time.to_date;
+
+                    if (msw && mew) {
+                        if (tsw && tew) {
+                            let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
+
+                            if (checkIfSame) {
+                                checkIsValid = true;
+                            }
+
+                            if (!checkIfSame) {
+                                if (
+                                    moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
+                                    moment(time_start, default_format).isSameOrBefore(moment(mile_end, default_format)) 
+                                 ) {
+                                    checkIsValid = false;
+                                 }
+
+                                 if (
+                                    moment(time_end, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
+                                    moment(time_end, default_format).isSameOrBefore(moment(mile_end, default_format)) 
+                                 ) {
+                                    checkIsValid = false;
+                                 }
                             }
                         }
 
-                        if (validStartInput) {
-                            // if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-                            if (moment(time.from_date).isSameOrAfter(mile.from_date) && moment(time.from_date).isSameOrBefore(mile.to_date)) {
-                                checkIsValid = false
-                            }
-                        }
-
-                        if (validEndInput) {
-                            // if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-                            if (moment(time.to_date).isSameOrAfter(mile.from_date) && moment(time.to_date).isSameOrBefore(mile.to_date)) {
-                                checkIsValid = false
+                        if (!tew) {
+                            if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
+                                checkIsValid = false;
                             }
                         }
                     }
 
-                    if (validStart && validStartInput && !validEnd) {
-                        if (moment(time.from_date).isSame(mile.from_date)) {
-                            checkIsValid = false
-                        }
-                    }
-
-                    if (validEnd && validEndInput && !validStart) {
-                        if (moment(time.to_date).isSame(mile.to_date)) {
-                            checkIsValid = false
-                        }
-                    }
+                    // here conditions
                 })
             }
         }
@@ -164,7 +235,7 @@ const PostJob = (props: Proptypes) => {
             setShowToast(true, 'Please add unique date.');
             return;
         }
-        
+
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
         setMileStones(milestone_clone);
