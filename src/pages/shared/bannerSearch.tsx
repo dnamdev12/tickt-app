@@ -539,7 +539,6 @@ const BannerSearch = (props: PropsType) => {
 
 
     let custom_name = searchText;
-    console.log({ length_spec, checkOnChange, inputFocus1 });
 
     if (!checkOnChange) {
         if (length_spec > 1) {
