@@ -9,6 +9,9 @@ import cameraBlack from '../../../assets/images/camera-black.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import profilePlaceholder from '../../../assets/images/ic-placeholder-detail.png';
 import cancel from "../../../assets/images/ic-cancel.png";
+import remove from "../../../assets/images/icon-close-1.png";
+import addMedia from "../../../assets/images/add-image.png";
+import editIconWhite from '../../../assets/images/ic-edit-white.png';
 
 
 interface Props {
@@ -212,10 +215,8 @@ export class PersonalInformation extends Component<Props, State> {
                             </div>
                             <span className="info_note">Don’t worry, nobody will see it. This is for verification only!</span>
                         </div>
-                        <div className="btn_wrap">
-                            <div className="bottom_btn">
-                                <button className="fill_btn full_btn btn-effect">Save changes</button>
-                            </div>
+                        <div className="bottom_btn custom_btn">
+                            <button className="fill_btn full_btn btn-effect">Save changes</button>
                         </div>
                     </div>
                 </Modal>
@@ -336,9 +337,92 @@ export class PersonalInformation extends Component<Props, State> {
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <div className="custom_wh ask_ques">
-                        Portfolio
+                    <div className="custom_wh profile_info" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading">
+                            <span className="sub_title">Portfolio</span>
+                            <button className="close_btn">
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
+                        <div className="inner_wrap">
+                            <ul className="portfolio_wrappr">
+                                <li className="media">
+                                    <figure className="portfolio_img">
+                                        <img src={profilePlaceholder} alt="portfolio-images" />
+                                        <span className="edit_icon">
+                                            <img src={editIconWhite} alt="edit" />
+                                        </span>
+                                        <span className="xs_sub_title">Dummy text</span>
+                                    </figure>
+                                </li>
+                                <li className="media">
+                                    <figure className="portfolio_img">
+                                        <img src={profilePlaceholder} alt="portfolio-images" />
+                                        <span className="edit_icon">
+                                            <img src={editIconWhite} alt="edit" />
+                                        </span>
+                                        <span className="xs_sub_title">Dummy text</span>
+                                    </figure>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bottom_btn custom_btn">
+                            <button className="fill_btn full_btn btn-effect">Save changes</button>
+                        </div>
                     </div>
+
+                    {/* job detail edit */}
+                    {/* <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                <div className="heading">
+                                    <div className="relate">
+                                        <button className="back"></button>
+                                        <div className="md_heading">
+                                            <span className="sub_title">Machine Maintenance</span>
+                                            <span className="info_note">Tradies who have a portfolio with photos get job faster. </span>
+                                        </div>
+                                    </div>
+                                    <button className="close_btn">
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                <div className="inner_wrap">
+                                    <div className="inner_wrappr">
+                                        <div className="form_field">
+                                            <label className="form_label">Job Name</label>
+                                            <div className="text_field">
+                                                <input type="text" placeholder="Enter Job Name" />
+                                            </div>
+                                        </div>
+                                        <div className="form_field">
+                                            <label className="form_label">Job Description</label>
+                                            <div className="text_field">
+                                                <textarea placeholder="The item has..."></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div className="upload_img_video">
+                                        <figure className="img_video">
+                                            <img src={dummy} alt="img" />
+                                            <img src={remove} alt="remove" className="remove" />
+                                        </figure>
+                                        <label className="upload_media" htmlFor="upload_img_video">
+                                            <img src={addMedia} alt="add" />
+                                        </label>
+                                        <input
+                                            type="file"
+                                            accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
+                                            style={{ display: "none" }}
+                                            id="upload_img_video"
+                                        />
+                                    </div>
+                                </div>
+                                <div className="bottom_btn custom_btn">
+                                    <button className="fill_btn full_btn btn-effect">Save changes</button>
+                                    <button className="fill_grey_btn btn-effect">Cancel</button>
+                                </div>
+                            </div> */}
+                    {/* job detail edit close */}
+
                 </Modal>
 
                 <button className="fill_btn full_btn">Save changes</button>

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import TradieEditProfileComponent from './tradieEditProfile copy';
+import TradieEditProfileComponent from './tradieEditProfile';
 import {
     getTradieProfileView,
     getTradieBasicDetails,
