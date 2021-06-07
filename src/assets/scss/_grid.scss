@@ -180,46 +180,6 @@
     }
   }
 
-  .choose_qf{
-    display: flex;
-    flex-flow: column;
-    margin-bottom: 10px;
-    [type="checkbox"] + label{
-      padding-left: 35px;
-    }
-    .checkbox_wrap{
-      label{
-        max-width: 240px;
-      }
-    }
-    .f_spacebw{
-      margin-bottom: 24px;
-    }
-    .upload_btn{
-      @include border-radius(3px);
-      background-color: var(--grey);
-      font-size: 12px;
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
-      color: var(--blue);
-      padding: 10px 15px;
-      display: inline-block;
-      cursor: pointer;
-      &.disable{
-        background-color: #dfe5ef6e;
-        pointer-events: none;
-        color: #c2c2c7;
-      }
-    }
-  }
-
-  .add_qf_doc{
-    margin-bottom: 40px;
-    .upload_doc{
-      text-align: center;
-      margin: 0 0 50px;
-    }
-  }
-
   .custom_steppr{
     display: flex;
     align-items: center;
@@ -241,7 +201,45 @@
   }
 }
 
+.choose_qf{
+  display: flex;
+  flex-flow: column;
+  margin-bottom: 10px;
+  [type="checkbox"] + label{
+    padding-left: 35px;
+  }
+  .checkbox_wrap{
+    label{
+      max-width: 240px;
+    }
+  }
+  .f_spacebw{
+    margin-bottom: 24px;
+  }
+  .upload_btn{
+    @include border-radius(3px);
+    background-color: var(--grey);
+    font-size: 12px;
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    color: var(--blue);
+    padding: 10px 15px;
+    display: inline-block;
+    cursor: pointer;
+    &.disable{
+      background-color: #dfe5ef6e;
+      pointer-events: none;
+      color: #c2c2c7;
+    }
+  }
+}
 
+.add_qf_doc{
+  margin-bottom: 40px;
+  .upload_doc{
+    text-align: center;
+    margin: 0 0 50px;
+  }
+}
 
 .left_col{
   position: fixed;
