@@ -24,7 +24,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) 
         {appliedJobList.length ? appliedJobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-              <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
+              <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
               <div className="user_wrap">
                 <figure className="u_img">
                   <img src={tradeSelectedUrl || dummy} alt="traide-img" />

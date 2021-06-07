@@ -50,7 +50,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => 
               <div className="flex_col_sm_6">
                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                   <NavLink
-                    to={`/mark-milestone?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`}
+                    to={`/mark-milestone?jobId=${jobId}&redirect_from=jobs`}
                     className="more_detail circle"
                   ></NavLink>
                   <div className="user_wrap">
