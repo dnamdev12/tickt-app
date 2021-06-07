@@ -74,11 +74,6 @@ const reducer = (state = initialState, action: any) => {
                 homeApplyJobData: action.payload
             }
 
-        case actionTypes.SET_PROFILE_BUILDER:
-            return {
-                ...state,
-                builderProfile: action.payload
-            }
 
         default: return state
     }

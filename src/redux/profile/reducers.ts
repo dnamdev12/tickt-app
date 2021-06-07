@@ -2,8 +2,12 @@ import * as actionTypes from './constants';
 
 const initialState = {
   tradieProfileData: '',
+  tradieProfileViewData: '',
+  tradieBasicDetailsData: '',
   bankDetails: {},
   error: '',
+  tradieInfo: [],
+  builderProfile:{}
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -13,6 +17,16 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         tradieProfileData: action.payload,
+      };
+    case actionTypes.SET_TRADIE_PROFILE_VIEW:
+      return {
+        ...state,
+        tradieProfileViewData: action.payload,
+      };
+    case actionTypes.SET_TRADIE_BASIC_DETAILS:
+      return {
+        ...state,
+        tradieBasicDetailsData: action.payload,
       };
 
     case actionTypes.GET_BANK_DETAILS_END:
@@ -32,14 +46,27 @@ const reducer = (state = initialState, action: any) => {
             account_name: '',
             account_number: '',
             bsb_number: '',
-          }, 
+          },
         }
       } else {
         return state;
       }
 
-      default:
-        return state;
+    case actionTypes.SET_TRADIE_PROFILE:
+      return {
+        ...state,
+        tradieInfo: action.payload,
+      };
+
+    case actionTypes.SET_PROFILE_BUILDER:
+      return {
+        ...state,
+        builderProfile: action.payload
+      }
+
+
+    default:
+      return state;
   }
 };
 

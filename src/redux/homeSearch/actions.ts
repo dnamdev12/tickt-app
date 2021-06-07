@@ -108,4 +108,3 @@ export const milestoneAcceptOrDecline = async (data: any) => {
     return { success: false, data: response.result };
 }
 
-export const getProfileBuilder = () => ({type:actionTypes.GET_PROFILE_BUILDER})
