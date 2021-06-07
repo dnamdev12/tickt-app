@@ -4,7 +4,6 @@ import {
     tradieReviewReply,
     tradieUpdateReviewReply,
     tradieRemoveReviewReply,
-    getTradieProfile,
     getTradieReviewListOnBuilder,
     getAcceptDeclineTradie,
     reviewReply,
@@ -13,6 +12,7 @@ import {
     getTradeReviews,
     getTradeProfile
 } from '../../redux/jobs/actions';
+import {getTradieProfile} from '../../redux/profile/actions';
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -146,6 +146,7 @@ class TradieInfo extends Component<Props, State> {
     componentDidUpdate() {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
+        console.log({tradeStatus})
         if (tradeStatus) {
             props.history.push('/jobs');
         }
@@ -739,7 +740,7 @@ class TradieInfo extends Component<Props, State> {
 }
 
 const mapState = (state: any) => ({
-    tradieInfo: state.jobs.tradieInfo,
+    tradieInfo: state.profile.tradieInfo,
     tradieReviews: state.jobs.tradieReviews,
     tradieRequestStatus: state.jobs.tradieRequestStatus,
 });

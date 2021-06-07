@@ -250,15 +250,7 @@ function* getnewJobApplicationListBuilder({ item }: any) {
 //   }
 // }
 
-function* getTradieProfile({ data }: any) {
-  const response: FetchResponse = yield NetworkOps.get(Urls.tradieProfile + `?tradieId=${data.tradieId}&jobId=${data.jobId}`);
 
-  if (response.status_code === 200) {
-    yield put({ type: actionTypes.SET_TRADIE_PROFILE, payload: response.result });
-  } else {
-    yield put({ type: actionTypes.SET_TRADIE_PROFILE, payload: [] });
-  }
-}
 
 function* getTradieReviewListOnBuilder({ data }: any) {
   const response: FetchResponse = yield NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
@@ -296,7 +288,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_BUILDER_OPEN_JOBS, getOpenJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS, getBuilderNewApplicants);
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, getnewJobApplicationListBuilder);
-    yield takeLatest(actionTypes.GET_TRADIE_PROFILE, getTradieProfile);
+ 
     yield takeLatest(actionTypes.GET_TRADIE_REVIEWS_LIST_ON_BUILDER, getTradieReviewListOnBuilder);
     yield takeLatest(actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, getAcceptDeclineTradie)
 

@@ -234,6 +234,13 @@ header {
             object-fit: cover;
           }
         }
+        &.active{
+          border: 3px solid var(--yellow);
+          border-radius: 50%;
+          figure{
+            border: none;
+          }
+        }
       }
     }
   }

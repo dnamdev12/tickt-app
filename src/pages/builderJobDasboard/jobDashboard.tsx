@@ -134,8 +134,8 @@ class JobDashboard extends Component<Props, State> {
             dataItemsAddons['location'] = {
                 "type": "Point",
                 "coordinates": [
-                    locationLocal[0],
-                    locationLocal[1]
+                    locationLocal[1],
+                    locationLocal[0]
                 ]
             };
         }
@@ -144,11 +144,7 @@ class JobDashboard extends Component<Props, State> {
             this.setState({ activeType: jobtype })
         }
         this.setState({
-            selectedItem: { jobtype, jobid, sortby, specializationId }, applicantsListJobs: [],
-            count: {
-                approveCount: 0,
-                applicantCount: 0
-            }
+            selectedItem: { jobtype, jobid, sortby, specializationId }, applicantsListJobs: []
         }, () => {
             if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
             if (jobtype === 'past') { getPastJobsBuilder(currentPage); }

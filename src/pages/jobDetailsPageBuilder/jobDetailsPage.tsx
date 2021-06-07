@@ -374,9 +374,25 @@ const JobDetailsPage = (props: PropsType) => {
         }
 
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate).endOf("month").toISOString();
+
+            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
+            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
+                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+            }
+            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
+                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            }
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
     }
+
 
     const renderByStatus = ({ status }: any) => {
         if (status) {
@@ -478,16 +494,16 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">
+                                            <li className="icon calendar">
                                                 {jobDetailsData?.time ? jobDetailsData.time : renderTime({ fromDate: jobDetailsData.fromDate, toDate: jobDetailsData?.toDate })}
                                             </li>
                                             <li className="icon dollar">{jobDetailsData.amount}</li>
-                                            <li className="icon calendar">{jobDetailsData.duration}</li>
                                             <li className="icon location line-3">{jobDetailsData.locationName}</li>
+                                            <li className="icon clock">{jobDetailsData.duration}</li>
                                         </ul>
                                     </div>
 
-                                    {paramStatus ? (
+                                    {/* {paramStatus ? (
                                         <button
                                             className="fill_btn full_btn btn-effect">
                                             {paramStatus}
@@ -497,7 +513,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             className="fill_btn full_btn btn-effect">
                                             {jobDetailsData?.status}
                                         </button>
-                                    ) : null}
+                                    ) : null} */}
                                 </div>
                             </div>
                         </div>
@@ -538,11 +554,15 @@ const JobDetailsPage = (props: PropsType) => {
                                         return (
                                             <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
-                                                <span>{item?.fromDate?.length && !item?.toDate?.length ?
+                                                <span>{renderTime({
+                                                    fromDate:item?.fromDate,
+                                                     toDate:item?.toDate
+                                                })}</span>
+                                                {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
                                                     `${moment(item?.fromDate).format('MMM DD')}` :
                                                     item?.fromDate?.length && item?.toDate?.length ?
                                                         `${moment(item?.fromDate).format('MMM DD ')}-${moment(item?.toDate).format(' DD')}` : ''
-                                                }</span>
+                                                }</span> */}
                                             </li>
                                         )
                                     })}

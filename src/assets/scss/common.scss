@@ -107,14 +107,6 @@ body {
   margin-bottom: 20px;
 }
 
-.heading {
-  font-size: 32px;
-  font-family: "Neue Haas Grotesk Text Pro Bold";
-  line-height: 1.06;
-  color: var(--white);
-  margin-bottom: 5px;
-}
-
 .title {
 	font-size: 32px;
 	font-family: 'Neue Haas Grotesk Text Pro Bold';
@@ -690,8 +682,8 @@ body {
     }
     img {
       margin-right: 15px;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
     }
     &.active {
       font-family: "Neue Haas Grotesk Text Pro Bold";
@@ -1490,12 +1482,27 @@ body {
               opacity: 0;
               visibility: hidden;
           }
+          .edit_icon{
+            opacity: 0;
+            visibility: hidden;
+            right: -100%;
+            top: 10px;
+            -webkit-transition: all ease .6s;
+            -o-transition: all ease .6s;
+            transition: all ease .6s;
+            z-index: 9;
+          }
           &.active, &:hover{
               .xs_sub_title{
                   visibility: visible;
                   opacity: 1;
                   background-color: rgba(22, 29, 74, 0.5);
                   bottom: 0;
+              }
+              .edit_icon{
+                visibility: visible;
+                opacity: 1;
+                right: 10px;
               }
           }
       }
@@ -1529,7 +1536,6 @@ body {
   min-height: 208px;
   margin: 0 0 30px;
   padding: 16px;
-  cursor: pointer;
   @include border-radius(3px);
   background-color: #f7f8fa;
   position: relative;
@@ -1717,10 +1723,7 @@ body {
     padding: 18px 15px;
 	}
   textarea {
-    min-height: 242px;
-  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    min-height: 130px;
-  }
+    min-height: 95px;
   }
   &.ask_ques{
     width: 864px;
@@ -1746,6 +1749,12 @@ body {
       height: 100%;
       max-height: 60%;
       margin: 15px auto;
+    }
+    textarea {
+      min-height: 242px;
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      min-height: 130px;
+    }
     }
   }
   &.confirmation{
@@ -1867,12 +1876,53 @@ body {
       }
     }
   }
+  &.profile_modal{
+    width: 686px;
+    max-width: 686px;
+    .inner_wrappr{
+      max-width: 606px;
+    }
+    textarea {
+      min-height: 280px;
+    }
+    .checkbox_wrap{   
+      label{
+        font-size: 16px;
+        font-family: 'Neue Haas Grotesk Text Pro Medium';
+        max-width: 550px;
+      }
+    }
+    .full_btn {
+      @media(max-width: 650px){
+        width: 100%;
+      }
+    }
+  }
+  .back{
+    top: 5px;
+    transform: initial;
+    @media(max-width: 650px){
+      top: 0;
+    }
+  }
+  .md_heading{
+    padding-left: 40px;
+    .sub_title{
+      margin-bottom: 5px;
+    }
+    .info_note{
+      font-family: 'Neue Haas Grotesk Text Pro Roman';
+    }
+  }
+
 }
+
+
+
 .ques_ans_modal,
 .custom_modal {
   position: relative;
   background-color: rgba(22, 29, 74, 0.7);
-
   [aria-hidden="true"] {
     background-color: transparent !important;
   }
@@ -1904,7 +1954,7 @@ body {
     }
   }
   .inner_wrappr {
-    max-width: 350px;
+    max-width: 800px;
     margin: 0;
     padding: 0;
   }
@@ -2112,11 +2162,11 @@ body {
       display: flex;
       .ico{
         width: 24px;
-        height: 24px;
         margin-right: 7px;
         img{
-          width: 24px;
-          height: 24px;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
         }
       }
     }
@@ -2796,7 +2846,12 @@ body {
  input::placeholder{
     color: var(--blue);
   }
+  #calender-input::placeholder {
+    opacity: 1;
+  }
 }
+
+
 
 .home_search {
 	margin-bottom: 55px;
@@ -3644,6 +3699,37 @@ body {
   height: 50px;
   display: block !important;
 }
+.edit_delete {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  &.tr{
+    top: 0;
+    right: 0;
+  }
+  span {
+    margin-left: 10px;
+    width: 24px;
+    height: 24px;
+    display: inline-block;
+    cursor: pointer;
+    z-index: 9;
+  }
+  .edit {
+    background: url("../images/ic-edit-blue.png") center no-repeat;
+    background-size: contain;
+  }
+  .delete {
+    background: url("../images/ic-cancel-blue.png") center no-repeat;
+    background-size: contain;
+  }
+  .remove {
+    background: url("../images/ic-bin.png") center no-repeat;
+    background-size: contain;
+  }
+}
 .milestones {
   margin-bottom: 30px;
   li {
@@ -3655,28 +3741,6 @@ body {
     margin-bottom: 16px;
     &:hover {
       box-shadow: 0 5px 30px 0 rgba(79, 79, 118, 0.15);
-    }
-    .edit_delete {
-      position: absolute;
-      top: 12px;
-      right: 12px;
-      display: flex;
-      align-items: center;
-      span {
-        margin-left: 10px;
-        width: 24px;
-        height: 24px;
-        display: inline-block;
-        cursor: pointer;
-      }
-      .edit {
-        background: url("../images/ic-edit-blue.png") center no-repeat;
-        background-size: contain;
-      }
-      .delete {
-        background: url("../images/ic-cancel-blue.png") center no-repeat;
-        background-size: contain;
-      }
     }
     // &:last-child{
     // 	margin-bottom: 0;
@@ -4161,7 +4225,7 @@ body {
     width: 0;
   }
   .title {
-    margin: 0 0 85px 120px;
+    margin: 0 0 40px 120px;
     @media (max-width: 1366px){
      margin: 0 0 15px 120px;
     }
@@ -4250,6 +4314,26 @@ body {
       &.applicants {
         &::before {
           background: url("../images/ic-profile.png") center no-repeat;
+        }
+      }
+      &.wallet {
+        &::before {
+          background: url("../images/ic-wallet.png") center no-repeat;
+        }
+      }
+      &.settings {
+        &::before {
+          background: url("../images/ic-setting.png") center no-repeat;
+        }
+      }
+      &.chat {
+        &::before {
+          background: url("../images/ic-message.png") center no-repeat;
+        }
+      }
+      &.tnc {
+        &::before {
+          background: url("../images/ico-terms.png") center no-repeat;
         }
       }
       .menu_txt{
@@ -4383,7 +4467,11 @@ body {
     .xs_sub_title{
       font-size: 16px;
       padding-left: 30px;
-      max-width: 93%;
+      max-width: 86%;
+    }
+    .edit_delete {
+      top: 0px;
+      right: 0px;
     }
   }
   hr{
@@ -4435,6 +4523,74 @@ body {
     margin-bottom: 30px;
     .img_video{
       margin: 0 20px 0px 0;
+    }
+  }
+}
+.profile_info{
+  .title{
+    position: relative;
+    margin-bottom: 12px;
+    .edit_icon {
+      top: auto;
+    }
+  }
+  .tagg{
+    color: var(--blue);
+  }
+  .review_job {
+    li {
+      width: 156px;
+    }
+  }
+  .tags_wrap{
+    ul{
+      margin: 0;
+    }
+  }
+  .portfolio_wrappr{
+    .media{
+      margin: 0 20px 20px 0;
+      .portfolio_img {
+        width: 176px;
+        height: 176px;
+      }
+    }
+  }
+  .flex_col_sm_8{
+    @media(max-width: 1024px){
+      width: 58.333333%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+  .flex_col_sm_4{
+    @media(max-width: 1024px){
+      width: 41.666667%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+  .p_settings{
+    .inner_title{
+      margin-bottom: 5px;
+    }
+    .form_label{
+      color: #120e24;
+      margin: 0;
+    }
+    .info_note{
+      color: #748092;
+      line-height: 1.4;
+    }
+  }
+  .support_categ{
+    margin: 35px 0;
+    .radio_wrap{
+      label{
+        font-family: 'Neue Haas Grotesk Text Pro Medium';
+      }
     }
   }
 }
@@ -4805,3 +4961,26 @@ div#light-box div {
 .padding_0 {
   padding: 0px;
 }
+
+.common-btn {
+  font-size: 14px;
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    line-height: 1.43;
+    color: var(--blue);
+    padding: 13px 15px;
+    border-radius: 6px;
+    border: 1px solid #dfe5ef;
+    background-color: #dfe5ef;
+    display: flex;
+    align-items: center;
+}
+
+
+.name_recent_search {
+  padding-top: 15px;
+  padding-left: 15px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+//---------------------- Job Dashboard -------------------------//

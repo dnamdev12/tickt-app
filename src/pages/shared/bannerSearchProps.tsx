@@ -73,6 +73,9 @@ export function useStateFromProp(initialValue: any) {
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
+    
+    const [checkOnChange, setOnChange] = useState(false);
+
     const [locationStatus, setLocationStatus] = useState(null);
     const [stateData, setStateData] = useState<any>(null)
     const [searchText, setSearchText] = useState('');
@@ -90,7 +93,7 @@ const BannerSearch = (props: PropsType) => {
     const [calenderRange1, setCalenderRange1] = useState<any>(example_calender);
 
     const handleOnOutsideSearch = () => {
-        console.log('Here!')
+        setOnChange(false);
         setInputFocus1(false);
     };
     const handleOnOutsideLocation = () => setInputFocus2(false);
@@ -216,30 +219,47 @@ const BannerSearch = (props: PropsType) => {
         if (searchText?.length > 2) {
             props.getSearchJobList(searchText);
         }
+        if(!searchText?.length){
+            setSelectedTrade({});
+        }
     }, [searchText])
 
-    const getRecentLocationData = () => {
+    const getRecentLocationData = async () => {
         var recentLocationDetails: any = [];
-        props.recentLocationData?.map((item: any, index: number) => {
-            var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ location: latlng }, (results, status) => {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    const formatedCityText = JSON.parse(JSON.stringify(results[0]));
-                    console.log(index, "index");
-                    const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
-                    const newData = {
-                        mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-                        secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-                    }
-                    recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
-                        setRecentLocation(recentLocationDetails);
-                    }
+
+        let recentLocationData = props.recentLocationData
+        for (let index = 0; index < recentLocationData.length; index++) {
+            let item = recentLocationData[index];
+            try {
+                let lat = item.location.coordinates[1];
+                let long = item.location.coordinates[0];
+                let response = await Geocode.fromLatLng(lat, long);
+                let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
+                let cityText: any = null;
+                if (formatedCityText?.formatted_address.includes(',')) {
+                    cityText = formatedCityText?.formatted_address.split(',')
+                } else {
+                    cityText = formatedCityText?.formatted_address.split('-');
                 }
-            });
-        })
+                const newData = {
+                    mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
+                    secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
+                }
+                recentLocationDetails[index] = {
+                    formatted_address: formatedCityText?.formatted_address,
+                    location: { coordinates: item?.location?.coordinates },
+                    allText: newData
+                };
+
+                if (recentLocationDetails?.length === props.recentLocationData?.length) {
+                    setRecentLocation(recentLocationDetails);
+                }
+            } catch (err) {
+                console.log({ err });
+            }
+        }
     }
+
 
     const checkIfExist = (_id: any) => {
         if (selectedTrade) {
@@ -465,7 +485,7 @@ const BannerSearch = (props: PropsType) => {
                 location: data.location,
                 from_date: data?.from_date,
                 to_date: data?.to_date,
-                doingLocalChanges:true
+                doingLocalChanges: true
             })
             props.postHomeSearchData(data);
         }
@@ -496,7 +516,7 @@ const BannerSearch = (props: PropsType) => {
         setLocationStatus(itemToggle.state);
         let local_position: any = localStorage.getItem('position');
         let position: any = JSON.parse(local_position);
-        
+
         if (position?.length) {
             let lng = (position[0]).toString();
             let lat = (position[1]).toString();
@@ -521,22 +541,36 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const checkPlaceholder = (calenderRange1: any) => {
-        let startDate: any = calenderRange1?.startDate;
-        let endDate: any = calenderRange1?.endDate;
-        let diff = moment().diff(moment(endDate), 'years')
-        let defaultFormat: string = 'DD MMM';
+        let fromDate: any = calenderRange1?.startDate;
+        let toDate: any = calenderRange1?.endDate;
+        return renderTime({ fromDate, toDate });
+    }
 
-        if (diff < 0) {
-            defaultFormat = 'DD MMM YYYY';
+    const renderTime = ({ fromDate, toDate }: any) => {
+        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+            return `${moment(fromDate).format('DD MMM')}`
         }
-   
-        if (startDate && !endDate) {
-            return `${moment(startDate).format('MMM-DD')}`
-        } else if (startDate && endDate) {
-            return `${moment(startDate).format(defaultFormat)}-${moment(endDate).format(defaultFormat)}`;
-        } else {
-            return 'When?';
+
+        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate).endOf("month").toISOString();
+
+            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
+            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
+                return `${moment(fromDate).format('DD MMM YYYY')} - ${moment(toDate).format('DD MMM YYYY')}`
+            }
+            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
+                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+            }
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
+
+        return 'when ?'
     }
 
     let state_data: any = stateData;
@@ -546,7 +580,12 @@ const BannerSearch = (props: PropsType) => {
     }
 
     let custom_name = searchText;
-    let condition_location: any = addressText?.length > 2 || (addressText?.length && enableCurrentLocation && Object.keys(selectedAddress).length);
+    if (!checkOnChange) {
+        if (length_spec > 1) {
+            custom_name = `${custom_name} +${length_spec - 1}`;
+        }
+    }
+
     return (
         <div className="home_search">
             <button
@@ -566,9 +605,10 @@ const BannerSearch = (props: PropsType) => {
                                 type="text"
                                 ref={searchRef}
                                 placeholder="What jobs are you after?"
-                                value={length_spec > 1 ? `${custom_name} +${length_spec - 1}` : (custom_name)}
+                                value={custom_name}
                                 onChange={(e) => {
                                     isHandleChanges(true)
+                                    setOnChange(true);
                                     setSearchText((e.target.value).trimLeft());
                                 }}
                                 // readOnly={props?.selectedItem ? true : false}
@@ -589,6 +629,7 @@ const BannerSearch = (props: PropsType) => {
                                             setSelectedTrade({});
                                             isHandleChanges(true)
                                             setSearchText('');
+                                            setOnChange(false);
                                         }} />
                                 </span>
                             ) : null}

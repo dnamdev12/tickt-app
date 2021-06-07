@@ -324,7 +324,7 @@ const SearchResultFilters = (props: any) => {
                                     return (
                                         <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
                                             <figure className="type_icon">
-                                                <img src={image} alt="icon" />
+                                                <img src={image} alt="" />
                                             </figure>
                                             <span className="name">{name}</span>
                                         </li>

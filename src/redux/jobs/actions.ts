@@ -301,7 +301,7 @@ export const markMilestoneComplete = (data: any, callback: (jobCompletedCount: n
 
 // Tradie
 
-export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data })
+
 export const getTradieReviewListOnBuilder = (data: any) => ({ type: actionTypes.GET_TRADIE_REVIEWS_LIST_ON_BUILDER, data })
 export const getAcceptDeclineTradie = (data: any) => ({ type: actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, data });
 
@@ -405,3 +405,12 @@ export const getTradeProfile = async (data: any) => {
   return { success: false, data: response.result };
 }
 
+export const getJobDetails = async (jobId: string) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.jobDetailsTradie + `?jobId=${jobId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+      return { success: true, data: response.result };
+  }
+  return { success: false };
+}

@@ -23,7 +23,9 @@ import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
-import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index'
+import BuilderProfile from '../pages/builderProfile';
+import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
+import TradieEditProfile from '../pages/tradieEditProfile';
 
 const routes = [
     {
@@ -53,6 +55,12 @@ const routes = [
         path: '/reset-password',
         component: ForgerPassword,
         authRoute: true,
+    },
+    {
+        name: 'myprofile',
+        path: '/my-profile',
+        component: BuilderProfile,
+        // authRoute: true,
     },
     {
         name: 'postnewjob',
@@ -100,7 +108,7 @@ const routes = [
         component: JobDetailsPageBuilder,
         authRoute: false,
         privateRoute: true,
-    }, 
+    },
     {
         name: 'job-applied-successfully',
         path: '/job-applied-successfully',
@@ -108,11 +116,11 @@ const routes = [
         authRoute: false,
         privateRoute: true,
     },
-    // {
-    //     name: 'builderinfo',
-    //     path: '/builder-info',
-    //     component: BuilderInfo,
-    // },
+    {
+        name: 'builderinfo',
+        path: '/builder-info',
+        component: BuilderInfo,
+    },
     {
         name: 'tradieinfo',
         path: '/tradie-info',
@@ -127,7 +135,7 @@ const routes = [
             '/new-jobs',
             '/approved-milestones',
             '/mark-milestone',
-            // '/review-builder',
+            '/review-builder',
         ],
         component: JobDashboard,
         authRoute: false,
@@ -144,6 +152,13 @@ const routes = [
         name: 'builderpostedjobs',
         path: '/builder-posted-jobs',
         component: BuilderPostedJobs,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'update-user-info',
+        path: '/update-user-info',
+        component: TradieEditProfile,
         authRoute: false,
         privateRoute: true,
     },
@@ -196,4 +211,4 @@ const routes = [
     },
 ]
 
-export default routes
+export default routes;

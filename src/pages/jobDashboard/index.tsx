@@ -30,6 +30,9 @@ const mapStateToProps = (state: any) => {
     },
     profile: {
       bankDetails,
+    },
+    common: {
+      isLoading: loading,
     }
   } = state;
 
@@ -43,6 +46,7 @@ const mapStateToProps = (state: any) => {
     milestonesCount,
     newJobsCount,
     bankDetails,
+    loading,
   };
 };
 

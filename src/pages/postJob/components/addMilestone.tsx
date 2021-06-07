@@ -350,7 +350,8 @@ export default class AddMilestone extends Component<Props, State> {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;
-                                                    let pattern = "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
+                                                    let pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
+                                                    // "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
                                                    
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';

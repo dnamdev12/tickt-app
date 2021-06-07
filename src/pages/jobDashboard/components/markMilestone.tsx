@@ -117,14 +117,12 @@ const MarkMilestone = ({
       ...bankDetails,
     }));
 
-    console.log(bankDetails);
-
     setReadOnly(!!bankDetails?.userId);
   }, [bankDetails]);
 
   const validateActualHours = (value: any) => {
     if (!value) {
-      return 'Time spent is required';
+      return 'Time Spent is required';
     }
 
     let pattern =
@@ -136,14 +134,20 @@ const MarkMilestone = ({
     return '';
   };
 
+  const errorLabel = {
+    'account_number': 'Account Number',
+    'account_name': 'Account Name',
+    'bsb_number': 'BSB Number',
+  } as {[key: string]: string};
+
   const validateBankDetails = (name: string, value: string) => {
     if (!value) {
-      return 'This field is required';
+      return `${errorLabel[name]} is required`;
     }
 
     switch (name) {
       case 'account_number':
-        return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 4 ? 'Minimum 4 digits are required' : '';
+        return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 6 ? 'Minimum 6 digits are required' : '';
       case 'bsb_number':
         return value.length !== 6 ? 'BSB number should be of 6 digits' : '';
     }
@@ -164,7 +168,6 @@ const MarkMilestone = ({
       }));
     }
 
-    console.log(step, stepCompleted, name, value);
     if (step === 5 && stepCompleted.includes(5)) {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -359,7 +362,7 @@ const MarkMilestone = ({
                 title="More"
                 onClick={() =>
                   history.push(
-                    `/job-details-page?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`
+                    `/job-details-page?jobId=${params.jobId}&redirect_from=jobs`
                   )
                 }
               >
@@ -512,12 +515,16 @@ const MarkMilestone = ({
               <span className="xs_sub_title">{jobName}</span>
               {data?.userId && readOnly && (
                 <>
-                  <span className="edit_icon" title="Edit">
+                  {/* <span className="edit_icon" title="Edit">
                     <img src={editIconBlue} alt="edit" onClick={() => setReadOnly(!readOnly)} />
                   </span>
                   <span className="edit_icon remove_icon" title="Remove" onClick={() => removeBankDetails()} >
                     <img src={removeIconBlue} alt="remove" />
-                  </span>
+                  </span> */}
+                  <div className="edit_delete">
+                    <span className="edit" title="Edit" onClick={() => setReadOnly(!readOnly)}></span>
+                    <span className="delete" title="Remove" onClick={() => removeBankDetails()}></span>
+                  </div>
                 </>
               )}
             </div>
@@ -525,7 +532,7 @@ const MarkMilestone = ({
             <p className="commn_para">Enter your bank account details</p>
 
             <div className="form_field">
-              <label className="form_label">Account name</label>
+              <label className="form_label">Account Name</label>
               <div className="text_field">
                 <input
                   type="text"
@@ -540,7 +547,7 @@ const MarkMilestone = ({
               <span className="error_msg">{errors.account_name}</span>
             </div>
             <div className="form_field">
-              <label className="form_label">Account number</label>
+              <label className="form_label">Account Number</label>
               <div className="text_field">
                 <input
                   type="number"
@@ -556,7 +563,7 @@ const MarkMilestone = ({
               <span className="error_msg">{errors.account_number}</span>
             </div>
             <div className="form_field">
-              <label className="form_label">BSB number</label>
+              <label className="form_label">BSB Number</label>
               <div className="text_field">
                 <input
                   type="number"
