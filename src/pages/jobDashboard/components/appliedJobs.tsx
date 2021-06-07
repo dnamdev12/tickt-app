@@ -1,15 +1,17 @@
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import waiting from '../../../assets/images/exclamation.png';
+import noDataFound from "../../../assets/images/no-search-data.png";
 import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 
 interface Proptypes {
+  loading: boolean;
   getAppliedJobList: (page: number) => void,
   appliedJobList: Array<any>,
 };
 
-const AppliedJobs = ({ getAppliedJobList, appliedJobList }: Proptypes) => {
+const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) => {
   useEffect(() => {
     getAppliedJobList(1);
   }, [getAppliedJobList]);
@@ -19,7 +21,7 @@ const AppliedJobs = ({ getAppliedJobList, appliedJobList }: Proptypes) => {
       {/* Applied Jobs */}
       <span className="sub_title">Applied Jobs</span>
       <div className="flex_row tradies_row">
-        {appliedJobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
+        {appliedJobList.length ? appliedJobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
               <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
@@ -74,7 +76,13 @@ const AppliedJobs = ({ getAppliedJobList, appliedJobList }: Proptypes) => {
               </div>
             </div>
           </div>
-        ))}
+        )) : !loading && (
+          <div className="no_record  m-t-vh">
+            <figure className="no_img">
+              <img src={noDataFound} alt="data not found" />
+            </figure>
+          </div>
+        )}
       </div>
       {/* Applied Jobs close */}
     </>

@@ -15,6 +15,7 @@ import templateImage from '../../assets/images/job-complete-bg.png';
 import reviewBuilderSuccess from '../../assets/images/review-builder-success.png';
 
 interface Proptypes {
+  loading: boolean,
   getActiveJobList: (page: number) => void;
   activeJobList: Array<any>;
   getAppliedJobList: (page: number) => void;
@@ -37,6 +38,7 @@ interface Proptypes {
 }
 
 const JobDashboard = ({
+  loading,
   getActiveJobList,
   activeJobList,
   getAppliedJobList,
@@ -121,7 +123,7 @@ const JobDashboard = ({
         <img src={templateImage} alt="template-image" />
         <div className="short_info">
           <div className="content">
-            <h1 className="title">Your {jobComplete}th job is completed!</h1>
+            <h1 className="title">Your {jobComplete}{`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'} job is completed!</h1>
             <span className="show_label">
               You have completed your 7th Job using Tickt! Click here to view
               your completed jobs or leave a review. You will be paid as soon as
@@ -217,6 +219,7 @@ const JobDashboard = ({
                 path="/active-jobs"
                 render={(props) => (
                   <ActiveJobsPage
+                    loading={loading}
                     getActiveJobList={getActiveJobList}
                     activeJobList={activeJobList}
                     {...props}
@@ -227,6 +230,7 @@ const JobDashboard = ({
                 path="/applied-jobs"
                 render={(props) => (
                   <AppliedJobsPage
+                    loading={loading}
                     getAppliedJobList={getAppliedJobList}
                     appliedJobList={appliedJobList}
                     {...props}
@@ -237,6 +241,7 @@ const JobDashboard = ({
                 path="/past-jobs"
                 render={(props) => (
                   <PastJobsPage
+                    loading={loading}
                     getPastJobList={getPastJobList}
                     pastJobList={pastJobList}
                     {...props}
@@ -247,6 +252,7 @@ const JobDashboard = ({
                 path="/new-jobs"
                 render={(props) => (
                   <NewJobsPage
+                    loading={loading}
                     getNewJobList={getNewJobList}
                     newJobList={newJobList}
                     {...props}
@@ -257,6 +263,7 @@ const JobDashboard = ({
                 path="/approved-milestones"
                 render={(props) => (
                   <ApprovedMilestonesPage
+                    loading={loading}
                     getApprovedMilestoneList={getApprovedMilestoneList}
                     approvedMilestoneList={approvedMilestoneList}
                     {...props}
