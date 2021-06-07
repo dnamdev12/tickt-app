@@ -24,7 +24,7 @@ export class BankingDetails extends Component<Props, State> {
         return (
             <div className="flex_row">
                 <div className="flex_col_sm_8">
-                    <span className="sub_title">Bank account details</span>
+                    <span className="sub_title">Payment details</span>
                     <span className="info_note">Enter your Bank account details</span>
                     <div className="form_field">
                         <label className="form_label">Account Name</label>
@@ -39,9 +39,9 @@ export class BankingDetails extends Component<Props, State> {
                         </div>
                     </div>
                     <div className="form_field">
-                        <label className="form_label">BSB Name</label>
+                        <label className="form_label">BSB Number</label>
                         <div className="text_field">
-                            <input type="number" placeholder="Enter BSB Name" />
+                            <input type="number" placeholder="Enter BSB Number" />
                         </div>
                     </div>
                     <button className="fill_btn full_btn btn-effect">Save changes</button>

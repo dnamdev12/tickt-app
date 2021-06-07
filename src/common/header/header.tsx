@@ -12,6 +12,10 @@ import menu from '../../assets/images/menu-line-white.svg';
 import bell from '../../assets/images/ic-notification.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import profile from '../../assets/images/ic-profile.png';
+import revenue from '../../assets/images/ic-revenue.png';
+import guide from '../../assets/images/ic-tutorial.png';
+import savedJobs from '../../assets/images/ic-job.png';
+
 
 
 const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
@@ -156,10 +160,28 @@ const Header = (props: any) => {
                                         </span>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon">
-                                                <img src={props?.builderProfile?.userImage || profile} alt="settings-icon" />
+                                                <img src={props?.builderProfile?.userImage || profile} alt="profile" />
                                                 {'My Profile'}
                                             </span>
                                         </MenuItem>
+                                        {/* <MenuItem onClick={handleClose}>
+                                            <span className="setting_icon">
+                                            <img src={revenue} alt="revenue" />
+                                                {'My revenue'}
+                                            </span>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleClose}>
+                                            <span className="setting_icon">
+                                            <img src={savedJobs} alt="savedJobs" />
+                                                {'Saved jobs'}
+                                            </span>
+                                        </MenuItem>
+                                        <MenuItem onClick={handleClose}>
+                                            <span className="setting_icon">
+                                            <img src={guide} alt="guide" />
+                                                {'App Guide'}
+                                            </span>
+                                        </MenuItem> */}
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon logout" onClick={logoutHandler}>Logout</span>
                                         </MenuItem>

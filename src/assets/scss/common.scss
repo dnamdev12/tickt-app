@@ -682,8 +682,8 @@ body {
     }
     img {
       margin-right: 15px;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
     }
     &.active {
       font-family: "Neue Haas Grotesk Text Pro Bold";
@@ -1890,6 +1890,11 @@ body {
         font-size: 16px;
         font-family: 'Neue Haas Grotesk Text Pro Medium';
         max-width: 550px;
+      }
+    }
+    .full_btn {
+      @media(max-width: 650px){
+        width: 100%;
       }
     }
   }
@@ -4220,7 +4225,7 @@ body {
     width: 0;
   }
   .title {
-    margin: 0 0 85px 120px;
+    margin: 0 0 40px 120px;
     @media (max-width: 1366px){
      margin: 0 0 15px 120px;
     }
@@ -4565,6 +4570,27 @@ body {
     }
     @media(max-width: 650px){
       width: 100%;
+    }
+  }
+  .p_settings{
+    .inner_title{
+      margin-bottom: 5px;
+    }
+    .form_label{
+      color: #120e24;
+      margin: 0;
+    }
+    .info_note{
+      color: #748092;
+      line-height: 1.4;
+    }
+  }
+  .support_categ{
+    margin: 35px 0;
+    .radio_wrap{
+      label{
+        font-family: 'Neue Haas Grotesk Text Pro Medium';
+      }
     }
   }
 }
