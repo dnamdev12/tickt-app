@@ -5,14 +5,16 @@ import approved from '../../../assets/images/approved.png';
 import waiting from '../../../assets/images/exclamation.png';
 import close from '../../../assets/images/icon-close-1.png';
 import addMedia from "../../../assets/images/add-image.png";
+import noDataFound from "../../../assets/images/no-search-data.png";
 import { format } from 'date-fns';
 
 interface Proptypes {
+  loading: boolean;
   getActiveJobList: (page: number) => void;
   activeJobList: Array<any>;
 }
 
-const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
+const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => {
   useEffect(() => {
     getActiveJobList(1);
   }, [getActiveJobList]);
@@ -22,7 +24,7 @@ const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
       {/* Active Jobs */}
       <span className="sub_title">Active Jobs</span>
       <div className="flex_row tradies_row">
-        {activeJobList.map(
+        {activeJobList.length ? activeJobList.map(
           ({
             jobId,
             tradeId,
@@ -113,6 +115,12 @@ const ActiveJobs = ({ getActiveJobList, activeJobList }: Proptypes) => {
               </div>
             );
           }
+        ) : !loading && (
+          <div className="no_record  m-t-vh">
+            <figure className="no_img">
+              <img src={noDataFound} alt="data not found" />
+            </figure>
+          </div>
         )}
       </div>
       {/* Active Jobs close */}
