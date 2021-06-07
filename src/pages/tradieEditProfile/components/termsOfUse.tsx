@@ -22,8 +22,11 @@ export class TermsOfUse extends Component<Props, State> {
         let props: any = this.props;
         console.log(this.state, "state--------------", props, "props------------");
         return (
-            <div className="flex_row">
-                Terms of use!!!
+            <div>
+                <span className="sub_title">Terms of use</span>
+                <p className="commn_para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.</p>
+                <p className="commn_para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.</p>
+                <p className="commn_para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.</p>
             </div>
         )
     }
