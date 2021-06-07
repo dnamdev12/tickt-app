@@ -8,6 +8,8 @@ import {
 
 import { callTradeList } from '../../redux/auth/actions';
 
+import { callTradieProfileData } from '../../redux/profile/actions';
+
 const mapStateToProps = (state: any) => {
     return {
         tradieProfileViewData: state.profile.tradieProfileViewData,
@@ -22,6 +24,7 @@ const mapDispatchToProps = (dispatch: any) => {
         getTradieProfileView,
         getTradieBasicDetails,
         callTradeList,
+        callTradieProfileData,
     }, dispatch);
 }
 

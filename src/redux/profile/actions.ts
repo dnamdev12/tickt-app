@@ -10,14 +10,45 @@ export const getTradieProfileView = () => ({ type: actionTypes.GET_TRADIE_PROFIL
 
 export const getTradieBasicDetails = () => ({ type: actionTypes.GET_TRADIE_BASIC_DETAILS });
 
-export const updateTradieProfileDetails = async (data: any) => {
+export const tradieUpdateProfileDetails = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.updateTradieProfileDetails, data);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdateProfileDetails, data);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true };
   }
-  return { success: false, data: response.result };
+  return { success: false };
+}
+
+// export const getTradieProfileView = async () => {
+//   setLoading(true);
+//   const response: FetchResponse = await NetworkOps.get(Urls.tradieProfileView);
+//   setLoading(false);
+//   if (response.status_code === 200) {
+//     return { success: true, data: response.result };
+//   }
+//   return { success: false };
+// }
+
+// export const getTradieBasicDetails = async () => {
+//   setLoading(true);
+//   const response: FetchResponse = await NetworkOps.get(Urls.getTradieBasicDetails);
+//   setLoading(false);
+//   if (response.status_code === 200) {
+//     return { success: true, data: response.result };
+//   }
+//   return { success: false };
+// }
+
+export const tradieUpdateBasicDetails = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieEditBasicDetails, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  return { success: false };
 }
 
 export const getBankDetails = () => ({
