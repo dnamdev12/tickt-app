@@ -150,7 +150,9 @@ const routes = [
     },
     {
         name: 'UpdateProfile',
-        path: '/update-profile',
+        path: ['/update-profile', 
+                '/banking-details',
+        ],
         component: TradieEditProfile,
         authRoute: false,
         privateRoute: true,
