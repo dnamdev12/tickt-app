@@ -271,6 +271,16 @@ function* getAcceptDeclineTradie({ data }: any) {
   }
 }
 
+function* getNewApprovalList({ page }: any) {
+  console.log({page},'--->?')
+  const response: FetchResponse = yield NetworkOps.get(`${Urls.needApproval}?page=${page}`);
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: false });
+  }
+}
+
 function* postJobWatcher() {
   try {
     yield takeLatest(actionTypes.FETCH_HOME_BUILDER, setHomeBuilder);
@@ -288,9 +298,11 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_BUILDER_OPEN_JOBS, getOpenJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS, getBuilderNewApplicants);
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, getnewJobApplicationListBuilder);
- 
+
     yield takeLatest(actionTypes.GET_TRADIE_REVIEWS_LIST_ON_BUILDER, getTradieReviewListOnBuilder);
     yield takeLatest(actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, getAcceptDeclineTradie)
+
+    yield takeLatest(actionTypes.GET_BUILDER_NEW_APPROVAL_LIST, getNewApprovalList);
 
   } catch (e) {
     console.log(e);

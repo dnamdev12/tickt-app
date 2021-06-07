@@ -11,6 +11,7 @@ import more from '../../../../assets/images/icon-direction-right.png';
 interface Proptypes {
     history: any,
     location: any,
+    backToScreen: () => void,
 }
 const RateThisJob = (props: Proptypes) => {
     const [reviewBuilderData, setReviewBuilderData] = useState({
@@ -19,7 +20,7 @@ const RateThisJob = (props: Proptypes) => {
         rating: 0,
         review: '',
     });
-    console.log(props, props.history, "props data")
+
     const item = props?.location?.state?.item;
 
     const ratingChanged = (newRating: number) => {
@@ -37,15 +38,15 @@ const RateThisJob = (props: Proptypes) => {
     const endDate = moment(item?.toDate).format('MMM DD');
 
     const submitReviewClicked = async () => {
-        if(reviewBuilderData.rating === 0){
+        if (reviewBuilderData.rating === 0) {
             setShowToast(true, 'Star rating is required');
             return;
         }
-        if(reviewBuilderData.review.trim().length < 1){
+        if (reviewBuilderData.review.trim().length < 1) {
             setShowToast(true, 'Review text is required');
             return;
         }
-        if(reviewBuilderData.review.trim().length > 1 && reviewBuilderData.rating > 0){
+        if (reviewBuilderData.review.trim().length > 1 && reviewBuilderData.rating > 0) {
             const data = {
                 jobId: item?.jobId,
                 builderId: item?.builderData?.builderId,
@@ -71,7 +72,7 @@ const RateThisJob = (props: Proptypes) => {
         <div className="flex_row">
             <div className="flex_col_sm_6">
                 <div className="form_field relate">
-                    <button className="back" onClick={() => props?.history?.goBack()}></button>
+                    <button className="back" onClick={() => { props?.backToScreen() }}></button>
                     {/* <span className="xs_sub_title">{item?.jobName}</span> */}
                     <span className="xs_sub_title">Review the tradesperson</span>
                 </div>
@@ -106,24 +107,47 @@ const RateThisJob = (props: Proptypes) => {
                 </div>
             </div>
             <div className="flex_col_sm_6 col_ruler">
-                <div className="relate">
-                    <span className="sub_title">Job details</span>
-                    <span className="edit_icon" title="More" onClick={jobClickHandler}>
-                        <img src={more} alt="more" />
-                    </span>
-                </div>
-                <div className="tradie_card posted_by view_more ">
-                    <div className="user_wrap">
-                        <figure className="u_img">
-                            <img src={item?.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
-                        </figure>
-                        <div className="details" onClick={() => builderClicked()}>
-                            <span className="name">{item?.tradeName}</span>
-                            <span className="prof">{item?.jobName}</span>
-                            <span className="prof">{`${startDate} - ${endDate}`}</span>
+                <>
+                    <div className="relate">
+                        <span className="sub_title">Job details</span>
+                        <span className="edit_icon" title="More" onClick={jobClickHandler}>
+                            <img src={more} alt="more" />
+                        </span>
+                    </div>
+                    <div className="tradie_card posted_by view_more ">
+                        <div className="user_wrap">
+                            <figure className="u_img">
+                                <img src={item?.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
+                            </figure>
+                            <div className="details" onClick={() => builderClicked()}>
+                                <span className="name">{item?.tradeName || 'Name'}</span>
+                                <span className="prof">{item?.jobName || 'Job Name'}</span>
+                                <span className="prof">{`${startDate} - ${endDate}`}</span>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </>
+
+                <>
+                    <div className="relate">
+                        <span className="sub_title">Tradie</span>
+                        <span className="edit_icon" title="More" onClick={jobClickHandler}>
+                            <img src={more} alt="more" />
+                        </span>
+                    </div>
+                    <div className="tradie_card posted_by view_more ">
+                        <div className="user_wrap">
+                            <figure className="u_img">
+                                <img src={item?.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
+                            </figure>
+                            <div className="details" onClick={() => builderClicked()}>
+                                <span className="name">{item?.tradeName || 'Name'}</span>
+                                <span className="prof">{item?.jobName || 'Rating'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </>
+
             </div>
         </div>
     )

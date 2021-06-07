@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
@@ -32,6 +32,7 @@ interface Post {
 export default function PastJobs(props: any): ReactElement {
     const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
+    const [enableRateJob, setRateJob] = useState(false);
 
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
@@ -65,12 +66,19 @@ export default function PastJobs(props: any): ReactElement {
         }
     }
 
-    return (
-        <RateThisJob
-            history={null}
-            location={null}
-        />
-    )
+    const backToScreen = () => {
+        setRateJob((prev: any) => !prev);
+    }
+
+    if (enableRateJob) {
+        return (
+            <RateThisJob
+                backToScreen={backToScreen}
+                history={null}
+                location={null}
+            />
+        )
+    }
 
     return (
         <React.Fragment>
@@ -150,7 +158,11 @@ export default function PastJobs(props: any): ReactElement {
                                             />
                                         </span>
                                     </div>
-                                    <button className="fill_grey_btn full_btn">
+                                    <button
+                                        onClick={() => {
+                                            setRateJob((prev: any) => !prev);
+                                        }}
+                                        className="fill_grey_btn full_btn">
                                         {status === "COMPLETED" ? (
                                             <React.Fragment>
                                                 <img src={rateStar} alt="rating-star" />

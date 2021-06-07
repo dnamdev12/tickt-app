@@ -32,20 +32,20 @@ export const store = createStore(rootReducer, composeEnhancers(
 sagaMiddleware.run(rootSaga)
 
 const App = () => {
-
+  console.log({ env: process.env })
   useEffect(() => {
     AOS.init({
-        duration: 2000
+      duration: 2000
     });
-}, []);
+  }, []);
 
 
   return (
-      <Provider store={store}>
-        <Routes />
-        <Loader />
-        <Toast />
-      </Provider>
+    <Provider store={store}>
+      <Routes />
+      <Loader />
+      <Toast />
+    </Provider>
   );
 }
 
