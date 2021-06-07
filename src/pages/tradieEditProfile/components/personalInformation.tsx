@@ -214,11 +214,30 @@ export class PersonalInformation extends Component<Props, State> {
                 newErrors.mobileNumber = Constants.errorStrings.phoneNumberErr
             }
         }
+        if (!this.state.password) {
+            newErrors.password = Constants.errorStrings.password;
+        } else {
+            const passwordRegex = new RegExp(regex.password);
+            if (!passwordRegex.test(this.state.password.trim())) {
+                newErrors.password = Constants.errorStrings.passwordError;
+            }
+        }
+        if (!this.state.newPassword) {
+            newErrors.newPassword = 'New Password is required';
+        } else {
+            const passwordRegex = new RegExp(regex.password);
+            if (!passwordRegex.test(this.state.newPassword.trim())) {
+                newErrors.newPassword = Constants.errorStrings.passwordError;
+            }
+        }
+        if (this.state.newPassword.trim() != this.state.confirmNewPassword.trim()) {
+            newErrors.confirmNewPassword = Constants.errorStrings.confirmNewPassword;
+        }
         this.setState({ errors: newErrors });
         return !Object.keys(newErrors).length;
     }
 
-    changeHandler = (e: any) => {
+    changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newBasicDetails = { ...this.state.basicDetailsData };
         newBasicDetails[`${e.target.name}`] = e.target.value;
         this.setState({ basicDetailsData: newBasicDetails });
@@ -238,8 +257,17 @@ export class PersonalInformation extends Component<Props, State> {
             if (res?.success) {
                 this.setState((prevState: any) => ({ profileModalClicked: false, basicDetailsData: prevState.basicDetailsData }));
             }
-        } else {
-            alert('nottttt')
+        }
+    }
+
+    passwordHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+        this.setState((prevState: any) => ({ ...prevState, [e.target.name]: e.target.value }));
+    }
+
+    updatePasswordHandler = () => {
+        console.log('current!!!!')
+        if (this.validateForm()) {
+            alert('all right')
         }
     }
 
@@ -247,6 +275,7 @@ export class PersonalInformation extends Component<Props, State> {
         let props: any = this.props;
         console.log(this.state, "state--------------", props, "props------------");
         let {
+            errors,
             profileModalClicked,
             areasOfSpecsModalClicked,
             aboutModalClicked,
@@ -331,12 +360,12 @@ export class PersonalInformation extends Component<Props, State> {
                                     <div className="text_field">
                                         <input type="text" placeholder="Enter Full Name" name='fullName' value={basicDetailsData?.fullName} onChange={this.changeHandler} />
                                     </div>
+                                    {!!errors?.fullName && <span className="error_msg">{errors?.fullName}</span>}
                                 </div>
                                 <div className="form_field">
                                     <label className="form_label">Mobile Number</label>
                                     <div className="text_field">
                                         {/* <input type="number" placeholder="Enter Mobile Number" value={basicDetailsData?.mobileNumber} /> */}
-
                                         <NumberFormat
                                             value={basicDetailsData?.mobileNumber}
                                             displayType={'input'}
@@ -344,7 +373,6 @@ export class PersonalInformation extends Component<Props, State> {
                                             placeholder="+61 400 123 456"
                                             format="+61 ### ### ###"
                                             isNumericString={true}
-                                            name='mobileNumber'
                                             onValueChange={(values) => {
                                                 const { formattedValue, value } = values;
                                                 const newBasicDetails = { ...this.state.basicDetailsData };
@@ -353,45 +381,51 @@ export class PersonalInformation extends Component<Props, State> {
                                             }}
                                         />
                                     </div>
+                                    {!!errors?.mobileNumber && <span className="error_msg">{errors?.mobileNumber}</span>}
                                 </div>
                                 <div className="form_field">
                                     <label className="form_label">Email</label>
                                     <div className="text_field">
                                         <input type="text" placeholder="Enter Email" value={basicDetailsData?.email} name='email' onChange={this.changeHandler} />
                                     </div>
+                                    {!!errors?.email && <span className="error_msg">{errors?.email}</span>}
                                 </div>
                                 <div className="form_field">
                                     <a className="link"
                                         onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
                                     >Change password</a>
                                 </div>
-                                <div className="form_field">
-                                    <label className="form_label">Qualification documents </label>
-                                </div>
-                                <div className="form_field">
-                                    <div className="relate">
-                                        <div className="checkbox_wrap agree_check">
-                                            <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc1" />
-                                            <label htmlFor="doc1" className="line-1">White Card</label>
+                                {basicDetailsData?.qualificationDoc?.length > 0 &&
+                                    <>
+                                        <div className="form_field">
+                                            <label className="form_label">Qualification documents </label>
                                         </div>
-                                        <div className="edit_delete tr">
-                                            <span className="edit" title="Edit"></span>
-                                            <span className="remove" title="Remove"></span>
+                                        <div className="form_field">
+                                            <div className="relate">
+                                                <div className="checkbox_wrap agree_check">
+                                                    <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc1" />
+                                                    <label htmlFor="doc1" className="line-1">White Card</label>
+                                                </div>
+                                                <div className="edit_delete tr">
+                                                    <span className="edit" title="Edit"></span>
+                                                    <span className="remove" title="Remove"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div className="form_field">
-                                    <div className="relate">
-                                        <div className="checkbox_wrap agree_check">
-                                            <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc2" />
-                                            <label htmlFor="doc2" className="line-1">First Aid</label>
+                                        <div className="form_field">
+                                            <div className="relate">
+                                                <div className="checkbox_wrap agree_check">
+                                                    <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc2" />
+                                                    <label htmlFor="doc2" className="line-1">First Aid</label>
+                                                </div>
+                                                <div className="edit_delete tr">
+                                                    <span className="edit" title="Edit"></span>
+                                                    <span className="remove" title="Remove"></span>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="edit_delete tr">
-                                            <span className="edit" title="Edit"></span>
-                                            <span className="remove" title="Remove"></span>
-                                        </div>
-                                    </div>
-                                </div>
+                                    </>
+                                }
                             </div>
                             <div className="form_field">
                                 <button className="fill_grey_btn full_btn btn-effect">Add qualification documents </button>
@@ -427,39 +461,39 @@ export class PersonalInformation extends Component<Props, State> {
                             <div className="form_field">
                                 <label className="form_label">Password</label>
                                 <div className="text_field">
-                                    <input type="password" className="detect_input" placeholder="Enter Password" />
+                                    <input type="password" className="detect_input" placeholder="Enter Password" name='password' onChange={this.passwordHandler} />
                                     <span className="detect_icon">
                                         {/* <img src={showPassword ? eyeIconOpen : eyeIconClose} /> */}
                                         <img src={eyeIconClose} />
                                     </span>
                                 </div>
-                                <span className="error_msg"></span>
+                                {!!errors?.password && <span className="error_msg">{errors?.password}</span>}
                             </div>
                             <div className="form_field">
                                 <label className="form_label">New Password</label>
                                 <div className="text_field">
-                                    <input type="password" className="detect_input" placeholder="Enter New Password" />
+                                    <input type="password" className="detect_input" placeholder="Enter New Password" name='newPassword' onChange={this.passwordHandler} />
                                     <span className="detect_icon">
                                         {/* <img src={showPassword ? eyeIconOpen : eyeIconClose} /> */}
                                         <img src={eyeIconClose} />
                                     </span>
                                 </div>
-                                <span className="error_msg"></span>
+                                {!!errors?.newPassword && <span className="error_msg">{errors?.newPassword}</span>}
                             </div>
                             <div className="form_field">
                                 <label className="form_label">Confirm New Password</label>
                                 <div className="text_field">
-                                    <input type="password" className="detect_input" placeholder="Enter Confirm New Password" />
+                                    <input type="password" className="detect_input" placeholder="Enter Confirm New Password" name='confirmNewPassword' onChange={this.passwordHandler} />
                                     <span className="detect_icon">
                                         {/* <img src={showPassword ? eyeIconOpen : eyeIconClose} /> */}
                                         <img src={eyeIconClose} />
                                     </span>
                                 </div>
-                                <span className="error_msg"></span>
+                                {!!errors?.confirmNewPassword && !errors?.newPassword && <span className="error_msg">{errors?.confirmNewPassword}</span>}
                             </div>
                         </div>
                         <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect">Save changes</button>
+                            <button className="fill_btn full_btn btn-effect" onClick={this.updatePasswordHandler}>Save changes</button>
                         </div>
                     </div >
                 </Modal >

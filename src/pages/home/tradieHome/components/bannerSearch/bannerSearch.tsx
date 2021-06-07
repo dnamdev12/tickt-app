@@ -241,30 +241,28 @@ const BannerSearch = (props: PropsType) => {
 
     const recentJobSearches = () => {
         return (
+            props.recentSearchJobData?.length > 0 &&
             <div className="custom_autosuggestion" id="recent-job-search-div">
-                {props.recentSearchJobData?.length > 0 &&
-                    <React.Fragment>
-                        <span className="sub_title">Recent searches</span>
-                        <div className="flex_row recent_search">
-                            {props.recentSearchJobData?.map((item: any) => {
-                                return (
-                                    <div className="flex_col_sm_3" key={item._id}>
-                                        <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
-                                            <figure className="ico">
-                                                <img src={item?.image || residential} alt="icon" />
-                                            </figure>
-                                            <div className="f_column">
-                                                <span>{item.name}</span>
-                                                <span className="name">{item.trade_name}</span>
-                                            </div>
-                                            <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
-                                                <img src={close} alt="remove" />
-                                            </span>
-                                        </div>
-                                    </div>)
-                            })}
-                        </div>
-                    </React.Fragment>}
+                <span className="sub_title">Recent searches</span>
+                <div className="flex_row recent_search">
+                    {props.recentSearchJobData?.slice(0,4)?.map((item: any) => {
+                        return (
+                            <div className="flex_col_sm_3" key={item._id}>
+                                <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
+                                    <figure className="ico">
+                                        <img src={item?.image || residential} alt="icon" />
+                                    </figure>
+                                    <div className="f_column">
+                                        <span>{item.name}</span>
+                                        <span className="name">{item.trade_name}</span>
+                                    </div>
+                                    <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
+                                        <img src={close} alt="remove" />
+                                    </span>
+                                </div>
+                            </div>)
+                    })}
+                </div>
             </div>
         )
     }

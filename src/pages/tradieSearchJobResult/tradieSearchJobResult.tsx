@@ -38,9 +38,9 @@ const TradieSearchJobResult = (props: any) => {
                 page: 1,
                 isFiltered: false,
                 jobTypes: queryParamsData.jobTypes,
-                location: {
-                    coordinates: [queryParamsData.defaultLong, queryParamsData.defaultLat]
-                }
+                // location: {
+                //     coordinates: [queryParamsData.defaultLong, queryParamsData.defaultLat]
+                // }
             }
             props.postHomeSearchData(data);
         } else if (!queryParamsData.isFiltered) {
