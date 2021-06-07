@@ -27,7 +27,6 @@ export const getHomeJobDetails = async (data: any) => {
     if (response.status_code === 200) {
         return { success: true, data: response.result };
     }
-    setShowToast(true, response.message);
     return { success: false };
 }
 
@@ -38,7 +37,6 @@ export const jobDetailsBuilder = async (data: any) => {
     if (response.status_code === 200) {
         return { success: true, data: response.result };
     }
-    setShowToast(true, response.message);
     return { success: false };
 }
 

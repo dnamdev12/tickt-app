@@ -1,4 +1,5 @@
 import { get } from 'lodash';
+import { setShowToast } from '../redux/common/actions';
 import storageService from '../utils/storageService';
 import { urlFor } from './Urls';
 
@@ -10,7 +11,7 @@ export interface FetchResponse {
     data: any
 }
 
-export class NetworkOps {
+class NetworkOps {
 
     async getRequest(type: string, options?: object): Promise<any> {
         const headerOverrides = get(options, 'headerOverrides', {});
@@ -42,12 +43,19 @@ export class NetworkOps {
     async wrapperWithOptions(url: string, request: any) {
         console.log('url -->>', url, request)
         try {
-            const response = await fetch(url, request);
+            const response: any = await fetch(url, request);
+            console.log(response)
             if (!response.ok) {
                 if (response.status === 401) {
                     if (storageService.getItem('jwtToken')) {
                         storageService.clearAll();
-                        alert('Token Expired')
+                        // alert('Token Expired');
+                        const res1 = await response.text();
+                        const res2 = JSON.parse(res1);
+                        setShowToast(true, res2.message || 'You\'ve been logged out');
+                        setTimeout(() => {
+                            window.location.pathname = '/login';
+                        }, 1000);
                     }
                 }
                 else if (response.status === 500 || response.status === 400) {

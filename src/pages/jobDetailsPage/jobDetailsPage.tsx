@@ -1,10 +1,12 @@
 import { useState, useEffect } from 'react';
 import Constants from '../../utils/constants';
-import {
+import {    
+    
     getHomeJobDetails,
     getHomeSaveJob,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
+import { getJobDetails } from '../../redux/jobs/actions';
 import { getTradieQuestionList } from '../../redux/jobs/actions';
 import {
     postAskQuestion,
@@ -90,12 +92,13 @@ const JobDetailsPage = (props: PropsType) => {
     useEffect(() => {
         (async () => {
             const params = new URLSearchParams(props.location?.search);
-            const data: any = {
-                jobId: params.get('jobId'),
-                tradeId: params.get('tradeId'),
-                specializationId: params.get('specializationId')
-            }
-            const res1 = await getHomeJobDetails(data);
+            const jobId: any = params.get('jobId');
+            // const data: any = {
+            //     jobId: params.get('jobId'),
+            //     tradeId: params.get('tradeId'),
+            //     specializationId: params.get('specializationId')
+            // }
+            const res1 = await getJobDetails(jobId);
             if (res1.success) {
                 setJobDetailsData(res1.data);
             }
@@ -433,8 +436,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         <ul>
                                             <li className="icon clock">{jobDetailsData?.time}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount}</li>
-                                            <li className="icon calendar">{jobDetailsData?.duration}</li>
                                             <li className="icon location line-3">{jobDetailsData?.locationName}</li>
+                                            <li className="icon calendar">{jobDetailsData?.duration}</li>
                                         </ul>
                                     </div>
                                     {jobDetailsData?.appliedStatus ? (
