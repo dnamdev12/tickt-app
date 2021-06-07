@@ -146,6 +146,7 @@ class TradieInfo extends Component<Props, State> {
     componentDidUpdate() {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
+        console.log({tradeStatus})
         if (tradeStatus) {
             props.history.push('/jobs');
         }

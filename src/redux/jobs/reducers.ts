@@ -105,6 +105,7 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         builderActionJobs: action.payload,
         builderNewApplicants: null,
+        tradieRequestStatus:false,
         builderNewApplicantsList: null,
       };
 
@@ -113,6 +114,7 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         builderOpenJobs: action.payload,
         builderNewApplicants: null,
+        tradieRequestStatus:false,
         builderNewApplicantsList: null,
       };
 
@@ -121,19 +123,24 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         builderPastJobs: action.payload,
         builderNewApplicants: null,
+        tradieRequestStatus:false,
         builderNewApplicantsList: null,
       };
 
     case actionTypes.SET_BUILDER_NEW_APPLICANTS:
+      console.log('Here!!')
       return {
         ...state,
         builderNewApplicants: action.payload,
+        tradieRequestStatus:false,
         builderNewApplicantsList: null
       };
 
     case actionTypes.SET_BUILDER_NEW_APPLICANTS_LIST:
+      console.log('Here!! --1 ')
       return {
         ...state,
+        tradieRequestStatus:false,
         builderNewApplicantsList: action.payload,
       };
 

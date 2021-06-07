@@ -137,10 +137,10 @@ const JobDetails = ({
                 if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
                     return { url: item.link, format: get_split_fromat };
                 }
-            }).filter((item:any) => item! !== undefined);
+            }).filter((item: any) => item! !== undefined);
 
             let filterItems: any = [];
-            
+
             if (format_items?.length) {
                 format_items.forEach((item: any, index: number) => {
                     let render_item: any = null;
@@ -198,7 +198,7 @@ const JobDetails = ({
                     </div>
                 )
             }
-            
+
             return filterItems;
         }
     }
@@ -261,6 +261,33 @@ const JobDetails = ({
 
         return { sources, types };
     }
+
+    const renderTime = ({ fromDate, toDate }: any) => {
+        const format = 'MM-DD-YYYY';
+        if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
+            return `${moment(fromDate, format).format('DD MMM')}`
+        }
+
+        if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate, format).endOf("month").toISOString();
+
+            let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
+            let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
+                return `${moment(fromDate, format).format('DD MMM YY')} - ${moment(toDate, format).format('DD MMM YY')}`
+            }
+            if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
+                return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
+            }
+            return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD')}`
+        }
+    }
+
 
     const { sources, types } = renderFilteredItems();
     return (
@@ -345,15 +372,17 @@ const JobDetails = ({
                                     </span>
                                 </span>
                                 <ul className="job_milestone">
+                                    {console.log({ milestones })}
                                     {milestones?.length ?
                                         milestones.map((item: any, index: any) => item?.milestone_name && (
                                             <li>
                                                 <span>{`${index + 1}. ${item?.milestone_name}`}</span>
-                                                <span>{item?.from_date?.length && item?.from_date !== 'Invalid date' && !item?.to_date?.length ?
-                                                    `${moment(item?.from_date).format('MMM-DD')}` :
-                                                    item?.from_date !== 'Invalid date' && item?.from_date?.length && item?.to_date?.length && item?.to_date !== 'Invalid date' ?
-                                                        `${moment(item?.from_date).format('MMM-DD')}-${moment(item?.to_date).format('DD')}` : ''
-                                                }</span>
+                                                <span>{renderTime({ fromDate: item?.from_date, toDate: item?.to_date })}</span>
+                                                {/* <span>{moment(item?.from_date,'MM-DD-YYYY').isValid() && !moment(item?.to_date,'MM-DD-YYYY').isValid()  ?
+                                                    `${moment(item?.from_date,'MM-DD-YYYY').format('MMM-DD')}` :
+                                                    moment(item?.from_date,'MM-DD-YYYY').isValid() && moment(item?.to_date,'MM-DD-YYYY').isValid() ?
+                                                        `${moment(item?.from_date,'MM-DD-YYYY').format('MMM DD')}-${moment(item?.to_date,'MM-DD-YYYY').format('DD')}` : ''
+                                                }</span> */}
                                             </li>
                                         ))
                                         : null}

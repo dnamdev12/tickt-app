@@ -374,19 +374,25 @@ const JobDetailsPage = (props: PropsType) => {
         }
 
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate).endOf("month").toISOString();
+
             let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
             let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+
             let monthDiff = parseInt(item.toString());
             let yearDiff = parseInt(item_year.toString());
-            if (yearDiff > 0) {
+
+            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
                 return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
             }
-            if (monthDiff > 0) {
+            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
                 return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
             }
             return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
     }
+
 
     const renderByStatus = ({ status }: any) => {
         if (status) {
@@ -548,11 +554,15 @@ const JobDetailsPage = (props: PropsType) => {
                                         return (
                                             <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
-                                                <span>{item?.fromDate?.length && !item?.toDate?.length ?
+                                                <span>{renderTime({
+                                                    fromDate:item?.fromDate,
+                                                     toDate:item?.toDate
+                                                })}</span>
+                                                {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
                                                     `${moment(item?.fromDate).format('MMM DD')}` :
                                                     item?.fromDate?.length && item?.toDate?.length ?
                                                         `${moment(item?.fromDate).format('MMM DD ')}-${moment(item?.toDate).format(' DD')}` : ''
-                                                }</span>
+                                                }</span> */}
                                             </li>
                                         )
                                     })}
