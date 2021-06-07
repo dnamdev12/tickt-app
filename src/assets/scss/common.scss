@@ -682,8 +682,8 @@ body {
     }
     img {
       margin-right: 15px;
-      width: 20px;
-      height: 20px;
+      width: 24px;
+      height: 24px;
     }
     &.active {
       font-family: "Neue Haas Grotesk Text Pro Bold";
@@ -1536,7 +1536,6 @@ body {
   min-height: 208px;
   margin: 0 0 30px;
   padding: 16px;
-  cursor: pointer;
   @include border-radius(3px);
   background-color: #f7f8fa;
   position: relative;
@@ -1893,10 +1892,18 @@ body {
         max-width: 550px;
       }
     }
+    .full_btn {
+      @media(max-width: 650px){
+        width: 100%;
+      }
+    }
   }
   .back{
     top: 5px;
     transform: initial;
+    @media(max-width: 650px){
+      top: 0;
+    }
   }
   .md_heading{
     padding-left: 40px;
@@ -2839,7 +2846,12 @@ body {
  input::placeholder{
     color: var(--blue);
   }
+  #calender-input::placeholder {
+    opacity: 1;
+  }
 }
+
+
 
 .home_search {
 	margin-bottom: 55px;
@@ -4213,7 +4225,7 @@ body {
     width: 0;
   }
   .title {
-    margin: 0 0 85px 120px;
+    margin: 0 0 40px 120px;
     @media (max-width: 1366px){
      margin: 0 0 15px 120px;
     }
@@ -4541,6 +4553,43 @@ body {
       .portfolio_img {
         width: 176px;
         height: 176px;
+      }
+    }
+  }
+  .flex_col_sm_8{
+    @media(max-width: 1024px){
+      width: 58.333333%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+  .flex_col_sm_4{
+    @media(max-width: 1024px){
+      width: 41.666667%;
+    }
+    @media(max-width: 650px){
+      width: 100%;
+    }
+  }
+  .p_settings{
+    .inner_title{
+      margin-bottom: 5px;
+    }
+    .form_label{
+      color: #120e24;
+      margin: 0;
+    }
+    .info_note{
+      color: #748092;
+      line-height: 1.4;
+    }
+  }
+  .support_categ{
+    margin: 35px 0;
+    .radio_wrap{
+      label{
+        font-family: 'Neue Haas Grotesk Text Pro Medium';
       }
     }
   }

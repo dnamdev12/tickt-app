@@ -2,10 +2,12 @@ import { useEffect } from 'react';
 import { NavLink, Link } from 'react-router-dom';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import rateStar from '../../../assets/images/ic-star-fill.png';
+import noDataFound from "../../../assets/images/no-search-data.png";
 import more from '../../assets/images/icon-direction-right.png';
 import { format } from 'date-fns';
 
 interface Proptypes {
+  loading: boolean;
   getPastJobList: (page: number) => void,
   pastJobList: Array<any>,
   history: any
@@ -20,7 +22,7 @@ const PastJobs = (props: Proptypes) => {
     <>
       <span className="sub_title">Past Jobs</span>
       <div className="flex_row tradies_row">
-        {props.pastJobList?.map((item: any) => {
+        {props.pastJobList.length ? props.pastJobList?.map((item: any) => {
           let fromDate = item.fromDate;
           let toDate = item.toDate;
           fromDate = fromDate
@@ -31,7 +33,7 @@ const PastJobs = (props: Proptypes) => {
           return (
             <div className="flex_col_sm_6" key={item.jobId}>
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                <NavLink to={`/job-details-page?jobId=${item.jobId}&tradeId=${item.tradeId}&specializationId=${item.specializationId}`} className="more_detail circle"></NavLink>
+                <NavLink to={`/job-details-page?jobId=${item.jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
                     <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="traide-img" />
@@ -87,7 +89,13 @@ const PastJobs = (props: Proptypes) => {
                 </NavLink>}
               </div>
             </div>)
-        })}
+        }) : !props.loading && (
+          <div className="no_record  m-t-vh">
+            <figure className="no_img">
+              <img src={noDataFound} alt="data not found" />
+            </figure>
+          </div>
+        )}
       </div >
     </>);
 };

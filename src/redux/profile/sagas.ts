@@ -20,7 +20,9 @@ function* callTradieProfileData() {
 }
 
 function* getTradieProfileView() {
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.tradieProfileView);
+  setLoading(false);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_TRADIE_PROFILE_VIEW,
