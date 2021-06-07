@@ -1,13 +1,15 @@
 import { useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import dummy from '../../../assets/images/u_placeholder.jpg';
+import noDataFound from "../../../assets/images/no-search-data.png";
 
 interface Proptypes {
+  loading: boolean;
   getNewJobList: (page: number) => void,
   newJobList: Array<any>,
 };
 
-const NewJobs = ({ getNewJobList, newJobList }: Proptypes) => {
+const NewJobs = ({ loading, getNewJobList, newJobList }: Proptypes) => {
   useEffect(() => {
     getNewJobList(1);
   }, [getNewJobList]);
@@ -17,7 +19,7 @@ const NewJobs = ({ getNewJobList, newJobList }: Proptypes) => {
       {/* New Jobs */}
       <span className="sub_title">New Jobs</span>
       <div className="flex_row tradies_row">
-        {newJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, jobDescription, time, amount, locationName, durations, viewersCount, questionsCount }) => (
+        {newJobList.length ? newJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, jobDescription, time, amount, locationName, durations, viewersCount, questionsCount }) => (
           <div className="flex_col_sm_6">
             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
               <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
@@ -47,7 +49,13 @@ const NewJobs = ({ getNewJobList, newJobList }: Proptypes) => {
               </ul>
             </div>
           </div>
-        ))}
+        )) : !loading && (
+          <div className="no_record  m-t-vh">
+            <figure className="no_img">
+              <img src={noDataFound} alt="data not found" />
+            </figure>
+          </div>
+        )}
       </div>
       {/* New Jobs close */}
     </>
