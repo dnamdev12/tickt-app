@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PersonalInformationComponent from './components/personalInformation';
+import BankingDetailsComponent from './components/bankingDetails';
 
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
@@ -7,6 +8,7 @@ import close from '../../assets/images/ic-cancel-blue.png';
 interface Props {
     tradieProfileViewData: any,
     getTradieProfileView: () => void,
+    getBankDetails: () => void,
 }
 
 interface State {
@@ -18,7 +20,7 @@ class TradieEditProfile extends Component<Props, State> {
     constructor(props: any) {
         super(props)
         this.state = {
-            activeMenuType: 'personal-information',
+            activeMenuType: 'banking-details',
             isToggleSidebar: false,
         }
     }
@@ -35,7 +37,6 @@ class TradieEditProfile extends Component<Props, State> {
         if (this.state.activeMenuType !== menuType && ['personal-information'].includes(menuType)) {
             this.setState({ activeMenuType: menuType }, () => {
                 if (menuType === 'personal-information') { getTradieProfileView(); }
-                // if (menuType === 'banking-details') { getBankDetails(); }
             });
         }
     }
@@ -76,8 +77,13 @@ class TradieEditProfile extends Component<Props, State> {
                                             <span className="menu_txt">Personal information</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a className="icon wallet">
+                                    <li 
+                                        onClick={() => {
+                                            console.log('current!!!!!!!')
+                                            this.setSelected('banking-details');
+                                        }}
+                                    >
+                                        <a className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
                                             <span className="menu_txt">Banking details</span>
                                         </a>
                                     </li>
@@ -108,6 +114,10 @@ class TradieEditProfile extends Component<Props, State> {
                         <div className="detail_col profile_info">
                             {activeMenuType === 'personal-information' && (
                                 <PersonalInformationComponent
+                                    {...props}
+                                />)}
+                                {activeMenuType === 'banking-details' && (
+                                <BankingDetailsComponent
                                     {...props}
                                 />)}
                         </div>
