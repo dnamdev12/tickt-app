@@ -3,19 +3,23 @@ import { Link } from 'react-router-dom';
 
 import dummy from '../../assets/images/u_placeholder.jpg';
 import search from '../../assets/images/main-search.png';
+import more from '../../assets/images/icon-direction-right.png';
 
 export default function NotFound() {
     return (
-        // <div className="error_page_wrap">
-        //     <figure className="no_img">
-        //         <img src={notFound} alt="not-found" />
-        //     </figure>
-        //     <div className="content">
-        //         <h1>Page Not Found</h1>
-        //         <Link to="/" className="fill_btn btn-effect" title=" Home">Back To Home</Link>
-        //     </div>
-        // </div>
+        <div className="error_page_wrap">
+            <figure className="no_img">
+                <img src={notFound} alt="not-found" />
+            </figure>
+            <div className="content">
+                <h1>Page Not Found</h1>
+                <Link to="/" className="fill_btn btn-effect" title=" Home">Back To Home</Link>
+            </div>
+        </div>
 
+
+
+        // -----My revenue list ------//
 
         // <div className="app_wrapper">
         //     <div className="section_wrapper">
@@ -40,7 +44,7 @@ export default function NotFound() {
         //                 </div>
         //                 <div className="flex_col_sm_3">
         //                     <div className="search_bar">
-        //                         <input type="text" placeholder="Search"/>
+        //                         <input type="text" placeholder="Search" />
         //                         <span className="detect_icon_ltr">
         //                             <img src={search} alt="search" />
         //                         </span>
@@ -69,7 +73,9 @@ export default function NotFound() {
         //                             <figure className="job_img">
         //                                 <img src={dummy} alt="job-img" />
         //                             </figure>
-        //                             <span className="inner_title">Wire up circuit box</span>
+        //                             <div className="details">
+        //                                 <span className="inner_title">Wire up circuit box</span>
+        //                             </div>
         //                         </div>
         //                     </div>
         //                     <div className="flex_col_sm_3">
@@ -88,7 +94,9 @@ export default function NotFound() {
         //                             <figure className="job_img">
         //                                 <img src={dummy} alt="job-img" />
         //                             </figure>
-        //                             <span className="inner_title">Wire up circuit box</span>
+        //                             <div className="details">
+        //                                 <span className="inner_title">Wire up circuit box</span>
+        //                             </div>
         //                         </div>
         //                     </div>
         //                     <div className="flex_col_sm_3">
@@ -106,29 +114,68 @@ export default function NotFound() {
         //     </div>
         // </div>
 
+        // -----My revenue list close ------//
 
-        <div className="app_wrapper">
-            <div className="section_wrapper">
-                <div className="custom_container">
-                    <div className="revenue_detail">
-                        <button className="back"></button>
-                        <ul className="total_count_card">
-                            <li className="revenue">
-                                <div className="f_spacebw">
-                                    <div className="img_txt_wrap">
-                                        <figure className="job_img">
-                                            <img src={dummy} alt="job-img" />
-                                        </figure>
-                                        <span className="inner_title">Wire up circuit box</span>
-                                    </div>
-                                    <span className="sub_title">$1,400</span>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
 
+        // -----My revenue detail ------//
+
+        // <div className="app_wrapper">
+        //     <div className="section_wrapper">
+        //         <div className="custom_container">
+        //             <div className="revenue_detail">
+        //                 <div className="flex_row">
+        //                     <div className="flex_col_sm_8">
+        //                         <button className="back"></button>
+        //                         <ul className="total_count_card">
+        //                             <li>
+        //                                 <div className="flex_row center_flex">
+        //                                     <div className="flex_col_sm_9">
+        //                                         <div className="img_txt_wrap">
+        //                                             <figure className="job_img">
+        //                                                 <img src={dummy} alt="job-img" />
+        //                                             </figure>
+        //                                             <div className="details">
+        //                                                 <span className="inner_title">Wire up circuit box</span>
+        //                                                 <span className="show_label">May 24 - 25</span>
+        //                                             </div>
+        //                                         </div>
+        //                                     </div>
+        //                                     <div className="flex_col_sm_3 text-right">
+        //                                         <span className="sub_title">$1,400</span>
+        //                                     </div>
+        //                                 </div>
+        //                             </li>
+        //                         </ul>
+        //                     </div>
+        //                     <div className="flex_col_sm_4 col_ruler">
+        //                         <span className="sub_title">Posted by</span>
+        //                         <div className="tradie_card posted_by view_more ">
+        //                             <a href="javascript:void(0)" className="chat circle"></a>
+        //                             <div className="user_wrap">
+        //                                 <figure className="u_img">
+        //                                     <img src={dummy} alt="img" />
+        //                                 </figure>
+        //                                 <div className="details">
+        //                                     <span className="name">John Oldman</span>
+        //                                     <span className="rating">4.9, 36 reviews</span>
+        //                                 </div>
+        //                             </div>
+        //                         </div>
+        //                         <div className="relate">
+        //                             <span className="sub_title">Job details</span>
+        //                             <span
+        //                                 className="edit_icon"
+        //                                 title="More">
+        //                                 <img src={more} alt="more" />
+        //                             </span>
+        //                         </div>
+        //                     </div>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
+
+        // -----My revenue detail close ------//
     );
 }

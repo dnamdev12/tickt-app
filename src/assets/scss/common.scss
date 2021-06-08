@@ -4972,6 +4972,7 @@ div#light-box div {
   li{
     display: inline-block;
     width: 100%;
+    max-width: 628px;
     min-height: 134px;
     padding: 33px 15px;
     background-color: #f7f8fa;
@@ -4984,6 +4985,9 @@ div#light-box div {
     }
     &:hover{
 	    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
+    }
+    .sub_title{
+      margin: 0;
     }
     .title{
       margin: 3px 0 0;
@@ -5027,8 +5031,11 @@ div#light-box div {
       object-fit: cover;
     }
   }
-  .inner_title{
-    width: 75%;
+  .details{
+    width: 78%;
+    .inner_title{
+      margin: 0;
+    }
   }
 }
 
@@ -5071,6 +5078,9 @@ div#light-box div {
     li{
       align-items: initial;
     }
+  }
+  .edit_icon{
+    right: 20px;
   }
 }
 
