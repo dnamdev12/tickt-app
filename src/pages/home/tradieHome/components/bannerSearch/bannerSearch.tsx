@@ -32,6 +32,7 @@ interface PropsType {
     recentSearchJobData: Array<any>,
     recentLocationData: Array<any>,
     homeSearchJobData: Array<any>,
+    cleanFiltersData?: boolean,
     setTradieHomeData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
@@ -245,7 +246,7 @@ const BannerSearch = (props: PropsType) => {
             <div className="custom_autosuggestion" id="recent-job-search-div">
                 <span className="sub_title">Recent searches</span>
                 <div className="flex_row recent_search">
-                    {props.recentSearchJobData?.slice(0,4)?.map((item: any) => {
+                    {props.recentSearchJobData?.slice(0, 4)?.map((item: any) => {
                         return (
                             <div className="flex_col_sm_3" key={item._id}>
                                 <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
@@ -411,12 +412,15 @@ const BannerSearch = (props: PropsType) => {
                 page: stateData.page,
                 isFiltered: false,
                 tradeId: newSearchData?.tradeId ? newSearchData?.tradeId : stateData?.tradeId,
-                location: stateData?.location,
+                ...(stateData.isMapLocationSelected && { location: stateData?.location }),
+                // location: stateData?.location,
                 specializationId: newSearchData?.specializationId ? newSearchData?.specializationId : stateData?.specializationId,
                 ...(stateData?.from_date && { from_date: stateData?.from_date }),
                 ...(stateData?.to_date && { to_date: stateData?.to_date })
             }
-            props.postHomeSearchData(data);
+            if (props?.location?.pathname === '/search-job-results') {
+                props.postHomeSearchData(data);
+            }
             const newData = {
                 ...data,
                 lat: stateData.location.coordinates[1],
@@ -439,7 +443,7 @@ const BannerSearch = (props: PropsType) => {
                 props.history.push(newUrl);
             } else {
                 props.history.replace(newUrl);
-                if (props?.cleanFiltersHandler) {
+                if (!props.cleanFiltersData && props?.cleanFiltersHandler) {
                     props?.cleanFiltersHandler(true);
                 }
             }
@@ -454,7 +458,7 @@ const BannerSearch = (props: PropsType) => {
                     <img src={Location} alt="location" />
                 </span>
                 {stateData?.selectedMapLocation && inputFocus2 && <span className="detect_icon" >
-                    <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '' }))} />
+                    <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '', isMapLocationSelected: false }))} />
                 </span>}
                 {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
             </div>

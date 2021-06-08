@@ -106,7 +106,7 @@ const JobDashboard = ({
               <button
                 className="fill_btn btn-effect"
                 onClick={() => {
-                  history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
+                  history.push(`/mark-milestone?jobId=${params.jobId}&redirect_from=jobs`);
                   setMilestoneComplete(false);
                 }}
               >
@@ -133,7 +133,7 @@ const JobDashboard = ({
               <button
                 className="fill_btn btn-effect"
                 onClick={() => {
-                  history.push(`/mark-milestone?jobId=${params.jobId}&tradeId=${params.tradeId}&specializationId=${params.specializationId}`);
+                  history.push(`/mark-milestone?jobId=${params.jobId}&redirect_from=jobs`);
                   setJobComplete(false);
                 }}
               >
