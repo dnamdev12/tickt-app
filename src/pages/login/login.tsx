@@ -49,12 +49,13 @@ const LoginPage = (props: Propstype) => {
 
         if (!loginData.password) {
             newErrors.password = Constants.errorStrings.password;
-        } else {
-            const passwordRegex = new RegExp(regex.password);
-            if (!passwordRegex.test(loginData.password.trim())) {
-                newErrors.password = Constants.errorStrings.passwordInvalid;
-            }
         }
+        //  else {
+        //     const passwordRegex = new RegExp(regex.password);
+        //     if (!passwordRegex.test(loginData.password.trim())) {
+        //         newErrors.password = Constants.errorStrings.passwordInvalid;
+        //     }
+        // }
 
         setErrors(newErrors);
         return !Object.keys(newErrors).length;

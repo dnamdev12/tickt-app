@@ -417,3 +417,12 @@ export const ratingTradieProfile = async (data: any) => {
 }
 
 
+export const getJobDetails = async (jobId: string) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.jobDetailsTradie + `?jobId=${jobId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+      return { success: true, data: response.result };
+  }
+  return { success: false };
+}

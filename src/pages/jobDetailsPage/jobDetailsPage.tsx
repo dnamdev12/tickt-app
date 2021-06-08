@@ -1,10 +1,13 @@
 import { useState, useEffect } from 'react';
 import Constants from '../../utils/constants';
+import { renderTime } from '../../utils/common';
 import {
+
     getHomeJobDetails,
     getHomeSaveJob,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
+import { getJobDetails } from '../../redux/jobs/actions';
 import { getTradieQuestionList } from '../../redux/jobs/actions';
 import {
     postAskQuestion,
@@ -58,6 +61,7 @@ const options = {
 const JobDetailsPage = (props: PropsType) => {
     const [errors, setErrors] = useState<any>({});
     const [jobDetailsData, setJobDetailsData] = useState<any>('');
+    const [redirectFrom, setRedirectFrom] = useState<string>('');
     const [jobConfirmation, setJobConfirmation] = useState<any>({
         isJobModalOpen: false,
         tradieTradeId: '',
@@ -90,12 +94,21 @@ const JobDetailsPage = (props: PropsType) => {
     useEffect(() => {
         (async () => {
             const params = new URLSearchParams(props.location?.search);
-            const data: any = {
-                jobId: params.get('jobId'),
-                tradeId: params.get('tradeId'),
-                specializationId: params.get('specializationId')
+            const redirectFrom: any = params.get('redirect_from');
+            setRedirectFrom(redirectFrom);
+            console.log(redirectFrom, 'redirectFrom----------------');
+            var data: any = {};
+            var res1: any;
+            if (redirectFrom) {
+                data.jobId = params.get('jobId');
+                res1 = await getJobDetails(data.jobId);
+
+            } else {
+                data.jobId = params.get('jobId');
+                data.tradeId = params.get('tradeId');
+                data.specializationId = params.get('specializationId');
+                res1 = await getHomeJobDetails(data);
             }
-            const res1 = await getHomeJobDetails(data);
             if (res1.success) {
                 setJobDetailsData(res1.data);
             }
@@ -431,10 +444,10 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{jobDetailsData?.time}</li>
+                                            <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : jobDetailsData?.time}`}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount}</li>
-                                            <li className="icon calendar">{jobDetailsData?.duration}</li>
                                             <li className="icon location line-3">{jobDetailsData?.locationName}</li>
+                                            <li className="icon calendar">{jobDetailsData?.duration}</li>
                                         </ul>
                                     </div>
                                     {jobDetailsData?.appliedStatus ? (
@@ -491,11 +504,12 @@ const JobDetailsPage = (props: PropsType) => {
                                         return (
                                             <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
-                                                <span>{item?.fromDate?.length && !item?.toDate?.length ?
+                                                {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
                                                     `${moment(item?.fromDate).format('MMM DD')}` :
                                                     item?.fromDate?.length && item?.toDate?.length ?
                                                         `${moment(item?.fromDate).format('MMM DD ')}-${moment(item?.toDate).format(' DD')}` : ''
-                                                }</span>
+                                                }</span> */}
+                                                <span>{renderTime(item?.fromDate, item?.toDate)}</span>
                                             </li>
                                         )
                                     })}

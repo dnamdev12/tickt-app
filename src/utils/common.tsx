@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export const validateABN = (abn: number) => {
     const ABN = abn.toString()
     var weightedSum = 0;
@@ -8,4 +10,59 @@ export const validateABN = (abn: number) => {
         weightedSum += (parseInt(ABN[i]) - ((i === 0) ? 1 : 0)) * weight[i];
     }
     return ((weightedSum % 89) === 0) ? true : false
+}
+
+export const renderTime = (fromDate: any, toDate: any) => {
+    if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
+        return `${moment(fromDate).format('DD MMM')}`
+    }
+
+    if (moment(fromDate).isValid() && moment(toDate).isValid()) {
+        let yearEnd = moment().endOf("year").toISOString();
+        let monthEnd = moment(fromDate).endOf("month").toISOString();
+
+        let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
+        let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
+
+        let monthDiff = parseInt(item.toString());
+        let yearDiff = parseInt(item_year.toString());
+
+        if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
+            return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+        }
+        if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
+            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+        }
+        return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
+    }
+}
+
+export const getSearchParamsData = (location?: any) => {
+    const params = new URLSearchParams(location?.search);
+    const specializationString = params.get('specializationId')
+    const specializationArray = specializationString?.split(',');
+    const tradeIdArray = params.get('tradeId') ? [params.get('tradeId')] : null;
+    const jobTypesArray = params.get('jobTypes') ? [params.get('jobTypes')] : null;
+    const queryParamsData: any = {
+        page: Number(params.get('page')),
+        isFiltered: params.get('isFiltered') === "true",
+        tradeId: tradeIdArray,
+        specializationId: specializationArray,
+        lat: Number(params.get('lat')),
+        long: Number(params.get('long')),
+        defaultLat: Number(params.get('defaultLat')),
+        defaultLong: Number(params.get('defaultLong')),
+        address: params.get('address'),
+        from_date: params.get('from_date'),
+        to_date: params.get('to_date'),
+        jobResults: params.get('jobResults'),
+        heading: params.get('heading'),
+        jobTypes: jobTypesArray,
+        searchJob: params.get('searchJob'),
+        max_budget: Number(params.get('max_budget')),
+        pay_type: params.get('pay_type'),
+        sortBy: params.get('sortBy')
+        //Array.isArray(params.get('jobTypes'))
+    }
+    return queryParamsData;
 }

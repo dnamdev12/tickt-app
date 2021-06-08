@@ -23,9 +23,11 @@ import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
+import BuilderProfile from '../pages/builderProfile';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile';
 import RateSuccessTradie from '../pages/builderJobDasboard/components/rateSuccess';
+import TradieVouchers from '../pages/tradieInfo/vouchers';
 
 const routes = [
     {
@@ -55,6 +57,12 @@ const routes = [
         path: '/reset-password',
         component: ForgerPassword,
         authRoute: true,
+    },
+    {
+        name: 'myprofile',
+        path: '/my-profile',
+        component: BuilderProfile,
+        // authRoute: true,
     },
     {
         name: 'postnewjob',
@@ -126,6 +134,11 @@ const routes = [
         component: TradieInfo,
     },
     {
+        name: 'tradievouchers',
+        path: '/tradie-vouchers',
+        component: TradieVouchers,
+    },
+    {
         name: 'jobdashboard',
         path: [
             '/active-jobs',
@@ -134,7 +147,7 @@ const routes = [
             '/new-jobs',
             '/approved-milestones',
             '/mark-milestone',
-            // '/review-builder',
+            '/review-builder',
         ],
         component: JobDashboard,
         authRoute: false,
@@ -155,8 +168,8 @@ const routes = [
         privateRoute: true,
     },
     {
-        name: 'UpdateProfile',
-        path: '/update-profile',
+        name: 'update-user-info',
+        path: '/update-user-info',
         component: TradieEditProfile,
         authRoute: false,
         privateRoute: true,
@@ -210,4 +223,4 @@ const routes = [
     },
 ]
 
-export default routes
+export default routes;

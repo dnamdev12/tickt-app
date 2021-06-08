@@ -4,13 +4,15 @@ import { format } from 'date-fns';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import waiting from '../../../assets/images/exclamation.png';
+import noDataFound from "../../../assets/images/no-search-data.png";
 
 interface Proptypes {
+  loading: boolean;
   getApprovedMilestoneList: (page: number) => void,
   approvedMilestoneList: Array<any>,
 };
 
-const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }: Proptypes) => {
+const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilestoneList }: Proptypes) => {
   useEffect(() => {
     getApprovedMilestoneList(1);
   }, [getApprovedMilestoneList]);
@@ -20,7 +22,7 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
       {/* Approved Milestones */}
       <span className="sub_title">Approved Milestones</span>
       <div className="flex_row tradies_row">
-        {approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => {
+        {approvedMilestoneList.length ? approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => {
           fromDate = fromDate
           ? format(new Date(fromDate), 'MMM dd')
           : '';
@@ -29,7 +31,7 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
           return (
             <div className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                <NavLink to={`/job-details-page?jobId=${jobId}&tradeId=${tradeId}&specializationId=${specializationId}`} className="more_detail circle"></NavLink>
+                <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
                     <img src={tradeSelectedUrl || dummy} alt="traide-img" />
@@ -90,7 +92,13 @@ const ApprovedMilestones = ({ getApprovedMilestoneList, approvedMilestoneList }:
               </div>
             </div>
           );
-        })}
+        }) : !loading && (
+          <div className="no_record  m-t-vh">
+            <figure className="no_img">
+              <img src={noDataFound} alt="data not found" />
+            </figure>
+          </div>
+        )}
       </div>
       {/* Approved Milestones close */}
     </>
