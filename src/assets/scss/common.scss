@@ -1613,6 +1613,11 @@ body {
     line-height: 1.29;
     color: var(--blue);
   }
+  &.vouchers{
+    .commn_para{
+      -webkit-line-clamp: 4;
+    }
+  }
   .vouch{
     margin-top: 15px;
     .vouch_icon{
@@ -1631,6 +1636,10 @@ body {
     }
   }
   
+}
+
+.add_vouch{
+  padding: 16px 18px
 }
 
 .rating_star {
