@@ -26,8 +26,8 @@ const JobTypeList = (props: any) => {
     }, [])
 
     const jobTypeListClicked = (id: string, jobTypeHeadingName: string) => {
-        // props.history.push(`/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}&defaultLat=${props.currentCoordinates?.coordinates[1]}&defaultLong=${props.currentCoordinates?.coordinates[0]}`);
-        props.history.push(`/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}`);
+        props.history.push(`/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}&defaultLat=${props.currentCoordinates?.coordinates[1]}&defaultLong=${props.currentCoordinates?.coordinates[0]}`);
+        // props.history.push(`/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}`);
     }
 
     console.log(props.jobTypeListData, "jobTypeListData  type==>", props.jobTypeData);

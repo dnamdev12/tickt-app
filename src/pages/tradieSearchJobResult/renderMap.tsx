@@ -41,7 +41,6 @@ const RenderMap = (props: any) => {
             return;
         } else {
             setCenter(newCenter);
-            console.log(newCenter, 'map newCenter encountered', mapCenterCoordinates, "mapCenterCoordinates");
         }
     }
 
@@ -51,7 +50,6 @@ const RenderMap = (props: any) => {
         setMapCenter();
         var jobsData;
         const jobResultsParam = new URLSearchParams(props.location?.search).get('jobResults');
-        // if (props.filterByPrice) {
         if (props.searchByFilter) {
             jobsData = props.homeSearchJobData;
             return jobsData;
