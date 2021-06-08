@@ -32,7 +32,7 @@ interface Post {
 export default function PastJobs(props: any): ReactElement {
     const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
-    const [enableRateJob, setRateJob] = useState(false);
+    const [enableRateJob, setRateJob] = useState({ data: {}, isTrue: false }); // toggle-rate-job
 
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
@@ -67,13 +67,17 @@ export default function PastJobs(props: any): ReactElement {
     }
 
     const backToScreen = () => {
-        setRateJob((prev: any) => !prev);
+        setRateJob((prev: any) => ({
+            data: {},
+            isTrue: !prev.isTrue
+        }));
     }
 
-    if (enableRateJob) {
+    if (enableRateJob?.isTrue) {
         return (
             <RateThisJob
                 backToScreen={backToScreen}
+                data={enableRateJob.data}
                 history={null}
                 location={null}
             />
@@ -160,7 +164,28 @@ export default function PastJobs(props: any): ReactElement {
                                     </div>
                                     <button
                                         onClick={() => {
-                                            setRateJob((prev: any) => !prev);
+                                            setRateJob((prev: any) => ({
+                                                data: {
+                                                    amount,
+                                                    fromDate,
+                                                    jobData,
+                                                    jobId,
+                                                    jobName,
+                                                    locationName,
+                                                    milestoneNumber,
+                                                    specializationId,
+                                                    specializationName,
+                                                    status,
+                                                    toDate,
+                                                    totalMilestones,
+                                                    tradeId,
+                                                    tradieId,
+                                                    tradeName,
+                                                    tradeSelectedUrl,
+                                                    tradieData,
+                                                },
+                                                isTrue: !prev.isTrue
+                                            }));
                                         }}
                                         className="fill_grey_btn full_btn">
                                         {status === "COMPLETED" ? (

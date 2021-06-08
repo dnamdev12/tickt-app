@@ -25,6 +25,7 @@ import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile';
+import RateSuccessTradie from '../pages/builderJobDasboard/components/rateSuccess';
 
 const routes = [
     {
@@ -108,6 +109,11 @@ const routes = [
         component: JobAppliedSuccessfully,
         authRoute: false,
         privateRoute: true,
+    },
+    {
+        name: 'ratesuccess',
+        path: '/rate-success',
+        component: RateSuccessTradie,
     },
     // {
     //     name: 'builderinfo',

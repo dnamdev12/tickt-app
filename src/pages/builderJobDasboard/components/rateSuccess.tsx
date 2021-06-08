@@ -1,5 +1,5 @@
 import React from 'react';
-import templateImage from '../../../../assets/images/review-builder-success.png';
+import templateImage from '../../../assets/images/review-builder-success.png';
 
 
 interface Props {

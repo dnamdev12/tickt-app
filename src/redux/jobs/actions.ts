@@ -406,3 +406,14 @@ export const getTradeProfile = async (data: any) => {
   return { success: false, data: response.result };
 }
 
+
+export const ratingTradieProfile = async (data: any) => {
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewTradie, data);
+  setShowToast(true, response.message);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+
