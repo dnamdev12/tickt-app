@@ -7,6 +7,7 @@ import { setShowToast } from '../../../../redux/common/actions';
 
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 import more from '../../../../assets/images/icon-direction-right.png';
+import { withRouter } from 'react-router-dom';
 
 interface Proptypes {
     history: any,
@@ -14,16 +15,16 @@ interface Proptypes {
     data: any,
     backToScreen: () => void,
 }
-const RateThisJob = (props: Proptypes) => {
+const RateThisJob = (props: any) => {
     const [reviewBuilderData, setReviewBuilderData] = useState({
         startDate: '',
         endDate: '',
         rating: 0,
         review: '',
     });
-
-    const item = props?.location?.state?.item;
-
+    
+    let data: any = props?.data;
+   
     const ratingChanged = (newRating: number) => {
         console.log(newRating);
         setReviewBuilderData((prevdata: any) => ({ ...prevdata, rating: newRating }))
@@ -35,8 +36,8 @@ const RateThisJob = (props: Proptypes) => {
         }
     }
 
-    const startDate = moment(item?.fromDate).format('MMM DD');
-    const endDate = moment(item?.toDate).format('MMM DD');
+    const startDate = moment(data?.fromDate).format('MMM DD');
+    const endDate = moment(data?.toDate).format('MMM DD');
 
     const submitReviewClicked = async () => {
         if (reviewBuilderData.rating === 0) {
@@ -48,25 +49,27 @@ const RateThisJob = (props: Proptypes) => {
             return;
         }
         if (reviewBuilderData.review.trim().length > 1 && reviewBuilderData.rating > 0) {
-            const data = {
-                jobId: item?.jobId,
-                tradieId: '',//item?.builderData?.builderId,
+            const dataItem = {
+                jobId: data?.jobId,
+                tradieId: data?.tradieId,
                 rating: reviewBuilderData.rating,
                 review: reviewBuilderData.review.trim()
             }
-            const response = await ratingTradieProfile(data);
+            const response = await ratingTradieProfile(dataItem);
             if (response?.success) {
                 props?.history?.push('/rate-success')
             }
         }
     }
 
-    const jobClickHandler = () => {
-        // props.history.push(`/job-details-page?jobId=${item?.jobId}&tradeId=${item?.tradeId}&specializationId=${item?.specializationId}`);
+    const jobClickHandler = ({ jobId }: any) => {
+        let urlEncode: any = window.btoa(`?jobId=${jobId}`)
+        props.history.push(`/job-detail?${urlEncode}`);
     }
 
-    const builderClicked = () => {
-        // props.history.push(`/builder-info?builderId=${item?.builderData?.builderId}`);
+    const tradieClicked = ({ tradieId, jobId }: any) => {
+        console.log({ props });
+        props.history.push(`/tradie-info?tradeId=${tradieId}&jobId=${jobId}`);
     }
 
     const renderTime = ({ fromDate, toDate }: any) => {
@@ -94,7 +97,6 @@ const RateThisJob = (props: Proptypes) => {
         }
     }
 
-    let data: any = props?.data;
     console.log({ data });
     return (
         <div className="flex_row">
@@ -149,7 +151,12 @@ const RateThisJob = (props: Proptypes) => {
                         <span className="sub_title">
                             {'Job details'}
                         </span>
-                        <span className="edit_icon" title="More" onClick={jobClickHandler}>
+                        <span
+                            className="edit_icon"
+                            title="More"
+                            onClick={() => {
+                                jobClickHandler({ jobId: data?.jobId })
+                            }}>
                             <img src={more} alt="more" />
                         </span>
                     </div>
@@ -161,9 +168,13 @@ const RateThisJob = (props: Proptypes) => {
                                     alt="traide-img"
                                 />
                             </figure>
-                            <div className="details" onClick={() => builderClicked()}>
+                            <div
+                                className="details"
+                                onClick={() => {
+                                    jobClickHandler({ jobId: data?.jobId })
+                                }}>
                                 <span className="name">{data?.jobData?.tradeName}</span>
-                                <span className="prof">{data?.jobName || 'Job Name'}</span>
+                                <span className="prof">{data?.jobName}</span>
                                 <span className="prof">
                                     {renderTime({
                                         fromDate: data?.jobData?.fromDate,
@@ -177,8 +188,18 @@ const RateThisJob = (props: Proptypes) => {
 
                 <>
                     <div className="relate">
-                        <span className="sub_title">Tradie</span>
-                        <span className="edit_icon" title="More" onClick={jobClickHandler}>
+                        <span className="sub_title">
+                            {'Tradie'}
+                        </span>
+                        <span
+                            className="edit_icon"
+                            title="More"
+                            onClick={() => {
+                                tradieClicked({
+                                    jobId: data?.jobId,
+                                    tradieId: data?.tradieId
+                                });
+                            }}>
                             <img src={more} alt="more" />
                         </span>
                     </div>
@@ -187,9 +208,18 @@ const RateThisJob = (props: Proptypes) => {
                             <figure className="u_img">
                                 <img src={data?.tradieData?.tradieImage || dummy} alt="traide-img" />
                             </figure>
-                            <div className="details" onClick={() => builderClicked()}>
+                            <div
+                                className="details"
+                                onClick={() => {
+                                    tradieClicked({
+                                        jobId: data?.jobId,
+                                        tradieId: data?.tradieId
+                                    });
+                                }}>
                                 <span className="name">{data?.tradieData?.tradieName}</span>
-                                <span className="prof">{}</span>
+                                <span className="rating">
+                                    {`${data?.tradieData?.ratings || 0} , ${data?.tradieData?.reviews || 0} reviews`}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -200,4 +230,4 @@ const RateThisJob = (props: Proptypes) => {
     )
 }
 
-export default RateThisJob;
+export default withRouter(RateThisJob);

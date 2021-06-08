@@ -12,6 +12,7 @@ interface Post {
     fromDate: any,
     jobData: any,
     jobId: any,
+    isRated: any,
     jobName: any,
     locationName: any,
     milestoneNumber: any,
@@ -94,6 +95,7 @@ export default function PastJobs(props: any): ReactElement {
                         fromDate,
                         jobData,
                         jobId,
+                        isRated,
                         jobName,
                         locationName,
                         milestoneNumber,
@@ -162,39 +164,46 @@ export default function PastJobs(props: any): ReactElement {
                                             />
                                         </span>
                                     </div>
-                                    <button
-                                        onClick={() => {
-                                            setRateJob((prev: any) => ({
-                                                data: {
-                                                    amount,
-                                                    fromDate,
-                                                    jobData,
-                                                    jobId,
-                                                    jobName,
-                                                    locationName,
-                                                    milestoneNumber,
-                                                    specializationId,
-                                                    specializationName,
-                                                    status,
-                                                    toDate,
-                                                    totalMilestones,
-                                                    tradeId,
-                                                    tradieId,
-                                                    tradeName,
-                                                    tradeSelectedUrl,
-                                                    tradieData,
-                                                },
-                                                isTrue: !prev.isTrue
-                                            }));
-                                        }}
-                                        className="fill_grey_btn full_btn">
-                                        {status === "COMPLETED" ? (
-                                            <React.Fragment>
-                                                <img src={rateStar} alt="rating-star" />
-                                                {'Rate this job'}
-                                            </React.Fragment>
-                                        ) : 'Publish again'}
-                                    </button>
+                                    {status === "COMPLETED" ?
+                                        !isRated && (<button
+                                            onClick={() => {
+                                                setRateJob((prev: any) => ({
+                                                    data: {
+                                                        amount,
+                                                        fromDate,
+                                                        jobData,
+                                                        jobId,
+                                                        jobName,
+                                                        locationName,
+                                                        milestoneNumber,
+                                                        specializationId,
+                                                        specializationName,
+                                                        status,
+                                                        toDate,
+                                                        totalMilestones,
+                                                        tradeId,
+                                                        tradieId,
+                                                        tradeName,
+                                                        tradeSelectedUrl,
+                                                        tradieData,
+                                                    },
+                                                    isTrue: !prev.isTrue
+                                                }));
+                                            }}
+                                            className="fill_grey_btn full_btn">
+                                            {status === "COMPLETED" ? (
+                                                <React.Fragment>
+                                                    <img src={rateStar} alt="rating-star" />
+                                                    {'Rate this job'}
+                                                </React.Fragment>
+                                            ) : 'Publish again'}
+                                        </button>
+                                        )
+                                        : (
+                                            <button className="fill_grey_btn full_btn">
+                                                {"Publish again"}
+                                            </button>
+                                        )}
                                 </div>
                             </div>
                         </div>

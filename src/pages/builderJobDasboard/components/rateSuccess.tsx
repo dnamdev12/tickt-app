@@ -1,14 +1,11 @@
 import React from 'react';
 import templateImage from '../../../assets/images/review-builder-success.png';
+import { withRouter } from 'react-router-dom';
 
 
-interface Props {
-    
-}
-
-const DeclineMilestoneSuccess = (props: Props) => {
-    return (
-        <div className="img_text_wrap">
+const DeclineMilestoneSuccess = (props: any) => {
+  return (
+    <div className="img_text_wrap">
       <figure className="full_image">
         <img src={templateImage} alt="template-item" />
         <div className="short_info">
@@ -18,13 +15,19 @@ const DeclineMilestoneSuccess = (props: Props) => {
               {'Your review will help other builders find the highest quality tradespeople on Tickt.'}
             </span>
             <div className="btn_wrapr">
-              <button className="fill_btn btn-effect">OK</button>
+              <button
+                onClick={() => {
+                  props.history.push('/');
+                }}
+                className="fill_btn btn-effect">
+                {'OK'}
+              </button>
             </div>
           </div>
         </div>
       </figure>
     </div>
-    )
+  )
 }
 
-export default DeclineMilestoneSuccess;
+export default withRouter(DeclineMilestoneSuccess);
