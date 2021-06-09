@@ -819,12 +819,12 @@ export class PersonalInformation extends Component<Props, State> {
                                     <img src={dotMenu} alt="menu" />
 
                                     <div className="edit_menu">
-                                    <ul>
-                                        <li className="icon edit">Edit</li>
-                                        <li className="icon delete">Delete</li>
-                                    </ul>
-                                </div>
-                                
+                                        <ul>
+                                            <li className="icon edit">Edit</li>
+                                            <li className="icon delete">Delete</li>
+                                        </ul>
+                                    </div>
+
                                 </span>
                                 {/* <Menu className="edit_menu"
                                     id="simple-menu"
@@ -848,7 +848,7 @@ export class PersonalInformation extends Component<Props, State> {
                                    </ul>
                                 </Menu> */}
 
-                               
+
 
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
