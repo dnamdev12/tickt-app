@@ -48,6 +48,7 @@ export const tradieUpdateBasicDetails = async (data: any) => {
     setShowToast(true, response.message);
     return { success: true };
   }
+  setShowToast(true, response.message);
   return { success: false };
 }
 
@@ -73,5 +74,17 @@ export const removeBankDetails = () => ({
   type: actionTypes.REMOVE_BANK_DETAILS_START,
 });
 
-export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data })
-export const getProfileBuilder = () => ({ type: actionTypes.GET_PROFILE_BUILDER })
+export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data });
+export const getProfileBuilder = () => ({ type: actionTypes.GET_PROFILE_BUILDER });
+
+export const tradieUpdatePassword = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieChangePassword, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
