@@ -21,12 +21,13 @@ import savedJobs from '../../assets/images/ic-job.png';
 const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
 const Header = (props: any) => {
+    let type = storageService.getItem('userType');
     const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
     const [toggleMenu, setToggleMenu] = useState(false);
-    const [activeLink, setActiveLink] = useState('');
+    const [activeLink, setActiveLink] = useState('discover');
 
     // const USER_TYPE = storageService.getItem('userType');
 
@@ -34,14 +35,19 @@ const Header = (props: any) => {
     let history = useHistory();
 
     useEffect(() => {
-        props.callTradieProfileData();
-        let type: any = storageService.getItem('userType');
-        if (type === 2) {
-            props.getProfileBuilder();
-        }
-    }, [])
+        // console.log({ props }, '-->');
+    }, [props])
 
     useEffect(() => {
+        if (type) {
+            if (type === 1) {
+                props.callTradieProfileData();
+            }
+            if (type === 2) {
+                props.getProfileBuilder();
+            }
+        }
+
         if (DISABLE_HEADER.includes(pathname)) {
             setShowHeader(false)
         } else {
@@ -62,6 +68,7 @@ const Header = (props: any) => {
         storageService.removeItem("jwtToken")
         storageService.removeItem("guestToken")
         storageService.removeItem("userType")
+        localStorage.clear();
         history.push('/login')
     }
 
@@ -83,7 +90,17 @@ const Header = (props: any) => {
             history.push('/jobs')
         }
     }
-    console.log({props},'---->')
+
+    const renderByType = ({ name }: any) => {
+        if (type === 2) {
+            return props?.builderProfile[name];
+        }
+        if (type === 1) {
+            return props?.tradieProfileData[name];
+        }
+    }
+
+
     return (
         <>
             {showHeader && <header id="header">
@@ -93,7 +110,7 @@ const Header = (props: any) => {
                             <figure>
                                 <img
                                     onClick={() => {
-                                        setActiveLink('');
+                                        setActiveLink('discover');
                                         setToggleMenu(false);
                                         props.history.push('/');
                                     }}
@@ -103,7 +120,12 @@ const Header = (props: any) => {
                         </div>
                         <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
                             <li>
-                                <a className={activeLink === 'discover' ? 'active' : ''}>
+                                <a
+                                    onClick={() => {
+                                        setActiveLink('discover');
+                                        history.push('/');
+                                    }}
+                                    className={activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
                                 </a>
                             </li>
@@ -141,7 +163,7 @@ const Header = (props: any) => {
                                 <div className="user_profile">
                                     {storageService.getItem("jwtToken") &&
                                         <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-                                            <img src={props?.builderProfile?.userImage || dummy} alt="profile-img" />
+                                            <img src={renderByType({ name: 'userImage' }) || dummy} alt="profile-img" />
                                         </figure>}
                                     <Menu className="sub_menu"
                                         id="simple-menu"
@@ -152,15 +174,16 @@ const Header = (props: any) => {
                                         transformOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
-                                          }}
+                                        }}
                                     >
                                         {/* <span className="sub_title">{props.tradieProfileData?.userName}</span> */}
                                         <span className="sub_title">
-                                            {props?.builderProfile?.userName || ''}
+                                            {renderByType({ name: 'userName' })}
+                                            {/* {props?.builderProfile?.userName || props?.tradieProfileData?.userName} */}
                                         </span>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon">
-                                                <img src={props?.builderProfile?.userImage || profile} alt="profile" />
+                                                <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" />
                                                 {'My Profile'}
                                             </span>
                                         </MenuItem>

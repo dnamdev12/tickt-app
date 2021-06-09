@@ -97,7 +97,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
             <figure className="no_img">
               <img src={noDataFound} alt="data not found" />
             </figure>
-            <span>Data not found</span>
+            <span>No Data Found</span>
           </div>
         )}
       </div>

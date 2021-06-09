@@ -514,7 +514,7 @@ class TradieInfo extends Component<Props, State> {
                                         <figure className="no_data_img">
                                             <img src={noData} alt="data not found" />
                                         </figure>
-                                        <span>Data not found</span>
+                                        <span>No Data Found</span>
                                     </div>}
                             </div>
                             <button
