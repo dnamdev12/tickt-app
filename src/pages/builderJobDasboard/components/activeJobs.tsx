@@ -6,6 +6,7 @@ import MarkMilestones from './markMilestones';
 import { withRouter } from 'react-router-dom';
 import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
+import LodgeDispute from './lodgeDispute';
 
 interface Active {
     amount: any,
@@ -61,6 +62,10 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                 listData={listData}
             />)
     }
+
+    return (
+        <LodgeDispute />
+    )
 
     return (
         <React.Fragment>
