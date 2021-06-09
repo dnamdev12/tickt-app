@@ -473,10 +473,11 @@ const BannerSearch = (props: PropsType) => {
                 </span>}
                 {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
             </div>
-            {suggestions?.length > 0 && stateData?.selectedMapLocation.length >= 3 && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+            {suggestions?.length > 0 && stateData?.selectedMapLocation.length >= 3 && inputFocus2 ? <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                 <div className="flex_row recent_search auto_loc">
                     <div className="flex_col_sm_4">
                         {loading && <div>Loading...</div>}
+
                         {suggestions.map((suggestion: any) => {
                             const className = 'autosuggestion_icon card loc name';
                             const style = suggestion.active
@@ -497,7 +498,16 @@ const BannerSearch = (props: PropsType) => {
                         })}
                     </div>
                 </div>
-            </div>}
+            </div> : !loading && stateData?.selectedMapLocation.length >= 3 && inputFocus2 && suggestions?.length === 0 ? (
+                <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                    <div className="flex_row recent_search auto_loc">
+                        <div className="flex_col_sm_4">
+                            <div className="loc_suggestions">
+                                {'No Result Found.'}
+                            </div>
+                        </div>
+                    </div>
+                </div>) : null}
         </React.Fragment>
     )
 

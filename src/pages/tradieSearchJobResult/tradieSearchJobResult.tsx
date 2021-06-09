@@ -243,6 +243,7 @@ const TradieSearchJobResult = (props: any) => {
                                     <div className="no_record">
                                         <figure className="no_img">
                                             <img src={noData} alt="data not found" />
+                                            <span>No Data Found</span>
                                         </figure>
                                     </div>}
                             </div> : (renderJobsData()?.length > 0 || props.isLoading) ?
@@ -252,7 +253,7 @@ const TradieSearchJobResult = (props: any) => {
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />
                                     </figure>
-                                    <span>No Data Found!</span>
+                                    <span>No Data Found</span>
                                 </div>}
                             {<div className="map_col" style={!mapData.showMap ? { display: "none" } : {}}>
                                 <div className="map_stick">

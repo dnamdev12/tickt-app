@@ -452,7 +452,7 @@ const BuilderInfo = (props: PropsType) => {
                                 <figure className="no_data_img">
                                     <img src={noDataFound} alt="data not found" />
                                 </figure>
-                                <span>Data not found</span>
+                                <span>No Data Found</span>
                             </div>}
                     </div>
                     <button className="fill_grey_btn full_btn m-tb40 view_more" disabled={profileData?.jobPostedData?.length < 1} onClick={builderAllJobsClicked}>
