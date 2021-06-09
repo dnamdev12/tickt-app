@@ -160,9 +160,12 @@ const SearchResultFilters = (props: any) => {
     }
 
     const setSameOnClick = () => {
+        const item = {
+            sortBy: 400  //sending 400 e.g, to delete sortBy from query param ==> by passing to parent component
+        }
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
         sortBySortingClose();
-        showResultsByAllFilter();
+        showResultsByAllFilter(item);
     }
 
     const sortOnClick = (num: number) => {
