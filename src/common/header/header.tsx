@@ -27,7 +27,7 @@ const Header = (props: any) => {
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
     const [toggleMenu, setToggleMenu] = useState(false);
-    const [activeLink, setActiveLink] = useState('');
+    const [activeLink, setActiveLink] = useState('discover');
 
     // const USER_TYPE = storageService.getItem('userType');
 
@@ -110,7 +110,7 @@ const Header = (props: any) => {
                             <figure>
                                 <img
                                     onClick={() => {
-                                        setActiveLink('');
+                                        setActiveLink('discover');
                                         setToggleMenu(false);
                                         props.history.push('/');
                                     }}
@@ -120,7 +120,12 @@ const Header = (props: any) => {
                         </div>
                         <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
                             <li>
-                                <a className={activeLink === 'discover' ? 'active' : ''}>
+                                <a
+                                    onClick={() => {
+                                        setActiveLink('discover');
+                                        history.push('/');
+                                    }}
+                                    className={activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
                                 </a>
                             </li>
