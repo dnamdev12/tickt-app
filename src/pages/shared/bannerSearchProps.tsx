@@ -73,7 +73,7 @@ export function useStateFromProp(initialValue: any) {
 const BannerSearch = (props: PropsType) => {
     let props_selected = props.selectedItem;
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
-    
+
     const [checkOnChange, setOnChange] = useState(false);
 
     const [locationStatus, setLocationStatus] = useState(null);
@@ -219,7 +219,7 @@ const BannerSearch = (props: PropsType) => {
         if (searchText?.length > 2) {
             props.getSearchJobList(searchText);
         }
-        if(!searchText?.length){
+        if (!searchText?.length) {
             setSelectedTrade({});
         }
     }, [searchText])
@@ -744,7 +744,8 @@ const BannerSearch = (props: PropsType) => {
                                                     <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                                         <div className="flex_row recent_search auto_loc">
                                                             <div className="flex_col_sm_4">
-                                                                <div className=" no_search_found">
+                                                                <div className="loc_suggestions">
+                                                                    {'No Result Found.'}
                                                                 </div>
                                                             </div>
                                                         </div>
