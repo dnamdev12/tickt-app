@@ -16,6 +16,7 @@ import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
 
 import menu from '../../../assets/images/menu-line-blue.png';
+import dotMenu from '../../../assets/images/menu-dot.png';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import cameraBlack from '../../../assets/images/camera-black.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
@@ -29,6 +30,7 @@ import eyeIconClose from '../../../assets/images/icon-eye-closed.png';
 import eyeIconOpen from '../../../assets/images/icon-eye-open.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import { spawn } from 'typed-redux-saga/dist';
 
 interface Props {
     tradieProfileViewData: any,
@@ -786,12 +788,9 @@ export class PersonalInformation extends Component<Props, State> {
                     aria-describedby="simple-modal-description"
                 >
                     <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        <div className="heading">
-                            {/* <button className="close_btn" onClick={() => this.setState({ portfolioImageClicked: false, portfolioModalClicked: true })}> */}
-                            <button className="close_btn" onClick={() => this.setState({ portfolioEditDeleteMenu: true })}>
-                                <img src={cancel} alt="cancel" />
-                            </button>
-                        </div>
+                        {/* <div className="heading">
+                            <button className="close_btn" onClick={() => this.setState({ portfolioImageClicked: false, portfolioModalClicked: true })}>
+                        </div> */}
                         <div className="flex_row">
                             <div className="flex_col_sm_6">
                                 <Carousel
@@ -815,6 +814,42 @@ export class PersonalInformation extends Component<Props, State> {
                                 </Carousel>
                             </div>
                             <div className="flex_col_sm_6">
+                                {/* <span className="dot_menu" onClick={() => this.setState({ portfolioEditDeleteMenu: true })}> */}
+                                <span className="dot_menu">
+                                    <img src={dotMenu} alt="menu" />
+
+                                    <div className="edit_menu">
+                                    <ul>
+                                        <li className="icon edit">Edit</li>
+                                        <li className="icon delete">Delete</li>
+                                    </ul>
+                                </div>
+                                
+                                </span>
+                                {/* <Menu className="edit_menu"
+                                    id="simple-menu"
+                                    // anchorEl={priceAnchorEl}
+                                    keepMounted
+                                    open={portfolioEditDeleteMenu}
+                                    onClose={() => this.setState({ portfolioEditDeleteMenu: false })}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'center',
+                                      }}
+                                      transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                      }}
+                                      
+                                >
+                                   <ul>
+                                       <li className="icon edit">Edit</li>
+                                       <li className="icon delete">Delete</li>
+                                   </ul>
+                                </Menu> */}
+
+                               
+
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
                                     <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
@@ -827,16 +862,6 @@ export class PersonalInformation extends Component<Props, State> {
                     </div>
                 </Modal>
 
-                <Menu className="fsp_modal range"
-                    id="simple-menu"
-                    // anchorEl={priceAnchorEl}
-                    keepMounted
-                    open={portfolioEditDeleteMenu}
-                    onClose={() => this.setState({ portfolioEditDeleteMenu: false })}
-                >
-                    <li>Edit</li>
-                    <li>Delete</li>
-                </Menu>
 
                 <Modal
                     className="custom_modal"

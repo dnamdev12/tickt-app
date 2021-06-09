@@ -2354,18 +2354,36 @@ body {
 	}
 }
 
-
-
 //----------------Sort/Range modal close---------------------//
 
-//----------------Setting mat menu---------------------//
-.setting_menu {
+//----------------Edit menu---------------------//
+.edit_menu {
+  position: absolute;
+  top: 30px;
+  right: -100%;
+  transition: all ease-in .3s;
+  opacity: 0;
+  visibility: hidden;
+  width: 165px;
+  padding: 16px 10px 16px 20px;
+  border-radius: 3px;
+  -webkit-backdrop-filter: blur(27px);
+  backdrop-filter: blur(27px);
+  background-color: #f7f8fa;
+  z-index: 99;
+  margin: 0px 0 0 0px;
+  box-shadow: none;
+  .MuiList-root{
+    position: initial;
+    padding: 0;
+    display: block;
+  }
   ul {
     li {
       &:not(:last-child){
-        margin-bottom: 32px;
+        margin-bottom: 24px;
       }
-      .icon {
+      &.icon {
         padding-left: 30px;
         font-size: 14px;
         font-family: 'Neue Haas Grotesk Text Pro Bold';
@@ -2373,11 +2391,21 @@ body {
           width: 24px;
           height: 24px;
         }
-        // &.edit {
-        // 	&::before {
-        // 		background: url('../images/ic-edit.png') center no-repeat;
-        // 	}
-        // }
+        &.edit {
+        	&::before {
+        		background: url('../images/ic-edit.png') center no-repeat;
+        	}
+        }
+        &.edit_line {
+        	&::before {
+        		background: url('../images/ic-edit-line.png') center no-repeat;
+        	}
+        }
+        &.lodge {
+        	&::before {
+        		background: url('../images/ic-lodge.png') center no-repeat;
+        	}
+        }
         &.delete {
           color: #ed1c24;
           &::before {
@@ -2388,6 +2416,24 @@ body {
     }
   }
 }
+
+.dot_menu{
+  position: absolute;
+  right: 30px;
+  top: 25px;
+  cursor: pointer;
+  width: 25px;
+  height: 25px;
+  &:hover{
+    .edit_menu{
+      opacity: 1;
+      visibility: visible;
+      right: 0;
+    }
+  }
+}
+//----------------Edit menu close---------------------//
+
 
 //---------------Success-img-text---------------//
 .img_text_wrap {
@@ -4549,6 +4595,7 @@ body {
   .portfolio_wrappr{
     .media{
       margin: 0 20px 20px 0;
+      cursor: auto;
       .portfolio_img {
         width: 176px;
         height: 176px;
