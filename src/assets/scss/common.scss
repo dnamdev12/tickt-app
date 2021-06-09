@@ -4962,25 +4962,131 @@ div#light-box div {
   padding: 0px;
 }
 
-.common-btn {
-  font-size: 14px;
-    font-family: 'Neue Haas Grotesk Text Pro Medium';
-    line-height: 1.43;
-    color: var(--blue);
-    padding: 13px 15px;
-    border-radius: 6px;
-    border: 1px solid #dfe5ef;
-    background-color: #dfe5ef;
-    display: flex;
-    align-items: center;
-}
-
-
-.name_recent_search {
-  padding-top: 15px;
-  padding-left: 15px;
-  font-weight: bold;
-  font-size: 16px;
-}
-
 //---------------------- Job Dashboard -------------------------//
+
+
+//----------Revenue-----------//
+.total_count_card{
+  display: flex;
+  margin-bottom: 50px;
+  li{
+    display: inline-block;
+    width: 100%;
+    max-width: 628px;
+    min-height: 134px;
+    padding: 33px 15px;
+    background-color: #f7f8fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    &:not(:last-child){
+      margin: 0 32px 0 0;
+    }
+    &:hover{
+	    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
+    }
+    .sub_title{
+      margin: 0;
+    }
+    .title{
+      margin: 3px 0 0;
+    }
+    &.revenue{
+      max-width: 488px;
+    }
+    &.job{
+      max-width: 384px;
+    }
+  }
+}
+.last_jobs{
+  margin: 32px 0 15px;
+  .center_flex {
+    &:not(:last-child){
+      margin-bottom: 24px;
+    }
+  }
+  .form_label{
+    margin-bottom: 16px;
+  }
+  .inner_title{
+    margin: 0;
+  }
+}
+
+.img_txt_wrap{
+  display: flex;
+  align-items: center;
+  .job_img{
+    width: 56px;
+    height: 56px;
+    margin: 0 16px 0 0;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 1px solid #f7f8fa;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+  .details{
+    width: 78%;
+    .inner_title{
+      margin: 0;
+    }
+  }
+}
+
+
+.search_bar{
+  position: relative;
+  overflow: hidden;
+  transition: width 0.6s ease;
+  input{
+    border-color: transparent !important;
+    position: relative;
+    padding: 12px 10px 12px 35px;
+    width: 0;
+    z-index: 9;
+    opacity: 0;
+    visibility: hidden;
+  }
+  &.active{
+    input{
+      background-color: #f7f8fa;
+      opacity: 1;
+      visibility: visible;
+      width: 100%;
+      box-shadow: none;
+    }
+    .detect_icon_ltr{
+      z-index: 9;
+    }
+  }
+}
+
+.revenue_detail{
+  position: relative;
+  .back{
+    top: 0;
+    transform: initial;
+  }
+  .total_count_card{
+    padding-left: 45px;
+    li{
+      align-items: initial;
+    }
+  }
+  .edit_icon{
+    right: 20px;
+  }
+}
+
+
+//---------Revenue close------------//
+
+
+
+
