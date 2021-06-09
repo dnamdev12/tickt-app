@@ -71,8 +71,8 @@ const JobDashboard = ({
   const [milestoneComplete, setMilestoneComplete] = useState(false);
   const [jobComplete, setJobComplete] = useState<boolean | number>(false);
 
-  const jobCompleteCount = jobComplete && {jobComplete}{`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'};
-
+  const jobCompleteCount = jobComplete && `${jobComplete}${`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'}`;
+  
   return milestoneComplete ? (
 
     // Review builder success
