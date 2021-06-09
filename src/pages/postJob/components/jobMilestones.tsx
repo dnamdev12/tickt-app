@@ -176,6 +176,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             destination.index
         );
         setLocalMilestones(reOrderedMilestones);
+        handleCombineMileStones(reOrderedMilestones);
         checkIfDatesValid();
         checkIfValidDates(reOrderedMilestones);
     };
@@ -224,7 +225,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             return `${moment(fromDate, default_format).format('DD MMM')} - ${moment(toDate, default_format).format('DD')}`
         }
     }
-
+    console.log({localMilestones})
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">

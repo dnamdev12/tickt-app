@@ -22,6 +22,7 @@ const RecommendedJobs = (props: any) => {
                             <figure className="no_img">
                                 <img src={noData} alt="data not found" />
                             </figure>
+                            <span>Data not found</span>
                         </div>}
                     </div>
                     <button className="fill_grey_btn full_btn m-tb40 view_more" onClick={viewAllJobs}>View all</button>

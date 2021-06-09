@@ -155,7 +155,7 @@ const PostNewJob = ({
                   <textarea placeholder="This Job..." name="job_description" value={job_description} onChange={handleChange} />
                   {job_description.length ?
                     <span className="char_count">
-                      {`character length : ${job_description.length}`}
+                      {`character length : ${job_description.length} / 250`}
                     </span>
                     : ''}
                 </div>

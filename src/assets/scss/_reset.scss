@@ -580,6 +580,14 @@ body.loader_show .full_loader {
         border: solid 1px var(--warm-gray) !important;
         cursor: pointer;
     }
+    input{
+        &:focus, &:hover{
+            border: none !important;
+            box-shadow: none !important;
+            -webkit-border: none !important;
+            -moz-box-shadow: none !important;
+        }
+    }
 }
 .css-1pahdxg-control{
     border: 1px solid var(--blue) !important;
@@ -592,14 +600,6 @@ body.loader_show .full_loader {
     font-size: 14px;
     color: var(--blue);
     cursor: pointer;
-}
-.css-b8ldur-Input{
-    input{
-        &:focus, &:hover{
-            border: none !important;
-            box-shadow: none !important;
-        }
-    }
 }
 
 .react-stars{
