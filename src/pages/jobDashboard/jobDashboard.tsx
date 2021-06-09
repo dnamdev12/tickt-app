@@ -71,6 +71,8 @@ const JobDashboard = ({
   const [milestoneComplete, setMilestoneComplete] = useState(false);
   const [jobComplete, setJobComplete] = useState<boolean | number>(false);
 
+  const jobCompleteCount = jobComplete && {jobComplete}{`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'};
+
   return milestoneComplete ? (
 
     // Review builder success
@@ -123,9 +125,9 @@ const JobDashboard = ({
         <img src={templateImage} alt="template-image" />
         <div className="short_info">
           <div className="content">
-            <h1 className="title">Your {jobComplete}{`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'} job is completed!</h1>
+            <h1 className="title">Your {jobCompleteCount} job is completed!</h1>
             <span className="show_label">
-              You have completed your 7th Job using Tickt! Click here to view
+              You have completed your {jobCompleteCount} Job using Tickt! Click here to view
               your completed jobs or leave a review. You will be paid as soon as
               the builder signs off.
             </span>
