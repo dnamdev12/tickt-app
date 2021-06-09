@@ -89,11 +89,12 @@ const ChooseTimingMileStone = ({
         }
         return true;
     }
-    
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+
                     <div className="form_field">
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
@@ -101,7 +102,11 @@ const ChooseTimingMileStone = ({
                                     <button className="back" onClick={handleStepBack}></button>
                                     <span className="title">Timing</span>
                                 </div>
-                                <p className="commn_para">Choose the start and finish day of your job</p>
+                                <p className="commn_para">
+                                    {'Select a start and end date, or a due date.'}
+                                    {/* {"if you tab the back arrow, you lose the `draft`. Can we save it ?"} */}
+                                    {/* {'Choose the start and finish day of your job'} */}
+                                </p>
                             </div>
                         </div>
                     </div>

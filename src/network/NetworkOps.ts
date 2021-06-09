@@ -52,10 +52,12 @@ class NetworkOps {
                         // alert('Token Expired');
                         const res1 = await response.text();
                         const res2 = JSON.parse(res1);
+                        console.log(res2.message, 'expired------------------');
                         setShowToast(true, res2.message || 'You\'ve been logged out');
                         setTimeout(() => {
                             window.location.pathname = '/login';
                         }, 1000);
+                        return;
                     }
                 }
                 else if (response.status === 500 || response.status === 400) {

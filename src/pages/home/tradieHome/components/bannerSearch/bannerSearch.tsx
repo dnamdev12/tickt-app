@@ -14,6 +14,8 @@ import moment from 'moment';
 import { DateRange } from 'react-date-range';
 import 'react-date-range/dist/styles.css';
 import 'react-date-range/dist/theme/default.css';
+import Geocode from "react-geocode";
+
 
 import Searchicon from "../../../../../assets/images/main-search.png";
 import search from "../../../../../assets/images/ic-search.png";
@@ -23,6 +25,9 @@ import icgps from "../../../../../assets/images/ic-gps.png";
 import residential from "../../../../../assets/images/ic-residential.png";
 import close from "../../../../../assets/images/icon-close-1.png";
 
+Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
+Geocode.setLanguage("en");
+Geocode.setRegion("au");
 interface PropsType {
     history: any,
     location?: any,
@@ -32,6 +37,7 @@ interface PropsType {
     recentSearchJobData: Array<any>,
     recentLocationData: Array<any>,
     homeSearchJobData: Array<any>,
+    cleanFiltersData?: boolean,
     setTradieHomeData: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
@@ -150,34 +156,40 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [props.currentCoordinates])
 
-    const getRecentLocationData = () => {
-        // const tempLocationList: any = [
-        //     { location: { type: "Point", coordinates: [77.020180, 28.489660] } },
-        //     { location: { type: "Point", coordinates: [75.722580, 29.149240] } },
-        //     { location: { type: "Point", coordinates: [76.582573, 28.890270] } },
-        //     { location: { type: "Point", coordinates: [153.076736, -27.559219] } }
-        // ]
+    const getRecentLocationData = async () => { //cd june 9
         var recentLocationDetails: any = [];
-        // tempLocationList?.map((item: any, index: number) => {
-        props.recentLocationData?.map((item: any, index: number) => {
-            var latlng = new google.maps.LatLng(item.location.coordinates[1], item.location.coordinates[0]);
-            var geocoder = new google.maps.Geocoder();
-            geocoder.geocode({ location: latlng }, (results, status) => {
-                if (status == google.maps.GeocoderStatus.OK) {
-                    const formatedCityText = JSON.parse(JSON.stringify(results[0]));
-                    console.log(index, "index");
-                    const cityText = formatedCityText?.formatted_address.includes(',') ? formatedCityText?.formatted_address.split(',') : formatedCityText?.formatted_address.split('-');
-                    const newData = {
-                        mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-                        secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-                    }
-                    recentLocationDetails[index] = { formatted_address: formatedCityText?.formatted_address, location: { coordinates: item?.location?.coordinates }, allText: newData };
-                    if (recentLocationDetails?.length == props.recentLocationData?.length) {
-                        setRecentLocation(recentLocationDetails);
-                    }
+
+        let recentLocationData = props.recentLocationData
+        for (let index = 0; index < recentLocationData.length; index++) {
+            let item = recentLocationData[index];
+            try {
+                let lat = item.location.coordinates[1];
+                let long = item.location.coordinates[0];
+                let response = await Geocode.fromLatLng(lat, long);
+                let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
+                let cityText: any = null;
+                if (formatedCityText?.formatted_address.includes(',')) {
+                    cityText = formatedCityText?.formatted_address.split(',')
+                } else {
+                    cityText = formatedCityText?.formatted_address.split('-');
                 }
-            });
-        })
+                const newData = {
+                    mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
+                    secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
+                }
+                recentLocationDetails[index] = {
+                    formatted_address: formatedCityText?.formatted_address,
+                    location: { coordinates: item?.location?.coordinates },
+                    allText: newData
+                };
+
+                if (recentLocationDetails?.length === props.recentLocationData?.length) {
+                    setRecentLocation(recentLocationDetails);
+                }
+            } catch (err) {
+                console.log({ err });
+            }
+        }
     }
 
     useEffect(() => {
@@ -241,30 +253,28 @@ const BannerSearch = (props: PropsType) => {
 
     const recentJobSearches = () => {
         return (
+            props.recentSearchJobData?.length > 0 &&
             <div className="custom_autosuggestion" id="recent-job-search-div">
-                {props.recentSearchJobData?.length > 0 &&
-                    <React.Fragment>
-                        <span className="sub_title">Recent searches</span>
-                        <div className="flex_row recent_search">
-                            {props.recentSearchJobData?.map((item: any) => {
-                                return (
-                                    <div className="flex_col_sm_3" key={item._id}>
-                                        <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
-                                            <figure className="ico">
-                                                <img src={item?.image || residential} alt="icon" />
-                                            </figure>
-                                            <div className="f_column">
-                                                <span>{item.name}</span>
-                                                <span className="name">{item.trade_name}</span>
-                                            </div>
-                                            <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
-                                                <img src={close} alt="remove" />
-                                            </span>
-                                        </div>
-                                    </div>)
-                            })}
-                        </div>
-                    </React.Fragment>}
+                <span className="sub_title">Recent searches</span>
+                <div className="flex_row recent_search">
+                    {props.recentSearchJobData?.slice(0, 4)?.map((item: any) => {
+                        return (
+                            <div className="flex_col_sm_3" key={item.recentSearchId}>
+                                <div className="card ico_txt_wrap" onClick={() => searchedJobClicked(item, 'isRecentSearchesClicked')}>
+                                    <figure className="ico">
+                                        <img src={item?.image || residential} alt="icon" />
+                                    </figure>
+                                    <div className="f_column">
+                                        <span>{item.name}</span>
+                                        <span className="name">{item.trade_name}</span>
+                                    </div>
+                                    <span className="remove_card" onClick={(event) => cleanRecentSearch(event, item.recentSearchId)}>
+                                        <img src={close} alt="remove" />
+                                    </span>
+                                </div>
+                            </div>)
+                    })}
+                </div>
             </div>
         )
     }
@@ -413,12 +423,15 @@ const BannerSearch = (props: PropsType) => {
                 page: stateData.page,
                 isFiltered: false,
                 tradeId: newSearchData?.tradeId ? newSearchData?.tradeId : stateData?.tradeId,
-                location: stateData?.location,
+                ...(stateData.isMapLocationSelected && { location: stateData?.location }),
+                // location: stateData?.location,
                 specializationId: newSearchData?.specializationId ? newSearchData?.specializationId : stateData?.specializationId,
                 ...(stateData?.from_date && { from_date: stateData?.from_date }),
                 ...(stateData?.to_date && { to_date: stateData?.to_date })
             }
-            props.postHomeSearchData(data);
+            if (props?.location?.pathname === '/search-job-results') {
+                props.postHomeSearchData(data);
+            }
             const newData = {
                 ...data,
                 lat: stateData.location.coordinates[1],
@@ -441,7 +454,7 @@ const BannerSearch = (props: PropsType) => {
                 props.history.push(newUrl);
             } else {
                 props.history.replace(newUrl);
-                if (props?.cleanFiltersHandler) {
+                if (!props.cleanFiltersData && props?.cleanFiltersHandler) {
                     props?.cleanFiltersHandler(true);
                 }
             }
@@ -456,14 +469,15 @@ const BannerSearch = (props: PropsType) => {
                     <img src={Location} alt="location" />
                 </span>
                 {stateData?.selectedMapLocation && inputFocus2 && <span className="detect_icon" >
-                    <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '' }))} />
+                    <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '', isMapLocationSelected: false }))} />
                 </span>}
                 {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
             </div>
-            {suggestions?.length > 0 && stateData?.selectedMapLocation.length >= 3 && inputFocus2 && <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+            {suggestions?.length > 0 && stateData?.selectedMapLocation.length >= 3 && inputFocus2 ? <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                 <div className="flex_row recent_search auto_loc">
                     <div className="flex_col_sm_4">
                         {loading && <div>Loading...</div>}
+
                         {suggestions.map((suggestion: any) => {
                             const className = 'autosuggestion_icon card loc name';
                             const style = suggestion.active
@@ -484,7 +498,16 @@ const BannerSearch = (props: PropsType) => {
                         })}
                     </div>
                 </div>
-            </div>}
+            </div> : !loading && stateData?.selectedMapLocation.length >= 3 && inputFocus2 && suggestions?.length === 0 ? (
+                <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                    <div className="flex_row recent_search auto_loc">
+                        <div className="flex_col_sm_4">
+                            <div className="loc_suggestions">
+                                {'No Result Found.'}
+                            </div>
+                        </div>
+                    </div>
+                </div>) : null}
         </React.Fragment>
     )
 

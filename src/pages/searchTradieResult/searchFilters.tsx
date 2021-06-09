@@ -32,6 +32,8 @@ const SearchFilter = (props: any) => {
         page: 1,
     });
 
+    const [filterEnable, setFilterEnable] = useState(false);
+
     const [prevLocal, setPrevLocal] = useState(null);
 
     const [sortByPrice, setSortByPrice] = useState<any>({
@@ -54,7 +56,7 @@ const SearchFilter = (props: any) => {
         sortBySorting: false,
         sortBy: 0,
     })
-
+    console.log({ sortByFilter, sortBySorting, sortByPrice })
     useEffect(() => {
         props.getJobTypeList();
         props.callTradeList();
@@ -69,6 +71,7 @@ const SearchFilter = (props: any) => {
                 specializationId: props.localInfo.specializationId
             }));
         }
+        console.log({ props })
     }, [props])
 
     const sortByPriceClick = (event: any) => {
@@ -118,6 +121,12 @@ const SearchFilter = (props: any) => {
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: num }));
         sortBySortingClose();
         updateOnChange(num);
+    }
+
+    const setSameOnClick = () => {
+        setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
+        sortBySortingClose();
+        updateOnChange();
     }
 
     const filterChangeHandler = (id: any, name: string) => {
@@ -176,9 +185,9 @@ const SearchFilter = (props: any) => {
             {/* specializationId
             tradeId */}
             <li>
-                <a className={checkIfActive() ? 'active' : ''} onClick={sortByFilterClick}>
+                <a className={filterEnable ? 'active' : ''} onClick={sortByFilterClick}>
                     <img
-                        src={checkIfActive() ? filterSelected : filterUnselected}
+                        src={filterEnable ? filterSelected : filterUnselected}
                         alt="filter" />
                     {'Filter'}
                 </a>
@@ -204,86 +213,99 @@ const SearchFilter = (props: any) => {
         }
         updateOnChange();
         sortByFilterClose();
+        setFilterEnable(true);
     }
 
     const updateOnChange = (sort?: any) => {
         let local_info: any = props.localInfo;
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
         const { specializationId, tradeId } = sortByFilter;
-        if (specializationId?.length) {
-            let filteredItem: any = []
-            // let name = specializationList[0].name;
-            if (specializationList?.length) {
-                filteredItem = specializationList.filter((item: any) => {
-                    if (specializationId.includes(item._id)) {
-                        return item;
-                    }
-                });
-            }
-            let name = filteredItem[0].name;
-
-            let data: any = {
-                page: 1,
-                isFiltered: true,
-                sortBy: sort ? sort : 1,
-                tradeId: Array.isArray(tradeId) ? tradeId : [tradeId],
-                specializationId: specializationId,
-            }
-
-            let get_position: any = localStorage.getItem('position');
-            if (sort === 2) {
-                let item_coord:any = local_info?.location?.coordinates?.length ? JSON.parse(get_position).reverse() : local_info?.location?.coordinates;
-                if(item_coord?.length){
-                    data['location'] = {
-                        "coordinates": item_coord,
-                    }
+        console.log({ specializationId })
+        // if (specializationId?.length) {
+        let filteredItem: any = []
+        // let name = specializationList[0].name;
+        if (specializationList?.length) {
+            filteredItem = specializationList.filter((item: any) => {
+                if (specializationId.includes(item._id)) {
+                    return item;
                 }
-            } else {
-                if (local_info?.location) {
-                    data['location'] = local_info?.location;
-                }
-                delete data.location;
-            }
-
-            if (local_info?.from_date) {
-                data['from_date'] = local_info?.from_date;
-            }
-
-            if (local_info?.to_date) {
-                data['to_date'] = local_info?.to_date;
-            }
-
-            console.log({
-                data,
-                filteredItem,
-                name: name,
-                count: specializationId?.length,
-                tradeId: data.tradeId,
-                specializationId: data.specializationId,
-                sortBy: data.sortBy,
-                to_date: local_info?.to_date,
-                from_date: local_info?.from_date
-            })
-            
-            props.postHomeSearchData(data)
-            props.getTitleInfo({
-                name: name,
-                count: specializationId?.length,
-                tradeId: data.tradeId,
-                specializationId: data.specializationId,
-                sortBy: data.sortBy,
-                to_date: local_info?.to_date,
-                from_date: local_info?.from_date,
-                doingLocalChanges:false
-            })
-            // props.updateSearchName(filteredItem);
+            });
         }
+        let name = '';
+
+        if (Array.isArray(filteredItem) && filteredItem?.length && filteredItem[0].name) {
+            name = filteredItem[0].name;
+        }
+
+        let data: any = {
+            page: 1,
+            isFiltered: true
+        }
+
+        if (sort) {
+            data['sortBy'] = sort;
+        }
+
+        if ((Array.isArray(tradeId) && tradeId?.length) || (!Array.isArray(tradeId) && tradeId?.length)) {
+            data['tradeId'] = Array.isArray(tradeId) ? tradeId : [tradeId]
+        }
+
+        if (Array.isArray(specializationId) && specializationId?.length) {
+            data['specializationId'] = specializationId;
+        }
+
+        let get_position: any = localStorage.getItem('position');
+        if (sort === 2) {
+            let item_coord: any = local_info?.location?.coordinates?.length ? JSON.parse(get_position).reverse() : local_info?.location?.coordinates;
+            if (item_coord?.length) {
+                data['location'] = {
+                    "coordinates": item_coord,
+                }
+            }
+        } else {
+            if (local_info?.location) {
+                data['location'] = local_info?.location;
+            }
+            delete data.location;
+        }
+
+        if (local_info?.from_date) {
+            data['from_date'] = local_info?.from_date;
+        }
+
+        if (local_info?.to_date) {
+            data['to_date'] = local_info?.to_date;
+        }
+
+        props.postHomeSearchData(data)
+        props.getTitleInfo({
+            name: name,
+            count: specializationId?.length,
+            tradeId: data.tradeId,
+            specializationId: data.specializationId,
+            sortBy: data.sortBy,
+            to_date: local_info?.to_date,
+            from_date: local_info?.from_date,
+            doingLocalChanges: false
+        })
     }
 
     const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
     let checkIfAllSelected = false;
     if (specializationList) {
         checkIfAllSelected = sortByFilter.specializationId?.length === specializationList?.length;
+    }
+
+    const sortOnChange = (num: number) => {
+        if (sortBySorting.sortBy !== num) {
+            sortByButtonClicked(num)
+        }
+    }
+
+    const sortOnClick = (num: number) => {
+        if (sortBySorting.sortBy == num) {
+            setSameOnClick();
+        }
     }
 
     return (
@@ -349,10 +371,18 @@ const SearchFilter = (props: any) => {
                                     <span className="xs_sub_title">Specialisation</span>
                                 </div>
                                 <div className="tags_wrap">
+                                    {console.log({
+                                        specializationList,
+                                        allSpecializationClicked: sortByFilter.allSpecializationClicked,
+                                        specializationId:sortByFilter.specializationId,
+                                        sortByFilter,
+                                        checkIfAllSelected
+                                    })}
                                     <ul>
                                         {specializationList?.length > 0 &&
                                             <li
-                                                className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                                className={checkIfAllSelected || sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                                // className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
                                                 onClick={() => {
                                                     let items: any = props.tradeListData.find((dt: any) => dt._id == sortByFilter.tradeId);
                                                     if (items) {
@@ -363,11 +393,15 @@ const SearchFilter = (props: any) => {
                                             </li>}
                                         {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
                                             // let active = sortByFilter.specializationId?.indexOf(_id) >= 0;
-                                            let active = sortByFilter.specializationId.includes(_id);
+                                            let active = false;
+                                            if(specializationList?.length !== sortByFilter.specializationId?.length){
+                                                active = sortByFilter.specializationId.includes(_id)
+                                            }
                                             return (
                                                 <li
                                                     key={_id}
-                                                    className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                                    className={active ? 'selected' : ''}
+                                                    // className={active && !sortByFilter.allSpecializationClicked ? 'selected' : ''}
                                                     onClick={() => {
                                                         if (checkIfAllSelected) {
                                                             let sort_by_spec: any = sortByFilter;
@@ -420,7 +454,8 @@ const SearchFilter = (props: any) => {
                             id="highestRated"
                             value="Highest rated"
                             checked={sortBySorting.sortBy === 1}
-                            onChange={() => sortByButtonClicked(1)}
+                            onClick={() => { sortOnClick(1) }}
+                            onChange={() => { sortOnChange(1) }}
                         />
                         <label htmlFor="highestRated">Highest rated</label>
                     </div>
@@ -431,7 +466,8 @@ const SearchFilter = (props: any) => {
                             id="closest"
                             value="Closest to me"
                             checked={sortBySorting.sortBy === 2}
-                            onChange={() => sortByButtonClicked(2)}
+                            onClick={() => { sortOnClick(2) }}
+                            onChange={() => { sortOnChange(2) }}
                         />
                         <label htmlFor="closest">Closest to me</label>
                     </div>
@@ -442,9 +478,12 @@ const SearchFilter = (props: any) => {
                             id="mostJob"
                             value="Most jobs completed"
                             checked={sortBySorting.sortBy === 3}
-                            onChange={() => sortByButtonClicked(3)}
+                            onClick={() => { sortOnClick(3) }}
+                            onChange={() => { sortOnChange(3) }}
                         />
-                        <label htmlFor="mostJob">Most jobs completed</label>
+                        <label htmlFor="mostJob">
+                            {'Most jobs completed'}
+                        </label>
                     </div>
                 </Menu>}
         </div >

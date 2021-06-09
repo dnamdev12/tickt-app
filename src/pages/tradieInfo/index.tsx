@@ -30,6 +30,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 import { portfolio, portfolioModal } from '../builderInfo/builderInfo'
+import { setShowToast } from '../../redux/common/actions';
 
 interface Props {
     tradieInfo: any,
@@ -514,17 +515,18 @@ class TradieInfo extends Component<Props, State> {
                                         <figure className="no_data_img">
                                             <img src={noData} alt="data not found" />
                                         </figure>
-                                        <span>Data not found</span>
+                                        <span>No Data Found</span>
                                     </div>}
                             </div>
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {
-                                    this.setState((prevData: any) => ({
-                                        reviewsData: {
-                                            ...prevData.reviewsData, showAllReviewsClicked: true
-                                        }
-                                    }))
+                                        setShowToast(true,'Under development');
+                                    // this.setState((prevData: any) => ({
+                                    //     reviewsData: {
+                                    //         ...prevData.reviewsData, showAllReviewsClicked: true
+                                    //     }
+                                    // }))
                                 }}>
                                 {`View all ${profileData?.reviewData?.length} reviews`}</button>
                         </div>

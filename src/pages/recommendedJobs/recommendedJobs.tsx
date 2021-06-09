@@ -26,6 +26,7 @@ const RecommendedJobs = (props: any) => {
                             <figure className="no_img">
                                 <img src={noData} alt="data not found" />
                             </figure>
+                            <span>Data not found</span>
                         </div>}
                     </div>
                 </div>

@@ -38,23 +38,31 @@ const TradieSearchJobResult = (props: any) => {
                 page: 1,
                 isFiltered: false,
                 jobTypes: queryParamsData.jobTypes,
-                location: {
-                    coordinates: [queryParamsData.defaultLong, queryParamsData.defaultLat]
-                }
+                // location: {
+                //     coordinates: [queryParamsData.defaultLong, queryParamsData.defaultLat]
+                // }
             }
             props.postHomeSearchData(data);
-        } else if (!queryParamsData.isFiltered) {
+        } else {
             const data: any = {
                 page: 1,
-                isFiltered: queryParamsData.isFiltered,
+                ...(queryParamsData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
                 ...(queryParamsData.tradeId?.length && { tradeId: queryParamsData.tradeId }),
                 ...(queryParamsData.jobTypes?.length && { jobTypes: queryParamsData.jobTypes }),
                 ...(queryParamsData.specializationId?.length && { specializationId: queryParamsData.specializationId }),
                 ...(queryParamsData.from_date && { from_date: queryParamsData.from_date }),
                 ...(queryParamsData.to_date && { to_date: queryParamsData.to_date }),
-                location: {
-                    coordinates: [queryParamsData.long ? queryParamsData.long : queryParamsData.defaultLong, queryParamsData.lat ? queryParamsData.lat : queryParamsData.defaultLat]
-                }
+                ...(queryParamsData.max_budget && { pay_type: queryParamsData.pay_type }),
+                ...(queryParamsData.max_budget && { max_budget: queryParamsData.max_budget }),
+                ...(queryParamsData.sortBy && { sortBy: queryParamsData.sortBy }),
+                ...((queryParamsData.address || queryParamsData.sortBy === 2) && {
+                    location: {
+                        coordinates: [queryParamsData.long ? queryParamsData.long : queryParamsData.defaultLong, queryParamsData.lat ? queryParamsData.lat : queryParamsData.defaultLat]
+                    }
+                }),
+                // location: {
+                //     coordinates: [queryParamsData.long ? queryParamsData.long : queryParamsData.defaultLong, queryParamsData.lat ? queryParamsData.lat : queryParamsData.defaultLat]
+                // }
             }
             console.log(data, "data tradie search result");
             props.postHomeSearchData(data);
@@ -85,8 +93,7 @@ const TradieSearchJobResult = (props: any) => {
             searchJob: params.get('searchJob'),
             max_budget: Number(params.get('max_budget')),
             pay_type: params.get('pay_type'),
-            sortBy: params.get('sortBy')
-            //Array.isArray(params.get('jobTypes'))
+            sortBy: Number(params.get('sortBy'))
         }
         setParamsData(queryParamsData);
         return queryParamsData;
@@ -113,23 +120,28 @@ const TradieSearchJobResult = (props: any) => {
     }
 
     const showBudgetFilterResults = (allFiltersData: any) => {
-        if (allFiltersData == 'searchedBySearchBannerClicked') {
-            return;
-        }
         const newParamsData = getQueryParamsData();
         console.log(allFiltersData, 'allFiltersData', newParamsData);
         var data = {
             ...newParamsData,
             jobResults: null,
-            // isFiltered: true,
-            ...(allFiltersData.sortBy ? { isFiltered: true } : { isFiltered: false }),
+            ...(allFiltersData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
             ...(allFiltersData.tradeId?.length && { tradeId: allFiltersData.tradeId }),
             ...(allFiltersData.jobTypes?.length && { jobTypes: allFiltersData.jobTypes }),
             ...(allFiltersData.specializationId?.length && { specializationId: allFiltersData.specializationId }),
-            ...(allFiltersData.pay_type && { pay_type: allFiltersData.pay_type }),
-            ...(allFiltersData.max_budget && { max_budget: allFiltersData.max_budget }),
-            ...(allFiltersData.sortBy && { sortBy: allFiltersData.sortBy })
+            ...(allFiltersData.max_budget > 0 && { pay_type: allFiltersData.pay_type }),
+            ...(allFiltersData.max_budget > 0 && { max_budget: allFiltersData.max_budget }),
+            ...([1, 2, 3].includes(allFiltersData.sortBy) && { sortBy: allFiltersData.sortBy })
         }
+
+        if (allFiltersData.sortBy === 400) {
+            delete data.sortBy;
+        }
+
+        // if (!allFiltersData.max_budget) {
+        //     delete data.max_budget;
+        // }
+
         // if (!newParamsData.searchJob && allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length && allFiltersData?.jobTypes?.length) {
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length && allFiltersData?.jobTypes?.length) {
             const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
@@ -142,6 +154,33 @@ const TradieSearchJobResult = (props: any) => {
             }
             console.log(specializationName, "specializationName");
         }
+
+        const newObjData = {
+            ...(data.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
+            ...(data.sortBy && { sortBy: data.sortBy }),
+            ...(data.page ? { page: data.page } : { page: searchResultData.page }),
+            ...(data.tradeId && { tradeId: data.tradeId }),
+            ...(data.specializationId && { specializationId: data.specializationId }),
+            ...(data.from_date && { from_date: data.from_date }),
+            ...(data.to_date && { to_date: data.to_date }),
+            ...(data.jobTypes && { jobTypes: data.jobTypes }),
+            ...(data.max_budget > 0 && { pay_type: data.pay_type }),
+            ...(data.max_budget > 0 && { max_budget: data.max_budget }),
+            ...((data.address || allFiltersData.sortBy === 2) && {
+                location: {
+                    coordinates: [data.long ? data.long : data.defaultLong, data.lat ? data.lat : data.defaultLat]
+                }
+            }),
+            // location: {
+            //     coordinates: [newParamsData.long ? newParamsData.long : newParamsData.defaultLong, newParamsData.lat ? newParamsData.lat : newParamsData.defaultLat]
+            // },
+            // ...(allFiltersData.tradeId?.length && { tradeId: allFiltersData.tradeId }),
+            // ...(allFiltersData.jobTypes?.length && { jobTypes: allFiltersData.jobTypes }),
+            // ...(allFiltersData.specializationId?.length && { specializationId: allFiltersData.specializationId }),
+            // ...(allFiltersData.pay_type && { pay_type: allFiltersData.pay_type }),
+            // ...(allFiltersData.max_budget && { max_budget: allFiltersData.max_budget }),
+            // ...(allFiltersData.sortBy && { sortBy: allFiltersData.sortBy })
+        }
         Object.keys(data).forEach(key => (data[key] === undefined || data[key] === null) && delete data[key]);
         var url = 'search-job-results?';
         for (let [key, value] of Object.entries(data)) {
@@ -149,25 +188,7 @@ const TradieSearchJobResult = (props: any) => {
             url += `${key}=${value}&`
         }
         const newUrl = url.slice(0, url.length - 1);
-        const newObjData = {
-            // isFiltered: true,
-            ...(allFiltersData.sortBy ? { isFiltered: true } : { isFiltered: false }),
-            ...(newParamsData.page ? { page: newParamsData.page } : { page: searchResultData.page }),
-            ...(newParamsData.tradeId && { tradeId: newParamsData.tradeId }),
-            ...(newParamsData.specializationId && { specializationId: newParamsData.specializationId }),
-            ...(newParamsData.from_date && { from_date: newParamsData.from_date }),
-            ...(newParamsData.to_date && { to_date: newParamsData.to_date }),
-            ...(newParamsData.jobTypes && { jobTypes: newParamsData.jobTypes }),
-            location: {
-                coordinates: [newParamsData.long ? newParamsData.long : newParamsData.defaultLong, newParamsData.lat ? newParamsData.lat : newParamsData.defaultLat]
-            },
-            ...(allFiltersData.tradeId?.length && { jobTypes: allFiltersData.tradeId }),
-            ...(allFiltersData.jobTypes?.length && { jobTypes: allFiltersData.jobTypes }),
-            ...(allFiltersData.specializationId?.length && { specializationId: allFiltersData.specializationId }),
-            ...(allFiltersData.pay_type && { pay_type: allFiltersData.pay_type }),
-            ...(allFiltersData.max_budget && { max_budget: allFiltersData.max_budget }),
-            ...(allFiltersData.sortBy && { sortBy: allFiltersData.sortBy })
-        }
+
         console.log(newUrl, "newUrl", data, "data", newObjData, "newObjData", newParamsData);
         props.postHomeSearchData(newObjData);
         props.history.replace(newUrl);
@@ -185,7 +206,11 @@ const TradieSearchJobResult = (props: any) => {
     return (
         <div className="app_wrapper" >
             <div className="top_search">
-                <BannerSearch {...props} paramsData={paramsData} cleanFiltersHandler={cleanFiltersHandler} />
+                <BannerSearch
+                    {...props} paramsData={paramsData}
+                    cleanFiltersHandler={cleanFiltersHandler}
+                    cleanFiltersData={searchResultData.cleanFiltersData}
+                />
             </div>
             <div className="search_result">
                 <div className="section_wrapper">
@@ -207,9 +232,10 @@ const TradieSearchJobResult = (props: any) => {
                                     </span>
                                     <SearchResultFilters
                                         showBudgetFilterResults={showBudgetFilterResults}
-                                        paramsData={paramsData}
+                                        // paramsData={paramsData}
                                         cleanFiltersData={searchResultData.cleanFiltersData}
                                         cleanFiltersHandler={cleanFiltersHandler}
+                                        history={props?.history}
                                     />
                                 </div>
                                 {renderJobsData()?.length > 0 && !mapData.showMap && <div className="flex_col_sm_4 text-right">
@@ -224,21 +250,22 @@ const TradieSearchJobResult = (props: any) => {
                             {mapData.showMap ? <div className="card_col">
                                 {renderJobsData()?.length > 0 ?
                                     (renderJobsData()?.map((jobData: any) => {
-                                        return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
+                                        return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
                                     })) :
                                     <div className="no_record">
                                         <figure className="no_img">
                                             <img src={noData} alt="data not found" />
+                                            <span>No Data Found</span>
                                         </figure>
                                     </div>}
-                            </div> : (renderJobsData()?.length > 0 || props.isLoading)?
+                            </div> : (renderJobsData()?.length > 0 || props.isLoading) ?
                                 (renderJobsData()?.map((jobData: any) => {
-                                    return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
+                                    return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
                                 })) : <div className="no_record">
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />
                                     </figure>
-                                    <span>No Data Found!</span>
+                                    <span>No Data Found</span>
                                 </div>}
                             {<div className="map_col" style={!mapData.showMap ? { display: "none" } : {}}>
                                 <div className="map_stick">
