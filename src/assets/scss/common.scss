@@ -1906,6 +1906,14 @@ body {
         width: 100%;
       }
     }
+    &.vouch_modal{
+      textarea {
+        min-height: 154px;
+      }
+      .img_video{
+        margin: 0 21px 21px 0;
+      }
+    }
   }
   .back{
     top: 5px;
