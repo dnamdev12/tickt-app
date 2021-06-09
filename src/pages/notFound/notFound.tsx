@@ -39,10 +39,10 @@ export default function NotFound() {
         //                 </li>
         //             </ul>
         //             <div className="flex_row center_flex">
-        //                 <div className="flex_col_sm_3">
+        //                 <div className="flex_col_sm_2">
         //                     <span className="xs_sub_title mb0">Last jobs</span>
         //                 </div>
-        //                 <div className="flex_col_sm_3">
+        //                 <div className="flex_col_sm_4">
         //                     <div className="search_bar">
         //                         <input type="text" placeholder="Search" />
         //                         <span className="detect_icon_ltr">
@@ -74,12 +74,12 @@ export default function NotFound() {
         //                                 <img src={dummy} alt="job-img" />
         //                             </figure>
         //                             <div className="details">
-        //                                 <span className="inner_title">Wire up circuit box</span>
+        //                                 <span className="inner_title line-3">Wire up circuit box</span>
         //                             </div>
         //                         </div>
         //                     </div>
         //                     <div className="flex_col_sm_3">
-        //                         <span className="inner_title">John Oldman</span>
+        //                         <span className="inner_title line-3">John Oldman</span>
         //                     </div>
         //                     <div className="flex_col_sm_3">
         //                         <span className="inner_title">25.08.2020</span>
@@ -95,7 +95,7 @@ export default function NotFound() {
         //                                 <img src={dummy} alt="job-img" />
         //                             </figure>
         //                             <div className="details">
-        //                                 <span className="inner_title">Wire up circuit box</span>
+        //                                 <span className="inner_title line-3">Wire up circuit box</span>
         //                             </div>
         //                         </div>
         //                     </div>

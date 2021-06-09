@@ -94,7 +94,7 @@
 
 .center_flex{
   align-items: center;
-  @media (max-width: 812px) {
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     align-items: flex-start;
   }
 }
