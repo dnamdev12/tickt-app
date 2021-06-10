@@ -121,7 +121,10 @@ header {
         padding: 10px 14px;
         border-radius: 3px;
         color: var(--white);
-        &:hover,
+        &:hover{
+          background-color: #fdf076;
+          color: var(--blue);
+        }
         &.active {
           color: var(--blue);
           background-color: var(--yellow);
