@@ -13,6 +13,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import { renderTimeWithFormat } from '../../../utils/common';
+
 // please arrange milestone date wise.
 // milestone start date should be doffent from another can not be.
 interface Proptypes {
@@ -199,33 +201,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     //     }
     // }
 
-    const renderTimeItem = ({ fromDate, toDate }: any) => {
-
-        const default_format = 'MM-DD-YYYY';
-        if (moment(fromDate, default_format).isValid() && !moment(toDate, default_format).isValid()) {
-            return `${moment(fromDate, default_format).format('DD MMM')}`
-        }
-
-        if (moment(fromDate, default_format).isValid() && moment(toDate, default_format).isValid()) {
-            let yearEnd = moment().endOf("year").toISOString();
-            let monthEnd = moment(fromDate, default_format).endOf("month").toISOString();
-
-            let item: any = moment(toDate, default_format).diff(moment(fromDate, default_format), 'months', true);
-            let item_year: any = moment(toDate, default_format).diff(moment(fromDate, default_format), 'years', true);
-
-            let monthDiff = parseInt(item.toString());
-            let yearDiff = parseInt(item_year.toString());
-
-            if (yearDiff > 0 || moment(toDate, default_format).isAfter(yearEnd) || moment(toDate, default_format).isAfter(yearEnd)) {
-                return `${moment(fromDate, default_format).format('DD MMM YY')} - ${moment(toDate, default_format).format('DD MMM YY')}`
-            }
-            if (monthDiff > 0 || moment(toDate, default_format).isAfter(monthEnd)) {
-                return `${moment(fromDate, default_format).format('DD MMM')} - ${moment(toDate, default_format).format('DD MMM')}`
-            }
-            return `${moment(fromDate, default_format).format('DD MMM')} - ${moment(toDate, default_format).format('DD')}`
-        }
-    }
-    console.log({localMilestones})
+    const format = 'MM-DD-YYYY';
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -359,10 +335,11 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                             <span>{'Photo evidence required'}</span>
                                                                             : <span></span>}
                                                                         <span>
-                                                                            {renderTimeItem({
-                                                                                fromDate: from_date,
-                                                                                toDate: to_date
-                                                                            })}
+                                                                            {renderTimeWithFormat(
+                                                                                from_date,
+                                                                                to_date,
+                                                                                format
+                                                                            )}
                                                                         </span>
                                                                         <span>
                                                                             {recommended_hours}

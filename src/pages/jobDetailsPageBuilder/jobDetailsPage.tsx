@@ -36,6 +36,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+import { setShowToast } from '../../redux/common/actions';
 interface PropsType {
     history: any,
     location: any,
@@ -772,9 +773,10 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <span
                                                     className="name"
                                                     onClick={() => {
-                                                        if (jobDetailsData?.postedBy?.builderName) {
-                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
-                                                        }
+                                                        setShowToast(true,'Under development');
+                                                        // if (jobDetailsData?.postedBy?.builderName) {
+                                                        //     props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                                                        // }
                                                     }}>
                                                     {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
                                                 </span>

@@ -54,8 +54,9 @@ const PostNewJob = ({
   // return isEmpty(name, value);
 
   const handleChange = ({ target: { value, name } }: { target: { value: string, name: string } }) => {
-    let valueElem: any = (value).trimLeft().replace(/[^a-zA-Z|0-9 ]/g, "");
+    let valueElem: any = (value).trimLeft()
     if (name === "jobName") {
+      valueElem = valueElem.replace(/[^a-zA-Z|0-9 ]/g, "");
       valueElem = valueElem.charAt(0).toUpperCase() + valueElem.substring(1);
     }
 
@@ -123,7 +124,9 @@ const PostNewJob = ({
                   <React.Fragment>
                     <div className="relate">
                       <button className="back" onClick={() => { handleStepForward(14) }}></button>
-                      <span className="title">Post new job</span>
+                      <span className="title">
+                        {'Post new job'}
+                      </span>
                     </div>
                     <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
                   </React.Fragment>

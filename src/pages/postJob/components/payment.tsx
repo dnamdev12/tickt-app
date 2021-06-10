@@ -146,7 +146,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                   <button className="back" onClick={handleStepBack}></button>
                   <span className="title">Payment</span>
                 </div>
-                <p className="commn_para">How mach will you pay for a job</p>
+                <p className="commn_para">How much will you pay for a job</p>
               </div>
             </div>
           </div>

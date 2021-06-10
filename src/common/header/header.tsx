@@ -22,6 +22,7 @@ const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
 const Header = (props: any) => {
     let type = storageService.getItem('userType');
+
     const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -35,8 +36,10 @@ const Header = (props: any) => {
     let history = useHistory();
 
     useEffect(() => {
-        // console.log({ props }, '-->');
-    }, [props])
+        if (pathname === '/') {
+            setActiveLink('discover')
+        }
+    }, [pathname])
 
     useEffect(() => {
         if (type) {
