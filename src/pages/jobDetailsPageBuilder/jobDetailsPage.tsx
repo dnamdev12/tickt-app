@@ -508,7 +508,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_4">
                                 <span className="sub_title">Job Milestones
                                     {/* <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`} */}
-                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber} `}{`of ${jobDetailsData?.totalMilestones}`} </b>
+                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber || ''} `}{`of ${jobDetailsData?.totalMilestones || ''}`} </b>
                                 </span>
 
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
