@@ -44,7 +44,7 @@ interface PropsType {
     cleanFiltersHandler?: (data: any) => void,
     getRecentSearchList: () => void,
     getRecentLocationList: () => void,
-    refreshParams: () => void,
+    refreshParams?: () => void,
 }
 
 const BannerSearch = (props: PropsType) => {
