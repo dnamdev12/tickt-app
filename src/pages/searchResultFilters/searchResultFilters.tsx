@@ -129,16 +129,16 @@ const SearchResultFilters = (props: any) => {
             ...(sortByPrice.max_budget && { max_budget: Number(sortByPrice.max_budget) }),
             ...(item?.sortBy && { sortBy: Number(item?.sortBy) }),
         }
-        props.showBudgetFilterResults(data);
+        props.searchByFilter(data);
     }
 
     const showResultsByFilter1 = () => {
-        if (sortByFilter.jobTypes.length && sortByFilter.specializationId.length && sortByFilter.tradeId.length) {
+        if (sortByFilter.jobTypes.length || sortByFilter.tradeId.length) {
             sortByFilterClose();
             setSortByFilter((prevData: any) => ({ ...prevData, showResultsButtonClicked: true }));
             showResultsByAllFilter();
         } else {
-            setShowToast(true, "Please select all required fields");
+            setShowToast(true, "Please select atleast one field");
         }
     }
 

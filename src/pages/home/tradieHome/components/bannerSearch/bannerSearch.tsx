@@ -445,7 +445,11 @@ const BannerSearch = (props: PropsType) => {
                 jobResults: null
             }
             delete newData.location;
-            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null) && delete newData[key]);
+            if (newData.searchJob) {
+                delete newData.heading;
+                delete newData.jobResults;
+            }
+            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0' ) && delete newData[key]);
             var url = 'search-job-results?';
             for (let [key, value] of Object.entries(newData)) {
                 url += `${key}=${value}&`
