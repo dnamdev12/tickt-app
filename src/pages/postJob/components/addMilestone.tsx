@@ -250,8 +250,8 @@ export default class AddMilestone extends Component<Props, State> {
                             <DialogTitle id="alert-dialog-title">
                                 {'If you click the back arrow, you lose the data, do you want to save it?'}
                                 {/* {"if you tab the back arrow, you lose the `draft`."} */}
-                                <br />
-                                {'Can we save it ?'}
+                                {/* <br />
+                                {'Can we save it ?'} */}
                                 {/* {"Unsaved data will be lost. Do you want to continue?"} */}
                             </DialogTitle>
                             <DialogActions>
