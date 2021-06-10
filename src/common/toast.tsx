@@ -10,11 +10,12 @@ export const TYPES = {
     info: 'info'
 }
 
-// handles the auto hinding of toast
+// handles the auto hiding of toast
 const TOAST_TIMEOUT = 3000;
 
 const Toast = (props: any) => {
     const [isOnline, setNetwork] = useState(window.navigator.onLine);
+    const [restrictNoInternetToast, setRestrictNoInternetToast] = useState(1);
 
     useEffect(() => {
         window.addEventListener("offline", handleConnectionChange);
@@ -25,12 +26,15 @@ const Toast = (props: any) => {
         };
     }, []);
 
-
-
     useEffect(() => {
-        setTimeout(() => hideToast(), TOAST_TIMEOUT)
+        setTimeout(() => hideToast(), TOAST_TIMEOUT);
     }, [props.showToast]);
 
+    useEffect(() => {
+        if (isOnline) {
+            setRestrictNoInternetToast(1);
+        }
+    }, [isOnline]);
 
     const handleConnectionChange = () => {
         const condition = navigator.onLine ? 'online' : 'offline';
@@ -59,6 +63,9 @@ const Toast = (props: any) => {
 
     const renderToast = () => {
         if (!isOnline) {
+            setTimeout(() => {
+                setRestrictNoInternetToast((prevValue: any) => prevValue.restrictNoInternetToast + 1);
+            }, 3000);
             return "Please check you internet connection";
         }
         return props.toastMessage;
@@ -72,6 +79,12 @@ const Toast = (props: any) => {
             <div className="wrapppr">
                 <p className="commn_para">{renderToast()}</p>
                 {/* <button className="fill_btn btn-effect" onClick={hideToast}>Close</button> */}
+            </div>
+        </div>
+    ) : (!isOnline && restrictNoInternetToast === 1) ? (
+        <div className={`body-message active ${props.toastType}`}>
+            <div className="wrapppr">
+                <p className="commn_para">{renderToast()}</p>
             </div>
         </div>
     ) : null;

@@ -86,7 +86,7 @@ export const getSearchParamsData = (location?: any) => {
         searchJob: params.get('searchJob'),
         max_budget: Number(params.get('max_budget')),
         pay_type: params.get('pay_type'),
-        sortBy: params.get('sortBy')
+        sortBy: Number(params.get('sortBy'))
         //Array.isArray(params.get('jobTypes'))
     }
     return queryParamsData;

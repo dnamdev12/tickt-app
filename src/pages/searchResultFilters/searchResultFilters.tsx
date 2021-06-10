@@ -129,16 +129,16 @@ const SearchResultFilters = (props: any) => {
             ...(sortByPrice.max_budget && { max_budget: Number(sortByPrice.max_budget) }),
             ...(item?.sortBy && { sortBy: Number(item?.sortBy) }),
         }
-        props.showBudgetFilterResults(data);
+        props.searchByFilter(data);
     }
 
     const showResultsByFilter1 = () => {
-        if (sortByFilter.jobTypes.length && sortByFilter.specializationId.length && sortByFilter.tradeId.length) {
+        if (sortByFilter.jobTypes.length || sortByFilter.tradeId.length) {
             sortByFilterClose();
             setSortByFilter((prevData: any) => ({ ...prevData, showResultsButtonClicked: true }));
             showResultsByAllFilter();
         } else {
-            setShowToast(true, "Please select all required fields");
+            setShowToast(true, "Please select atleast one field");
         }
     }
 
@@ -160,9 +160,12 @@ const SearchResultFilters = (props: any) => {
     }
 
     const setSameOnClick = () => {
+        const item = {
+            sortBy: 400  //sending 400 e.g, to delete sortBy from query param ==> by passing to parent component
+        }
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
         sortBySortingClose();
-        showResultsByAllFilter();
+        showResultsByAllFilter(item);
     }
 
     const sortOnClick = (num: number) => {
