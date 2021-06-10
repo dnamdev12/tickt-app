@@ -15,6 +15,7 @@ import {
     getMilestoneDetails
 } from '../../../redux/homeSearch/actions';
 import { setShowToast } from '../../../redux/common/actions';
+import { renderTime } from '../../../utils/common';
 
 interface Props {
 
@@ -129,10 +130,6 @@ const MarkMilestones = (props: any) => {
                         //     status === 0 &&
                         //     (prevMilestoneStatus === 1 ||
                         //         prevMilestoneStatus === undefined);
-                        fromDate = fromDate
-                            ? format(new Date(fromDate), 'MMM dd')
-                            : '';
-                        toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
                         const isActive = status;
                         return (
                             <li
@@ -153,12 +150,7 @@ const MarkMilestones = (props: any) => {
                                         <span>Photo evidence required</span>
                                     )}
                                     <span>
-                                        {fromDate}
-                                        {toDate &&
-                                            ` - ${fromDate.startsWith(toDate.split(' ')[0])
-                                                ? toDate.split(' ')[1]
-                                                : toDate
-                                            }`}
+                                        {renderTime(fromDate, toDate)}
                                     </span>
                                 </div>
                                 {isActive === 1 ? (
