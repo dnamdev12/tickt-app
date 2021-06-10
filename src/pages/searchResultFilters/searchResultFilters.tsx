@@ -46,8 +46,14 @@ const SearchResultFilters = (props: any) => {
         props.callTradeList();
         const paramsList = getSearchParamsData(props?.history?.location);
         if (paramsList) {
-            if (paramsList.specializationId?.length && paramsList.tradeId?.length && paramsList.jobTypes?.length) {
-                setSortByFilter((prevData: any) => ({ ...prevData, tradeId: paramsList.tradeId, jobTypes: paramsList.jobTypes, specializationId: paramsList.specializationId, showResultsButtonClicked: true }));
+            if (paramsList.tradeId?.length || paramsList.jobTypes?.length) {
+                setSortByFilter((prevData: any) => ({
+                    ...prevData,
+                    tradeId: paramsList.tradeId ? paramsList.tradeId : [],
+                    jobTypes: paramsList.jobTypes ? paramsList.jobTypes : [],
+                    specializationId: paramsList.specializationId ? paramsList.specializationId: [],
+                    showResultsButtonClicked: true
+                }));
             }
             if (paramsList.max_budget && paramsList.pay_type) {
                 setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsList.pay_type, max_budget: paramsList.max_budget }));

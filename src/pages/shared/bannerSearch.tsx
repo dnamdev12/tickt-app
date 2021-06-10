@@ -479,6 +479,8 @@ const BannerSearch = (props: PropsType) => {
                     setSelectedAddress({ lat, long });
                     setAddressText(address);
                     setInputFocus2(true);
+                    setInputFocus1(false);
+                    setInputFocus3(false);
                     setCurrentLocations(true);
                 }
             } else {
@@ -549,7 +551,11 @@ const BannerSearch = (props: PropsType) => {
                                 }}
                                 autoComplete="none"
                                 // readOnly={props?.selectedItem ? true : false}
-                                onFocus={() => { setInputFocus1(true) }}
+                                onFocus={() => {
+                                    setInputFocus1(true);
+                                    setInputFocus2(false);
+                                    setInputFocus3(false);
+                                }}
                             />
                             <div className="border_eff"></div>
                             <span className="detect_icon_ltr">
@@ -590,7 +596,9 @@ const BannerSearch = (props: PropsType) => {
                                     className={'line-1'}
                                     onChange={(e: any) => { setAddressText((e.target.value).trimLeft()) }}
                                     onFocus={() => {
-                                        setInputFocus2(true)
+                                        setInputFocus2(true);
+                                        setInputFocus1(false);
+                                        setInputFocus3(false);
                                     }}
                                 />
                                 <span className="detect_icon_ltr">
@@ -635,7 +643,11 @@ const BannerSearch = (props: PropsType) => {
                                                     id="location-input-tag"
                                                     ref={locationRef}
                                                     autoComplete="none"
-                                                    onFocus={() => { setInputFocus2(true) }}
+                                                    onFocus={() => {
+                                                        setInputFocus2(true);
+                                                        setInputFocus1(false);
+                                                        setInputFocus3(false);
+                                                    }}
                                                 />
                                                 <span className="detect_icon_ltr">
                                                     <img src={Location} alt="location" />
@@ -748,7 +760,11 @@ const BannerSearch = (props: PropsType) => {
                                     id="calender-input"
                                     placeholder={checkPlaceholder(calenderRange1)}
                                     autoComplete="none"
-                                    onFocus={() => setInputFocus3(true)}
+                                    onFocus={() => {
+                                        setInputFocus3(true);
+                                        setInputFocus1(false);
+                                        setInputFocus2(false);
+                                    }}
                                 />
                                 {calenderRange1?.startDate && inputFocus3 &&
                                     <span className="detect_icon" >
