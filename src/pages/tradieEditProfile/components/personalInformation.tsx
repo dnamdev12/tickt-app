@@ -30,7 +30,6 @@ import eyeIconClose from '../../../assets/images/icon-eye-closed.png';
 import eyeIconOpen from '../../../assets/images/icon-eye-open.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { spawn } from 'typed-redux-saga/dist';
 
 interface Props {
     tradieProfileViewData: any,
