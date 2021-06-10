@@ -234,7 +234,7 @@ export default class EditMilestone extends Component<Props, State> {
         let { milestone_name, isPhotoevidence, recommended_hours, from_date, to_date, errors } = this.state;
         
         let from_date_format = from_date?.length && from_date !== 'Invalid date' ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
-        let to_date_format = to_date?.length && to_date !== 'Invalid date' ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
+        let to_date_format = to_date?.length && to_date !== 'Invalid date' ? moment(to_date, 'MM-DD-YYYY').format('MMM DD') : '';
         let check_errors = this.checkErrors();
 
         return (
@@ -292,7 +292,7 @@ export default class EditMilestone extends Component<Props, State> {
                                             className="fill_btn fill_grey_btn choose_btn">
                                             {!to_date_format.length && from_date_format.length
                                                 ? `${from_date_format}` : to_date_format.length
-                                                    ? `${from_date_format}-${to_date_format}`
+                                                    ? `${from_date_format} - ${to_date_format}`
                                                     : 'Choose'}
                                         </button>
                                     </div>
