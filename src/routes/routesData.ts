@@ -16,7 +16,6 @@ import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
 import JobDashboard from '../pages/jobDashboard';
 import TradieListData from '../pages/shared/tradieListData';
 import SearchResultTradie from '../pages/searchTradieResult/index';
-// import BuilderProfile from '../pages/builderProfile/builderProfile';
 import builderJobDasboard from '../pages/builderJobDasboard/index';
 import TradieDetails from '../common/tradieDetails';
 import BuilderInfo from '../pages/builderInfo/index';

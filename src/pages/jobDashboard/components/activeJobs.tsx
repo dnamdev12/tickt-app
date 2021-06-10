@@ -120,6 +120,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => 
             <figure className="no_img">
               <img src={noDataFound} alt="data not found" />
             </figure>
+            <span>No Data Found</span>
           </div>
         )}
       </div>

@@ -133,6 +133,7 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
                             <figure className="no_img">
                                 <img src={noDataFound} alt="data not found" />
                             </figure>
+                            <span>{'No Data Found'}</span>
                         </div>
                     )}
             </div>

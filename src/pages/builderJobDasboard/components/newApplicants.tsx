@@ -5,6 +5,7 @@ import { withRouter } from 'react-router';
 import noDataFound from '../../../assets/images/no-search-data.png';
 import noData from '../../../assets/images/no-search-data.png';
 import moment from 'moment';
+import { renderTime } from '../../../utils/common';
 interface Applicant {
     amount: any,
     builderId: any,
@@ -39,31 +40,6 @@ const NewApplicants = (props: any) => {
         if (jobId?.length) {
             let urlEncode: any = window.btoa(`?jobId=${jobId}`)
             props_.history.push(`/job-detail?${urlEncode}`);
-        }
-    }
-
-    const renderTime = ({ fromDate, toDate }: any) => {
-        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
-            return `${moment(fromDate).format('DD MMM')}`
-        }
-
-        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-            let yearEnd = moment().endOf("year").toISOString();
-            let monthEnd = moment(fromDate).endOf("month").toISOString();
-        
-            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
-            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
-        
-            let monthDiff = parseInt(item.toString());
-            let yearDiff = parseInt(item_year.toString());
-        
-            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
-                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
-            }
-            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
-                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
-            }
-            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
         }
     }
 
@@ -118,7 +94,7 @@ const NewApplicants = (props: any) => {
                                             </span>
                                         </li>
                                         <li className="icon calendar">
-                                            {renderTime({ fromDate, toDate })}
+                                            {renderTime(fromDate, toDate)}
                                         </li>
                                         <li className="">
                                             <span>
@@ -148,6 +124,7 @@ const NewApplicants = (props: any) => {
                             <figure className="no_img">
                                 <img src={noData} alt="data not found" />
                             </figure>
+                            <span>{'No Data Found'}</span>
                         </div>
                     )}
             </div>

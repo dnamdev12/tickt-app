@@ -8,6 +8,8 @@ import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 
+
+
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 import { stat } from 'node:fs';
@@ -117,7 +119,9 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
                                     <button className="back" onClick={handleStepBack}></button>
                                     <span className="title">Timing</span>
                                 </div>
-                                <p className="commn_para">Choose the start and finish day of your job</p>
+                                <p className="commn_para">
+                                    {'Choose the start and finish day of your job'}
+                                </p>
                             </div>
                         </div>
                     </div>

@@ -134,7 +134,7 @@ export default class AddMilestone extends Component<Props, State> {
     }
 
     handleChange = (name: string, value: any) => {
-        
+
         let error_clone: any = this.state.errors;
 
         if (name === "milestone_name") {
@@ -202,7 +202,7 @@ export default class AddMilestone extends Component<Props, State> {
         const { milestones, handleStepMileStone, newMileStoneScreen, removeMilestoneByIndex } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, errors } = this.state;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
-        
+
         if (is_remove) {
             removeMilestoneByIndex(milestone_index);
             return
@@ -235,7 +235,7 @@ export default class AddMilestone extends Component<Props, State> {
                 to_date_format = moment(date_to_moment, 'MM-DD-YYYY').format('DD');
             }
         }
-        
+
         let check_errors = this.checkErrors();
         return (
             <div className="app_wrapper">
@@ -248,9 +248,17 @@ export default class AddMilestone extends Component<Props, State> {
                             aria-describedby="alert-dialog-description"
                         >
                             <DialogTitle id="alert-dialog-title">
-                                {"Unsaved data will be lost. Do you want to continue?"}
+                                {"if you tab the back arrow, you lose the `draft`."}
+                                <br />
+                                {'Can we save it ?'}
+                                {/* {"Unsaved data will be lost. Do you want to continue?"} */}
                             </DialogTitle>
                             <DialogActions>
+                                <Button
+                                    onClick={() => { this.toggleOpen() }}
+                                    color="primary">
+                                    {'Yes'}
+                                </Button>
                                 <Button
                                     onClick={() => {
                                         if (check_errors) {
@@ -261,11 +269,6 @@ export default class AddMilestone extends Component<Props, State> {
                                         }
                                     }}
                                     color="primary" autoFocus>
-                                    {'Yes'}
-                                </Button>
-                                <Button
-                                    onClick={() => { this.toggleOpen() }}
-                                    color="primary">
                                     {'No'}
                                 </Button>
                             </DialogActions>
@@ -352,7 +355,7 @@ export default class AddMilestone extends Component<Props, State> {
                                                     let error_item = this.state.errors;
                                                     let pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
                                                     // "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
-                                                   
+
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
                                                     } else {

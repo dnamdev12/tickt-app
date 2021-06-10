@@ -120,6 +120,7 @@ const MileStoneTemplates = (props: Proptypes) => {
                                         <figure className="no_img">
                                             <img src={noData} alt="data not found" />
                                         </figure>
+                                        <span>{'No Data Found'}</span>
                                     </div>
                             ) : null}
                         </div>
