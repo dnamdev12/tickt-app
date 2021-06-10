@@ -71,6 +71,7 @@ export const getSearchParamsData = (location?: any) => {
     const queryParamsData: any = {
         page: Number(params.get('page')),
         isFiltered: params.get('isFiltered') === "true",
+        isFilterOn: params.get('isFilterOn'),
         tradeId: tradeIdArray,
         specializationId: specializationArray,
         lat: Number(params.get('lat')),
@@ -87,7 +88,6 @@ export const getSearchParamsData = (location?: any) => {
         max_budget: Number(params.get('max_budget')),
         pay_type: params.get('pay_type'),
         sortBy: Number(params.get('sortBy'))
-        //Array.isArray(params.get('jobTypes'))
     }
     return queryParamsData;
 }

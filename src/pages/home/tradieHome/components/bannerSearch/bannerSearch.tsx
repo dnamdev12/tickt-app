@@ -446,6 +446,7 @@ const BannerSearch = (props: PropsType) => {
                 jobResults: null
             }
             delete newData.location;
+            delete newData.isFilterOn;
             if (newData.searchJob) {
                 delete newData.heading;
                 delete newData.jobResults;
