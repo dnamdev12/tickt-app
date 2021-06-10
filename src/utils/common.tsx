@@ -33,7 +33,58 @@ export const renderTime = (fromDate: any, toDate: any) => {
         if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
             return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
         }
-        return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
+        return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
+    }
+}
+
+// export const renderTimeWithFormat = (fromDate: any, toDate: any, format?: any) => {
+//     if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
+//         return `${moment(fromDate, format).format('DD MMM')}`
+//     }
+
+//     if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
+//         let yearEnd = moment().endOf("year").toISOString();
+//         let monthEnd = moment(fromDate, format).endOf("month").toISOString();
+
+//         let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
+//         let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
+
+//         let monthDiff = parseInt(item.toString());
+//         let yearDiff = parseInt(item_year.toString());
+
+//         if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
+//             return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+//         }
+//         if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
+//             return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
+//         }
+//         return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
+//     }
+// }
+
+export const renderTimeWithFormat = (fromDate:any, toDate:any, format:any) => {
+
+    if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
+        return `${moment(fromDate, format).format('DD MMM')}`
+    }
+
+    if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
+        let yearEnd = moment().endOf("year").toISOString();
+        let monthEnd = moment(fromDate, format).endOf("month").toISOString();
+
+        let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
+        let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
+
+        let monthDiff = parseInt(item.toString());
+        let yearDiff = parseInt(item_year.toString());
+
+        if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
+            return `${moment(fromDate, format).format('DD MMM YY')} - ${moment(toDate, format).format('DD MMM YY')}`
+        }
+        if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
+            return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
+        }
+        return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
     }
 }
 

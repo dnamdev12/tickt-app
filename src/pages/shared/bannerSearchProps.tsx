@@ -30,6 +30,8 @@ import { setShowToast } from '../../redux/common/actions';
 import { property } from 'lodash';
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
+import { renderTime } from '../../utils/common'
+
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
 
@@ -529,6 +531,8 @@ const BannerSearch = (props: PropsType) => {
                     setSelectedAddress({ lat, lng });
                     setAddressText(address);
                     setInputFocus2(true);
+                    setInputFocus1(false);
+                    setInputFocus3(false);
                     setCurrentLocations(true);
                     // this.setState({ currentAddressLatLng: { long, lat }, addressText: address, enableCurrentLocation: true, inputFocus2: true })
                 }
@@ -543,34 +547,7 @@ const BannerSearch = (props: PropsType) => {
     const checkPlaceholder = (calenderRange1: any) => {
         let fromDate: any = calenderRange1?.startDate;
         let toDate: any = calenderRange1?.endDate;
-        return renderTime({ fromDate, toDate });
-    }
-
-    const renderTime = ({ fromDate, toDate }: any) => {
-        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
-            return `${moment(fromDate).format('DD MMM')}`
-        }
-
-        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-            let yearEnd = moment().endOf("year").toISOString();
-            let monthEnd = moment(fromDate).endOf("month").toISOString();
-
-            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
-            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
-
-            let monthDiff = parseInt(item.toString());
-            let yearDiff = parseInt(item_year.toString());
-
-            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
-                return `${moment(fromDate).format('DD MMM YYYY')} - ${moment(toDate).format('DD MMM YYYY')}`
-            }
-            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
-                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
-            }
-            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
-        }
-
-        return 'when ?'
+        return renderTime(fromDate, toDate);
     }
 
     let state_data: any = stateData;
@@ -612,7 +589,11 @@ const BannerSearch = (props: PropsType) => {
                                     setSearchText((e.target.value).trimLeft());
                                 }}
                                 // readOnly={props?.selectedItem ? true : false}
-                                onFocus={() => { setInputFocus1(true) }}
+                                onFocus={() => {
+                                    setInputFocus1(true);
+                                    setInputFocus2(false);
+                                    setInputFocus3(false);
+                                }}
                             />
                             <div className="border_eff"></div>
                             <span className="detect_icon_ltr">
@@ -656,7 +637,9 @@ const BannerSearch = (props: PropsType) => {
                                         setAddressText((e.target.value).trimLeft());
                                     }}
                                     onFocus={() => {
-                                        setInputFocus2(true)
+                                        setInputFocus2(true);
+                                        setInputFocus1(false);
+                                        setInputFocus3(false);
                                     }}
                                 />
                                 <span className="detect_icon_ltr">
@@ -700,7 +683,9 @@ const BannerSearch = (props: PropsType) => {
                                                     autoComplete="off"
                                                     ref={locationRef}
                                                     onFocus={() => {
-                                                        setInputFocus2(true)
+                                                        setInputFocus2(true);
+                                                        setInputFocus1(false);
+                                                        setInputFocus3(false);
                                                     }}
                                                 />
                                                 <span className="detect_icon_ltr">
@@ -809,7 +794,11 @@ const BannerSearch = (props: PropsType) => {
                                 <input
                                     type="text"
                                     placeholder={checkPlaceholder(calenderRange1)}
-                                    onFocus={() => setInputFocus3(true)}
+                                    onFocus={() => {
+                                        setInputFocus3(true);
+                                        setInputFocus1(false);
+                                        setInputFocus2(false);
+                                    }}
                                 />
                                 {calenderRange1?.startDate && inputFocus3 &&
                                     <span className="detect_icon" >

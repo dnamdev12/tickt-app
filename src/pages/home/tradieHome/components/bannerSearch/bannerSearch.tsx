@@ -44,6 +44,7 @@ interface PropsType {
     cleanFiltersHandler?: (data: any) => void,
     getRecentSearchList: () => void,
     getRecentLocationList: () => void,
+    refreshParams?: () => void,
 }
 
 const BannerSearch = (props: PropsType) => {
@@ -86,6 +87,8 @@ const BannerSearch = (props: PropsType) => {
     const searchRef = useDetectClickOutside({ onTriggered: handleOnOutsideSearch });
     const locationRef = useDetectClickOutside({ onTriggered: handleOnOutsideLocation });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
+
+    console.log(inputFocus1, inputFocus2, inputFocus3, "inputfocus---------");
 
     useEffect(() => {
         props.getRecentSearchList();
@@ -443,7 +446,11 @@ const BannerSearch = (props: PropsType) => {
                 jobResults: null
             }
             delete newData.location;
-            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null) && delete newData[key]);
+            if (newData.searchJob) {
+                delete newData.heading;
+                delete newData.jobResults;
+            }
+            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0' ) && delete newData[key]);
             var url = 'search-job-results?';
             for (let [key, value] of Object.entries(newData)) {
                 url += `${key}=${value}&`
@@ -454,6 +461,9 @@ const BannerSearch = (props: PropsType) => {
                 props.history.push(newUrl);
             } else {
                 props.history.replace(newUrl);
+                if(props?.refreshParams){
+                    props?.refreshParams();
+                }
                 if (!props.cleanFiltersData && props?.cleanFiltersHandler) {
                     props?.cleanFiltersHandler(true);
                 }
@@ -464,7 +474,15 @@ const BannerSearch = (props: PropsType) => {
     const renderPlacesData = ({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
         <React.Fragment>
             <div className="text_field">
-                <input {...getInputProps({ placeholder: 'Where?', className: 'line-1' })} id="location-input-tag" onFocus={() => setInputFocus2(true)} />
+                <input
+                    {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
+                    id="location-input-tag"
+                    onFocus={() => {
+                        setInputFocus2(true);
+                        setInputFocus1(false);
+                        setInputFocus3(false);
+                    }}
+                />
                 <span className="detect_icon_ltr">
                     <img src={Location} alt="location" />
                 </span>
@@ -520,7 +538,17 @@ const BannerSearch = (props: PropsType) => {
                 <ul>
                     <li className="categ_box">
                         <div className="text_field" id="text-field-div">
-                            <input type="text" ref={searchRef} placeholder="What jobs are you after?" value={stateData?.searchedJob} onChange={handleJobChange} onFocus={() => setInputFocus1(true)} />
+                            <input type="text"
+                                ref={searchRef}
+                                placeholder="What jobs are you after?"
+                                value={stateData?.searchedJob}
+                                onChange={handleJobChange}
+                                onFocus={() => {
+                                    setInputFocus1(true);
+                                    setInputFocus2(false);
+                                    setInputFocus3(false);
+                                }}
+                            />
                             <div className="border_eff"></div>
                             <span className="detect_icon_ltr">
                                 <img src={Searchicon} alt="search" />
@@ -532,8 +560,8 @@ const BannerSearch = (props: PropsType) => {
                         </div>
                         {/* {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>} */}
                     </li>
-                    {!stateData?.searchedJob && inputFocus1 && recentJobSearches()}
-                    {stateData?.searchedJob?.length >= 1 && inputFocus1 && renderJobResult()}
+                    {!stateData?.searchedJob && inputFocus1 && !inputFocus2 && recentJobSearches()}
+                    {stateData?.searchedJob?.length >= 1 && inputFocus1 && !inputFocus2 && renderJobResult()}
                     <li ref={locationRef} className="loc_box">
                         <div id="location-text-field-div">
                             <PlacesAutocomplete
@@ -582,7 +610,16 @@ const BannerSearch = (props: PropsType) => {
                         <div ref={calenderRef} className="custom_date_range" id="date-range-div">
                             <div className="text_field">
                                 <span className="detect_icon_ltr calendar"></span>
-                                <input type="text" id="calender-input" placeholder={stateData?.startDate ? `${stateData?.startDate} - ${stateData?.endDate}` : "When?"} onFocus={() => setInputFocus3(true)} />
+                                <input
+                                    type="text"
+                                    id="calender-input"
+                                    placeholder={stateData?.startDate ? `${stateData?.startDate} - ${stateData?.endDate}` : "When?"}
+                                    onFocus={() => {
+                                        setInputFocus3(true)
+                                        setInputFocus1(false);
+                                        setInputFocus2(false);
+                                    }}
+                                />
                                 {stateData?.startDate && inputFocus3 &&
                                     <span className="detect_icon" >
                                         <img src={cross} alt="cross" onClick={() => cleanInputData('calender')} />

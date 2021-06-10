@@ -3,6 +3,7 @@ import Location from "../../assets/images/ic-location.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
 import TradieBox from './tradieBox';
 import noData from '../../assets/images/no-search-data.png';
+import { setShowToast } from '../../redux/common/actions';
 
 interface Props {
     data: any,
@@ -42,9 +43,10 @@ export default class TradieHome extends Component<Props> {
                     </div>
                     <button
                         onClick={() => {
-                            if (redirectPath) {
-                                props.history.push(props.redirectPath)
-                            }
+                            setShowToast(true,'Under development');
+                            // if (redirectPath) {
+                            //     props.history.push(props.redirectPath)
+                            // }
                         }}
                         className="fill_grey_btn full_btn m-tb40 view_more">View all</button>
                 </div>

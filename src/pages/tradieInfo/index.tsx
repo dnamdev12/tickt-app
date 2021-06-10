@@ -12,7 +12,7 @@ import {
     getTradeReviews,
     getTradeProfile
 } from '../../redux/jobs/actions';
-import {getTradieProfile} from '../../redux/profile/actions';
+import { getTradieProfile } from '../../redux/profile/actions';
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -147,7 +147,7 @@ class TradieInfo extends Component<Props, State> {
     componentDidUpdate() {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
-        console.log({tradeStatus})
+        console.log({ tradeStatus })
         if (tradeStatus) {
             props.history.push('/jobs');
         }
@@ -346,7 +346,7 @@ class TradieInfo extends Component<Props, State> {
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
-        // let setPortfolioData: any = null;
+      
         return (
             <div className="app_wrapper">
                 <div className="section_wrapper">
@@ -370,16 +370,16 @@ class TradieInfo extends Component<Props, State> {
                                 </div>
                                 <div className="flex_col_sm_4 relative">
                                     <div className="detail_card">
-                                        <span className="title">{tradieInfo?.tradieName}</span>
-                                        <span className="tagg">{tradieInfo?.position}</span>
+                                        <span className="title">{tradieInfo?.tradieName || ''}</span>
+                                        <span className="tagg">{tradieInfo?.position || ''}</span>
                                         {/* <span className="xs_sub_title">{profileData?.companyName}</span> */}
                                         <ul className="review_job">
                                             <li>
-                                                <span className="icon reviews">{tradieInfo?.ratings}</span>
-                                                <span className="review_count">{`${tradieInfo?.reviewsCount} reviews`}</span>
+                                                <span className="icon reviews">{tradieInfo?.ratings || ''}</span>
+                                                <span className="review_count">{`${tradieInfo?.reviewsCount || ''} reviews`}</span>
                                             </li>
                                             <li>
-                                                <span className="icon job">{tradieInfo?.jobCompletedCount}</span>
+                                                <span className="icon job">{tradieInfo?.jobCompletedCount || ''}</span>
                                                 <span className="review_count"> jobs completed</span>
                                             </li>
                                         </ul>
@@ -398,22 +398,29 @@ class TradieInfo extends Component<Props, State> {
                             </div>
                             <div className="flex_row description">
                                 <div className="flex_col_sm_8">
-                                    <div>
-                                        <span className="sub_title">About</span>
-                                        <p className="commn_para">{tradieInfo?.about}</p>
-                                    </div>
+                                    {tradieInfo?.about?.length > 0 && (
+                                        <div>
+                                            <span className="sub_title">About</span>
+                                            <p className="commn_para">{tradieInfo?.about}</p>
+                                        </div>
+                                    )}
                                 </div>
                                 <div className="flex_col_sm_4">
-                                    <span className="sub_title">Areas of specialisation</span>
-                                    <div className="tags_wrap">
-                                        <ul>
-                                            {tradieInfo?.areasOfSpecialization?.map((item: any) => {
-                                                return <li key={item.specializationId}>{item.specializationName}</li>
-                                            })}
-                                        </ul>
-                                    </div>
+                                    {tradieInfo?.areasOfSpecialization?.length > 0 && (
+                                        <>
+                                            <span className="sub_title">Areas of specialisation</span>
+                                            <div className="tags_wrap">
+                                                <ul>
+                                                    {tradieInfo?.areasOfSpecialization?.map((item: any) => {
+                                                        return <li key={item.specializationId}>{item.specializationName}</li>
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        </>
+                                    )}
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
@@ -521,7 +528,7 @@ class TradieInfo extends Component<Props, State> {
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {
-                                        setShowToast(true,'Under development');
+                                    setShowToast(true, 'Under development');
                                     // this.setState((prevData: any) => ({
                                     //     reviewsData: {
                                     //         ...prevData.reviewsData, showAllReviewsClicked: true
@@ -531,7 +538,7 @@ class TradieInfo extends Component<Props, State> {
                                 {`View all ${profileData?.reviewData?.length} reviews`}</button>
                         </div>
                     </div>
-                : null}
+                    : null}
 
                 {reviewsData.showAllReviewsClicked && tradieReviews?.length &&
                     <Modal
@@ -682,7 +689,7 @@ class TradieInfo extends Component<Props, State> {
                                                 handleChange(e, 'reviewData')
                                             }}>
                                         </textarea>
-                                    <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                                        <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
                                     </div>
                                 </div>
                                 <div className="bottom_btn custom_btn">

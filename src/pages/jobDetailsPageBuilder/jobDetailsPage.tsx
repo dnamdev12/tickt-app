@@ -28,12 +28,15 @@ import moment from 'moment';
 import approved from '../../assets/images/approved.png';
 import waiting from '../../assets/images/exclamation.png';
 
+import { renderTime } from '../../utils/common';
+
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+import { setShowToast } from '../../redux/common/actions';
 interface PropsType {
     history: any,
     location: any,
@@ -368,30 +371,6 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    const renderTime = ({ fromDate, toDate }: any) => {
-        if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
-            return `${moment(fromDate).format('DD MMM')}`
-        }
-
-        if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-            let yearEnd = moment().endOf("year").toISOString();
-            let monthEnd = moment(fromDate).endOf("month").toISOString();
-
-            let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
-            let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
-
-            let monthDiff = parseInt(item.toString());
-            let yearDiff = parseInt(item_year.toString());
-
-            if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
-                return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
-            }
-            if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
-                return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
-            }
-            return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
-        }
-    }
 
 
     const renderByStatus = ({ status }: any) => {
@@ -495,7 +474,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <div className="job_info">
                                         <ul>
                                             <li className="icon calendar">
-                                                {jobDetailsData?.time ? jobDetailsData.time : renderTime({ fromDate: jobDetailsData.fromDate, toDate: jobDetailsData?.toDate })}
+                                                {jobDetailsData?.time ? jobDetailsData.time : renderTime(jobDetailsData.fromDate, jobDetailsData?.toDate)}
                                             </li>
                                             <li className="icon dollar">{jobDetailsData.amount}</li>
                                             <li className="icon location line-3">{jobDetailsData.locationName}</li>
@@ -529,7 +508,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_4">
                                 <span className="sub_title">Job Milestones
                                     {/* <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`} */}
-                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber} `}{`of ${jobDetailsData?.totalMilestones}`} </b>
+                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber || ''} `}{`of ${jobDetailsData?.totalMilestones || ''}`} </b>
                                 </span>
 
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -554,10 +533,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         return (
                                             <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
-                                                <span>{renderTime({
-                                                    fromDate:item?.fromDate,
-                                                     toDate:item?.toDate
-                                                })}</span>
+                                                <span>{renderTime(item?.fromDate, item?.toDate)}</span>
                                                 {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
                                                     `${moment(item?.fromDate).format('MMM DD')}` :
                                                     item?.fromDate?.length && item?.toDate?.length ?
@@ -797,9 +773,10 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <span
                                                     className="name"
                                                     onClick={() => {
-                                                        if (jobDetailsData?.postedBy?.builderName) {
-                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
-                                                        }
+                                                        setShowToast(true,'Under development');
+                                                        // if (jobDetailsData?.postedBy?.builderName) {
+                                                        //     props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                                                        // }
                                                     }}>
                                                     {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
                                                 </span>

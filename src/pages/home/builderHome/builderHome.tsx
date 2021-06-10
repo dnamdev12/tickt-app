@@ -15,6 +15,13 @@ import JobTypes from './components/jobTypes';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 
+const setKey = () => {
+    localStorage.setItem('toastLocation','true');
+}
+
+const getKey = () => {
+    return localStorage.getItem('toastLocation');
+}
 
 const BuilderHome = (props: any) => {
     let { callTradeList, getRecentSearchList, setHomeBuilder, builderHome, tradeListData, tradieHomeData } = props;
@@ -67,7 +74,10 @@ const BuilderHome = (props: any) => {
 
         let permission: any = await navigator.permissions.query({ name: 'geolocation' });
         if (permission.state === 'denied') {
-            setShowToast(true, 'Please enable the location permission from the settings so that Tickt app can access your location');
+            if(getKey() !== "true"){
+                setShowToast(true, 'Please enable the location permission from the settings so that Tickt app can access your location');
+                setKey();
+            }
         }
         navigator.geolocation.getCurrentPosition(showPosition, postionError)
     }

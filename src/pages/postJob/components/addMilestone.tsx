@@ -232,7 +232,7 @@ export default class AddMilestone extends Component<Props, State> {
             }
 
             if (date_to_moment?.length) {
-                to_date_format = moment(date_to_moment, 'MM-DD-YYYY').format('DD');
+                to_date_format = moment(date_to_moment, 'MM-DD-YYYY').format('MMM DD');
             }
         }
 
@@ -248,9 +248,10 @@ export default class AddMilestone extends Component<Props, State> {
                             aria-describedby="alert-dialog-description"
                         >
                             <DialogTitle id="alert-dialog-title">
-                                {"if you tab the back arrow, you lose the `draft`."}
-                                <br />
-                                {'Can we save it ?'}
+                                {'If you click the back arrow, you lose the data, do you want to save it?'}
+                                {/* {"if you tab the back arrow, you lose the `draft`."} */}
+                                {/* <br />
+                                {'Can we save it ?'} */}
                                 {/* {"Unsaved data will be lost. Do you want to continue?"} */}
                             </DialogTitle>
                             <DialogActions>
@@ -339,7 +340,7 @@ export default class AddMilestone extends Component<Props, State> {
                                             className="fill_btn fill_grey_btn choose_btn">
                                             {!to_date_format.length && from_date_format.length
                                                 ? `${from_date_format}` : to_date_format.length
-                                                    ? `${from_date_format}-${to_date_format}`
+                                                    ? `${from_date_format} - ${to_date_format}`
                                                     : 'Choose'}
                                         </button>
                                     </div>
