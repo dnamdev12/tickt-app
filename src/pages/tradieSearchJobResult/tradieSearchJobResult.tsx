@@ -33,16 +33,6 @@ const TradieSearchJobResult = (props: any) => {
                 lat: queryParamsData.defaultLat
             }
             props.getViewNearByJob(data);
-        } else if (queryParamsData.jobResults == 'jobTypeList') {
-            const data = {
-                page: 1,
-                isFiltered: false,
-                jobTypes: queryParamsData.jobTypes,
-                // location: {
-                //     coordinates: [queryParamsData.defaultLong, queryParamsData.defaultLat]
-                // }
-            }
-            props.postHomeSearchData(data);
         } else {
             const data: any = {
                 page: 1,
@@ -67,6 +57,17 @@ const TradieSearchJobResult = (props: any) => {
             console.log(data, "data tradie search result");
             props.postHomeSearchData(data);
         }
+        // else if (queryParamsData.jobResults == 'jobTypeList') {
+        //     const data = {
+        //         page: 1,
+        //         isFiltered: false,
+        //         jobTypes: queryParamsData.jobTypes,
+        //         // location: {
+        //         //     coordinates: [queryParamsData.defaultLong, queryParamsData.defaultLat]
+        //         // }
+        //     }
+        //     props.postHomeSearchData(data);
+        // } 
     }, [])
 
     const getQueryParamsData = () => {
@@ -248,6 +249,10 @@ const TradieSearchJobResult = (props: any) => {
         }
     }
 
+    const refreshParams = () => {
+        getQueryParamsData();
+    }
+
     return (
         <div className="app_wrapper" >
             <div className="top_search">
@@ -255,6 +260,7 @@ const TradieSearchJobResult = (props: any) => {
                     {...props} paramsData={paramsData}
                     cleanFiltersHandler={cleanFiltersHandler}
                     cleanFiltersData={searchResultData.cleanFiltersData}
+                    refreshParams={refreshParams}
                 />
             </div>
             <div className="search_result">

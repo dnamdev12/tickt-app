@@ -44,6 +44,7 @@ interface PropsType {
     cleanFiltersHandler?: (data: any) => void,
     getRecentSearchList: () => void,
     getRecentLocationList: () => void,
+    refreshParams: () => void,
 }
 
 const BannerSearch = (props: PropsType) => {
@@ -460,6 +461,7 @@ const BannerSearch = (props: PropsType) => {
                 props.history.push(newUrl);
             } else {
                 props.history.replace(newUrl);
+                props?.refreshParams();
                 if (!props.cleanFiltersData && props?.cleanFiltersHandler) {
                     props?.cleanFiltersHandler(true);
                 }
