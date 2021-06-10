@@ -46,12 +46,12 @@ const SearchResultFilters = (props: any) => {
         props.callTradeList();
         const paramsList = getSearchParamsData(props?.history?.location);
         if (paramsList) {
-            if (paramsList.tradeId?.length || paramsList.jobTypes?.length) {
+            if (paramsList.isFilterOn === "isFilterOn" && (paramsList.tradeId?.length || paramsList.jobTypes?.length)) {
                 setSortByFilter((prevData: any) => ({
                     ...prevData,
                     tradeId: paramsList.tradeId ? paramsList.tradeId : [],
                     jobTypes: paramsList.jobTypes ? paramsList.jobTypes : [],
-                    specializationId: paramsList.specializationId ? paramsList.specializationId: [],
+                    specializationId: paramsList.specializationId ? paramsList.specializationId : [],
                     showResultsButtonClicked: true
                 }));
             }

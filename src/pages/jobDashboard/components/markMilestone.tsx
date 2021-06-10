@@ -11,6 +11,7 @@ import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import removeIconBlue from '../../../assets/images/ic-cancel-blue.png';
 import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
+import { renderTime } from '../../../utils/common';
 
 const declinedImages = {
   desktop: {
@@ -227,10 +228,6 @@ const MarkMilestone = ({
                     ([1, 2].includes(prevMilestoneStatus) ||
                       prevMilestoneStatus === undefined);
                   const isDeclined = status === 3;
-                  fromDate = fromDate
-                    ? format(new Date(fromDate), 'MMM dd')
-                    : '';
-                  toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
 
                   return (
                     <li
@@ -254,12 +251,7 @@ const MarkMilestone = ({
                           <span>Photo evidence required</span>
                         )}
                         <span>
-                          {fromDate}
-                          {toDate &&
-                            ` - ${fromDate.startsWith(toDate.split(' ')[0])
-                              ? toDate.split(' ')[1]
-                              : toDate
-                            }`}
+                          {renderTime(fromDate, toDate)}
                         </span>
                       </div>
                       {isDeclined && (

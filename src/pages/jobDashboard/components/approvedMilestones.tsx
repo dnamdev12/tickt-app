@@ -5,6 +5,7 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import waiting from '../../../assets/images/exclamation.png';
 import noDataFound from "../../../assets/images/no-search-data.png";
+import { renderTime } from '../../../utils/common';
 
 interface Proptypes {
   loading: boolean;
@@ -22,14 +23,8 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
       {/* Approved Milestones */}
       <span className="sub_title">Approved Milestones</span>
       <div className="flex_row tradies_row">
-        {approvedMilestoneList.length ? approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => {
-          fromDate = fromDate
-          ? format(new Date(fromDate), 'MMM dd')
-          : '';
-          toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
-
-          return (
-            <div className="flex_col_sm_6">
+        {approvedMilestoneList.length ? approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
+            <div key={jobId} className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
@@ -44,13 +39,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                 <div className="job_info">
                   <ul>
                     <li className="icon clock">
-                      {fromDate}
-                      {toDate &&
-                        ` - ${
-                          fromDate.startsWith(toDate.split(' ')[0])
-                            ? toDate.split(' ')[1]
-                            : toDate
-                        }`}
+                      {renderTime(fromDate, toDate)}
                     </li>
                     <li className="icon dollar">{amount}</li>
                     <li className="icon location line-1">{locationName}</li>
@@ -91,8 +80,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                 </div>
               </div>
             </div>
-          );
-        }) : !loading && (
+        )) : !loading && (
           <div className="no_record  m-t-vh">
             <figure className="no_img">
               <img src={noDataFound} alt="data not found" />

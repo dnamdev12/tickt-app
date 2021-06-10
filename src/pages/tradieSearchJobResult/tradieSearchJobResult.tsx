@@ -79,6 +79,7 @@ const TradieSearchJobResult = (props: any) => {
         const queryParamsData: any = {
             page: Number(params.get('page')),
             isFiltered: params.get('isFiltered') === "true",
+            isFilterOn: params.get('isFilterOn'),
             tradeId: tradeIdArray,
             specializationId: specializationArray,
             lat: Number(params.get('lat')),
@@ -139,6 +140,7 @@ const TradieSearchJobResult = (props: any) => {
 
         if (allFiltersData.jobTypes?.length && !allFiltersData.tradeId?.length) {
             headingType = props.jobTypeListData?.find((i: any) => i._id === allFiltersData.jobTypes[0])?.name;
+            delete newParamsData.searchJob;
         }
 
         if (allFiltersData.tradeId?.length && !allFiltersData.specializationId?.length) {
@@ -148,29 +150,18 @@ const TradieSearchJobResult = (props: any) => {
 
         var data = {
             ...newParamsData,
-
+            isFilterOn: "isFilterOn", 
             jobResults: null,
-
             ...(allFiltersData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
-
             ...(allFiltersData.tradeId?.length && { tradeId: allFiltersData.tradeId }),
-
             ...(allFiltersData.jobTypes?.length && { jobTypes: allFiltersData.jobTypes }),
-
             ...((allFiltersData.jobTypes?.length && !allFiltersData.tradeId?.length) && { jobResults: 'jobTypeList' }),
-
             ...((allFiltersData.jobTypes?.length && !allFiltersData.tradeId?.length) && { heading: headingType }),
-
             ...((allFiltersData.tradeId?.length && !allFiltersData.specializationId?.length) && { jobResults: 'jobTypeList' }),
-
             ...((allFiltersData.tradeId?.length && !allFiltersData.specializationId?.length) && { heading: headingType }),
-
             ...(allFiltersData.specializationId?.length && { specializationId: allFiltersData.specializationId }),
-
             ...(allFiltersData.max_budget > 0 && { pay_type: allFiltersData.pay_type }),
-
             ...(allFiltersData.max_budget > 0 && { max_budget: allFiltersData.max_budget }),
-
             ...([1, 2, 3].includes(allFiltersData.sortBy) && { sortBy: allFiltersData.sortBy })
         }
 
@@ -227,7 +218,7 @@ const TradieSearchJobResult = (props: any) => {
             // ...(allFiltersData.max_budget && { max_budget: allFiltersData.max_budget }),
             // ...(allFiltersData.sortBy && { sortBy: allFiltersData.sortBy })
         }
-        Object.keys(data).forEach(key => (data[key] === undefined || data[key] === null || data[key] == 0 || data[key] == "0") && delete data[key]);
+        Object.keys(data).forEach(key => (data[key] === undefined || data[key] === null || data[key] === 0 || data[key] === "0") && delete data[key]);
         var url = 'search-job-results?';
         for (let [key, value] of Object.entries(data)) {
             console.log(key, value);
