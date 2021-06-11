@@ -179,18 +179,18 @@ const JobDashboard = ({
                 </li>
                 <li>
                   <NavLink className="icon applied" to="/applied-jobs">
-                    <span className="menu_txt">Applied jobs</span>
+                    <span className="menu_txt">Applied Jobs</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon past" to="/past-jobs">
-                    <span className="menu_txt">Past jobs</span>
+                    <span className="menu_txt">Past Jobs</span>
                   </NavLink>
                 </li>
                 {/* <hr></hr> */}
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
-                    <span className="menu_txt">New jobs
+                    <span className="menu_txt">New Jobs
                     {!!newJobsCount && (
                         <span className="badge_count">
                           {newJobsCount > 9 ? '9+' : newJobsCount}
@@ -203,7 +203,7 @@ const JobDashboard = ({
                 </li>
                 <li>
                   <NavLink className="icon approved" to="/approved-milestones">
-                    <span className="menu_txt">Approved milestones
+                    <span className="menu_txt">Approved Milestones
                     {!!milestonesCount && (
                         <span className="badge_count">
                           {milestonesCount > 9 ? '9+' : milestonesCount}
