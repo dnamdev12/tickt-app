@@ -196,7 +196,7 @@ export default class AddMilestone extends Component<Props, State> {
     }
 
 
-    checkErrors = () => {
+    checkErrors = (isTrue?: boolean) => {
         const { milestones } = this.props;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
         let from_date = milestones[milestone_index]?.from_date || '';
@@ -206,13 +206,20 @@ export default class AddMilestone extends Component<Props, State> {
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-            errorItems['milestone_name'] = error_1;
-            errorItems['from_date'] = error_2;
-            errorItems['recommended_hours'] = error_3;
+
+            if(milestone_name?.length){
+                errorItems['milestone_name'] = error_1;
+            }
+
+            
+            if(recommended_hours?.length && error_3?.length){
+                errorItems['recommended_hours'] = error_3;
+            }
 
             if (JSON.stringify(this.state.errors) !== JSON.stringify(errorItems)) {
                 this.setState({ errors: errorItems })
             }
+
             // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
             // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
             if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
