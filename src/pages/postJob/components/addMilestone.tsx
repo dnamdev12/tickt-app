@@ -344,8 +344,10 @@ export default class AddMilestone extends Component<Props, State> {
                                             onClick={() => {
                                                 if (check_errors) {
                                                     if (milestone_name?.length || isPhotoevidence == true || recommended_hours?.length || from_date_format?.length) {
+                                                        this.setItems(true);
                                                         this.toggleOpen()
                                                     } else {
+                                                        this.setItems(true);
                                                         handleStepBack();
                                                     }
                                                 } else {
