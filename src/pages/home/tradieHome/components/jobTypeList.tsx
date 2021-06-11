@@ -27,16 +27,13 @@ const JobTypeList = (props: any) => {
 
     const jobTypeListClicked = (id: string, jobTypeHeadingName: string) => {
         props.history.push(`/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}&defaultLat=${props.currentCoordinates?.coordinates[1]}&defaultLong=${props.currentCoordinates?.coordinates[0]}`);
-        // props.history.push(`/search-job-results?jobResults=jobTypeList&heading=${jobTypeHeadingName}&jobTypes=${id}`);
     }
-
-    console.log(props.jobTypeListData, "jobTypeListData  type==>", props.jobTypeData);
 
     return (
         <div className="home_job_categories">
             <div className="custom_container">
                 <Carousel className="item_slider" responsive={categoriesjob} infinite={true} autoPlay={props.jobTypeListData?.length > 5 ? true : false} arrows={false} showDots={props.jobTypeListData?.length > 5 ? true : false} >
-                    {props.jobTypeListData?.length ? props.jobTypeListData?.map((item: any) => {
+                    {props.jobTypeListData?.map((item: any) => {
                         return (
                             <ul className="job_categories">
                                 <li key={item._id} className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
@@ -47,16 +44,17 @@ const JobTypeList = (props: any) => {
                                 </li>
                             </ul>
                         )
-                    }) :
-                        <div className="page_loader">
-                            <figure>
-                                <img src={loader} alt="loader" />
-                            </figure>
-                        </div>}
+                    })}
                 </Carousel>
             </div>
         </div >
     )
 }
 
-export default JobTypeList
+export default JobTypeList;
+
+{/* <div className="page_loader">
+    <figure>
+        <img src={loader} alt="loader" />
+    </figure>
+</div> */}

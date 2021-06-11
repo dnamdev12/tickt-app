@@ -12,6 +12,7 @@ import {
 
 const mapStateToProps = (state: any) => {
     return {
+        isLoading: state.common.isLoading,
         searchJobListData: state.homeSearch.searchJobListData,
         jobTypeListData: state.homeSearch.jobTypeListData,
         jobDataWithJobTypeLatLong: state.homeSearch.jobDataWithJobTypeLatLong,
@@ -22,10 +23,10 @@ const mapStateToProps = (state: any) => {
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
-        getSearchJobList,
-        getRecentSearchList,
         getJobTypeList,
         getJobWithJobTypeLatLong,
+        getSearchJobList,
+        getRecentSearchList,
         getViewNearByJob,
         resetHomeSearchJobData,
     }, dispatch);

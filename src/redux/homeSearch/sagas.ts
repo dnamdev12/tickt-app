@@ -2,14 +2,13 @@ import { call, put, takeLatest } from 'redux-saga/effects';
 import * as actionTypes from './constants';
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
-import * as commonActions from '../common/actions';
-import storageService from '../../utils/storageService';
+import { setLoading, setShowToast } from '../common/actions';
 
 
 function* getSearchJobList(action: any) {
-    // commonActions.setLoading(true);
+    // setLoading(true);
     const response: FetchResponse = yield NetworkOps.get(Urls.getSearchData + `?search_text=${action.searchJob}`);
-    // commonActions.setLoading(false);
+    // setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_SEARCH_JOB_LIST, payload: response.result });
     } else {
@@ -37,7 +36,9 @@ function* getRecentLocationList() {
 
 
 function* getJobTypeList() {
+    setLoading(true);
     const response: FetchResponse = yield NetworkOps.get(Urls.jobTypeList);
+    setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_JOB_TYPE_LIST, payload: response.result.resultData });
     } else {
@@ -47,9 +48,9 @@ function* getJobTypeList() {
 
 function* getViewNearByJob(action: any) {
     const { data } = action;
-    commonActions.setLoading(true);
+    setLoading(true);
     const response: FetchResponse = yield NetworkOps.get(Urls.viewNearByJob + `?lat=${data.lat}&long=${data.long}&page=${1}`)
-    commonActions.setLoading(false);
+    setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_VIEW_NEARBY_JOBS, payload: response.result });
     } else {
@@ -74,8 +75,9 @@ function* getJobWithJobTypeLatLong(action: any) {
     } else {
         url = Urls.home + `?lat=${jobData.lat}` + `&long=${jobData.long}`
     }
-    console.log(jobData, url, "okk")
+    setLoading(true);
     const response: FetchResponse = yield NetworkOps.get(url)
+    setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_JOB_WITH_JOB_TYPE_AND_LATLONG, payload: response.result });
     } else {
@@ -84,9 +86,9 @@ function* getJobWithJobTypeLatLong(action: any) {
 }
 
 function* postHomeSearchData(action: any) {
-    commonActions.setLoading(true);
+    setLoading(true);
     const response: FetchResponse = yield NetworkOps.postToJson(Urls.homeSearch, action.jobData)
-    commonActions.setLoading(false);
+    setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: response.result });
     } else {
@@ -94,7 +96,7 @@ function* postHomeSearchData(action: any) {
     }
 }
 function* resetHomeSearchJobData() {
-        yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
+    yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
 }
 
 

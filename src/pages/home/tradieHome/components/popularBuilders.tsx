@@ -1,17 +1,14 @@
-
+import { setShowToast } from '../../../../redux/common/actions';
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 
 const PopularBuilders = (props: any) => {
 
     const viewAllBuilders = () => {
+        setShowToast(true, 'Under development');
         // props.history.push('popular-builders')
     }
 
-
-
     const popularBuildersData = props.jobDataWithJobTypeLatLong?.popular_builders?.slice(0, 6);
-
-    
 
     return (
         <>
