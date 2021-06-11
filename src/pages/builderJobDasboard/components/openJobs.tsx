@@ -125,7 +125,7 @@ class OpenJobs extends Component<Props, State> {
                                                 {renderTime(fromDate, toDate)}
                                             </li>
                                             <li>
-                                                <span className="job_status">
+                                                <span>
                                                     {timeLeft}
                                                 </span>
                                             </li>

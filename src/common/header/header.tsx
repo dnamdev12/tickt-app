@@ -68,11 +68,8 @@ const Header = (props: any) => {
     };
 
     const logoutHandler = () => {
-        storageService.removeItem("jwtToken")
-        storageService.removeItem("guestToken")
-        storageService.removeItem("userType")
-        localStorage.clear();
-        history.push('/login')
+        storageService.clearAll();
+        history.push('/login');
     }
 
     const postClicked = () => {
@@ -113,6 +110,10 @@ const Header = (props: any) => {
                             <figure>
                                 <img
                                     onClick={() => {
+                                        if (pathname === '/') {
+                                            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                                            return;
+                                        }
                                         setActiveLink('discover');
                                         setToggleMenu(false);
                                         props.history.push('/');

@@ -225,7 +225,6 @@ a.fill_grey_btn {
 
 .choose_btn{
   padding: 12px 15px;
-  width: 158px;
 }
 
 .digital_id_btn {
@@ -662,6 +661,9 @@ a.fill_grey_btn {
 .bottom_btn.custom_btn{
   position: absolute;
   bottom: 40px;
+  @media (max-width: 1366px){
+    bottom: 25px;
+  }
 }
 // .bottom_btn {
 //   position: absolute;

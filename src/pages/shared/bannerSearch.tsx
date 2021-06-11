@@ -652,7 +652,8 @@ const BannerSearch = (props: PropsType) => {
                                                 <span className="detect_icon_ltr">
                                                     <img src={Location} alt="location" />
                                                 </span>
-                                                {inputFocus2 && addressText?.length > 2 ?
+
+                                                {addressText?.length > 2 ?
                                                     <span className="detect_icon" >
                                                         <img
                                                             src={cross}
@@ -663,6 +664,18 @@ const BannerSearch = (props: PropsType) => {
                                                             }}
                                                         />
                                                     </span> : null}
+
+                                                {/* {inputFocus2 && addressText?.length > 2 ?
+                                                    <span className="detect_icon" >
+                                                        <img
+                                                            src={cross}
+                                                            alt="cross"
+                                                            onClick={() => {
+                                                                setAddressText('');
+                                                                setSelectedAddress({});
+                                                            }}
+                                                        />
+                                                    </span> : null} */}
                                             </div>
 
                                             {suggestions?.length && inputFocus2 && addressText?.length > 2 ?

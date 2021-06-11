@@ -63,7 +63,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                             Needs approval
                           </>
                         ) : (
-                          'Awating'
+                          'Awaiting'
                         )}
                     </span>
                     <span className="progress_bar">

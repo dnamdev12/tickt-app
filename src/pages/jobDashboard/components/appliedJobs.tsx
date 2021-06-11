@@ -59,7 +59,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) 
                           Needs approval
                         </>
                       ) : (
-                        'Awating'
+                        'Awaiting'
                       )}
                   </span>
                   <span className="progress_bar">
