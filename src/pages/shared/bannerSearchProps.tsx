@@ -104,16 +104,17 @@ const BannerSearch = (props: PropsType) => {
     const searchRef = useDetectClickOutside({ onTriggered: handleOnOutsideSearch });
     const locationRef = useDetectClickOutside({
         onTriggered: () => {
-            if (addressText?.length > 3) {
-                handleOnOutsideLocation()
-            }
+            // if (addressText?.length > 3) {
+            handleOnOutsideLocation()
+            // }
         }
     });
+
     const locationRefClone = useDetectClickOutside({
         onTriggered: () => {
-            if (!addressText || addressText?.length < 2) {
-                handleOnOutsideLocation()
-            }
+            //     if (!addressText || addressText?.length < 2) {
+            //         handleOnOutsideLocation()
+            //     }
         }
     });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
@@ -630,7 +631,7 @@ const BannerSearch = (props: PropsType) => {
                     {/* {'location search start here!'} */}
                     <li className="loc_box">
                         <div id="location-text-field-div">
-
+                            {/* 
                             <div
                                 className={`text_field ${addressText?.length > 2 ? 'none' : ''}`}>
                                 <input
@@ -652,17 +653,17 @@ const BannerSearch = (props: PropsType) => {
                                 <span className="detect_icon_ltr">
                                     <img src={Location} alt="location" />
                                 </span>
-                            </div>
+                            </div> */}
 
 
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
                                     searchOptions={{ componentRestrictions: { country: "au" } }}
+                                    shouldFetchSuggestions={addressText?.length > 2}
                                     onChange={(item: any) => {
                                         setAddressText(item);
                                     }}
-                                    shouldFetchSuggestions={true}
                                     onSelect={async (address) => {
                                         let selected_address: any = address;
                                         if (address.indexOf(',')) {
@@ -683,7 +684,8 @@ const BannerSearch = (props: PropsType) => {
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
                                         <div>
                                             <div
-                                                className={`text_field ${addressText?.length > 2 ? '' : 'none'}`}>
+                                                className={`text_field`}>
+                                                {/* className={`text_field ${addressText?.length > 2 ? '' : 'none'}`}> */}
                                                 <input
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
                                                     id="location-input-tag"
@@ -698,8 +700,8 @@ const BannerSearch = (props: PropsType) => {
                                                 <span className="detect_icon_ltr">
                                                     <img src={Location} alt="location" />
                                                 </span>
-                                                {addressText?.length > 2 ?
-                                                // {inputFocus2 && addressText?.length > 2 ?
+                                                {inputFocus2 && addressText?.length > 2 ?
+                                                    // {inputFocus2 && addressText?.length > 2 ?
                                                     <span className="detect_icon" >
                                                         <img
                                                             src={cross}

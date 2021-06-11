@@ -39,6 +39,14 @@ const Header = (props: any) => {
         if (pathname === '/') {
             setActiveLink('discover')
         }
+
+        if (pathname === '/jobs') {
+            setActiveLink('jobs')
+        }
+
+        if (pathname === '/post-new-job') {
+            setActiveLink('post')
+        }
     }, [pathname])
 
     useEffect(() => {
