@@ -37,9 +37,16 @@ const Header = (props: any) => {
 
     useEffect(() => {
         if (pathname === '/') {
-            setActiveLink('discover')
+            setActiveLink('discover');
         }
-    }, [pathname])
+        if (['/jobs','/active-jobs','/applied-jobs','/past-jobs','/new-jobs','/approved-milestones','/mark-milestone','/review-builder'].includes(pathname)) {
+            setActiveLink('jobs');
+        }
+
+        if (pathname === '/post-new-job') {
+            setActiveLink('post');  
+        }
+    }, [pathname]);
 
     useEffect(() => {
         if (type) {
