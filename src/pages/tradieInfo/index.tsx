@@ -726,7 +726,7 @@ class TradieInfo extends Component<Props, State> {
                         <>
                             <div className="custom_wh confirmation">
                                 <div className="heading">
-                                    <span className="sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : reviewsData.updateReviewsClicked ? 'Update' : ''} Reply Confirmation`}</span>
+                                    <span className="xs_sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : reviewsData.updateReviewsClicked ? 'Update' : ''} Reply Confirmation`}</span>
                                     <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                         <img src={cancel} alt="cancel" />
                                     </button>

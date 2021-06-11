@@ -281,10 +281,10 @@ body {
       &.main {
         background-color: #dfe5ef;
         img {
-          width: 10px;
-          height: 16px;
-          margin-right: 7px;
-          object-fit: cover;
+          width: 15px;
+          height: 15px;
+          margin-right: 4px;
+          object-fit: contain;
         }
       }
     }
@@ -1416,6 +1416,7 @@ body {
           font-family: 'Neue Haas Grotesk Text Pro Bold';
           margin-bottom: 8px;
           display: block;
+          min-height: 30px;
           &::before{
               width: 24px;
               height: 24px;
@@ -1780,10 +1781,13 @@ body {
       margin: 15px auto;
     }
     .modal_message{
-      max-width: 400px;
-      margin: 0 auto;
-      padding: 10px 0;
       text-align: center;
+      max-height: 115px;
+      overflow-y: auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
       p{
         font-size: 16px;
         line-height: 1.5;
@@ -1793,13 +1797,10 @@ body {
       }
     }
     .dialog_actions{
-      padding: 8px 0;
-      display: flex;
-      flex-wrap: wrap;
-      min-height: 52px;
-      align-items: center;
-      justify-content: center;
-      margin-top: 15px;
+      position: absolute;
+      bottom: 18;
+      left: 50%;
+      transform: translateX(-50%);
       .fill_btn, .fill_grey_btn{
         padding: 12px 25px;
       }
@@ -2123,7 +2124,7 @@ body {
 }
 
 .recent_search {
-  padding-bottom: 35px;
+  padding-bottom: 15px;
   .card {
     border-radius: 12px;
     border: none;
@@ -2166,11 +2167,11 @@ body {
       display: flex;
       .ico{
         width: 24px;
+        height: 24px;
         margin-right: 7px;
         img{
           width: 100%;
           height: 100%;
-          object-fit: cover;
         }
       }
     }
@@ -3071,6 +3072,7 @@ body {
     &.active {
       left: 50%;
       top: 90px;
+      width: 95%;
     }
     .modal_srch_close {
       display: block;
@@ -3091,13 +3093,13 @@ body {
   top: 64px;
   left: auto;
   right: 0;
-  padding: 10px 20px;
-  max-height: 387px;
+  padding: 10px 10px 10px 12px;
+  // max-height: 387px;
   min-height: 120px;
-  overflow-y: auto;
+  // overflow-y: auto;
   z-index: 99;
   @media (max-width: 768px) {
-    top: 120px;
+    top: 60px;
   }
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     top: 69px;
@@ -3146,10 +3148,17 @@ body {
     }
   }
 
+  .select_sphere{
+    max-height: 320px;
+    overflow-y: auto;
+  }
+
   .drop_data {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
+    max-height: 320px;
+    overflow-y: auto;
     li {
       display: flex;
       width: 100% !important;
