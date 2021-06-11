@@ -4,9 +4,12 @@ import { Link } from 'react-router-dom';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import search from '../../assets/images/main-search.png';
 import more from '../../assets/images/icon-direction-right.png';
+import menu from '../../assets/images/menu-line-blue.png';
+import close from '../../assets/images/ic-cancel-blue.png';
 
 export default function NotFound() {
     return (
+
         <div className="error_page_wrap">
             <figure className="no_img">
                 <img src={notFound} alt="not-found" />
@@ -177,5 +180,40 @@ export default function NotFound() {
         // </div>
 
         // -----My revenue detail close ------//
+
+
+
+
+        // <div className="app_wrapper">
+        //     <div className="custom_container">
+        //         <span className="mob_side_nav">
+        //             <img src={menu} alt="mob-side-nav" />
+        //         </span>
+        //         <div className="f_row chat_wrapr">
+        //             <div className="side_nav_col">
+        //                 <button className="close_nav">
+        //                     <img src={close} alt="close" />
+        //                 </button>
+        //                 <div className="stick">
+        //                     <span className="title">Chat</span>
+        //                     <ul className="chat_list">
+        //                         <li>
+        //                             <a href="javascript:void(0)" className="chat">
+        //                                 <figure className="u_img">
+        //                                     <img src={dummy} alt="img"/>
+        //                                 </figure>
+        //                                 <div className="detail">
+        //                                     <span className="inner_title">John Oldman</span>
+        //                                     <span className="inner_title job">Wire up circuit box</span>
+        //                                 </div>
+        //                             </a>
+        //                         </li>
+        //                     </ul>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
+
     );
 }
