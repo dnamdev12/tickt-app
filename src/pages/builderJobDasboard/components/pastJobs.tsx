@@ -104,7 +104,7 @@ export default function PastJobs(props: any): ReactElement {
                                             {status === "Approved" && <img src={approved} alt="icon" />}
                                             {status}
                                         </span> */}
-                                        {/* {'Approved'} */} {/* Awating */}
+                                        {/* {'Approved'} */} {/* Awaiting */}
                                         {/* <img src={waiting} alt="icon" /> */}
                                         {/* Need approval */}
                                         <span className="progress_bar">
