@@ -22,6 +22,7 @@ const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
 
 const Header = (props: any) => {
     let type = storageService.getItem('userType');
+
     const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -39,8 +40,17 @@ const Header = (props: any) => {
     let history = useHistory();
 
     useEffect(() => {
-        // console.log({ props }, '-->');
-    }, [props])
+        if (pathname === '/') {
+            setActiveLink('discover');
+        }
+        if (['/jobs','/active-jobs','/applied-jobs','/past-jobs','/new-jobs','/approved-milestones','/mark-milestone','/review-builder'].includes(pathname)) {
+            setActiveLink('jobs');
+        }
+
+        if (pathname === '/post-new-job') {
+            setActiveLink('post');  
+        }
+    }, [pathname]);
 
     useEffect(() => {
         if (type) {
@@ -69,11 +79,8 @@ const Header = (props: any) => {
     };
 
     const logoutHandler = () => {
-        storageService.removeItem("jwtToken")
-        storageService.removeItem("guestToken")
-        storageService.removeItem("userType")
-        localStorage.clear();
-        history.push('/login')
+        storageService.clearAll();
+        history.push('/login');
     }
 
     const postClicked = () => {
@@ -114,6 +121,10 @@ const Header = (props: any) => {
                             <figure>
                                 <img
                                     onClick={() => {
+                                        if (pathname === '/') {
+                                            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                                            return;
+                                        }
                                         setActiveLink('discover');
                                         setToggleMenu(false);
                                         props.history.push('/');

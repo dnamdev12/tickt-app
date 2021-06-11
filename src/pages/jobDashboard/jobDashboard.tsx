@@ -71,6 +71,8 @@ const JobDashboard = ({
   const [milestoneComplete, setMilestoneComplete] = useState(false);
   const [jobComplete, setJobComplete] = useState<boolean | number>(false);
 
+  const jobCompleteCount = jobComplete && `${jobComplete}${`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'}`;
+  
   return milestoneComplete ? (
 
     // Review builder success
@@ -123,9 +125,9 @@ const JobDashboard = ({
         <img src={templateImage} alt="template-image" />
         <div className="short_info">
           <div className="content">
-            <h1 className="title">Your {jobComplete}{`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'} job is completed!</h1>
+            <h1 className="title">Your {jobCompleteCount} job is completed!</h1>
             <span className="show_label">
-              You have completed your 7th Job using Tickt! Click here to view
+              You have completed your {jobCompleteCount} Job using Tickt! Click here to view
               your completed jobs or leave a review. You will be paid as soon as
               the builder signs off.
             </span>
@@ -177,18 +179,18 @@ const JobDashboard = ({
                 </li>
                 <li>
                   <NavLink className="icon applied" to="/applied-jobs">
-                    <span className="menu_txt">Applied jobs</span>
+                    <span className="menu_txt">Applied Jobs</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon past" to="/past-jobs">
-                    <span className="menu_txt">Past jobs</span>
+                    <span className="menu_txt">Past Jobs</span>
                   </NavLink>
                 </li>
                 {/* <hr></hr> */}
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
-                    <span className="menu_txt">New jobs
+                    <span className="menu_txt">New Jobs
                     {!!newJobsCount && (
                         <span className="badge_count">
                           {newJobsCount > 9 ? '9+' : newJobsCount}
@@ -201,7 +203,7 @@ const JobDashboard = ({
                 </li>
                 <li>
                   <NavLink className="icon approved" to="/approved-milestones">
-                    <span className="menu_txt">Approved milestones
+                    <span className="menu_txt">Approved Milestones
                     {!!milestonesCount && (
                         <span className="badge_count">
                           {milestonesCount > 9 ? '9+' : milestonesCount}

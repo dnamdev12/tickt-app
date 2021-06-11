@@ -123,13 +123,13 @@ export default function PastJobs(props: any): ReactElement {
                                         <span className="completed-digit" id="digit-progress">
                                             <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
                                         </span>
-                                        <span className="approval_info">
+                                        {/* <span className="approval_info">
                                             {status === "Approved" && <img src={approved} alt="icon" />}
                                             {status}
-                                            {/* {'Approved'} */} {/* Awating */}
-                                            {/* <img src={waiting} alt="icon" /> */}
-                                            {/* Need approval */}
-                                        </span>
+                                        </span> */}
+                                        {/* {'Approved'} */} {/* Awaiting */}
+                                        {/* <img src={waiting} alt="icon" /> */}
+                                        {/* Need approval */}
                                         <span className="progress_bar">
                                             <input
                                                 className="done_progress"

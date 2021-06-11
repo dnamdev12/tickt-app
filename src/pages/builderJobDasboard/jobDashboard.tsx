@@ -20,6 +20,7 @@ import MarkMilestones from './components/markMilestones';
 import DeclineMilestone from './components/declineMilestone';
 import DeclineMilestoneSuccess from './components/declineMilestoneSuccess';
 import { getNewApprovalList } from '../../redux/jobs/actions';
+import { setShowToast } from '../../redux/common/actions';
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -196,21 +197,21 @@ class JobDashboard extends Component<Props, State> {
                                                     // setResetItem(true);
                                                     setSelected('active')
                                                 }}
-                                                className="menu_txt">Active Jobs</span>
+                                                className="menu_txt">Active</span>
                                         </span>
                                     </li>
                                     <li>
                                         <span className={`icon open ${activeType === "open" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('open') }}
-                                                className="menu_txt">Open jobs</span>
+                                                className="menu_txt">Open</span>
                                         </span>
                                     </li>
                                     <li>
                                         <span className={`icon past ${activeType === "past" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('past') }}
-                                                className="menu_txt">Past jobs</span>
+                                                className="menu_txt">Past</span>
                                         </span>
                                     </li>
                                     {/* <hr></hr> */}
@@ -232,7 +233,10 @@ class JobDashboard extends Component<Props, State> {
                                         {/* <span className="icon approved"> */}
                                         <span className={`icon approved ${activeType === "approval" ? 'active' : ''}`}>
                                             <span
-                                                onClick={() => { setSelected('approval') }}
+                                                onClick={() => { 
+                                                    setShowToast(true,'Under development');
+                                                    // setSelected('approval') 
+                                                }}
                                                 className="menu_txt">
                                                 {'Need approval'}
                                                 {!!approveCount && (

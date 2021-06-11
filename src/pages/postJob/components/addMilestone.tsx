@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+
 // Please add a unique date
 interface Props {
     data: any;
@@ -46,6 +47,8 @@ const label: { [index: string]: string } = {
     from_date: 'From Date',
     recommended_hours: 'Recommended Hours',
 }
+
+const pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 export default class AddMilestone extends Component<Props, State> {
     constructor(props: any) {
         super(props)
@@ -72,6 +75,7 @@ export default class AddMilestone extends Component<Props, State> {
 
         let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = this.state;
         if (nextProps.milestones.length) {
+
             let milestones_items = nextProps.milestones;
             let item = milestones_items[milestones_items.length - 1];
 
@@ -111,6 +115,7 @@ export default class AddMilestone extends Component<Props, State> {
                 }
             }
         }
+
     }
 
     setLocalValueByCompare = (prop: any, state: any, name: any) => {
@@ -168,6 +173,17 @@ export default class AddMilestone extends Component<Props, State> {
         }
     }
 
+    checkHoursVal = (value: any, lable: any, name: any) => {
+        if (value?.length) {
+            if (value.match(pattern) !== null) {
+                return '';
+            } else {
+                return 'Please enter a valid pattern like : 04:03'
+            }
+        }
+        return `${label[name]} is required.`
+    }
+
     isInvalid = (name: string, value: string) => {
         switch (name) {
             case 'milestone_name':
@@ -175,20 +191,35 @@ export default class AddMilestone extends Component<Props, State> {
             case 'from_date':
                 return !value.length ? `${label[name]} is required.` : '';
             case 'recommended_hours':
-                return !value.length ? `${label[name]} is required.` : '';
+                return this.checkHoursVal(value, label, name);
         }
     }
 
 
-    checkErrors = () => {
+    checkErrors = (isTrue?: boolean) => {
         const { milestones } = this.props;
         let milestone_index = milestones.length ? milestones.length - 1 : 0;
         let from_date = milestones[milestone_index]?.from_date || '';
         let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
         if (milestone_name?.length) {
+            let errorItems: any = {};
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+
+            if(milestone_name?.length){
+                errorItems['milestone_name'] = error_1;
+            }
+
+            
+            if(recommended_hours?.length && error_3?.length){
+                errorItems['recommended_hours'] = error_3;
+            }
+
+            if (JSON.stringify(this.state.errors) !== JSON.stringify(errorItems)) {
+                this.setState({ errors: errorItems })
+            }
+
             // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
             // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
             if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
@@ -217,6 +248,35 @@ export default class AddMilestone extends Component<Props, State> {
         }
     }
 
+
+    renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: any, formatSet?: any) => {
+
+        if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
+            return `${moment(fromDate, format).format('DD MMM')}`
+        }
+
+        if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate, format).endOf("month").toISOString();
+
+            let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
+            let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
+                return `${moment(fromDate, format).format(formatSet[1])} - ${moment(toDate, format).format(formatSet[1])}`
+            }
+            if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
+                return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
+            }
+            return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
+        }
+
+        return 'Choose';
+    }
+
     render() {
         const { newMileStoneScreen, handleStepForward, handleStepBack, milestones } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, errors, isToggleOpen } = this.state;
@@ -228,11 +288,11 @@ export default class AddMilestone extends Component<Props, State> {
             let date_from_moment = milestones[milestones.length - 1].from_date;
             let date_to_moment = milestones[milestones.length - 1].to_date;
             if (date_from_moment?.length) {
-                from_date_format = moment(date_from_moment, 'MM-DD-YYYY').format('MMM DD');
+                from_date_format = date_from_moment //moment(date_from_moment, 'MM-DD-YYYY').format('MMM DD');
             }
 
             if (date_to_moment?.length) {
-                to_date_format = moment(date_to_moment, 'MM-DD-YYYY').format('DD');
+                to_date_format = date_to_moment //moment(date_to_moment, 'MM-DD-YYYY').format('MMM DD');
             }
         }
 
@@ -248,9 +308,10 @@ export default class AddMilestone extends Component<Props, State> {
                             aria-describedby="alert-dialog-description"
                         >
                             <DialogTitle id="alert-dialog-title">
-                                {"if you tab the back arrow, you lose the `draft`."}
-                                <br />
-                                {'Can we save it ?'}
+                                {'If you click the back arrow, you lose the data, do you want to save it?'}
+                                {/* {"if you tab the back arrow, you lose the `draft`."} */}
+                                {/* <br />
+                                {'Can we save it ?'} */}
                                 {/* {"Unsaved data will be lost. Do you want to continue?"} */}
                             </DialogTitle>
                             <DialogActions>
@@ -283,8 +344,10 @@ export default class AddMilestone extends Component<Props, State> {
                                             onClick={() => {
                                                 if (check_errors) {
                                                     if (milestone_name?.length || isPhotoevidence == true || recommended_hours?.length || from_date_format?.length) {
+                                                        this.setItems(true);
                                                         this.toggleOpen()
                                                     } else {
+                                                        this.setItems(true);
                                                         handleStepBack();
                                                     }
                                                 } else {
@@ -306,7 +369,9 @@ export default class AddMilestone extends Component<Props, State> {
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
                                 <div className="form_field">
-                                    <label className="form_label">Milestone Name</label>
+                                    <label className="form_label">
+                                        {'Milestone Name'}
+                                    </label>
                                     <div className="text_field">
                                         <input
                                             type="text"
@@ -337,10 +402,16 @@ export default class AddMilestone extends Component<Props, State> {
                                         <button
                                             onClick={() => { handleStepForward(8) }}
                                             className="fill_btn fill_grey_btn choose_btn">
-                                            {!to_date_format.length && from_date_format.length
+                                            {this.renderTimeWithCustomFormat(
+                                                from_date_format,
+                                                to_date_format,
+                                                'MM-DD-YYYY',
+                                                ['MMM DD', 'MMM DD YYYY']
+                                            )}
+                                            {/* {!to_date_format.length && from_date_format.length
                                                 ? `${from_date_format}` : to_date_format.length
-                                                    ? `${from_date_format}-${to_date_format}`
-                                                    : 'Choose'}
+                                                    ? `${from_date_format} - ${to_date_format}`
+                                                    : 'Choose'} */}
                                         </button>
                                     </div>
                                 </div>
@@ -353,7 +424,6 @@ export default class AddMilestone extends Component<Props, State> {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;
-                                                    let pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
                                                     // "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
 
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {

@@ -37,7 +37,8 @@ export const renderTime = (fromDate: any, toDate: any) => {
     }
 }
 
-export const renderTimeWithFormat = (fromDate: any, toDate: any, format?: any) => {
+export const renderTimeWithFormat = (fromDate:any, toDate:any, format:any) => {
+
     if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
         return `${moment(fromDate, format).format('DD MMM')}`
     }
@@ -53,7 +54,7 @@ export const renderTimeWithFormat = (fromDate: any, toDate: any, format?: any) =
         let yearDiff = parseInt(item_year.toString());
 
         if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
-            return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
+            return `${moment(fromDate, format).format('DD MMM YY')} - ${moment(toDate, format).format('DD MMM YY')}`
         }
         if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
             return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
@@ -61,6 +62,7 @@ export const renderTimeWithFormat = (fromDate: any, toDate: any, format?: any) =
         return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
     }
 }
+
 
 export const getSearchParamsData = (location?: any) => {
     const params = new URLSearchParams(location?.search);
@@ -71,6 +73,7 @@ export const getSearchParamsData = (location?: any) => {
     const queryParamsData: any = {
         page: Number(params.get('page')),
         isFiltered: params.get('isFiltered') === "true",
+        isFilterOn: params.get('isFilterOn'),
         tradeId: tradeIdArray,
         specializationId: specializationArray,
         lat: Number(params.get('lat')),
@@ -86,8 +89,7 @@ export const getSearchParamsData = (location?: any) => {
         searchJob: params.get('searchJob'),
         max_budget: Number(params.get('max_budget')),
         pay_type: params.get('pay_type'),
-        sortBy: params.get('sortBy')
-        //Array.isArray(params.get('jobTypes'))
+        sortBy: Number(params.get('sortBy'))
     }
     return queryParamsData;
 }

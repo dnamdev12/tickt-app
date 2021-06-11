@@ -54,11 +54,12 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     let split_values = value.split('.');
     if (split_values.length > 1) {
       if (split_values[0].length > 6) {
-        return 'Price field must have 6 digits before decimal or less.'
+        return 'Price field must have 6 or less digits before decimal';
+        // return 'Price field must have 6 digits before decimal or less.'
       }
 
       if (split_values[1].length > 2) {
-        return 'Price field must have 2 digits after decimal or less.'
+        return 'Price field must have 6 or less digits before decimal'
       }
 
     } else {
@@ -146,7 +147,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                   <button className="back" onClick={handleStepBack}></button>
                   <span className="title">Payment</span>
                 </div>
-                <p className="commn_para">How mach will you pay for a job</p>
+                <p className="commn_para">How much will you pay for a job</p>
               </div>
             </div>
           </div>

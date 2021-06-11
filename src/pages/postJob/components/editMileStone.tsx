@@ -30,6 +30,8 @@ const label: { [index: string]: string } = {
     from_date: 'From Date',
     recommended_hours: 'Recommended Hours',
 }
+
+const pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 export default class EditMilestone extends Component<Props, State> {
     constructor(props: any) {
         super(props)
@@ -127,7 +129,7 @@ export default class EditMilestone extends Component<Props, State> {
                     }
                 }
             }
-            
+
             this.setState({
                 from_date: from_date,
                 isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
@@ -184,6 +186,17 @@ export default class EditMilestone extends Component<Props, State> {
         }, milestone_index);
     }
 
+    checkHoursVal = (value: any, lable: any, name: any) => {
+        if (value?.length) {
+            if (value.match(pattern) !== null) {
+                return '';
+            } else {
+                return 'Please enter a valid pattern like : 04:03'
+            }
+        }
+        return `${label[name]} is required.`
+    }
+
     isInvalid = (name: string, value: string) => {
         switch (name) {
             case 'milestone_name':
@@ -191,7 +204,7 @@ export default class EditMilestone extends Component<Props, State> {
             case 'from_date':
                 return !value.length ? `${label[name]} is required.` : '';
             case 'recommended_hours':
-                return !value.length ? `${label[name]} is required.` : '';
+                return this.checkHoursVal(value, label, name);
         }
     }
 
@@ -217,9 +230,26 @@ export default class EditMilestone extends Component<Props, State> {
         let from_date = milestones[milestone_index]?.from_date || '';
         let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
         if (milestone_name?.length) {
+            let errorItems: any = {};
             let error_1 = this.isInvalid('milestone_name', milestone_name);
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
+            errorItems['milestone_name'] = error_1;
+            errorItems['from_date'] = error_2;
+            errorItems['recommended_hours'] = error_3;
+
+            if(milestone_name?.length){
+                errorItems['milestone_name'] = error_1;
+            }
+            
+            if(recommended_hours?.length && error_3?.length){
+                errorItems['recommended_hours'] = error_3;
+            }
+
+            if (JSON.stringify(this.state.errors) !== JSON.stringify(errorItems)) {
+                this.setState({ errors: errorItems })
+            }
+
             // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
             // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
             if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
@@ -229,12 +259,44 @@ export default class EditMilestone extends Component<Props, State> {
         return true;
     }
 
+    renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: any, formatSet?: any) => {
+
+        if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
+            return `${moment(fromDate, format).format('DD MMM')}`
+        }
+
+        if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
+            let yearEnd = moment().endOf("year").toISOString();
+            let monthEnd = moment(fromDate, format).endOf("month").toISOString();
+
+            let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
+            let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
+
+            let monthDiff = parseInt(item.toString());
+            let yearDiff = parseInt(item_year.toString());
+
+            if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
+                return `${moment(fromDate, format).format(formatSet[1])} - ${moment(toDate, format).format(formatSet[1])}`
+            }
+            if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
+                return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
+            }
+            return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
+        }
+
+        return 'Choose';
+    }
+
     render() {
         const { handleStepForward, handleStepBack, milestones, editMileStone } = this.props;
         let { milestone_name, isPhotoevidence, recommended_hours, from_date, to_date, errors } = this.state;
-        
-        let from_date_format = from_date?.length && from_date !== 'Invalid date' ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
-        let to_date_format = to_date?.length && to_date !== 'Invalid date' ? moment(to_date, 'MM-DD-YYYY').format('DD') : '';
+
+        // let from_date_format = from_date?.length && from_date !== 'Invalid date' ? moment(from_date, 'MM-DD-YYYYY').format('MMM DD') : '';
+        // let to_date_format = to_date?.length && to_date !== 'Invalid date' ? moment(to_date, 'MM-DD-YYYY').format('MMM DD') : '';
+
+        let from_date_format = from_date;
+        let to_date_format = to_date;
+
         let check_errors = this.checkErrors();
 
         return (
@@ -290,10 +352,16 @@ export default class EditMilestone extends Component<Props, State> {
                                         <button
                                             onClick={() => { handleStepForward(8) }}
                                             className="fill_btn fill_grey_btn choose_btn">
-                                            {!to_date_format.length && from_date_format.length
+                                            {this.renderTimeWithCustomFormat(
+                                                from_date_format,
+                                                to_date_format,
+                                                'MM-DD-YYYY',
+                                                ['MMM DD', 'MMM DD YYYY']
+                                            )}
+                                            {/* {!to_date_format.length && from_date_format.length
                                                 ? `${from_date_format}` : to_date_format.length
-                                                    ? `${from_date_format}-${to_date_format}`
-                                                    : 'Choose'}
+                                                    ? `${from_date_format} - ${to_date_format}`
+                                                    : 'Choose'} */}
                                         </button>
                                     </div>
                                 </div>
@@ -306,7 +374,7 @@ export default class EditMilestone extends Component<Props, State> {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;
-                                                    let pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
+
                                                     // "^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$";
 
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {

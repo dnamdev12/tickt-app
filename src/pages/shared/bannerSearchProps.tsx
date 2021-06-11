@@ -30,7 +30,7 @@ import { setShowToast } from '../../redux/common/actions';
 import { property } from 'lodash';
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
-import {renderTime} from '../../utils/common'
+import { renderTime } from '../../utils/common'
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -104,16 +104,17 @@ const BannerSearch = (props: PropsType) => {
     const searchRef = useDetectClickOutside({ onTriggered: handleOnOutsideSearch });
     const locationRef = useDetectClickOutside({
         onTriggered: () => {
-            if (addressText?.length > 3) {
-                handleOnOutsideLocation()
-            }
+            // if (addressText?.length > 3) {
+            handleOnOutsideLocation()
+            // }
         }
     });
+
     const locationRefClone = useDetectClickOutside({
         onTriggered: () => {
-            if (!addressText || addressText?.length < 2) {
-                handleOnOutsideLocation()
-            }
+            //     if (!addressText || addressText?.length < 2) {
+            //         handleOnOutsideLocation()
+            //     }
         }
     });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
@@ -132,6 +133,7 @@ const BannerSearch = (props: PropsType) => {
 
         if (!searchText?.length && !checkRender) {
             setSearchText(state.name);
+            console.log('Here ----------->')
 
             setStateData({
                 createdAt: null,
@@ -159,11 +161,16 @@ const BannerSearch = (props: PropsType) => {
         // when this option true it the props will set.
         if (Object.keys(local_info).length && !local_info?.doingLocalChanges) {
             if (searchText?.length !== local_info?.name) {
-
                 if (local_info?.sortBy) {
                     setSortBy(local_info?.sortBy);
                 }
-                setSearchText(local_info.name);
+
+                if (!local_info?.isTradeName) {
+                    setSearchText(local_info.name);
+                } else {
+                    setSearchText('');
+                }
+
                 setStateData({
                     createdAt: null,
                     image: null,
@@ -481,6 +488,7 @@ const BannerSearch = (props: PropsType) => {
 
             props.getTitleInfo({
                 name: searchText,
+                isTradeName: false,
                 count: data?.specializationId?.length,
                 tradeId: data.tradeId,
                 specializationId: data.specializationId,
@@ -531,6 +539,8 @@ const BannerSearch = (props: PropsType) => {
                     setSelectedAddress({ lat, lng });
                     setAddressText(address);
                     setInputFocus2(true);
+                    setInputFocus1(false);
+                    setInputFocus3(false);
                     setCurrentLocations(true);
                     // this.setState({ currentAddressLatLng: { long, lat }, addressText: address, enableCurrentLocation: true, inputFocus2: true })
                 }
@@ -545,7 +555,7 @@ const BannerSearch = (props: PropsType) => {
     const checkPlaceholder = (calenderRange1: any) => {
         let fromDate: any = calenderRange1?.startDate;
         let toDate: any = calenderRange1?.endDate;
-        return renderTime(fromDate, toDate );
+        return renderTime(fromDate, toDate);
     }
 
     let state_data: any = stateData;
@@ -587,7 +597,11 @@ const BannerSearch = (props: PropsType) => {
                                     setSearchText((e.target.value).trimLeft());
                                 }}
                                 // readOnly={props?.selectedItem ? true : false}
-                                onFocus={() => { setInputFocus1(true) }}
+                                onFocus={() => {
+                                    setInputFocus1(true);
+                                    setInputFocus2(false);
+                                    setInputFocus3(false);
+                                }}
                             />
                             <div className="border_eff"></div>
                             <span className="detect_icon_ltr">
@@ -617,7 +631,7 @@ const BannerSearch = (props: PropsType) => {
                     {/* {'location search start here!'} */}
                     <li className="loc_box">
                         <div id="location-text-field-div">
-
+                            {/* 
                             <div
                                 className={`text_field ${addressText?.length > 2 ? 'none' : ''}`}>
                                 <input
@@ -631,23 +645,25 @@ const BannerSearch = (props: PropsType) => {
                                         setAddressText((e.target.value).trimLeft());
                                     }}
                                     onFocus={() => {
-                                        setInputFocus2(true)
+                                        setInputFocus2(true);
+                                        setInputFocus1(false);
+                                        setInputFocus3(false);
                                     }}
                                 />
                                 <span className="detect_icon_ltr">
                                     <img src={Location} alt="location" />
                                 </span>
-                            </div>
+                            </div> */}
 
 
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
                                     searchOptions={{ componentRestrictions: { country: "au" } }}
+                                    shouldFetchSuggestions={addressText?.length > 2}
                                     onChange={(item: any) => {
                                         setAddressText(item);
                                     }}
-                                    shouldFetchSuggestions={true}
                                     onSelect={async (address) => {
                                         let selected_address: any = address;
                                         if (address.indexOf(',')) {
@@ -668,20 +684,24 @@ const BannerSearch = (props: PropsType) => {
                                     {({ getInputProps, suggestions, getSuggestionItemProps, loading }: any) => (
                                         <div>
                                             <div
-                                                className={`text_field ${addressText?.length > 2 ? '' : 'none'}`}>
+                                                className={`text_field`}>
+                                                {/* className={`text_field ${addressText?.length > 2 ? '' : 'none'}`}> */}
                                                 <input
                                                     {...getInputProps({ placeholder: 'Where?', className: 'line-1' })}
                                                     id="location-input-tag"
                                                     autoComplete="off"
                                                     ref={locationRef}
                                                     onFocus={() => {
-                                                        setInputFocus2(true)
+                                                        setInputFocus2(true);
+                                                        setInputFocus1(false);
+                                                        setInputFocus3(false);
                                                     }}
                                                 />
                                                 <span className="detect_icon_ltr">
                                                     <img src={Location} alt="location" />
                                                 </span>
                                                 {inputFocus2 && addressText?.length > 2 ?
+                                                    // {inputFocus2 && addressText?.length > 2 ?
                                                     <span className="detect_icon" >
                                                         <img
                                                             src={cross}
@@ -784,7 +804,11 @@ const BannerSearch = (props: PropsType) => {
                                 <input
                                     type="text"
                                     placeholder={checkPlaceholder(calenderRange1)}
-                                    onFocus={() => setInputFocus3(true)}
+                                    onFocus={() => {
+                                        setInputFocus3(true);
+                                        setInputFocus1(false);
+                                        setInputFocus2(false);
+                                    }}
                                 />
                                 {calenderRange1?.startDate && inputFocus3 &&
                                     <span className="detect_icon" >

@@ -124,7 +124,7 @@ class OpenJobs extends Component<Props, State> {
                                             <li className="icon calendar">
                                                 {renderTime(fromDate, toDate)}
                                             </li>
-                                            <li className="">
+                                            <li>
                                                 <span>
                                                     {timeLeft}
                                                 </span>

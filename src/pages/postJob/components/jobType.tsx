@@ -203,7 +203,17 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ed
             <div className="flex_col_sm_6">
               <div className="tags_wrap">
                 <ul>
-                  {specializations.map(({ _id, name }: { _id: string, name: string }) => <li key={_id} className={specialization.includes(_id) ? 'selected' : undefined} onClick={() => handleChange(_id, 'specialization')}>{name}</li>)}
+                  {specializations.map(({ _id, name }: { _id: string, name: string }) => {
+                    return (
+                      <li
+                        key={_id}
+                        className={specialization.includes(_id) ? 'selected' : undefined}
+                        onClick={() => handleChange(_id, 'specialization')}
+                      >
+                        {name}
+                      </li>
+                    )
+                  })}
                 </ul>
                 <span className="error_msg">{errors.specialization}</span>
               </div>
