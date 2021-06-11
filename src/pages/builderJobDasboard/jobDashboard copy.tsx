@@ -92,7 +92,7 @@ const JobDashboard = ({ getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBui
                                             <span className="approval_info">
                                                 <img src={approved} alt="icon" />
                                                 {'Approved'}
-                                                {/* Awating */}
+                                                {/* Awaiting */}
                                                 {/* <img src={waiting} alt="icon" /> */}
                                                 {/* Need approval */}
                                             </span>
@@ -172,7 +172,7 @@ const JobDashboard = ({ getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBui
                                             <span className="approval_info">
                                                 <img src={approved} alt="icon" />
                                                 {'Approved'}
-                                                {/* Awating */}
+                                                {/* Awaiting */}
                                                 {/* <img src={waiting} alt="icon" /> */}
                                                 {/* Need approval */}
                                             </span>
