@@ -14,6 +14,8 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { setShowToast } from '../../../redux/common/actions';
 
+import { renderTimeWithFormat } from '../../../utils/common';
+
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 interface Proptypes {
@@ -262,33 +264,7 @@ const JobDetails = ({
         return { sources, types };
     }
 
-    const renderTime = ({ fromDate, toDate }: any) => {
-        const format = 'MM-DD-YYYY';
-        if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
-            return `${moment(fromDate, format).format('DD MMM')}`
-        }
-
-        if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
-            let yearEnd = moment().endOf("year").toISOString();
-            let monthEnd = moment(fromDate, format).endOf("month").toISOString();
-
-            let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
-            let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
-
-            let monthDiff = parseInt(item.toString());
-            let yearDiff = parseInt(item_year.toString());
-
-            if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
-                return `${moment(fromDate, format).format('DD MMM YY')} - ${moment(toDate, format).format('DD MMM YY')}`
-            }
-            if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
-                return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
-            }
-            return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD')}`
-        }
-    }
-
-
+    const format = 'MM-DD-YYYY';
     const { sources, types } = renderFilteredItems();
     return (
         <div className="app_wrapper">
@@ -377,7 +353,7 @@ const JobDetails = ({
                                         milestones.map((item: any, index: any) => item?.milestone_name && (
                                             <li>
                                                 <span>{`${index + 1}. ${item?.milestone_name}`}</span>
-                                                <span>{renderTime({ fromDate: item?.from_date, toDate: item?.to_date })}</span>
+                                                <span>{renderTimeWithFormat(item?.from_date, item?.to_date , format)}</span>
                                                 {/* <span>{moment(item?.from_date,'MM-DD-YYYY').isValid() && !moment(item?.to_date,'MM-DD-YYYY').isValid()  ?
                                                     `${moment(item?.from_date,'MM-DD-YYYY').format('MMM-DD')}` :
                                                     moment(item?.from_date,'MM-DD-YYYY').isValid() && moment(item?.to_date,'MM-DD-YYYY').isValid() ?

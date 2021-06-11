@@ -19,6 +19,7 @@ import ApplicantsList from './components/applicantsList';
 import MarkMilestones from './components/markMilestones';
 import DeclineMilestone from './components/declineMilestone';
 import DeclineMilestoneSuccess from './components/declineMilestoneSuccess';
+import { setShowToast } from '../../redux/common/actions';
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -225,7 +226,10 @@ class JobDashboard extends Component<Props, State> {
                                     <li>
                                         <span className="icon approved">
                                             <span
-                                                onClick={() => { setSelected('approval') }}
+                                                onClick={() => { 
+                                                    setShowToast(true,'Under development');
+                                                    // setSelected('approval') 
+                                                }}
                                                 className="menu_txt">
                                                 {'Need approval'}
                                                 {!!approveCount && (

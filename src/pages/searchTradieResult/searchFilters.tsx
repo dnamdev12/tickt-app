@@ -138,7 +138,10 @@ const SearchFilter = (props: any) => {
             }
         } else if (name === 'specializationId') {
             setSortByFilter((prevData: any) => {
-                var newData = [...prevData.specializationId];
+                var newData: any = []
+                if (Array.isArray(prevData.specializationId) && prevData?.specializationId?.length) {
+                    newData = [...prevData.specializationId];
+                }
                 if (sortByFilter.allSpecializationClicked) {
                     newData = []
                 }
@@ -207,10 +210,10 @@ const SearchFilter = (props: any) => {
     )
 
     const showResultSearch = () => {
-        if (!sortByFilter?.specializationId?.length) {
-            setShowToast(true, 'Please select all fields.');
-            return;
-        }
+        // if (!sortByFilter?.specializationId?.length) {
+        //     setShowToast(true, 'Please select all fields.');
+        //     return;
+        // }
         updateOnChange();
         sortByFilterClose();
         setFilterEnable(true);
@@ -218,16 +221,19 @@ const SearchFilter = (props: any) => {
 
     const updateOnChange = (sort?: any) => {
         let local_info: any = props.localInfo;
+        const tradeInfo = props.tradeListData.find((item: any) => item._id === sortByFilter.tradeId[0]);
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
         const { specializationId, tradeId } = sortByFilter;
-        console.log({ specializationId })
+        console.log({ specializationId, sortByFilter, props })
         // if (specializationId?.length) {
         let filteredItem: any = []
         // let name = specializationList[0].name;
         if (specializationList?.length) {
             filteredItem = specializationList.filter((item: any) => {
-                if (specializationId.includes(item._id)) {
-                    return item;
+                if (Array.isArray(specializationId) && specializationId?.length) {
+                    if (specializationId.includes(item._id)) {
+                        return item;
+                    }
                 }
             });
         }
@@ -279,13 +285,13 @@ const SearchFilter = (props: any) => {
 
         props.postHomeSearchData(data)
         props.getTitleInfo({
-            name: name,
-            count: specializationId?.length,
+            name: name || tradeInfo.trade_name,
+            count: specializationId?.length || 0,
             tradeId: data.tradeId,
-            specializationId: data.specializationId,
-            sortBy: data.sortBy,
-            to_date: local_info?.to_date,
-            from_date: local_info?.from_date,
+            specializationId: data.specializationId || [],
+            sortBy: data.sortBy || 0,
+            to_date: local_info?.to_date || '',
+            from_date: local_info?.from_date || '',
             doingLocalChanges: false
         })
     }
@@ -371,13 +377,6 @@ const SearchFilter = (props: any) => {
                                     <span className="xs_sub_title">Specialisation</span>
                                 </div>
                                 <div className="tags_wrap">
-                                    {console.log({
-                                        specializationList,
-                                        allSpecializationClicked: sortByFilter.allSpecializationClicked,
-                                        specializationId:sortByFilter.specializationId,
-                                        sortByFilter,
-                                        checkIfAllSelected
-                                    })}
                                     <ul>
                                         {specializationList?.length > 0 &&
                                             <li
@@ -394,8 +393,11 @@ const SearchFilter = (props: any) => {
                                         {specializationList?.map(({ _id, name }: { _id: string, name: string }) => {
                                             // let active = sortByFilter.specializationId?.indexOf(_id) >= 0;
                                             let active = false;
-                                            if(specializationList?.length !== sortByFilter.specializationId?.length){
-                                                active = sortByFilter.specializationId.includes(_id)
+                                            if (specializationList?.length !== sortByFilter.specializationId?.length) {
+                                                active = false;
+                                                if (Array.isArray(sortByFilter.specializationId) && sortByFilter.specializationId?.length) {
+                                                    active = sortByFilter.specializationId.includes(_id);
+                                                }
                                             }
                                             return (
                                                 <li

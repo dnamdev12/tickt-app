@@ -7,6 +7,7 @@ import close from '../../../assets/images/icon-close-1.png';
 import addMedia from "../../../assets/images/add-image.png";
 import noDataFound from "../../../assets/images/no-search-data.png";
 import { format } from 'date-fns';
+import { renderTime } from '../../../utils/common';
 
 interface Proptypes {
   loading: boolean;
@@ -40,14 +41,8 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => 
             milestoneNumber,
             totalMilestones,
             status,
-          }) => {
-            fromDate = fromDate
-              ? format(new Date(fromDate), 'MMM dd')
-              : '';
-              toDate = toDate ? format(new Date(toDate), 'MMM dd') : '';
-
-            return (
-              <div className="flex_col_sm_6">
+          }) => (
+              <div key={jobId} className="flex_col_sm_6">
                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                   <NavLink
                     to={`/mark-milestone?jobId=${jobId}&redirect_from=jobs`}
@@ -65,13 +60,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => 
                   <div className="job_info">
                     <ul>
                       <li className="icon clock">
-                        {fromDate}
-                        {toDate &&
-                          ` - ${
-                            fromDate.startsWith(toDate.split(' ')[0])
-                              ? toDate.split(' ')[1]
-                              : toDate
-                          }`}
+                        {renderTime(fromDate, toDate)}
                       </li>
                       <li className="icon dollar">{amount}</li>
                       <li className="icon location line-1">{locationName}</li>
@@ -113,9 +102,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => 
                   </div>
                 </div>
               </div>
-            );
-          }
-        ) : !loading && (
+        )) : !loading && (
           <div className="no_record  m-t-vh">
             <figure className="no_img">
               <img src={noDataFound} alt="data not found" />
