@@ -132,6 +132,7 @@ const BannerSearch = (props: PropsType) => {
 
         if (!searchText?.length && !checkRender) {
             setSearchText(state.name);
+            console.log('Here ----------->')
 
             setStateData({
                 createdAt: null,
@@ -159,11 +160,16 @@ const BannerSearch = (props: PropsType) => {
         // when this option true it the props will set.
         if (Object.keys(local_info).length && !local_info?.doingLocalChanges) {
             if (searchText?.length !== local_info?.name) {
-
                 if (local_info?.sortBy) {
                     setSortBy(local_info?.sortBy);
                 }
-                setSearchText(local_info.name);
+
+                if (!local_info?.isTradeName) {
+                    setSearchText(local_info.name);
+                } else {
+                    setSearchText('');
+                }
+
                 setStateData({
                     createdAt: null,
                     image: null,
@@ -481,6 +487,7 @@ const BannerSearch = (props: PropsType) => {
 
             props.getTitleInfo({
                 name: searchText,
+                isTradeName: false,
                 count: data?.specializationId?.length,
                 tradeId: data.tradeId,
                 specializationId: data.specializationId,
@@ -691,7 +698,8 @@ const BannerSearch = (props: PropsType) => {
                                                 <span className="detect_icon_ltr">
                                                     <img src={Location} alt="location" />
                                                 </span>
-                                                {inputFocus2 && addressText?.length > 2 ?
+                                                {addressText?.length > 2 ?
+                                                // {inputFocus2 && addressText?.length > 2 ?
                                                     <span className="detect_icon" >
                                                         <img
                                                             src={cross}
