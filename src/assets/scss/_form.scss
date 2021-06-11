@@ -587,6 +587,17 @@ a.fill_grey_btn {
   .back{
     top: -30px !important;
   }
+  .dot_menu {
+    right: 10px;
+    top: -30px;
+    @media(max-width: 768px){
+      top: -40px;
+    }
+    @media(max-width: 650px){
+      top: -34px;
+      right: 24px;
+    }
+  }
 }
 
 .m-tb40{

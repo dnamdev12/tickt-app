@@ -145,7 +145,7 @@ header {
     width: 20%;
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: flex-end;
     flex-flow: column;
     @media (max-width: 650px) {
       width: 75%;
@@ -153,6 +153,7 @@ header {
       flex-flow: row-reverse;
       align-items: center;
       justify-content: end;
+      margin-right: 10px;
     }
     li {
       display: inline-block;
