@@ -23,6 +23,7 @@ import question from '../../assets/images/ic-question.png';
 import leftIcon from '../../assets/images/ic-back-arrow-line.png';
 import rightIcon from '../../assets/images/ic-next-arrow-line.png';
 import noDataFound from "../../assets/images/no-search-data.png";
+import editIconBlue from '../../assets/images/ic-edit-blue.png';
 
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -404,9 +405,20 @@ const JobDetailsPage = (props: PropsType) => {
                     />
 
                     <div className="vid_img_wrapper pt-20">
-                        <div className="flex_row">
-                            <div className="flex_col_sm_8 relative">
+                        <div className="flex_row relative">
+                            <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
+                            </div>
+                            <div className="flex_col_sm_4 text-right">
+                            <span className="dot_menu" title="Edit">
+                                    <img src={editIconBlue} alt="edit" />
+                                    <div className="edit_menu">
+                                        <ul>
+                                            <li className="icon lodge">Lodge dispute</li>
+                                            <li className="icon delete">Cancel job</li>
+                                        </ul>
+                                    </div>
+                                </span>
                             </div>
                         </div>
                         <div className="flex_row">
