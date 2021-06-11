@@ -23,6 +23,7 @@ import question from '../../assets/images/ic-question.png';
 import leftIcon from '../../assets/images/ic-back-arrow-line.png';
 import rightIcon from '../../assets/images/ic-next-arrow-line.png';
 import noDataFound from "../../assets/images/no-search-data.png";
+import editIconBlue from '../../assets/images/ic-edit-blue.png';
 
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -34,6 +35,7 @@ interface PropsType {
     history: any,
     location: any,
     tradieProfileData: any,
+    isLoading: boolean,
 }
 
 const options = {
@@ -63,6 +65,7 @@ const JobDetailsPage = (props: PropsType) => {
     const [errors, setErrors] = useState<any>({});
     const [jobDetailsData, setJobDetailsData] = useState<any>('');
     const [redirectFrom, setRedirectFrom] = useState<string>('');
+    const [isTradieWorking, setIsTradieWorking] = useState<string>('');
     const [jobConfirmation, setJobConfirmation] = useState<any>({
         isJobModalOpen: false,
         tradieTradeId: '',
@@ -93,8 +96,10 @@ const JobDetailsPage = (props: PropsType) => {
     console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation");
 
     useEffect(() => {
+        const params = new URLSearchParams(props.location?.search);
+        const isTradieWorking: any = params.get('isActive');
+        setIsTradieWorking(isTradieWorking);
         (async () => {
-            const params = new URLSearchParams(props.location?.search);
             const redirectFrom: any = params.get('redirect_from');
             setRedirectFrom(redirectFrom);
             console.log(redirectFrom, 'redirectFrom----------------');
@@ -404,10 +409,22 @@ const JobDetailsPage = (props: PropsType) => {
                     />
 
                     <div className="vid_img_wrapper pt-20">
-                        <div className="flex_row">
-                            <div className="flex_col_sm_8 relative">
+                        <div className="flex_row relative">
+                            <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
+                            {!jobDetailsData?.appliedStatus && !props.isLoading &&isTradieWorking && (
+                                <div className="flex_col_sm_4 text-right">
+                                    <span className="dot_menu" title="Edit">
+                                        <img src={editIconBlue} alt="edit" />
+                                        <div className="edit_menu">
+                                            <ul>
+                                                <li className="icon lodge">Lodge dispute</li>
+                                                <li className="icon delete">Cancel job</li>
+                                            </ul>
+                                        </div>
+                                    </span>
+                                </div>)}
                         </div>
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
@@ -519,7 +536,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 </ul>
                                 <button className="fill_grey_btn ques_btn" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
                                     <img src={question} alt="question" />
-                                    {`${jobDetailsData?.questionsCount || '0'} questions`}
+                                    {`${jobDetailsData?.questionsCount ? `${jobDetailsData?.questionsCount === 1 ? `${jobDetailsData?.questionsCount} question` : `${jobDetailsData?.questionsCount} questions`}` : '0 questions'}`}
                                 </button>
                             </div>
 
@@ -702,7 +719,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                                 <span className="rating">
-                                                    {`${jobDetailsData?.postedBy?.ratings || '0'}, ${jobDetailsData?.postedBy?.reviews || '0'} reviews`}
+                                                    {`${jobDetailsData?.postedBy?.ratings || '0'}, ${jobDetailsData?.postedBy?.reviews ? `${jobDetailsData?.postedBy?.reviews === 1 ? `${jobDetailsData?.postedBy?.reviews} review` : `${jobDetailsData?.postedBy?.reviews} reviews`}` : '0 reviews'}`}
                                                 </span>
                                             </div>
                                         </div>

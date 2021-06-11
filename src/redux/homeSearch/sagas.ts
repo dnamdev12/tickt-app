@@ -36,9 +36,7 @@ function* getRecentLocationList() {
 
 
 function* getJobTypeList() {
-    setLoading(true);
     const response: FetchResponse = yield NetworkOps.get(Urls.jobTypeList);
-    setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_JOB_TYPE_LIST, payload: response.result.resultData });
     } else {
