@@ -570,7 +570,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                                 <span className="date">{questionData?.date || ''}</span>
                                                             </div>
                                                         </div>
-                                                        <p>{questionData?.question}</p>
+                                                        <p>{questionData?.question || ''}</p>
                                                         {Object.keys(questionData?.answerData).length > 0 && !(questionsData.answerShownHideList.includes(questionData?.questionId)) &&
                                                             <span className="show_hide_ans link" onClick={() => questionHandler('showAnswerClicked', questionData?.questionId)}>Show answer</span>}
                                                         {questionsData.answerShownHideList.includes(questionData?.questionId) && <span className="show_hide_ans link" onClick={() => questionHandler('hideAnswerClicked', questionData?.questionId)}>Hide answer</span>}

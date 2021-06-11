@@ -191,21 +191,21 @@ class JobDashboard extends Component<Props, State> {
                                                     // setResetItem(true);
                                                     setSelected('active')
                                                 }}
-                                                className="menu_txt">Active Jobs</span>
+                                                className="menu_txt">Active</span>
                                         </span>
                                     </li>
                                     <li>
                                         <span className={`icon open ${activeType === "open" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('open') }}
-                                                className="menu_txt">Open jobs</span>
+                                                className="menu_txt">Open</span>
                                         </span>
                                     </li>
                                     <li>
                                         <span className={`icon past ${activeType === "past" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { setSelected('past') }}
-                                                className="menu_txt">Past jobs</span>
+                                                className="menu_txt">Past</span>
                                         </span>
                                     </li>
                                     {/* <hr></hr> */}

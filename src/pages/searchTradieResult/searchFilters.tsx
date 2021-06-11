@@ -65,11 +65,11 @@ const SearchFilter = (props: any) => {
 
     useEffect(() => {
         if (props?.localInfo?.tradeId?.length) {
-            setSortByFilter((prev: any) => ({
-                ...prev,
-                tradeId: props.localInfo.tradeId,
-                specializationId: props.localInfo.specializationId
-            }));
+            // setSortByFilter((prev: any) => ({
+            //     ...prev,
+            //     tradeId: props.localInfo.tradeId,
+            //     specializationId: props.localInfo.specializationId
+            // }));
         }
         console.log({ props })
     }, [props])
@@ -210,6 +210,11 @@ const SearchFilter = (props: any) => {
     )
 
     const showResultSearch = () => {
+        if (!sortByFilter?.tradeId?.length) {
+            setShowToast(true, 'Please select atleast one field');
+            return;
+        }
+
         // if (!sortByFilter?.specializationId?.length) {
         //     setShowToast(true, 'Please select all fields.');
         //     return;
@@ -285,7 +290,8 @@ const SearchFilter = (props: any) => {
 
         props.postHomeSearchData(data)
         props.getTitleInfo({
-            name: name || tradeInfo.trade_name,
+            name: name ? name : tradeInfo?.trade_name ? tradeInfo?.trade_name : '',
+            isTradeName: tradeInfo?.trade_name ? true : false,
             count: specializationId?.length || 0,
             tradeId: data.tradeId,
             specializationId: data.specializationId || [],
