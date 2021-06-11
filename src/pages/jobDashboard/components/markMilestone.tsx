@@ -139,7 +139,7 @@ const MarkMilestone = ({
     'account_number': 'Account Number',
     'account_name': 'Account Name',
     'bsb_number': 'BSB Number',
-  } as {[key: string]: string};
+  } as { [key: string]: string };
 
   const validateBankDetails = (name: string, value: string) => {
     if (!value) {
@@ -195,8 +195,14 @@ const MarkMilestone = ({
                 onClick={() => history.push('/active-jobs')}
               ></button>
               <span className="xs_sub_title">{jobName}</span>
-              <span className="edit_icon" title="Edit">
+              <span className="dot_menu" title="Edit">
                 <img src={editIconBlue} alt="edit" />
+                <div className="edit_menu">
+                  <ul>
+                    <li className="icon lodge">Lodge dispute</li>
+                    <li className="icon delete">Cancel job</li>
+                  </ul>
+                </div>
               </span>
             </div>
             {/* <span className="sub_title">Job Milestones</span> */}
