@@ -444,7 +444,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '' )}`}</li>
+                                            <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount || ''}</li>
                                             <li className="icon location line-3">{jobDetailsData?.locationName || ''}</li>
                                             <li className="icon calendar">{jobDetailsData?.duration || ''}</li>
@@ -474,7 +474,7 @@ const JobDetailsPage = (props: PropsType) => {
                         >
                             <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                 <div className="heading">
-                                    <span className="sub_title">Apply Job Confirmation</span>
+                                    <span className="xs_sub_title">Apply Job Confirmation</span>
                                     <button className="close_btn" onClick={closeApplyJobModal}>
                                         <img src={cancel} alt="cancel" />
                                     </button>
@@ -578,12 +578,10 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>Load more</button>
                                                 </div>}
                                             </div>
-                                            <div className="btn_wrap">
-                                                <div className="bottom_btn">
-                                                    <button className="fill_grey_btn full_btn btn-effect" onClick={() => questionHandler('askQuestion')}>
-                                                        {'Ask question'}
-                                                    </button>
-                                                </div>
+                                            <div className="bottom_btn custom_btn">
+                                                <button className="fill_grey_btn full_btn btn-effect" onClick={() => questionHandler('askQuestion')}>
+                                                    {'Ask question'}
+                                                </button>
                                             </div>
                                         </div>
                                     </>
@@ -632,7 +630,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 >
                                     <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                         <div className="heading">
-                                            <span className="sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
+                                            <span className="xs_sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
                                             <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                                 <img src={cancel} alt="cancel" />
                                             </button>

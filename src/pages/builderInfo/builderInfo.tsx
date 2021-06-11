@@ -603,7 +603,7 @@ const BuilderInfo = (props: PropsType) => {
                 >
                     <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
-                            {reviewsData.deleteReviewsClicked && <span className="sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>}
+                            {reviewsData.deleteReviewsClicked && <span className="xs_sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>}
                             <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                 <img src={cancel} alt="cancel" />
                             </button>
