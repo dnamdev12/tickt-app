@@ -809,7 +809,13 @@ export class PersonalInformation extends Component<Props, State> {
                                             </div>
                                         )
                                     }) : <img alt="" src={portfolioPlaceholder} />} */}
-                                    <p>rfbciuhoewu,xo ch3y8rhrueowsriuefhkry8esjhjio</p>
+                                    {/* <p>rfbciuhoewu,xo ch3y8rhrueowsriuefhkry8esjhjio</p> */}
+                                    <div className="media">
+                                                <figure className="portfolio_img">
+                                                    <img src={portfolioPlaceholder} alt="portfolio-images" />
+                                                    <span className="back bk_white"></span>
+                                                </figure>
+                                            </div>
                                 </Carousel>
                             </div>
                             <div className="flex_col_sm_6">

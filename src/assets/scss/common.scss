@@ -490,6 +490,9 @@ body {
   left: 0px;
   width: 24px;
   height: 24px;
+  &.bk_white{
+    background: url('../images/icon-back-white.png') center no-repeat;
+  }
 }
 .share {
   font-size: 14px;
@@ -1487,7 +1490,7 @@ body {
             opacity: 0;
             visibility: hidden;
             right: -100%;
-            top: 10px;
+            top: 10px !important;
             -webkit-transition: all ease .6s;
             -o-transition: all ease .6s;
             transition: all ease .6s;
@@ -1821,6 +1824,15 @@ body {
     max-width: 864px;
     height: 378px;
     max-height: 378px;
+    padding: 30px 30px 0px;
+    @media (max-width: 650px){
+    padding: 30px 20px 0px;
+    }
+    .dot_menu {
+      @media (max-width: 650px){
+        top: 6px;
+      }
+  }
     .heading{
       margin: 0;
       @media(max-width: 650px){
@@ -1917,6 +1929,11 @@ body {
     transform: initial;
     @media(max-width: 650px){
       top: 0;
+    }
+    &.bk_white{
+      top: 10px;
+      left: 10px;
+      background: url('../images/icon-back-white.png') center no-repeat;
     }
   }
   .md_heading{
@@ -4639,9 +4656,16 @@ body {
     .media{
       margin: 0 20px 20px 0;
       cursor: auto;
+      @media(max-width: 650px){
+        margin: 0 18px 18px 0;
+      }
       .portfolio_img {
         width: 176px;
         height: 176px;
+        @media(max-width: 650px){
+          width: 145px;
+          height: 145px;
+        }
       }
     }
   }
