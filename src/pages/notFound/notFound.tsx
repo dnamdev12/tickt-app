@@ -203,8 +203,11 @@ export default function NotFound() {
         //                                     <img src={dummy} alt="img"/>
         //                                 </figure>
         //                                 <div className="detail">
-        //                                     <span className="inner_title">John Oldman</span>
-        //                                     <span className="inner_title job">Wire up circuit box</span>
+        //                                     <span className="inner_title line-1">John Oldman</span>
+        //                                     <span className="inner_title job line-1">Wire up circuit box</span>
+        //                                     <p className="commn_para line-1">Hi, thanks for request, hope you..</p>
+        //                                     <span className="date_time">20 August</span>
+        //                                     <span className="count">2</span>
         //                                 </div>
         //                             </a>
         //                         </li>
