@@ -923,7 +923,7 @@ export class PersonalInformation extends Component<Props, State> {
                                             <div className="media" key={portfolioJobDetail?.portfolioId}>
                                                 <figure className="portfolio_img">
                                                     <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
-                                                    <span className="back bk_white" title="Back" onClick={() => this.setState({ portfolioJobClicked: false, portfolioModalClicked: true })}></span>
+                                                    <span className="back bk_white" title="Back" onClick={() => this.setState({ portfolioJobClicked: false })}></span>
                                                 </figure>
                                             </div>
                                         )
