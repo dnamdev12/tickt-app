@@ -195,7 +195,7 @@ body {
 	position: absolute;
     right: auto;
     margin-left: 10px;
-    top: 0px;
+    top: 0px !important;
     cursor: pointer;
 	img{
 		width: 24px !important;
@@ -490,6 +490,9 @@ body {
   left: 0px;
   width: 24px;
   height: 24px;
+  &.bk_white{
+    background: url('../images/icon-back-white.png') center no-repeat;
+  }
 }
 .share {
   font-size: 14px;
@@ -1487,7 +1490,7 @@ body {
             opacity: 0;
             visibility: hidden;
             right: -100%;
-            top: 10px;
+            top: 10px !important;
             -webkit-transition: all ease .6s;
             -o-transition: all ease .6s;
             transition: all ease .6s;
@@ -1821,6 +1824,15 @@ body {
     max-width: 864px;
     height: 378px;
     max-height: 378px;
+    padding: 30px 30px 0px;
+    @media (max-width: 650px){
+    padding: 30px 20px 0px;
+    }
+    .dot_menu {
+      @media (max-width: 650px){
+        top: 6px;
+      }
+  }
     .heading{
       margin: 0;
       @media(max-width: 650px){
@@ -1917,6 +1929,11 @@ body {
     transform: initial;
     @media(max-width: 650px){
       top: 0;
+    }
+    &.bk_white{
+      top: 10px;
+      left: 10px;
+      background: url('../images/icon-back-white.png') center no-repeat;
     }
   }
   .md_heading{
@@ -2443,6 +2460,10 @@ body {
   width: 25px;
   height: 25px;
   z-index: 9;
+  @media(max-width: 650px){
+    right: 10px;
+    top: 15px;
+  }
   &:hover{
     .edit_menu{
       opacity: 1;
@@ -4537,10 +4558,21 @@ body {
         right: 80px;
       }
     }
+    .dot_menu{
+      top: 0;
+      right: 10px;
+      @media(max-width: 650px){
+        top: -2px;
+        right: 40px;
+      }
+    }
     .xs_sub_title{
       font-size: 16px;
       padding-left: 30px;
       max-width: 86%;
+      @media(max-width: 650px){
+        max-width: 80%;
+      }
     }
     .edit_delete {
       top: 0px;
@@ -4624,9 +4656,16 @@ body {
     .media{
       margin: 0 20px 20px 0;
       cursor: auto;
+      @media(max-width: 650px){
+        margin: 0 18px 18px 0;
+      }
       .portfolio_img {
         width: 176px;
         height: 176px;
+        @media(max-width: 650px){
+          width: 145px;
+          height: 145px;
+        }
       }
     }
   }
@@ -5200,6 +5239,7 @@ div#light-box div {
       color: var(--blue);
       display: flex;   
       margin-bottom: 12px;   
+      position: relative;
       @media (max-width: 1366px){
         padding: 15px 10px 17px 120px;
         margin-bottom: 8px;
@@ -5226,6 +5266,7 @@ div#light-box div {
         width: 80%;
         .inner_title{
           font-size: 14px;
+          margin-bottom: 2px;
           &.job{
             padding-left: 25px;
             position: relative;
@@ -5239,6 +5280,30 @@ div#light-box div {
             }
           }
         }
+      }
+      .date_time{
+        font-size: 14px;
+        line-height: 1.43;
+        color: #748092;
+        position: absolute;
+        top: 0;
+        right: 0;
+      }
+      .count{
+        font-size: 12px;
+        line-height: 1.67;
+        color: #313d48;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        background-color: var(--yellow);
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
     }
   }
