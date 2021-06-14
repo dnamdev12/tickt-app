@@ -11,15 +11,15 @@ import close from '../../assets/images/ic-cancel-blue.png';
 export default function NotFound() {
     return (
 
-        // <div className="error_page_wrap">
-        //     <figure className="no_img">
-        //         <img src={notFound} alt="not-found" />
-        //     </figure>
-        //     <div className="content">
-        //         <h1>Page Not Found</h1>
-        //         <Link to="/" className="fill_btn btn-effect" title=" Home">Back To Home</Link>
-        //     </div>
-        // </div>
+        <div className="error_page_wrap">
+            <figure className="no_img">
+                <img src={notFound} alt="not-found" />
+            </figure>
+            <div className="content">
+                <h1>Page Not Found</h1>
+                <Link to="/" className="fill_btn btn-effect" title=" Home">Back To Home</Link>
+            </div>
+        </div>
 
 
 
@@ -185,59 +185,59 @@ export default function NotFound() {
 
 
 
-        <div className="app_wrapper">
-            <div className="custom_container">
-                <span className="mob_side_nav">
-                    <img src={menu} alt="mob-side-nav" />
-                </span>
-                <div className="f_row chat_wrapr">
-                    <div className="side_nav_col">
-                        <button className="close_nav">
-                            <img src={close} alt="close" />
-                        </button>
-                        <div className="stick">
-                            <span className="title">Chat</span>
-                            <div className="search_bar">
-                                <input type="text" placeholder="Search" />
-                                <span className="detect_icon_ltr">
-                                    <img src={chatSearch} alt="search" />
-                                </span>
-                            </div>
-                            <ul className="chat_list">
-                                <li>
-                                    <a href="javascript:void(0)" className="chat active">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="img" />
-                                        </figure>
-                                        <div className="detail">
-                                            <span className="inner_title line-1">John Oldman</span>
-                                            <span className="inner_title job line-1">Wire up circuit box</span>
-                                            <p className="commn_para line-1">Hi, thanks for request, hope you..</p>
-                                            <span className="date_time">Aug 20</span>
-                                            <span className="count">2</span>
-                                        </div>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:void(0)" className="chat">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="img" />
-                                        </figure>
-                                        <div className="detail">
-                                            <span className="inner_title line-1">John Oldman</span>
-                                            <span className="inner_title job line-1">Wire up circuit box</span>
-                                            <p className="commn_para line-1">Hi, thanks for request, hope you..</p>
-                                            <span className="date_time">Aug 20</span>
-                                            <span className="count grey">2</span>
-                                        </div>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
+        // <div className="app_wrapper">
+        //     <div className="custom_container">
+        //         <span className="mob_side_nav">
+        //             <img src={menu} alt="mob-side-nav" />
+        //         </span>
+        //         <div className="f_row chat_wrapr">
+        //             <div className="side_nav_col">
+        //                 <button className="close_nav">
+        //                     <img src={close} alt="close" />
+        //                 </button>
+        //                 <div className="stick">
+        //                     <span className="title">Chat</span>
+        //                     <div className="search_bar">
+        //                         <input type="text" placeholder="Search" />
+        //                         <span className="detect_icon_ltr">
+        //                             <img src={chatSearch} alt="search" />
+        //                         </span>
+        //                     </div>
+        //                     <ul className="chat_list">
+        //                         <li>
+        //                             <a href="javascript:void(0)" className="chat active">
+        //                                 <figure className="u_img">
+        //                                     <img src={dummy} alt="img" />
+        //                                 </figure>
+        //                                 <div className="detail">
+        //                                     <span className="inner_title line-1">John Oldman</span>
+        //                                     <span className="inner_title job line-1">Wire up circuit box</span>
+        //                                     <p className="commn_para line-1">Hi, thanks for request, hope you..</p>
+        //                                     <span className="date_time">Aug 20</span>
+        //                                     <span className="count">2</span>
+        //                                 </div>
+        //                             </a>
+        //                         </li>
+        //                         <li>
+        //                             <a href="javascript:void(0)" className="chat">
+        //                                 <figure className="u_img">
+        //                                     <img src={dummy} alt="img" />
+        //                                 </figure>
+        //                                 <div className="detail">
+        //                                     <span className="inner_title line-1">John Oldman</span>
+        //                                     <span className="inner_title job line-1">Wire up circuit box</span>
+        //                                     <p className="commn_para line-1">Hi, thanks for request, hope you..</p>
+        //                                     <span className="date_time">Aug 20</span>
+        //                                     <span className="count grey">2</span>
+        //                                 </div>
+        //                             </a>
+        //                         </li>
+        //                     </ul>
+        //                 </div>
+        //             </div>
+        //         </div>
+        //     </div>
+        // </div>
 
     );
 }

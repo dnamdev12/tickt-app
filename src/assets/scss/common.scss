@@ -1867,6 +1867,7 @@ body {
         margin-bottom: 15px;
       }
       .media {
+        cursor: auto;
         .portfolio_img {
           width: 392px;
           height: 314px;
@@ -1910,6 +1911,12 @@ body {
     }
     textarea {
       min-height: 280px;
+      @media (max-width: 1366px) {
+        min-height: 220px;
+      }
+      @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        min-height: 220px;
+      }
     }
     .checkbox_wrap{   
       label{
@@ -1934,6 +1941,8 @@ body {
       top: 10px;
       left: 10px;
       background: url('../images/icon-back-white.png') center no-repeat;
+      z-index: 9;
+      cursor: pointer;
     }
   }
   .md_heading{
@@ -4655,7 +4664,6 @@ body {
   .portfolio_wrappr{
     .media{
       margin: 0 20px 20px 0;
-      cursor: auto;
       @media(max-width: 650px){
         margin: 0 18px 18px 0;
       }
