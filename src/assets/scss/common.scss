@@ -2401,9 +2401,10 @@ body {
         margin-bottom: 24px;
       }
       &.icon {
-        padding-left: 30px;
+        padding-left: 32px;
         font-size: 14px;
         font-family: 'Neue Haas Grotesk Text Pro Bold';
+        text-align: left;
         &:before {
           width: 24px;
           height: 24px;
@@ -2441,6 +2442,7 @@ body {
   cursor: pointer;
   width: 25px;
   height: 25px;
+  z-index: 9;
   &:hover{
     .edit_menu{
       opacity: 1;
