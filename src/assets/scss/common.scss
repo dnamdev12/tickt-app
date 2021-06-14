@@ -5218,6 +5218,9 @@ div#light-box div {
 
 //----------Chat-------------//
 .chat_wrapr{
+  .side_nav_col {
+    width: 490px;
+  }
   .u_img{
     width: 40px;
     height: 40px;
@@ -5230,6 +5233,29 @@ div#light-box div {
       object-fit: cover;
     }
   }
+  .search_bar{
+    position: absolute;
+    top: 45px;
+    right: 15px;
+    overflow: initial;
+    &.active{
+      input{
+        background-color: var(--white);
+      }
+      .detect_icon_ltr {
+        img {
+          width: 22px;
+          height: 22px;
+        }
+      }
+    }
+    .detect_icon_ltr {
+      img{
+        width: 42px;
+        height: 42px;
+      }
+    }
+  }
 }
 
 .chat_list {
@@ -5238,15 +5264,12 @@ div#light-box div {
       padding: 19px 10px 19px 120px;
       color: var(--blue);
       display: flex;   
-      margin-bottom: 12px;   
       position: relative;
       @media (max-width: 1366px){
         padding: 15px 10px 17px 120px;
-        margin-bottom: 8px;
         }
         @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
         padding: 15px 10px 17px 120px;
-        margin-bottom: 8px;
         }
         @media(max-width: 768px){
           padding: 15px 10px 17px 100px;
@@ -5255,7 +5278,6 @@ div#light-box div {
         padding: 12px 10px 12px 40px;
       }
       &.active, &:hover{
-        font-family: "Neue Haas Grotesk Text Pro Bold";
         background: #ffffff;
       }
       .u_img{
@@ -5263,15 +5285,16 @@ div#light-box div {
         height: 64px;
       }
       .detail{
-        width: 80%;
+        width: 64%;
         .inner_title{
           font-size: 14px;
           margin-bottom: 2px;
           &.job{
-            padding-left: 25px;
+            padding-left: 18px;
             position: relative;
             &::before{
-              @include position(absolute, 0px, auto, auto, 0px);
+              @include position(absolute, 50%, auto, auto, 0px);
+              transform: translateY(-50%);
               content: "";
               width: 12px;
               height: 12px;
@@ -5280,14 +5303,17 @@ div#light-box div {
             }
           }
         }
+        .commn_para{
+          margin: 0;
+        }
       }
       .date_time{
         font-size: 14px;
         line-height: 1.43;
         color: #748092;
         position: absolute;
-        top: 0;
-        right: 0;
+        top: 15px;
+        right: 15px;
       }
       .count{
         font-size: 12px;
@@ -5299,11 +5325,15 @@ div#light-box div {
         font-family: 'Neue Haas Grotesk Text Pro Bold';
         background-color: var(--yellow);
         position: absolute;
-        bottom: 0;
-        right: 0;
+        bottom: 20px;
+        right: 15px;
         display: flex;
         justify-content: center;
         align-items: center;
+        &.grey{
+          background-color: #748092;
+          color: var(--white);
+        }
       }
     }
   }
