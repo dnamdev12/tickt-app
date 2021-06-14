@@ -274,7 +274,7 @@ const PostJob = (props: Proptypes) => {
             setStep(step);
         }
     };
-
+    console.log({data});
     let page;
     switch (step) {
         case 1:
