@@ -49,7 +49,7 @@ interface State {
     aboutModalClicked: boolean,
     portfolioModalClicked: boolean,
     editPortfolioModalClicked: boolean,
-    portfolioImageClicked: boolean,
+    portfolioJobClicked: boolean,
     editJobModalClicked: boolean,
     jobDescModalClicked: boolean,
     passwordModalClicked: boolean,
@@ -72,6 +72,7 @@ interface State {
     tradeData: Array<any>,
     specializationData: Array<any>,
     portfolioEditDeleteMenu: boolean,
+    portfolioJobDetail: any,
 }
 
 export class PersonalInformation extends Component<Props, State> {
@@ -84,7 +85,7 @@ export class PersonalInformation extends Component<Props, State> {
             areasOfSpecsModalClicked: false,
             aboutModalClicked: false,
             portfolioModalClicked: false,
-            portfolioImageClicked: false,
+            portfolioJobClicked: false,
             editPortfolioModalClicked: false,
             editJobModalClicked: false,
             jobDescModalClicked: false,
@@ -108,6 +109,7 @@ export class PersonalInformation extends Component<Props, State> {
             profileViewData: {},
             localProfileView: '',
             portfolioEditDeleteMenu: false,
+            portfolioJobDetail: '',
         }
     }
 
@@ -363,7 +365,7 @@ export class PersonalInformation extends Component<Props, State> {
             aboutModalClicked,
             portfolioModalClicked,
             editPortfolioModalClicked,
-            portfolioImageClicked,
+            portfolioJobClicked,
             passwordModalClicked,
             basicDetailsData,
             trade,
@@ -379,6 +381,7 @@ export class PersonalInformation extends Component<Props, State> {
             confirmNewPassword,
             showConfirmNewPassword,
             portfolioEditDeleteMenu,
+            portfolioJobDetail,
         } = this.state;
 
         const tradeList: any = props.tradeListData;
@@ -586,7 +589,7 @@ export class PersonalInformation extends Component<Props, State> {
 
                 <div className="section_wrapper">
                     <span className="sub_title">Areas of specialisation
-                                    <span className="edit_icon" title="Edit" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
+                        <span className="edit_icon" title="Edit" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
                             <img src={editIconBlue} alt="edit" />
                         </span>
                     </span>
@@ -714,20 +717,20 @@ export class PersonalInformation extends Component<Props, State> {
 
                 <div className="section_wrapper">
                     <span className="sub_title">Portfolio
-                        {profileViewData?.portfolio?.length > 0 && <span className="edit_icon" title="Edit" onClick={() => this.setState({ portfolioModalClicked: true })}>
+                        {/* {profileViewData?.portfolio?.length > 0 && <span className="edit_icon" title="Edit" onClick={() => this.setState({ portfolioModalClicked: true })}>
                             <img src={editIconBlue} alt="edit" />
-                        </span>}
+                        </span>} */}
                     </span>
                     {profileViewData?.portfolio?.length === 0 && <button className="fill_grey_btn full_btn btn-effect">Add portfolio</button>}
                     <ul className="portfolio_wrappr">
                         {/* jon name ismissing in portfolio */}
                         {
-                            profileViewData?.portfolio?.map(({ jobDescription, portfolioId, portfolioImage }: { jobDescription: string, portfolioId: string, portfolioImage: Array<any> }) => {
+                            profileViewData?.portfolio?.map(({ jobDescription, jobName, portfolioId, portfolioImage }: { jobDescription: string, jobName: string, portfolioId: string, portfolioImage: Array<any> }) => {
                                 return (
-                                    <li className="media" key={portfolioId}>
+                                    <li className="media" key={portfolioId} onClick={() => this.setState({ portfolioJobClicked: true, portfolioJobDetail: { jobDescription, jobName, portfolioId, portfolioImage } })}>
                                         <figure className="portfolio_img">
                                             <img src={portfolioImage[0] ? portfolioImage[0] : profilePlaceholder} alt="portfolio-images" />
-                                            <span className="xs_sub_title">{jobDescription}</span>
+                                            <span className="xs_sub_title">{jobName}</span>
                                         </figure>
                                     </li>
                                 )
@@ -736,7 +739,7 @@ export class PersonalInformation extends Component<Props, State> {
                     </ul>
                 </div>
 
-                <Modal
+                {/* <Modal
                     className="custom_modal"
                     open={portfolioModalClicked}
                     onClose={() => this.setState({ portfolioModalClicked: false })}
@@ -754,9 +757,8 @@ export class PersonalInformation extends Component<Props, State> {
                             <ul className="portfolio_wrappr">
                                 <li className="media">
                                     <figure className="portfolio_img" >
-                                        <img src={profilePlaceholder} alt="portfolio-images" onClick={() => this.setState({ portfolioModalClicked: false, portfolioImageClicked: true })} />
-                                        {/* <span className="edit_icon" onClick={() => this.setState({ portfolioModalClicked: false, editPortfolioModalClicked: true })}> */}
-                                        <span className="edit_icon" onClick={() => this.setState({ portfolioModalClicked: false, portfolioImageClicked: true })} >
+                                        <img src={profilePlaceholder} alt="portfolio-images" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} />
+                                        <span className="edit_icon" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} >
                                             <img src={editIconWhite} alt="edit" />
                                         </span>
                                         <span className="xs_sub_title">Dummy text</span>
@@ -777,18 +779,18 @@ export class PersonalInformation extends Component<Props, State> {
                             <button className="fill_btn full_btn btn-effect">Save changes</button>
                         </div>
                     </div>
-                </Modal>
+                </Modal> */}
 
                 <Modal
                     className="custom_modal"
-                    open={portfolioImageClicked}
-                    onClose={() => this.setState({ portfolioImageClicked: false, portfolioModalClicked: true })}
+                    open={portfolioJobClicked}
+                    onClose={() => this.setState({ portfolioJobClicked: false, portfolioModalClicked: true })}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         {/* <div className="heading">
-                            <button className="close_btn" onClick={() => this.setState({ portfolioImageClicked: false, portfolioModalClicked: true })}>
+                            <button className="close_btn" onClick={() => this.setState({ portfolioJobClicked: false, portfolioModalClicked: true })}>
                         </div> */}
                         <div className="flex_row">
                             <div className="flex_col_sm_6">
@@ -800,22 +802,15 @@ export class PersonalInformation extends Component<Props, State> {
                                     arrows={false}
                                     className="portfolio_wrappr"
                                 >
-                                    {/* {profileViewData?.portfolio?.length > 0 ? profileViewData?.portfolio?.portfolioImage?.map((image: string) => {
+                                    {portfolioJobDetail?.portfolioImage?.length > 0 ? portfolioJobDetail?.portfolioImage?.map((image: string) => {
                                         return (
-                                            <div className="media" key={portfolioId}>
+                                            <div className="media" key={portfolioJobDetail?.portfolioId}>
                                                 <figure className="portfolio_img">
                                                     <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
                                                 </figure>
                                             </div>
                                         )
-                                    }) : <img alt="" src={portfolioPlaceholder} />} */}
-                                    {/* <p>rfbciuhoewu,xo ch3y8rhrueowsriuefhkry8esjhjio</p> */}
-                                    <div className="media">
-                                                <figure className="portfolio_img">
-                                                    <img src={portfolioPlaceholder} alt="portfolio-images" />
-                                                    <span className="back bk_white"></span>
-                                                </figure>
-                                            </div>
+                                    }) : <img alt="" src={portfolioPlaceholder} />}
                                 </Carousel>
                             </div>
                             <div className="flex_col_sm_6">
@@ -860,7 +855,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
                                     Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
                                     Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
-                                    {/* <p>{portfolioData?.portfolioDetails?.jobDescription}</p> */}
+                                    {/* <p>{portfolioJobDetail?.jobDescription}</p> */}
                                 </div>
                             </div>
                         </div>
