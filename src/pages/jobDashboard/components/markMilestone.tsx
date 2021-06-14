@@ -360,7 +360,7 @@ const MarkMilestone = ({
                 title="More"
                 onClick={() =>
                   history.push(
-                    `/job-details-page?jobId=${params.jobId}&redirect_from=jobs`
+                    `/job-details-page?jobId=${params.jobId}&redirect_from=jobs&isActive=on`
                   )
                 }
               >
