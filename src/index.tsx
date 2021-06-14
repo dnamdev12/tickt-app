@@ -8,7 +8,6 @@ import ErrorBoundary from '../src/hoc/errorBoundary';
 
 import '../src/assets/scss/common.scss'
 
-
 const app = (
   <React.StrictMode>
     <ErrorBoundary>

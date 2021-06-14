@@ -2,6 +2,8 @@ import { get } from 'lodash';
 import { setShowToast } from '../redux/common/actions';
 import storageService from '../utils/storageService';
 import { urlFor } from './Urls';
+import * as moment from 'moment';
+import 'moment-timezone';
 
 export interface FetchResponse {
     status?: number | boolean,
@@ -20,6 +22,7 @@ class NetworkOps {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Basic dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz`,
+                'timezone':moment.tz.guess(),
                 ...headerOverrides
             },
         };
@@ -34,6 +37,7 @@ class NetworkOps {
             request.headers = {
                 ...request.headers,
                 Authorization: token,
+                'timezone':moment.tz.guess(),
                 // Authorization: `Bearer ${token}`,
             }
         }
