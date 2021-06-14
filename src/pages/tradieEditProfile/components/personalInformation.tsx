@@ -648,36 +648,38 @@ export class PersonalInformation extends Component<Props, State> {
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
-                        <div className="inner_wrappr">
-                            <div className="form_field">
-                                <label className="form_label">Password</label>
-                                <div className="text_field">
-                                    <input type={showPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Password" name='password' value={password} onChange={this.passwordHandler} />
-                                    <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }))}>
-                                        <img src={showPassword ? eyeIconOpen : eyeIconClose} />
-                                    </span>
+                        <div className="inner_wrap">
+                            <div className="inner_wrappr">
+                                <div className="form_field">
+                                    <label className="form_label">Password</label>
+                                    <div className="text_field">
+                                        <input type={showPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Password" name='password' value={password} onChange={this.passwordHandler} />
+                                        <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }))}>
+                                            <img src={showPassword ? eyeIconOpen : eyeIconClose} />
+                                        </span>
+                                    </div>
+                                    {!!errors?.password && <span className="error_msg">{errors?.password}</span>}
                                 </div>
-                                {!!errors?.password && <span className="error_msg">{errors?.password}</span>}
-                            </div>
-                            <div className="form_field">
-                                <label className="form_label">New Password</label>
-                                <div className="text_field">
-                                    <input type={showNewPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter New Password" name='newPassword' value={newPassword} onChange={this.passwordHandler} />
-                                    <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showNewPassword: !prevState.showNewPassword }))}>
-                                        <img src={showNewPassword ? eyeIconOpen : eyeIconClose} />
-                                    </span>
+                                <div className="form_field">
+                                    <label className="form_label">New Password</label>
+                                    <div className="text_field">
+                                        <input type={showNewPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter New Password" name='newPassword' value={newPassword} onChange={this.passwordHandler} />
+                                        <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showNewPassword: !prevState.showNewPassword }))}>
+                                            <img src={showNewPassword ? eyeIconOpen : eyeIconClose} />
+                                        </span>
+                                    </div>
+                                    {!!errors?.newPassword && <span className="error_msg">{errors?.newPassword}</span>}
                                 </div>
-                                {!!errors?.newPassword && <span className="error_msg">{errors?.newPassword}</span>}
-                            </div>
-                            <div className="form_field">
-                                <label className="form_label">Confirm New Password</label>
-                                <div className="text_field">
-                                    <input type={showConfirmNewPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Confirm New Password" name='confirmNewPassword' value={confirmNewPassword} onChange={this.passwordHandler} />
-                                    <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showConfirmNewPassword: !prevState.showConfirmNewPassword }))}>
-                                        <img src={showConfirmNewPassword ? eyeIconOpen : eyeIconClose} />
-                                    </span>
+                                <div className="form_field">
+                                    <label className="form_label">Confirm New Password</label>
+                                    <div className="text_field">
+                                        <input type={showConfirmNewPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Confirm New Password" name='confirmNewPassword' value={confirmNewPassword} onChange={this.passwordHandler} />
+                                        <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showConfirmNewPassword: !prevState.showConfirmNewPassword }))}>
+                                            <img src={showConfirmNewPassword ? eyeIconOpen : eyeIconClose} />
+                                        </span>
+                                    </div>
+                                    {!!errors?.confirmNewPassword && !errors?.newPassword && <span className="error_msg">{errors?.confirmNewPassword}</span>}
                                 </div>
-                                {!!errors?.confirmNewPassword && !errors?.newPassword && <span className="error_msg">{errors?.confirmNewPassword}</span>}
                             </div>
                         </div>
                         <div className="bottom_btn custom_btn">
@@ -902,7 +904,10 @@ export class PersonalInformation extends Component<Props, State> {
                     <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         {/* <div className="heading">
                             <button className="close_btn" onClick={() => this.setState({ portfolioJobClicked: false, portfolioModalClicked: true })}>
+                            <img src={cancel} alt="cancel" />
+                            </button>
                         </div> */}
+
                         <div className="flex_row">
                             <div className="flex_col_sm_6">
                                 <Carousel
@@ -918,6 +923,7 @@ export class PersonalInformation extends Component<Props, State> {
                                             <div className="media" key={portfolioJobDetail?.portfolioId}>
                                                 <figure className="portfolio_img">
                                                     <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
+                                                    <span className="back bk_white" title="Back" onClick={() => this.setState({ portfolioJobClicked: false, portfolioModalClicked: true })}></span>
                                                 </figure>
                                             </div>
                                         )
