@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import dummy from '../../assets/images/u_placeholder.jpg';
 import search from '../../assets/images/main-search.png';
+import chatSearch from '../../assets/images/search-chat.png';
 import more from '../../assets/images/icon-direction-right.png';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
@@ -196,18 +197,38 @@ export default function NotFound() {
         //                 </button>
         //                 <div className="stick">
         //                     <span className="title">Chat</span>
+        //                     <div className="search_bar">
+        //                         <input type="text" placeholder="Search" />
+        //                         <span className="detect_icon_ltr">
+        //                             <img src={chatSearch} alt="search" />
+        //                         </span>
+        //                     </div>
         //                     <ul className="chat_list">
         //                         <li>
-        //                             <a href="javascript:void(0)" className="chat">
+        //                             <a href="javascript:void(0)" className="chat active">
         //                                 <figure className="u_img">
-        //                                     <img src={dummy} alt="img"/>
+        //                                     <img src={dummy} alt="img" />
         //                                 </figure>
         //                                 <div className="detail">
         //                                     <span className="inner_title line-1">John Oldman</span>
         //                                     <span className="inner_title job line-1">Wire up circuit box</span>
         //                                     <p className="commn_para line-1">Hi, thanks for request, hope you..</p>
-        //                                     <span className="date_time">20 August</span>
+        //                                     <span className="date_time">Aug 20</span>
         //                                     <span className="count">2</span>
+        //                                 </div>
+        //                             </a>
+        //                         </li>
+        //                         <li>
+        //                             <a href="javascript:void(0)" className="chat">
+        //                                 <figure className="u_img">
+        //                                     <img src={dummy} alt="img" />
+        //                                 </figure>
+        //                                 <div className="detail">
+        //                                     <span className="inner_title line-1">John Oldman</span>
+        //                                     <span className="inner_title job line-1">Wire up circuit box</span>
+        //                                     <p className="commn_para line-1">Hi, thanks for request, hope you..</p>
+        //                                     <span className="date_time">Aug 20</span>
+        //                                     <span className="count grey">2</span>
         //                                 </div>
         //                             </a>
         //                         </li>
