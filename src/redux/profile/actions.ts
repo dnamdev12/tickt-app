@@ -52,6 +52,42 @@ export const tradieUpdateBasicDetails = async (data: any) => {
   return { success: false };
 }
 
+export const tradieAddPortfolioJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieAddPortfolioJob, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const tradieUpdatePortfolioJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdatePortfolioJob, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const tradieDeletePortfolioJob = async (portfolioId: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(Urls.tradieDeletePortfolioJob +  `?portfolioId=${portfolioId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message);
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 export const getBankDetails = () => ({
   type: actionTypes.GET_BANK_DETAILS_START,
 });

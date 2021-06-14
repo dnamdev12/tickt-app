@@ -10,7 +10,10 @@ import _ from 'lodash';
 import {
     tradieUpdateProfileDetails,
     tradieUpdateBasicDetails,
-    tradieUpdatePassword
+    tradieUpdatePassword,
+    tradieAddPortfolioJob,
+    tradieUpdatePortfolioJob,
+    tradieDeletePortfolioJob,
 } from '../../../redux/profile/actions';
 import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
@@ -24,6 +27,7 @@ import profilePlaceholder from '../../../assets/images/ic-placeholder-detail.png
 import cancel from "../../../assets/images/ic-cancel.png";
 import remove from "../../../assets/images/icon-close-1.png";
 import addMedia from "../../../assets/images/add-image.png";
+import addMediaLrg from "../../../assets/images/add-image-lg.png";
 import editIconWhite from '../../../assets/images/ic-edit-white.png';
 import spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
 import eyeIconClose from '../../../assets/images/icon-eye-closed.png';
@@ -47,11 +51,8 @@ interface State {
     profileModalClicked: boolean,
     areasOfSpecsModalClicked: boolean,
     aboutModalClicked: boolean,
-    portfolioModalClicked: boolean,
-    editPortfolioModalClicked: boolean,
+    isAddEditPortfolioModal: boolean,
     portfolioJobClicked: boolean,
-    editJobModalClicked: boolean,
-    jobDescModalClicked: boolean,
     passwordModalClicked: boolean,
     basicDetailsData: any,
     trade: Array<any>,
@@ -71,8 +72,10 @@ interface State {
     localProfileView: any,
     tradeData: Array<any>,
     specializationData: Array<any>,
-    portfolioEditDeleteMenu: boolean,
     portfolioJobDetail: any,
+    addPortfolioJob: boolean,
+    editPortfolioJob: boolean,
+    deletePortfolioJob: boolean,
 }
 
 export class PersonalInformation extends Component<Props, State> {
@@ -84,11 +87,8 @@ export class PersonalInformation extends Component<Props, State> {
             profileModalClicked: false,
             areasOfSpecsModalClicked: false,
             aboutModalClicked: false,
-            portfolioModalClicked: false,
             portfolioJobClicked: false,
-            editPortfolioModalClicked: false,
-            editJobModalClicked: false,
-            jobDescModalClicked: false,
+            isAddEditPortfolioModal: false,
             passwordModalClicked: false,
             trade: [],
             tradeData: [],
@@ -108,8 +108,10 @@ export class PersonalInformation extends Component<Props, State> {
             basicDetailsData: {},
             profileViewData: {},
             localProfileView: '',
-            portfolioEditDeleteMenu: false,
             portfolioJobDetail: '',
+            addPortfolioJob: false,
+            editPortfolioJob: false,
+            deletePortfolioJob: false,
         }
     }
 
@@ -216,7 +218,7 @@ export class PersonalInformation extends Component<Props, State> {
         // alert('areasssss');
     }
 
-    onFileChange = async (e: any) => {
+    onFileChange = async (e: any, type?: string) => {
         const formData = new FormData();
         const newFile = e.target.files[0];
         var fileType = newFile?.type?.split('/')[1]?.toLowerCase();
@@ -227,6 +229,15 @@ export class PersonalInformation extends Component<Props, State> {
             return;
         }
         formData.append('file', newFile);
+        if (type === "addJobPhotos") {
+            const res = await onFileUpload(formData);
+            if (res?.success) {
+                const data: any = { ...this.state.portfolioJobDetail };
+                data?.portfolioImage?.push(res.imgUrl);
+                this.setState({ portfolioJobDetail: data });
+            }
+            return;
+        }
         this.setState({ userImage: URL.createObjectURL(newFile), formData: formData });
         // const res1 = await onFileUpload(formData);
         // if (res1?.success) {
@@ -302,16 +313,44 @@ export class PersonalInformation extends Component<Props, State> {
         this.setState({ basicDetailsData: newBasicDetails });
     }
 
+    // validatePortfolioForm = () => {
+    //     const newErrors: any = {};
+    //     if (!this.state.portfolioJobDetail?.jobname.trim()) {
+    //         newErrors.jobName = Constants.errorStrings.jobName;
+    //     } else {
+    //         const passwordRegex = new RegExp(regex.password);
+    //         if (!passwordRegex.test(this.state.password.trim())) {
+    //             newErrors.jobName = Constants.errorStrings.jobName;
+    //         }
+    //     }
+
+    //     if (!this.state.portfolioJobDetail?.jobDescription.trim()) {
+    //         newErrors.jobDescription = Constants.errorStrings.jobDescription;
+    //     } else {
+    //         const passwordRegex = new RegExp(regex.password);
+    //         if (!passwordRegex.test(this.state.password.trim())) {
+    //             newErrors.jobDescription = Constants.errorStrings.jobDescription;
+    //         }
+    //     }
+
+    //     if (!this.state.portfolioJobDetail?.jobDescription.trim()) {
+    //         newErrors.jobDescription = Constants.errorStrings.jobDescription;
+    //     } else {
+    //         const passwordRegex = new RegExp(regex.password);
+    //         if (!passwordRegex.test(this.state.password.trim())) {
+    //             newErrors.jobDescription = Constants.errorStrings.jobDescription;
+    //         }
+    //     }
+
+    //     this.setState({ errors: newErrors });
+    //     return !Object.keys(newErrors).length;
+    // }
+
     submitBasicProfileDetails = async () => {
         if (this.validateBasicDetailsForm()) {
             const data = { ...this.state.basicDetailsData };
             delete data.userType;
             delete data.userId;
-            // data.qualificationDoc.splice(0, data.qualificationDoc.length);
-            // data.qualificationDoc.push({
-            //     qualification_id: "White Card",
-            //     url: "url1"
-            // })
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
                 this.setState((prevState: any) => ({ profileModalClicked: false, basicDetailsData: prevState.basicDetailsData }));
@@ -355,6 +394,67 @@ export class PersonalInformation extends Component<Props, State> {
         });
     }
 
+    submitPortfolioJobs = async () => {
+        if (this.state.addPortfolioJob) {
+            const portfolioJobDetail = this.state.portfolioJobDetail;
+            const data = {
+                jobName: portfolioJobDetail?.jobName,
+                jobDescription: portfolioJobDetail?.jobDescription,
+                url: portfolioJobDetail?.portfolioImage,
+            };
+            const res = await tradieAddPortfolioJob(data);
+            if (res?.success) {
+                this.setState({
+                    portfolioJobDetail: '',
+                    portfolioJobClicked: false,
+                    isAddEditPortfolioModal: false,
+                    addPortfolioJob: false,
+                });
+                return;
+            }
+        }
+        if (this.state.editPortfolioJob) {
+            const portfolioJobDetail = this.state.portfolioJobDetail;
+            const data = {
+                portfolioId: portfolioJobDetail?.portfolioId,
+                jobName: portfolioJobDetail?.jobName,
+                jobDescription: portfolioJobDetail?.jobDescription,
+                url: portfolioJobDetail?.portfolioImage,
+            };
+            const res = await tradieUpdatePortfolioJob(data);
+            if (res?.success) {
+                this.setState({
+                    portfolioJobDetail: '',
+                    portfolioJobClicked: true,
+                    isAddEditPortfolioModal: false,
+                    editPortfolioJob: false,
+                });
+                return;
+            }
+        }
+        if (this.state.deletePortfolioJob) {
+            const portfolioId = "ihgjvkhjkjhgcfgvbh";
+            const res = await tradieDeletePortfolioJob(portfolioId);
+            if (res?.success) {
+                this.setState({
+                    portfolioJobDetail: '',
+                    portfolioJobClicked: false,
+                    isAddEditPortfolioModal: false,
+                    deletePortfolioJob: false,
+                });
+                return;
+            }
+        }
+    }
+
+    closeAddEditPortofolioModal = () => {
+        this.setState((prevState: any) => ({
+            isAddEditPortfolioModal: false,
+            portfolioJobClicked: prevState.addPortfolioJob ? false : true,
+            addPortfolioJob: false
+        }));
+    }
+
     render() {
         let props: any = this.props;
         console.log(this.state, "state--------------", props, "props------------");
@@ -363,8 +463,7 @@ export class PersonalInformation extends Component<Props, State> {
             profileModalClicked,
             areasOfSpecsModalClicked,
             aboutModalClicked,
-            portfolioModalClicked,
-            editPortfolioModalClicked,
+            isAddEditPortfolioModal,
             portfolioJobClicked,
             passwordModalClicked,
             basicDetailsData,
@@ -380,8 +479,8 @@ export class PersonalInformation extends Component<Props, State> {
             showNewPassword,
             confirmNewPassword,
             showConfirmNewPassword,
-            portfolioEditDeleteMenu,
             portfolioJobDetail,
+            addPortfolioJob,
         } = this.state;
 
         const tradeList: any = props.tradeListData;
@@ -414,7 +513,7 @@ export class PersonalInformation extends Component<Props, State> {
                                 <img src={editIconBlue} alt="edit" />
                             </span>
                         </span>
-                        <span className="tagg">Tradie</span>
+                        <span className="tagg">Tradesperson</span>
                         <ul className="review_job">
                             <li>
                                 <span className="icon reviews">{profileViewData?.ratings || 0}</span>
@@ -596,7 +695,7 @@ export class PersonalInformation extends Component<Props, State> {
                     <div className="tags_wrap">
                         <ul>
                             <li className="main">
-                                <img src={profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="icon" />{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName}
+                                <img src={profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName}
                             </li>
                             {
                                 profileViewData?.areasOfSpecialization?.specializationData?.map(({ specializationId, specializationName }: { specializationId: string, specializationName: string }) => {
@@ -736,7 +835,19 @@ export class PersonalInformation extends Component<Props, State> {
                                 )
                             })
                         }
+
                     </ul>
+                    <label className="upload_media">
+                        <img
+                            src={addMediaLrg}
+                            alt="add"
+                            onClick={() => this.setState({
+                                addPortfolioJob: true,
+                                isAddEditPortfolioModal: true,
+                                portfolioJobDetail: { jobName: '', jobDescription: '', portfolioImage: [] }
+                            })}
+                        />
+                    </label>
                 </div>
 
                 {/* <Modal
@@ -784,7 +895,7 @@ export class PersonalInformation extends Component<Props, State> {
                 <Modal
                     className="custom_modal"
                     open={portfolioJobClicked}
-                    onClose={() => this.setState({ portfolioJobClicked: false, portfolioModalClicked: true })}
+                    onClose={() => this.setState({ portfolioJobClicked: false })}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
@@ -814,47 +925,22 @@ export class PersonalInformation extends Component<Props, State> {
                                 </Carousel>
                             </div>
                             <div className="flex_col_sm_6">
-                                {/* <span className="dot_menu" onClick={() => this.setState({ portfolioEditDeleteMenu: true })}> */}
                                 <span className="dot_menu">
                                     <img src={dotMenu} alt="menu" />
 
                                     <div className="edit_menu">
                                         <ul>
-                                            <li className="icon edit">Edit</li>
+                                            <li className="icon edit" onClick={() => this.setState({ isAddEditPortfolioModal: true, portfolioJobClicked: false, editPortfolioJob: true })}>Edit</li>
                                             <li className="icon delete">Delete</li>
                                         </ul>
                                     </div>
 
                                 </span>
-                                {/* <Menu className="edit_menu"
-                                    id="simple-menu"
-                                    // anchorEl={priceAnchorEl}
-                                    keepMounted
-                                    open={portfolioEditDeleteMenu}
-                                    onClose={() => this.setState({ portfolioEditDeleteMenu: false })}
-                                    anchorOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'center',
-                                      }}
-                                      transformOrigin={{
-                                        vertical: 'top',
-                                        horizontal: 'left',
-                                      }}
-                                      
-                                >
-                                   <ul>
-                                       <li className="icon edit">Edit</li>
-                                       <li className="icon delete">Delete</li>
-                                   </ul>
-                                </Menu> */}
-
-
-
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
                                     <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
+                                        Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
+                                        Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
                                     {/* <p>{portfolioJobDetail?.jobDescription}</p> */}
                                 </div>
                             </div>
@@ -865,21 +951,21 @@ export class PersonalInformation extends Component<Props, State> {
 
                 <Modal
                     className="custom_modal"
-                    open={editPortfolioModalClicked}
-                    onClose={() => this.setState({ editPortfolioModalClicked: false, portfolioModalClicked: true })}
+                    open={isAddEditPortfolioModal}
+                    onClose={this.closeAddEditPortofolioModal}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
                             <div className="relate">
-                                <button className="back" onClick={() => this.setState({ editPortfolioModalClicked: false, portfolioModalClicked: true })} />
+                                <button className="back" onClick={this.closeAddEditPortofolioModal} />
                                 <div className="md_heading">
                                     <span className="sub_title">Machine Maintenance</span>
                                     <span className="info_note">Tradies who have a portfolio with photos get job faster. </span>
                                 </div>
                             </div>
-                            <button className="close_btn" onClick={() => this.setState({ editPortfolioModalClicked: false, portfolioModalClicked: true })}>
+                            <button className="close_btn" onClick={this.closeAddEditPortofolioModal}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
@@ -888,35 +974,83 @@ export class PersonalInformation extends Component<Props, State> {
                                 <div className="form_field">
                                     <label className="form_label">Job Name</label>
                                     <div className="text_field">
-                                        <input type="text" placeholder="Enter Job Name" />
+                                        <input
+                                            type="text"
+                                            placeholder="Enter Job Name"
+                                            value={portfolioJobDetail?.jobName}
+                                            maxLength={100}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                                                const data = { ...portfolioJobDetail };
+                                                data.jobName = e.target.value;
+                                                this.setState({ portfolioJobDetail: data });
+                                            }
+                                            }
+                                        />
                                     </div>
                                 </div>
                                 <div className="form_field">
                                     <label className="form_label">Job Description</label>
                                     <div className="text_field">
-                                        <textarea placeholder="The item has..."></textarea>
+                                        <textarea
+                                            placeholder="Enter Job Description"
+                                            value={portfolioJobDetail?.jobDescription}
+                                            maxLength={250}
+                                            onChange={(e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                                                const data = { ...portfolioJobDetail };
+                                                data.jobDescription = e.target.value;
+                                                this.setState({ portfolioJobDetail: data });
+                                            }
+                                            }
+                                        />
                                     </div>
                                 </div>
                             </div>
                             <div className="upload_img_video">
-                                <figure className="img_video">
-                                    <img src={dummy} alt="img" />
-                                    <img src={remove} alt="remove" className="remove" />
-                                </figure>
-                                <label className="upload_media" htmlFor="upload_img_video">
-                                    <img src={addMedia} alt="add" />
-                                </label>
-                                <input
-                                    type="file"
-                                    accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
-                                    style={{ display: "none" }}
-                                    id="upload_img_video"
-                                />
+                                {portfolioJobDetail?.portfolioImage?.map((image: string, index: number) => {
+                                    return (
+                                        // <div className="media" key={portfolioJobDetail?.portfolioId}>
+                                        <figure className="img_video">
+                                            <img src={image ? image : dummy} alt="portfolio-images" />
+                                            <img src={remove} alt="remove" className="remove"
+                                                onClick={() => {
+                                                    const data: any = { ...portfolioJobDetail };
+                                                    data?.portfolioImage?.splice(index, 1);
+                                                    // const imageArray = [...data?.portfolioImage];
+                                                    // imageArray.splice(index, 1);
+                                                    this.setState({ portfolioJobDetail: data });
+                                                }} />
+                                        </figure>
+                                    )
+                                })
+                                }
+
+                                {(portfolioJobDetail?.portfolioImage?.length < 6 || addPortfolioJob) &&
+                                    <>
+                                        <label className="upload_media" htmlFor="upload_img_video">
+                                            <img src={addMedia} alt="add" />
+                                        </label>
+
+                                        <input
+                                            type="file"
+                                            accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
+                                            style={{ display: "none" }}
+                                            id="upload_img_video"
+                                            onChange={(e) => this.onFileChange(e, "addJobPhotos")}
+                                        />
+                                    </>
+                                }
+
                             </div>
                         </div>
                         <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect">Save changes</button>
-                            <button className="fill_grey_btn btn-effect">Cancel</button>
+                            <button
+                                className={`fill_btn full_btn btn-effect ${portfolioJobDetail?.jobName?.trim() && portfolioJobDetail?.jobDescription?.trim() && portfolioJobDetail?.portfolioImage?.length ? '' : 'disable_btn'}`}
+                                onClick={this.submitPortfolioJobs}
+                            >
+                                Save changes
+                            </button>
+                            <button className="fill_grey_btn btn-effect"
+                                onClick={this.closeAddEditPortofolioModal}>Cancel</button>
                         </div>
                     </div>
                 </Modal>
