@@ -174,23 +174,23 @@ const JobDashboard = ({
               <ul className="dashboard_menu">
                 <li>
                   <NavLink className="icon star" to="/active-jobs">
-                    <span className="menu_txt">Active Jobs</span>
+                    <span className="menu_txt">Active</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon applied" to="/applied-jobs">
-                    <span className="menu_txt">Applied Jobs</span>
+                    <span className="menu_txt">Applied</span>
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon past" to="/past-jobs">
-                    <span className="menu_txt">Past Jobs</span>
+                    <span className="menu_txt">Past</span>
                   </NavLink>
                 </li>
                 {/* <hr></hr> */}
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
-                    <span className="menu_txt">New Jobs
+                    <span className="menu_txt">New
                     {!!newJobsCount && (
                         <span className="badge_count">
                           {newJobsCount > 9 ? '9+' : newJobsCount}

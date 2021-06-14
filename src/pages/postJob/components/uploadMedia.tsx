@@ -117,7 +117,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         const res = await onFileUpload(formData)
         if (res.success) {
             let link: string = res.imgUrl;
-            let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx","msword"].includes(fileType) ? 3 : 4
+            let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx", "msword"].includes(fileType) ? 3 : 4
             setFilesUrl((prev: Array<any>) => [...prev, {
                 "mediaType": check_type,
                 "link": link
@@ -212,7 +212,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                 </div>
                                 {title && <span className="sub_title">{title}</span>}
                                 <p className="commn_para">
-                                    {para || 'Record a short video or add photos to demonstrate your job and any unique requirements.'}
+                                    {para || "Record maximum 2 short videos or 6 doc files/images to demonstrate your job and any unique requirements."}
+                                    {/* {para || 'Record a short video or add photos to demonstrate your job and any unique requirements.'} */}
                                 </p>
                             </div>
                             {!jobName && !filesUrl?.length ? (
@@ -254,29 +255,29 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     </div>
                     <div className="flex_row">
                         <div className="flex_col_sm_8">
-                        {hasDescription && <div className="form_field">
-                        <label className="form_label">Photo description</label>
-                        <div className="text_field">
-                            <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
+                            {hasDescription && <div className="form_field">
+                                <label className="form_label">Photo description</label>
+                                <div className="text_field">
+                                    <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
+                                </div>
+                                <span className="error_msg">{submitClicked && !description ? 'Description is required' : ''}</span>
+                            </div>}
+                            <div className="form_field">
+                                <button
+                                    onClick={() => {
+                                        setSubmitClicked(true);
+                                        handleStepComplete({
+                                            urls: filesUrl,
+                                            description: hasDescription ? description : undefined,
+                                        })
+                                    }}
+                                    className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}>
+                                    {'Submit'}
+                                </button>
+                            </div>
                         </div>
-                        <span className="error_msg">{submitClicked && !description ? 'Description is required' : ''}</span>
-                    </div>}
-                    <div className="form_field">
-                        <button
-                            onClick={() => {
-                                setSubmitClicked(true);
-                                handleStepComplete({
-                                    urls: filesUrl,
-                                    description: hasDescription ? description : undefined,
-                                })
-                            }}
-                            className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}>
-                            {'Submit'}
-                        </button>
                     </div>
-                        </div>
-                        </div>
-                    
+
                 </div>
             </div>
 
