@@ -1,6 +1,4 @@
-// const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
-// const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
-const ACTIVE_HOST = 'https://ticktstgapi.appskeeper.in';  // stg env
+const ACTIVE_HOST = process.env.REACT_APP_BASE_URL;
 
 const versions = {
     v1: 'v1/',
@@ -97,6 +95,8 @@ const Urls = {
     reviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewReply`,
     updateReviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}updateReviewReply`,
     removeReviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}removeReviewReply`,
+    needApproval:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`,
+    reviewTradie:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewTradie`,
     builder:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
 }
 

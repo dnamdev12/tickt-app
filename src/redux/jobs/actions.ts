@@ -286,6 +286,7 @@ export const getOpenJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUI
 export const getPastJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_PAST_JOBS, page });
 export const getNewApplicantsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS, page });
 export const getnewJobApplicationListBuilder = (item: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, item });
+export const getNewApprovalList = (page: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPROVAL_LIST, page });
 
 export const getMilestoneList = (jobId: string) => ({
   type: actionTypes.GET_MILESTONES_START,
@@ -404,6 +405,17 @@ export const getTradeProfile = async (data: any) => {
   }
   return { success: false, data: response.result };
 }
+
+
+export const ratingTradieProfile = async (data: any) => {
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewTradie, data);
+  setShowToast(true, response.message);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
 
 export const getJobDetails = async (jobId: string) => {
   setLoading(true);

@@ -157,12 +157,12 @@ const MarkMilestones = (props: any) => {
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={() => {
-                                                setShowToast(true, 'under development.')
-                                                // setMilestoneIndex({
-                                                //     index,
-                                                //     milestoneId,
-                                                //     jobId: item_details?.jobId
-                                                // });
+                                                // setShowToast(true, 'under development.')
+                                                setMilestoneIndex({
+                                                    index,
+                                                    milestoneId,
+                                                    jobId: item_details?.jobId
+                                                });
 
                                                 if (index === item_details?.milestones?.length - 1) {
                                                     // setIsLastMilestone(true);

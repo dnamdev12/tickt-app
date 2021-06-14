@@ -23,6 +23,7 @@ const initialState = {
   builderNewApplicantsList: [],
   tradieReviewList: [],
   tradieReviews: [],
+  newApprovalList:[],
   tradieRequestStatus: false
 }
 
@@ -105,7 +106,7 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         builderActionJobs: action.payload,
         builderNewApplicants: null,
-        tradieRequestStatus:false,
+        tradieRequestStatus: false,
         builderNewApplicantsList: null,
       };
 
@@ -114,7 +115,7 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         builderOpenJobs: action.payload,
         builderNewApplicants: null,
-        tradieRequestStatus:false,
+        tradieRequestStatus: false,
         builderNewApplicantsList: null,
       };
 
@@ -123,7 +124,7 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         builderPastJobs: action.payload,
         builderNewApplicants: null,
-        tradieRequestStatus:false,
+        tradieRequestStatus: false,
         builderNewApplicantsList: null,
       };
 
@@ -132,7 +133,7 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderNewApplicants: action.payload,
-        tradieRequestStatus:false,
+        tradieRequestStatus: false,
         builderNewApplicantsList: null
       };
 
@@ -140,7 +141,7 @@ const reducer = (state = initialState, action: any) => {
       console.log('Here!! --1 ')
       return {
         ...state,
-        tradieRequestStatus:false,
+        tradieRequestStatus: false,
         builderNewApplicantsList: action.payload,
       };
 
@@ -162,6 +163,12 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         tradieRequestStatus: action.payload,
+      };
+
+    case actionTypes.SET_BUILDER_NEW_APPROVAL_LIST:
+      return {
+        ...state,
+        newApprovalList: action.payload,
       };
 
     default: return state;

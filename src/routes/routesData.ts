@@ -25,6 +25,8 @@ import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import BuilderProfile from '../pages/builderProfile';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile';
+import RateSuccessTradie from '../pages/builderJobDasboard/components/rateSuccess';
+import TradieVouchers from '../pages/tradieInfo/vouchers';
 
 const routes = [
     {
@@ -115,6 +117,11 @@ const routes = [
         authRoute: false,
         privateRoute: true,
     },
+    {
+        name: 'ratesuccess',
+        path: '/rate-success',
+        component: RateSuccessTradie,
+    },
     // {
     //     name: 'builderinfo',
     //     path: '/builder-info',
@@ -124,6 +131,11 @@ const routes = [
         name: 'tradieinfo',
         path: '/tradie-info',
         component: TradieInfo,
+    },
+    {
+        name: 'tradievouchers',
+        path: '/tradie-vouchers',
+        component: TradieVouchers,
     },
     {
         name: 'jobdashboard',

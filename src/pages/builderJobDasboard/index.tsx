@@ -7,6 +7,7 @@ import {
     getOpenJobsBuilder,
     getNewApplicantsBuilder,
     getnewJobApplicationListBuilder,
+    getNewApprovalList,
 } from '../../redux/jobs/actions';
 
 const mapStateToProps = (state: any) => {
@@ -17,7 +18,8 @@ const mapStateToProps = (state: any) => {
             builderOpenJobs,
             builderPastJobs,
             builderNewApplicants,
-            builderNewApplicantsList
+            builderNewApplicantsList,
+            newApprovalList
         },
     } = state;
     return {
@@ -25,7 +27,7 @@ const mapStateToProps = (state: any) => {
         openJobs: builderOpenJobs,
         pastJobs: builderPastJobs,
         applicantJobs: builderNewApplicants,
-        approvalJobs: null,
+        approvalJobs: newApprovalList,
         applicantsListJobs: builderNewApplicantsList,
         isLoading: state.common.isLoading
     };
@@ -38,7 +40,8 @@ const mapDispatchToProps = (dispatch: any) => {
             getPastJobsBuilder,
             getOpenJobsBuilder,
             getNewApplicantsBuilder,
-            getnewJobApplicationListBuilder
+            getnewJobApplicationListBuilder,
+            getNewApprovalList
         },
         dispatch
     );

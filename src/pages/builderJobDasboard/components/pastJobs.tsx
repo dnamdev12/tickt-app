@@ -1,16 +1,19 @@
-import React, { ReactElement } from 'react'
+import React, { ReactElement, useState } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
 import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 import moment from 'moment';
+import RateThisJob from './ratethisJob/index';
+
 import { renderTime } from '../../../utils/common';
 interface Post {
     amount: any,
     fromDate: any,
     jobData: any,
     jobId: any,
+    isRated: any,
     jobName: any,
     locationName: any,
     milestoneNumber: any,
@@ -31,12 +34,31 @@ interface Post {
 export default function PastJobs(props: any): ReactElement {
     const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
+    const [enableRateJob, setRateJob] = useState({ data: {}, isTrue: false }); // toggle-rate-job
 
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
             let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
             props.history.push(`/job-detail?${urlEncode}`);
         }
+    }
+
+    const backToScreen = () => {
+        setRateJob((prev: any) => ({
+            data: {},
+            isTrue: !prev.isTrue
+        }));
+    }
+
+    if (enableRateJob?.isTrue) {
+        return (
+            <RateThisJob
+                backToScreen={backToScreen}
+                data={enableRateJob.data}
+                history={null}
+                location={null}
+            />
+        )
     }
 
     return (
@@ -49,6 +71,7 @@ export default function PastJobs(props: any): ReactElement {
                         fromDate,
                         jobData,
                         jobId,
+                        isRated,
                         jobName,
                         locationName,
                         milestoneNumber,
@@ -117,14 +140,46 @@ export default function PastJobs(props: any): ReactElement {
                                             />
                                         </span>
                                     </div>
-                                    <button className="fill_grey_btn full_btn">
-                                        {status === "COMPLETED" ? (
-                                            <React.Fragment>
-                                                <img src={rateStar} alt="rating-star" />
-                                                {'Rate this job'}
-                                            </React.Fragment>
-                                        ) : 'Publish again'}
-                                    </button>
+                                    {status === "COMPLETED" ?
+                                        !isRated && (<button
+                                            onClick={() => {
+                                                setRateJob((prev: any) => ({
+                                                    data: {
+                                                        amount,
+                                                        fromDate,
+                                                        jobData,
+                                                        jobId,
+                                                        jobName,
+                                                        locationName,
+                                                        milestoneNumber,
+                                                        specializationId,
+                                                        specializationName,
+                                                        status,
+                                                        toDate,
+                                                        totalMilestones,
+                                                        tradeId,
+                                                        tradieId,
+                                                        tradeName,
+                                                        tradeSelectedUrl,
+                                                        tradieData,
+                                                    },
+                                                    isTrue: !prev.isTrue
+                                                }));
+                                            }}
+                                            className="fill_grey_btn full_btn">
+                                            {status === "COMPLETED" ? (
+                                                <React.Fragment>
+                                                    <img src={rateStar} alt="rating-star" />
+                                                    {'Rate this job'}
+                                                </React.Fragment>
+                                            ) : 'Publish again'}
+                                        </button>
+                                        )
+                                        : (
+                                            <button className="fill_grey_btn full_btn">
+                                                {"Publish again"}
+                                            </button>
+                                        )}
                                 </div>
                             </div>
                         </div>
