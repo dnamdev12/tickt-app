@@ -58,7 +58,6 @@ interface State {
     trade: Array<any>,
     specialization: Array<any>,
     allSpecializationSelected: boolean,
-    portfolio: Array<any>,
     about: string,
     userImage: string,
     password: string,
@@ -95,7 +94,6 @@ export class PersonalInformation extends Component<Props, State> {
             specialization: [],
             specializationData: [],
             allSpecializationSelected: false,
-            portfolio: [],
             about: '',
             userImage: '',
             password: '',
@@ -404,13 +402,15 @@ export class PersonalInformation extends Component<Props, State> {
             };
             const res = await tradieAddPortfolioJob(data);
             if (res?.success) {
+                const data = { ...this.state.profileViewData };
+                data.portfolio.push(res?.data);
                 this.setState({
                     portfolioJobDetail: '',
                     portfolioJobClicked: false,
                     isAddEditPortfolioModal: false,
                     addPortfolioJob: false,
+                    profileViewData: data
                 });
-                return;
             }
         }
         if (this.state.editPortfolioJob) {
@@ -824,75 +824,30 @@ export class PersonalInformation extends Component<Props, State> {
                     </span>
                     {profileViewData?.portfolio?.length === 0 && <button className="fill_grey_btn full_btn btn-effect">Add portfolio</button>}
                     <ul className="portfolio_wrappr">
-                        {/* jon name ismissing in portfolio */}
-                        {
-                            profileViewData?.portfolio?.map(({ jobDescription, jobName, portfolioId, portfolioImage }: { jobDescription: string, jobName: string, portfolioId: string, portfolioImage: Array<any> }) => {
-                                return (
-                                    <li className="media" key={portfolioId} onClick={() => this.setState({ portfolioJobClicked: true, portfolioJobDetail: { jobDescription, jobName, portfolioId, portfolioImage } })}>
-                                        <figure className="portfolio_img">
-                                            <img src={portfolioImage[0] ? portfolioImage[0] : profilePlaceholder} alt="portfolio-images" />
-                                            <span className="xs_sub_title">{jobName}</span>
-                                        </figure>
-                                    </li>
-                                )
-                            })
-                        }
-
-                    </ul>
-                    <label className="upload_media">
-                        <img
-                            src={addMediaLrg}
-                            alt="add"
-                            onClick={() => this.setState({
-                                addPortfolioJob: true,
-                                isAddEditPortfolioModal: true,
-                                portfolioJobDetail: { jobName: '', jobDescription: '', portfolioImage: [] }
-                            })}
-                        />
-                    </label>
-                </div>
-
-                {/* <Modal
-                    className="custom_modal"
-                    open={portfolioModalClicked}
-                    onClose={() => this.setState({ portfolioModalClicked: false })}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    <div className="custom_wh profile_info" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        <div className="heading">
-                            <span className="sub_title">Portfolio</span>
-                            <button className="close_btn" onClick={() => this.setState({ portfolioModalClicked: false })}>
-                                <img src={cancel} alt="cancel" />
-                            </button>
-                        </div>
-                        <div className="inner_wrap">
-                            <ul className="portfolio_wrappr">
-                                <li className="media">
-                                    <figure className="portfolio_img" >
-                                        <img src={profilePlaceholder} alt="portfolio-images" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} />
-                                        <span className="edit_icon" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} >
-                                            <img src={editIconWhite} alt="edit" />
-                                        </span>
-                                        <span className="xs_sub_title">Dummy text</span>
-                                    </figure>
-                                </li>
-                                <li className="media">
+                        {profileViewData?.portfolio?.map(({ jobDescription, jobName, portfolioId, portfolioImage }: { jobDescription: string, jobName: string, portfolioId: string, portfolioImage: Array<any> }) => {
+                            return (
+                                <li className="media" key={portfolioId} onClick={() => this.setState({ portfolioJobClicked: true, portfolioJobDetail: { jobDescription, jobName, portfolioId, portfolioImage } })}>
                                     <figure className="portfolio_img">
-                                        <img src={profilePlaceholder} alt="portfolio-images" />
-                                        <span className="edit_icon">
-                                            <img src={editIconWhite} alt="edit" />
-                                        </span>
-                                        <span className="xs_sub_title">Dummy text</span>
+                                        <img src={portfolioImage[0] ? portfolioImage[0] : profilePlaceholder} alt="portfolio-images" />
+                                        <span className="xs_sub_title">{jobName}</span>
                                     </figure>
                                 </li>
-                            </ul>
-                        </div>
-                        <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect">Save changes</button>
-                        </div>
-                    </div>
-                </Modal> */}
+                            )
+                        })}
+
+                        {profileViewData?.portfolio?.length < 6 && <label className="upload_media">
+                            <img
+                                src={addMediaLrg}
+                                alt="add"
+                                onClick={() => this.setState({
+                                    addPortfolioJob: true,
+                                    isAddEditPortfolioModal: true,
+                                    portfolioJobDetail: { jobName: '', jobDescription: '', portfolioImage: [] }
+                                })}
+                            />
+                        </label>}
+                    </ul>
+                </div>
 
                 <Modal
                     className="custom_modal"
@@ -907,7 +862,6 @@ export class PersonalInformation extends Component<Props, State> {
                             <img src={cancel} alt="cancel" />
                             </button>
                         </div> */}
-
                         <div className="flex_row">
                             <div className="flex_col_sm_6">
                                 <Carousel
@@ -944,16 +898,13 @@ export class PersonalInformation extends Component<Props, State> {
                                 </span>
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
-                                    <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                        Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                        Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
+                                    <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p>
                                     {/* <p>{portfolioJobDetail?.jobDescription}</p> */}
                                 </div>
                             </div>
                         </div>
                     </div>
                 </Modal>
-
 
                 <Modal
                     className="custom_modal"
@@ -1070,3 +1021,49 @@ export class PersonalInformation extends Component<Props, State> {
 }
 
 export default PersonalInformation;
+
+
+
+
+//portfolio edit button removed ==> modal html
+{/* <Modal
+                    className="custom_modal"
+                    open={portfolioModalClicked}
+                    onClose={() => this.setState({ portfolioModalClicked: false })}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <div className="custom_wh profile_info" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading">
+                            <span className="sub_title">Portfolio</span>
+                            <button className="close_btn" onClick={() => this.setState({ portfolioModalClicked: false })}>
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
+                        <div className="inner_wrap">
+                            <ul className="portfolio_wrappr">
+                                <li className="media">
+                                    <figure className="portfolio_img" >
+                                        <img src={profilePlaceholder} alt="portfolio-images" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} />
+                                        <span className="edit_icon" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} >
+                                            <img src={editIconWhite} alt="edit" />
+                                        </span>
+                                        <span className="xs_sub_title">Dummy text</span>
+                                    </figure>
+                                </li>
+                                <li className="media">
+                                    <figure className="portfolio_img">
+                                        <img src={profilePlaceholder} alt="portfolio-images" />
+                                        <span className="edit_icon">
+                                            <img src={editIconWhite} alt="edit" />
+                                        </span>
+                                        <span className="xs_sub_title">Dummy text</span>
+                                    </figure>
+                                </li>
+                            </ul>
+                        </div>
+                        <div className="bottom_btn custom_btn">
+                            <button className="fill_btn full_btn btn-effect">Save changes</button>
+                        </div>
+                    </div>
+                </Modal> */}
