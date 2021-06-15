@@ -2204,6 +2204,7 @@ body {
     }
     &.ico_txt_wrap{
       display: flex;
+      min-height: 72px;
       .ico{
         width: 24px;
         height: 24px;
