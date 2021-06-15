@@ -5,8 +5,11 @@ import dummy from '../../assets/images/u_placeholder.jpg';
 import search from '../../assets/images/main-search.png';
 import chatSearch from '../../assets/images/search-chat.png';
 import more from '../../assets/images/icon-direction-right.png';
+import viewMore from '../../assets/images/icon-direction-blue.png';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
+import sendMedia from '../../assets/images/ic-media.png';
+import sendBtn from '../../assets/images/ic-send.png';
 
 export default function NotFound() {
     return (
@@ -17,7 +20,7 @@ export default function NotFound() {
             </figure>
             <div className="content">
                 <h1>Page Not Found</h1>
-                <Link to="/" className="fill_btn btn-effect" title=" Home">Back To Home</Link>
+                <Link to="/" className="fill_btn full_btn btn-effect" title="Home">Back To Home</Link>
             </div>
         </div>
 
@@ -184,7 +187,7 @@ export default function NotFound() {
 
 
 
-
+        // -----------------Chat------------------//
         // <div className="app_wrapper">
         //     <div className="custom_container">
         //         <span className="mob_side_nav">
@@ -235,9 +238,88 @@ export default function NotFound() {
         //                     </ul>
         //                 </div>
         //             </div>
+        //             <div className="detail_col">
+        //                 <div className="flex_row">
+        //                     <div className="chat_col active">
+        //                         <div className="chat_user">
+        //                             <figure className="u_img">
+        //                                 <img src={dummy} alt="user-img" />
+        //                             </figure>
+        //                             <span className="name">John Oldman</span>
+        //                             <span className="view_detail">View Job Details
+        //                                 <img src={viewMore} alt="view-more" />
+        //                             </span>
+        //                         </div>
+        //                         <div className="message_wrapr">
+        //                             <div className="date_time">
+        //                                 <span>Today</span>
+        //                                 <span>09.08.2020</span>
+        //                             </div>
+        //                             <div className="message">
+        //                                 <figure className="media">
+        //                                     <img src={notFound} alt="media" />
+        //                                     <span className="time">10:32</span>
+        //                                 </figure>
+        //                             </div>
+        //                             <div className="message">
+        //                                 <p className="mark">Completed  job milestone. Switches for lighting are all along the top row, appliances in the bottom row
+        //                                     <span className="time">10:32</span>
+        //                                 </p>
+        //                             </div>
+        //                             <div className="message">
+        //                                 <p>Circuit board wiring milestone completed
+        //                                     <span className="time">10:32</span>
+        //                                 </p>
+        //                             </div>
+        //                             <div className="message recive_msg">
+        //                                 <p>Great Thanks !
+        //                                     <span className="time">10:32</span>
+        //                                 </p>
+        //                             </div>
+        //                         </div>
+        //                         <div className="send_msg">
+        //                             <div className="text_field">
+        //                                 <span className="detect_icon_ltr">
+        //                                     <img src={sendMedia} alt="media" />
+        //                                 </span>
+        //                                 <textarea placeholder="Message.."></textarea>
+        //                                 <span className="detect_icon">
+        //                                     <img src={sendBtn} alt="send" />
+        //                                 </span>
+        //                             </div>
+        //                         </div>
+        //                     </div>
+        //                     <div className="view_detail_col">
+        //                         <div className="flex_row center_flex">
+        //                             <div className="flex_col_sm_10">
+        //                                 <span className="title">Wire up circuit box</span>
+        //                             </div>
+        //                             <div className="flex_col_sm_2 text-right">
+        //                                 <span className="close">
+        //                                     <img src={close} alt="close" />
+        //                                 </span>
+        //                             </div>
+        //                         </div>
+        //                         <div className="job_info">
+        //                             <ul>
+        //                                 <li className="icon clock">32 minutes ago</li>
+        //                                 <li className="icon dollar">$250 p/h</li>
+        //                                 <li className="icon location line-1">Melbourne CBD</li>
+        //                                 <li className="icon calendar">5 days</li>
+        //                             </ul>
+        //                         </div>
+        //                         <p className="commn_para">
+        //                             Sparky wanted for a quick job to hook up two new floors of an apartment building. Sparky wanted for a quick job to hook up two new floors of an apartment building. Sparky wanted for a quick job to hook up two new floors of an apartment building. Sparky wanted for a quick job to hook up two new floors of an apartment building.
+        //                         </p>
+        //                         <button className="fill_btn full_btn btn-effect">View Job details</button>
+        //                     </div>
+        //                 </div>
+        //             </div>
         //         </div>
         //     </div>
         // </div>
+        // -----------------Chat close------------------//
+
 
     );
 }
