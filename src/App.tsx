@@ -35,8 +35,7 @@ sagaMiddleware.run(rootSaga)
 
 const App = () => {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();
-
-  console.log({ env: process.env })
+  
   useEffect(() => {
     AOS.init({
       duration: 2000

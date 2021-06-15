@@ -32,6 +32,7 @@ import 'react-multi-carousel/lib/styles.css';
 import { portfolio, portfolioModal } from '../builderInfo/builderInfo'
 import { setShowToast } from '../../redux/common/actions';
 
+import vouch from '../../assets/images/ic-template.png';
 interface Props {
     tradieInfo: any,
     tradieId: any,
@@ -346,7 +347,7 @@ class TradieInfo extends Component<Props, State> {
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
-      
+
         return (
             <div className="app_wrapper">
                 <div className="section_wrapper">
@@ -539,6 +540,67 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                     : null}
+
+
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">Vouchers</span>
+                        <div className="flex_row">
+
+                            <div className="flex_col_sm_3">
+                                <div className="review_card vouchers">
+                                    <div className="pic_shot_dtl">
+                                        <figure className="u_img">
+                                            <img src={dummy} alt="user-img" />
+                                        </figure>
+                                        <div className="name_wrap">
+                                            <span className="user_name" title="Mark Spencerman">Mark Spencerman</span>
+                                            <span className="date">November 2020</span>
+                                        </div>
+                                    </div>
+                                    <p className="commn_para" title="">I give a guarantee for the work of this builder. This is a vouch from our company.</p>
+                                    <div className="vouch">
+                                        <figure className="vouch_icon">
+                                            <img src={vouch} alt="vouch" />
+                                        </figure>
+                                        <a className="link">Vouch for John Oldman</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex_col_sm_3">
+                                <div className="review_card vouchers">
+                                    <div className="pic_shot_dtl">
+                                        <figure className="u_img">
+                                            <img src={dummy} alt="user-img" />
+                                        </figure>
+                                        <div className="name_wrap">
+                                            <span className="user_name" title="Mark Spencerman">Mark Spencerman</span>
+                                            <span className="date">November 2020</span>
+                                        </div>
+                                    </div>
+                                    <p className="commn_para" title="">I give a guarantee for the work of this builder. This is a vouch from our company.</p>
+                                    <div className="vouch">
+                                        <figure className="vouch_icon">
+                                            <img src={vouch} alt="vouch" />
+                                        </figure>
+                                        <a className="link">Vouch for John Oldman</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <button
+                            className="fill_grey_btn full_btn view_more"
+                            onClick={() => {
+                                props.history.push({
+                                    pathname: '/tradie-vouchers',
+                                    state: {
+                                        path: props.location.search
+                                    }
+                                });
+                            }}>
+                            {`View all ${profileData?.reviewData?.length} vouchers`}</button>
+                    </div>
+                </div>
 
                 {reviewsData.showAllReviewsClicked && tradieReviews?.length &&
                     <Modal

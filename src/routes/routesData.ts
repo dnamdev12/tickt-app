@@ -28,6 +28,11 @@ import TradieEditProfile from '../pages/tradieEditProfile';
 import RateSuccessTradie from '../pages/builderJobDasboard/components/rateSuccess';
 import TradieVouchers from '../pages/tradieInfo/vouchers';
 
+import LodgeSuccess from '../pages/builderJobDasboard/components/lodgeDispute/success';
+import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/success';
+
+import ChooseTheJob from '../pages/chooseTheJob/index';
+
 const routes = [
     {
         name: 'main',
@@ -122,6 +127,16 @@ const routes = [
         path: '/rate-success',
         component: RateSuccessTradie,
     },
+    {
+        name: 'lodgesuccess',
+        path: '/lodge-success',
+        component: LodgeSuccess,
+    },
+    {
+        name: 'cancelsuccess',
+        path: '/cancel-job-success',
+        component: CancelJobSuccess,
+    },
     // {
     //     name: 'builderinfo',
     //     path: '/builder-info',
@@ -136,6 +151,11 @@ const routes = [
         name: 'tradievouchers',
         path: '/tradie-vouchers',
         component: TradieVouchers,
+    },
+    {
+        name: 'chooseTheJob',
+        path: '/choose-the-job',
+        component: ChooseTheJob,
     },
     {
         name: 'jobdashboard',

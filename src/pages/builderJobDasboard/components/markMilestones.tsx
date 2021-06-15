@@ -36,6 +36,8 @@ const MarkMilestones = (props: any) => {
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
     const [selectedMile, setMilestone] = useState(null);
 
+    const [toggleEdit, setToggleEdit] = useState(false);
+
     const backToScreen = () => {
         preFetch();
         setEnableApprove(false);
@@ -105,9 +107,18 @@ const MarkMilestones = (props: any) => {
                         }}
                     ></button>
                     <span className="xs_sub_title">{'Title'}</span>
-                    {/* <span className="edit_icon" title="Edit">
+                    <span
+                        onClick={() => {
+                            setToggleEdit((prev: any) => !prev);
+                        }}
+                        className="edit_icon" title="Edit">
                         <img src={editIconBlue} alt="edit" />
-                    </span> */}
+                    </span>
+                    {toggleEdit && (
+                        <span>
+                            {'Edit Element'}
+                        </span>
+                    )}
                 </div>
                 <span className="sub_title">Job Milestones</span>
                 <p className="commn_para">
@@ -154,30 +165,30 @@ const MarkMilestones = (props: any) => {
                                     </span>
                                 </div>
                                 {isActive === 1 ? (
-                                        <button
-                                            className="fill_btn full_btn btn-effect"
-                                            onClick={() => {
-                                                // setShowToast(true, 'under development.')
-                                                setMilestoneIndex({
-                                                    index,
-                                                    milestoneId,
-                                                    jobId: item_details?.jobId
-                                                });
+                                    <button
+                                        className="fill_btn full_btn btn-effect"
+                                        onClick={() => {
+                                            // setShowToast(true, 'under development.')
+                                            setMilestoneIndex({
+                                                index,
+                                                milestoneId,
+                                                jobId: item_details?.jobId
+                                            });
 
-                                                if (index === item_details?.milestones?.length - 1) {
-                                                    // setIsLastMilestone(true);
-                                                }
+                                            if (index === item_details?.milestones?.length - 1) {
+                                                // setIsLastMilestone(true);
+                                            }
 
-                                                if (isPhotoevidence) {
-                                                    // setStep(2);
-                                                } else {
-                                                    // setStep(3);
-                                                }
-                                            }}
-                                        >
-                                            {'Check and Approve'}
-                                        </button>
-                                    ) : null}
+                                            if (isPhotoevidence) {
+                                                // setStep(2);
+                                            } else {
+                                                // setStep(3);
+                                            }
+                                        }}
+                                    >
+                                        {'Check and Approve'}
+                                    </button>
+                                ) : null}
                             </li>
                         );
                     }

@@ -97,6 +97,7 @@ const Urls = {
     removeReviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}removeReviewReply`,
     needApproval:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`,
     reviewTradie:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewTradie`,
+    jobBuilder:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}`,
     builder:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
 }
 
