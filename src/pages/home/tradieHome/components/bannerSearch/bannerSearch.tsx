@@ -45,6 +45,7 @@ interface PropsType {
     getRecentSearchList: () => void,
     getRecentLocationList: () => void,
     refreshParams?: () => void,
+    handleChangeToggle?: (data: any) => void,
 }
 
 const BannerSearch = (props: PropsType) => {
@@ -451,7 +452,7 @@ const BannerSearch = (props: PropsType) => {
                 delete newData.heading;
                 delete newData.jobResults;
             }
-            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0' ) && delete newData[key]);
+            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0') && delete newData[key]);
             var url = 'search-job-results?';
             for (let [key, value] of Object.entries(newData)) {
                 url += `${key}=${value}&`
@@ -462,7 +463,7 @@ const BannerSearch = (props: PropsType) => {
                 props.history.push(newUrl);
             } else {
                 props.history.replace(newUrl);
-                if(props?.refreshParams){
+                if (props?.refreshParams) {
                     props?.refreshParams();
                 }
                 if (!props.cleanFiltersData && props?.cleanFiltersHandler) {
@@ -532,7 +533,14 @@ const BannerSearch = (props: PropsType) => {
 
     return (
         <div className="home_search">
-            <button className="modal_srch_close">
+            <button
+                className="modal_srch_close"
+                onClick={() => {
+                    if (props?.handleChangeToggle) {
+                        props.handleChangeToggle(false);
+                    }
+                }}
+            >
                 <img src={close} alt="close" />
             </button>
             <form className={`search_wrapr ${props.history?.location?.pathname === '/' ? stateData?.isFirstJobSelectedCount ? '' : 'first_input' : ''}`}>
@@ -584,11 +592,11 @@ const BannerSearch = (props: PropsType) => {
                                     <span className="gps_icon">
                                         <img src={icgps} />
                                     </span> Use my current location
-                            </a>
+                                </a>
                                 {stateData?.locationDenied && <span className="blocked_note">
                                     You have blocked your location.
                                     To use this, change your location settings in browser.
-                              </span>}
+                                </span>}
                                 <div className="flex_row recent_search auto_loc">
                                     {recentLocation?.length ?
                                         <span className="sub_title">Recent searches</span>

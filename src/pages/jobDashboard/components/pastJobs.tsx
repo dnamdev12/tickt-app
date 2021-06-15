@@ -6,6 +6,7 @@ import noDataFound from "../../../assets/images/no-search-data.png";
 import more from '../../assets/images/icon-direction-right.png';
 import { format } from 'date-fns';
 import { renderTime } from '../../../utils/common';
+import { setShowToast } from '../../../redux/common/actions';
 
 interface Proptypes {
   loading: boolean;
@@ -24,48 +25,49 @@ const PastJobs = (props: Proptypes) => {
       <span className="sub_title">Past Jobs</span>
       <div className="flex_row tradies_row">
         {props.pastJobList.length ? props.pastJobList?.map((item: any) => (
-            <div className="flex_col_sm_6" key={item.jobId}>
-              <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                <NavLink to={`/job-details-page?jobId=${item.jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
-                <div className="user_wrap">
-                  <figure className="u_img">
-                    <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="traide-img" />
-                  </figure>
-                  <div className="details">
-                    <span className="name">{item.tradeName}</span>
-                    <span className="prof">{item.jobName}</span>
-                  </div>
+          <div className="flex_col_sm_6" key={item.jobId}>
+            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
+              <NavLink to={`/job-details-page?jobId=${item.jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
+              <div className="user_wrap">
+                <figure className="u_img">
+                  <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="traide-img" />
+                </figure>
+                <div className="details">
+                  <span className="name">{item.tradeName}</span>
+                  <span className="prof">{item.jobName}</span>
                 </div>
-                <div className="job_info">
-                  <ul>
-                    <li className="icon clock">
-                      {renderTime(item.fromDate, item.toDate)}
-                    </li>
-                    <li className="icon dollar">{item.amount}</li>
-                    <li className="icon location line-1">{item.locationName}</li>
-                    {item.durations ? <li className="icon calendar">{item.durations}</li> : <li><span className="job_status">{item.status}</span></li>}
-                  </ul>
-                </div>
-                {/* <p className="commn_para line-3">
+              </div>
+              <div className="job_info">
+                <ul>
+                  <li className="icon clock">
+                    {renderTime(item.fromDate, item.toDate)}
+                  </li>
+                  <li className="icon dollar">{item.amount}</li>
+                  <li className="icon location line-1">{item.locationName}</li>
+                  {item.durations ? <li className="icon calendar">{item.durations}</li> : <li><span className="job_status">{item.status}</span></li>}
+                </ul>
+              </div>
+              {/* <p className="commn_para line-3">
                 {builderData.jobDescription}
               </p> */}
-                <div className="job_progress_wrap" id="scroll-progress-bar">
-                  <div className="progress_wrapper">
-                    <span className="completed-digit" id="digit-progress">
-                      <b>Job Milestones {item.milestoneNumber}</b> of {item.totalMilestones}
-                    </span>
-                    <span className="progress_bar">
-                      <input
-                        className="done_progress"
-                        id="progress-bar"
-                        type="range"
-                        min="0"
-                        value={item.milestoneNumber / item.totalMilestones * 100}
-                      />
-                    </span>
-                  </div>
+              <div className="job_progress_wrap" id="scroll-progress-bar">
+                <div className="progress_wrapper">
+                  <span className="completed-digit" id="digit-progress">
+                    <b>Job Milestones {item.milestoneNumber}</b> of {item.totalMilestones}
+                  </span>
+                  <span className="progress_bar">
+                    <input
+                      className="done_progress"
+                      id="progress-bar"
+                      type="range"
+                      min="0"
+                      value={item.milestoneNumber / item.totalMilestones * 100}
+                    />
+                  </span>
                 </div>
-                {!item?.isRated && <NavLink to={{
+              </div>
+              {/* for staging build comment line  70 - 78 and uncomment line 79-81 */}
+              {!item?.isRated && <NavLink to={{
                   pathname: "/review-builder",
                   state: { item: item }
                 }}
@@ -74,8 +76,11 @@ const PastJobs = (props: Proptypes) => {
                     <img src={rateStar} alt="rating-star" /> Rate this job
                 </button>
                 </NavLink>}
-              </div>
+              {/* <button className="fill_grey_btn full_btn" onClick={() => setShowToast(true, 'Under Development')}>
+                <img src={rateStar} alt="rating-star" /> Rate this job
+              </button> */}
             </div>
+          </div>
         )) : !props.loading && (
           <div className="no_record  m-t-vh">
             <figure className="no_img">

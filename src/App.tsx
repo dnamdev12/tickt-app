@@ -12,6 +12,8 @@ import React, { useEffect } from "react";
 
 import AOS from 'aos';
 import 'aos/dist/aos.css';
+import { useClearCache } from 'react-clear-cache';
+
 
 declare global {
   interface Window {
@@ -32,20 +34,32 @@ export const store = createStore(rootReducer, composeEnhancers(
 sagaMiddleware.run(rootSaga)
 
 const App = () => {
+  const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
   useEffect(() => {
     AOS.init({
-        duration: 2000
+      duration: 2000
     });
-}, []);
 
+    if (!isLatestVersion) {
+      emptyCacheStorage();
+    }
+
+  }, []);
+
+  useEffect(() => {
+    if (!isLatestVersion) {
+      emptyCacheStorage();
+    }
+
+  }, [isLatestVersion])
 
   return (
-      <Provider store={store}>
-        <Routes />
-        <Loader />
-        <Toast />
-      </Provider>
+    <Provider store={store}>
+      <Routes />
+      <Loader />
+      <Toast />
+    </Provider>
   );
 }
 

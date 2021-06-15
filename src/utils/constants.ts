@@ -42,6 +42,8 @@ maxBudgetError: 'Budget have maximum two decimal values',
 askQuestion: 'Question is required',
 askReview: 'Review is required',
 askReply: 'Reply is required',
+JobName: 'Job Name is required',
+JobDescription: 'Job Description is required',
 }
 
 const OTP_TIMER = 60;
