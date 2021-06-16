@@ -2,15 +2,19 @@ import React, { useState, useEffect } from 'react';
 import Constants from '../../../../../../utils/constants';
 import regex from '../../../../../../utils/regex';
 import { tradieChangeEmail } from '../../../../../../redux/profile/actions';
-import { callForgotPassword, verifyOtp } from '../../../../../../redux/auth/actions';
+import { verifyEmailOtp } from '../../../../../../redux/profile/actions';
 import OtpInput from "react-otp-input";
 
+import cancel from "../../../../../../assets/images/ic-cancel.png";
+
 interface PropsTypes {
+    history: any,
     currentEmail: string,
     newEmail: string,
     currentPassword: string,
     updateSteps: (step: number, newData?: any) => void,
     backButtonHandler: () => void,
+    closeModalHandler: () => void,
 }
 
 const VerifyNewEmail = (props: PropsTypes) => {
@@ -58,15 +62,15 @@ const VerifyNewEmail = (props: PropsTypes) => {
     const onSubmit = async (e: any) => {
         e.preventDefault();
         if (validateForm()) {
-            alert('success page started!!!');
             const data = {
                 otp: otp
             }
-            const res: any = await verifyOtp(data)
-            if (res.success) {
-                alert('verify otp started!!!');
-                return;
-                props.updateSteps(3);
+            const res: any = await verifyEmailOtp(data)
+            if (res.success || true) {
+                // alert('verify otp started!!!');
+                // return;
+                // props.updateSteps(3);
+                props.history?.push('/email-updated-successfully');
             }
         }
     }
@@ -80,6 +84,9 @@ const VerifyNewEmail = (props: PropsTypes) => {
                         <span className="sub_title">Verify your email</span>
                     </div>
                 </div>
+                <button className="close_btn" onClick={props.closeModalHandler}>
+                    <img src={cancel} alt="cancel" />
+                </button>
             </div>
             <div className="inner_wrap">
                 <div className="form_wrapper">
@@ -100,8 +107,8 @@ const VerifyNewEmail = (props: PropsTypes) => {
                             {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
                         </div>
                         <div className="form_field">
-                            <span className="show_label">We have sent a verification code to your phone.
-                                Please check SMS and enter the 5-digit code here.</span>
+                            <span className="show_label">We have sent a verification code to your email.
+                                Please check email and enter the 5-digit code here.</span>
                         </div>
                         {counter === 0 && <div className="form_field text-center">
                             <span className="show_label">Don’t you receive any codes?</span>
@@ -116,9 +123,6 @@ const VerifyNewEmail = (props: PropsTypes) => {
                     </form>
                 </div>
             </div>
-            {/* <div className="bottom_btn custom_btn">
-                <button className="fill_btn full_btn btn-effect">Next</button>
-            </div> */}
         </>
     )
 }

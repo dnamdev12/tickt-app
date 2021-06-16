@@ -5,6 +5,7 @@ import { tradieChangeEmail } from '../../../../../../redux/profile/actions';
 
 import eyeIconClose from '../../../../../../assets/images/icon-eye-closed.png';
 import eyeIconOpen from '../../../../../../assets/images/icon-eye-open.png';
+import cancel from "../../../../../../assets/images/ic-cancel.png";
 
 interface PropsTypes {
     currentEmail: string,
@@ -12,6 +13,7 @@ interface PropsTypes {
     currentPassword: string,
     updateSteps: (step: number, newData?: any) => void,
     backButtonHandler: () => void,
+    closeModalHandler: () => void,
 }
 
 const NewEmail = (props: PropsTypes) => {
@@ -69,9 +71,9 @@ const NewEmail = (props: PropsTypes) => {
                         <span className="show_label">Enter your password too and we will send you message to verify new email</span>
                     </div>
                 </div>
-                {/* <button className="close_btn" onClick={closeModalHandler}>
+                <button className="close_btn" onClick={props.closeModalHandler}>
                     <img src={cancel} alt="cancel" />
-                </button> */}
+                </button>
             </div>
             <div className="inner_wrap">
                 <div className="inner_wrappr">

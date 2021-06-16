@@ -37,6 +37,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
 interface Props {
+    history: any,
     tradieProfileViewData: any,
     tradieBasicDetailsData: any,
     tradeListData: any,
@@ -724,7 +725,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                 <div className="form_field">
                                                     <div className="relate">
                                                         <div className="checkbox_wrap agree_check">
-                                                            <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'}  />
+                                                            <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'} />
                                                             <label htmlFor={qualificationName + 'upload'} className="line-1">{qualificationName || ''}</label>
                                                         </div>
                                                         <div className="edit_delete tr">
@@ -826,6 +827,7 @@ export class PersonalInformation extends Component<Props, State> {
 
                 {/* change email */}
                 <ChangeEmailModal
+                    history={props.history}
                     isChangeEmailModalClicked={changeEmailModalClicked}
                     currentEmail={this.state.basicDetailsData?.email}
                     changeEmailModalCloseHandler={this.changeEmailModalCloseHandler}

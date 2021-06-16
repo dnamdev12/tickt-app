@@ -25,6 +25,7 @@ import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import BuilderProfile from '../pages/builderProfile';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile';
+import EmailUpdatedSuccess from '../pages/tradieEditProfile/components/personalInformation/changeEmailModal/components/successPage';
 
 const routes = [
     {
@@ -158,6 +159,13 @@ const routes = [
         name: 'update-user-info',
         path: '/update-user-info',
         component: TradieEditProfile,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'email-updated-successfully',
+        path: '/email-updated-successfully',
+        component: EmailUpdatedSuccess,
         authRoute: false,
         privateRoute: true,
     },
