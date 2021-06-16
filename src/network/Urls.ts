@@ -1,5 +1,5 @@
-// const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
-const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
+const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
+// const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
 // const ACTIVE_HOST = 'https://ticktstgapi.appskeeper.in';  // stg env
 
 const versions = {
@@ -87,6 +87,7 @@ const Urls = {
     tradieUpdatePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}editPortfolio`,
     tradieDeletePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}deletePortfolio`,
     tradieChangePassword: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changePassword`,
+    tradieChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changeEmail`,
     jobDetailsTradie: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}jobDetails`,
     reviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewList`,
     acceptDeclineRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}acceptDeclineRequest`,
