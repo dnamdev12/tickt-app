@@ -307,6 +307,9 @@ body.loader_show .full_loader {
 ::-webkit-scrollbar-thumb:window-inactive {
     background:  var(--blue); 
 }
+
+html {scrollbar-color: var(--blue) #f7f8fa;}
+
 //-------------- Scroll Bar ------------------// 
 
 
