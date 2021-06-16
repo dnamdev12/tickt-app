@@ -5,7 +5,7 @@ import NumberFormat from 'react-number-format';
 import Constants from '../../../../utils/constants';
 import regex from '../../../../utils/regex';
 import { portfolioModal } from '../../../builderInfo/builderInfo';
-import ChangeEmailModal from '../personalInformation/changeEmail';
+import ChangeEmailModal from './changeEmailModal/changeEmailModal';
 import {
     tradieUpdateProfileDetails,
     tradieUpdateBasicDetails,
@@ -151,7 +151,7 @@ export class PersonalInformation extends Component<Props, State> {
     tradeHandler = (item: any, name: string) => {
         const id = item?._id;
         console.log(item, "item-------------------")
-        if (name == 'trade') {
+        if (name === 'trade') {
             if (this.state.trade.length && this.state.trade[0] == id) {
                 this.setState({
                     trade: [],
@@ -193,7 +193,7 @@ export class PersonalInformation extends Component<Props, State> {
                     allSpecializationSelected: false
                 }
             })
-        } else if (name == 'All Clicked') {
+        } else if (name === 'All Clicked') {
             if (this.state.allSpecializationSelected) {
                 this.setState({ allSpecializationSelected: false, specialization: [], specializationData: [] });
             } else {
@@ -207,7 +207,7 @@ export class PersonalInformation extends Component<Props, State> {
                 this.setState({ allSpecializationSelected: true, specialization: newSpecialization, specializationData: newSpecializationData });
             }
         }
-        else if (name == 'Clear All') {
+        else if (name === 'Clear All') {
             this.setState({ allSpecializationSelected: false, trade: [], tradeData: [], specialization: [], specializationData: [] });
         }
     }
@@ -218,11 +218,6 @@ export class PersonalInformation extends Component<Props, State> {
         newData.areasOfSpecialization.specializationData = this.state.specializationData;
         console.log(newData, "newdata-----------")
         this.setState({ profileViewData: newData, areasOfSpecsModalClicked: false });
-        // const res = await tradieUpdateProfileDetails(data);
-        // if (res.success) {
-        //     this.setState({ areasOfSpecsModalClicked: false });
-        // }
-        // alert('areasssss');
     }
 
     onFileChange = async (e: any, type?: string) => {
@@ -300,7 +295,7 @@ export class PersonalInformation extends Component<Props, State> {
                 newErrors.newPassword = Constants.errorStrings.passwordError;
             }
         }
-        if (this.state.newPassword.trim() != this.state.confirmNewPassword.trim()) {
+        if (this.state.newPassword.trim() !== this.state.confirmNewPassword.trim()) {
             newErrors.confirmNewPassword = Constants.errorStrings.confirmNewPassword;
         }
         this.setState({ errors: newErrors });
@@ -591,7 +586,7 @@ export class PersonalInformation extends Component<Props, State> {
             addPortfolioJob,
             confirmationModalClicked,
             changeEmailModalClicked,
-            newEmail,
+            // newEmail,
         } = this.state;
 
         const tradeList: any = props.tradeListData;
@@ -768,7 +763,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     <div className="text_field">
                                         <input type={showPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Password" name='password' value={password} onChange={this.passwordHandler} />
                                         <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }))}>
-                                            <img src={showPassword ? eyeIconOpen : eyeIconClose} />
+                                            <img src={showPassword ? eyeIconOpen : eyeIconClose} alt="" />
                                         </span>
                                     </div>
                                     {!!errors?.password && <span className="error_msg">{errors?.password}</span>}
@@ -778,7 +773,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     <div className="text_field">
                                         <input type={showNewPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter New Password" name='newPassword' value={newPassword} onChange={this.passwordHandler} />
                                         <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showNewPassword: !prevState.showNewPassword }))}>
-                                            <img src={showNewPassword ? eyeIconOpen : eyeIconClose} />
+                                            <img src={showNewPassword ? eyeIconOpen : eyeIconClose} alt="" />
                                         </span>
                                     </div>
                                     {!!errors?.newPassword && <span className="error_msg">{errors?.newPassword}</span>}
@@ -788,7 +783,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     <div className="text_field">
                                         <input type={showConfirmNewPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Confirm New Password" name='confirmNewPassword' value={confirmNewPassword} onChange={this.passwordHandler} />
                                         <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showConfirmNewPassword: !prevState.showConfirmNewPassword }))}>
-                                            <img src={showConfirmNewPassword ? eyeIconOpen : eyeIconClose} />
+                                            <img src={showConfirmNewPassword ? eyeIconOpen : eyeIconClose} alt="" />
                                         </span>
                                     </div>
                                     {!!errors?.confirmNewPassword && !errors?.newPassword && <span className="error_msg">{errors?.confirmNewPassword}</span>}
@@ -802,59 +797,12 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal >
 
                 {/* change email */}
-                {/* change email */}
-                {/* change email */}
                 <ChangeEmailModal
                     isChangeEmailModalClicked={changeEmailModalClicked}
                     currentEmail={this.state.basicDetailsData?.email}
                     changeEmailModalCloseHandler={this.changeEmailModalCloseHandler}
                 />
-                {/* <Modal
-                    className="custom_modal"
-                    open={changeEmailModalClicked}
-                    onClose={this.changeEmailModalCloseHandler}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        <div className="heading form_field">
-                            <div className="relate">
-                                <button className="back" onClick={this.changeEmailModalCloseHandler}></button>
-                                <div className="md_heading">
-                                    <span className="sub_title">Change email</span>
-                                    <span className="">Enter your password too and we will send you message to verify new email</span>
-                                </div>
-                            </div>
-                            <button className="close_btn" onClick={this.changeEmailModalCloseHandler}>
-                                <img src={cancel} alt="cancel" />
-                            </button>
-                        </div>
-                        <div className="inner_wrap">
-                            <div className="inner_wrappr">
-                                <div className="form_field">
-                                    <label className="form_label">New Email</label>
-                                    <div className="text_field">
-                                        <input type="text" placeholder="Enter New Email" value={newEmail} name='newEmail' onChange={(e: React.ChangeEvent<HTMLInputElement>) => this.setState({ newEmail: e.target.value })} />
-                                    </div>
-                                    {!!errors?.newEmail && <span className="error_msg">{errors?.newEmail}</span>}
-                                </div>
-                                <div className="form_field">
-                                    <label className="form_label">Current Password</label>
-                                    <div className="text_field">
-                                        <input type={showPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Current Password" name='password' value={password} onChange={this.passwordHandler} />
-                                        <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }))}>
-                                            <img src={showPassword ? eyeIconOpen : eyeIconClose} />
-                                        </span>
-                                    </div>
-                                    {!!errors?.currentPassword && <span className="error_msg">{errors?.currentPassword}</span>}
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect" onClick={this.changeEmailHandler}>Next</button>
-                        </div>
-                    </div >
-                </Modal > */}
+
 
                 <div className="section_wrapper">
                     <span className="sub_title">Areas of specialisation
@@ -902,7 +850,7 @@ export class PersonalInformation extends Component<Props, State> {
                                         return (
                                             <li key={_id} className={active ? 'active' : ''} onClick={() => this.tradeHandler({ _id, trade_name, selected_url }, 'trade')}>
                                                 <figure>
-                                                    <img src={selected_url ? selected_url : spherePlaceholder} />
+                                                    <img src={selected_url ? selected_url : spherePlaceholder} alt="" />
                                                 </figure>
                                                 <span className="name">{trade_name}</span>
                                             </li>
@@ -941,7 +889,6 @@ export class PersonalInformation extends Component<Props, State> {
                         </span>}
                     </span>
                     {!profileViewData?.about && <button className="fill_grey_btn full_btn btn-effect" onClick={this.addInfoAboutYou}>Add info about you</button>}
-                    {/* <p className="commn_para">** Currently on holiday, back Jan 10! ** Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. If that sounds good to you, flick me a message and I’ll reply ASAP! Just finished up my Electricians apprenticeship working on large project sites around Melbourne. I aim to finish all my work in a timely and affordable manner. Just finished up my Electricians apprenticeship working on large project sites around Melbourne.</p> */}
                     <p className="commn_para">{profileViewData?.about}</p>
                 </div>
 
@@ -970,8 +917,7 @@ export class PersonalInformation extends Component<Props, State> {
                         <div className="bottom_btn custom_btn">
                             <button className="fill_btn full_btn btn-effect" onClick={() => {
                                 let err: any = {};
-                                // if (about.trim().length < 1) {
-                                if (false) {
+                                if (about.trim().length < 1) {
                                     err.about = 'Text is required';
                                     this.setState({ errors: err });
                                 } else {
@@ -1018,11 +964,6 @@ export class PersonalInformation extends Component<Props, State> {
                     aria-describedby="simple-modal-description"
                 >
                     <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        {/* <div className="heading">
-                            <button className="close_btn" onClick={() => this.setState({ portfolioJobClicked: false, portfolioModalClicked: true })}>
-                            <img src={cancel} alt="cancel" />
-                            </button>
-                        </div> */}
                         <div className="flex_row">
                             <div className="flex_col_sm_6">
                                 <Carousel
@@ -1059,7 +1000,6 @@ export class PersonalInformation extends Component<Props, State> {
                                 </span>
                                 <span className="xs_sub_title">Job Description</span>
                                 <div className="job_content">
-                                    {/* <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p> */}
                                     <p>{portfolioJobDetail?.jobDescription}</p>
                                 </div>
                             </div>
@@ -1150,15 +1090,12 @@ export class PersonalInformation extends Component<Props, State> {
                             <div className="upload_img_video">
                                 {portfolioJobDetail?.portfolioImage?.map((image: string, index: number) => {
                                     return (
-                                        // <div className="media" key={portfolioJobDetail?.portfolioId}>
-                                        <figure className="img_video">
+                                        <figure className="img_video" key={image}>
                                             <img src={image ? image : dummy} alt="portfolio-images" />
                                             <img src={remove} alt="remove" className="remove"
                                                 onClick={() => {
                                                     const data: any = { ...portfolioJobDetail };
                                                     data?.portfolioImage?.splice(index, 1);
-                                                    // const imageArray = [...data?.portfolioImage];
-                                                    // imageArray.splice(index, 1);
                                                     this.setState({ portfolioJobDetail: data });
                                                 }} />
                                         </figure>
@@ -1206,49 +1143,3 @@ export class PersonalInformation extends Component<Props, State> {
 }
 
 export default PersonalInformation;
-
-
-
-
-//portfolio edit button removed ==> modal html
-{/* <Modal
-                    className="custom_modal"
-                    open={portfolioModalClicked}
-                    onClose={() => this.setState({ portfolioModalClicked: false })}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    <div className="custom_wh profile_info" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        <div className="heading">
-                            <span className="sub_title">Portfolio</span>
-                            <button className="close_btn" onClick={() => this.setState({ portfolioModalClicked: false })}>
-                                <img src={cancel} alt="cancel" />
-                            </button>
-                        </div>
-                        <div className="inner_wrap">
-                            <ul className="portfolio_wrappr">
-                                <li className="media">
-                                    <figure className="portfolio_img" >
-                                        <img src={profilePlaceholder} alt="portfolio-images" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} />
-                                        <span className="edit_icon" onClick={() => this.setState({ portfolioModalClicked: false, portfolioJobClicked: true })} >
-                                            <img src={editIconWhite} alt="edit" />
-                                        </span>
-                                        <span className="xs_sub_title">Dummy text</span>
-                                    </figure>
-                                </li>
-                                <li className="media">
-                                    <figure className="portfolio_img">
-                                        <img src={profilePlaceholder} alt="portfolio-images" />
-                                        <span className="edit_icon">
-                                            <img src={editIconWhite} alt="edit" />
-                                        </span>
-                                        <span className="xs_sub_title">Dummy text</span>
-                                    </figure>
-                                </li>
-                            </ul>
-                        </div>
-                        <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect">Save changes</button>
-                        </div>
-                    </div>
-                </Modal> */}

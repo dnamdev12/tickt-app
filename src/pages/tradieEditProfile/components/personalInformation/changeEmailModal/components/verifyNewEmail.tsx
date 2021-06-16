@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import Constants from '../../../../../utils/constants';
-import regex from '../../../../../utils/regex';
-import { tradieChangeEmail } from '../../../../../redux/profile/actions';
-import { callForgotPassword, verifyOtp } from '../../../../../redux/auth/actions';
+import Constants from '../../../../../../utils/constants';
+import regex from '../../../../../../utils/regex';
+import { tradieChangeEmail } from '../../../../../../redux/profile/actions';
+import { callForgotPassword, verifyOtp } from '../../../../../../redux/auth/actions';
 import OtpInput from "react-otp-input";
 
 interface PropsTypes {

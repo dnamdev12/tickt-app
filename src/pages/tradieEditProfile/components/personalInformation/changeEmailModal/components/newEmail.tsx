@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Constants from '../../../../../utils/constants';
-import regex from '../../../../../utils/regex';
-import { tradieChangeEmail } from '../../../../../redux/profile/actions';
+import Constants from '../../../../../../utils/constants';
+import regex from '../../../../../../utils/regex';
+import { tradieChangeEmail } from '../../../../../../redux/profile/actions';
 
-import eyeIconClose from '../../../../../assets/images/icon-eye-closed.png';
-import eyeIconOpen from '../../../../../assets/images/icon-eye-open.png';
+import eyeIconClose from '../../../../../../assets/images/icon-eye-closed.png';
+import eyeIconOpen from '../../../../../../assets/images/icon-eye-open.png';
 
 interface PropsTypes {
     currentEmail: string,
