@@ -33,6 +33,7 @@ import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/
 
 import ChooseTheJob from '../pages/chooseTheJob/index';
 
+
 const routes = [
     {
         name: 'main',
@@ -137,11 +138,11 @@ const routes = [
         path: '/cancel-job-success',
         component: CancelJobSuccess,
     },
-    // {
-    //     name: 'builderinfo',
-    //     path: '/builder-info',
-    //     component: BuilderInfo,
-    // },
+    {
+        name: 'builderinfo',
+        path: '/builder-info',
+        component: BuilderInfo,
+    },
     {
         name: 'tradieinfo',
         path: '/tradie-info',

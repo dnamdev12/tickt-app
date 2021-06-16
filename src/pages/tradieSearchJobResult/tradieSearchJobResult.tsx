@@ -20,6 +20,7 @@ const TradieSearchJobResult = (props: any) => {
         showMap: false
     })
     const [paramsData, setParamsData] = useState<any>({});
+    const [isToggleModifySearch, setToggleModifySearch] = useState<boolean>(false);
 
     const location: any = useLocation();
 
@@ -244,11 +245,15 @@ const TradieSearchJobResult = (props: any) => {
         getQueryParamsData();
     }
 
+    const handleChangeToggle = (value: boolean) => { setToggleModifySearch(value) }
+
     return (
         <div className="app_wrapper" >
-            <div className="top_search">
+            <div className={`top_search ${isToggleModifySearch ? 'active' : ''}`}>
                 <BannerSearch
-                    {...props} paramsData={paramsData}
+                    {...props} 
+                    handleChangeToggle={handleChangeToggle}
+                    paramsData={paramsData}
                     cleanFiltersHandler={cleanFiltersHandler}
                     cleanFiltersData={searchResultData.cleanFiltersData}
                     refreshParams={refreshParams}
@@ -261,7 +266,7 @@ const TradieSearchJobResult = (props: any) => {
                         <div className="flex_row mob_srch_option">
                             <div className="flex_col_sm_6"></div>
                             <div className="flex_col_sm_6 text-right">
-                                <button className="fill_grey_btn btn-effect">Modify Search</button>
+                                <button onClick={() => { setToggleModifySearch(true) }} className="fill_grey_btn btn-effect">Modify Search</button>
                             </div>
                         </div>
 
@@ -274,7 +279,6 @@ const TradieSearchJobResult = (props: any) => {
                                     </span>
                                     <SearchResultFilters
                                         searchByFilter={searchByFilter}
-                                        // paramsData={paramsData}
                                         cleanFiltersData={searchResultData.cleanFiltersData}
                                         cleanFiltersHandler={cleanFiltersHandler}
                                         history={props?.history}

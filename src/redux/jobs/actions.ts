@@ -422,7 +422,7 @@ export const getJobDetails = async (jobId: string) => {
   const response: FetchResponse = await NetworkOps.get(Urls.jobDetailsTradie + `?jobId=${jobId}`);
   setLoading(false);
   if (response.status_code === 200) {
-      return { success: true, data: response.result };
+    return { success: true, data: response.result };
   }
   return { success: false };
 }
@@ -430,40 +430,43 @@ export const getJobDetails = async (jobId: string) => {
 
 export const lodgeDispute = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}/lodgeDispute`,data);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}lodgeDispute`, data);
   setLoading(false);
   if (response.status_code === 200) {
-      return { success: true, data: response.result };
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
   }
   return { success: false };
 }
 
 export const CancelJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}/canceljob`,data);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}canceljob`, data);
   setLoading(false);
   if (response.status_code === 200) {
-      return { success: true, data: response.result };
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
   }
   return { success: false };
 }
 
 export const InviteForJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}/inviteForJob`,data);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}inviteForJob`, data);
   setLoading(false);
   if (response.status_code === 200) {
-      return { success: true, data: response.result };
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
   }
   return { success: false };
 }
 
 export const cancelInviteForJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}/cancelInviteForJob`,data);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}/cancelInviteForJob`, data);
   setLoading(false);
   if (response.status_code === 200) {
-      return { success: true, data: response.result };
+    return { success: true, data: response.result };
   }
   return { success: false };
 }

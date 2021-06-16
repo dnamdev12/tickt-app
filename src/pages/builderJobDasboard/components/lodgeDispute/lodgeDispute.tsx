@@ -19,7 +19,7 @@ import { lodgeDispute } from '../../../../redux/jobs/actions';
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
 const LodgeDispute = (props: any) => {
-    const { jobId, jobName, history } = props;
+    const { item: { jobId, jobName }, history } = props;
     const [stateData, setStateData] = useState({ reason: 0, detail: '', upload: [] });
     const [errorData, setErrorData] = useState({ reason: '', detail: '', upload: '' });
     const [filesUrl, setFilesUrl] = useState([] as any);
@@ -135,7 +135,8 @@ const LodgeDispute = (props: any) => {
             "photos": filesUrl
         }
         let response: any = await lodgeDispute(data);
-        if (response?.status) {
+    
+        if (response?.success) {
             history.push('/lodge-success');
         }
     }
@@ -161,7 +162,9 @@ const LodgeDispute = (props: any) => {
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button className="back"></button>
+                    <button 
+                    onClick={() => { props.backTab('lodge') }}
+                    className="back"></button>
                     <span className="xs_sub_title">
                         {jobName || ''}
                     </span>

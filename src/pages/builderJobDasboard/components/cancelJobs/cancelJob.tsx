@@ -19,7 +19,7 @@ import { CancelJob } from '../../../../redux/jobs/actions';
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
 const LodgeDispute = (props: any) => {
-    const { jobId, jobName, history } = props;
+    const { item: { jobId, jobName }, history } = props;
     const [stateData, setStateData] = useState({ reason: 0, detail: '', upload: [] });
     const [errorData, setErrorData] = useState({ reason: '', detail: '', upload: '' });
     const [filesUrl, setFilesUrl] = useState([] as any);
@@ -133,7 +133,7 @@ const LodgeDispute = (props: any) => {
             "note": detail,
         }
         let response: any = await CancelJob(data);
-        if (response?.status) {
+        if (response?.success) {
             history.push('/cancel-job-success');
         }
     }
@@ -159,7 +159,9 @@ const LodgeDispute = (props: any) => {
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button className="back"></button>
+                    <button
+                        onClick={() => { props.backTab('cancel') }}
+                        className="back"></button>
                     <span className="xs_sub_title">
                         {jobName || ''}
                     </span>
@@ -247,8 +249,3 @@ const LodgeDispute = (props: any) => {
 }
 
 export default withRouter(LodgeDispute);
-
-
-{/* <div className="app_wrapper">
-<div className="section_wrapper">
-    <div className="custom_container"> */}

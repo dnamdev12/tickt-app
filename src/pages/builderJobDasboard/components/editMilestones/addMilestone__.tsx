@@ -8,7 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import { renderTimeWithCustomFormat } from '../../../utils/common';
+import { renderTimeWithCustomFormat } from '../../../../utils/common';
 
 // Please add a unique date
 interface Props {

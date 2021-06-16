@@ -12,7 +12,7 @@ export const validateABN = (abn: number) => {
     return ((weightedSum % 89) === 0) ? true : false
 }
 
-export const renderTime = (fromDate: any, toDate: any) => {
+export const renderTime = (fromDate: any, toDate: any, format?: any) => {
     if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
         return `${moment(fromDate).format('DD MMM')}`
     }
@@ -37,7 +37,7 @@ export const renderTime = (fromDate: any, toDate: any) => {
     }
 }
 
-export const renderTimeWithFormat = (fromDate:any, toDate:any, format:any) => {
+export const renderTimeWithFormat = (fromDate: any, toDate: any, format: any) => {
 
     if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
         return `${moment(fromDate, format).format('DD MMM')}`
@@ -61,6 +61,35 @@ export const renderTimeWithFormat = (fromDate:any, toDate:any, format:any) => {
         }
         return `${moment(fromDate, format).format('DD MMM')} - ${moment(toDate, format).format('DD MMM')}`
     }
+}
+
+
+export const renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: any, formatSet?: any, text?: string) => {
+
+    if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
+        return `${moment(fromDate, format).format(formatSet[1])}`
+    }
+
+    if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
+        let yearEnd = moment().endOf("year").toISOString();
+        let monthEnd = moment(fromDate, format).endOf("month").toISOString();
+
+        let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
+        let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
+
+        let monthDiff = parseInt(item.toString());
+        let yearDiff = parseInt(item_year.toString());
+
+        if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
+            return `${moment(fromDate, format).format(formatSet[1])} - ${moment(toDate, format).format(formatSet[1])}`
+        }
+        if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
+            return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
+        }
+        return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
+    }
+
+    return text || 'Choose';
 }
 
 
