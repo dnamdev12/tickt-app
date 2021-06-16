@@ -33,6 +33,8 @@ import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/
 
 import ChooseTheJob from '../pages/chooseTheJob/index';
 
+import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
+
 
 const routes = [
     {
@@ -89,6 +91,11 @@ const routes = [
         name: 'mostviewedjobs',
         path: '/most-viewed-jobs',
         component: MostViewedJobs,
+    },
+    {
+        name: 'milestoneRequestSent',
+        path: '/milestone-request-sent-success',
+        component: MilestoneRequestSentSuccess,
     },
     {
         name: 'popularbuilders',

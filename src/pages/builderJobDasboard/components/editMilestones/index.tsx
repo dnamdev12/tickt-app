@@ -1,10 +1,19 @@
 import React, { useState, useEffect } from 'react'
 // @ts-ignore
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { renderTime } from '../../../../utils/common';
+import { renderTime, renderTimeWithCustomFormat } from '../../../../utils/common';
 import milestonesPlaceholder from '../../../../assets/images/Job milestones-preview.png';
 import moment from 'moment';
 import { setShowToast } from '../../../../redux/common/actions';
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import {changeRequest} from '../../../../redux/jobs/actions';
 
 import AddEditMile from './addEditMile';
 
@@ -16,11 +25,14 @@ const EditMilestone = (props: any) => {
     const [open, setOpen] = React.useState(false);
     const [deleteItem, setDeleteItem] = React.useState(null);
 
-    const [itemData, setItemData] = useState({ add: false, edit: false, editId: '' });
+    const [itemData, setItemData] = useState({ add: false, edit: false, editId: '', deleteId: '' });
 
     const [sortedItems, setSortedItems] = React.useState([]);
 
+    const [toggleItem, setToggleItem] = useState(false);
+
     useEffect(() => {
+        console.log({ milestones })
         if (!stateData?.length) {
             setStateData(milestones);
         }
@@ -51,22 +63,24 @@ const EditMilestone = (props: any) => {
     };
 
     const checkIfValidDates = (item: any) => {
+        console.log({ stateData })
         let isfilter = stateData.filter((item_: any) => {
-            if (item_.hasOwnProperty('from_date')) {
-                if (item_?.from_date !== "Invalid date" || !item_?.from_date?.length) {
+            if (item_.hasOwnProperty('fromDate')) {
+                if (moment(item_?.fromDate).isValid()) {
                     return item_;
                 }
             }
         });
+        console.log({ isfilter })
         if (!isfilter?.length) {
             return true;
         } else {
             const newarr: any = isfilter.slice().sort((a: any, b: any) => {
-                return moment(a.from_date, 'MM-DD-YYYY').diff(moment(b.from_date, 'MM-DD-YYYY'));
+                return moment(a.fromDate).diff(moment(b.fromDate));
             });
             let filteredItem: any = item.filter((item_reorder: any) => {
-                if (item_reorder.hasOwnProperty('from_date')) {
-                    if (item_reorder?.from_date !== "Invalid date" || !item_reorder?.from_date?.length) {
+                if (item_reorder.hasOwnProperty('fromDate')) {
+                    if (moment(item_reorder?.fromDate).isValid()) {
                         return item_reorder;
                     }
                 }
@@ -83,18 +97,19 @@ const EditMilestone = (props: any) => {
 
     const checkIfDatesValid = () => {
         let data = item;
-        let start_selection: any = moment(data?.from_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
+        console.log({ data, stateData }, '----->');
+        let start_selection: any = data?.fromDate;
         let end_selection: any = null;
-        if (moment(data?.to_date, 'YYYY-MM-DD').isValid()) {
-            if (!moment(data?.to_date, 'YYYY-MM-DD').isSame(moment(data?.from_date, 'YYYY-MM-DD'))) {
-                end_selection = moment(data?.to_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
+        if (moment(data?.toDate).isValid()) {
+            if (!moment(data?.toDate).isSame(moment(data?.fromDate))) {
+                end_selection = data?.toDate;
             }
         }
 
         let item_find: any = false;
         let filteredItem = stateData.filter((item: any) => {
-            if (item.hasOwnProperty('from_date')) {
-                if (!item?.from_date?.length || item?.from_date !== "Invalid date") {
+            if (item.hasOwnProperty('fromDate')) {
+                if (moment(item?.fromDate).isValid()) {
                     return item;
                 }
             }
@@ -102,25 +117,25 @@ const EditMilestone = (props: any) => {
 
         if (filteredItem?.length) {
             filteredItem.forEach((item_date: any) => {
-                let start: any = moment(item_date.from_date, 'MM-DD-YYYY').isValid() ? item_date.from_date : null;
-                let end: any = moment(item_date.to_date, 'MM-DD-YYYY').isValid() ? item_date.to_date : null;
+                let start: any = moment(item_date.fromDate).isValid() ? item_date.fromDate : null;
+                let end: any = moment(item_date.toDate).isValid() ? item_date.toDate : null;
 
                 if (start && end) {
                     if (start_selection && end_selection) {
-                        if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
+                        if (moment(start_selection).isAfter(moment(start)) || moment(end_selection).isBefore(moment(end))) {
                             item_find = true
                         }
                     }
                 }
 
                 if (start && !end) {
-                    if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
+                    if (moment(start_selection).isAfter(moment(start))) {
                         item_find = true; // true;
                     }
                 }
 
                 if (start_selection && end_selection && !end) {
-                    if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                    if (moment(start).isSameOrAfter(moment(start_selection)) && moment(start).isSameOrBefore(moment(end_selection))) {
                         item_find = false;
                     } else {
                         item_find = true
@@ -142,22 +157,139 @@ const EditMilestone = (props: any) => {
         edit_item_clone[index] = e.target.checked;
         setEditItems((prev) => ({ ...prev, ...edit_item_clone }));
     }
+
     const resetItems = () => {
-        setItemData({ add: false, edit: false, editId: '' })
+        setItemData((prev: any) => ({ ...prev, add: false, edit: false, editId: '', deleteId: '' }));
+        setEditItems({});
+    }
+
+    const addNewMile = (item: any) => {
+        if (itemData.edit) { // edit
+            stateData[itemData.editId] = item;
+            setStateData(stateData)
+        } else {
+            setStateData((prev: any) => ([...prev, item]));
+        }
     }
 
     if (itemData?.add || itemData?.edit) {
-        return <AddEditMile resetItems={resetItems}/>
+        return (
+            <AddEditMile
+                item={item}
+                milestones={stateData}
+                editMile={itemData.editId}
+                addNewMile={addNewMile}
+                resetItems={resetItems}
+            />
+        )
+    }
+
+    const removeMilestoneByIndex = (index: any) => {
+        setStateData(stateData.filter((_: any, index_: any) => index));
+        resetItems();
+    }
+
+    const checkIfChange = () => {
+        if (JSON.stringify(stateData) !== JSON.stringify(milestones)) {
+            return true;
+        }
+        return false;
     }
 
 
+    const submitData = () => {
+        let filtered = stateData.map((item: any) => {
+            return {
+                "milestoneId": "",
+                "milestone_name": item?.milestoneName,
+                "isPhotoevidence": item?.isPhotoevidence,
+                "from_date": moment(item?.fromDate).format("YYYY-MM-DD"),
+                "to_date": moment(item?.toDate).isValid() ?  moment(item?.toDate).format("YYYY-MM-DD") : '',
+                "recommended_hours": item?.recommendedHours
+            }
+        })
+
+        let data = {
+            "jobId": item.jobId,
+            "tradieId": item.tradeId,
+            "milestones": filtered
+        };
+        let response:any = changeRequest(data);
+        if(response?.success){
+            props.history.push('/milestone-request-sent-success');
+        }
+    }
+
+    console.log({ item, stateData, milestones, props })
     return (
         <React.Fragment>
+
+
+            <Dialog
+                open={toggleItem}
+                // onClose={handleClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {'If you click the back arrow, you lose the data, do you want to save it ?'}
+                </DialogTitle>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            setToggleItem((prev: any) => !prev);
+                        }}
+                        color="primary">
+                        {'Yes'}
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            setToggleItem((prev: any) => !prev);
+                            props.backTab('edit');
+                        }}
+                        color="primary" autoFocus>
+                        {'No'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            <Dialog
+                open={itemData?.deleteId !== '' ? true : false}
+                onClose={resetItems}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"Are you sure you want to delete the milestone ?"}
+                </DialogTitle>
+                <DialogActions>
+                    <Button
+                        onClick={() => {
+                            removeMilestoneByIndex(itemData?.deleteId);
+                        }}
+                        color="primary" autoFocus>
+                        {'Yes'}
+                    </Button>
+                    <Button
+                        onClick={() => {
+                            resetItems()
+                        }}
+                        color="primary">
+                        {'No'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
             <div className="flex_row">
                 <div className="flex_col_sm_8">
                     <div className="relate">
                         <button
-                            onClick={() => { props.backTab('edit') }}
+                            onClick={() => {
+                                if (checkIfChange()) {
+                                    setToggleItem((prev: any) => !prev);
+                                }
+                                props.backTab('edit');
+                            }}
                             className="back"></button>
                         <span className="xs_sub_title">
                             {jobName || ''}
@@ -167,13 +299,14 @@ const EditMilestone = (props: any) => {
                         {'Change Request'}
                     </span>
                     <p className="commn_para">
-                        {'You can  add/remove/change a milestones here. The changes will be sent to the tradesperson to accept befiore being implemented'}
+                        {'You can add/remove/change a milestones here. The changes will be sent to the tradesperson to accept before being implemented'}
                     </p>
                 </div>
             </div>
 
             <div className="flex_row">
                 <div className="flex_col_sm_7">
+                    {console.log({stateData})}
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="milestones">
                             {(provided, snapshot) => (
@@ -185,18 +318,21 @@ const EditMilestone = (props: any) => {
                                             isPhotoevidence,
                                             recommendedHours,
                                             fromDate,
-                                            toDate
+                                            toDate,
+                                            status
                                         }: {
                                             milestoneName: string,
                                             isPhotoevidence: boolean,
                                             fromDate: string,
                                             toDate: string,
+                                            status: number
                                             recommendedHours: any
                                         }, index: any) => (
                                             <Draggable
                                                 key={`${index}-${milestoneName}`}
                                                 draggableId={`${milestoneName}-${index}`}
                                                 index={index}
+                                                isDragDisabled={status === 1 ? true : false}
                                             >
                                                 {(provided: any, snapshot: any) => (
                                                     <li
@@ -211,19 +347,23 @@ const EditMilestone = (props: any) => {
                                                             <div className="edit_delete">
                                                                 <span
                                                                     onClick={(e) => {
-                                                                        // e.stopPropagation();
-                                                                        // handleStepForward(15);
-                                                                        // updateMileStoneIndex(index);
+                                                                        setItemData((prev: any) => ({
+                                                                            ...prev,
+                                                                            edit: true,
+                                                                            editId: index,
+                                                                            deleteId: ''
+                                                                        }));
                                                                     }}
                                                                     className="edit">
                                                                 </span>
                                                                 <span
                                                                     onClick={(e) => {
                                                                         e.preventDefault();
-                                                                        // handleClickOpen(index);
-                                                                        // removeMilestoneByIndex(index);
-
-                                                                        // setEditItems({}); // too old comment
+                                                                        setItemData((prev: any) => ({
+                                                                            ...prev,
+                                                                            editId: '',
+                                                                            deleteId: index
+                                                                        }));
                                                                     }}
                                                                     className="delete"></span>
                                                             </div>
@@ -241,9 +381,11 @@ const EditMilestone = (props: any) => {
                                                                     <span>{'Photo evidence required'}</span>
                                                                     : <span></span>}
                                                                 <span>
-                                                                    {renderTime(
+                                                                    {renderTimeWithCustomFormat(
                                                                         fromDate,
-                                                                        toDate
+                                                                        toDate,
+                                                                        '',
+                                                                        ['DD MMM', 'DD MMM YY']
                                                                     )}
                                                                 </span>
                                                                 <span>
@@ -274,7 +416,7 @@ const EditMilestone = (props: any) => {
                                 <button
                                     className="fill_btn full_btn btn-effect"
                                     onClick={() => {
-                                        setItemData({ add: true, editId: '', edit: false });
+                                        setItemData({ add: true, editId: '', edit: false, deleteId: '' });
                                         // handleStepComplete({})
                                     }}>
                                     {'+ Add milestone'}
@@ -284,9 +426,9 @@ const EditMilestone = (props: any) => {
                     ) : (
                         <React.Fragment>
                             <div className="form_field">
-                                <button className="fill_btn full_btn btn-effect"
+                                <button className="fill_btn fill_grey_btn full_btn btn-effect"
                                     onClick={() => {
-                                        setItemData({ add: true, editId: '', edit: false });
+                                        setItemData({ add: true, editId: '', edit: false, deleteId: '' });
                                         // handleStepComplete({})
                                     }}>
                                     {'+ Add milestone'}
@@ -297,22 +439,19 @@ const EditMilestone = (props: any) => {
                                 <button
                                     onClick={() => {
                                         let checkIfItem: boolean = checkIfDatesValid();
+                                        console.log({ checkIfItem })
                                         if (!checkIfItem) {
                                             let check: boolean = checkIfValidDates(stateData);
+                                            console.log({ check })
                                             if (check) {
-                                                // handleCombineMileStones(stateData);
-                                                // if (editDetailPage?.currentScreen) {
-                                                //     handleStepForward(14)
-                                                // } else {
-                                                //     handleStepForward(13)
-                                                // }
+                                                submitData()
                                             } else {
                                                 setShowToast(true, "Please arrange milestonea date wise.")
                                             }
                                         }
                                     }}
-                                    className="fill_btn fill_grey_btn full_btn btn-effect">
-                                    {'Continue'}
+                                    className={`fill_btn full_btn btn-effect`}>
+                                    {'Send to tradie'}
                                 </button>
                             </div>
                         </React.Fragment>

@@ -189,7 +189,9 @@ const LodgeDispute = (props: any) => {
                                 onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 1 })) }}
                                 checked={reason === 1}
                                 name="Reason" className="filter-type filled-in" type="checkbox" id="reason1" />
-                            <label htmlFor="reason1">Reason</label>
+                            <label htmlFor="reason1">
+                                {'I got a better job'}
+                            </label>
                         </div>
                         <div className="checkbox_wrap agree_check">
                             <input
@@ -197,26 +199,9 @@ const LodgeDispute = (props: any) => {
                                 onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 2 })) }}
                                 checked={reason === 2}
                                 name="Reason" className="filter-type filled-in" type="checkbox" id="reason2" />
-                            <label htmlFor="reason2">Reason</label>
-                        </div>
-                    </div>
-
-                    <div className="f_spacebw">
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 3 })) }}
-                                checked={reason === 3}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason3" />
-                            <label htmlFor="reason3">Reason</label>
-                        </div>
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 4 })) }}
-                                checked={reason === 4}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason4" />
-                            <label htmlFor="reason4">Reason</label>
+                            <label htmlFor="reason2">
+                                {'I am not the right fit for the job'}
+                            </label>
                         </div>
                     </div>
                 </div>

@@ -807,7 +807,7 @@ const BannerSearch = (props: PropsType) => {
                                     id="custom-date-range-div">
                                     <DateRange
                                         onChange={handleCalenderRange}
-                                        ranges={!calenderRange1?.startDate?.length ? [{ startDate: new Date(), endDate: '', key: 'selection1' }] : [calenderRange1]}
+                                        ranges={!moment(calenderRange1?.startDate).isValid() ? [{ startDate: new Date(), endDate: new Date(), key: 'selection1' }] : [calenderRange1]}
                                         moveRangeOnFirstSelection={false}
                                         rangeColors={["#fee600", "#b5b5b5"]}
                                         showDateDisplay={false}

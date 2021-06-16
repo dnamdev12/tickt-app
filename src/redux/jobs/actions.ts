@@ -463,10 +463,23 @@ export const InviteForJob = async (data: any) => {
 
 export const cancelInviteForJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}/cancelInviteForJob`, data);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}cancelInviteForJob`, data);
   setLoading(false);
   if (response.status_code === 200) {
+    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
   return { success: false };
 }
+
+export const changeRequest = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}changeRequest`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
