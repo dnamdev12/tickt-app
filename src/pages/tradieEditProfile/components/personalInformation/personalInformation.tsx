@@ -599,18 +599,18 @@ export class PersonalInformation extends Component<Props, State> {
                         <div className="upload_profile_pic">
                             <figure className="user_img">
                                 <img src={userImage ? userImage : dummy} alt="Profile-pic" />
+                                <label className="camera" htmlFor="upload_profile_pic">
+                                    <img src={cameraBlack} alt="camera" />
+                                </label>
+                                <input
+                                    type="file"
+                                    // accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
+                                    accept="image/png,image/jpg,image/jpeg"
+                                    style={{ display: "none" }}
+                                    id="upload_profile_pic"
+                                    onChange={this.onFileChange}
+                                />
                             </figure>
-                            <label className="camera" htmlFor="upload_profile_pic">
-                                <img src={cameraBlack} alt="camera" />
-                            </label>
-                            <input
-                                type="file"
-                                // accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
-                                accept="image/png,image/jpg,image/jpeg"
-                                style={{ display: "none" }}
-                                id="upload_profile_pic"
-                                onChange={this.onFileChange}
-                            />
                         </div>
                     </div>
                     <div className="flex_col_sm_8">
@@ -684,12 +684,12 @@ export class PersonalInformation extends Component<Props, State> {
                                     <label className="form_label">Email</label>
                                     <div className="text_field">
                                         {/* <input type="text" placeholder="Enter Email" value={basicDetailsData?.email} name='email' onChange={this.changeHandler} /> */}
-                                        <span>{basicDetailsData?.email}</span>
-                                        <a className="link" onClick={() => this.setState({ changeEmailModalClicked: true, profileModalClicked: false })}> Change</a>
+                                        <span className="show_label">{basicDetailsData?.email}</span>
                                     </div>
                                     {!!errors?.email && <span className="error_msg">{errors?.email}</span>}
                                 </div>
-                                <div className="form_field">
+                                <div className="form_field f_spacebw">
+                                    <a className="link" onClick={() => this.setState({ changeEmailModalClicked: true, profileModalClicked: false })}> Change email</a>
                                     <a className="link"
                                         onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
                                     >Change password</a>

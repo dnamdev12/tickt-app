@@ -80,9 +80,9 @@ const ChangeEmailModal = (props: Propstype) => {
             aria-describedby="simple-modal-description"
         >
             <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                <button className="close_btn" onClick={closeModalHandler}>
+                {/* <button className="close_btn" onClick={closeModalHandler}>
                     <img src={cancel} alt="cancel" />
-                </button>
+                </button> */}
                 {renderPages()}
             </div >
         </Modal >

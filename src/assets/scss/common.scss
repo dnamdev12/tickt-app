@@ -1450,7 +1450,6 @@ body {
 .portfolio_wrappr{
   display: flex;
   flex-wrap: wrap;
-  align-items: center;
   margin-bottom: 30px;
   .media{
       display: inline-block;
@@ -3488,8 +3487,11 @@ body {
     }
     .user_wrap {
       .details {
-        width: 62%;
+        width: 60%;
         min-height: auto;
+        .name{
+          font-size: 14px;
+        }
       }
     }
   }
@@ -4676,6 +4678,9 @@ body {
           height: 145px;
         }
       }
+    }
+    .upload_media{
+      cursor: pointer;
     }
   }
   .flex_col_sm_8{

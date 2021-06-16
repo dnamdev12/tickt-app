@@ -66,9 +66,12 @@ const NewEmail = (props: PropsTypes) => {
                     <button className="back" onClick={props.backButtonHandler}></button>
                     <div className="md_heading">
                         <span className="sub_title">Change email</span>
-                        <span className="">Enter your password too and we will send you message to verify new email</span>
+                        <span className="show_label">Enter your password too and we will send you message to verify new email</span>
                     </div>
                 </div>
+                {/* <button className="close_btn" onClick={closeModalHandler}>
+                    <img src={cancel} alt="cancel" />
+                </button> */}
             </div>
             <div className="inner_wrap">
                 <div className="inner_wrappr">
