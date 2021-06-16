@@ -80,6 +80,9 @@ interface State {
     confirmationModalClicked: boolean,
     changeEmailModalClicked: boolean,
     newEmail: string,
+    addQualificationClicked: boolean,
+    localQualificationDoc: any,
+    remainingQualificationDoc: any,
 }
 
 export class PersonalInformation extends Component<Props, State> {
@@ -119,6 +122,9 @@ export class PersonalInformation extends Component<Props, State> {
             confirmationModalClicked: false,
             changeEmailModalClicked: false,
             newEmail: '',
+            addQualificationClicked: false,
+            localQualificationDoc: [],
+            remainingQualificationDoc: [],
         }
     }
 
@@ -141,6 +147,16 @@ export class PersonalInformation extends Component<Props, State> {
             console.log('different basic details 1111111111');
             return {
                 basicDetailsData: nextProps.tradieBasicDetailsData
+            }
+        }
+        if (nextProps.tradeListData && !prevState.localQualificationDoc?.length && nextProps.tradieBasicDetailsData) {
+            const data = [...nextProps.tradeListData][0]?.qualifications?.map((item: any) => item.name?.length && { _id: item._id, name: item.name });
+            const alreadyFilledQualificationDoc: Array<any> = nextProps.tradieBasicDetailsData?.qualificationDoc?.map(({ qualification_id }: { qualification_id: string }) => qualification_id?.length && qualification_id);
+            const remainingQualificationDoc = data?.filter(({ _id }: { _id: string }) => !alreadyFilledQualificationDoc.includes(_id));
+            console.log(remainingQualificationDoc, "remainingQualificationDoc");
+            return {
+                localQualificationDoc: data ? data : [],
+                remainingQualificationDoc: remainingQualificationDoc ? remainingQualificationDoc : []
             }
         }
         return null;
@@ -587,6 +603,9 @@ export class PersonalInformation extends Component<Props, State> {
             confirmationModalClicked,
             changeEmailModalClicked,
             // newEmail,
+            addQualificationClicked,
+            localQualificationDoc,
+            remainingQualificationDoc,
         } = this.state;
 
         const tradeList: any = props.tradeListData;
@@ -636,7 +655,7 @@ export class PersonalInformation extends Component<Props, State> {
                 <Modal
                     className="custom_modal"
                     open={profileModalClicked}
-                    onClose={() => this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {} })}
+                    onClose={() => this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {}, addQualificationClicked: false })}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
@@ -644,7 +663,7 @@ export class PersonalInformation extends Component<Props, State> {
                         <div className="heading">
                             <span className="sub_title">Edit Profile</span>
                             <button className="close_btn" onClick={() => {
-                                this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {} });
+                                this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {}, addQualificationClicked: false });
                             }}
                             >
                                 <img src={cancel} alt="cancel" />
@@ -694,41 +713,50 @@ export class PersonalInformation extends Component<Props, State> {
                                         onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
                                     >Change password</a>
                                 </div>
-                                {basicDetailsData?.qualificationDoc?.length > 0 &&
+                                {(basicDetailsData?.qualificationDoc?.length > 0 && localQualificationDoc.length > 0) &&
                                     <>
                                         <div className="form_field">
                                             <label className="form_label">Qualification documents </label>
                                         </div>
-                                        <div className="form_field">
-                                            <div className="relate">
-                                                <div className="checkbox_wrap agree_check">
-                                                    <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc1" />
-                                                    <label htmlFor="doc1" className="line-1">White Card</label>
+                                        {basicDetailsData?.qualificationDoc?.map(({ qualification_id, url }: { qualification_id: string, url: string }) => {
+                                            const qualificationName: string = localQualificationDoc.find(({ _id }: { _id: string }) => _id === qualification_id)?.name;
+                                            return (
+                                                <div className="form_field">
+                                                    <div className="relate">
+                                                        <div className="checkbox_wrap agree_check">
+                                                            <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'}  />
+                                                            <label htmlFor={qualificationName + 'upload'} className="line-1">{qualificationName || ''}</label>
+                                                        </div>
+                                                        <div className="edit_delete tr">
+                                                            <span className="remove" title="Remove"></span>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <div className="edit_delete tr">
-                                                    <span className="edit" title="Edit"></span>
-                                                    <span className="remove" title="Remove"></span>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className="form_field">
-                                            <div className="relate">
-                                                <div className="checkbox_wrap agree_check">
-                                                    <input name="qualification" className="filter-type filled-in" type="checkbox" id="doc2" />
-                                                    <label htmlFor="doc2" className="line-1">First Aid</label>
-                                                </div>
-                                                <div className="edit_delete tr">
-                                                    <span className="edit" title="Edit"></span>
-                                                    <span className="remove" title="Remove"></span>
-                                                </div>
-                                            </div>
-                                        </div>
+                                            )
+                                        })}
+                                        {(addQualificationClicked && remainingQualificationDoc?.length) &&
+                                            remainingQualificationDoc?.map(({ qualification_id, name }: { qualification_id: string, name: string }) => {
+                                                return (
+                                                    <div className="form_field">
+                                                        <div className="relate">
+                                                            <div className="checkbox_wrap agree_check">
+                                                                <input name="qualification" className="filter-type filled-in" type="checkbox" id={name + 'upload'} />
+                                                                <label htmlFor={name + 'upload'} className="line-1">{name}</label>
+                                                            </div>
+                                                            <div className="edit_delete tr">
+                                                                <span className="remove" title="Remove"></span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            })}
                                     </>
                                 }
                             </div>
-                            <div className="form_field">
-                                <button className="fill_grey_btn full_btn btn-effect">Add qualification documents </button>
-                            </div>
+
+                            {(basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <div className="form_field">
+                                <button className="fill_grey_btn full_btn btn-effect" onClick={() => this.setState({ addQualificationClicked: true })}>Add qualification documents </button>
+                            </div>}
                             <span className="info_note">Don’t worry, nobody will see it. This is for verification only!</span>
                         </div>
                         <div className="bottom_btn custom_btn">
