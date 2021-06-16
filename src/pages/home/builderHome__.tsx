@@ -705,7 +705,7 @@ const BuilderHome = (props: any) => {
                     <span className="title">Reccomended tradies</span>
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
-                            <div className="tradie_card">
+                            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
@@ -735,7 +735,7 @@ const BuilderHome = (props: any) => {
                         </div>
 
                         <div className="flex_col_sm_4">
-                            <div className="tradie_card">
+                            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">
@@ -765,7 +765,7 @@ const BuilderHome = (props: any) => {
                         </div>
 
                         <div className="flex_col_sm_4">
-                            <div className="tradie_card">
+                            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <a href="javascript:void(0)" className="more_detail circle"></a>
                                 <div className="user_wrap">
                                     <figure className="u_img">

@@ -30,7 +30,7 @@ import { setShowToast } from '../../redux/common/actions';
 import { property } from 'lodash';
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
-import { renderTime } from '../../utils/common'
+import { renderTime, renderTimeWithCustomFormat } from '../../utils/common'
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -552,11 +552,19 @@ const BannerSearch = (props: PropsType) => {
         }
     }
 
+
     const checkPlaceholder = (calenderRange1: any) => {
         let fromDate: any = calenderRange1?.startDate;
         let toDate: any = calenderRange1?.endDate;
-        return renderTime(fromDate, toDate);
+        let result = renderTimeWithCustomFormat(fromDate, toDate, '', ['DD MMM', 'DD MMM YYYY'], 'When ?');
+
+        if (!result) {
+            return 'When ?'
+        }
+
+        return result;
     }
+
 
     let state_data: any = stateData;
     let length_spec = 0;
@@ -827,7 +835,7 @@ const BannerSearch = (props: PropsType) => {
                                     id="custom-date-range-div">
                                     <DateRange
                                         onChange={handleCalenderRange}
-                                        ranges={[calenderRange1]}
+                                        ranges={!moment(calenderRange1?.startDate).isValid() ? [{ startDate: new Date(), endDate: new Date(), key: 'selection1' }] : [calenderRange1]}
                                         moveRangeOnFirstSelection={false}
                                         rangeColors={["#fee600", "#b5b5b5"]}
                                         showDateDisplay={false}

@@ -17,9 +17,11 @@ import {
 import { setShowToast } from '../../../redux/common/actions';
 import { renderTime } from '../../../utils/common';
 
-interface Props {
+import EditMilestones from './editMilestones/index';
+import CancelJobs from './cancelJobs/cancelJob'
+import LodgeDispute from './lodgeDispute/lodgeDispute';
+import { CancelJob } from '../../../redux/jobs/actions';
 
-}
 interface Mile {
     milestoneId: any,
     milestoneName: any,
@@ -35,6 +37,8 @@ const MarkMilestones = (props: any) => {
     const [itemDetails, setDetails] = useState(null);
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
     const [selectedMile, setMilestone] = useState(null);
+
+    const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
 
     const backToScreen = () => {
         preFetch();
@@ -93,6 +97,36 @@ const MarkMilestones = (props: any) => {
                 data={{ selectedMile, selectedMilestoneIndex, selectedItem, itemDetails }}
             />)
     }
+
+    const backTab = (name: string) => {
+        setToggleItem((prev: any) => ({ ...prev, [name]: false }))
+    }
+
+    if (toggleItem?.edit) {
+        return (
+            <EditMilestones
+                details={itemDetails}
+                item={selectedItem}
+                backTab={backTab}
+            />
+        )
+    }
+
+    if (toggleItem?.lodge) {
+        return (
+            <LodgeDispute item={selectedItem} backTab={backTab} />
+        )
+    }
+
+    if (toggleItem?.cancel) {
+        return (
+            <CancelJobs item={selectedItem} backTab={backTab} />
+        )
+    }
+    console.log({
+        selectedMile, selectedMilestoneIndex, selectedItem, itemDetails
+    })
+    let item_detail:any = itemDetails;
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
@@ -104,10 +138,28 @@ const MarkMilestones = (props: any) => {
                             resetStateLocal();
                         }}
                     ></button>
-                    <span className="xs_sub_title">{'Title'}</span>
-                    {/* <span className="edit_icon" title="Edit">
+                    <span className="xs_sub_title">
+                        {item_detail && Object.keys(item_detail).length ? item_detail.jobName : ''}
+                    </span>
+
+                    <span className="dot_menu" title="Edit">
                         <img src={editIconBlue} alt="edit" />
-                    </span> */}
+                        <div className="edit_menu">
+                            <ul>
+                                <li
+                                    onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
+                                    className="icon edit_line">Edit Milestone</li>
+                                <li
+                                    onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
+                                    className="icon lodge">Lodge dispute</li>
+                                <li
+                                    onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
+                                    className="icon delete">Cancel job</li>
+                            </ul>
+                        </div>
+                    </span>
+
+
                 </div>
                 <span className="sub_title">Job Milestones</span>
                 <p className="commn_para">
@@ -154,30 +206,30 @@ const MarkMilestones = (props: any) => {
                                     </span>
                                 </div>
                                 {isActive === 1 ? (
-                                        <button
-                                            className="fill_btn full_btn btn-effect"
-                                            onClick={() => {
-                                                setShowToast(true, 'under development.')
-                                                // setMilestoneIndex({
-                                                //     index,
-                                                //     milestoneId,
-                                                //     jobId: item_details?.jobId
-                                                // });
+                                    <button
+                                        className="fill_btn full_btn btn-effect"
+                                        onClick={() => {
+                                            // setShowToast(true, 'under development.')
+                                            setMilestoneIndex({
+                                                index,
+                                                milestoneId,
+                                                jobId: item_details?.jobId
+                                            });
 
-                                                if (index === item_details?.milestones?.length - 1) {
-                                                    // setIsLastMilestone(true);
-                                                }
+                                            if (index === item_details?.milestones?.length - 1) {
+                                                // setIsLastMilestone(true);
+                                            }
 
-                                                if (isPhotoevidence) {
-                                                    // setStep(2);
-                                                } else {
-                                                    // setStep(3);
-                                                }
-                                            }}
-                                        >
-                                            {'Check and Approve'}
-                                        </button>
-                                    ) : null}
+                                            if (isPhotoevidence) {
+                                                // setStep(2);
+                                            } else {
+                                                // setStep(3);
+                                            }
+                                        }}
+                                    >
+                                        {'Check and Approve'}
+                                    </button>
+                                ) : null}
                             </li>
                         );
                     }

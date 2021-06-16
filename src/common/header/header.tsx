@@ -32,6 +32,10 @@ const Header = (props: any) => {
 
     // const USER_TYPE = storageService.getItem('userType');
 
+    useEffect(() => {
+        setActiveLink('discover')
+    },[])
+
     let { pathname } = useLocation();
     let history = useHistory();
 

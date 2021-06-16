@@ -8,6 +8,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import { renderTimeWithCustomFormat } from '../../../utils/common';
 
 // Please add a unique date
 interface Props {
@@ -207,12 +208,12 @@ export default class AddMilestone extends Component<Props, State> {
             let error_2 = this.isInvalid('from_date', from_date);
             let error_3 = this.isInvalid('recommended_hours', recommended_hours);
 
-            if(milestone_name?.length){
+            if (milestone_name?.length) {
                 errorItems['milestone_name'] = error_1;
             }
 
-            
-            if(recommended_hours?.length && error_3?.length){
+
+            if (recommended_hours?.length && error_3?.length) {
                 errorItems['recommended_hours'] = error_3;
             }
 
@@ -246,35 +247,6 @@ export default class AddMilestone extends Component<Props, State> {
                 "recommended_hours": recommended_hours
             }, milestone_index);
         }
-    }
-
-
-    renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: any, formatSet?: any) => {
-
-        if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
-            return `${moment(fromDate, format).format('DD MMM')}`
-        }
-
-        if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {
-            let yearEnd = moment().endOf("year").toISOString();
-            let monthEnd = moment(fromDate, format).endOf("month").toISOString();
-
-            let item: any = moment(toDate, format).diff(moment(fromDate, format), 'months', true);
-            let item_year: any = moment(toDate, format).diff(moment(fromDate, format), 'years', true);
-
-            let monthDiff = parseInt(item.toString());
-            let yearDiff = parseInt(item_year.toString());
-
-            if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
-                return `${moment(fromDate, format).format(formatSet[1])} - ${moment(toDate, format).format(formatSet[1])}`
-            }
-            if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
-                return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
-            }
-            return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
-        }
-
-        return 'Choose';
     }
 
     render() {
@@ -402,7 +374,7 @@ export default class AddMilestone extends Component<Props, State> {
                                         <button
                                             onClick={() => { handleStepForward(8) }}
                                             className="fill_btn fill_grey_btn choose_btn">
-                                            {this.renderTimeWithCustomFormat(
+                                            {renderTimeWithCustomFormat(
                                                 from_date_format,
                                                 to_date_format,
                                                 'MM-DD-YYYY',

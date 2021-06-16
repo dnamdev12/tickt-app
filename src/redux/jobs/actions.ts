@@ -286,6 +286,7 @@ export const getOpenJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUI
 export const getPastJobsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_PAST_JOBS, page });
 export const getNewApplicantsBuilder = (page: number) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS, page });
 export const getnewJobApplicationListBuilder = (item: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPLICANTS_LIST, item });
+export const getNewApprovalList = (page: any) => ({ type: actionTypes.GET_BUILDER_NEW_APPROVAL_LIST, page });
 
 export const getMilestoneList = (jobId: string) => ({
   type: actionTypes.GET_MILESTONES_START,
@@ -405,12 +406,80 @@ export const getTradeProfile = async (data: any) => {
   return { success: false, data: response.result };
 }
 
+
+export const ratingTradieProfile = async (data: any) => {
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewTradie, data);
+  setShowToast(true, response.message);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false, data: response.result };
+}
+
+
 export const getJobDetails = async (jobId: string) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.jobDetailsTradie + `?jobId=${jobId}`);
   setLoading(false);
   if (response.status_code === 200) {
-      return { success: true, data: response.result };
+    return { success: true, data: response.result };
   }
   return { success: false };
 }
+
+
+export const lodgeDispute = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}lodgeDispute`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const CancelJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}canceljob`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const InviteForJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}inviteForJob`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const cancelInviteForJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}cancelInviteForJob`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const changeRequest = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}changeRequest`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+

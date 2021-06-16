@@ -189,18 +189,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         setEditItems((prev) => ({ ...prev, ...edit_item_clone }));
     }
 
-
-    // const renderTimeItem = ({ from_date, to_date }: any) => {
-    //     console.log({ from_date, to_date })
-    //     if (from_date?.length && from_date !== 'Invalid date' && (!to_date?.length || to_date !== 'Invalid date')) {
-    //         return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}`
-    //     }
-
-    //     if (from_date?.length && from_date !== 'Invalid date' && to_date?.length && to_date !== 'Invalid date') {
-    //         return `${moment(from_date, 'MM-DD-YYYY').format('MMM DD')}-${moment(to_date, 'MM-DD-YYYY').format('DD')}`
-    //     }
-    // }
-
     const format = 'MM-DD-YYYY';
     return (
         <div className="app_wrapper">
