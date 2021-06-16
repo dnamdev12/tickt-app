@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import PersonalInformationComponent from './components/personalInformation';
+import PersonalInformationComponent from './components/personalInformation/personalInformation';
 import BankingDetailsComponent from './components/bankingDetails';
 import SettingsComponent from './components/settings';
 import SupportChatComponent from './components/supportChat';

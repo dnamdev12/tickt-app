@@ -62,6 +62,7 @@ textarea {
   font-size: 14px;
   letter-spacing: 0.5px;
   -webkit-appearance: none;
+  -moz-appearance: none;
   transition: all 0.30s ease-in-out;
   -webkit-transition: all 0.30s ease-in-out;
   -moz-transition: all 0.30s ease-in-out;
@@ -166,7 +167,7 @@ a.fill_btn {
     padding: 12px 18px;
   }
   &.disable_btn {
-    background-color: rgba(254, 230, 0, 0.1);
+    background-color: #fffacb;
     color: #99a4b6;
     pointer-events: none;
   }
@@ -562,10 +563,6 @@ a.fill_grey_btn {
 .mt-15 {
   margin: 15px 0px 0px;
 }
-
-.mt-16{
-  margin-top: 16px;
-}
 .mb0{
   margin-bottom: 0px !important;
 }
@@ -879,6 +876,7 @@ a.fill_grey_btn {
     width: 240px;
     height: 240px;
     border-radius: 3px;
+    position: relative;
     @media(max-width: 650px){
       width: 100%;
       margin: 10px 0 15px;
@@ -937,6 +935,7 @@ a.fill_grey_btn {
   input[type="range"] { 
       margin: auto;
       -webkit-appearance: none;
+      -moz-appearance: none;
       position: relative;
       overflow: hidden;
       pointer-events: none;
@@ -944,7 +943,7 @@ a.fill_grey_btn {
       height: 8px;
   }
   ::-webkit-slider-runnable-track {
-      background: #ddd;
+      background: #dfe5ef;
   }
   ::-webkit-slider-thumb {
       -webkit-appearance: none;
@@ -952,17 +951,18 @@ a.fill_grey_btn {
       height: 40px;
       background: #0b41a8;
       box-shadow: -100vw 0 0 100vw #0b41a8;
-      border: 2px #0b41a8 #999;
+      border: 2px #0b41a8 #dfe5ef;
   }
   ::-moz-range-track {
       height: 40px;
-      background: #ddd;
+      background: #dfe5ef;
   }
   ::-moz-range-thumb {
-      background: #fff;
+    -moz-appearance: none;
+      background: #0b41a8;
       height: 40px;
       width: 20px;
-      border: 3px solid #999;
+      border: 3px solid #0b41a8;
       border-radius: 0 !important;
       box-shadow: -100vw 0 0 100vw #0b41a8;
       box-sizing: border-box;
@@ -972,7 +972,7 @@ a.fill_grey_btn {
   }
   ::-ms-thumb { 
       background: #fff;
-      border: 2px solid #999;
+      border: 2px solid #dfe5ef;
       height: 40px;
       width: 20px;
       box-sizing: border-box;
@@ -984,7 +984,7 @@ a.fill_grey_btn {
       display: none; 
   }
   ::-ms-track { 
-      background: #ddd;
+      background: #dfe5ef;
       color: transparent;
       height: 40px;
       border: none;
@@ -1001,6 +1001,7 @@ a.fill_grey_btn {
   font-size: 14px;
   b{
       font-family: 'Neue Haas Grotesk Text Pro Bold';
+      font-weight: 500;
   }
 }
 //------------Progress bar close---------------//

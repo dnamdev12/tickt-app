@@ -18,7 +18,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 
 
-const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
+const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404', '/email-updated-successfully'];
 
 const Header = (props: any) => {
     let type = storageService.getItem('userType');

@@ -25,6 +25,7 @@ import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import BuilderProfile from '../pages/builderProfile';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile';
+import EmailUpdatedSuccess from '../pages/tradieEditProfile/components/personalInformation/changeEmailModal/components/successPage';
 import RateSuccessTradie from '../pages/builderJobDasboard/components/rateSuccess';
 import TradieVouchers from '../pages/tradieInfo/vouchers';
 
@@ -34,6 +35,7 @@ import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/
 import ChooseTheJob from '../pages/chooseTheJob/index';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
+
 
 
 const routes = [
@@ -198,6 +200,13 @@ const routes = [
         name: 'update-user-info',
         path: '/update-user-info',
         component: TradieEditProfile,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'email-updated-successfully',
+        path: '/email-updated-successfully',
+        component: EmailUpdatedSuccess,
         authRoute: false,
         privateRoute: true,
     },
