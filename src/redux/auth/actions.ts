@@ -141,5 +141,3 @@ export const onFileUpload = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 };
-
-

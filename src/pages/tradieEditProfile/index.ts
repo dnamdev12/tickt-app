@@ -4,6 +4,7 @@ import TradieEditProfileComponent from './tradieEditProfile';
 import {
     getTradieProfileView,
     getTradieBasicDetails,
+    cleanTradieBasicDetails
 } from './../../redux/profile/actions';
 
 import { callTradeList } from '../../redux/auth/actions';
@@ -23,6 +24,7 @@ const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         getTradieProfileView,
         getTradieBasicDetails,
+        cleanTradieBasicDetails,
         callTradeList,
         callTradieProfileData,
     }, dispatch);

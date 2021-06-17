@@ -103,6 +103,7 @@ const Urls = {
     needApproval:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`,
     reviewTradie:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewTradie`,
     jobBuilder:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}`,
+    jobHome:`${versions.v1}${ServiceEnum.home}`,
     builder:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
 }
 

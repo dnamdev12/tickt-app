@@ -234,8 +234,7 @@ class JobDashboard extends Component<Props, State> {
                                         <span className={`icon approved ${activeType === "approval" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { 
-                                                    setShowToast(true,'Under development');
-                                                    // setSelected('approval') 
+                                                    setSelected('approval') 
                                                 }}
                                                 className="menu_txt">
                                                 {'Need approval'}

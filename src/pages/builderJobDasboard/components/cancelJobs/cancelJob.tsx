@@ -43,7 +43,8 @@ const LodgeDispute = (props: any) => {
         let error_1 = isValid({ name: 'reason', value: reason, title: 'Reason' });
         let error_2 = isValid({ name: 'detail', value: detail, title: 'Detail' });
 
-        if (!error_1?.length && !error_2?.length) {
+        // if (!error_1?.length && !error_2?.length) {
+        if (!error_1?.length) {
             return false;
         }
         return true;

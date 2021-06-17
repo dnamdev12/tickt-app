@@ -44,7 +44,8 @@ const LodgeDispute = (props: any) => {
         let error_2 = isValid({ name: 'detail', value: detail, title: 'Detail' });
         let error_3 = isValid({ name: 'upload', value: filesUrl, title: 'Media file' });
 
-        if (!error_1?.length && !error_2?.length && !error_3?.length) {
+        // if (!error_1?.length && !error_2?.length && !error_3?.length) {
+        if (!error_1?.length) {
             return false;
         }
         return true;
@@ -135,7 +136,7 @@ const LodgeDispute = (props: any) => {
             "photos": filesUrl
         }
         let response: any = await lodgeDispute(data);
-    
+
         if (response?.success) {
             history.push('/lodge-success');
         }
@@ -162,9 +163,9 @@ const LodgeDispute = (props: any) => {
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button 
-                    onClick={() => { props.backTab('lodge') }}
-                    className="back"></button>
+                    <button
+                        onClick={() => { props.backTab('lodge') }}
+                        className="back"></button>
                     <span className="xs_sub_title">
                         {jobName || ''}
                     </span>

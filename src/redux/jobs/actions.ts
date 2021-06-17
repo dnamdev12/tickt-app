@@ -452,7 +452,7 @@ export const CancelJob = async (data: any) => {
 
 export const InviteForJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}inviteForJob`, data);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}inviteForJob?tradieId=${data.tradieId}&jobId=${data.jobId}`, {});
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message)
@@ -483,3 +483,44 @@ export const changeRequest = async (data: any) => {
   return { success: false };
 }
 
+export const SaveTradie = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.jobBuilder}saveTradie?tradieId=${data.tradieId}&isSave=${data.isSave}`,);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+
+export const HomeTradieProfile = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.jobHome}tradieProfile?tradieId=${data.tradieId}`,);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const AddVoucher = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}addVoucher`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    setShowToast(true, response.message)
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const ChooseJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.jobBuilder}chooseJob?page=${data.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}

@@ -1,18 +1,53 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import milestonesPlaceholder from '../../assets/images/Job milestones-preview.png';
-import { renderTimeWithFormat } from '../../utils/common';
+import { renderTimeWithCustomFormat } from '../../utils/common';
 import CancelJobSuccess from './success';
 
-const ChooseTheJob = () => {
+import { ChooseJob, InviteForJob } from '../../redux/jobs/actions';
+import { withRouter } from 'react-router-dom';
+
+const ChooseTheJob = (props: any) => {
 
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
-    const [stateData, setStateData] = useState([1,2,3,4]);
-
+    const [stateData, setStateData] = useState([]);
+    const { tradieId, path } = props?.location?.state;
     const checkOnClick = (e: any, index: any) => {
-        let edit_item_clone: any = editItem;
-        edit_item_clone[index] = e.target.checked;
-        setEditItems((prev) => ({ ...prev, ...edit_item_clone }));
+        setEditItems((prev) => ({ [index]: e.target.checked }));
     }
+
+    useEffect(() => {
+        preFetch();
+    }, [])
+
+    const preFetch = async () => {
+        let response = await ChooseJob({ page: 1 });
+        if (response?.success) {
+            setStateData(response.data);
+        }
+    }
+
+    useEffect(() => {
+        console.log('Here!=====>', { editItem });
+    }, [editItem])
+
+    const handleSubmit = async () => {
+        let key: any = '';
+
+        if (Object.keys(editItem).length) {
+            key = Object.keys(editItem)[0];
+        }
+
+        let data = {
+            tradieId: tradieId,
+            jobId: key
+        }
+        console.log({data},'--->');
+        let response = await InviteForJob(data);
+        if (response.success) {
+            props.history.push('/choose-the-job-success');
+        }
+    }
+    console.log({ props, stateData })
 
     return (
         <div className="app_wrapper">
@@ -26,7 +61,9 @@ const ChooseTheJob = () => {
                                     <div className="relate">
                                         <button
                                             className="back"
-                                            onClick={() => { }}
+                                            onClick={() => {
+                                                props.history.push(`/tradie-info${path}`)
+                                             }}
                                         >
                                         </button>
                                         <span className="title">
@@ -42,23 +79,28 @@ const ChooseTheJob = () => {
                         <div className="flex_col_sm_5">
                             <ul className={`milestones`}>
                                 {stateData?.length > 0 ?
-                                    stateData.map((item, index) => (
+                                    stateData.map((item: any, index: any) => (
                                         <li key={index}>
                                             <div className="checkbox_wrap agree_check">
                                                 <input
-                                                    checked={editItem[index]}
-                                                    onChange={(e: any) => { checkOnClick(e, index) }}
+                                                    checked={editItem[item?.jobId] == true ? true : false}
+                                                    onChange={(e: any) => { checkOnClick(e, item?.jobId) }}
                                                     className="filter-type filled-in"
                                                     type="checkbox"
                                                     id={`milestone${index}`} />
                                                 <label
                                                     htmlFor={`milestone${index}`}>
-                                                    {`${'Job Name'}`}
+                                                    {`${item?.tradeName}`}
                                                 </label>
                                                 <div className="info">
-                                                    <span>{'To wire up circuit board'}</span>
+                                                    <span>{item?.jobName}</span>
                                                     <span>
-                                                        {renderTimeWithFormat('06-12-2021', '23-12-2021', 'MM-DD-YYYY')}
+                                                        {renderTimeWithCustomFormat(
+                                                            item?.fromDate,
+                                                            item?.toDate,
+                                                            '',
+                                                            ['DD MMM', 'DD MMM YY']
+                                                        )}
                                                     </span>
                                                 </div>
                                             </div>
@@ -73,10 +115,10 @@ const ChooseTheJob = () => {
                                     )}
 
 
-                                <div style={{marginTop:'50px'}} className="form_field">
+                                <div style={{ marginTop: '50px' }} className="form_field">
                                     <button
-                                        onClick={() => {}}
-                                        className="fill_btn full_btn btn-effect">
+                                        onClick={handleSubmit}
+                                        className={`fill_btn full_btn btn-effect ${!Object.keys(editItem).length ? 'disable_btn' : ''}`}>
                                         {'Invite for the job'}
                                     </button>
                                 </div>
@@ -85,8 +127,8 @@ const ChooseTheJob = () => {
                     </div>
                 </div>
             </div>
-        </div >
+        </div>
     )
 }
 
-export default ChooseTheJob;
+export default withRouter(ChooseTheJob);

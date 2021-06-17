@@ -69,16 +69,16 @@ const AddQualification = (props: Propstype) => {
 
     const onSubmit = (e: any) => {
         e.preventDefault();
-        const newData = [...qualification]
+        const newData = [...qualification];
         const item = newData.find(i => i.url === '')
-        const itemIndex = newData.indexOf(item)
-        console.log(qualification, item, itemIndex, 'okk')
+        const itemIndex = newData.indexOf(item);
+        console.log(qualification, item, itemIndex, 'okk');
         if (!qualification.length) {
-            setShowToast(true, "Please add atleast one qualification.")
+            setShowToast(true, "Please add atleast one qualification");
         } else if (itemIndex >= 0) {
-            setShowToast(true, "Please upload all selected documents.")
+            setShowToast(true, "Please upload all selected documents");
         } else {
-            props.updateSteps(props.step + 1, { qualification })
+            props.updateSteps(props.step + 1, { qualification });
         }
     }
 

@@ -33,6 +33,12 @@ import editIconWhite from '../../../../assets/images/ic-edit-white.png';
 import spherePlaceholder from '../../../../assets/images/ic_categories_placeholder.svg';
 import eyeIconClose from '../../../../assets/images/icon-eye-closed.png';
 import eyeIconOpen from '../../../../assets/images/icon-eye-open.png';
+import removeFile from '../../../../assets/images/icon-close-1.png';
+import jpegFile from '../../../../assets/images/jpeg.png';
+import jpgFile from '../../../../assets/images/jpg.png';
+import pngFile from '../../../../assets/images/png.png';
+import pdfFile from '../../../../assets/images/pdf.png';
+import docFile from '../../../../assets/images/doc.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -45,6 +51,7 @@ interface Props {
     getTradieBasicDetails: () => void,
     callTradeList: () => void,
     callTradieProfileData: () => void,
+    cleanTradieBasicDetails: () => void,
 }
 
 interface State {
@@ -150,11 +157,11 @@ export class PersonalInformation extends Component<Props, State> {
                 basicDetailsData: nextProps.tradieBasicDetailsData
             }
         }
-        if (nextProps.tradeListData && !prevState.localQualificationDoc?.length && nextProps.tradieBasicDetailsData) {
+        if (nextProps.tradeListData && (!prevState.localQualificationDoc?.length || !prevState.remainingQualificationDoc?.length) && nextProps.tradieBasicDetailsData) {
             const data = [...nextProps.tradeListData][0]?.qualifications?.map((item: any) => item.name?.length && { _id: item._id, name: item.name });
             const alreadyFilledQualificationDoc: Array<any> = nextProps.tradieBasicDetailsData?.qualificationDoc?.map(({ qualification_id }: { qualification_id: string }) => qualification_id?.length && qualification_id);
             const remainingQualificationDoc = data?.filter(({ _id }: { _id: string }) => !alreadyFilledQualificationDoc.includes(_id));
-            console.log(remainingQualificationDoc, "remainingQualificationDoc");
+            console.log(remainingQualificationDoc, "remainingQualificationDoc", alreadyFilledQualificationDoc, "alreadyFilledQualificationDoc");
             return {
                 localQualificationDoc: data ? data : [],
                 remainingQualificationDoc: remainingQualificationDoc ? remainingQualificationDoc : []
@@ -237,7 +244,10 @@ export class PersonalInformation extends Component<Props, State> {
         this.setState({ profileViewData: newData, areasOfSpecsModalClicked: false });
     }
 
-    onFileChange = async (e: any, type?: string) => {
+    onFileChange = async (e: any, type?: string, id?: string) => {
+        // if (type === "qualificationDoc") {
+        //     return;
+        // }
         const formData = new FormData();
         const newFile = e.target.files[0];
         var fileType = newFile?.type?.split('/')[1]?.toLowerCase();
@@ -248,27 +258,36 @@ export class PersonalInformation extends Component<Props, State> {
             return;
         }
         formData.append('file', newFile);
+        if (type === "profileImage") {
+            this.setState({ userImage: URL.createObjectURL(newFile), formData: formData });
+        }
         if (type === "addJobPhotos") {
             const res = await onFileUpload(formData);
-            if (res?.success) {
+            if (res.success) {
                 const data: any = { ...this.state.portfolioJobDetail };
                 data?.portfolioImage?.push(res.imgUrl);
                 this.setState({ portfolioJobDetail: data });
             }
-            return;
         }
-        this.setState({ userImage: URL.createObjectURL(newFile), formData: formData });
-        // const res1 = await onFileUpload(formData);
-        // if (res1?.success) {
-        // const data: any = {
-        // userImage: res1?.imgUrl
-        // }
-        // const res2 = await tradieUpdateBasicDetails(data);
-        // if (res2?.success) {
-        // setShowToast(true, 'Profile image updated successfully');
-        // this.setState({ userImage: res1?.imgUrl });
-        // this.props.callTradieProfileData();
-        // }
+        if (type === "filledQualification") {
+            const res = await onFileUpload(formData);
+            if (res.success) {
+                const newBasicData: any = { ...this.state.basicDetailsData };
+                const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
+                const item = newqualificationDoc?.find(i => i.qualification_id === id)
+                item.url = res.imgUrl;
+                this.setState({ basicDetailsData: newBasicData });
+            }
+        }
+        if (type === "remainingQualification") {
+            const res = await onFileUpload(formData);
+            if (res.success) {
+                const data: Array<any> = [...this.state.remainingQualificationDoc];
+                const item = data?.find(i => i._id === id)
+                item.url = res.imgUrl;
+                this.setState({ remainingQualificationDoc: data });
+            }
+        }
     }
 
     validateBasicDetailsForm = () => {
@@ -282,7 +301,7 @@ export class PersonalInformation extends Component<Props, State> {
             }
         }
 
-        if (!this.state.basicDetailsData?.mobileNumbechangedEmailr) {
+        if (!this.state.basicDetailsData?.mobileNumber) {
             newErrors.mobileNumber = Constants.errorStrings.phoneNumberEmpty;
         } else {
             const phoneRegex = new RegExp(regex.mobile);
@@ -290,6 +309,23 @@ export class PersonalInformation extends Component<Props, State> {
                 newErrors.mobileNumber = Constants.errorStrings.phoneNumberErr
             }
         }
+
+        const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
+        console.log(newQualificationDoc, "newQualificationDoc validation");
+        if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
+            // newErrors.qualificationDoc = "Please upload all selected documents";
+            setShowToast(true, "Please upload all selected documents");
+            return;
+        }
+
+        const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
+        console.log(newRemainingDoc, "newRemainingDoc validation");
+        if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
+            // newErrors.qualificationDoc = "Please upload all selected documents";
+            setShowToast(true, "Please upload all selected documents");
+            return;
+        }
+
         this.setState({ errors: newErrors });
         return !Object.keys(newErrors).length;
     }
@@ -349,47 +385,29 @@ export class PersonalInformation extends Component<Props, State> {
         this.setState({ basicDetailsData: newBasicDetails });
     }
 
-    // validatePortfolioForm = () => {
-    //     const newErrors: any = {};
-    //     if (!this.state.portfolioJobDetail?.jobname.trim()) {
-    //         newErrors.jobName = Constants.errorStrings.jobName;
-    //     } else {
-    //         const passwordRegex = new RegExp(regex.password);
-    //         if (!passwordRegex.test(this.state.password.trim())) {
-    //             newErrors.jobName = Constants.errorStrings.jobName;
-    //         }
-    //     }
-
-    //     if (!this.state.portfolioJobDetail?.jobDescription.trim()) {
-    //         newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //     } else {
-    //         const passwordRegex = new RegExp(regex.password);
-    //         if (!passwordRegex.test(this.state.password.trim())) {
-    //             newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //         }
-    //     }
-
-    //     if (!this.state.portfolioJobDetail?.jobDescription.trim()) {
-    //         newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //     } else {
-    //         const passwordRegex = new RegExp(regex.password);
-    //         if (!passwordRegex.test(this.state.password.trim())) {
-    //             newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //         }
-    //     }
-
-    //     this.setState({ errors: newErrors });
-    //     return !Object.keys(newErrors).length;
-    // }
-
     submitBasicProfileDetails = async () => {
         if (this.validateBasicDetailsForm()) {
-            const data = { ...this.state.basicDetailsData };
-            delete data.userType;
-            delete data.userId;
+            const basicDetails = { ...this.state.basicDetailsData };
+            const filledQualification = [...this.state.basicDetailsData?.qualificationDoc]?.filter(({ isSelected }: { isSelected: string }) => !isSelected?.length)
+            const remainingQualification = this.state.remainingQualificationDoc?.map(({ _id, url }: { _id: string, url: string }) => url?.length && { qualification_id: _id, url: url });
+            const newRemainingQualification = remainingQualification?.filter((i: any) => (i && Object.keys(i)?.length > 0));
+            const data = {
+                fullName: basicDetails?.fullName,
+                mobileNumber: basicDetails?.mobileNumber,
+                email: basicDetails?.email,
+                qualificationDoc: [...filledQualification, ...newRemainingQualification]
+            }
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
-                this.setState((prevState: any) => ({ profileModalClicked: false, basicDetailsData: prevState.basicDetailsData }));
+                this.props.cleanTradieBasicDetails();
+                basicDetails.qualificationDoc = data.qualificationDoc;
+                this.setState((prevState: any) => ({
+                    profileModalClicked: false,
+                    addQualificationClicked: false,
+                    remainingQualificationDoc: [],
+                    basicDetailsData: basicDetails
+                }));
+                this.props.getTradieBasicDetails();
             }
         }
     }
@@ -413,10 +431,6 @@ export class PersonalInformation extends Component<Props, State> {
     }
 
     passwordModalCloseHandler = () => {
-        // const newErrors = { ...this.state.errors };
-        // newErrors.password && delete newErrors.password;
-        // newErrors.newPassword && delete newErrors.newPassword;
-        // newErrors.confirmNewPassword && delete newErrors.confirmNewPassword;
         this.setState({
             profileModalClicked: true,
             passwordModalClicked: false,
@@ -575,6 +589,86 @@ export class PersonalInformation extends Component<Props, State> {
         }
     }
 
+    removeQualificationFileHandler = (id: string, type: string) => {
+        if (type === "filledQualification") {
+            const newBasicData: any = { ...this.state.basicDetailsData };
+            const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
+            const item = newqualificationDoc?.find(i => i.qualification_id === id)
+            item.url = '';
+            newBasicData.qualificationDoc = newqualificationDoc;
+            this.setState({ basicDetailsData: newBasicData });
+        }
+        if (type === "remainingQualification") {
+            const data: Array<any> = [...this.state.remainingQualificationDoc];
+            const item = data?.find(i => i._id === id)
+            item.url = '';
+            this.setState({ remainingQualificationDoc: data });
+        }
+    }
+
+    changeQualificationHandler = (id: string, type: string) => {
+        if (type === "filledQualification") {
+            const newBasicData: any = { ...this.state.basicDetailsData };
+            const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
+            const item = newqualificationDoc?.find(i => i.qualification_id === id);
+            const itemIndex = newqualificationDoc?.indexOf(item);
+            // if (!item) {
+            // newqualificationDoc.push({ qualification_id: id, url: '' });
+            // } else {
+            // newqualificationDoc.splice(itemIndex, 1);
+            if (item.isSelected) {
+                newqualificationDoc.splice(itemIndex, 1, { qualification_id: id, url: '' });
+            } else {
+                newqualificationDoc.splice(itemIndex, 1, { qualification_id: id, url: '', isSelected: "isSelected" });
+            }
+            newBasicData.qualificationDoc = newqualificationDoc;
+            this.setState({ basicDetailsData: newBasicData });
+        }
+
+        if (type === "remainingQualification") {
+            const newqualificationDoc: Array<any> = [...this.state.remainingQualificationDoc];
+            const item = newqualificationDoc?.find(i => i._id === id);
+            const itemIndex = newqualificationDoc?.indexOf(item);
+            if (item.isSelected) {
+                newqualificationDoc.splice(itemIndex, 1, { _id: id, url: '', name: item.name });
+            } else {
+                newqualificationDoc.splice(itemIndex, 1, { _id: id, url: '', name: item.name, isSelected: "isSelected" });
+            }
+            this.setState({ remainingQualificationDoc: newqualificationDoc });
+        }
+    }
+
+    qualificationFileDetails = (url: any) => {
+        var fileArray = url.replace(/^.*[\\\/]/, '').split('.');
+        const type = fileArray[1].toLowerCase();
+        switch (type) {
+            case "jpeg":
+                return { fileName: fileArray[0], fileType: jpegFile };
+            case "jpg":
+                return { fileName: fileArray[0], fileType: jpgFile };
+            case "png":
+                return { fileName: fileArray[0], fileType: pngFile };
+            case "pdf":
+                return { fileName: fileArray[0], fileType: pdfFile };
+            case "doc":
+                return { fileName: fileArray[0], fileType: docFile };
+            case "docx":
+                return { fileName: fileArray[0], fileType: docFile };
+            default:
+                return null;
+        }
+    }
+
+    editProfileCloseHandler = () => {
+        this.setState((prevState: any) => ({
+            profileModalClicked: false,
+            basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {},
+            addQualificationClicked: false,
+            remainingQualificationDoc: []
+        }));
+    }
+
+
     render() {
         let props: any = this.props;
         console.log(this.state, "state--------------", props, "props------------");
@@ -628,7 +722,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     accept="image/png,image/jpg,image/jpeg"
                                     style={{ display: "none" }}
                                     id="upload_profile_pic"
-                                    onChange={this.onFileChange}
+                                    onChange={(e) => this.onFileChange(e, "profileImage")}
                                 />
                             </figure>
                         </div>
@@ -656,17 +750,14 @@ export class PersonalInformation extends Component<Props, State> {
                 <Modal
                     className="custom_modal"
                     open={profileModalClicked}
-                    onClose={() => this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {}, addQualificationClicked: false })}
+                    onClose={this.editProfileCloseHandler}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
                             <span className="sub_title">Edit Profile</span>
-                            <button className="close_btn" onClick={() => {
-                                this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {}, addQualificationClicked: false });
-                            }}
-                            >
+                            <button className="close_btn" onClick={this.editProfileCloseHandler}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
@@ -714,45 +805,129 @@ export class PersonalInformation extends Component<Props, State> {
                                         onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
                                     >Change password</a>
                                 </div>
+                                <div className="form_field">
+                                    <label className="form_label">Qualification documents </label>
+                                </div>
                                 {(basicDetailsData?.qualificationDoc?.length > 0 && localQualificationDoc.length > 0) &&
                                     <>
-                                        <div className="form_field">
-                                            <label className="form_label">Qualification documents </label>
-                                        </div>
-                                        {basicDetailsData?.qualificationDoc?.map(({ qualification_id, url }: { qualification_id: string, url: string }) => {
+                                        {basicDetailsData?.qualificationDoc?.map(({ qualification_id, url, isSelected }: { qualification_id: string, url: string, isSelected: string }) => {
                                             const qualificationName: string = localQualificationDoc.find(({ _id }: { _id: string }) => _id === qualification_id)?.name;
+                                            const docDetails: any = url && this.qualificationFileDetails(url);
                                             return (
-                                                <div className="form_field">
-                                                    <div className="relate">
-                                                        <div className="checkbox_wrap agree_check">
-                                                            <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'} />
-                                                            <label htmlFor={qualificationName + 'upload'} className="line-1">{qualificationName || ''}</label>
-                                                        </div>
-                                                        <div className="edit_delete tr">
-                                                            <span className="remove" title="Remove"></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })}
-                                        {(addQualificationClicked && remainingQualificationDoc?.length) &&
-                                            remainingQualificationDoc?.map(({ qualification_id, name }: { qualification_id: string, name: string }) => {
-                                                return (
-                                                    <div className="form_field">
+                                                <>
+                                                    {/* <div className="form_field">
                                                         <div className="relate">
                                                             <div className="checkbox_wrap agree_check">
-                                                                <input name="qualification" className="filter-type filled-in" type="checkbox" id={name + 'upload'} />
-                                                                <label htmlFor={name + 'upload'} className="line-1">{name}</label>
+                                                                <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'} />
+                                                                <label htmlFor={qualificationName + 'upload'} className="line-1">{qualificationName || ''}</label>
                                                             </div>
                                                             <div className="edit_delete tr">
                                                                 <span className="remove" title="Remove"></span>
                                                             </div>
                                                         </div>
+                                                    </div> */}
+                                                    <div className="f_spacebw" key={qualification_id}>
+                                                        <div className="checkbox_wrap agree_check">
+                                                            <input
+                                                                className="filter-type filled-in"
+                                                                type="checkbox"
+                                                                checked={!!isSelected ? false : true}
+                                                                name={qualificationName}
+                                                                id={qualificationName}
+                                                                onChange={() => this.changeQualificationHandler(qualification_id, "filledQualification")}
+                                                            />
+                                                            <label htmlFor={qualificationName}>{qualificationName}</label>
+                                                        </div>
+                                                        {url ?
+                                                            (<div className="file_upload_box">
+                                                                <span className="close" onClick={() => this.removeQualificationFileHandler(qualification_id, "filledQualification")}>
+                                                                    <img src={removeFile} />
+                                                                </span>
+                                                                <span className="file_icon">
+                                                                    <img src={docDetails?.fileType} />
+                                                                </span>
+                                                                <div className="file_details">
+                                                                    <span className="name">{docDetails?.fileName}</span>
+                                                                </div>
+                                                            </div>) :
+                                                            (<div className="upload_doc">
+                                                                <label
+                                                                    className={`upload_btn ${!isSelected ? "disable" : ""}`}
+                                                                    htmlFor={qualificationName + 'upload'}>Upload</label>
+                                                                <input
+                                                                    type="file"
+                                                                    className="none"
+                                                                    id={qualificationName + 'upload'}
+                                                                    accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
+                                                                    disabled={!!isSelected ? true : false}
+                                                                    onChange={(e) => this.onFileChange(e, "filledQualification", qualification_id)}
+                                                                />
+                                                            </div>)}
                                                     </div>
-                                                )
-                                            })}
+                                                </>
+                                            )
+                                        })}
                                     </>
                                 }
+
+                                {(addQualificationClicked && remainingQualificationDoc?.length > 0) &&
+                                    remainingQualificationDoc?.map(({ _id, name, url, isSelected }: { _id: string, name: string, url: string, isSelected: string }) => {
+                                        const docDetails: any = url && this.qualificationFileDetails(url);
+                                        return (
+                                            // <div className="form_field">
+                                            //     <div className="relate">
+                                            //         <div className="checkbox_wrap agree_check">
+                                            //             <input name="qualification" className="filter-type filled-in" type="checkbox" id={name + 'upload'} />
+                                            //             <label htmlFor={name + 'upload'} className="line-1">{name}</label>
+                                            //         </div>
+                                            //         <div className="edit_delete tr">
+                                            //             <span className="remove" title="Remove"></span>
+                                            //         </div>
+                                            //     </div>
+                                            // </div>
+                                            <>
+                                                <div className="f_spacebw" key={_id}>
+                                                    <div className="checkbox_wrap agree_check">
+                                                        <input
+                                                            className="filter-type filled-in"
+                                                            type="checkbox"
+                                                            checked={!!isSelected ? true : false}
+                                                            name={name}
+                                                            id={name}
+                                                            onChange={() => this.changeQualificationHandler(_id, "remainingQualification")}
+                                                        />
+                                                        <label htmlFor={name}>{name}</label>
+                                                    </div>
+                                                    {url ?
+                                                        (<div className="file_upload_box">
+                                                            <span className="close" onClick={() => this.removeQualificationFileHandler(_id, "remainingQualification")}>
+                                                                <img src={removeFile} />
+                                                            </span>
+                                                            {/* onClick={() => window.open(url, '_blank')} */}
+                                                            <span className="file_icon">
+                                                                <img src={docDetails?.fileType} />
+                                                            </span>
+                                                            <div className="file_details">
+                                                                <span className="name">{docDetails?.fileName}</span>
+                                                            </div>
+                                                        </div>) :
+                                                        (<div className="upload_doc">
+                                                            <label
+                                                                className={`upload_btn ${!isSelected ? "disable" : ""}`}
+                                                                htmlFor={name + 'upload'}>Upload</label>
+                                                            <input
+                                                                type="file"
+                                                                className="none"
+                                                                id={name + 'upload'}
+                                                                accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
+                                                                disabled={!!isSelected ? false : true}
+                                                                onChange={(e) => this.onFileChange(e, "remainingQualification", _id)}
+                                                            />
+                                                        </div>)}
+                                                </div>
+                                            </>
+                                        )
+                                    })}
                             </div>
 
                             {(basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <div className="form_field">
@@ -1133,7 +1308,7 @@ export class PersonalInformation extends Component<Props, State> {
                                 })
                                 }
 
-                                {(portfolioJobDetail?.portfolioImage?.length < 6 || addPortfolioJob) &&
+                                {(portfolioJobDetail?.portfolioImage?.length < 6 && addPortfolioJob) &&
                                     <>
                                         <label className="upload_media" htmlFor="upload_img_video">
                                             <img src={addMedia} alt="add" />
