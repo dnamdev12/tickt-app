@@ -413,7 +413,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
-                            {!jobDetailsData?.appliedStatus && !props.isLoading &&isTradieWorking && (
+                            {!jobDetailsData?.appliedStatus && !props.isLoading && isTradieWorking && (
                                 <div className="flex_col_sm_4 text-right">
                                     <span className="dot_menu" title="Edit">
                                         <img src={editIconBlue} alt="edit" />
@@ -458,7 +458,16 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    <span className="title line-3" title={jobDetailsData?.jobName}>{jobDetailsData?.jobName}</span>
+                                    {/* <div className="chang_req_card">
+                                        <span className="sub_title">Change request details</span>
+                                        <p className="commn_para line-2">
+                                            Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid.
+                                        </p>
+                                        <button className="fill_btn btn-effect">Accept</button>
+                                        <button className="fill_grey_btn btn-effect">Reject</button>
+                                    </div> */}
+
+                                    <span className="title line-1" title={jobDetailsData?.jobName}>{jobDetailsData?.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
