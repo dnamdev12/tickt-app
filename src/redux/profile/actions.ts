@@ -10,6 +10,8 @@ export const getTradieProfileView = () => ({ type: actionTypes.GET_TRADIE_PROFIL
 
 export const getTradieBasicDetails = () => ({ type: actionTypes.GET_TRADIE_BASIC_DETAILS });
 
+export const cleanTradieBasicDetails = () => ({ type: actionTypes.CLEAN_TRADIE_BASIC_DETAILS });
+
 export const tradieUpdateProfileDetails = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdateProfileDetails, data);

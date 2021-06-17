@@ -2,16 +2,18 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
 import { format } from 'date-fns';
 import { setShowToast } from '../../../redux/common/actions';
-
-import Carousel from 'react-multi-carousel';
-import "react-multi-carousel/lib/styles.css";
 import UploadMedia from '../../postJob/components/uploadMedia';
+import { renderTime } from '../../../utils/common';
+import LodgeDispute from './lodgeDispute/lodgeDispute';
+import CancelJobs from './cancelJobs/cancelJob'
+
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import removeIconBlue from '../../../assets/images/ic-cancel-blue.png';
 import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
-import { renderTime } from '../../../utils/common';
+import Carousel from 'react-multi-carousel';
+import "react-multi-carousel/lib/styles.css";
 
 const declinedImages = {
   desktop: {
@@ -106,6 +108,7 @@ const MarkMilestone = ({
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
+  const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
 
   useEffect(() => {
     getMilestoneList(params.jobId);
@@ -177,11 +180,36 @@ const MarkMilestone = ({
     }
   };
 
-  const { jobName, milestones, postedBy } = milestoneList || {};
+
+  const { jobId, jobName, milestones, postedBy } = milestoneList || {};
   const { builderId, builderImage, builderName, reviews } = postedBy || {};
 
   const hoursMinutes = data.actualHours.split(':').map((key: string) => parseInt(key));
   const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
+
+  const backTab = (name: string) => {
+    setToggleItem((prev: any) => ({ ...prev, [name]: false }))
+  }
+
+  if (toggleItem?.lodge) {
+    return (
+      <LodgeDispute
+        item={{ jobId: jobId, jobName: jobName }}
+        backTab={backTab}
+        history={history}
+      />
+    )
+  }
+
+  if (toggleItem?.cancel) {
+    return (
+      <CancelJobs
+        item={{ jobId: jobId, jobName: jobName }}
+        backTab={backTab}
+        history={history}
+      />
+    )
+  }
 
   let page = null;
   switch (step) {
@@ -199,8 +227,12 @@ const MarkMilestone = ({
                 <img src={editIconBlue} alt="edit" />
                 <div className="edit_menu">
                   <ul>
-                    <li className="icon lodge">Lodge dispute</li>
-                    <li className="icon delete">Cancel job</li>
+                    <li
+                      onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
+                      className="icon lodge">Lodge dispute</li>
+                    <li
+                      onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
+                      className="icon delete">Cancel job</li>
                   </ul>
                 </div>
               </span>

@@ -2,11 +2,11 @@ import { useState } from 'react';
 import moment from 'moment';
 // @ts-ignore
 import ReactStars from "react-rating-stars-component";
-import { reviewBuilder } from '../../../redux/jobs/actions';
-import { setShowToast } from '../../../redux/common/actions';
+import { reviewBuilder } from '../../../../redux/jobs/actions';
+import { setShowToast } from '../../../../redux/common/actions';
 
-import dummy from '../../../assets/images/u_placeholder.jpg';
-import more from '../../../assets/images/icon-direction-right.png';
+import dummy from '../../../../assets/images/u_placeholder.jpg';
+import more from '../../../../assets/images/icon-direction-right.png';
 
 interface Proptypes {
     history: any,

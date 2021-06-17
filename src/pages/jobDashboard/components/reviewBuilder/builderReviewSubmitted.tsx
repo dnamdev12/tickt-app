@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
-import reviewBuilderSuccess from '../../../assets/images/review-builder-success.png';
+import reviewBuilderSuccess from '../../../../assets/images/review-builder-success.png';
 
-const BuilderReviewSubmitted = () => {
+const BuilderReviewSuccess = () => {
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
@@ -24,4 +24,4 @@ const BuilderReviewSubmitted = () => {
     )
 }
 
-export default BuilderReviewSubmitted
+export default BuilderReviewSuccess;

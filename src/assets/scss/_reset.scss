@@ -482,6 +482,14 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
     .rdrDayToday .rdrDayNumber span:after{
         background: transparent !important;
     }
+    .rdrDayToday, .rdrDayToday .rdrDayNumber {
+        background: var(--yellow) !important;
+        color: var(--blue);
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        .rdrInRange{
+        background: var(--yellow) !important;
+        }
+    }
 
     .rdrInRange{
         background-color: #a09fa726 !important;

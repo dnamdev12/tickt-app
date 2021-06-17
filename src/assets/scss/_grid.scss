@@ -216,20 +216,20 @@
   .f_spacebw{
     margin-bottom: 24px;
   }
-  .upload_btn{
-    @include border-radius(3px);
-    background-color: var(--grey);
-    font-size: 12px;
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
-    color: var(--blue);
-    padding: 10px 15px;
-    display: inline-block;
-    cursor: pointer;
-    &.disable{
-      background-color: #dfe5ef6e;
-      pointer-events: none;
-      color: #c2c2c7;
-    }
+}
+.upload_btn{
+  @include border-radius(3px);
+  background-color: var(--grey);
+  font-size: 12px;
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  color: var(--blue);
+  padding: 10px 15px;
+  display: inline-block;
+  cursor: pointer;
+  &.disable{
+    background-color: #dfe5ef6e;
+    pointer-events: none;
+    color: #c2c2c7;
   }
 }
 

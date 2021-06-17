@@ -110,18 +110,19 @@ const VerifyNewEmail = (props: PropsTypes) => {
                             <span className="show_label">We have sent a verification code to your email.
                                 Please check email and enter the 5-digit code here.</span>
                         </div>
-                        {counter === 0 && <div className="form_field text-center">
+                        {counter === 0 && <div className="form_field f_spacebw">
                             <span className="show_label">Don’t you receive any codes?</span>
                             <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
                         </div>}
-                        {counter > 0 && <div className="form_field text-center">
+                        {counter > 0 && <div>
                             <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
                         </div>}
-                        <div className="form_field">
-                            <button className="fill_btn btn-effect">Next</button>
-                        </div>
+                       
                     </form>
                 </div>
+                <div className="bottom_btn custom_btn">
+                            <button className="fill_btn full_btn btn-effect">Next</button>
+                        </div>
             </div>
         </>
     )

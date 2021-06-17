@@ -41,7 +41,6 @@ import pdfFile from '../../../../assets/images/pdf.png';
 import docFile from '../../../../assets/images/doc.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-import { id } from 'date-fns/locale';
 
 interface Props {
     history: any,
@@ -52,6 +51,7 @@ interface Props {
     getTradieBasicDetails: () => void,
     callTradeList: () => void,
     callTradieProfileData: () => void,
+    cleanTradieBasicDetails: () => void,
 }
 
 interface State {
@@ -157,7 +157,7 @@ export class PersonalInformation extends Component<Props, State> {
                 basicDetailsData: nextProps.tradieBasicDetailsData
             }
         }
-        if (nextProps.tradeListData && !prevState.localQualificationDoc?.length && nextProps.tradieBasicDetailsData) {
+        if (nextProps.tradeListData && (!prevState.localQualificationDoc?.length || !prevState.remainingQualificationDoc?.length) && nextProps.tradieBasicDetailsData) {
             const data = [...nextProps.tradeListData][0]?.qualifications?.map((item: any) => item.name?.length && { _id: item._id, name: item.name });
             const alreadyFilledQualificationDoc: Array<any> = nextProps.tradieBasicDetailsData?.qualificationDoc?.map(({ qualification_id }: { qualification_id: string }) => qualification_id?.length && qualification_id);
             const remainingQualificationDoc = data?.filter(({ _id }: { _id: string }) => !alreadyFilledQualificationDoc.includes(_id));
@@ -385,39 +385,6 @@ export class PersonalInformation extends Component<Props, State> {
         this.setState({ basicDetailsData: newBasicDetails });
     }
 
-    // validatePortfolioForm = () => {
-    //     const newErrors: any = {};
-    //     if (!this.state.portfolioJobDetail?.jobname.trim()) {
-    //         newErrors.jobName = Constants.errorStrings.jobName;
-    //     } else {
-    //         const passwordRegex = new RegExp(regex.password);
-    //         if (!passwordRegex.test(this.state.password.trim())) {
-    //             newErrors.jobName = Constants.errorStrings.jobName;
-    //         }
-    //     }
-
-    //     if (!this.state.portfolioJobDetail?.jobDescription.trim()) {
-    //         newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //     } else {
-    //         const passwordRegex = new RegExp(regex.password);
-    //         if (!passwordRegex.test(this.state.password.trim())) {
-    //             newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //         }
-    //     }
-
-    //     if (!this.state.portfolioJobDetail?.jobDescription.trim()) {
-    //         newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //     } else {
-    //         const passwordRegex = new RegExp(regex.password);
-    //         if (!passwordRegex.test(this.state.password.trim())) {
-    //             newErrors.jobDescription = Constants.errorStrings.jobDescription;
-    //         }
-    //     }
-
-    //     this.setState({ errors: newErrors });
-    //     return !Object.keys(newErrors).length;
-    // }
-
     submitBasicProfileDetails = async () => {
         if (this.validateBasicDetailsForm()) {
             const basicDetails = { ...this.state.basicDetailsData };
@@ -432,6 +399,7 @@ export class PersonalInformation extends Component<Props, State> {
             }
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
+                this.props.cleanTradieBasicDetails();
                 basicDetails.qualificationDoc = data.qualificationDoc;
                 this.setState((prevState: any) => ({
                     profileModalClicked: false,
@@ -439,6 +407,7 @@ export class PersonalInformation extends Component<Props, State> {
                     remainingQualificationDoc: [],
                     basicDetailsData: basicDetails
                 }));
+                this.props.getTradieBasicDetails();
             }
         }
     }
@@ -462,10 +431,6 @@ export class PersonalInformation extends Component<Props, State> {
     }
 
     passwordModalCloseHandler = () => {
-        // const newErrors = { ...this.state.errors };
-        // newErrors.password && delete newErrors.password;
-        // newErrors.newPassword && delete newErrors.newPassword;
-        // newErrors.confirmNewPassword && delete newErrors.confirmNewPassword;
         this.setState({
             profileModalClicked: true,
             passwordModalClicked: false,
@@ -694,6 +659,15 @@ export class PersonalInformation extends Component<Props, State> {
         }
     }
 
+    editProfileCloseHandler = () => {
+        this.setState((prevState: any) => ({
+            profileModalClicked: false,
+            basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {},
+            addQualificationClicked: false,
+            remainingQualificationDoc: []
+        }));
+    }
+
 
     render() {
         let props: any = this.props;
@@ -776,17 +750,14 @@ export class PersonalInformation extends Component<Props, State> {
                 <Modal
                     className="custom_modal"
                     open={profileModalClicked}
-                    onClose={() => this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {}, addQualificationClicked: false })}
+                    onClose={this.editProfileCloseHandler}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
                             <span className="sub_title">Edit Profile</span>
-                            <button className="close_btn" onClick={() => {
-                                this.setState({ profileModalClicked: false, basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {}, addQualificationClicked: false });
-                            }}
-                            >
+                            <button className="close_btn" onClick={this.editProfileCloseHandler}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
@@ -834,17 +805,17 @@ export class PersonalInformation extends Component<Props, State> {
                                         onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
                                     >Change password</a>
                                 </div>
-                                {(basicDetailsData?.qualificationDoc?.length > 0 && localQualificationDoc.length > 0) &&
-                                    <>
-                                        <div className="form_field">
-                                            <label className="form_label">Qualification documents </label>
-                                        </div>
-                                        {basicDetailsData?.qualificationDoc?.map(({ qualification_id, url, isSelected }: { qualification_id: string, url: string, isSelected: string }) => {
-                                            const qualificationName: string = localQualificationDoc.find(({ _id }: { _id: string }) => _id === qualification_id)?.name;
-                                            const docDetails: any = url && this.qualificationFileDetails(url);
-                                            return (
-                                                <>
-                                                    {/* <div className="form_field">
+                                <div className="form_field">
+                                    <label className="form_label">Qualification documents </label>
+
+                                    {(basicDetailsData?.qualificationDoc?.length > 0 && localQualificationDoc.length > 0) &&
+                                        <>
+                                            {basicDetailsData?.qualificationDoc?.map(({ qualification_id, url, isSelected }: { qualification_id: string, url: string, isSelected: string }) => {
+                                                const qualificationName: string = localQualificationDoc.find(({ _id }: { _id: string }) => _id === qualification_id)?.name;
+                                                const docDetails: any = url && this.qualificationFileDetails(url);
+                                                return (
+                                                    <>
+                                                        {/* <div className="form_field">
                                                         <div className="relate">
                                                             <div className="checkbox_wrap agree_check">
                                                                 <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'} />
@@ -855,81 +826,23 @@ export class PersonalInformation extends Component<Props, State> {
                                                             </div>
                                                         </div>
                                                     </div> */}
-                                                    <div className="f_spacebw" key={qualification_id}>
-                                                        <div className="checkbox_wrap agree_check">
-                                                            <input
-                                                                className="filter-type filled-in"
-                                                                type="checkbox"
-                                                                checked={!!isSelected ? false : true}
-                                                                name={qualificationName}
-                                                                id={qualificationName}
-                                                                onChange={() => this.changeQualificationHandler(qualification_id, "filledQualification")}
-                                                            />
-                                                            <label htmlFor={qualificationName}>{qualificationName}</label>
-                                                        </div>
-                                                        {url ?
-                                                            (<div className="file_upload_box">
-                                                                <span className="close" onClick={() => this.removeQualificationFileHandler(qualification_id, "filledQualification")}>
-                                                                    <img src={removeFile} />
-                                                                </span>
-                                                                <span className="file_icon">
-                                                                    <img src={docDetails?.fileType} />
-                                                                </span>
-                                                                <div className="file_details">
-                                                                    <span className="name">{docDetails?.fileName}</span>
-                                                                </div>
-                                                            </div>) :
-                                                            (<div className="upload_doc">
-                                                                <label
-                                                                    className={`upload_btn ${!isSelected ? "disable" : ""}`}
-                                                                    htmlFor={qualificationName + 'upload'}>Upload</label>
-                                                                <input
-                                                                    type="file"
-                                                                    className="none"
-                                                                    id={qualificationName + 'upload'}
-                                                                    accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
-                                                                    disabled={!!isSelected ? true : false}
-                                                                    onChange={(e) => this.onFileChange(e, "filledQualification", qualification_id)}
-                                                                />
-                                                            </div>)}
-                                                    </div>
-                                                </>
-                                            )
-                                        })}
-                                        {(addQualificationClicked && remainingQualificationDoc?.length) &&
-                                            remainingQualificationDoc?.map(({ _id, name, url, isSelected }: { _id: string, name: string, url: string, isSelected: string }) => {
-                                                const docDetails: any = url && this.qualificationFileDetails(url);
-                                                return (
-                                                    // <div className="form_field">
-                                                    //     <div className="relate">
-                                                    //         <div className="checkbox_wrap agree_check">
-                                                    //             <input name="qualification" className="filter-type filled-in" type="checkbox" id={name + 'upload'} />
-                                                    //             <label htmlFor={name + 'upload'} className="line-1">{name}</label>
-                                                    //         </div>
-                                                    //         <div className="edit_delete tr">
-                                                    //             <span className="remove" title="Remove"></span>
-                                                    //         </div>
-                                                    //     </div>
-                                                    // </div>
-                                                    <>
-                                                        <div className="f_spacebw" key={_id}>
+                                                        <div className="f_spacebw mt-15" key={qualification_id}>
                                                             <div className="checkbox_wrap agree_check">
                                                                 <input
                                                                     className="filter-type filled-in"
                                                                     type="checkbox"
-                                                                    checked={!!isSelected ? true : false}
-                                                                    name={name}
-                                                                    id={name}
-                                                                    onChange={() => this.changeQualificationHandler(_id, "remainingQualification")}
+                                                                    checked={!!isSelected ? false : true}
+                                                                    name={qualificationName}
+                                                                    id={qualificationName}
+                                                                    onChange={() => this.changeQualificationHandler(qualification_id, "filledQualification")}
                                                                 />
-                                                                <label htmlFor={name}>{name}</label>
+                                                                <label htmlFor={qualificationName}>{qualificationName}</label>
                                                             </div>
                                                             {url ?
                                                                 (<div className="file_upload_box">
-                                                                    <span className="close" onClick={() => this.removeQualificationFileHandler(_id, "remainingQualification")}>
+                                                                    <span className="close" onClick={() => this.removeQualificationFileHandler(qualification_id, "filledQualification")}>
                                                                         <img src={removeFile} />
                                                                     </span>
-                                                                    {/* onClick={() => window.open(url, '_blank')} */}
                                                                     <span className="file_icon">
                                                                         <img src={docDetails?.fileType} />
                                                                     </span>
@@ -940,22 +853,82 @@ export class PersonalInformation extends Component<Props, State> {
                                                                 (<div className="upload_doc">
                                                                     <label
                                                                         className={`upload_btn ${!isSelected ? "disable" : ""}`}
-                                                                        htmlFor={name + 'upload'}>Upload</label>
+                                                                        htmlFor={qualificationName + 'upload'}>Upload</label>
                                                                     <input
                                                                         type="file"
                                                                         className="none"
-                                                                        id={name + 'upload'}
+                                                                        id={qualificationName + 'upload'}
                                                                         accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
-                                                                        disabled={!!isSelected ? false : true}
-                                                                        onChange={(e) => this.onFileChange(e, "remainingQualification", _id)}
+                                                                        disabled={!!isSelected ? true : false}
+                                                                        onChange={(e) => this.onFileChange(e, "filledQualification", qualification_id)}
                                                                     />
                                                                 </div>)}
                                                         </div>
                                                     </>
                                                 )
                                             })}
-                                    </>
-                                }
+                                        </>
+                                    }
+
+                                    {(addQualificationClicked && remainingQualificationDoc?.length > 0) &&
+                                        remainingQualificationDoc?.map(({ _id, name, url, isSelected }: { _id: string, name: string, url: string, isSelected: string }) => {
+                                            const docDetails: any = url && this.qualificationFileDetails(url);
+                                            return (
+                                                // <div className="form_field">
+                                                //     <div className="relate">
+                                                //         <div className="checkbox_wrap agree_check">
+                                                //             <input name="qualification" className="filter-type filled-in" type="checkbox" id={name + 'upload'} />
+                                                //             <label htmlFor={name + 'upload'} className="line-1">{name}</label>
+                                                //         </div>
+                                                //         <div className="edit_delete tr">
+                                                //             <span className="remove" title="Remove"></span>
+                                                //         </div>
+                                                //     </div>
+                                                // </div>
+                                                <>
+                                                    <div className="f_spacebw mt-15" key={_id}>
+                                                        <div className="checkbox_wrap agree_check">
+                                                            <input
+                                                                className="filter-type filled-in"
+                                                                type="checkbox"
+                                                                checked={!!isSelected ? true : false}
+                                                                name={name}
+                                                                id={name}
+                                                                onChange={() => this.changeQualificationHandler(_id, "remainingQualification")}
+                                                            />
+                                                            <label htmlFor={name}>{name}</label>
+                                                        </div>
+                                                        {url ?
+                                                            (<div className="file_upload_box">
+                                                                <span className="close" onClick={() => this.removeQualificationFileHandler(_id, "remainingQualification")}>
+                                                                    <img src={removeFile} />
+                                                                </span>
+                                                                {/* onClick={() => window.open(url, '_blank')} */}
+                                                                <span className="file_icon">
+                                                                    <img src={docDetails?.fileType} />
+                                                                </span>
+                                                                <div className="file_details">
+                                                                    <span className="name">{docDetails?.fileName}</span>
+                                                                </div>
+                                                            </div>) :
+                                                            (<div className="upload_doc">
+                                                                <label
+                                                                    className={`upload_btn ${!isSelected ? "disable" : ""}`}
+                                                                    htmlFor={name + 'upload'}>Upload</label>
+                                                                <input
+                                                                    type="file"
+                                                                    className="none"
+                                                                    id={name + 'upload'}
+                                                                    accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
+                                                                    disabled={!!isSelected ? false : true}
+                                                                    onChange={(e) => this.onFileChange(e, "remainingQualification", _id)}
+                                                                />
+                                                            </div>)}
+                                                    </div>
+                                                </>
+                                            )
+                                        })}
+                                </div>
                             </div>
 
                             {(basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <div className="form_field">

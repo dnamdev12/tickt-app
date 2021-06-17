@@ -439,6 +439,16 @@ export const lodgeDispute = async (data: any) => {
   return { success: false };
 }
 
+export const tradielodgeDispute = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieLodgeDispute, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  return { success: false };
+}
+
 export const CancelJob = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}canceljob`, data);
@@ -446,6 +456,16 @@ export const CancelJob = async (data: any) => {
   if (response.status_code === 200) {
     setShowToast(true, response.message)
     return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const tradieCancelJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieCancelJob, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
   }
   return { success: false };
 }

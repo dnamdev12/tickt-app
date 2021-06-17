@@ -1,7 +1,6 @@
-import React from 'react';
-import templateImage from '../../../../assets/images/cancel-job-bg.png';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-
+import templateImage from '../../../../assets/images/cancel-job-bg.png';
 
 const DeclineMilestoneSuccess = (props: any) => {
   return (
@@ -14,7 +13,7 @@ const DeclineMilestoneSuccess = (props: any) => {
             {'Got it!'}
             </h1>
             <span className="show_label">
-              {'We’ll send it to your tradesperson. Why not check out new recommended jobs on the homepage.'}
+              {`We’ll send it to your ${props.userType === 1 ? 'builder' : 'tradesperson'}. Why not check out new recommended jobs on the homepage.`}
             </span>
             <div className="btn_wrapr">
               <button
@@ -32,4 +31,10 @@ const DeclineMilestoneSuccess = (props: any) => {
   )
 }
 
-export default withRouter(DeclineMilestoneSuccess);
+const mapStateToProps = (state: any) => {
+  return {
+    userType: state.profile.userType
+  }
+}
+
+export default withRouter(connect(mapStateToProps, null)(DeclineMilestoneSuccess));

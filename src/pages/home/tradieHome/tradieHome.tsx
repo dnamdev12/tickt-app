@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import HomeBanner from './components/homeBanner';
 import JobTypeList from './components/jobTypeList';
 import SavedJobs from './components/savedJobs';

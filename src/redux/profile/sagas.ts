@@ -45,6 +45,10 @@ function* getTradieBasicDetails() {
   }
 }
 
+function* cleanTradieBasicDetails() {
+  yield put({ type: actionTypes.SET_TRADIE_BASIC_DETAILS, payload: '' });
+}
+
 function* addBankDetails({ data, milestoneData, callback }: any) {
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.postToJson(
@@ -139,14 +143,14 @@ function* getTradieProfile({ data }: any) {
   }
 }
 
-function* getProfileBuilder(){
+function* getProfileBuilder() {
   commonActions.setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.builder)
   commonActions.setLoading(false);
   if (response.status_code === 200) {
-      yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: response.result });
+    yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: response.result });
   } else {
-      yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: [] });
+    yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: [] });
   }
 }
 
@@ -159,7 +163,8 @@ function* authWatcher() {
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE, getTradieProfile);
   yield takeLatest(actionTypes.GET_PROFILE_BUILDER, getProfileBuilder);
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE_VIEW, getTradieProfileView);
-  yield takeLatest(actionTypes.GET_TRADIE_PROFILE_VIEW, getTradieBasicDetails);
+  yield takeLatest(actionTypes.GET_TRADIE_BASIC_DETAILS, getTradieBasicDetails);
+  yield takeLatest(actionTypes.CLEAN_TRADIE_BASIC_DETAILS, cleanTradieBasicDetails);
 }
 
 export default authWatcher;

@@ -19,7 +19,7 @@ import SearchResultTradie from '../pages/searchTradieResult/index';
 import builderJobDasboard from '../pages/builderJobDasboard/index';
 import TradieDetails from '../common/tradieDetails';
 import BuilderInfo from '../pages/builderInfo/index';
-import BuilderReviewSubmitted from '../pages/jobDashboard/components/builderReviewSubmitted';
+import BuilderReviewSubmitted from '../pages/jobDashboard/components/reviewBuilder/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
 import BuilderProfile from '../pages/builderProfile';
