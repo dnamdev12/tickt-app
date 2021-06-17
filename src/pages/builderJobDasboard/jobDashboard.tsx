@@ -256,7 +256,7 @@ class JobDashboard extends Component<Props, State> {
                         </div>
                         <div className="detail_col">
                             <FixedRate />
-                            <ConfirmAndPay />
+                            {/* <ConfirmAndPay /> */}
                             {/* {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}

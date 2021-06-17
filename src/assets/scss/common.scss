@@ -4775,6 +4775,34 @@ body {
   }
 }
 
+.card_btn{
+  padding: 15px 10px;
+  margin-bottom: 24px;
+  border-radius: 3px;
+  border: solid 1px #0b41a8;
+  background-color: #f7f8fa;
+  position: relative;
+  display: block;
+  font-size: 14px;
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  span{
+    display: inline-block;
+    font-family: 'Neue Haas Grotesk Text Pro Roman';
+  }
+  img{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 20px;
+    &.card{
+      left: 12px;
+    }
+    &.check{
+      right: 12px;
+    }
+  }
+}
+
 .payment_note{
   font-size: 14px;
   line-height: 1.43;
@@ -5003,6 +5031,46 @@ body {
         color: var(--blue);
         font-family: 'Neue Haas Grotesk Text Pro Medium';
         margin: 0;
+      }
+    }
+  }
+}
+
+.payment_details{
+  min-height: 175px;
+  padding: 24px 15px 20px 24px;
+  background-color: #f6f7f9;
+  margin-bottom: 30px;
+  .f_spacebw{
+    &:not(:last-child){
+      margin-bottom: 12px;
+    }
+  }
+
+}
+
+.bank_detail{
+  position: relative;
+  padding-left: 50px;
+  display: flex;
+  flex-flow: column;
+  margin-bottom: 100px;
+  &::before{
+    @include position(absolute, 50%, auto, auto, 0px);
+    transform: translateY(-50%);
+    content: "";
+    width: 40px;
+    height: 40px;
+    background: url("../images/ic-bank.png") center no-repeat;
+    background-size: contain;    
+  }
+  span{
+    margin: 0;
+  }
+  &.view_more{
+    &:hover{
+      &::after{
+        right: 0;
       }
     }
   }
