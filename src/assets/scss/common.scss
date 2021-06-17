@@ -1192,7 +1192,7 @@ body {
     }
     }
 	.edit_icon{
-		top: 10px;
+		top: 10px !important;
 		right: 20px;
     img{
       @media (max-width: 650px){
@@ -4198,6 +4198,9 @@ body {
 		li{
 			flex: 1 1 50%;
     		margin: 5px 0;
+        &.location{
+          padding-right: 5px;
+        }
 		}
 	  }
 	}
@@ -4482,7 +4485,7 @@ body {
   @media(max-width: 768px){
     width: 100%;
     padding: 30px 20px 0;
-    margin-left: 0;
+    margin-left: 0 !important;
     .flex_col_sm_2 {
       width: 20%;
     }
