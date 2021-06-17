@@ -53,7 +53,7 @@ const TradieHome = (props: any) => {
         if (props.homeSearchJobData.length) {
             props.resetHomeSearchJobData();
         }
-    }, [])
+    }, [props])
 
     console.log(tradieHomeData, "stateData tradie home")
 

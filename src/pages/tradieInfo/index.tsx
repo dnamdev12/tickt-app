@@ -355,8 +355,8 @@ class TradieInfo extends Component<Props, State> {
             isSave: tradieInfo?.isSaved ? false : true
         }
         let response = await SaveTradie(data);
-        if(response.success){
-           await this.setItems()
+        if (response.success) {
+            await this.setItems()
         }
     }
 
@@ -423,7 +423,7 @@ class TradieInfo extends Component<Props, State> {
                                                     <div className="bottom_btn">
                                                         <span
                                                             onClick={() => {
-                                                                this.savedTradie({tradieInfo})
+                                                                this.savedTradie({ tradieInfo })
                                                             }}
                                                             className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
                                                         <button className="fill_btn full_btn btn-effect">
@@ -434,7 +434,7 @@ class TradieInfo extends Component<Props, State> {
                                                     <div className="bottom_btn">
                                                         <span
                                                             onClick={() => {
-                                                                this.savedTradie({tradieInfo})
+                                                                this.savedTradie({ tradieInfo })
                                                             }}
                                                             className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
                                                         <button
@@ -615,13 +615,13 @@ class TradieInfo extends Component<Props, State> {
                     </div>
                     : null}
                 {console.log({ vouchers: tradieInfo?.vouches })}
-                {tradieInfo?.vouches?.length ?
+                {tradieInfo?.vouchesData?.length ?
                     <div className="section_wrapper">
                         <div className="custom_container">
                             <span className="sub_title">Vouchers</span>
                             <div className="flex_row">
 
-                                {tradieInfo?.vouches.map((item: any) => (
+                                {tradieInfo?.vouchesData.map((item: any) => (
                                     <div className="flex_col_sm_3">
                                         <div className="review_card vouchers">
                                             <div className="pic_shot_dtl">
@@ -629,22 +629,29 @@ class TradieInfo extends Component<Props, State> {
                                                     <img src={item?.userImage || dummy} alt="user-img" />
                                                 </figure>
                                                 <div className="name_wrap">
-                                                    <span className="user_name" title={item?.userName || ''}>
-                                                        {item?.userName || ''}
+                                                    <span className="user_name" title={item?.builderName || ''}>
+                                                        {item?.builderName || ''}
                                                     </span>
-                                                    <span className="date">November 2020</span>
+                                                    <span className="date">
+                                                        {item?.date}
+                                                    </span>
                                                 </div>
                                             </div>
+
+                                            <span>
+                                                {item?.jobName}
+                                            </span>
+
                                             <p className="commn_para" title="">
-                                                {item?.details || ''}
+                                                {item?.vouchDescription || ''}
                                             </p>
                                             <div className="vouch">
                                                 <figure className="vouch_icon">
                                                     <img src={vouch} alt="vouch" />
                                                 </figure>
-                                                <a className="link">
+                                                <span className="link">
                                                     {'Vouch for John Oldman'}
-                                                </a>
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
@@ -661,7 +668,7 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouches?.length} vouchers`}</button>
+                                {`View all ${tradieInfo?.vouchesData?.length} vouchers`}</button>
                         </div>
                     </div>
                     : null}

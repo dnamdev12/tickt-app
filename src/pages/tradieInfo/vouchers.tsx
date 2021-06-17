@@ -202,12 +202,12 @@ const Vouchers = (props: any) => {
                         </Modal>
                     </div>
 
-                    {state_data?.vouches?.length ?
+                    {state_data?.vouchesData?.length ?
                         <div className="section_wrapper">
                             <div className="custom_container">
                                 <span className="sub_title">Vouchers</span>
                                 <div className="flex_row">
-                                    {state_data?.vouches.map((item: any) => (
+                                    {state_data?.vouchesData.map((item: any) => (
                                         <div className="flex_col_sm_3">
                                             <div className="review_card vouchers">
                                                 <div className="pic_shot_dtl">
@@ -215,20 +215,27 @@ const Vouchers = (props: any) => {
                                                         <img src={item?.userImage || dummy} alt="user-img" />
                                                     </figure>
                                                     <div className="name_wrap">
-                                                        <span className="user_name" title={item?.userName || ''}>
-                                                            {item?.userName || ''}
+                                                        <span className="user_name" title={item?.builderName || ''}>
+                                                            {item?.builderName || ''}
                                                         </span>
-                                                        <span className="date">November 2020</span>
+                                                        <span className="date">
+                                                            {item?.date}
+                                                        </span>
                                                     </div>
                                                 </div>
+
+                                                <span>
+                                                    {item?.jobName}
+                                                </span>
+
                                                 <p className="commn_para" title="">
-                                                    {item?.details || ''}
+                                                    {item?.vouchDescription || ''}
                                                 </p>
                                                 <div className="vouch">
                                                     <figure className="vouch_icon">
                                                         <img src={vouch} alt="vouch" />
                                                     </figure>
-                                                    <span
+                                                    <span 
                                                     onClick={() => {
                                                         setToggleRecommendation((prev: any) => !prev)
                                                     }}
