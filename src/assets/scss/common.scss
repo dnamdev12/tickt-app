@@ -1917,6 +1917,12 @@ body {
     .inner_wrappr{
       max-width: 606px;
     }
+    .form_wrapper{
+      padding: 0;
+      width: 540px;
+      margin: 0 auto;
+      max-width: 540px;
+    }
     textarea {
       min-height: 280px;
       @media (max-width: 1366px) {
