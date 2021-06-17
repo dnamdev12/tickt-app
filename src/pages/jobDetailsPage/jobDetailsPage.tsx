@@ -459,7 +459,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
                                     <span className="title line-3" title={jobDetailsData?.jobName}>{jobDetailsData?.jobName}</span>
-                                    <span className="tagg">Job details</span>
+                                    <span className="tagg">Job detailscdcdc</span>
                                     <div className="job_info">
                                         <ul>
                                             <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>

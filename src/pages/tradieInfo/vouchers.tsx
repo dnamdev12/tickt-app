@@ -124,15 +124,42 @@ const Vouchers = (props: any) => {
                             aria-labelledby="simple-modal-title"
                             aria-describedby="simple-modal-description"
                         >
-                            <div className="custom_wh profile_modal vouch_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                            <div className="custom_wh vouch_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                 <div className="heading">
                                     <span className="sub_title">
                                         {'Recommendation about work'}
                                     </span>
-                                    <span className="info_note">Upload the vouch and write the description.</span>
                                     <button className="close_btn">
                                         <img src={cancel} alt="cancel" />
                                     </button>
+                                </div>
+                                <div className="inner_wrap descr">
+                                    <div className="inner_wrappr">
+                                        <div className="form_field">
+                                            <span className="show_label"><b>Job position:</b> Write up circuit box</span>
+                                            <span className="show_label"><b>Trader:</b> John Oldman</span>
+                                        </div>
+                                        <p className="commn_para">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                        </p>
+                                        <p className="commn_para">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                        </p>
+                                        <p className="commn_para">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                        </p>
+                                        <p className="commn_para">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                        </p>
+                                        <p className="commn_para">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                        </p>
+                                        <p className="commn_para">
+                                            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Laudantium, quisquam eius accusamus ab commodi facere. Cupiditate exercitationem necessitatibus deleniti consequuntur quod amet debitis. Placeat dolore sapiente, quia fuga error quidem?
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         </Modal>
@@ -157,7 +184,7 @@ const Vouchers = (props: any) => {
                                 <div className="inner_wrap">
                                     <div className="inner_wrappr">
                                         <div className="form_field">
-
+                                            <label className="form_label">Job</label>
                                             <div className="text_field">
                                                 <Select
                                                     className="select_menu"
@@ -169,6 +196,8 @@ const Vouchers = (props: any) => {
                                                     }}
                                                 />
                                             </div>
+                                        </div>
+                                        <div className="form_field">
 
                                             <label className="form_label">Job Description</label>
                                             <div className="text_field">
@@ -224,7 +253,7 @@ const Vouchers = (props: any) => {
                                                     </div>
                                                 </div>
 
-                                                <span>
+                                                <span className="xs_head">
                                                     {item?.jobName}
                                                 </span>
 
@@ -235,11 +264,11 @@ const Vouchers = (props: any) => {
                                                     <figure className="vouch_icon">
                                                         <img src={vouch} alt="vouch" />
                                                     </figure>
-                                                    <span 
-                                                    onClick={() => {
-                                                        setToggleRecommendation((prev: any) => !prev)
-                                                    }}
-                                                    className="link">
+                                                    <span
+                                                        onClick={() => {
+                                                            setToggleRecommendation((prev: any) => !prev)
+                                                        }}
+                                                        className="link">
                                                         {'Vouch for John Oldman'}
                                                     </span>
                                                 </div>
