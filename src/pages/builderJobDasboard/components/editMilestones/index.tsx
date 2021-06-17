@@ -17,6 +17,8 @@ import {changeRequest} from '../../../../redux/jobs/actions';
 
 import AddEditMile from './addEditMile';
 
+import { withRouter } from 'react-router-dom';
+
 const EditMilestone = (props: any) => {
     const { item, item: { jobId, jobName }, details: { milestones }, history } = props;
 
@@ -464,4 +466,4 @@ const EditMilestone = (props: any) => {
     )
 }
 
-export default EditMilestone;
+export default withRouter(EditMilestone);

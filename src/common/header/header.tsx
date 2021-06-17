@@ -17,6 +17,7 @@ import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
 
 
+import { useDispatch } from 'react-redux'
 
 const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404', '/email-updated-successfully'];
 
@@ -30,11 +31,13 @@ const Header = (props: any) => {
     const [toggleMenu, setToggleMenu] = useState(false);
     const [activeLink, setActiveLink] = useState('discover');
 
+    const dispatch = useDispatch();
+
     // const USER_TYPE = storageService.getItem('userType');
 
     useEffect(() => {
         setActiveLink('discover')
-    },[])
+    }, [])
 
     let { pathname } = useLocation();
     let history = useHistory();
@@ -43,12 +46,12 @@ const Header = (props: any) => {
         if (pathname === '/') {
             setActiveLink('discover');
         }
-        if (['/jobs','/active-jobs','/applied-jobs','/past-jobs','/new-jobs','/approved-milestones','/mark-milestone','/review-builder'].includes(pathname)) {
+        if (['/jobs', '/active-jobs', '/applied-jobs', '/past-jobs', '/new-jobs', '/approved-milestones', '/mark-milestone', '/review-builder'].includes(pathname)) {
             setActiveLink('jobs');
         }
 
         if (pathname === '/post-new-job') {
-            setActiveLink('post');  
+            setActiveLink('post');
         }
     }, [pathname]);
 
@@ -79,6 +82,7 @@ const Header = (props: any) => {
     };
 
     const logoutHandler = () => {
+        dispatch({ type: 'USER_LOGGED_OUT' });
         storageService.clearAll();
         history.push('/login');
     }
@@ -110,7 +114,6 @@ const Header = (props: any) => {
             return props?.tradieProfileData[name];
         }
     }
-
 
     return (
         <>

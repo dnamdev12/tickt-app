@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import dummy from '../../assets/images/u_placeholder.jpg';
 import vouch from '../../assets/images/ic-template.png';
 import cancel from '../../assets/images/ic-cancel.png';
@@ -7,12 +7,44 @@ import addMedia from "../../assets/images/add-image.png";
 import Modal from '@material-ui/core/Modal';
 import { withRouter } from 'react-router-dom';
 
+import {
+    HomeTradieProfile,
+    AddVoucher
+} from '../../redux/jobs/actions';
+
 const Vouchers = (props: any) => {
     const [toggle, setToggle] = useState(false);
     const [stateData, setStateData] = useState({});
+    const { id, path } = props?.location?.state;
 
-    console.log({ props });
 
+    useEffect(() => {
+        prefetch();
+    }, [id, path])
+
+    const prefetch = async () => {
+        let res_profile: any = await HomeTradieProfile({ tradieId: id });
+        console.log({ res_profile })
+        if (res_profile.success) {
+            setStateData(res_profile.data);
+        }
+    }
+
+    const handleSubmit = async () => {
+        let data = {
+            "jobId": "60c9be93a81e6b5f82097a91",
+            "jobName": "Please Apply",
+            "tradieId": id,
+            "photos": ["https://appinventiv-development.s3.amazonaws.com/ezgif.com-gif-maker.png"],
+            "vouchDescription": "This is vouchers",
+            "recommendation": "This is recommendation url"
+        }
+        
+        let response = await AddVoucher(data);
+    }
+
+    console.log({ props, stateData });
+    let state_data: any = stateData;
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -22,7 +54,7 @@ const Vouchers = (props: any) => {
                             <div className="relate">
                                 <button
                                     onClick={() => {
-                                        let path: any = props.location.state.path;
+                                        // let path: any = props.location.state.path;
                                         props.history.push(`tradie-info${path}`);
                                     }}
                                     className="back"></button>
@@ -105,49 +137,43 @@ const Vouchers = (props: any) => {
                         </Modal>
                     </div>
 
-                    <div className="flex_row">
-                        <div className="flex_col_sm_3">
-                            <div className="review_card vouchers">
-                                <div className="pic_shot_dtl">
-                                    <figure className="u_img">
-                                        <img src={dummy} alt="user-img" />
-                                    </figure>
-                                    <div className="name_wrap">
-                                        <span className="user_name" title="Mark Spencerman">Mark Spencerman</span>
-                                        <span className="date">November 2020</span>
-                                    </div>
-                                </div>
-                                <p className="commn_para" title="">I give a guarantee for the work of this builder. This is a vouch from our company.</p>
-                                <div className="vouch">
-                                    <figure className="vouch_icon">
-                                        <img src={vouch} alt="vouch" />
-                                    </figure>
-                                    <a className="link">Vouch for John Oldman</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="flex_col_sm_3">
-                            <div className="review_card vouchers">
-                                <div className="pic_shot_dtl">
-                                    <figure className="u_img">
-                                        <img src={dummy} alt="user-img" />
-                                    </figure>
-                                    <div className="name_wrap">
-                                        <span className="user_name" title="Mark Spencerman">Mark Spencerman</span>
-                                        <span className="date">November 2020</span>
-                                    </div>
-                                </div>
-                                <p className="commn_para" title="">I give a guarantee for the work of this builder. This is a vouch from our company.</p>
-                                <div className="vouch">
-                                    <figure className="vouch_icon">
-                                        <img src={vouch} alt="vouch" />
-                                    </figure>
-                                    <a className="link">Vouch for John Oldman</a>
+                    {state_data?.vouches?.length ?
+                        <div className="section_wrapper">
+                            <div className="custom_container">
+                                <span className="sub_title">Vouchers</span>
+                                <div className="flex_row">
+                                    {state_data?.vouches.map((item: any) => (
+                                        <div className="flex_col_sm_3">
+                                            <div className="review_card vouchers">
+                                                <div className="pic_shot_dtl">
+                                                    <figure className="u_img">
+                                                        <img src={item?.userImage || dummy} alt="user-img" />
+                                                    </figure>
+                                                    <div className="name_wrap">
+                                                        <span className="user_name" title={item?.userName || ''}>
+                                                            {item?.userName || ''}
+                                                        </span>
+                                                        <span className="date">November 2020</span>
+                                                    </div>
+                                                </div>
+                                                <p className="commn_para" title="">
+                                                    {item?.details || ''}
+                                                </p>
+                                                <div className="vouch">
+                                                    <figure className="vouch_icon">
+                                                        <img src={vouch} alt="vouch" />
+                                                    </figure>
+                                                    <a className="link">
+                                                        {'Vouch for John Oldman'}
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
                                 </div>
                             </div>
                         </div>
-                    </div>
-
+                        : null}
                 </div>
             </div>
         </div>

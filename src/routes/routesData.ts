@@ -33,6 +33,7 @@ import LodgeSuccess from '../pages/builderJobDasboard/components/lodgeDispute/su
 import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/success';
 
 import ChooseTheJob from '../pages/chooseTheJob/index';
+import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
 
@@ -166,6 +167,11 @@ const routes = [
         name: 'chooseTheJob',
         path: '/choose-the-job',
         component: ChooseTheJob,
+    },
+    {
+        name: 'chooseTheJob',
+        path: '/choose-the-job-success',
+        component: ChooseJobSuccess,
     },
     {
         name: 'jobdashboard',

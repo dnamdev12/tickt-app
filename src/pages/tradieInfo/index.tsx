@@ -10,7 +10,8 @@ import {
     updateReviewReply,
     removeReviewReply,
     getTradeReviews,
-    getTradeProfile
+    getTradeProfile,
+    HomeTradieProfile
 } from '../../redux/jobs/actions';
 import { getTradieProfile } from '../../redux/profile/actions';
 
@@ -31,6 +32,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 import { portfolio, portfolioModal } from '../builderInfo/builderInfo'
 import { setShowToast } from '../../redux/common/actions';
+import { SaveTradie } from '../../redux/jobs/actions'
 
 import vouch from '../../assets/images/ic-template.png';
 interface Props {
@@ -313,11 +315,21 @@ class TradieInfo extends Component<Props, State> {
 
     setItems = async () => {
         const { jobId, tradeId } = this.getItemsFromLocation();
-        let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
-        console.log({ res_profile })
-        if (res_profile.success) {
-            this.setState({ tradieInfo: res_profile.data })
+
+        if (jobId) {
+            let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
+            console.log({ res_profile })
+            if (res_profile.success) {
+                this.setState({ tradieInfo: res_profile.data })
+            }
+        } else {
+            let res_profile: any = await HomeTradieProfile({ tradieId: tradeId });
+            console.log({ res_profile })
+            if (res_profile.success) {
+                this.setState({ tradieInfo: res_profile.data })
+            }
         }
+
         let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: 1 });
         console.log({ res_trade })
         if (res_trade.success) {
@@ -337,6 +349,17 @@ class TradieInfo extends Component<Props, State> {
         getAcceptDeclineTradie(data);
     }
 
+    savedTradie = async ({ tradieInfo }: any) => {
+        let data = {
+            tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+            isSave: tradieInfo?.isSaved ? false : true
+        }
+        let response = await SaveTradie(data);
+        if(response.success){
+           await this.setItems()
+        }
+    }
+
     render() {
         let props: any = this.props;
         // let tradieInfo: any = props.tradieInfo;
@@ -347,6 +370,15 @@ class TradieInfo extends Component<Props, State> {
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
+
+        let profileReviewsData = [];
+        if (profileData?.reviewData) {
+            profileReviewsData = profileData?.reviewData
+        }
+
+        if (profileData?.reviews) {
+            profileReviewsData = profileData?.reviews
+        }
 
         return (
             <div className="app_wrapper">
@@ -384,16 +416,59 @@ class TradieInfo extends Component<Props, State> {
                                                 <span className="review_count"> jobs completed</span>
                                             </li>
                                         </ul>
-                                        <div className="form_field">
-                                            <button
-                                                onClick={() => { submitAcceptDeclineRequest(1) }}
-                                                className="fill_btn full_btn btn-effect">Accept</button>
-                                        </div>
-                                        <div className="form_field">
-                                            <button
-                                                onClick={() => { submitAcceptDeclineRequest(2) }}
-                                                className="fill_grey_btn full_btn btn-effect">Decline</button>
-                                        </div>
+
+                                        {!tradieInfo?.isRequested ? (
+                                            <div className="form_field">
+                                                {tradieInfo?.isInvited ? (
+                                                    <div className="bottom_btn">
+                                                        <span
+                                                            onClick={() => {
+                                                                this.savedTradie({tradieInfo})
+                                                            }}
+                                                            className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
+                                                        <button className="fill_btn full_btn btn-effect">
+                                                            {'Cancel Invite'}
+                                                        </button>
+                                                    </div>
+                                                ) : (
+                                                    <div className="bottom_btn">
+                                                        <span
+                                                            onClick={() => {
+                                                                this.savedTradie({tradieInfo})
+                                                            }}
+                                                            className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
+                                                        <button
+                                                            onClick={() => {
+                                                                console.log({ tradieInfo })
+                                                                props.history.push({
+                                                                    pathname: '/choose-the-job',
+                                                                    state: {
+                                                                        tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+                                                                        path: props.location.search,
+                                                                    }
+                                                                })
+                                                            }}
+                                                            className="fill_btn full_btn btn-effect">
+                                                            {'Invite'}
+                                                        </button>
+                                                    </div>
+                                                )}
+                                            </div>
+                                        ) : (
+                                            <>
+                                                <div className="form_field">
+                                                    <button
+                                                        onClick={() => { submitAcceptDeclineRequest(1) }}
+                                                        className="fill_btn full_btn btn-effect">Accept</button>
+                                                </div>
+                                                <div className="form_field">
+                                                    <button
+                                                        onClick={() => { submitAcceptDeclineRequest(2) }}
+                                                        className="fill_grey_btn full_btn btn-effect">Decline</button>
+                                                </div>
+                                            </>
+                                        )}
+
                                     </div>
                                 </div>
                             </div>
@@ -509,14 +584,14 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </Modal>}
 
-
-                {profileData?.reviewData?.length ?
+                {console.log({ profileData })}
+                {profileReviewsData?.length ?
                     <div className="section_wrapper">
                         <div className="custom_container">
                             <span className="sub_title">Reviews</span>
                             <div className="flex_row review_parent">
-                                {profileData?.reviewData?.length > 0 ?
-                                    (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                {profileReviewsData?.length > 0 ?
+                                    (profileReviewsData?.slice(0, 8)?.map((jobData: any) => {
                                         return <ReviewInfoBox item={jobData} {...props} />
                                     })) :
                                     <div className="no_record">
@@ -529,78 +604,67 @@ class TradieInfo extends Component<Props, State> {
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {
-                                    setShowToast(true, 'Under development');
-                                    // this.setState((prevData: any) => ({
-                                    //     reviewsData: {
-                                    //         ...prevData.reviewsData, showAllReviewsClicked: true
-                                    //     }
-                                    // }))
+                                    this.setState((prevData: any) => ({
+                                        reviewsData: {
+                                            ...prevData.reviewsData, showAllReviewsClicked: true
+                                        }
+                                    }))
                                 }}>
-                                {`View all ${profileData?.reviewData?.length} reviews`}</button>
+                                {`View all ${profileReviewsData?.length} reviews`}</button>
                         </div>
                     </div>
                     : null}
+                {console.log({ vouchers: tradieInfo?.vouches })}
+                {tradieInfo?.vouches?.length ?
+                    <div className="section_wrapper">
+                        <div className="custom_container">
+                            <span className="sub_title">Vouchers</span>
+                            <div className="flex_row">
 
-
-                <div className="section_wrapper">
-                    <div className="custom_container">
-                        <span className="sub_title">Vouchers</span>
-                        <div className="flex_row">
-
-                            <div className="flex_col_sm_3">
-                                <div className="review_card vouchers">
-                                    <div className="pic_shot_dtl">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="user-img" />
-                                        </figure>
-                                        <div className="name_wrap">
-                                            <span className="user_name" title="Mark Spencerman">Mark Spencerman</span>
-                                            <span className="date">November 2020</span>
+                                {tradieInfo?.vouches.map((item: any) => (
+                                    <div className="flex_col_sm_3">
+                                        <div className="review_card vouchers">
+                                            <div className="pic_shot_dtl">
+                                                <figure className="u_img">
+                                                    <img src={item?.userImage || dummy} alt="user-img" />
+                                                </figure>
+                                                <div className="name_wrap">
+                                                    <span className="user_name" title={item?.userName || ''}>
+                                                        {item?.userName || ''}
+                                                    </span>
+                                                    <span className="date">November 2020</span>
+                                                </div>
+                                            </div>
+                                            <p className="commn_para" title="">
+                                                {item?.details || ''}
+                                            </p>
+                                            <div className="vouch">
+                                                <figure className="vouch_icon">
+                                                    <img src={vouch} alt="vouch" />
+                                                </figure>
+                                                <a className="link">
+                                                    {'Vouch for John Oldman'}
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
-                                    <p className="commn_para" title="">I give a guarantee for the work of this builder. This is a vouch from our company.</p>
-                                    <div className="vouch">
-                                        <figure className="vouch_icon">
-                                            <img src={vouch} alt="vouch" />
-                                        </figure>
-                                        <a className="link">Vouch for John Oldman</a>
-                                    </div>
-                                </div>
+                                ))}
                             </div>
-                            <div className="flex_col_sm_3">
-                                <div className="review_card vouchers">
-                                    <div className="pic_shot_dtl">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="user-img" />
-                                        </figure>
-                                        <div className="name_wrap">
-                                            <span className="user_name" title="Mark Spencerman">Mark Spencerman</span>
-                                            <span className="date">November 2020</span>
-                                        </div>
-                                    </div>
-                                    <p className="commn_para" title="">I give a guarantee for the work of this builder. This is a vouch from our company.</p>
-                                    <div className="vouch">
-                                        <figure className="vouch_icon">
-                                            <img src={vouch} alt="vouch" />
-                                        </figure>
-                                        <a className="link">Vouch for John Oldman</a>
-                                    </div>
-                                </div>
-                            </div>
+                            <button
+                                className="fill_grey_btn full_btn view_more"
+                                onClick={() => {
+                                    props.history.push({
+                                        pathname: '/tradie-vouchers',
+                                        state: {
+                                            path: props.location.search,
+                                            id: tradieInfo.tradieId
+                                        }
+                                    });
+                                }}>
+                                {`View all ${tradieInfo?.vouches?.length} vouchers`}</button>
                         </div>
-                        <button
-                            className="fill_grey_btn full_btn view_more"
-                            onClick={() => {
-                                props.history.push({
-                                    pathname: '/tradie-vouchers',
-                                    state: {
-                                        path: props.location.search
-                                    }
-                                });
-                            }}>
-                            {`View all ${profileData?.reviewData?.length} vouchers`}</button>
                     </div>
-                </div>
+                    : null}
 
                 {reviewsData.showAllReviewsClicked && tradieReviews?.length &&
                     <Modal
