@@ -168,12 +168,9 @@ const AddEditMile = (props: any) => {
                 >
                     <div
                         style={{
-                            width: "50%",
-                            position: "absolute",
-                            top: "30%",
-                            left: "21%"
+                            padding: '12px 20px 0px'
                         }}
-                        className="item-modal-ctm">
+                        className="item-modal-ctm custom_wh portfolio_preview ">
                         <DateRangePicker
                             ranges={!moment(calenderItems?.startDate).isValid() ? [{ startDate: new Date(), endDate: new Date(), key: 'selection' }] : [calenderItems]}
                             onChange={(data: any) => { setCalender(data.selection) }}
