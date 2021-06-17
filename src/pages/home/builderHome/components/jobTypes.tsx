@@ -52,6 +52,12 @@ const JobTypes = (props: any) => {
                             margin: 10,
                             mouseDrag: true,
                             touchDrag: true
+                        },
+                        1360: {
+                            items: 7,
+                            margin: 10,
+                            mouseDrag: true,
+                            touchDrag: true
                         }
                     }
                     }

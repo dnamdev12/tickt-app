@@ -33,7 +33,6 @@ const SocialAuth = (props: Propstype) => {
     };
 
     const googleResponse = async (response: any) => {
-        console.log(response, "g-oauth response");
         const res = await checkSocialId({ socialId: response.googleId, email: response.profileObj.email })
         if (res.success) {
             if (res.isProfileCompleted) {

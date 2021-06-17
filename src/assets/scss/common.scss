@@ -1616,6 +1616,11 @@ body {
     line-height: 1.29;
     color: var(--blue);
   }
+  &.vouchers{
+    .commn_para{
+      -webkit-line-clamp: 4;
+    }
+  }
   .vouch{
     margin-top: 15px;
     .vouch_icon{
@@ -1634,6 +1639,10 @@ body {
     }
   }
   
+}
+
+.add_vouch{
+  padding: 16px 18px
 }
 
 .rating_star {
@@ -1927,6 +1936,14 @@ body {
     .full_btn {
       @media(max-width: 650px){
         width: 100%;
+      }
+    }
+    &.vouch_modal{
+      textarea {
+        min-height: 154px;
+      }
+      .img_video{
+        margin: 0 21px 21px 0;
       }
     }
   }

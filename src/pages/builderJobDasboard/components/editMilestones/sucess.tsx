@@ -1,5 +1,5 @@
 import React from 'react';
-import templateImage from '../../../assets/images/review-builder-success.png';
+import templateImage from '../../../../assets/images/job-complete-bg.png';
 import { withRouter } from 'react-router-dom';
 
 
@@ -10,9 +10,11 @@ const DeclineMilestoneSuccess = (props: any) => {
         <img src={templateImage} alt="template-item" />
         <div className="short_info">
           <div className="content">
-            <h1 className="title">Thanks</h1>
+            <h1 className="title">
+              {'Request sent'}
+            </h1>
             <span className="show_label">
-              {'Your review will help other builders find the highest quality tradespeople on Tickt.'}
+              {'Your milestone change request has been sent to the tradesperson.'}
             </span>
             <div className="btn_wrapr">
               <button

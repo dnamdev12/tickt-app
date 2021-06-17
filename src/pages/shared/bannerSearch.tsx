@@ -30,7 +30,7 @@ import { setShowToast } from '../../redux/common/actions';
 
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
-import { renderTime } from '../../utils/common';
+import { renderTime, renderTimeWithCustomFormat } from '../../utils/common';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -112,14 +112,14 @@ const BannerSearch = (props: PropsType) => {
     const locationRef = useDetectClickOutside({
         onTriggered: () => {
             // if (addressText?.length > 3) {
-                handleOnOutsideLocation()
+            handleOnOutsideLocation()
             // }
         }
     });
     const locationRefClone = useDetectClickOutside({
         onTriggered: () => {
             // if (!addressText || addressText?.length < 2) {
-                // handleOnOutsideLocation()
+            // handleOnOutsideLocation()
             // }
         }
     });
@@ -511,7 +511,13 @@ const BannerSearch = (props: PropsType) => {
     const checkPlaceholder = (calenderRange1: any) => {
         let fromDate: any = calenderRange1?.startDate;
         let toDate: any = calenderRange1?.endDate;
-        return renderTime(fromDate, toDate);
+        let result = renderTimeWithCustomFormat(fromDate, toDate, '', ['DD MMM', 'DD MMM YYYY'], 'When ?');
+
+        if (!result) {
+            return 'When ?'
+        }
+
+        return result;
     }
 
 
@@ -683,7 +689,11 @@ const BannerSearch = (props: PropsType) => {
                                                 <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                                     <div className="flex_row recent_search auto_loc">
                                                         <div className="flex_col_sm_4">
-                                                            {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>}
+                                                            {!!errors.selectedMapLocation &&
+                                                                <span className="error_msg">
+                                                                    {errors.selectedMapLocation}
+                                                                </span>
+                                                            }
                                                             {loading && <div>Loading...</div>}
 
                                                             {suggestions.map((suggestion: any) => {
@@ -730,12 +740,12 @@ const BannerSearch = (props: PropsType) => {
                                 onClick={getCurrentLocation}>
                                 <span className="gps_icon">
                                     <img src={icgps} alt="" />
-                                </span> Use my current location
+                                </span>
+                                {' Use my current location'}
                             </span>
                             {locationStatus === "denied" &&
                                 (<span className="blocked_note">
-                                    You have blocked your location.
-                                    To use this, change your location settings in browser.
+                                    {'You have blocked your location. To use this, change your location settings in browser.'}
                                 </span>)}
                             <div className="flex_row recent_search auto_loc">
                                 {recentLocation?.length ?
@@ -797,7 +807,7 @@ const BannerSearch = (props: PropsType) => {
                                     id="custom-date-range-div">
                                     <DateRange
                                         onChange={handleCalenderRange}
-                                        ranges={[calenderRange1]}
+                                        ranges={!moment(calenderRange1?.startDate).isValid() ? [{ startDate: new Date(), endDate: new Date(), key: 'selection1' }] : [calenderRange1]}
                                         moveRangeOnFirstSelection={false}
                                         rangeColors={["#fee600", "#b5b5b5"]}
                                         showDateDisplay={false}

@@ -12,13 +12,14 @@ import ActiveJobsComponent from './components/activeJobs';
 import OpenJobsComponent from './components/openJobs';
 import PastJobsComponent from './components/pastJobs';
 import NewApplicantComponent from './components/newApplicants';
-
+import NeedApproval from './components/needApproval';
 import ApplicantsList from './components/applicantsList';
 
 
 import MarkMilestones from './components/markMilestones';
 import DeclineMilestone from './components/declineMilestone';
 import DeclineMilestoneSuccess from './components/declineMilestoneSuccess';
+import { getNewApprovalList } from '../../redux/jobs/actions';
 import { setShowToast } from '../../redux/common/actions';
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
@@ -26,6 +27,7 @@ interface Props {
     getNewApplicantsBuilder: (page: number) => void,
     getOpenJobsBuilder: (page: number) => void,
     getnewJobApplicationListBuilder: (item: any) => void,
+    getNewApprovalList: (page: number) => void,
     activeJobs: any,
     pastJobs: any,
     openJobs: any
@@ -73,7 +75,7 @@ class JobDashboard extends Component<Props, State> {
 
     componentDidUpdate(prevProps: any) {
         let nextProps: any = this.props;
-        let { activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs } = nextProps;
+        let { activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs, approvalJobs } = nextProps;
         let { selectedItem: { jobtype } } = this.state;
         if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state.activeJobs)) {
             let { active, needApprovalCount, newApplicantsCount } = activeJobs;
@@ -96,7 +98,7 @@ class JobDashboard extends Component<Props, State> {
                 }
             });
         }
-      
+
         if (jobtype === 'open' && JSON.stringify(openJobs?.open) !== JSON.stringify(this.state.openJobs)) {
             let { open, needApprovalCount, newApplicantsCount } = openJobs;
             console.log({ open, needApprovalCount, newApplicantsCount })
@@ -119,13 +121,15 @@ class JobDashboard extends Component<Props, State> {
             this.setState({ applicantJobs })
         }
 
-        console.log({ nextProps, jobtype, applicantJobs: this.state.applicantJobs })
+        if (jobtype === 'approval' && JSON.stringify(approvalJobs) !== JSON.stringify(this.state.approvalJobs)) {
+            this.setState({ approvalJobs })
+        }
     }
 
 
     toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
     setSelected = (jobtype: any, jobid?: any, sortby?: any, specializationId?: any) => {
-        const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, } = this.props;
+        const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, getNewApprovalList } = this.props;
         let { currentPage } = this.state;
         let item_position: any = localStorage.getItem('position');
         let locationLocal: any = JSON.parse(item_position);
@@ -141,7 +145,7 @@ class JobDashboard extends Component<Props, State> {
             };
         }
 
-        if (['active', 'past', 'open', 'applicant'].includes(jobtype)) {
+        if (['active', 'past', 'open', 'applicant', 'approval'].includes(jobtype)) {
             this.setState({ activeType: jobtype })
         }
         this.setState({
@@ -151,6 +155,7 @@ class JobDashboard extends Component<Props, State> {
             if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
             if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
             if (jobtype === 'applicant') { getNewApplicantsBuilder(currentPage); }
+            if (jobtype === 'approval') { getNewApprovalList(currentPage); }
             if (jobtype === 'applicantList') { getnewJobApplicationListBuilder(dataItemsAddons); }
         });
     }
@@ -161,11 +166,12 @@ class JobDashboard extends Component<Props, State> {
             activeType,
             selectedItem: { jobtype, jobid, specializationId },
             count: { applicantCount, approveCount },
-            activeJobs, pastJobs, openJobs, applicantJobs, applicantsListJobs,
+            activeJobs, pastJobs, openJobs, applicantJobs, applicantsListJobs, approvalJobs
         } = this.state;
         const { toggleSidebar, setSelected } = this;
         let props: any = this.props;
         let isLoading: any = props.isLoading;
+        console.log({ approvalJobs }, '------------------------------->')
         return (
             <div className="app_wrapper">
                 <div className="custom_container">
@@ -224,7 +230,8 @@ class JobDashboard extends Component<Props, State> {
                                         </span>
                                     </li>
                                     <li>
-                                        <span className="icon approved">
+                                        {/* <span className="icon approved"> */}
+                                        <span className={`icon approved ${activeType === "approval" ? 'active' : ''}`}>
                                             <span
                                                 onClick={() => { 
                                                     setShowToast(true,'Under development');
@@ -276,6 +283,15 @@ class JobDashboard extends Component<Props, State> {
                                     setJobLabel={setSelected}
                                     history={props.history}
                                 />)}
+                            {jobtype === 'approval' && (
+                                <NeedApproval
+                                    isLoading={isLoading}
+                                    dataItems={approvalJobs}
+                                    jobType={jobtype}
+                                    setJobLabel={setSelected}
+                                    history={props.history}
+                                />
+                            )}
                             {jobtype === 'applicantList' && (
                                 <ApplicantsList
                                     isLoading={isLoading}

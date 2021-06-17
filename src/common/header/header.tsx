@@ -18,7 +18,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 
 
-const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404'];
+const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404', '/email-updated-successfully'];
 
 const Header = (props: any) => {
     let type = storageService.getItem('userType');
@@ -31,6 +31,10 @@ const Header = (props: any) => {
     const [activeLink, setActiveLink] = useState('discover');
 
     // const USER_TYPE = storageService.getItem('userType');
+
+    useEffect(() => {
+        setActiveLink('discover')
+    },[])
 
     let { pathname } = useLocation();
     let history = useHistory();

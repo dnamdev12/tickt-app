@@ -4,11 +4,10 @@ import NewEmail from './components/newEmail';
 import VerifyNewEmail from './components/verifyNewEmail';
 import SuccessPage from './components/successPage';
 
-import cancel from "../../../../../assets/images/ic-cancel.png";
 
 
 interface Propstype {
-    // history: any,
+    history: any,
     isChangeEmailModalClicked: boolean,
     currentEmail: string,
     changeEmailModalCloseHandler: () => void,
@@ -40,35 +39,42 @@ const ChangeEmailModal = (props: Propstype) => {
         setSteps(steps - minStep);
     }
 
+    const closeModalHandler = () => {
+        setSteps(1);
+        props.changeEmailModalCloseHandler();
+    }
+
     const renderPages = () => {
         switch (steps) {
             case 1:
                 return <NewEmail
                     backButtonHandler={backButtonHandler}
+                    closeModalHandler={closeModalHandler}
                     currentEmail={props.currentEmail}
                     updateSteps={updateSteps}
                     newEmail={stateData.newEmail}
                     currentPassword={stateData.currentPassword}
-
                 />
             case 2:
                 return <VerifyNewEmail
+                    history={props.history}
                     backButtonHandler={backButtonHandler}
+                    closeModalHandler={closeModalHandler}
                     currentEmail={props.currentEmail}
                     updateSteps={updateSteps}
                     newEmail={stateData.newEmail}
                     currentPassword={stateData.currentPassword}
                 />
             // case 3:
-            // return <SuccessPage history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
+            // return <SuccessPage
+            // history={props.history}
+            // updateSteps={updateSteps}
+            // closeModalHandler={closeModalHandler}
+            // />
             default: return null
         }
     }
 
-    const closeModalHandler = () => {
-        setSteps(1);
-        props.changeEmailModalCloseHandler();
-    }
 
 
     return (
@@ -144,8 +150,8 @@ export default ChangeEmailModal;
                 </Modal > */}
 
 
-                // portfolio edit button removed ==> modal html
-                {/* <Modal
+// portfolio edit button removed ==> modal html
+{/* <Modal
                                     className="custom_modal"
                                     open={portfolioModalClicked}
                                     onClose={() => this.setState({ portfolioModalClicked: false })}

@@ -67,6 +67,17 @@ export const tradieChangeEmail = async (data: any) => {
   return { success: false };
 }
 
+export const verifyEmailOtp = async (data: object) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.verifyEmailOtp, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false }
+};
+
 export const tradieDeletePortfolioJob = async (portfolioId: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.delete(Urls.tradieDeletePortfolioJob +  `?portfolioId=${portfolioId}`);

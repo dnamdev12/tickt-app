@@ -6,6 +6,8 @@ import MarkMilestones from './markMilestones';
 import { withRouter } from 'react-router-dom';
 import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
+import LodgeDispute from './lodgeDispute/lodgeDispute';
+import CancelJobs from './cancelJobs/cancelJob';
 
 interface Active {
     amount: any,
@@ -61,6 +63,13 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                 listData={listData}
             />)
     }
+
+    // return (
+    //     <CancelJobs
+    //         jobId={'12315115'}
+    //         jobName={'Wire up circuit'}
+    //     />
+    // )
 
     return (
         <React.Fragment>

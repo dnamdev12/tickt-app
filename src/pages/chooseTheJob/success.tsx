@@ -1,18 +1,20 @@
 import React from 'react';
-import templateImage from '../../../assets/images/review-builder-success.png';
+import templateImage from '../../assets/images/cancel-job-bg.png';
 import { withRouter } from 'react-router-dom';
 
 
-const DeclineMilestoneSuccess = (props: any) => {
+const ChooseJobSuccess = (props: any) => {
   return (
     <div className="img_text_wrap">
       <figure className="full_image">
         <img src={templateImage} alt="template-item" />
         <div className="short_info">
           <div className="content">
-            <h1 className="title">Thanks</h1>
+            <h1 className="title">
+              {'Thanks!'}
+            </h1>
             <span className="show_label">
-              {'Your review will help other builders find the highest quality tradespeople on Tickt.'}
+              {'We’ve sent this job to the tradie. You can find other recommended tradespeople in the search results.'}
             </span>
             <div className="btn_wrapr">
               <button
@@ -30,4 +32,4 @@ const DeclineMilestoneSuccess = (props: any) => {
   )
 }
 
-export default withRouter(DeclineMilestoneSuccess);
+export default withRouter(ChooseJobSuccess);

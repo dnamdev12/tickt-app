@@ -1,6 +1,4 @@
-const ACTIVE_HOST = 'https://ticktdevapi.appskeeper.in';  // dev env
-// const ACTIVE_HOST = 'https://ticktqaapi.appskeeper.in';  // qa env
-// const ACTIVE_HOST = 'https://ticktstgapi.appskeeper.in';  // stg env
+const ACTIVE_HOST = process.env.REACT_APP_BASE_URL;
 
 const versions = {
     v1: 'v1/',
@@ -88,6 +86,7 @@ const Urls = {
     tradieDeletePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}deletePortfolio`,
     tradieChangePassword: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changePassword`,
     tradieChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changeEmail`,
+    verifyEmailOtp: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}verifyEmail`,
     jobDetailsTradie: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}jobDetails`,
     reviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewList`,
     acceptDeclineRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}acceptDeclineRequest`,
@@ -101,6 +100,9 @@ const Urls = {
     reviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewReply`,
     updateReviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}updateReviewReply`,
     removeReviewReply:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}removeReviewReply`,
+    needApproval:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`,
+    reviewTradie:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewTradie`,
+    jobBuilder:`${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}`,
     builder:`${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
 }
 
