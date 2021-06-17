@@ -7,10 +7,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-
 import Modal from '@material-ui/core/Modal';
-
 import { renderTimeWithCustomFormat } from '../../../../utils/common';
+import { setShowToast } from '../../../../redux/common/actions';
 
 // @ts-ignore
 import { DateRangePicker } from 'react-date-range';
@@ -114,18 +113,126 @@ const AddEditMile = (props: any) => {
 
 
     const checkIfChange = () => {
-        if (!stateData?.name?.length && !stateData?.isPhoto && !stateData?.duration?.length && !stateData?.recommended?.length) {
+
+        let renderDuration: any = renderTimeWithCustomFormat(
+            calenderItems.startDate,
+            calenderItems.endDate,
+            '',
+            ['DD MMM', 'DD MMM YY'],
+            'Choose'
+        );
+
+        if (!stateData?.name?.length && !stateData?.isPhoto && renderDuration === 'Choose' && !stateData?.recommended?.length) {
             return false;
         }
         return true;
     }
 
-    const { name, isPhoto, recommended } = stateData;
+    const handleCalender = (date: any) => {
+        let time = {
+            fromDate: date.selection.startDate,
+            toDate: date.selection.endDate
+        };
+        console.log({selection:date.selection})
+        let index = props?.milestones?.length;
+        addTimeToMileStone(time, index);
+        // setCalender(date.selection);
+    }
+
+    const addTimeToMileStone = (time: any, index: any, skip?: any) => {
+        let milestone_clone: any = props?.milestones;
+        let checkIsValid: any = true;
+
+        if (!skip && milestone_clone?.length) {
+
+            let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
+
+            if (filter_milestone?.length) {
+                filter_milestone.forEach((mile: any) => {
+                    let msw = moment(mile.fromDate).isValid();
+                    let mew = moment(mile.toDate).isValid();
+
+                    let tsw = moment(time.fromDate).isValid();
+                    let tew = moment(time.toDate).isValid();
+
+                    let mile_start = mile.fromDate;
+                    let mile_end = mile.toDate;
+
+                    let time_start = time.fromDate;
+                    let time_end = time.toDate;
+
+                    if (msw && mew) {
+                        if (tsw && tew) {
+                            let checkIfSame = moment(time_start).isSame(moment(mile_start)) && moment(time_end).isSame(moment(mile_end));
+
+                            if (checkIfSame) {
+                                checkIsValid = true;
+                            }
+
+                            if (!checkIfSame) {
+                                if (
+                                    moment(time_start).isSameOrAfter(moment(mile_start)) &&
+                                    moment(time_start).isSameOrBefore(moment(mile_end))
+                                ) {
+                                    checkIsValid = false;
+                                }
+
+                                if (
+                                    moment(time_end).isSameOrAfter(moment(mile_start)) &&
+                                    moment(time_end).isSameOrBefore(moment(mile_end))
+                                ) {
+                                    checkIsValid = false;
+                                }
+                            }
+                        }
+
+                        if (!tew) {
+                            if (moment(time_start).isSameOrAfter(moment(mile_start)) && moment(time_start).isSameOrBefore(moment(mile_start))) {
+                                checkIsValid = false;
+                            }
+                        }
+                    }
+
+                    // here conditions
+                })
+            }
+        }
+        console.log({checkIsValid});
+        if (!checkIsValid) {
+            setShowToast(true, 'Please add unique date.');
+            return;
+        }
+
+        setCalender({
+            startDate:moment(time.fromDate).toDate(),
+            endDate:moment(time.toDate).toDate(),
+            key: "selection"
+        })
+        // milestone_clone[index]['fromDate'] = time.fromDate;
+        // milestone_clone[index]['to_date'] = time.to_date;
+        // setMileStones(milestone_clone);
+        // Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
+    }
+
+    // before render check
+    const { name, isPhoto, recommended, duration } = stateData;
     let check_errors = false;
-    if (!Object.values(errors).includes('')) {
+    let renderDuration: any = renderTimeWithCustomFormat(
+        calenderItems.startDate,
+        calenderItems.endDate,
+        '',
+        ['DD MMM', 'DD MMM YY', true],
+        'Choose'
+    );
+
+    if (!name?.length || !recommended?.length || renderDuration === 'Choose') {
         check_errors = true;
     }
-    console.log({ item, calenderItems })
+
+    let ItemCal: any = calenderItems;
+    if (!moment(calenderItems?.startDate).isValid()) {
+        ItemCal = { startDate: new Date(), endDate: '', key: 'selection' }
+    }
     return (
         <div className="flex_row">
             <div className="flex_col_sm_12">
@@ -172,8 +279,8 @@ const AddEditMile = (props: any) => {
                         }}
                         className="item-modal-ctm custom_wh portfolio_preview ">
                         <DateRangePicker
-                            ranges={!moment(calenderItems?.startDate).isValid() ? [{ startDate: new Date(), endDate: new Date(), key: 'selection' }] : [calenderItems]}
-                            onChange={(data: any) => { setCalender(data.selection) }}
+                            ranges={[ItemCal]}
+                            onChange={(date: any) => { handleCalender(date) }}
                             months={2}
                             direction="horizontal"
                             moveRangeOnFirstSelection={false}
@@ -197,6 +304,7 @@ const AddEditMile = (props: any) => {
                                     onClick={() => {
                                         if (checkIfChange()) {
                                             setToggleItem((prev: any) => !prev);
+                                            return
                                         }
                                         resetItems();
                                     }}
@@ -250,13 +358,7 @@ const AddEditMile = (props: any) => {
                                 <button
                                     onClick={() => { toggleCal() }}
                                     className="fill_btn fill_grey_btn choose_btn">
-                                    {renderTimeWithCustomFormat(
-                                        calenderItems.startDate,
-                                        calenderItems.endDate,
-                                        '',
-                                        ['DD MMM', 'DD MMM YY'],
-                                        'Choose'
-                                    )}
+                                    {renderDuration}
                                 </button>
                             </div>
                         </div>

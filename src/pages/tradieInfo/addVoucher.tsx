@@ -7,16 +7,33 @@ import addMedia from "../../assets/images/add-image.png";
 import Modal from '@material-ui/core/Modal';
 import { withRouter } from 'react-router-dom';
 
-import {ChooseJob} from '../../redux/jobs/actions'
+import { setShowToast } from '../../redux/common/actions';
+
+import close from '../../assets/images/icon-close-1.png';
+import { onFileUpload } from '../../redux/auth/actions';
+
+import { ChooseJob } from '../../redux/jobs/actions'
+
+import { AddVoucher } from '../../redux/jobs/actions';
+import docThumbnail from '../../assets/images/add-document.png'
 
 import Select from 'react-select';
+const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
-const AddVoucher = (props:any) => {
-    const {toggleProps} = props;
+const AddVoucherComponent = (props: any) => {
+    const { toggleProps, closeToggle } = props;
     const [toggle, setToggle] = useState(false);
     const [jobsList, setJobsList] = useState([]);
-    const [reactSelect, setReactSelect] = useState({});
+    const [reactSelect, setReactSelect] = useState({ label: '', value: '' });
     const [jobDescription, setJobDesciption] = useState('');
+
+    const [errorData, setErrorData] = useState({ detail: '', upload: '' });
+    const [filesUrl, setFilesUrl] = useState([] as any);
+    const [localFiles, setLocalFiles] = useState({});
+
+    const [update, forceUpdate] = useState({});
+    const [toggler, setToggler] = useState(false);
+    const [selectedSlide, setSelectSlide] = useState(1);
 
     useEffect(() => {
         prefetch();
@@ -25,6 +42,27 @@ const AddVoucher = (props:any) => {
     useEffect(() => {
         setToggle(toggleProps);
     }, [toggleProps])
+
+    useEffect(() => {
+        setErrorData((prev: any) => ({ ...prev, detail: jobDescription?.length > 250 ? 'Maximum 250 characters are allowed' : '' }));
+    }, [jobDescription])
+
+    // useEffect(() => {
+    //     setErrorData((prev: any) => ({ ...prev, upload: filesUrl?.length ? '' : 'Document file is required' }));
+    // }, [filesUrl]);
+
+    useEffect(() => {
+        console.log({toggle})
+        if (!toggle) {
+            closeToggle();
+            setReactSelect((prev: any) => ({ ...prev, label: '', value: '' }));
+            setJobDesciption("");
+            setFilesUrl([]);
+            setErrorData((prev: any) => ({ ...prev, detail: '', upload: '' }))
+        } else {
+            prefetch();
+        }
+    }, [toggle])
 
     const prefetch = async () => {
         let res_jobs: any = await ChooseJob({ page: 1 });
@@ -39,11 +77,95 @@ const AddVoucher = (props:any) => {
         }
     }
 
+    const setItemToggle = (index: any) => {
+        setToggler((prev: boolean) => !prev);
+        setSelectSlide(index + 1);
+    }
+
+
+    const removeFromItem = (index: any) => {
+        filesUrl.splice(index, 1);
+        setFilesUrl(filesUrl);
+        Array.isArray(update) ? forceUpdate([]) : forceUpdate({});
+    }
+
+    const onFileChange = async (e: any) => {
+        const formData = new FormData();
+        const newFile = e.target.files[0];
+
+        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
+        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
+
+        if (docformats.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+            setShowToast(true, "The file must be in proper format or size.")
+            return;
+        }
+
+        if (docformats.includes(fileType) && selectedFileSize > 10) { // image validations
+            setShowToast(true, "The file size must be below 10 MB.")
+            return;
+        }
+
+        formData.append('file', newFile);
+        const res = await onFileUpload(formData)
+        if (res.success) {
+            let link: string = res.imgUrl;
+
+            setFilesUrl((prev: Array<any>) => [...prev, {
+                "mediaType": ["doc", "docx", "msword"].includes(fileType) ? 3 : 4,
+                "link": link
+            }]);
+            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
+        }
+    }
+
+    const renderbyFileFormat = (item: any, index: any) => {
+        let split_item_format = item.split('.');
+        let get_split_fromat = split_item_format[split_item_format.length - 1];
+
+        let split_item_name = item.split('/');
+        let get_split_name = split_item_name[split_item_name.length - 1];
+        let image_render: any = null;
+        if (get_split_fromat) {
+            if (docformats.includes(get_split_fromat)) {
+                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={docThumbnail} alt="media" />
+            }
+            return (
+                <figure className="img_video">
+                    {image_render}
+                    <img
+                        onClick={() => { removeFromItem(index) }}
+                        src={close} alt="remove" className="remove" />
+                    {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
+                </figure>
+            )
+        }
+    }
+
+
+    const handleSubmit = async () => {
+        let data = {
+            "jobId": reactSelect?.value,
+            "jobName": reactSelect?.label,
+            "tradieId": "60b9d9e297d08d1ac8d0f57d",
+            "photos": [filesUrl[0].link],
+            "vouchDescription": jobDescription,
+            "recommendation": filesUrl[0].link
+        }
+        let response = await AddVoucher(data);
+        if (response?.success) {
+            console.log('Here!');
+            setToggle((prev: any) => !prev);
+            await prefetch();
+        }
+    }
+
     return (
         <Modal
             className="custom_modal"
             open={toggle}
             onClose={() => {
+                closeToggle();
                 setToggle((prev: any) => !prev)
             }}
             aria-labelledby="simple-modal-title"
@@ -51,9 +173,18 @@ const AddVoucher = (props:any) => {
         >
             <div className="custom_wh profile_modal vouch_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                 <div className="heading">
-                    <span className="sub_title">Leave a voucher</span>
-                    <span className="info_note">Upload the vouch and write the description.</span>
-                    <button className="close_btn">
+                    <span className="sub_title">
+                        {'Leave a voucher'}
+                    </span>
+                    <span className="info_note">
+                        {'Upload the vouch and write the description.'}
+                    </span>
+                    <button
+                        onClick={() => {
+                            closeToggle();
+                            setToggle((prev: any) => !prev)
+                        }}
+                        className="close_btn">
                         <img src={cancel} alt="cancel" />
                     </button>
                 </div>
@@ -84,34 +215,58 @@ const AddVoucher = (props:any) => {
                                     placeholder="Enter Description...">
                                 </textarea>
                             </div>
-                            <span className="error_msg"></span>
+                            <span className="error_msg">
+                                {errorData?.detail}
+                            </span>
+                            <br />
+                            <span className="error_msg">
+                                {errorData?.upload}
+                            </span>
                         </div>
                         <div className="upload_img_video">
-                            <figure className="img_video">
-                                <img src={dummy} alt="img" />
-                                <img src={remove} alt="remove" className="remove" />
-                            </figure>
+                            {filesUrl?.length ?
+                                filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
+                                : null}
 
-                            <label className="upload_media" htmlFor="upload_img_video">
-                                <img src={addMedia} alt="add" />
-                            </label>
-                            <input
-                                type="file"
-                                accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
-                                style={{ display: "none" }}
-                                id="upload_img_video"
-                            />
+                            {filesUrl?.length < 1 ? (
+                                <React.Fragment>
+                                    <label className="upload_media" htmlFor="upload_img_video">
+                                        <img src={addMedia} alt="" />
+                                    </label>
+                                    <input
+                                        onChange={onFileChange}
+                                        type="file"
+                                        accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
+                                        style={{ display: "none" }}
+                                        id="upload_img_video"
+                                    />
+                                </React.Fragment>
+                            ) : null}
                         </div>
                     </div>
                 </div>
                 <div className="bottom_btn custom_btn">
-                    <button className="fill_btn full_btn btn-effect">Save changes</button>
+                    <button
+                        onClick={() => {
+                            if (!filesUrl?.length || !jobDescription?.length) {
+                                if (!filesUrl?.length) {
+                                    setErrorData((prev: any) => ({ ...prev, upload: 'Document file is required.' }));
+                                }
+
+                                if (!jobDescription?.length) {
+                                    setErrorData((prev: any) => ({ ...prev, detail: 'Job Description is required' }));
+                                }
+                            } else {
+                                handleSubmit();
+                            }
+                        }}
+                        className={`fill_btn full_btn btn-effect`}>
+                        {'Save changes'}
+                    </button>
                 </div>
             </div>
-
         </Modal>
-
     )
 }
 
-export default AddVoucher;
+export default AddVoucherComponent;

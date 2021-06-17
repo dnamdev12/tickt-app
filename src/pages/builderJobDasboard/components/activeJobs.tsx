@@ -50,7 +50,7 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
 
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true`)
             history.push(`/job-detail?${urlEncode}`);
         }
     }

@@ -46,8 +46,6 @@ const MarkMilestones = (props: any) => {
     }
 
     const selectedItem: any = listData[selectedIndex];
-
-
     useEffect(() => {
         fetchMilestoneDetail();
     }, [selectedMilestoneIndex]);
@@ -80,11 +78,10 @@ const MarkMilestones = (props: any) => {
         }
     }
 
-
     const redirectToInfo = ({ jobId, status }: any) => {
         console.log({ jobId });
         let props_: any = props;
-        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true`)
         props_.history.push(`/job-detail?${urlEncode}`);
     }
 
@@ -123,9 +120,7 @@ const MarkMilestones = (props: any) => {
             <CancelJobs item={selectedItem} backTab={backTab} />
         )
     }
-    console.log({
-        selectedMile, selectedMilestoneIndex, selectedItem, itemDetails
-    })
+
     let item_detail: any = itemDetails;
     return (
         <div className="flex_row">

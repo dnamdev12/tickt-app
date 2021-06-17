@@ -36,6 +36,8 @@ import { setShowToast } from '../../redux/common/actions';
 import { SaveTradie } from '../../redux/jobs/actions'
 
 import vouch from '../../assets/images/ic-template.png';
+import VoucherDetail from './voucherDetail';
+
 interface Props {
     tradieInfo: any,
     tradieId: any,
@@ -71,6 +73,10 @@ interface State {
         reviewData: any,
         showReviewReply: boolean,
         replyShownHideList: any
+    },
+    toggleVoucher: {
+        item: string,
+        isTrue: boolean
     }
 }
 
@@ -101,7 +107,8 @@ class TradieInfo extends Component<Props, State> {
             showReviewReply: false,
             replyShownHideList: []
         },
-        tradieReviewList: []
+        tradieReviewList: [],
+        toggleVoucher: { item: '', isTrue: false }
     };
 
 
@@ -365,16 +372,22 @@ class TradieInfo extends Component<Props, State> {
         let data = {
 
         };
-        let response:any = CancelInviteForJob(data);
+        let response: any = CancelInviteForJob(data);
         if (response.success) {
             await this.setItems()
         }
     }
 
+    closeToggle = () => {
+        this.setState({
+            toggleVoucher: { item: '', isTrue: false }
+        })
+    }
+
     render() {
         let props: any = this.props;
         // let tradieInfo: any = props.tradieInfo;
-        let { portfolioData } = this.state;
+        let { portfolioData, toggleVoucher } = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
         let tradieReviews: any = this.state.tradieReviews;
@@ -395,6 +408,15 @@ class TradieInfo extends Component<Props, State> {
             <div className="app_wrapper">
                 <div className="section_wrapper">
                     <div className="custom_container">
+
+
+                        <VoucherDetail
+                            toggleProps={toggleVoucher.isTrue}
+                            item={toggleVoucher.item}
+                            id={tradieInfo?.tradeId}
+                            closeToggle={this.closeToggle}
+                        />
+
                         <div className="vid_img_wrapper pt-20">
                             <div className="flex_row">
                                 <div className="flex_col_sm_8 relative">
@@ -660,7 +682,13 @@ class TradieInfo extends Component<Props, State> {
                                                 <figure className="vouch_icon">
                                                     <img src={vouch} alt="vouch" />
                                                 </figure>
-                                                <span className="link">
+                                                <span
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            toggleVoucher: { item: item, isTrue: true }
+                                                        })
+                                                    }}
+                                                    className="link">
                                                     {`Vouch for ${item?.tradieName}`}
                                                 </span>
                                             </div>

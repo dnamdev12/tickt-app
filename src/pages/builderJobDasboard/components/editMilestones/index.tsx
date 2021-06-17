@@ -13,7 +13,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
-import {changeRequest} from '../../../../redux/jobs/actions';
+import { changeRequest } from '../../../../redux/jobs/actions';
 
 import AddEditMile from './addEditMile';
 
@@ -192,21 +192,20 @@ const EditMilestone = (props: any) => {
     }
 
     const checkIfChange = () => {
-        if (JSON.stringify(stateData) !== JSON.stringify(milestones)) {
+        if (JSON.stringify(stateData) !== JSON.stringify(props?.details?.milestones)) {
             return true;
         }
         return false;
     }
 
-
     const submitData = () => {
         let filtered = stateData.map((item: any) => {
             return {
-                "milestoneId": "",
+                // "milestoneId": "",
                 "milestone_name": item?.milestoneName,
                 "isPhotoevidence": item?.isPhotoevidence,
                 "from_date": moment(item?.fromDate).format("YYYY-MM-DD"),
-                "to_date": moment(item?.toDate).isValid() ?  moment(item?.toDate).format("YYYY-MM-DD") : '',
+                "to_date": moment(item?.toDate).isValid() ? moment(item?.toDate).format("YYYY-MM-DD") : '',
                 "recommended_hours": item?.recommendedHours
             }
         })
@@ -216,16 +215,14 @@ const EditMilestone = (props: any) => {
             "tradieId": item.tradeId,
             "milestones": filtered
         };
-        let response:any = changeRequest(data);
-        if(response?.success){
+        let response: any = changeRequest(data);
+        if (response?.success) {
             props.history.push('/milestone-request-sent-success');
         }
     }
-
-    console.log({ item, stateData, milestones, props })
+    console.log({ stateData })
     return (
         <React.Fragment>
-
 
             <Dialog
                 open={toggleItem}
@@ -289,6 +286,7 @@ const EditMilestone = (props: any) => {
                             onClick={() => {
                                 if (checkIfChange()) {
                                     setToggleItem((prev: any) => !prev);
+                                    return
                                 }
                                 props.backTab('edit');
                             }}
@@ -308,7 +306,7 @@ const EditMilestone = (props: any) => {
 
             <div className="flex_row">
                 <div className="flex_col_sm_7">
-                    {console.log({stateData})}
+                    {console.log({ stateData })}
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="milestones">
                             {(provided, snapshot) => (
@@ -373,7 +371,12 @@ const EditMilestone = (props: any) => {
                                                         <div className="checkbox_wrap agree_check">
                                                             <input
                                                                 checked={editItem[index]}
-                                                                onChange={(e: any) => { checkOnClick(e, index) }}
+                                                                onChange={(e: any) => {
+                                                                   
+                                                                    if (status !== 1) {
+                                                                        checkOnClick(e, index)
+                                                                    }
+                                                                }}
                                                                 className="filter-type filled-in"
                                                                 type="checkbox"
                                                                 id={`milestone${index}`} />

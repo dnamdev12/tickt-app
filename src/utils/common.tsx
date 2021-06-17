@@ -81,10 +81,25 @@ export const renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: a
         let yearDiff = parseInt(item_year.toString());
 
         if (yearDiff > 0 || moment(toDate, format).isAfter(yearEnd) || moment(toDate, format).isAfter(yearEnd)) {
+            if (formatSet[2]) {
+                if (moment(fromDate, format).isSame(moment(toDate, format))) {
+                    return moment(fromDate, format).format(formatSet[1])
+                }
+            }
             return `${moment(fromDate, format).format(formatSet[1])} - ${moment(toDate, format).format(formatSet[1])}`
         }
         if (monthDiff > 0 || moment(toDate, format).isAfter(monthEnd)) {
+            if (formatSet[2]) {
+                if (moment(fromDate, format).isSame(moment(toDate, format))) {
+                    return moment(fromDate, format).format(formatSet[0])
+                }
+            }
             return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
+        }
+        if (formatSet[2]) {
+            if (moment(fromDate, format).isSame(moment(toDate, format))) {
+                return moment(fromDate, format).format(formatSet[0])
+            }
         }
         return `${moment(fromDate, format).format(formatSet[0])} - ${moment(toDate, format).format(formatSet[0])}`
     }

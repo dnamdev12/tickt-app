@@ -88,6 +88,7 @@ const JobDetailsPage = (props: PropsType) => {
     })
 
     const [toggler, setToggler] = useState(false);
+    const [showEditBtn, setEditBtn] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
 
 
@@ -97,6 +98,11 @@ const JobDetailsPage = (props: PropsType) => {
         (async () => {
             let location_search = window.atob((props.location?.search).substring(1))
             const params = new URLSearchParams(location_search);
+
+            if (params.get('edit')) {
+                setEditBtn((prev: any) => true);
+            }
+
             if (params.get('jobId') && params.get('tradeId') && params.get('specializationId')) {
                 const res1 = await getHomeJobDetails({
                     jobId: params.get('jobId'),
@@ -474,7 +480,13 @@ const JobDetailsPage = (props: PropsType) => {
                                     <div className="job_info">
                                         <ul>
                                             <li className="icon calendar">
-                                                {jobDetailsData?.time ? jobDetailsData.time : renderTime(jobDetailsData.fromDate, jobDetailsData?.toDate)}
+                                                {jobDetailsData?.time ?
+                                                    jobDetailsData.time :
+                                                    renderTime(
+                                                        jobDetailsData.fromDate,
+                                                        jobDetailsData?.toDate
+                                                    )
+                                                }
                                             </li>
                                             <li className="icon dollar">{jobDetailsData.amount}</li>
                                             <li className="icon location line-3">{jobDetailsData.locationName}</li>
@@ -773,7 +785,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <span
                                                     className="name"
                                                     onClick={() => {
-                                                        setShowToast(true,'Under development');
+                                                        setShowToast(true, 'Under development');
                                                         // if (jobDetailsData?.postedBy?.builderName) {
                                                         //     props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
                                                         // }
