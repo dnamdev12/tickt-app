@@ -97,7 +97,7 @@ export const getMilestoneDetails = async (data: any) => {
 
 export const milestoneAcceptOrDecline = async (data: any) => {
     setLoading(true);
-    const response: FetchResponse = await NetworkOps.putToJson(Urls.milestoneApproveDecline,data)
+    const response: FetchResponse = await NetworkOps.putToJson(Urls.milestoneApproveDecline, data)
     setLoading(false);
     setShowToast(true, response.message);
     if (response.status_code === 200) {
@@ -105,4 +105,3 @@ export const milestoneAcceptOrDecline = async (data: any) => {
     }
     return { success: false, data: response.result };
 }
-

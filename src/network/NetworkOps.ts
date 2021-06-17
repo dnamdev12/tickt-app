@@ -22,7 +22,7 @@ class NetworkOps {
             headers: {
                 'Content-Type': 'application/json',
                 Authorization: `Basic dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz`,
-                'timezone':moment.tz.guess(),
+                'timezone': moment.tz.guess(),
                 ...headerOverrides
             },
         };
@@ -37,7 +37,7 @@ class NetworkOps {
             request.headers = {
                 ...request.headers,
                 Authorization: token,
-                'timezone':moment.tz.guess(),
+                'timezone': moment.tz.guess(),
                 // Authorization: `Bearer ${token}`,
             }
         }
@@ -45,10 +45,8 @@ class NetworkOps {
     }
 
     async wrapperWithOptions(url: string, request: any) {
-        console.log('url -->>', url, request)
         try {
             const response: any = await fetch(url, request);
-            console.log(response)
             if (!response.ok) {
                 if (response.status === 401) {
                     if (storageService.getItem('jwtToken')) {
@@ -56,7 +54,6 @@ class NetworkOps {
                         // alert('Token Expired');
                         const res1 = await response.text();
                         const res2 = JSON.parse(res1);
-                        console.log(res2.message, 'expired------------------');
                         setShowToast(true, res2.message || 'You\'ve been logged out');
                         setTimeout(() => {
                             window.location.pathname = '/login';
@@ -73,13 +70,10 @@ class NetworkOps {
             }
             else {
                 const res = await response.text();
-                console.log('res -->>', JSON.parse(res))
                 try {
-                    console.log('if', { res: JSON.parse(res) })
                     return JSON.parse(res);
                 }
                 catch {
-                    console.log('else', { res })
                     return res;
                 }
             }
@@ -125,7 +119,7 @@ class NetworkOps {
     get = async (service: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('GET');
-            return this.wrapperWithOptions(urlFor(service), request);
+            return await this.wrapperWithOptions(urlFor(service), request);
         }
         catch (err) {
             throw err;
