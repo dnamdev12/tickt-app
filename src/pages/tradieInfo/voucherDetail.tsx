@@ -9,11 +9,14 @@ import { withRouter } from 'react-router-dom';
 
 import Select from 'react-select';
 
-const VoucherDetail = () => {
-
+const VoucherDetail = (props: any) => {
+    const { toggleProps } = props;
     const [toggleRecommendation, setToggleRecommendation] = useState(false);
 
-    
+    useEffect(() => {
+        setToggleRecommendation(toggleProps);
+    }, [toggleProps])
+
     return (
         <Modal
             className="custom_modal"

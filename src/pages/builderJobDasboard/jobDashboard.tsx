@@ -258,6 +258,7 @@ class JobDashboard extends Component<Props, State> {
                             {/* <FixedRate />
                             <ConfirmAndPay /> */}
                              {jobtype === 'past' && (
+              
                                 <PastJobsComponent
                                     isLoading={isLoading}
                                     dataItems={pastJobs}

@@ -566,6 +566,12 @@ a.fill_grey_btn {
 .mb0{
   margin-bottom: 0px !important;
 }
+.mb130{
+  margin-bottom: 130px;
+  @media(max-width: 768px){
+    margin-bottom: 50px;
+  }
+}
 
 .m-l-30 {
   margin-left: 30px;

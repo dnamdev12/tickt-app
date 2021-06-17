@@ -11,7 +11,8 @@ import {ChooseJob} from '../../redux/jobs/actions'
 
 import Select from 'react-select';
 
-const AddVoucher = () => {
+const AddVoucher = (props:any) => {
+    const {toggleProps} = props;
     const [toggle, setToggle] = useState(false);
     const [jobsList, setJobsList] = useState([]);
     const [reactSelect, setReactSelect] = useState({});
@@ -20,6 +21,10 @@ const AddVoucher = () => {
     useEffect(() => {
         prefetch();
     }, [])
+
+    useEffect(() => {
+        setToggle(toggleProps);
+    }, [toggleProps])
 
     const prefetch = async () => {
         let res_jobs: any = await ChooseJob({ page: 1 });

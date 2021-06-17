@@ -8,7 +8,8 @@ import {
     ChooseJob
 } from '../../redux/jobs/actions';
 
-
+import AddVoucherModal from './addVoucher';
+import VoucherDetailModal from './voucherDetail';
 
 const Vouchers = (props: any) => {
     const [stateData, setStateData] = useState({});
@@ -83,6 +84,14 @@ const Vouchers = (props: any) => {
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+
+                    <VoucherDetailModal
+                    toggleProps={toggleRecommendation}
+                    />
+                    <AddVoucherModal
+                        toggleProps={toggle}
+                    />
+
                     <div className="flex_row">
                         <div className="flex_col_sm_6">
                             <div className="relate">
