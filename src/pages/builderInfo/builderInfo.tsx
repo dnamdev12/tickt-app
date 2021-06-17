@@ -297,10 +297,7 @@ const BuilderInfo = (props: PropsType) => {
     }
 
     const builderAllJobsClicked = () => {
-        props.history?.push({
-            pathname: "/builder-posted-jobs",
-            state: { builderId: profileData?.builderId, totalJobPostedCount: profileData?.totalJobPostedCount }
-        })
+        props.history?.push(`/builder-posted-jobs?bId=${profileData?.builderId}&jCount=${profileData?.totalJobPostedCount}`);
     }
 
     return (

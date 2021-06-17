@@ -125,12 +125,14 @@ const LodgeDispute = (props: PropTypes) => {
     }
 
     const handleSubmit = async () => {
-        let data = {
-            "jobId": jobId,
-            "reason": reason,
-            "details": detail.trim(),
-            "photos": filesUrl
+        let data: any = {
+            jobId: jobId,
+            reason: reason,
+            details: detail.trim(),
+            photos: filesUrl
         }
+        if (!data.details) delete data.details;
+        if (!data.photos?.length) delete data.photos;
 
         let response: any = await tradielodgeDispute(data);
         if (response?.success) {

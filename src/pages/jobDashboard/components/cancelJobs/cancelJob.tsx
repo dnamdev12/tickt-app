@@ -117,11 +117,12 @@ const LodgeDispute = (props: PropTypes) => {
     }
 
     const handleSubmit = async () => {
-        let data = {
-            "jobId": jobId,
-            "reason": reason,
-            "note": detail,
+        let data: any = {
+            jobId: jobId,
+            reason: reason,
+            note: detail,
         }
+        if (!data.note) delete data.note;
         let response: any = await tradieCancelJob(data);
         if (response?.success) {
             history.push('/cancel-job-success');

@@ -1,13 +1,14 @@
 import * as actionTypes from './constants';
 
 const initialState = {
+  userType: null,
   tradieProfileData: '',
   tradieProfileViewData: '',
   tradieBasicDetailsData: '',
   bankDetails: {},
   error: '',
   tradieInfo: [],
-  builderProfile:{}
+  builderProfile: {}
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -17,6 +18,7 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         tradieProfileData: action.payload,
+        userType: action.payload.userType
       };
     case actionTypes.SET_TRADIE_PROFILE_VIEW:
       return {
@@ -61,7 +63,8 @@ const reducer = (state = initialState, action: any) => {
     case actionTypes.SET_PROFILE_BUILDER:
       return {
         ...state,
-        builderProfile: action.payload
+        builderProfile: action.payload,
+        userType: action.payload.userType
       }
 
 
