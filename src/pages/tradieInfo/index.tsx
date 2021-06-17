@@ -638,7 +638,7 @@ class TradieInfo extends Component<Props, State> {
                                                 </div>
                                             </div>
 
-                                            <span>
+                                            <span className="xs_head">
                                                 {item?.jobName}
                                             </span>
 
