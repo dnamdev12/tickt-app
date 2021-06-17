@@ -64,12 +64,7 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
             />)
     }
 
-    // return (
-    //     <CancelJobs
-    //         jobId={'12315115'}
-    //         jobName={'Wire up circuit'}
-    //     />
-    // )
+    
 
     return (
         <React.Fragment>

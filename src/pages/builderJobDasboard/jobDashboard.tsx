@@ -21,6 +21,11 @@ import DeclineMilestone from './components/declineMilestone';
 import DeclineMilestoneSuccess from './components/declineMilestoneSuccess';
 import { getNewApprovalList } from '../../redux/jobs/actions';
 import { setShowToast } from '../../redux/common/actions';
+
+import FixedConfirm from './components/confirmAndPay/fixedRate';
+import ConfirmAndPay from './components/confirmAndPay/confirmAndPay';
+import FixedRate from './components/confirmAndPay/fixedRate';
+
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -250,7 +255,9 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
                         <div className="detail_col">
-                            {jobtype === 'past' && (
+                            <FixedRate />
+                            <ConfirmAndPay />
+                            {/* {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}
                                     dataItems={pastJobs}
@@ -300,7 +307,7 @@ class JobDashboard extends Component<Props, State> {
                                     setJobLabel={setSelected}
                                     activeType={activeType}
                                     history={props.history}
-                                />)}
+                                />)} */}
                         </div>
                     </div>
                 </div>

@@ -37,8 +37,6 @@ import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
 
-
-
 const routes = [
     {
         name: 'main',
