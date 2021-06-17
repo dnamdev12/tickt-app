@@ -126,7 +126,7 @@ const MarkMilestones = (props: any) => {
     console.log({
         selectedMile, selectedMilestoneIndex, selectedItem, itemDetails
     })
-    let item_detail:any = itemDetails;
+    let item_detail: any = itemDetails;
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
@@ -238,8 +238,16 @@ const MarkMilestones = (props: any) => {
             </div>
             <div className="flex_col_sm_6 col_ruler">
                 <span className="sub_title">Tradie</span>
-                <div className="tradie_card posted_by view_more ">
-                    <a href="javascript:void(0)" className="chat circle"></a>
+
+                <div
+                    onClick={() => {
+                        console.log({ item_details })
+                        props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}`);
+                    }}
+                    className="tradie_card posted_by view_more ">
+                    <span
+                    onClick={(e) => { e.stopPropagation() }}
+                    className="chat circle"></span>
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
@@ -251,6 +259,7 @@ const MarkMilestones = (props: any) => {
                         </div>
                     </div>
                 </div>
+
                 <div className="relate">
                     <span className="sub_title">Job details</span>
                     <span

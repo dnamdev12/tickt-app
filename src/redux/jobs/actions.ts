@@ -461,7 +461,7 @@ export const InviteForJob = async (data: any) => {
   return { success: false };
 }
 
-export const cancelInviteForJob = async (data: any) => {
+export const CancelInviteForJob = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}cancelInviteForJob`, data);
   setLoading(false);

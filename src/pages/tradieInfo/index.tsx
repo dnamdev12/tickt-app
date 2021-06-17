@@ -11,7 +11,8 @@ import {
     removeReviewReply,
     getTradeReviews,
     getTradeProfile,
-    HomeTradieProfile
+    HomeTradieProfile,
+    CancelInviteForJob,
 } from '../../redux/jobs/actions';
 import { getTradieProfile } from '../../redux/profile/actions';
 
@@ -360,6 +361,16 @@ class TradieInfo extends Component<Props, State> {
         }
     }
 
+    cancelInvite = async () => {
+        let data = {
+
+        };
+        let response:any = CancelInviteForJob(data);
+        if (response.success) {
+            await this.setItems()
+        }
+    }
+
     render() {
         let props: any = this.props;
         // let tradieInfo: any = props.tradieInfo;
@@ -614,7 +625,7 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                     : null}
-                {console.log({ vouchers: tradieInfo?.vouches })}
+
                 {tradieInfo?.vouchesData?.length ?
                     <div className="section_wrapper">
                         <div className="custom_container">
@@ -650,7 +661,7 @@ class TradieInfo extends Component<Props, State> {
                                                     <img src={vouch} alt="vouch" />
                                                 </figure>
                                                 <span className="link">
-                                                    {'Vouch for John Oldman'}
+                                                    {`Vouch for ${item?.tradieName}`}
                                                 </span>
                                             </div>
                                         </div>
@@ -673,7 +684,8 @@ class TradieInfo extends Component<Props, State> {
                     </div>
                     : null}
 
-                {reviewsData.showAllReviewsClicked && tradieReviews?.length &&
+                {
+                    reviewsData.showAllReviewsClicked && tradieReviews?.length &&
                     <Modal
                         className="ques_ans_modal"
                         open={reviewsData.showAllReviewsClicked}
@@ -796,7 +808,8 @@ class TradieInfo extends Component<Props, State> {
                     </Modal>
                 }
                 {/* post reply modal */}
-                {reviewsData.reviewReplyClicked &&
+                {
+                    reviewsData.reviewReplyClicked &&
                     <Modal
                         className="ques_ans_modal"
                         open={reviewsData.reviewReplyClicked}
@@ -848,7 +861,8 @@ class TradieInfo extends Component<Props, State> {
                     </Modal>
                 }
                 {/* send confirmation yes/no modal */}
-                {(reviewsData.confirmationClicked) &&
+                {
+                    (reviewsData.confirmationClicked) &&
                     <Modal
                         className="custom_modal"
                         open={reviewsData.confirmationClicked}
@@ -875,7 +889,7 @@ class TradieInfo extends Component<Props, State> {
                         </>
                     </Modal>
                 }
-            </div>
+            </div >
         )
     }
 

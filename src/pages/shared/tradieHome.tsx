@@ -8,7 +8,7 @@ import { setShowToast } from '../../redux/common/actions';
 interface Props {
     data: any,
     title: string,
-    redirectPath: string,
+    redirectPath?: string,
     length: any
 }
 

@@ -116,7 +116,7 @@ const BuilderHome = (props: any) => {
     // }, [stateData])
 
     const fetchByLatLong = async (data: any) => {
-        console.log({ params: data })
+
         let url: string = `${process.env.REACT_APP_BASE_URL}/v1/home?lat=${data.lat}&long=${data.long}`
         let item: any = localStorage.getItem('jwtToken')
         try {
@@ -127,14 +127,12 @@ const BuilderHome = (props: any) => {
                     Authorization: JSON.parse(item),
                     timezone: moment.tz.guess(),
                 }
-            })
+            });
 
             if (response?.status === 200) {
                 let data: any = response?.data;
-                console.log({ data });
                 responseElement = data?.result;
                 // setStateData((prev: any) => ({ ...prev, ...data?.result }));
-
             }
         } catch (err) {
             console.log({ err });
@@ -142,6 +140,7 @@ const BuilderHome = (props: any) => {
     }
 
     let home_data: any = responseElement;
+
     return (
         <div className="app_wrapper" >
 
@@ -156,52 +155,56 @@ const BuilderHome = (props: any) => {
             />
 
             <TradieHome
-                {...props}
                 data={home_data?.saved_tradespeople}
                 title={"Saved tradespeople"}
                 length={3} // redirectPath={"/saved-trade-people"}
             />
 
-            <div className="section_wrapper bg_gray">
-                <div className="custom_container">
-                    <span className="title">
-                        {'Popular tradespeople'}
-                    </span>
-                    <ul className="popular_tradies">
-                        {home_data?.popular_tradespeople?.length ?
-                            home_data?.popular_tradespeople?.map((item: any, index: number) => {
+            {home_data?.popular_tradespeople?.length > 0 &&
+                <div className="section_wrapper bg_gray">
+                    <div className="custom_container">
+                        <span className="title">
+                            {'Popular tradespeople'}
+                        </span>
+                        <ul className="popular_tradies">
+                            {home_data?.popular_tradespeople?.map((item: any, index: number) => {
                                 return (
-                                    <li key={`${item.userName}item${index}`} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000">
+                                    <li
+                                        key={`${item.userName}item${index}`}
+                                        data-aos="flip-right"
+                                        data-aos-delay="200"
+                                        data-aos-duration="1000">
                                         <figure className="tradies_img">
                                             <img src={item.userImage || dummy} alt="tradies-img" />
                                         </figure>
                                         <span className="name">{item.userName}</span>
                                         <span className="post">{item.trade}</span>
                                     </li>)
-                            }) :
-                            <span>
+                            })}
+
+                            {/* <span>
                                 {'No Data Found'}
-                            </span>
-                        }
-                    </ul>
-                    <button
-                        className="fill_grey_btn full_btn m-tb40 view_more"
-                        onClick={() => { setShowToast(true, 'Under development'); }}
-                    >
-                        {'View all'}
-                    </button>
+                            </span> */}
+
+                        </ul>
+                        <button
+                            className="fill_grey_btn full_btn m-tb40 view_more"
+                            onClick={() => {
+                                setShowToast(true, 'Under development');
+                            }}>
+                            {'View all'}
+                        </button>
+                    </div>
                 </div>
-            </div>
+            }
 
             <TradieHome
-                {...props}
                 data={home_data?.recomended_tradespeople}
                 title={"Recommended tradespeople"} // redirectPath={'/recommended-trade-people'}
                 length={9}
             />
 
             <TradieHome
-                {...props}
                 data={home_data?.mostViewed_tradespeople}
                 title={"Most Viewed tradespeople"} // redirectPath={'/recommended-trade-people'}
                 length={9}

@@ -255,9 +255,9 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
                         <div className="detail_col">
-                            <FixedRate />
-                            <ConfirmAndPay />
-                            {/* {jobtype === 'past' && (
+                            {/* <FixedRate />
+                            <ConfirmAndPay /> */}
+                             {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}
                                     dataItems={pastJobs}
@@ -307,7 +307,7 @@ class JobDashboard extends Component<Props, State> {
                                     setJobLabel={setSelected}
                                     activeType={activeType}
                                     history={props.history}
-                                />)} */}
+                                />)} 
                         </div>
                     </div>
                 </div>
