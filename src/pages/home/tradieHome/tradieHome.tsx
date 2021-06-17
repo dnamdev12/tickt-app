@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
 import HomeBanner from './components/homeBanner';
 import JobTypeList from './components/jobTypeList';
 import SavedJobs from './components/savedJobs';
@@ -53,7 +52,7 @@ const TradieHome = (props: any) => {
         if (props.homeSearchJobData.length) {
             props.resetHomeSearchJobData();
         }
-    }, [props])
+    }, []);
 
     console.log(tradieHomeData, "stateData tradie home")
 
