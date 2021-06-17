@@ -7,14 +7,27 @@ import addMedia from "../../assets/images/add-image.png";
 import Modal from '@material-ui/core/Modal';
 import { withRouter } from 'react-router-dom';
 
+import Select from 'react-select';
+
 import {
     HomeTradieProfile,
     AddVoucher
 } from '../../redux/jobs/actions';
 
+const label: { [index: string]: string } = {
+    pay_type: 'Pay Type',
+    amount: 'Price',
+}
+
 const Vouchers = (props: any) => {
     const [toggle, setToggle] = useState(false);
     const [stateData, setStateData] = useState({});
+    const [reactSelect, setReactSelect] = useState({ value: "Job Name", label: "Job Name" });
+    const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: 'Per hour', amount: '' });
+    const [errors, setErrors] = useState({});
+
+    const [toggleRecommendation, setToggleRecommendation] = useState(false);
+
     const { id, path } = props?.location?.state;
 
 
@@ -39,9 +52,40 @@ const Vouchers = (props: any) => {
             "vouchDescription": "This is vouchers",
             "recommendation": "This is recommendation url"
         }
-        
+
         let response = await AddVoucher(data);
     }
+
+    const isInvalid = (name: string, value: string) => {
+        switch (name) {
+            case 'pay_type':
+                return !value.length ? `${label[name]} is required.` : '';
+            case 'amount':
+                return ''
+        }
+    }
+
+    const priceOptions = [
+        { value: 'Per hour', label: 'Per Hour' },
+        { value: 'Fixed price', label: 'Fixed Price' },
+    ];
+
+    const handleChange = (value: string, name: string) => {
+        setErrors((prevErrors) => ({
+            ...prevErrors,
+            [name]: isInvalid(name, value),
+        }));
+
+        setPaymentDetails((prevDetails) => {
+            // if (name === "pay_type" && prevDetails.pay_type !== value) {
+            //   prevDetails.amount = '';
+            // }
+            return ({
+                ...prevDetails,
+                [name]: value,
+            })
+        })
+    };
 
     console.log({ props, stateData });
     let state_data: any = stateData;
@@ -70,6 +114,29 @@ const Vouchers = (props: any) => {
                                 {'+ Leave a voucher'}
                             </button>
                         </div>
+
+                        <Modal
+                            className="custom_modal"
+                            open={toggleRecommendation}
+                            onClose={() => {
+                                setToggleRecommendation((prev: any) => !prev)
+                            }}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh profile_modal vouch_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                <div className="heading">
+                                    <span className="sub_title">
+                                        {'Recommendation about work'}
+                                    </span>
+                                    <span className="info_note">Upload the vouch and write the description.</span>
+                                    <button className="close_btn">
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                            </div>
+                        </Modal>
+
                         <Modal
                             className="custom_modal"
                             open={toggle}
@@ -90,6 +157,19 @@ const Vouchers = (props: any) => {
                                 <div className="inner_wrap">
                                     <div className="inner_wrappr">
                                         <div className="form_field">
+
+                                            <div className="text_field">
+                                                <Select
+                                                    className="select_menu"
+                                                    value={reactSelect}
+                                                    options={priceOptions}
+                                                    onChange={(item: any) => {
+                                                        setReactSelect(item);
+                                                        handleChange(item?.value, 'pay_type')
+                                                    }}
+                                                />
+                                            </div>
+
                                             <label className="form_label">Job Description</label>
                                             <div className="text_field">
                                                 <textarea placeholder="Enter Description..."></textarea>
@@ -97,26 +177,11 @@ const Vouchers = (props: any) => {
                                             <span className="error_msg"></span>
                                         </div>
                                         <div className="upload_img_video">
-                                            <figure className="img_video">
+                                            {/* <figure className="img_video">
                                                 <img src={dummy} alt="img" />
                                                 <img src={remove} alt="remove" className="remove" />
-                                            </figure>
-                                            <figure className="img_video">
-                                                <img src={dummy} alt="img" />
-                                                <img src={remove} alt="remove" className="remove" />
-                                            </figure>
-                                            <figure className="img_video">
-                                                <img src={dummy} alt="img" />
-                                                <img src={remove} alt="remove" className="remove" />
-                                            </figure>
-                                            <figure className="img_video">
-                                                <img src={dummy} alt="img" />
-                                                <img src={remove} alt="remove" className="remove" />
-                                            </figure>
-                                            <figure className="img_video">
-                                                <img src={dummy} alt="img" />
-                                                <img src={remove} alt="remove" className="remove" />
-                                            </figure>
+                                            </figure> */}
+
                                             <label className="upload_media" htmlFor="upload_img_video">
                                                 <img src={addMedia} alt="add" />
                                             </label>
@@ -163,9 +228,13 @@ const Vouchers = (props: any) => {
                                                     <figure className="vouch_icon">
                                                         <img src={vouch} alt="vouch" />
                                                     </figure>
-                                                    <a className="link">
+                                                    <span
+                                                    onClick={() => {
+                                                        setToggleRecommendation((prev: any) => !prev)
+                                                    }}
+                                                    className="link">
                                                         {'Vouch for John Oldman'}
-                                                    </a>
+                                                    </span>
                                                 </div>
                                             </div>
                                         </div>
@@ -176,7 +245,7 @@ const Vouchers = (props: any) => {
                         : null}
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
