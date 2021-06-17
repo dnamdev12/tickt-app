@@ -55,7 +55,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "prod-build":"npm run prebuild && npm run build",
+    "prod-build": "npm run prebuild && npm run build",
     "prebuild": "npm run generate-build-meta",
     "generate-build-meta": "./node_modules/react-clear-cache/bin/cli.js"
   },
