@@ -129,12 +129,19 @@ const LodgeDispute = (props: any) => {
     }
 
     const handleSubmit = async () => {
-        let data = {
+        let data: any = {
             "jobId": jobId,
-            "reason": reason,
-            "details": detail,
-            "photos": filesUrl
+            "reason": reason
         }
+
+        if (filesUrl?.length) {
+            data['photos'] = filesUrl;
+        }
+
+        if (detail?.length) {
+            data['details'] = detail;
+        }
+
         let response: any = await lodgeDispute(data);
 
         if (response?.success) {

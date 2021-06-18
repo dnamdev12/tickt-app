@@ -128,11 +128,15 @@ const LodgeDispute = (props: any) => {
     }
 
     const handleSubmit = async () => {
-        let data = {
+        let data:any = {
             "jobId": jobId,
             "reason": reason,
-            "note": detail,
         }
+
+        if(detail?.length){
+            data['note'] = detail;
+        }
+
         let response: any = await CancelJob(data);
         if (response?.success) {
             history.push('/cancel-job-success');

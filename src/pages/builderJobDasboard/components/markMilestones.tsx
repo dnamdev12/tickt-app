@@ -148,11 +148,11 @@ const MarkMilestones = (props: any) => {
                         <img src={editIconBlue} alt="edit" />
                         <div className="edit_menu">
                             <ul>
-                                {item_status && (
-                                    <li
-                                        onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
-                                        className="icon edit_line">Edit Milestone</li>
-                                )}
+                                {/* {item_status && ( )} */}
+                                <li
+                                    onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
+                                    className="icon edit_line">Edit Milestone</li>
+
                                 <li
                                     onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
                                     className="icon lodge">Lodge dispute</li>
