@@ -4,7 +4,8 @@ import TradieEditProfileComponent from './tradieEditProfile';
 import {
     getTradieProfileView,
     getTradieBasicDetails,
-    cleanTradieBasicDetails
+    cleanTradieBasicDetails,
+    cleanTradieProfileViewData
 } from './../../redux/profile/actions';
 
 import { callTradeList } from '../../redux/auth/actions';
@@ -28,6 +29,7 @@ const mapDispatchToProps = (dispatch: any) => {
         cleanTradieBasicDetails,
         callTradeList,
         callTradieProfileData,
+        cleanTradieProfileViewData,
     }, dispatch);
 }
 

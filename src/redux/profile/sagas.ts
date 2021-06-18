@@ -20,6 +20,7 @@ function* callTradieProfileData() {
 }
 
 function* getTradieProfileView() {
+  yield put({ type: actionTypes.SET_TRADIE_PROFILE_VIEW, payload: '' });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.tradieProfileView);
   setLoading(false);
@@ -31,6 +32,10 @@ function* getTradieProfileView() {
   } else {
     yield put({ type: actionTypes.SET_TRADIE_PROFILE_VIEW, payload: '' });
   }
+}
+
+function* cleanTradieProfileViewData() {
+  yield put({ type: actionTypes.SET_TRADIE_PROFILE_VIEW, payload: '' });
 }
 
 function* getTradieBasicDetails() {
@@ -165,6 +170,7 @@ function* authWatcher() {
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE_VIEW, getTradieProfileView);
   yield takeLatest(actionTypes.GET_TRADIE_BASIC_DETAILS, getTradieBasicDetails);
   yield takeLatest(actionTypes.CLEAN_TRADIE_BASIC_DETAILS, cleanTradieBasicDetails);
+  yield takeLatest(actionTypes.CLEAN_TRADIE_PROFILE_VIEW_DATA, cleanTradieProfileViewData);
 }
 
 export default authWatcher;

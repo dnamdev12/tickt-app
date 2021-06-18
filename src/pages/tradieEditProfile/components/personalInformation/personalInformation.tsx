@@ -55,6 +55,7 @@ interface Props {
     callTradeList: () => void,
     callTradieProfileData: () => void,
     cleanTradieBasicDetails: () => void,
+    cleanTradieProfileViewData: () => void,
 }
 
 interface State {
@@ -143,6 +144,11 @@ export class PersonalInformation extends Component<Props, State> {
         this.props.getTradieProfileView();
         this.props.getTradieBasicDetails();
         if (!this.props.tradeListData.length) { this.props.callTradeList(); }
+    }
+
+    componentWillUnmount(){
+        this.props.cleanTradieProfileViewData();
+        console.log('componentWillUnmount');
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
@@ -424,7 +430,7 @@ export class PersonalInformation extends Component<Props, State> {
             const data = {
                 user_type: 1,
                 oldPassword: this.state.password,
-                newPassoword: this.state.newPassword
+                newPassword: this.state.newPassword
             }
             const res = await tradieUpdatePassword(data);
             if (res.success) {

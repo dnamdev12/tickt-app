@@ -419,8 +419,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         <img src={editIconBlue} alt="edit" />
                                         <div className="edit_menu">
                                             <ul>
-                                                <li className="icon lodge">Lodge dispute</li>
-                                                <li className="icon delete">Cancel job</li>
+                                                <li className="icon lodge" onClick={() => props.history.push(`mark-milestone?jobId=${jobDetailsData?.jobId}&redirect_from=jobs&jobAction=dispute`)}>Lodge dispute</li>
+                                                <li className="icon delete" onClick={() => props.history.push(`mark-milestone?jobId=${jobDetailsData?.jobId}&redirect_from=jobs&jobAction=cancel`)}>Cancel job</li>
                                             </ul>
                                         </div>
                                     </span>
