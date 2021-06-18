@@ -200,7 +200,9 @@ const Header = (props: any) => {
                                             {/* {props?.builderProfile?.userName || props?.tradieProfileData?.userName} */}
                                         </span>
                                         <MenuItem onClick={handleClose}>
-                                            <span className="setting_icon">
+                                            <span className="setting_icon"
+                                             onClick={() => props.userType === 1 && history.push(`/tradie-info?tradeId=${renderByType({ name: 'userId' })}`)}
+                                             >
                                                 <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" />
                                                 {'My Profile'}
                                             </span>

@@ -10,7 +10,8 @@ import {
 const mapStateToProps = (state: any) => {
     return {
         tradieProfileData: state.profile.tradieProfileData,
-        builderProfile: state.profile.builderProfile
+        builderProfile: state.profile.builderProfile,
+        userType: state.profile.userType
     }
 }
 
