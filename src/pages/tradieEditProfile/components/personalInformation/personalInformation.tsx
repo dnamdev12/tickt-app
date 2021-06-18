@@ -39,6 +39,8 @@ import jpgFile from '../../../../assets/images/jpg.png';
 import pngFile from '../../../../assets/images/png.png';
 import pdfFile from '../../../../assets/images/pdf.png';
 import docFile from '../../../../assets/images/doc.png';
+import viewProfile from '../../../../assets/images/view.png';
+
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
@@ -728,12 +730,39 @@ export class PersonalInformation extends Component<Props, State> {
                         </div>
                     </div>
                     <div className="flex_col_sm_8">
-                        <span className="title">{basicDetailsData?.fullName}
-                            <span className="edit_icon" title="Edit" onClick={() => this.setState({ profileModalClicked: true })}>
-                                <img src={editIconBlue} alt="edit" />
+                        <div className="title_view_wrap">
+                            <span className="title">{basicDetailsData?.fullName}
+                                <span className="edit_icon" title="Edit" onClick={() => this.setState({ profileModalClicked: true })}>
+                                    <img src={editIconBlue} alt="edit" />
+                                </span>
                             </span>
-                        </span>
+                            <a href="javascript:void(0)" className="view_profile">
+                                <img src={viewProfile} alt="view-profile" />View public profile</a>
+                        </div>
+
                         <span className="tagg">Tradesperson</span>
+
+                        <div className="flex_row">
+                            <div className="flex_col_sm_4">
+                                <div className="job_progress_wrap" id="scroll-progress-bar">
+                                    <div className="progress_wrapper">
+                                        <span className="show_label">
+                                            Complete your profile
+                                        </span>
+                                        <span className="approval_info">44% </span>
+                                        <span className="progress_bar">
+                                            <input
+                                                className="done_progress"
+                                                id="progress-bar"
+                                                type="range"
+                                                min="0"
+                                            />
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <ul className="review_job">
                             <li>
                                 <span className="icon reviews">{profileViewData?.ratings || 0}</span>

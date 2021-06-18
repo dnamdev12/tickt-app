@@ -297,7 +297,7 @@ const BuilderInfo = (props: PropsType) => {
     }
 
     const builderAllJobsClicked = () => {
-        props.history?.push(`/builder-posted-jobs?bId=${profileData?.builderId}&jCount=${profileData?.totalJobPostedCount}`);
+        props.history?.push(`/builder-posted-jobs?bId=${profileData?.builderId}&jobCount=${profileData?.totalJobPostedCount}`);
     }
 
     return (
