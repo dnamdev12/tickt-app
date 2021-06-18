@@ -14,7 +14,10 @@ import {
     HomeTradieProfile,
     CancelInviteForJob,
 } from '../../redux/jobs/actions';
-import { getTradieProfile } from '../../redux/profile/actions';
+import {
+    getTradieProfile,
+    getTradieProfileView
+} from '../../redux/profile/actions';
 
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -33,19 +36,24 @@ import 'react-multi-carousel/lib/styles.css';
 
 import { portfolio, portfolioModal } from '../builderInfo/builderInfo'
 import { setShowToast } from '../../redux/common/actions';
-import { SaveTradie } from '../../redux/jobs/actions'
+import { SaveTradie } from '../../redux/jobs/actions';
+import storageService from '../../utils/storageService';
 
 import vouch from '../../assets/images/ic-template.png';
 import VoucherDetail from './voucherDetail';
 
+const USER_TYPE = storageService.getItem('userType');
 interface Props {
     tradieInfo: any,
     tradieId: any,
     jobId: any,
     tradieReviews: any,
+    userType: number,
+    tradieProfileViewData: any,
     getTradieProfile: (data: any) => void,
     getTradieReviewListOnBuilder: (data: any) => void,
     getAcceptDeclineTradie: (data: any) => void,
+    getTradieProfileView: () => void,
 }
 
 interface State {
@@ -153,6 +161,15 @@ class TradieInfo extends Component<Props, State> {
 
     componentDidMount() {
         this.setItems();
+    }
+
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        if (nextProps.tradieProfileViewData && prevState.tradieInfo === null) {
+            return {
+                tradieInfo: nextProps.tradieProfileViewData
+            }
+        }
+        return null;
     }
 
     componentDidUpdate() {
@@ -324,7 +341,14 @@ class TradieInfo extends Component<Props, State> {
     setItems = async () => {
         const { jobId, tradeId } = this.getItemsFromLocation();
 
-        if (jobId) {
+        if (this.props.userType === 1 || USER_TYPE === 1) {
+            this.props.getTradieProfileView();
+            // let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
+            // console.log({ res_profile })
+            // if (res_profile.success) {
+            //     this.setState({ tradieInfo: res_profile.data })
+            // }
+        } else if (jobId) {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
             console.log({ res_profile })
             if (res_profile.success) {
@@ -390,7 +414,10 @@ class TradieInfo extends Component<Props, State> {
         let { portfolioData, toggleVoucher } = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
+        let userType: number = props.userType ? props.userType : 1;
         let tradieReviews: any = this.state.tradieReviews;
+
+        console.log(tradieInfo, "tradieInfo", userType, "userType");
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
@@ -429,28 +456,34 @@ class TradieInfo extends Component<Props, State> {
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
                                         <img
-                                            src={tradieInfo?.tradieImage || profilePlaceholder}
+                                            src={userType === 1 ? tradieInfo?.userImage : tradieInfo?.tradieImage ? tradieInfo?.tradieImage : profilePlaceholder}
                                             alt="profile-pic"
                                         />
                                     </figure>
                                 </div>
                                 <div className="flex_col_sm_4 relative">
                                     <div className="detail_card">
-                                        <span className="title">{tradieInfo?.tradieName || ''}</span>
-                                        <span className="tagg">{tradieInfo?.position || ''}</span>
+                                        <span className="title">{userType === 1 ? tradieInfo?.userName : tradieInfo?.tradieName ? tradieInfo?.tradieName : ''}</span>
+                                        <span className="tagg">{userType === 1 ? 'Tradesperson' : tradieInfo?.position ? tradieInfo?.position : ''}</span>
                                         {/* <span className="xs_sub_title">{profileData?.companyName}</span> */}
                                         <ul className="review_job">
                                             <li>
-                                                <span className="icon reviews">{tradieInfo?.ratings || ''}</span>
-                                                <span className="review_count">{`${tradieInfo?.reviewsCount || ''} reviews`}</span>
+                                                <span className="icon reviews">{tradieInfo?.ratings || '0'}</span>
+                                                <span className="review_count">{`${tradieInfo?.reviewsCount || '0'} reviews`}</span>
                                             </li>
                                             <li>
-                                                <span className="icon job">{tradieInfo?.jobCompletedCount || ''}</span>
+                                                <span className="icon job">{tradieInfo?.jobCompletedCount || '0'}</span>
                                                 <span className="review_count"> jobs completed</span>
                                             </li>
                                         </ul>
 
-                                        {!tradieInfo?.isRequested ? (
+                                        {userType === 1 ? (
+                                            <div className="form_field">
+                                                <div className="bottom_btn">
+                                                    <button className="fill_btn full_btn btn-effect" onClick={() => { alert('tradie edit profile clicked'); }}>Edit</button>
+                                                </div>
+                                            </div>
+                                        ) : (!tradieInfo?.isRequested ? (
                                             <div className="form_field">
                                                 {tradieInfo?.isInvited ? (
                                                     <div className="bottom_btn">
@@ -500,7 +533,7 @@ class TradieInfo extends Component<Props, State> {
                                                         className="fill_grey_btn full_btn btn-effect">Decline</button>
                                                 </div>
                                             </>
-                                        )}
+                                        ))}
 
                                     </div>
                                 </div>
@@ -515,7 +548,18 @@ class TradieInfo extends Component<Props, State> {
                                     )}
                                 </div>
                                 <div className="flex_col_sm_4">
-                                    {tradieInfo?.areasOfSpecialization?.length > 0 && (
+                                    {userType === 1 ? (tradieInfo?.areasOfSpecialization?.length > 0 && (
+                                        <>
+                                            <span className="sub_title">Areas of specialisation</span>
+                                            <div className="tags_wrap">
+                                                <ul>
+                                                    {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any) => {
+                                                        return <li key={item.specializationId}>{item.specializationName}</li>
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        </>
+                                    )) : (tradieInfo?.areasOfSpecialization?.length > 0 && (
                                         <>
                                             <span className="sub_title">Areas of specialisation</span>
                                             <div className="tags_wrap">
@@ -526,7 +570,7 @@ class TradieInfo extends Component<Props, State> {
                                                 </ul>
                                             </div>
                                         </>
-                                    )}
+                                    ))}
                                 </div>
                             </div>
 
@@ -925,15 +969,18 @@ class TradieInfo extends Component<Props, State> {
 
 const mapState = (state: any) => ({
     tradieInfo: state.profile.tradieInfo,
+    userType: state.profile.userType,
     tradieReviews: state.jobs.tradieReviews,
     tradieRequestStatus: state.jobs.tradieRequestStatus,
+    tradieProfileViewData: state.profile.tradieProfileViewData,
 });
 
 const mapProps = (dispatch: any) => {
     return bindActionCreators({
         getTradieProfile,
         getTradieReviewListOnBuilder,
-        getAcceptDeclineTradie
+        getAcceptDeclineTradie,
+        getTradieProfileView
     }, dispatch);
 };
 
