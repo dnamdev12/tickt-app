@@ -8,7 +8,10 @@ const DocViewer = ({ src, width, height }) => {
                 sandbox=''
                 title="file"
                 width={width || '100%'}
-                style={{ minHeight: '500px', maxHeight: '2000px' }}
+                style={{ Height: '450px', maxHeight: '450px', overflowY: 'scroll' }}
+
+            
+
             ></iframe>
         </div>
     )
