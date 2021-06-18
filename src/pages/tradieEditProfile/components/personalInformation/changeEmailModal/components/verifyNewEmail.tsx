@@ -65,11 +65,8 @@ const VerifyNewEmail = (props: PropsTypes) => {
             const data = {
                 otp: otp
             }
-            const res: any = await verifyEmailOtp(data)
-            if (res.success || true) {
-                // alert('verify otp started!!!');
-                // return;
-                // props.updateSteps(3);
+            const res: any = await verifyEmailOtp(data);
+            if (res.success) {
                 props.history?.push('/email-updated-successfully');
             }
         }
@@ -117,12 +114,12 @@ const VerifyNewEmail = (props: PropsTypes) => {
                         {counter > 0 && <div>
                             <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
                         </div>}
-                       
+
                     </form>
                 </div>
                 <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect">Next</button>
-                        </div>
+                    <button className="fill_btn full_btn btn-effect">Next</button>
+                </div>
             </div>
         </>
     )

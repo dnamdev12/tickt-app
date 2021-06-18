@@ -46,6 +46,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 interface Props {
     history: any,
+    tradieProfileData: any,
     tradieProfileViewData: any,
     tradieBasicDetailsData: any,
     tradeListData: any,
@@ -567,12 +568,9 @@ export class PersonalInformation extends Component<Props, State> {
         }
         const res2 = await tradieUpdateProfileDetails(data);
         if (res2?.success) {
-            alert('details updated');
             this.setState({
                 formData: null,
             })
-        } else {
-            alert('details not updated');
         }
     }
 
@@ -736,7 +734,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     <img src={editIconBlue} alt="edit" />
                                 </span>
                             </span>
-                            <a href="javascript:void(0)" className="view_profile">
+                            <a href="javascript:void(0)" className="view_profile" onClick={() => props.history.push(`/tradie-info?tradeId=${basicDetailsData?.userId}&type=1`)}>
                                 <img src={viewProfile} alt="view-profile" />View public profile</a>
                         </div>
 
@@ -749,13 +747,14 @@ export class PersonalInformation extends Component<Props, State> {
                                         <span className="show_label">
                                             Complete your profile
                                         </span>
-                                        <span className="approval_info">44% </span>
+                                        <span className="approval_info">{this.props.tradieProfileData?.profileCompleted}</span>
                                         <span className="progress_bar">
                                             <input
                                                 className="done_progress"
                                                 id="progress-bar"
                                                 type="range"
                                                 min="0"
+                                                value={parseInt(this.props.tradieProfileData?.profileCompleted)}
                                             />
                                         </span>
                                     </div>

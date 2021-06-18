@@ -389,7 +389,7 @@ export const getTradeReviews = async (data: any) => {
   const response: FetchResponse = await NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
   setLoading(false);
 
-  if (response.status_code === 200) {
+  if (response?.status_code === 200) {
     return { success: true, data: response.result };
   }
   return { success: false, data: response.result };
@@ -518,7 +518,7 @@ export const HomeTradieProfile = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.jobHome}tradieProfile?tradieId=${data.tradieId}`,);
   setLoading(false);
-  if (response.status_code === 200) {
+  if (response?.status_code === 200) {
     return { success: true, data: response.result };
   }
   return { success: false };
