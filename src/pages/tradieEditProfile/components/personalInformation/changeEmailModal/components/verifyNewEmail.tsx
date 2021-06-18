@@ -85,9 +85,10 @@ const VerifyNewEmail = (props: PropsTypes) => {
                     <img src={cancel} alt="cancel" />
                 </button>
             </div>
-            <div className="inner_wrap">
-                <div className="form_wrapper">
-                    <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit}>
+                <div className="inner_wrap">
+                    <div className="form_wrapper">
+
                         <span className="show_label">Verification Code</span>
                         <div className="form_field">
                             <div className="otp_input_wrapper">
@@ -115,13 +116,14 @@ const VerifyNewEmail = (props: PropsTypes) => {
                             <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
                         </div>}
 
-                    </form>
+
+                    </div>
+
                 </div>
-              
-            </div>
-            <div className="bottom_btn custom_btn">
+                <div className="bottom_btn custom_btn">
                     <button className="fill_btn full_btn btn-effect">Next</button>
                 </div>
+            </form>
         </>
     )
 }
