@@ -80,7 +80,8 @@ const ConfirmAndPay = (props: any) => {
                 </div>
                 <button
                     onClick={() => {
-                        // props.onSubmitAccept();
+                        // this will submit the accept request.
+                        props.onSubmitAccept();
                     }}
                     className="fill_btn full_btn btn-effect">Continue</button>
             </div>
