@@ -81,32 +81,32 @@ class TradieEditProfile extends Component<Props, State> {
                                             <span className="menu_txt">Personal information</span>
                                         </a>
                                     </li>
-                                    {/* <li> */}
-                                    <li onClick={() => { this.setSelected('banking-details') }}>
+                                    <li>
+                                        {/* <li onClick={() => { this.setSelected('banking-details') }}> */}
                                         <a className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
                                             <span className="menu_txt">Banking details</span>
                                         </a>
                                     </li>
-                                    {/* <li> */}
-                                    <li onClick={() => { this.setSelected('settings') }}>
+                                    <li>
+                                        {/* <li onClick={() => { this.setSelected('settings') }}> */}
                                         <a className={`icon settings ${activeMenuType === 'settings' ? 'active' : ''}`}>
                                             <span className="menu_txt">Settings</span>
                                         </a>
                                     </li>
-                                    {/* <li> */}
-                                    <li onClick={() => { this.setSelected('support-chat') }}>
+                                    <li>
+                                        {/* <li onClick={() => { this.setSelected('support-chat') }}> */}
                                         <a className={`icon chat ${activeMenuType === 'support-chat' ? 'active' : ''}`}>
                                             <span className="menu_txt">Support chat</span>
                                         </a>
                                     </li>
-                                    {/* <li> */}
-                                    <li onClick={() => { this.setSelected('privacy-policy') }}>
+                                    <li>
+                                        {/* <li onClick={() => { this.setSelected('privacy-policy') }}> */}
                                         <a className={`icon tnc ${activeMenuType === 'privacy-policy' ? 'active' : ''}`}>
                                             <span className="menu_txt">Privacy Policy</span>
                                         </a>
                                     </li>
-                                    {/* <li> */}
-                                    <li onClick={() => { this.setSelected('terms-of-use') }}>
+                                    <li>
+                                        {/* <li onClick={() => { this.setSelected('terms-of-use') }}> */}
                                         <a className={`icon tnc ${activeMenuType === 'terms-of-use' ? 'active' : ''}`}>
                                             <span className="menu_txt">Terms of use</span>
                                         </a>
