@@ -3,14 +3,19 @@ import media from '../../../assets/images/portfolio-placeholder.jpg';
 import DeclineMilestone from './declineMilestone';
 import { milestoneAcceptOrDecline } from '../../../redux/homeSearch/actions'
 
-interface Props {
-    backToScreen: any,
-    data: any,
-    resetStateLocal: any
-}
+import FixedRate from './confirmAndPay/fixedRate';
+import { withRouter } from 'react-router-dom';
 
-const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
+// interface Props {
+//     backToScreen: any,
+//     data: any,
+//     resetStateLocal: any
+// }
+
+const MilestoneApprove = ( props:any) => {
+    const { backToScreen, data, resetStateLocal } = props;
     const [isToggle, setToggle] = useState(false);
+    const [IsToggleAccept, setToggleAccept] = useState(false);
     console.log({ data });
 
     if (data) {
@@ -28,15 +33,29 @@ const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
                 "status": 1,
                 "jobId": jobId,
                 "milestoneId": item?.milestoneId,
+                // "reason": "Not approved",
+                // "url":[]
             }
+
             let response: any = await milestoneAcceptOrDecline(data);
-            if (response?.status) {
+            if (response?.success) {
                 resetStateLocal();
+                props.history.push('/need-approval-success');
             }
         }
 
         const toggleBack = () => {
             setToggle(false);
+            setToggleAccept(false);
+        }
+
+        if (IsToggleAccept) {
+            return (
+                <FixedRate
+                    toggleBack={toggleBack}
+                    onSubmitAccept={onSubmitAccept}
+                />
+            )
         }
 
 
@@ -84,10 +103,19 @@ const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
                         <span className="show_label">{`${hoursWorked || 0} hours`}</span>
                     </div>
                     <div className="form_field">
-                        <button onClick={onSubmitAccept} className="fill_btn full_btn">Approve</button>
+                        {/* onSubmitAccept */}
+                        <button
+                            onClick={() => {
+                                setToggleAccept(true)
+                            }}
+                            className="fill_btn full_btn">Approve</button>
                     </div>
                     <div className="form_field">
-                        <button onClick={() => { setToggle(true) }} className="fill_grey_btn full_btn btn-effect mt-15">Decline</button>
+                        <button
+                            onClick={() => { setToggle(true) }}
+                            className="fill_grey_btn full_btn btn-effect mt-15">
+                            {'Decline'}
+                        </button>
                     </div>
                 </div>
             </div>
@@ -96,4 +124,4 @@ const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
     return null;
 }
 
-export default MilestoneApprove;
+export default withRouter(MilestoneApprove);

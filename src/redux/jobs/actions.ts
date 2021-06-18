@@ -544,3 +544,14 @@ export const ChooseJob = async (data: any) => {
   }
   return { success: false };
 }
+
+export const getVouchers = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.jobBuilder}getVoucher?tradieId=${data.tradieId}&page=${data.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+

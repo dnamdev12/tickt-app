@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom';
 import {
     HomeTradieProfile,
     AddVoucher,
-    ChooseJob
+    ChooseJob,
+    getVouchers
 } from '../../redux/jobs/actions';
 
 import AddVoucherModal from './addVoucher';
@@ -25,7 +26,8 @@ const Vouchers = (props: any) => {
     const closeToggle = () => {
         setToggleRecommendation({ isTrue: false, item: {} });
         setSelectedItem({});
-        setToggle((prev: any) => false)
+        setToggle((prev: any) => false);
+        prefetch();
     }
 
     useEffect(() => {
@@ -34,7 +36,8 @@ const Vouchers = (props: any) => {
 
 
     const prefetch = async () => {
-        let res_profile: any = await HomeTradieProfile({ tradieId: id });
+        let res_profile: any = await getVouchers({ tradieId: id, page:1 })
+        // let res_profile: any = await HomeTradieProfile({ tradieId: id });
         if (res_profile.success) {
 
             let completeItems = res_profile?.data?.vouchesData; //[]
@@ -57,7 +60,7 @@ const Vouchers = (props: any) => {
             //         }
             //     ])
             // }
-            setStateData(completeItems);
+            setStateData(res_profile.data);
         }
     }
 
@@ -91,7 +94,7 @@ const Vouchers = (props: any) => {
                                     }}
                                     className="back"></button>
                                 <span className="title">
-                                    {'2 Vouchers'}
+                                    {`${stateData.length} Vouchers`}
                                 </span>
                             </div>
                         </div>

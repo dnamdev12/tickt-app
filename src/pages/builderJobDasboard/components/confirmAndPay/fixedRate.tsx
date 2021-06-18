@@ -1,12 +1,35 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import ConfirmPay from './confirmAndPay';
 
+const FixedRate = (props: any) => {
+    const [toggle, setToggle] = useState(false);
 
-const FixedRate = () => {
+    const backToScreen = () => {
+        setToggle(false);
+    }
+
+    useEffect(() => {
+
+    }, [toggle])
+
+    if (toggle) {
+        return (
+            <ConfirmPay
+                backToScreen={backToScreen}
+                onSubmitAccept={props.onSubmitAccept}
+            />
+        )
+    }
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button className="back"></button>
+                    <button
+                        onClick={() => {
+                            props.toggleBack()
+                        }}
+                        className="back"></button>
                     <span className="xs_sub_title">
                         {'Wire up circuit box'}
                     </span>
@@ -43,7 +66,14 @@ const FixedRate = () => {
                     <span className="xs_head">Bank Details</span>
                     <span className="show_label">Credit card </span>
                 </div>
-                <button className="fill_btn full_btn btn-effect">Pay</button>
+                <button
+                    onClick={() => {
+                        console.log('Here!!!')
+                        setToggle(true);
+                    }}
+                    className="fill_btn full_btn btn-effect">
+                    {'Pay'}
+                </button>
             </div>
         </div>
 

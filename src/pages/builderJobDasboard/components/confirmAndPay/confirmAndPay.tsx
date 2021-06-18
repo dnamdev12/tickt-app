@@ -1,14 +1,42 @@
-import React from 'react';
+import React, { useState } from 'react';
 import cardIcon from '../../../../assets/images/ic-credit.png';
 import check from '../../../../assets/images/checked-2.png';
 
+import PaymentDetails from './paymentDetails';
+import Success from './suceess';
+import { withRouter } from 'react-router-dom';
 
-const confirmAndPay = () => {
+const ConfirmAndPay = (props: any) => {
+    const [toggle, setToggle] = useState(false);
+    const [paymentDetail, setPaymentDetail] = useState<any>([]);
+
+    const backToScreen = () => {
+        setToggle(false);
+    }
+
+    const setDetials = (data: any) => {
+        setPaymentDetail((prev: any) => ([...prev, data]))
+    }
+
+    if (toggle) {
+        return (
+            <PaymentDetails
+                backToScreen={backToScreen}
+                setDetials={setDetials}
+                onSubmitAccept={props.onSubmitAccept}
+            />
+        )
+    }
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button className="back"></button>
+                    <button
+                        onClick={() => {
+                            props.backToScreen()
+                        }}
+                        className="back"></button>
                     <span className="xs_sub_title">
                         {'Wire up circuit box'}
                     </span>
@@ -19,12 +47,25 @@ const confirmAndPay = () => {
                     </span>
                 </div>
                 <div className="mb130">
-                    <button className="card_btn full_btn">
+                    {paymentDetail?.length ?
+                        paymentDetail.map((item: any) => (
+                            <button className="card_btn full_btn">
+                                <img src={cardIcon} alt="card-icon" className="card" />
+                                {item?.name} <span className="show_label"> XXXX {(item?.number).substring(0,4)}</span>
+                                <img src={check} alt="check" className="check" />
+                            </button>
+                        ))
+                        : null}
+                    {/* <button className="card_btn full_btn">
                         <img src={cardIcon} alt="card-icon" className="card" />
                         Credit Card <span className="show_label"> XXXX 4034</span>
                         <img src={check} alt="check" className="check" />
-                    </button>
-                    <button className="fill_grey_btn full_btn btn-effect">Add another card</button>
+                    </button> */}
+                    <button
+                        onClick={() => {
+                            setToggle(true);
+                        }}
+                        className="fill_grey_btn full_btn btn-effect">Add another card</button>
                 </div>
 
                 <div className="form_field">
@@ -37,10 +78,15 @@ const confirmAndPay = () => {
                         receiving your payment, please contact your builder.
                     </p>
                 </div>
-                <button className="fill_btn full_btn btn-effect">Continue</button>
+                <button
+                    onClick={() => {
+                        // this will submit the accept request.
+                        props.onSubmitAccept();
+                    }}
+                    className="fill_btn full_btn btn-effect">Continue</button>
             </div>
         </div>
     )
 }
 
-export default confirmAndPay;
+export default withRouter(ConfirmAndPay);
