@@ -87,7 +87,7 @@ const VerifyNewEmail = (props: PropsTypes) => {
             </div>
             <div className="inner_wrap">
                 <div className="form_wrapper">
-                    <form onSubmit={onSubmit}>
+                    <form>
                         <span className="show_label">Verification Code</span>
                         <div className="form_field">
                             <div className="otp_input_wrapper">
@@ -117,11 +117,10 @@ const VerifyNewEmail = (props: PropsTypes) => {
 
                     </form>
                 </div>
-              
-            </div>
-            <div className="bottom_btn custom_btn">
-                    <button className="fill_btn full_btn btn-effect">Next</button>
+                <div className="bottom_btn custom_btn">
+                    <button className="fill_btn full_btn btn-effect" onClick={onSubmit}>Next</button>
                 </div>
+            </div>
         </>
     )
 }
