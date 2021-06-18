@@ -37,6 +37,8 @@ import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
 
+import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmAndPay/suceess';
+
 const routes = [
     {
         name: 'main',
@@ -165,6 +167,11 @@ const routes = [
         name: 'chooseTheJob',
         path: '/choose-the-job',
         component: ChooseTheJob,
+    },
+    {
+        name: 'needApprovalSuccess',
+        path: '/need-approval-success',
+        component: NeedApprovalSuccess,
     },
     {
         name: 'chooseTheJob',

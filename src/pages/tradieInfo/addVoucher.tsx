@@ -147,7 +147,7 @@ const AddVoucherComponent = (props: any) => {
         let data = {
             "jobId": reactSelect?.value,
             "jobName": reactSelect?.label,
-            "tradieId": "60b9d9e297d08d1ac8d0f57d",
+            "tradieId": props.id,
             "photos": [filesUrl[0].link],
             "vouchDescription": jobDescription,
             "recommendation": filesUrl[0].link
@@ -214,6 +214,11 @@ const AddVoucherComponent = (props: any) => {
                                     value={jobDescription}
                                     placeholder="Enter Description...">
                                 </textarea>
+                                {jobDescription.length ?
+                                    <span className="char_count">
+                                        {`character length : ${jobDescription.length} / 250`}
+                                    </span>
+                                    : ''}
                             </div>
                             <span className="error_msg">
                                 {errorData?.detail}

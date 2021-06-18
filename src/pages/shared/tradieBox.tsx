@@ -40,6 +40,8 @@ class TradieBox extends Component<PropsType, State> {
     redirectPath = (item: any) => {
         const { jobId, specializationId, history } = this.props;
 
+        console.log({item},'-->')
+
         let tradieId = item?.tradieId;
 
         if (jobId && tradieId) {

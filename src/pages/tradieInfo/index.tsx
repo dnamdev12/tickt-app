@@ -696,6 +696,7 @@ class TradieInfo extends Component<Props, State> {
                                     </div>
                                 ))}
                             </div>
+                            {console.log({tradieInfo})}
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {
