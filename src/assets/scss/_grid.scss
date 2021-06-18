@@ -226,6 +226,7 @@
   padding: 10px 15px;
   display: inline-block;
   cursor: pointer;
+  z-index: 9;
   &.disable{
     background-color: #dfe5ef6e;
     pointer-events: none;

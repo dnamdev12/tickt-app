@@ -371,6 +371,7 @@ body {
   display: inline-flex;
   align-items: center;
   border-radius: 3px;
+  z-index: 99;
   .close {
     position: absolute;
     right: -8px;
@@ -4697,9 +4698,55 @@ body {
   }
 }
 .profile_info{
+  padding: 48px 0px 0 40px;
+  .title_view_wrap{
+    position: relative;
+    .view_profile{
+      display: flex;
+      align-items: center;
+      position: absolute;
+      top: 0;
+      right: 0;
+      font-size: 14px;
+      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      color: var(--blue-two);
+      @media(max-width: 768px){
+        font-size: 12px;
+      }
+      @media(max-width: 650px){
+        top: 30px;
+      }
+      &:hover{
+        color: var(--blue);
+      }
+      img{
+        margin-right: 10px;
+        @media(max-width: 768px){
+          width: 20px;
+          height: 20px;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+  .job_progress_wrap{
+    .approval_info{
+      top: 25px;
+      right: -40px;
+      font-size: 12px;
+      color: var(--blue);
+    }
+  }
   .title{
     position: relative;
     margin-bottom: 12px;
+    max-width: 72%;
+    @media(max-width: 768px){
+      max-width: 65%;
+    }
+    @media(max-width: 650px){
+      max-width: 100%;
+    }
     .edit_icon {
       top: auto;
     }
