@@ -122,6 +122,13 @@ const MarkMilestones = (props: any) => {
     }
 
     let item_detail: any = itemDetails;
+    let item_status = false;
+    if (item_details?.milestones?.length) {
+        let isExist = item_details?.milestones.find((item: any) => item.status === 1);
+        if (isExist) {
+            item_status = true;
+        }
+    }
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
@@ -141,9 +148,11 @@ const MarkMilestones = (props: any) => {
                         <img src={editIconBlue} alt="edit" />
                         <div className="edit_menu">
                             <ul>
-                                <li
-                                    onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
-                                    className="icon edit_line">Edit Milestone</li>
+                                {item_status && (
+                                    <li
+                                        onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
+                                        className="icon edit_line">Edit Milestone</li>
+                                )}
                                 <li
                                     onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
                                     className="icon lodge">Lodge dispute</li>
@@ -241,8 +250,8 @@ const MarkMilestones = (props: any) => {
                     }}
                     className="tradie_card posted_by view_more ">
                     <span
-                    onClick={(e) => { e.stopPropagation() }}
-                    className="chat circle"></span>
+                        onClick={(e) => { e.stopPropagation() }}
+                        className="chat circle"></span>
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />

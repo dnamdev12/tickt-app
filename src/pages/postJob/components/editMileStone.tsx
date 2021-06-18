@@ -238,11 +238,11 @@ export default class EditMilestone extends Component<Props, State> {
             errorItems['from_date'] = error_2;
             errorItems['recommended_hours'] = error_3;
 
-            if(milestone_name?.length){
+            if (milestone_name?.length) {
                 errorItems['milestone_name'] = error_1;
             }
-            
-            if(recommended_hours?.length && error_3?.length){
+
+            if (recommended_hours?.length && error_3?.length) {
                 errorItems['recommended_hours'] = error_3;
             }
 
@@ -251,8 +251,8 @@ export default class EditMilestone extends Component<Props, State> {
             }
 
             // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
-            // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
-            if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
+            // if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
+            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
         }

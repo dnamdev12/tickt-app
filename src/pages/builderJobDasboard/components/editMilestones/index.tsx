@@ -187,7 +187,7 @@ const EditMilestone = (props: any) => {
     }
 
     const removeMilestoneByIndex = (index: any) => {
-        setStateData(stateData.filter((_: any, index_: any) => index));
+        setStateData(stateData.filter((_: any, index_: any) => index_ === index));
         resetItems();
     }
 
@@ -200,15 +200,22 @@ const EditMilestone = (props: any) => {
 
     const submitData = () => {
         let filtered = stateData.map((item: any) => {
-            return {
-                // "milestoneId": "",
+            let data = {
+                "milestoneId": item?.milestoneId || '',
                 "milestone_name": item?.milestoneName,
                 "isPhotoevidence": item?.isPhotoevidence,
                 "from_date": moment(item?.fromDate).format("YYYY-MM-DD"),
                 "to_date": moment(item?.toDate).isValid() ? moment(item?.toDate).format("YYYY-MM-DD") : '',
                 "recommended_hours": item?.recommendedHours
             }
+
+            if (!item?.milestoneId) {
+                delete data.milestoneId;
+            }
+
+            return data;
         })
+
 
         let data = {
             "jobId": item.jobId,
@@ -372,7 +379,7 @@ const EditMilestone = (props: any) => {
                                                             <input
                                                                 checked={editItem[index]}
                                                                 onChange={(e: any) => {
-                                                                   
+
                                                                     if (status !== 1) {
                                                                         checkOnClick(e, index)
                                                                     }
@@ -455,7 +462,7 @@ const EditMilestone = (props: any) => {
                                             }
                                         }
                                     }}
-                                    className={`fill_btn full_btn btn-effect`}>
+                                    className={`fill_btn full_btn btn-effect ${!checkIfChange() ? 'disable_btn' : ''}`}>
                                     {'Send to tradie'}
                                 </button>
                             </div>

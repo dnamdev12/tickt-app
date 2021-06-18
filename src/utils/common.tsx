@@ -65,9 +65,12 @@ export const renderTimeWithFormat = (fromDate: any, toDate: any, format: any) =>
 
 
 export const renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: any, formatSet?: any, text?: string) => {
-
+    console.log({
+        start:moment(fromDate, format).isValid(),
+        end:moment(toDate, format).isValid()
+    })
     if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
-        return `${moment(fromDate, format).format(formatSet[1])}`
+        return `${moment(fromDate, format).format(formatSet[0])}`
     }
 
     if (moment(fromDate, format).isValid() && moment(toDate, format).isValid()) {

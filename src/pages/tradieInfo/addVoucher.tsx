@@ -52,7 +52,7 @@ const AddVoucherComponent = (props: any) => {
     // }, [filesUrl]);
 
     useEffect(() => {
-        console.log({toggle})
+        console.log({ toggle })
         if (!toggle) {
             closeToggle();
             setReactSelect((prev: any) => ({ ...prev, label: '', value: '' }));
@@ -218,10 +218,7 @@ const AddVoucherComponent = (props: any) => {
                             <span className="error_msg">
                                 {errorData?.detail}
                             </span>
-                            <br />
-                            <span className="error_msg">
-                                {errorData?.upload}
-                            </span>
+
                         </div>
                         <div className="upload_img_video">
                             {filesUrl?.length ?
@@ -243,6 +240,9 @@ const AddVoucherComponent = (props: any) => {
                                 </React.Fragment>
                             ) : null}
                         </div>
+                        <span className="error_msg">
+                            {errorData?.upload}
+                        </span>
                     </div>
                 </div>
                 <div className="bottom_btn custom_btn">

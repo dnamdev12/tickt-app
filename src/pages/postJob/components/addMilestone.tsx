@@ -222,8 +222,8 @@ export default class AddMilestone extends Component<Props, State> {
             }
 
             // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
-            // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
-            if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
+            // if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
+            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
                 return false;
             }
         }
@@ -374,6 +374,7 @@ export default class AddMilestone extends Component<Props, State> {
                                         <button
                                             onClick={() => { handleStepForward(8) }}
                                             className="fill_btn fill_grey_btn choose_btn">
+                                                {console.log({from_date_format,to_date_format})}
                                             {renderTimeWithCustomFormat(
                                                 from_date_format,
                                                 to_date_format,

@@ -14,7 +14,7 @@ import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { setShowToast } from '../../../redux/common/actions';
 
-import { renderTimeWithFormat } from '../../../utils/common';
+import { renderTime, renderTimeWithFormat } from '../../../utils/common';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
@@ -264,6 +264,30 @@ const JobDetails = ({
         return { sources, types };
     }
 
+    const renderTime = (data: any) => {
+        let format = 'YYYY-MM-DD';
+        let currentTime = moment().format('YYYY-MM-DD');
+        console.log({
+            start: moment(data?.from_date, format).isValid(),
+            end: moment(data?.to_date, format).isValid()
+        })
+
+        data.to_date = moment(data?.from_date, format).isSame(moment(data?.to_date, format)) ? '' : data?.to_date;
+
+        if (moment(data?.from_date, format)?.isValid() && !moment(data?.to_date, format)?.isValid()) {
+
+            return moment(data?.from_date).format('DD MMM');
+        }
+
+        if (moment(data?.from_date, format)?.isValid() && moment(data?.to_date, format)?.isValid()) {
+            if (moment(data?.from_date, format).isSameOrBefore(moment(currentTime, format))) {
+                return moment(data?.to_date, format).diff(moment(data?.from_date, format), 'days') + 1 + ' ' + 'days'; 
+            } else {
+                return moment(data?.from_date, format).diff(moment(currentTime, format), 'days') + ' ' + 'days overdue';
+            }
+        }
+    }
+
     const format = 'MM-DD-YYYY';
     const { sources, types } = renderFilteredItems();
     return (
@@ -310,10 +334,11 @@ const JobDetails = ({
                                         <ul>
                                             {/* <li className="icon clock">0 minutes ago</li> */}
                                             <li className="icon calendar">
-                                                {data?.from_date?.length && !data?.to_date?.length ? `0 days` :
+                                                {renderTime(data)}
+                                                {/* {data?.from_date?.length && !data?.to_date?.length ? '0 days' :
                                                     data?.from_date?.length && data?.to_date?.length ?
                                                         `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
-                                                        : '0 days'}
+                                                        : '0 days'} */}
                                             </li>
                                             <li className="icon dollar">${data?.amount} {data?.pay_type === "Fixed price" ? 'f/p' : 'p/h'} </li>
                                             <li className="icon location line-3">{data?.location_name}</li>
@@ -353,7 +378,7 @@ const JobDetails = ({
                                         milestones.map((item: any, index: any) => item?.milestone_name && (
                                             <li>
                                                 <span>{`${index + 1}. ${item?.milestone_name}`}</span>
-                                                <span>{renderTimeWithFormat(item?.from_date, item?.to_date , format)}</span>
+                                                <span>{renderTimeWithFormat(item?.from_date, item?.to_date, format)}</span>
                                                 {/* <span>{moment(item?.from_date,'MM-DD-YYYY').isValid() && !moment(item?.to_date,'MM-DD-YYYY').isValid()  ?
                                                     `${moment(item?.from_date,'MM-DD-YYYY').format('MMM-DD')}` :
                                                     moment(item?.from_date,'MM-DD-YYYY').isValid() && moment(item?.to_date,'MM-DD-YYYY').isValid() ?

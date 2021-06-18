@@ -83,8 +83,12 @@ const MilestoneApprove = ({ backToScreen, data, resetStateLocal }: Props) => {
                         <span className="xs_sub_title">Hours worked in this milestone</span>
                         <span className="show_label">{`${hoursWorked || 0} hours`}</span>
                     </div>
-                    <button onClick={onSubmitAccept} className="fill_btn full_btn">Approve</button>
-                    <button onClick={() => { setToggle(true) }} className="fill_grey_btn full_btn btn-effect mt-15">Decline</button>
+                    <div className="form_field">
+                        <button onClick={onSubmitAccept} className="fill_btn full_btn">Approve</button>
+                    </div>
+                    <div className="form_field">
+                        <button onClick={() => { setToggle(true) }} className="fill_grey_btn full_btn btn-effect mt-15">Decline</button>
+                    </div>
                 </div>
             </div>
         )
