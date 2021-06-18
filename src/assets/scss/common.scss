@@ -1978,6 +1978,17 @@ body {
   &.profile_modal{
     width: 686px;
     max-width: 686px;
+    &.vouch_modal{
+      .inner_wrap{
+        padding-bottom: 25px;
+        @media(max-width: 1366px){
+          padding-bottom: 40px;
+        }
+        .upload_img_video{
+          margin-bottom: 5px;
+        }
+      }
+    }
     .inner_wrappr{
       max-width: 606px;
     }
