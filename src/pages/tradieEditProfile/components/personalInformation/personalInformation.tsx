@@ -747,7 +747,7 @@ export class PersonalInformation extends Component<Props, State> {
                         <span className="tagg">Tradesperson</span>
 
                         <div className="flex_row">
-                            <div className="flex_col_sm_4">
+                            <div className="flex_col_sm_4 w85per">
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
                                     <div className="progress_wrapper">
                                         <span className="show_label">

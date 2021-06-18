@@ -4740,6 +4740,9 @@ body {
 }
 .profile_info{
   padding: 48px 0px 0 40px;
+  @media(max-width: 650px){
+    padding: 30px 10px 0;
+  }
   .title_view_wrap{
     position: relative;
     .view_profile{
@@ -4806,6 +4809,7 @@ body {
     }
   }
   .portfolio_wrappr{
+    max-width: 600px;
     .media{
       margin: 0 20px 20px 0;
       @media(max-width: 650px){
@@ -4822,6 +4826,14 @@ body {
     }
     .upload_media{
       cursor: pointer;
+      @media(max-width: 650px){
+        width: 145px;
+        height: 145px;
+        img{
+          width: 145px;
+          height: 145px;
+        }
+      }
     }
   }
   .flex_col_sm_8{

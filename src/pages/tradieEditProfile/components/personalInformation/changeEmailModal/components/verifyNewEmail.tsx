@@ -117,10 +117,11 @@ const VerifyNewEmail = (props: PropsTypes) => {
 
                     </form>
                 </div>
-                <div className="bottom_btn custom_btn">
+              
+            </div>
+            <div className="bottom_btn custom_btn">
                     <button className="fill_btn full_btn btn-effect">Next</button>
                 </div>
-            </div>
         </>
     )
 }
