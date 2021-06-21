@@ -7,12 +7,14 @@ import {
     getHomeSaveJob,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
-import { getJobDetails } from '../../redux/jobs/actions';
-import { getTradieQuestionList } from '../../redux/jobs/actions';
 import {
+    getJobDetails,
+    getTradieQuestionList,
     postAskQuestion,
     deleteQuestion,
-    updateQuestion
+    updateQuestion,
+    replyCancellation,
+    replyChangeRequest
 } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
 
@@ -88,9 +90,16 @@ const JobDetailsPage = (props: PropsType) => {
         questionIndex: null
     })
 
-
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+    const [jobActionState, setJobActionState] = useState({
+        isCancelRequestAcceptedClicked: false,
+        isCancelRequestRejectedClicked: false,
+        replyCancelReason: '',
+        isChangeRequestAcceptedClicked: false,
+        isChangeRequestRejectedClicked: false,
+        replyChangeRequestReason: '',
+    });
 
 
     console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation");
@@ -334,8 +343,58 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const closeApplyJobModal = () => {
-        setJobConfirmation((prevData: any) => ({ ...prevData, isJobModalOpen: false, isJobModalAuthorized: false }));
+        setJobConfirmation((prevData: any) => ({
+            ...prevData,
+            isJobModalOpen: false,
+            isJobModalAuthorized: false
+        }));
     }
+
+    const replyCancellationHandler = async (type: string) => {
+        const data: any = {
+            jobId: jobDetailsData?.jobId,
+            status: type === 'acceptJobCancelRequest' ? 1 : 2,
+            note: type === 'acceptJobCancelRequest' ? 'job accepted' : jobActionState.replyCancelReason ? jobActionState.replyCancelReason?.trim() : 'job rejected'
+        }
+        const res = await replyCancellation(data);
+        if (res.success) {
+            props.history.push('/request-monitored');
+            setJobActionState((prevData: any) => ({
+                ...prevData,
+                isCancelRequestAcceptedClicked: false,
+                isCancelRequestRejectedClicked: false,
+                replyCancelReason: ''
+            }));
+        }
+    }
+
+    const replyChangeRequestHandler = async (type: string) => {
+        const data: any = {
+            jobId: jobDetailsData?.jobId,
+            status: type === 'acceptChangeRequest' ? 1 : 2,
+            note: type === 'acceptChangeRequest' ? 'change request accepted' : jobActionState.replyCancelReason ? jobActionState.replyCancelReason?.trim() : 'change request rejected'
+        }
+        const res = await replyChangeRequest(data);
+        if (res.success) {
+            props.history.push('/request-monitored');
+            setJobActionState((prevData: any) => ({
+                ...prevData,
+                isChangeRequestAcceptedClicked: false,
+                isChangeRequestRejectedClicked: false,
+                replyCancelReason: ''
+            }));
+        }
+    }
+
+    const closeJobActionConfirmationModal = (name: string) => {
+        setJobActionState((prevData: any) => ({
+            ...prevData,
+            [name]: false,
+            isChangeRequestAcceptedClicked: false,
+            isChangeRequestRejectedClicked: false
+        }));
+    }
+
 
 
     const renderBuilderAvatar = (item: any) => {
@@ -413,7 +472,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
-                            {!jobDetailsData?.appliedStatus && !props.isLoading && isTradieWorking && (
+                            {!jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isLoading && isTradieWorking && (
                                 <div className="flex_col_sm_4 text-right">
                                     <span className="dot_menu" title="Edit">
                                         <img src={editIconBlue} alt="edit" />
@@ -458,16 +517,16 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {/* <span className="title line-3" title={jobDetailsData?.jobName}>{jobDetailsData?.jobName}</span>
-                                    <span className="tagg">Job detailscdcdc</span> */}
-                                    {/* <div className="chang_req_card">
+                                    {jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card">
+                                    {/* {!jobDetailsData?.isChangeRequest && <div className="chang_req_card"> */}
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
                                             Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid.
                                         </p>
-                                        <button className="fill_btn btn-effect">Accept</button>
-                                        <button className="fill_grey_btn btn-effect">Reject</button>
-                                    </div> */}
+                                        <button className="fill_btn btn-effect"
+                                            onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestAcceptedClicked: true }))}>Accept</button>
+                                        <button className="fill_grey_btn btn-effect" onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestRejectedClicked: true }))}>Reject</button>
+                                    </div>}
 
                                     <span className="title line-1" title={jobDetailsData?.jobName}>{jobDetailsData?.jobName}</span>
                                     <span className="tagg">Job details</span>
@@ -479,10 +538,19 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon calendar">{jobDetailsData?.duration || ''}</li>
                                         </ul>
                                     </div>
+                                    {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card">
+                                        <span className="sub_title">Job cancellation request</span>
+                                        <p className="commn_para line-2">
+                                            Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid.
+                                        </p>
+                                        <button className="fill_btn btn-effect"
+                                            onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestAcceptedClicked: true }))}>Accept</button>
+                                        <button className="fill_grey_btn btn-effect" onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}>Reject</button>
+                                    </div>}
                                     {jobDetailsData?.appliedStatus ? (
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
-                                            <button className={`fill_btn full_btn btn-effect${['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus) ? ' disable_btn' : ''}`} disabled={['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus)} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                            <button className={`fill_btn full_btn btn-effect${['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) ? ' disable_btn' : ''}`} disabled={['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
                                     ) : paramStatus ? (
                                         <button
@@ -494,6 +562,66 @@ const JobDetailsPage = (props: PropsType) => {
                                 </div>
                             </div>
                         </div>
+
+                        <Modal
+                            className="custom_modal"
+                            open={jobActionState.isCancelRequestAcceptedClicked || jobActionState.isChangeRequestAcceptedClicked}
+                            onClose={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                <div className="heading">
+                                    <span className="xs_sub_title">{`Accept Job ${jobActionState.isCancelRequestAcceptedClicked ? 'Cancellation' : 'Change'} Request`}</span>
+                                    <button className="close_btn" onClick={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}>
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                <div className="modal_message">
+                                    <p>Are you sure you still want to proceed?</p>
+                                </div>
+                                <div className="dialog_actions">
+                                    {jobActionState.isCancelRequestAcceptedClicked && <button className="fill_btn btn-effect" onClick={() => replyCancellationHandler('acceptJobCancelRequest')}>Yes</button>}
+                                    {jobActionState.isChangeRequestAcceptedClicked && <button className="fill_btn btn-effect" onClick={() => replyChangeRequestHandler('acceptChangeRequest')}>Yes</button>}
+                                    <button className="fill_grey_btn btn-effect"
+                                        onClick={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}>No</button>
+                                </div>
+                            </div>
+                        </Modal>
+
+                        <Modal
+                            className="custom_modal"
+                            open={jobActionState.isCancelRequestRejectedClicked || jobActionState.isChangeRequestRejectedClicked}
+                            onClose={() => closeJobActionConfirmationModal('isCancelRequestRejectedClicked')}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                <div className="heading">
+                                    <span className="sub_title">{`Your reply to job ${jobActionState.isCancelRequestRejectedClicked ? 'cancellation' : 'change request'}`}</span>
+                                    <button className="close_btn" onClick={() => closeJobActionConfirmationModal('isCancelRequestRejectedClicked')}>
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                <div className="form_field">
+                                    <label className="form_label">{`Let the builder and Tickt know if you accept or reject ${jobActionState.isCancelRequestRejectedClicked ? 'cancelling' : 'change request'} for this job.`}</label>
+                                    <div className="text_field">
+                                        <textarea
+                                            placeholder={`I disagree with this ${jobActionState.isCancelRequestRejectedClicked ? 'cancelling' : 'change request'}`}
+                                            maxLength={250}
+                                            value={jobActionState.replyCancelReason}
+                                            onChange={({ target: { value } }: { target: { value: string } }) => setJobActionState((prevData: any) => ({ ...prevData, replyCancelReason: value }))} />
+                                        <span className="char_count">{`${jobActionState.replyCancelReason?.length}/250`}</span>
+                                    </div>
+                                    {!!errors.replyCancelReason && <span className="error_msg">{errors.replyCancelReason}</span>}
+                                </div>
+                                <div className="bottom_btn custom_btn">
+                                    {jobActionState.isCancelRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyCancellationHandler('RejectJobCancelRequest')}>Send</button>}
+                                    {jobActionState.isChangeRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyChangeRequestHandler('rejectChangeRequest')}>Send</button>}
+                                    <button className="fill_grey_btn btn-effect" onClick={() => closeJobActionConfirmationModal('isCancelRequestRejectedClicked')}>Cancel</button>
+                                </div>
+                            </div>
+                        </Modal>
 
                         <Modal
                             className="custom_modal"

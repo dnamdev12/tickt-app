@@ -26,6 +26,7 @@ import 'react-multi-carousel/lib/styles.css';
 interface PropsType {
     location: any,
     history: any,
+    isLoading: boolean
 }
 
 const portfolio = {
@@ -438,7 +439,7 @@ const BuilderInfo = (props: PropsType) => {
                 <div className="custom_container">
                     <span className="sub_title">Job posted</span>
                     <div className="flex_row tradies_row">
-                        {profileData?.jobPostedData?.length > 0 ?
+                        {(props.isLoading || profileData?.jobPostedData?.length > 0) ?
                             (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
                                 return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
                             })) :
@@ -454,7 +455,7 @@ const BuilderInfo = (props: PropsType) => {
                         disabled={profileData?.totalJobPostedCount === 0}
                         onClick={builderAllJobsClicked}
                     >
-                        {`View all ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount === 1 ? `${profileData?.totalJobPostedCount} job` : `${profileData?.totalJobPostedCount} jobs`}` : ''}`}
+                        {`View ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount === 1 ? `${profileData?.totalJobPostedCount} job` : `all ${profileData?.totalJobPostedCount} jobs`}` : ''}`}
                     </button>
                 </div>
             </div >
@@ -463,7 +464,7 @@ const BuilderInfo = (props: PropsType) => {
                 <div className="custom_container">
                     <span className="sub_title">Reviews</span>
                     <div className="flex_row review_parent">
-                        {profileData?.reviewData?.length > 0 ?
+                        {(props.isLoading || profileData?.reviewData?.length > 0) ?
                             (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
                                 return <ReviewInfoBox item={jobData} {...props} />
                             })) :
@@ -479,7 +480,7 @@ const BuilderInfo = (props: PropsType) => {
                         disabled={profileData?.reviewsCount === 0}
                         onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
                     >
-                        {`View all ${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `${profileData?.reviewsCount} reviews`}` : ''}`}
+                        {`View ${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `all ${profileData?.reviewsCount} reviews`}` : ''}`}
                     </button>
                 </div>
             </div>

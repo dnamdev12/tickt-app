@@ -85,6 +85,8 @@ const Urls = {
     tradieUpdatePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}editPortfolio`,
     tradieDeletePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}deletePortfolio`,
     tradieChangePassword: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changePassword`,
+    replyChangeRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}replyChangeRequest`,
+    replyCancellation: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}replyCancellation`,
     tradieChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changeEmail`,
     verifyEmailOtp: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}verifyEmail`,
     jobDetailsTradie: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}jobDetails`,

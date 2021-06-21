@@ -391,9 +391,9 @@ const JobDetails = ({
 
                                 </ul>
                                 <button
-                                    onClick={() => {
-                                        setShowToast(true, 'Under development.')
-                                    }}
+                                    // onClick={() => {
+                                    //     setShowToast(true, 'Under development.')
+                                    // }}
                                     className="fill_grey_btn ques_btn">
                                     <img src={question} alt="question" />
                                     {'0 questions'}

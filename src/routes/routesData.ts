@@ -36,6 +36,7 @@ import ChooseTheJob from '../pages/chooseTheJob/index';
 import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
+import RequestMonitored from '../pages/jobDetailsPage/components/requestMonitored';
 
 import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmAndPay/suceess';
 
@@ -99,6 +100,11 @@ const routes = [
         name: 'milestoneRequestSent',
         path: '/milestone-request-sent-success',
         component: MilestoneRequestSentSuccess,
+    },
+    {
+        name: 'requestMonitered',
+        path: '/request-monitored',
+        component: RequestMonitored,
     },
     {
         name: 'popularbuilders',

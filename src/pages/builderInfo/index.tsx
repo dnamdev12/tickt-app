@@ -8,6 +8,7 @@ import {
 const mapStateToProps = (state: any) => {
     return {
         // tradieReviewList: state.jobs.tradieReviewList,
+        isLoading: state.common.isLoading
     }
 }
 

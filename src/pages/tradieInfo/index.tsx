@@ -771,7 +771,7 @@ class TradieInfo extends Component<Props, State> {
                     >
                         <div className="custom_wh">
                             <div className="heading">
-                                <span className="sub_title">{`${props.tradieReviews?.length} questions`}</span>
+                                <span className="sub_title">{`${tradieInfo.reviewsCount} reviews`}</span>
                                 <button className="close_btn"
                                     onClick={() => modalCloseHandler('showAllReviewsClicked')}
                                 >
