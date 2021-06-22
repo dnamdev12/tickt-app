@@ -2,6 +2,7 @@ import * as actionTypes from './constants';
 
 const initialState = {
     isLoading: false,
+    isSkeletonLoading: false,
     showToast: false,
     toastType: undefined,
     toastMessage: undefined,
@@ -12,7 +13,12 @@ const reducer = (state = initialState, action: any) => {
         case actionTypes.SET_LOADING:
             return {
                 ...state,
-                isLoading: action.payload
+                isLoading: action.payload,
+            }
+        case actionTypes.SET_SKELETON_LOADING:
+            return {
+                ...state,
+                isSkeletonLoading: action.payload,
             }
         case actionTypes.SHOW_HIDE_TOAST:
             return {
@@ -25,4 +31,4 @@ const reducer = (state = initialState, action: any) => {
     }
 }
 
-export default reducer
+export default reducer;

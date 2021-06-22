@@ -1,7 +1,7 @@
 import NetworkOps, { FetchResponse } from "../../network/NetworkOps";
 import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
-import { setShowToast, setLoading } from '../common/actions';
+import { setShowToast, setLoading, setSkeletonLoading } from '../common/actions';
 
 //jobTypeList
 export const callCategories = async () => {
@@ -106,9 +106,7 @@ export const getBuilderHomeData = async (item: any) => {
 export const isHandleChanges = (data: any) => ({ type: actionTypes.GET_LOCAL_CHANGES, data });
 
 export const getTradieQuestionList = async (data: any) => {
-  setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.tradieQuestionList + `?jobId=${data.jobId}&page=${data.page}`);
-  setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -418,9 +416,9 @@ export const ratingTradieProfile = async (data: any) => {
 
 
 export const getJobDetails = async (jobId: string) => {
-  setLoading(true);
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.jobDetailsTradie + `?jobId=${jobId}`);
-  setLoading(false);
+  setSkeletonLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }

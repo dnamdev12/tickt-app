@@ -8,6 +8,7 @@ import {
 const mapStateToProps = (state: any) => {
     return {
         isLoading: state.common.isLoading,
+        isSkeletonLoading: state.common.isSkeletonLoading,
         tradieProfileData: state.profile.tradieProfileData
     }
 }
