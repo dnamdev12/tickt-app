@@ -55,7 +55,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             return true;
         }
 
-        if (hasDescription && !description) {
+        if (hasDescription && !description.trim()) {
             return true;
         }
 
@@ -69,8 +69,14 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     }
 
     const onFileChange = async (e: any) => {
-        const formData = new FormData();
-        const newFile = e.target.files[0];
+      const formData = new FormData();
+      const newFile = e.target.files[0];
+      var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
+
+        if (hasDescription && !imageFormats.includes(fileType)) {
+          setShowToast(true, "The file must be in proper format.");
+          return;
+        }
 
         if (filesUrl?.length === 6) {
             setShowToast(true, "Max files upload limit is 6.")
@@ -89,7 +95,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
         }).filter((item: any) => item !== undefined);
 
-        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
@@ -216,7 +221,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     {/* {para || 'Record a short video or add photos to demonstrate your job and any unique requirements.'} */}
                                 </p>
                             </div>
-                            {!jobName && !filesUrl?.length ? (
+                            {!jobName && !filesUrl?.length && !hasDescription ? (
                                 <div className="flex_col_sm_5 text-right">
                                     <span
                                         onClick={() => {
@@ -244,7 +249,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                         <input
                                             onChange={onFileChange}
                                             type="file"
-                                            accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
+                                            accept={hasDescription ? "image/png,image/jpg,image/jpeg" : "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"}
                                             style={{ display: "none" }}
                                             id="upload_img_video"
                                         />
@@ -256,11 +261,11 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     <div className="flex_row">
                         <div className="flex_col_sm_8">
                             {hasDescription && <div className="form_field">
-                                <label className="form_label">Photo description</label>
+                                <label className="form_label">Photo Description</label>
                                 <div className="text_field">
-                                    <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
+                                    <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} maxLength={250} />
                                 </div>
-                                <span className="error_msg">{submitClicked && !description ? 'Description is required' : ''}</span>
+                                <span className="error_msg">{submitClicked && !description.trim() ? 'Photo Description is required' : ''}</span>
                             </div>}
                             <div className="form_field">
                                 <button

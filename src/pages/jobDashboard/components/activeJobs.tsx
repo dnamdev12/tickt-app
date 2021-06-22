@@ -74,19 +74,9 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => 
                         {totalMilestones}
                       </span>
                       <span className="approval_info">
-                        {status === 'APPROVED' ? (
-                          <>
-                            <img src={approved} alt="icon" />
-                            Approved
-                          </>
-                        ) : status === 'NEEDS APPROVAL' ? (
-                          <>
-                            <img src={waiting} alt="icon" />
-                            Needs approval
-                          </>
-                        ) : (
-                          'Awaiting'
-                        )}
+                        {status === 'APPROVED' && <img src={approved} alt="icon" />}
+                        {status === 'NEEDS APPROVAL' && <img src={waiting} alt="icon" />}
+                        {status}
                       </span>
                       <span className="progress_bar">
                         <input
