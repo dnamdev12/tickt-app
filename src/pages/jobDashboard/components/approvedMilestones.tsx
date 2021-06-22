@@ -52,19 +52,8 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                       <b>Job Milestones {milestoneNumber}</b> of {totalMilestones}
                     </span>
                     <span className="approval_info">
-                        {status === 'APPROVED' ? (
-                          <>
-                            <img src={approved} alt="icon" />
-                            Approved
-                          </>
-                        ) : status === 'NEEDS APPROVAL' ? (
-                          <>
-                            <img src={waiting} alt="icon" />
-                            Needs approval
-                          </>
-                        ) : (
-                          'Awaiting'
-                        )}
+                      <img src={approved} alt="icon" />
+                      APPROVED
                     </span>
                     <span className="progress_bar">
                       <input
