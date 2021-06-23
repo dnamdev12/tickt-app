@@ -22,7 +22,6 @@ import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/reviewBuilder/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
-import BuilderProfile from '../pages/builderProfile';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile';
 import EmailUpdatedSuccess from '../pages/tradieEditProfile/components/personalInformation/changeEmailModal/components/successPage';
@@ -68,12 +67,6 @@ const routes = [
         path: '/reset-password',
         component: ForgerPassword,
         authRoute: true,
-    },
-    {
-        name: 'myprofile',
-        path: '/my-profile',
-        component: BuilderProfile,
-        // authRoute: true,
     },
     {
         name: 'postnewjob',

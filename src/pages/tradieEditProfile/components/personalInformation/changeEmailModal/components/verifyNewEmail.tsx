@@ -6,6 +6,7 @@ import { verifyEmailOtp } from '../../../../../../redux/profile/actions';
 import OtpInput from "react-otp-input";
 
 import cancel from "../../../../../../assets/images/ic-cancel.png";
+import storageService from '../../../../../../utils/storageService';
 
 interface PropsTypes {
     history: any,
@@ -51,7 +52,7 @@ const VerifyNewEmail = (props: PropsTypes) => {
             currentEmail: props.currentEmail,
             newEmail: props.newEmail,
             password: props.currentPassword,
-            user_type: 1
+            user_type: storageService.getItem('userType'),
         }
         const res = await tradieChangeEmail(data);
         if (res.success) {

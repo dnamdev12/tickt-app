@@ -23,12 +23,15 @@ import cancel from "../../assets/images/ic-cancel.png";
 import menu from '../../assets/images/menu-line-blue.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import storageService from '../../utils/storageService';
 
 import Skeleton from 'react-loading-skeleton';
 
 interface PropsType {
     location: any,
     history: any,
+    tradieProfileViewData: any,
+    getTradieProfileView: () => void,
     isLoading: boolean,
     isSkeletonLoading: boolean,
     userType: number,
@@ -383,7 +386,7 @@ const BuilderInfo = (props: PropsType) => {
                                                 </li>
                                             </ul>
                                             {userType === 2 ?
-                                                <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/builder-edit-profile')}>Edit</button>
+                                                <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
                                                 :
                                                 <button className="fill_btn full_btn btn-effect">Write a message</button>}
                                         </>}

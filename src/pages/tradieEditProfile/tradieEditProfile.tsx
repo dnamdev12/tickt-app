@@ -8,6 +8,7 @@ import TermsOfUseComponent from './components/termsOfUse';
 
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
+import storageService from '../../utils/storageService';
 
 interface Props {
     tradieProfileViewData: any,
@@ -38,7 +39,7 @@ class TradieEditProfile extends Component<Props, State> {
     setSelected = (menuType: string) => {
         const { getTradieProfileView } = this.props;
 
-        if (this.state.activeMenuType !== menuType && ['personal-information', 'banking-details', 'settings', 'support-chat', 'privacy-policy', 'terms-of-use'].includes(menuType)) {
+        if (this.state.activeMenuType !== menuType && ['personal-information', 'banking-details', 'milestone-templates', 'settings', 'support-chat', 'privacy-policy', 'terms-of-use'].includes(menuType)) {
             this.setState({ activeMenuType: menuType }, () => {
                 if (menuType === 'personal-information') { getTradieProfileView(); }
             });
@@ -87,6 +88,14 @@ class TradieEditProfile extends Component<Props, State> {
                                             <span className="menu_txt">Banking details</span>
                                         </a>
                                     </li>
+                                    {storageService.getItem('userType') === 2 && (
+                                        <li>
+                                            {/* <li onClick={() => { this.setSelected('milestone-templates') }}> */}
+                                            <a className={`icon template ${activeMenuType === 'milestone-templates' ? 'active' : ''}`}>
+                                                <span className="menu_txt">Milestone Templates</span>
+                                            </a>
+                                        </li>
+                                    )}
                                     <li>
                                         {/* <li onClick={() => { this.setSelected('settings') }}> */}
                                         <a className={`icon settings ${activeMenuType === 'settings' ? 'active' : ''}`}>

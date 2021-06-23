@@ -43,12 +43,15 @@ import viewProfile from '../../../../assets/images/view.png';
 
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import storageService from '../../../../utils/storageService';
+import { validateABN } from '../../../../utils/common';
 
 import Skeleton from 'react-loading-skeleton';
 
 interface Props {
     history: any,
     tradieProfileData: any,
+    builderProfile: any,
     tradieProfileViewData: any,
     tradieBasicDetailsData: any,
     tradeListData: any,
@@ -102,6 +105,8 @@ interface State {
 }
 
 export class PersonalInformation extends Component<Props, State> {
+    private userType: any;
+
     constructor(props: any) {
         super(props)
         this.state = {
@@ -143,6 +148,8 @@ export class PersonalInformation extends Component<Props, State> {
             localQualificationDoc: [],
             remainingQualificationDoc: [],
         }
+
+        this.userType = storageService.getItem('userType');
     }
 
     componentDidMount() {
@@ -162,7 +169,7 @@ export class PersonalInformation extends Component<Props, State> {
             console.log('different basic details 2222222222');
             return {
                 profileViewData: nextProps.tradieProfileViewData,
-                userImage: nextProps.tradieProfileViewData?.userImage
+                userImage: nextProps.tradieProfileViewData?.userImage || nextProps.tradieProfileViewData?.builderImage
             }
         }
         if (nextProps.tradieBasicDetailsData && Object.keys(prevState.basicDetailsData).length === 0 && !_.isEqual(nextProps.tradieBasicDetailsData, prevState.basicDetailsData)) {
@@ -171,10 +178,10 @@ export class PersonalInformation extends Component<Props, State> {
                 basicDetailsData: nextProps.tradieBasicDetailsData
             }
         }
-        if (nextProps.tradeListData && (!prevState.localQualificationDoc?.length || !prevState.remainingQualificationDoc?.length) && nextProps.tradieBasicDetailsData) {
+        if (storageService.getItem('userType') === 1 && nextProps.tradeListData && (!prevState.localQualificationDoc?.length || !prevState.remainingQualificationDoc?.length) && nextProps.tradieBasicDetailsData) {
             const data = [...nextProps.tradeListData][0]?.qualifications?.map((item: any) => item.name?.length && { _id: item._id, name: item.name });
             const alreadyFilledQualificationDoc: Array<any> = nextProps.tradieBasicDetailsData?.qualificationDoc?.map(({ qualification_id }: { qualification_id: string }) => qualification_id?.length && qualification_id);
-            const remainingQualificationDoc = data?.filter(({ _id }: { _id: string }) => !alreadyFilledQualificationDoc.includes(_id));
+            const remainingQualificationDoc = data?.filter(({ _id }: { _id: string }) => !alreadyFilledQualificationDoc?.includes(_id));
             console.log(remainingQualificationDoc, "remainingQualificationDoc", alreadyFilledQualificationDoc, "alreadyFilledQualificationDoc");
             return {
                 localQualificationDoc: data ? data : [],
@@ -324,20 +331,51 @@ export class PersonalInformation extends Component<Props, State> {
             }
         }
 
-        const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
-        console.log(newQualificationDoc, "newQualificationDoc validation");
-        if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
-            // newErrors.qualificationDoc = "Please upload all selected documents";
-            setShowToast(true, "Please upload all selected documents");
-            return;
-        }
+        if (this.userType === 1) { 
+          const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
+          console.log(newQualificationDoc, "newQualificationDoc validation");
+          if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
+              // newErrors.qualificationDoc = "Please upload all selected documents";
+              setShowToast(true, "Please upload all selected documents");
+              return;
+          }
 
-        const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
-        console.log(newRemainingDoc, "newRemainingDoc validation");
-        if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
-            // newErrors.qualificationDoc = "Please upload all selected documents";
-            setShowToast(true, "Please upload all selected documents");
-            return;
+          const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
+          console.log(newRemainingDoc, "newRemainingDoc validation");
+          if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
+              // newErrors.qualificationDoc = "Please upload all selected documents";
+              setShowToast(true, "Please upload all selected documents");
+              return;
+          }
+        } else {
+          if (!this.state.basicDetailsData?.companyName) {
+            newErrors.companyName = Constants.errorStrings.companyNameEmpty;
+          } else {
+              const nameRegex = new RegExp(regex.fullname);
+              if (!nameRegex.test(this.state.basicDetailsData.companyName.trim())) {
+                  newErrors.companyName = Constants.errorStrings.companyNameErr;
+              }
+          }
+          if (!this.state.basicDetailsData?.position) {
+              newErrors.position = Constants.errorStrings.positionNameEmpty;
+          } else {
+              const positionRegex = new RegExp(regex.fullname);
+              if (!positionRegex.test(this.state.basicDetailsData.position.trim())) {
+                  newErrors.position = Constants.errorStrings.positionNameErr;
+              }
+          }
+
+          if (!this.state.basicDetailsData?.abn) {
+              newErrors.abn = Constants.errorStrings.abnEmpty;
+          } else {
+              const abnRegex = new RegExp(regex.abn);
+              if (!abnRegex.test(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
+                  newErrors.abn = Constants.errorStrings.abnErr
+              }
+              if (!validateABN(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
+                  newErrors.abn = Constants.errorStrings.abnErr
+              }
+          }
         }
 
         this.setState({ errors: newErrors });
@@ -402,19 +440,27 @@ export class PersonalInformation extends Component<Props, State> {
     submitBasicProfileDetails = async () => {
         if (this.validateBasicDetailsForm()) {
             const basicDetails = { ...this.state.basicDetailsData };
-            const filledQualification = [...this.state.basicDetailsData?.qualificationDoc]?.filter(({ isSelected }: { isSelected: string }) => !isSelected?.length)
+            const filledQualification = this.userType === 1 ? [...this.state.basicDetailsData?.qualificationDoc]?.filter(({ isSelected }: { isSelected: string }) => !isSelected?.length) : [];
             const remainingQualification = this.state.remainingQualificationDoc?.map(({ _id, url }: { _id: string, url: string }) => url?.length && { qualification_id: _id, url: url });
             const newRemainingQualification = remainingQualification?.filter((i: any) => (i && Object.keys(i)?.length > 0));
+            
+            const builderData = {
+              companyName: basicDetails?.companyName,
+              position: basicDetails?.position,
+              abn: basicDetails?.abn,
+            }
+
             const data = {
                 fullName: basicDetails?.fullName,
                 mobileNumber: basicDetails?.mobileNumber,
                 email: basicDetails?.email,
-                qualificationDoc: [...filledQualification, ...newRemainingQualification]
+                qualificationDoc: this.userType === 1 ? [...filledQualification, ...newRemainingQualification] : undefined,
+                ...(this.userType === 1 ? {} : builderData),
             }
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
                 this.props.cleanTradieBasicDetails();
-                basicDetails.qualificationDoc = data.qualificationDoc;
+                basicDetails.qualificationDoc = this.userType === 1 ? data.qualificationDoc : [];
                 this.setState((prevState: any) => ({
                     profileModalClicked: false,
                     addQualificationClicked: false,
@@ -433,7 +479,7 @@ export class PersonalInformation extends Component<Props, State> {
     updatePasswordHandler = async () => {
         if (this.validatePasswordForm()) {
             const data = {
-                user_type: 1,
+                user_type: storageService.getItem('userType'),
                 oldPassword: this.state.password,
                 newPassword: this.state.newPassword
             }
@@ -557,7 +603,7 @@ export class PersonalInformation extends Component<Props, State> {
     addInfoAboutYou = () => {
         this.setState((prevState: any) => ({
             aboutModalClicked: true,
-            about: prevState?.profileViewData?.about ? prevState?.profileViewData?.about : ''
+            about: prevState?.profileViewData?.about || prevState?.profileViewData?.aboutCompany || '',
         }));
     }
 
@@ -566,10 +612,13 @@ export class PersonalInformation extends Component<Props, State> {
         var newSpecializationData: Array<any> = newSpecialization?.map(({ specializationId }: { specializationId: string }) => specializationId?.length > 0 && specializationId);
         const data = {
             fullName: this.state.basicDetailsData?.fullName,
-            userImage: this.state.profileViewData?.userImage,
+            userImage: this.state.profileViewData?.userImage || this.state.profileViewData?.builderImage,
             trade: [this.state.profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeId],
             specialization: newSpecializationData,
-            about: this.state.profileViewData?.about ? this.state.profileViewData?.about : ''
+            about: this.userType === 1 ? this.state.profileViewData?.about || '' : undefined,
+            position: this.userType === 1 ? undefined : this.state.profileViewData?.position,
+            companyName: this.userType === 1 ? undefined : this.state.profileViewData?.companyName,
+            aboutCompany: this.userType === 1 ? undefined : this.state.profileViewData?.about || this.state.profileViewData?.aboutCompany,
         }
         if (this.state.formData) {
             const res1 = await onFileUpload(this.state.formData);
@@ -591,7 +640,7 @@ export class PersonalInformation extends Component<Props, State> {
                 currentEmail: this.state.basicDetailsData?.email,
                 newEmail: this.state.newEmail,
                 password: this.state.password,
-                user_type: 1
+                user_type: storageService.getItem('userType'),
             }
             const res = await tradieChangeEmail(data);
             if (res?.success) {
@@ -763,14 +812,14 @@ export class PersonalInformation extends Component<Props, State> {
                                         <span className="show_label">
                                             Complete your profile
                                         </span>
-                                        <span className="approval_info">{this.props.tradieProfileData?.profileCompleted}</span>
+                                        <span className="approval_info">{this.userType === 1 ? this.props.tradieProfileData?.profileCompleted : this.props.builderProfile?.profileCompleted}</span>
                                         <span className="progress_bar">
                                             <input
                                                 className="done_progress"
                                                 id="progress-bar"
                                                 type="range"
                                                 min="0"
-                                                value={parseInt(this.props.tradieProfileData?.profileCompleted)}
+                                                value={parseInt(this.userType === 1 ? this.props.tradieProfileData?.profileCompleted : this.props.builderProfile?.profileCompleted)}
                                             />
                                         </span>
                                     </div>}
@@ -849,7 +898,7 @@ export class PersonalInformation extends Component<Props, State> {
                                         onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
                                     >Change password</a>
                                 </div>
-                                <div className="form_field">
+                                {this.userType === 1 && (<div className="form_field">
                                     <label className="form_label">Qualification documents </label>
 
                                     {(basicDetailsData?.qualificationDoc?.length > 0 && localQualificationDoc.length > 0) &&
@@ -972,13 +1021,34 @@ export class PersonalInformation extends Component<Props, State> {
                                                 </>
                                             )
                                         })}
+                                </div>)}
+                                <div className="form_field">
+                                    <label className="form_label">Company Name</label>
+                                    <div className="text_field">
+                                        <input type="text" placeholder="Company Name" name='companyName' value={basicDetailsData?.companyName} onChange={this.changeHandler} />
+                                    </div>
+                                    {!!errors?.companyName && <span className="error_msg">{errors?.companyName}</span>}
+                                </div>
+                                <div className="form_field">
+                                    <label className="form_label">Your Position</label>
+                                    <div className="text_field">
+                                        <input type="text" placeholder="Your Position" name='position' value={basicDetailsData?.position} onChange={this.changeHandler} />
+                                    </div>
+                                    {!!errors?.position && <span className="error_msg">{errors?.position}</span>}
+                                </div>
+                                <div className="form_field">
+                                    <label className="form_label">Australian Business Number</label>
+                                    <div className="text_field">
+                                        <input type="text" placeholder="Company Name" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
+                                    </div>
+                                    {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
                                 </div>
                             </div>
 
-                            {(basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <div className="form_field">
+                            {(this.userType === 1 && basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <><div className="form_field">
                                 <button className="fill_grey_btn full_btn btn-effect" onClick={() => this.setState({ addQualificationClicked: true })}>Add qualification documents </button>
-                            </div>}
-                            <span className="info_note">Don’t worry, nobody will see it. This is for verification only!</span>
+                            </div>
+                            <span className="info_note">Don’t worry, nobody will see it. This is for verification only!</span></>}
                         </div>
                         <div className="bottom_btn custom_btn">
                             <button className="fill_btn full_btn btn-effect" onClick={this.submitBasicProfileDetails}>Save changes</button>
@@ -1062,9 +1132,9 @@ export class PersonalInformation extends Component<Props, State> {
                     </span>}
                     <div className="tags_wrap">
                         {isSkeletonLoading ? <Skeleton count={3} /> : <ul>
-                            <li className="main">
+                            {profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName && <li className="main">
                                 <img src={profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName}
-                            </li>
+                            </li>}
                             {
                                 profileViewData?.areasOfSpecialization?.specializationData?.map(({ specializationId, specializationName }: { specializationId: string, specializationName: string }) => {
                                     return <li key={specializationId}>{specializationName}</li>
@@ -1133,13 +1203,13 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal>
 
                 <div className="section_wrapper">
-                    {isSkeletonLoading ? <Skeleton /> : <span className="sub_title">About
-                        {profileViewData?.about && <span className="edit_icon" title="Edit" onClick={this.addInfoAboutYou}>
+                    {isSkeletonLoading ? <Skeleton /> : <span className="sub_title">About {this.userType === 2 && 'company'}
+                        {(profileViewData?.about || profileViewData?.aboutCompany) && <span className="edit_icon" title="Edit" onClick={this.addInfoAboutYou}>
                             <img src={editIconBlue} alt="edit" />
                         </span>}
                     </span>}
-                    {!profileViewData?.about && <button className="fill_grey_btn full_btn btn-effect" onClick={this.addInfoAboutYou}>{isSkeletonLoading ? <Skeleton /> : 'Add info about you'}</button>}
-                    <p className="commn_para">{isSkeletonLoading ? <Skeleton /> : profileViewData?.about}</p>
+                    {(!profileViewData?.about && !profileViewData?.aboutCompany) && <button className="fill_grey_btn full_btn btn-effect" onClick={this.addInfoAboutYou}>{isSkeletonLoading ? <Skeleton /> : `Add info about ${this.userType === 1 ? 'you' : 'company'}`}</button>}
+                    <p className="commn_para">{isSkeletonLoading ? <Skeleton /> : profileViewData?.about || profileViewData?.aboutCompany}</p>
                 </div>
 
                 <Modal
@@ -1151,13 +1221,13 @@ export class PersonalInformation extends Component<Props, State> {
                 >
                     <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
-                            <span className="sub_title">About</span>
+                            <span className="sub_title">About {this.userType === 2 && 'company'}</span>
                             <button className="close_btn" onClick={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false })}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
                         <div className="form_field">
-                            <label className="form_label">Description</label>
+                            <label className="form_label">{this.userType === 1 ? 'Description' : ''}</label>
                             <div className="text_field">
                                 <textarea placeholder="Enter Description" maxLength={250} value={about} onChange={({ target: { value } }: { target: { value: string } }) => this.setState({ about: value })} />
                                 <span className="char_count">{`${about.length}/250`}</span>
