@@ -398,7 +398,7 @@ const BuilderInfo = (props: PropsType) => {
                                 </div>}
                             </div>
                             <div className="flex_col_sm_4">
-                                <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of jobs'}</span>
+                                <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of specialisation'}</span>
                                 <div className="tags_wrap">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
                                         <ul>

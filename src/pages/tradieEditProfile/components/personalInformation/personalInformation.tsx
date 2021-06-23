@@ -96,6 +96,7 @@ interface State {
     changeEmailModalClicked: boolean,
     newEmail: string,
     addQualificationClicked: boolean,
+    isProfileViewDataChanged: boolean,
     localQualificationDoc: any,
     remainingQualificationDoc: any,
 }
@@ -136,6 +137,7 @@ export class PersonalInformation extends Component<Props, State> {
             portfolioJobIndex: null,
             confirmationModalClicked: false,
             changeEmailModalClicked: false,
+            isProfileViewDataChanged: false,
             newEmail: '',
             addQualificationClicked: false,
             localQualificationDoc: [],
@@ -253,7 +255,7 @@ export class PersonalInformation extends Component<Props, State> {
         newData.areasOfSpecialization.tradeData = this.state.tradeData;
         newData.areasOfSpecialization.specializationData = this.state.specializationData;
         console.log(newData, "newdata-----------")
-        this.setState({ profileViewData: newData, areasOfSpecsModalClicked: false });
+        this.setState({ profileViewData: newData, areasOfSpecsModalClicked: false, isProfileViewDataChanged: true });
     }
 
     onFileChange = async (e: any, type?: string, id?: string) => {
@@ -271,7 +273,7 @@ export class PersonalInformation extends Component<Props, State> {
         }
         formData.append('file', newFile);
         if (type === "profileImage") {
-            this.setState({ userImage: URL.createObjectURL(newFile), formData: formData });
+            this.setState({ userImage: URL.createObjectURL(newFile), formData: formData, isProfileViewDataChanged: true });
         }
         if (type === "addJobPhotos") {
             const res = await onFileUpload(formData);
@@ -706,7 +708,7 @@ export class PersonalInformation extends Component<Props, State> {
             addPortfolioJob,
             confirmationModalClicked,
             changeEmailModalClicked,
-            // newEmail,
+            isProfileViewDataChanged,
             addQualificationClicked,
             localQualificationDoc,
             remainingQualificationDoc,
@@ -1125,7 +1127,7 @@ export class PersonalInformation extends Component<Props, State> {
                             <a className={`link ${(trade.length && specialization.length) ? '' : 'disable_link'}`} onClick={() => this.tradeHandler('Clear All', 'Clear All')}>Clear All</a>
                             <button className={`fill_btn full_btn btn-effect ${(trade.length && specialization.length) ? '' : 'disable_btn'}`}
                                 onClick={this.submitAreasOfTrade}
-                            >Show Results</button>
+                            >Save changes</button>
                         </div>
                     </div>
                 </Modal>
@@ -1171,7 +1173,7 @@ export class PersonalInformation extends Component<Props, State> {
                                 } else {
                                     const newData = { ...profileViewData };
                                     newData.about = about;
-                                    this.setState({ profileViewData: newData, aboutModalClicked: false });
+                                    this.setState({ profileViewData: newData, aboutModalClicked: false, isProfileViewDataChanged: true });
                                 }
                             }}>Save changes</button>
                             <button className="fill_grey_btn btn-effect" onClick={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false })}>Cancel</button>
@@ -1379,7 +1381,9 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal>
 
                 <div className="section_wrapper">
-                    <button className="fill_btn full_btn btn-effect" onClick={this.submitUpdateProfile}>{isSkeletonLoading ? <Skeleton /> : 'Save changes'}</button>
+                    <button
+                        className={`fill_btn full_btn btn-effect ${isProfileViewDataChanged ? '' : 'disable_btn'}`}
+                        onClick={this.submitUpdateProfile}>{isSkeletonLoading ? <Skeleton /> : 'Save changes'}</button>
                 </div>
             </>
         )
