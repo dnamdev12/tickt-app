@@ -8,6 +8,8 @@ export const callTradieProfileData = () => ({ type: actionTypes.GET_TRADIE_PROFI
 
 export const getTradieProfileView = () => ({ type: actionTypes.GET_TRADIE_PROFILE_VIEW });
 
+export const getBuilderProfileView = () => ({ type: actionTypes.GET_BUILDER_PROFILE_VIEW });
+
 export const getTradieBasicDetails = () => ({ type: actionTypes.GET_TRADIE_BASIC_DETAILS });
 
 export const cleanTradieBasicDetails = () => ({ type: actionTypes.CLEAN_TRADIE_BASIC_DETAILS });

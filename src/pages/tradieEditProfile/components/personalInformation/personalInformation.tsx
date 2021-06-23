@@ -44,12 +44,15 @@ import viewProfile from '../../../../assets/images/view.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
+import Skeleton from 'react-loading-skeleton';
+
 interface Props {
     history: any,
     tradieProfileData: any,
     tradieProfileViewData: any,
     tradieBasicDetailsData: any,
     tradeListData: any,
+    isLoading: boolean,
     getTradieProfileView: () => void,
     getTradieBasicDetails: () => void,
     callTradeList: () => void,
@@ -146,7 +149,7 @@ export class PersonalInformation extends Component<Props, State> {
         if (!this.props.tradeListData.length) { this.props.callTradeList(); }
     }
 
-    componentWillUnmount(){
+    componentWillUnmount() {
         this.props.cleanTradieProfileViewData();
         console.log('componentWillUnmount');
     }
@@ -710,14 +713,15 @@ export class PersonalInformation extends Component<Props, State> {
         } = this.state;
 
         const tradeList: any = props.tradeListData;
+        const isSkeletonLoading: any = props.isSkeletonLoading;
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === trade[0])?.specialisations;
 
         return (
-            <div>
+            <>
                 <div className="flex_row f_col">
                     <div className="flex_col_sm_4">
                         <div className="upload_profile_pic">
-                            <figure className="user_img">
+                            {isSkeletonLoading ? <Skeleton height={240} /> : <figure className="user_img">
                                 <img src={userImage ? userImage : dummy} alt="Profile-pic" />
                                 <label className="camera" htmlFor="upload_profile_pic">
                                     <img src={cameraBlack} alt="camera" />
@@ -730,26 +734,30 @@ export class PersonalInformation extends Component<Props, State> {
                                     id="upload_profile_pic"
                                     onChange={(e) => this.onFileChange(e, "profileImage")}
                                 />
-                            </figure>
+                            </figure>}
                         </div>
                     </div>
                     <div className="flex_col_sm_8">
                         <div className="title_view_wrap">
-                            <span className="title">{basicDetailsData?.fullName}
+                            {isSkeletonLoading ? <Skeleton /> : <span className="title">{basicDetailsData?.fullName}
                                 <span className="edit_icon" title="Edit" onClick={() => this.setState({ profileModalClicked: true })}>
                                     <img src={editIconBlue} alt="edit" />
                                 </span>
-                            </span>
-                            <a href="javascript:void(0)" className="view_profile" onClick={() => props.history.push(`/tradie-info?tradeId=${basicDetailsData?.userId}&type=1`)}>
-                                <img src={viewProfile} alt="view-profile" />View public profile</a>
+                            </span>}
+                            {isSkeletonLoading ? <Skeleton /> : <a href="javascript:void(0)" className="view_profile"
+                                onClick={() => {
+                                    props.cleanTradieProfileViewData();
+                                    props.history.push(`/tradie-info?tradeId=${basicDetailsData?.userId}&type=1`);
+                                }}>
+                                <img src={viewProfile} alt="view-profile" />View public profile</a>}
                         </div>
 
-                        <span className="tagg">Tradesperson</span>
+                        <span className="tagg">{isSkeletonLoading ? <Skeleton /> : 'Tradesperson'}</span>
 
                         <div className="flex_row">
                             <div className="flex_col_sm_4 w85per">
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
-                                    <div className="progress_wrapper">
+                                    {isSkeletonLoading ? <Skeleton count={2} /> : <div className="progress_wrapper">
                                         <span className="show_label">
                                             Complete your profile
                                         </span>
@@ -763,20 +771,20 @@ export class PersonalInformation extends Component<Props, State> {
                                                 value={parseInt(this.props.tradieProfileData?.profileCompleted)}
                                             />
                                         </span>
-                                    </div>
+                                    </div>}
                                 </div>
                             </div>
                         </div>
 
                         <ul className="review_job">
-                            <li>
+                            {isSkeletonLoading ? <Skeleton /> : <li>
                                 <span className="icon reviews">{profileViewData?.ratings || 0}</span>
                                 <span className="review_count">{`${profileViewData?.reviewsCount || 0} reviews`}</span>
-                            </li>
-                            <li>
+                            </li>}
+                            {isSkeletonLoading ? <Skeleton /> : <li>
                                 <span className="icon job">{profileViewData?.jobCompletedCount}</span>
                                 <span className="review_count"> jobs completed</span>
-                            </li>
+                            </li>}
                         </ul>
                     </div>
                 </div>
@@ -1045,13 +1053,13 @@ export class PersonalInformation extends Component<Props, State> {
 
 
                 <div className="section_wrapper">
-                    <span className="sub_title">Areas of specialisation
+                    {isSkeletonLoading ? <Skeleton /> : <span className="sub_title">{'Areas of specialisation'}
                         <span className="edit_icon" title="Edit" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
                             <img src={editIconBlue} alt="edit" />
                         </span>
-                    </span>
+                    </span>}
                     <div className="tags_wrap">
-                        <ul>
+                        {isSkeletonLoading ? <Skeleton count={3} /> : <ul>
                             <li className="main">
                                 <img src={profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName}
                             </li>
@@ -1060,7 +1068,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     return <li key={specializationId}>{specializationName}</li>
                                 })
                             }
-                        </ul>
+                        </ul>}
                     </div>
                 </div>
 
@@ -1123,13 +1131,13 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal>
 
                 <div className="section_wrapper">
-                    <span className="sub_title">About
+                    {isSkeletonLoading ? <Skeleton /> : <span className="sub_title">About
                         {profileViewData?.about && <span className="edit_icon" title="Edit" onClick={this.addInfoAboutYou}>
                             <img src={editIconBlue} alt="edit" />
                         </span>}
-                    </span>
-                    {!profileViewData?.about && <button className="fill_grey_btn full_btn btn-effect" onClick={this.addInfoAboutYou}>Add info about you</button>}
-                    <p className="commn_para">{profileViewData?.about}</p>
+                    </span>}
+                    {!profileViewData?.about && <button className="fill_grey_btn full_btn btn-effect" onClick={this.addInfoAboutYou}>{isSkeletonLoading ? <Skeleton /> : 'Add info about you'}</button>}
+                    <p className="commn_para">{isSkeletonLoading ? <Skeleton /> : profileViewData?.about}</p>
                 </div>
 
                 <Modal
@@ -1172,13 +1180,9 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal>
 
                 <div className="section_wrapper">
-                    <span className="sub_title">Portfolio
-                        {/* {profileViewData?.portfolio?.length > 0 && <span className="edit_icon" title="Edit" onClick={() => this.setState({ portfolioModalClicked: true })}>
-                            <img src={editIconBlue} alt="edit" />
-                        </span>} */}
-                    </span>
-                    {profileViewData?.portfolio?.length === 0 && <button className="fill_grey_btn full_btn btn-effect" onClick={this.addNewPortfolioJob}>Add portfolio</button>}
-                    <ul className="portfolio_wrappr">
+                    <span className="sub_title">{isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
+                    {profileViewData?.portfolio?.length === 0 && <button className="fill_grey_btn full_btn btn-effect" onClick={this.addNewPortfolioJob}>{isSkeletonLoading ? <Skeleton /> : 'Add portfolio'}</button>}
+                    {isSkeletonLoading ? <Skeleton height={200} /> : <ul className="portfolio_wrappr">
                         {profileViewData?.portfolio?.map(({ jobDescription, jobName, portfolioId, portfolioImage }: { jobDescription: string, jobName: string, portfolioId: string, portfolioImage: Array<any> }, index: number) => {
                             return (
                                 <li className="media" key={portfolioId} onClick={() => this.setState({ portfolioJobClicked: true, portfolioJobDetail: { jobDescription, jobName, portfolioId, portfolioImage }, portfolioJobIndex: index })}>
@@ -1193,7 +1197,7 @@ export class PersonalInformation extends Component<Props, State> {
                         {(profileViewData?.portfolio?.length < 6 && profileViewData?.portfolio?.length > 0) && <label className="upload_media">
                             <img src={addMediaLrg} alt="add" onClick={this.addNewPortfolioJob} />
                         </label>}
-                    </ul>
+                    </ul>}
                 </div>
 
                 <Modal
@@ -1375,9 +1379,9 @@ export class PersonalInformation extends Component<Props, State> {
                 </Modal>
 
                 <div className="section_wrapper">
-                    <button className="fill_btn full_btn btn-effect" onClick={this.submitUpdateProfile}>Save changes</button>
+                    <button className="fill_btn full_btn btn-effect" onClick={this.submitUpdateProfile}>{isSkeletonLoading ? <Skeleton /> : 'Save changes'}</button>
                 </div>
-            </div >
+            </>
         )
     }
 }

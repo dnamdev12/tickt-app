@@ -201,7 +201,7 @@ const Header = (props: any) => {
                                         </span>
                                         <MenuItem onClick={handleClose}>
                                             <span className="setting_icon"
-                                             onClick={() => props.userType === 1 && history.push(`/tradie-info?tradeId=${renderByType({ name: 'userId' })}&type=1`)}
+                                             onClick={() => props.userType === 1 ? history.push(`/tradie-info?tradeId=${renderByType({ name: 'userId' })}&type=1`) : props.userType === 2 ? history.push(`/builder-info?builderId=${renderByType({ name: 'userId' })}&type=2`) : null}
                                              >
                                                 <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" />
                                                 {'My Profile'}

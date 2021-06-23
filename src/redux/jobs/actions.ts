@@ -115,9 +115,7 @@ export const getTradieQuestionList = async (data: any) => {
 }
 
 export const getTradieReviewList = async (data: any) => {
-  setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.tradieReviewList + `?builderId=${data.builderId}&page=${data.page}`);
-  setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -243,10 +241,10 @@ export const tradieRemoveReviewReply = async (data: any) => {
   return { success: false };
 }
 
-export const getBuilderProfile = async (builderId: string) => {
-  setLoading(true);
+export const getBuilderProfile = async (builderId: any) => {
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`);
-  setLoading(false);
+  setSkeletonLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -383,10 +381,7 @@ export const removeReviewReply = async (data: any) => {
 }
 
 export const getTradeReviews = async (data: any) => {
-  setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
-  setLoading(false);
-
   if (response?.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -394,14 +389,13 @@ export const getTradeReviews = async (data: any) => {
 }
 
 export const getTradeProfile = async (data: any) => {
-  setLoading(true);
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.tradieProfile + `?tradieId=${data.tradieId}&jobId=${data.jobId}`);
-  setLoading(false);
-
+  setSkeletonLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
-  return { success: false, data: response.result };
+  return { success: false };
 }
 
 
@@ -533,9 +527,9 @@ export const SaveTradie = async (data: any) => {
 
 
 export const HomeTradieProfile = async (data: any) => {
-  setLoading(true);
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.jobHome}tradieProfile?tradieId=${data.tradieId}`,);
-  setLoading(false);
+  setSkeletonLoading(false);
   if (response?.status_code === 200) {
     return { success: true, data: response.result };
   }

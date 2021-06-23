@@ -78,6 +78,7 @@ const Urls = {
     tradieRemoveReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewReply`,
     tradieProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}tradieProfile`,
     tradieProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}view`,
+    builderProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}view`,
     getTradieBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getBasicDetails`,
     tradieEditBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}editBasicDetails`,
     tradieUpdateProfileDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}editProfile`,

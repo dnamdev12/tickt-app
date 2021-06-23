@@ -18,7 +18,8 @@ const mapStateToProps = (state: any) => {
         tradieProfileViewData: state.profile.tradieProfileViewData,
         tradieBasicDetailsData: state.profile.tradieBasicDetailsData,
         tradeListData: state.auth.tradeListData,
-        isLoading: state.common.isLoading
+        isLoading: state.common.isLoading,
+        isSkeletonLoading: state.common.isSkeletonLoading
     }
 }
 
