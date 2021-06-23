@@ -4,6 +4,9 @@ import { MARK_MILESTONE_COMPLETE } from '../jobs/constants';
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
 import { setLoading, setShowToast, setSkeletonLoading } from '../common/actions';
+import { markMilestoneComplete } from '../jobs/actions';
+import * as commonActions from '../common/actions';
+import storageService from '../../utils/storageService';
 
 function* callTradieProfileData() {
   const response: FetchResponse = yield NetworkOps.get(Urls.profileTradie);
@@ -20,7 +23,7 @@ function* callTradieProfileData() {
 function* getTradieProfileView() {
   yield put({ type: actionTypes.SET_TRADIE_PROFILE_VIEW, payload: '' });
   setSkeletonLoading(true);
-  const response: FetchResponse = yield NetworkOps.get(Urls.tradieProfileView);
+  const response: FetchResponse = yield NetworkOps.get(storageService.getItem('userType') === 1 ? Urls.tradieProfileView : Urls.builderProfileView);
   setSkeletonLoading(false);
   if (response.status_code === 200) {
     yield put({
@@ -52,7 +55,7 @@ function* getBuilderProfileView() {
 }
 
 function* getTradieBasicDetails() {
-  const response: FetchResponse = yield NetworkOps.get(Urls.getTradieBasicDetails);
+  const response: FetchResponse = yield NetworkOps.get(storageService.getItem('userType') === 1 ? Urls.getTradieBasicDetails : Urls.getBuilderBasicDetails);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_TRADIE_BASIC_DETAILS,

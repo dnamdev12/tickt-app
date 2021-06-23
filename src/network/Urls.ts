@@ -78,7 +78,6 @@ const Urls = {
     tradieRemoveReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}removeReviewReply`,
     tradieProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}tradieProfile`,
     tradieProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}view`,
-    builderProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}view`,
     getTradieBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getBasicDetails`,
     tradieEditBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}editBasicDetails`,
     tradieUpdateProfileDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}editProfile`,
@@ -110,6 +109,15 @@ const Urls = {
     tradieCancelJob: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}cancelJob`,
     jobHome: `${versions.v1}${ServiceEnum.home}`,
     builder: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
+    builderProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}view`,
+    getBuilderBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getBasicDetails`,
+    builderChangePassword: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}changePassword`,
+    builderEditBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}editBasicDetails`,
+    builderAddPortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}addPortfolio`,
+    builderUpdatePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}editPortfolio`,
+    builderDeletePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}deletePortfolio`,
+    builderUpdateProfileDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}editProfile`,
+    builderChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}changeEmail`,
 }
 
 export const urlFor = (service: String): string => {

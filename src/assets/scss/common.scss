@@ -4532,6 +4532,11 @@ body {
           background: url("../images/ic-message.png") center no-repeat;
         }
       }
+      &.template {
+        &::before {
+          background: url("../images/ic-template.png") center no-repeat;
+        }
+      }
       &.tnc {
         &::before {
           background: url("../images/ico-terms.png") center no-repeat;
