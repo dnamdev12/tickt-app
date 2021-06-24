@@ -14,9 +14,10 @@ import UploadMedia from './components/uploadMedia';
 import MileStoneTemplates from './components/milestoneTemplates';
 import JobDetails from './components/jobDetails';
 import EditMilestone from './components/editMileStone';
-import { callCategories } from '../../redux/jobs/actions';
+import { callCategories, republishJob } from '../../redux/jobs/actions';
 import moment from 'moment';
 import { setShowToast } from '../../redux/common/actions';
+import { useHistory } from 'react-router-dom';
 
 interface Proptypes {
     callTradeList: () => void;
@@ -33,6 +34,8 @@ interface Proptypes {
 }
 
 const PostJob = (props: Proptypes) => {
+    const history = useHistory();
+
     const {
         callTradeList,
         isLoading,
@@ -51,6 +54,7 @@ const PostJob = (props: Proptypes) => {
     const [editMileStone, setEditMileStone] = useState(0 as number);
     const [milestones, setMileStones] = useState([]);
     const [forceupdate, setForceUpdate] = useState({});
+    const [jobId, setJobId] = useState('');
 
     const getCategories = useCallback(async () => {
         const { categories: categoriesData } = await callCategories();
@@ -61,6 +65,37 @@ const PostJob = (props: Proptypes) => {
         getCategories();
         callTradeList();
     }, [getCategories, callTradeList, milestones]);
+
+    const getJobDetails = useCallback(async (jobId: string) => {
+      let res = await republishJob(jobId);
+      if (res.success) {
+          setData({
+            ...res.data,
+            specialization: res.data.specialization.map(({ specializationId }: { specializationId: string }) => specializationId),
+            categories: res.data.categories.map(({ categoryId }: { categoryId: string }) => categoryId),
+            job_type: res.data.job_type.map(({ jobTypeId }: { jobTypeId: string }) => jobTypeId),
+            amount: `${res.data.amount}`,
+          });
+          setMileStones(res.data.milestones.map(({ milestone_name, isPhotoevidence, recommended_hours, from_date, to_date }: { milestone_name: string, isPhotoevidence: boolean, recommended_hours: string, from_date: string, to_date: string }) => ({
+            milestone_name,
+            isPhotoevidence,
+            recommended_hours,
+            from_date: moment(new Date(from_date)).format('MM-DD-YYYY'),
+            to_date: moment(new Date(to_date)).format('MM-DD-YYYY'),
+          })));
+          setStepsCompleted([1, 2, 3, 4, 5, 6, 7 , 8, 9, 10, 11, 12, 13, 14, 15]);
+      }
+    }, []);
+
+    useEffect(() => {
+      const params = new URLSearchParams(history.location?.search);
+      const jobId = params.get('jobId') || '';
+
+      if (jobId) {
+        setJobId(jobId);
+        getJobDetails(jobId);
+      }
+    }, [getJobDetails, history.location]);
 
     const clearParentStates = () => {
         setData({});
@@ -459,6 +494,7 @@ const PostJob = (props: Proptypes) => {
                     handleStepForward={handleStepForward}
                     handleStepBack={handleStepBack}
                     updateDetailScreen={updateDetailScreen}
+                    jobId={jobId}
                 />
             )
             break;

@@ -632,6 +632,7 @@ export class PersonalInformation extends Component<Props, State> {
         if (res2?.success) {
             this.setState({
                 formData: null,
+                isProfileViewDataChanged: false
             })
         }
     }

@@ -93,7 +93,7 @@ const TradieSearchJobResult = (props: any) => {
             jobResults: params.get('jobResults'),
             heading: params.get('heading'),
             jobTypes: jobTypesArray,
-            searchJob: params.get('searchJob'),
+            searchJob: params.get('searchJob')?.replaceAll("xxx", "&"),
             max_budget: Number(params.get('max_budget')),
             pay_type: params.get('pay_type'),
             sortBy: Number(params.get('sortBy'))
@@ -151,7 +151,7 @@ const TradieSearchJobResult = (props: any) => {
 
         var data = {
             ...newParamsData,
-            isFilterOn: "isFilterOn", 
+            isFilterOn: "isFilterOn",
             jobResults: null,
             ...(allFiltersData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
             ...(allFiltersData.tradeId?.length && { tradeId: allFiltersData.tradeId }),
@@ -251,7 +251,7 @@ const TradieSearchJobResult = (props: any) => {
         <div className="app_wrapper" >
             <div className={`top_search ${isToggleModifySearch ? 'active' : ''}`}>
                 <BannerSearch
-                    {...props} 
+                    {...props}
                     handleChangeToggle={handleChangeToggle}
                     paramsData={paramsData}
                     cleanFiltersHandler={cleanFiltersHandler}
@@ -275,7 +275,7 @@ const TradieSearchJobResult = (props: any) => {
                                 <div className="flex_col_sm_8">
                                     {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
                                     <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
-                                        <span className="count">{`${renderJobsData()?.length ? renderJobsData()?.length === 1 ? `${renderJobsData()?.length} result`: `${renderJobsData()?.length} results` : ''}`}</span>
+                                        <span className="count">{`${renderJobsData()?.length ? renderJobsData()?.length === 1 ? `${renderJobsData()?.length} result` : `${renderJobsData()?.length} results` : ''}`}</span>
                                     </span>
                                     <SearchResultFilters
                                         searchByFilter={searchByFilter}
