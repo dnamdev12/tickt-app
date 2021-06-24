@@ -72,7 +72,7 @@ const JobDetails = ({
     clearParentStates,
     handleStepBack,
     jobId,
-   }: Proptypes) => {
+}: Proptypes) => {
     const [categorySelected, setSelected] = useState<{ [index: string]: any }>({ category: {}, job_type: {} });
     const [isEnablePopup, setPopUp] = useState(false);
     const [toggler, setToggler] = useState(false);
@@ -239,10 +239,10 @@ const JobDetails = ({
         }
 
         if (jobId) {
-          data_clone.jobId = jobId;
+            data_clone.jobId = jobId;
         }
 
-        const createJob = jobId ? publishJobAgain : createPostJob; 
+        const createJob = jobId ? publishJobAgain : createPostJob;
 
         let response: any = await createJob(data_clone);
         if (response?.success) {
@@ -290,7 +290,7 @@ const JobDetails = ({
 
         if (moment(data?.from_date, format)?.isValid() && moment(data?.to_date, format)?.isValid()) {
             if (moment(data?.from_date, format).isSameOrBefore(moment(currentTime, format))) {
-                return moment(data?.to_date, format).diff(moment(data?.from_date, format), 'days') + 1 + ' ' + 'days'; 
+                return moment(data?.to_date, format).diff(moment(data?.from_date, format), 'days') + 1 + ' ' + 'days';
             } else {
                 return moment(data?.from_date, format).diff(moment(currentTime, format), 'days') + ' ' + 'days overdue';
             }
@@ -355,8 +355,8 @@ const JobDetails = ({
                                     </div>
                                     <button
                                         onClick={handlePost}
-<<<<<<< src/pages/postJob/components/jobDetails.tsx
                                         className="fill_btn full_btn btn-effect mt-15">{jobId ? 'Republish job' : 'Post job'}</button>
+                                </div>
                             </div>
                         </div>
                         <div className="flex_row">
