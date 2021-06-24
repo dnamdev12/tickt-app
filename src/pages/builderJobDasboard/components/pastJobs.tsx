@@ -167,16 +167,14 @@ export default function PastJobs(props: any): ReactElement {
                                                 }));
                                             }}
                                             className="fill_grey_btn full_btn">
-                                            {status === "COMPLETED" ? (
-                                                <React.Fragment>
-                                                    <img src={rateStar} alt="rating-star" />
-                                                    {'Rate this job'}
-                                                </React.Fragment>
-                                            ) : 'Publish again'}
+                                            <React.Fragment>
+                                                <img src={rateStar} alt="rating-star" />
+                                                {'Rate this job'}
+                                            </React.Fragment>
                                         </button>
                                         )
-                                        : (
-                                            <button className="fill_grey_btn full_btn">
+                                        : status === "EXPIRED" && (
+                                            <button className="fill_grey_btn full_btn" onClick={() => redirectToInfo({ jobId, status }) }>
                                                 {"Publish again"}
                                             </button>
                                         )}

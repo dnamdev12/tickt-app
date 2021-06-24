@@ -6,7 +6,7 @@ import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
-import { createPostJob } from '../../../redux/jobs/actions';
+import { createPostJob, publishJobAgain } from '../../../redux/jobs/actions';
 import moment from 'moment';
 import jobDummyImage from '../../../assets/images/ic-placeholder-detail.png';
 import OwlCarousel from 'react-owl-carousel';
@@ -30,6 +30,7 @@ interface Proptypes {
     handleStepBack: () => void;
     clearParentStates: () => void;
     updateDetailScreen: (data: any) => void;
+    jobId: string;
 }
 
 const options = {
@@ -69,7 +70,9 @@ const JobDetails = ({
     handleStepForward,
     handleStepComplete,
     clearParentStates,
-    handleStepBack }: Proptypes) => {
+    handleStepBack,
+    jobId,
+   }: Proptypes) => {
     const [categorySelected, setSelected] = useState<{ [index: string]: any }>({ category: {}, job_type: {} });
     const [isEnablePopup, setPopUp] = useState(false);
     const [toggler, setToggler] = useState(false);
@@ -235,7 +238,13 @@ const JobDetails = ({
             delete data_clone?.urls
         }
 
-        let response: any = await createPostJob(data_clone);
+        if (jobId) {
+          data_clone.jobId = jobId;
+        }
+
+        const createJob = jobId ? publishJobAgain : createPostJob; 
+
+        let response: any = await createJob(data_clone);
         if (response?.success) {
             clearParentStates();
             handleStepForward(12);
@@ -324,7 +333,7 @@ const JobDetails = ({
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    <span className="title">{data?.jobName}
+                                    <span className="title line-3 pr-20" title={data?.jobName}>{data?.jobName}
                                         <span onClick={() => { forwardScreenStep(1) }} className="edit_icon" title="Edit">
                                             <img src={editIconBlue} alt="edit" />
                                         </span>
@@ -346,8 +355,8 @@ const JobDetails = ({
                                     </div>
                                     <button
                                         onClick={handlePost}
-                                        className="fill_btn full_btn btn-effect">Post job</button>
-                                </div>
+<<<<<<< src/pages/postJob/components/jobDetails.tsx
+                                        className="fill_btn full_btn btn-effect mt-15">{jobId ? 'Republish job' : 'Post job'}</button>
                             </div>
                         </div>
                         <div className="flex_row">
