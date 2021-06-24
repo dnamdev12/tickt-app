@@ -226,8 +226,12 @@ const JobDetails = ({
         data_clone['milestones'] = filter_milestones;
         let from_date = data_clone?.from_date;
         let to_date = data_clone?.to_date;
-
+        console.log({from_date,to_date})
         if (moment(from_date).isSame(moment(to_date))) {
+            delete data_clone?.to_date;
+        }
+
+        if(!to_date?.length){
             delete data_clone?.to_date;
         }
 

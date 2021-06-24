@@ -507,7 +507,7 @@ class TradieInfo extends Component<Props, State> {
                                                                         })
                                                                     }}
                                                                     className="fill_btn full_btn btn-effect">
-                                                                    {'Invite'}
+                                                                    {'Invite for job'}
                                                                 </button>
                                                             </div>
                                                         )}
@@ -679,7 +679,7 @@ class TradieInfo extends Component<Props, State> {
                                     }
                                 }))
                             }}>
-                            {`View all ${tradieInfo?.reviewsCount || 0} reviews`}</button>}
+                            {`View all ${tradieInfo?.reviewsCount || 0} ${tradieInfo?.reviewsCount === 1 ? 'review' : 'reviews'} `}</button>}
                     </div>
                 </div>
 
@@ -759,7 +759,7 @@ class TradieInfo extends Component<Props, State> {
                     >
                         <div className="custom_wh">
                             <div className="heading">
-                                <span className="sub_title">{`${tradieInfo.reviewsCount} reviews`}</span>
+                                <span className="sub_title">{`${tradieInfo.reviewsCount} ${tradieInfo?.reviewsCount === 1 ? 'review' : 'reviews'}`}</span>
                                 <button className="close_btn"
                                     onClick={() => modalCloseHandler('showAllReviewsClicked')}
                                 >

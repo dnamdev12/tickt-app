@@ -5,6 +5,7 @@ import ApplicantsList from './applicantsList';
 import { withRouter } from 'react-router-dom'
 import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
+import waiting from '../../../assets/images/exclamation.png';
 import moment from 'moment';
 interface Active {
     amount: any,
@@ -168,7 +169,9 @@ class NeedApproval extends Component<Props, State> {
                                                 <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
                                             </span>
                                             <span className="approval_info">
+                                                {console.log({status})}
                                                 {status === "Approved" && <img src={approved} alt="icon" />}
+                                                {status === "NEED APPROVAL" && <img src={waiting} alt="icon" />}
                                                 {status}
                                             </span>
                                             <span className="progress_bar">
