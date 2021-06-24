@@ -456,8 +456,8 @@ class TradieInfo extends Component<Props, State> {
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
-                                                <span className="title">{userType === 1 ? tradieInfo?.userName : tradieInfo?.tradieName ? tradieInfo?.tradieName : ''}</span>
-                                                <span className="tagg">{userType === 1 ? 'Tradesperson' : tradieInfo?.position ? tradieInfo?.position : ''}</span>
+                                                <span className="title line-3" title="">{userType === 1 ? tradieInfo?.userName : tradieInfo?.tradieName ? tradieInfo?.tradieName : ''}</span>
+                                                <span className="tagg  mb30">{userType === 1 ? 'Tradesperson' : tradieInfo?.position ? tradieInfo?.position : ''}</span>
                                                 <ul className="review_job">
                                                     <li>
                                                         <span className="icon reviews">{tradieInfo?.ratings || '0'}</span>
@@ -470,11 +470,7 @@ class TradieInfo extends Component<Props, State> {
                                                 </ul>
 
                                                 {userType === 1 ? (
-                                                    <div className="form_field">
-                                                        <div className="bottom_btn">
-                                                            <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
-                                                        </div>
-                                                    </div>
+                                                    <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
                                                 ) : (!tradieInfo?.isRequested ? (
                                                     <div className="form_field">
                                                         {tradieInfo?.isInvited ? (
@@ -670,7 +666,7 @@ class TradieInfo extends Component<Props, State> {
                                     <span>No Data Found</span>
                                 </div>}
                         </div>}
-                        {props.isSkeletonLoading ? <Skeleton height={25}/> : <button
+                        {props.isSkeletonLoading ? <Skeleton height={25} /> : <button
                             className="fill_grey_btn full_btn view_more"
                             onClick={() => {
                                 this.setState((prevData: any) => ({

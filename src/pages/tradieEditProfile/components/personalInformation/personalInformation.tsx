@@ -889,7 +889,7 @@ export class PersonalInformation extends Component<Props, State> {
                                 </div>
                                 <div className="form_field">
                                     <label className="form_label">Email</label>
-                                    <div className="text_field">
+                                    <div className="text_field f_spacebw">
                                         {/* <input type="text" placeholder="Enter Email" value={basicDetailsData?.email} name='email' onChange={this.changeHandler} /> */}
                                         <span className="show_label">{basicDetailsData?.email}</span>
                                     </div>
