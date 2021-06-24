@@ -3075,7 +3075,7 @@ body {
 		align-items: center;
 	}
 	input {
-		padding: 22px 26px 22px 40px;
+		padding: 21px 26px 21px 40px;
 		border-color: transparent;
 		&:hover,
 		&:focus,
@@ -3149,13 +3149,13 @@ body {
 						border-top-left-radius: 12px;
 						border-bottom-left-radius: 12px;
 						input {
-							padding: 22px 30px 22px 60px;
+							padding: 21px 30px 21px 60px;
 						}
 					}
 				}
 				&.loc_box {
 					input {
-						padding: 22px 32px 22px 40px;
+						padding: 21px 32px 21px 40px;
 					}
 				}
 			}
@@ -5480,6 +5480,14 @@ div#light-box div {
 .chat_wrapr{
   .side_nav_col {
     width: 490px;
+    @media(max-width: 768px){
+      width: 0;
+    }
+    &.active{
+      @media(max-width: 768px){
+        width: 360px;
+      }
+    }
   }
   .u_img{
     width: 40px;
@@ -5529,8 +5537,14 @@ div#light-box div {
       width: 100%;
       position: relative;
       padding: 20px;
+      @media(max-width: 650px){
+        padding: 10px 0;
+      }
       &.active{
         width: 55%;
+        @media(max-width: 768px){
+          width: 100%;
+        }
       }
       .chat_user{
         display: flex;
@@ -5566,6 +5580,10 @@ div#light-box div {
           font-family: 'Neue Haas Grotesk Text Pro Bold';
           font-size: 14px;
           cursor: pointer;
+          @media(max-width: 650px){
+            top: -15px;
+            right: 20px;
+          }
           img{
             margin-left: 10px;
           }
@@ -5685,6 +5703,9 @@ div#light-box div {
       width: 45%;
       border-left: 1px solid #dfe5ef;
       padding: 20px;
+      @media(max-width: 768px){
+        width: 100%;
+      }
       .center_flex{
         margin-bottom: 24px;
         .title{
