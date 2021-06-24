@@ -567,3 +567,26 @@ export const getVouchers = async (data: any) => {
   return { success: false };
 }
 
+export const republishJob = async (jobId: string) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(Urls.republishJob + `?jobId=${jobId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+      return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+// Republish job 
+export const publishJobAgain = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.publishJobAgain, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+
+  setShowToast(true, response.message);
+  return { success: false };
+}
