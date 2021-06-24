@@ -451,7 +451,7 @@ export const tradielodgeDispute = async (data: any) => {
 
 export const CancelJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}canceljob`, data);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}canceljob`, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message)
