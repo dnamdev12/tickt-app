@@ -100,6 +100,7 @@ interface State {
     newEmail: string,
     addQualificationClicked: boolean,
     isProfileViewDataChanged: boolean,
+    isEditProfileModalChanged: boolean,
     localQualificationDoc: any,
     remainingQualificationDoc: any,
 }
@@ -143,6 +144,7 @@ export class PersonalInformation extends Component<Props, State> {
             confirmationModalClicked: false,
             changeEmailModalClicked: false,
             isProfileViewDataChanged: false,
+            isEditProfileModalChanged: false,
             newEmail: '',
             addQualificationClicked: false,
             localQualificationDoc: [],
@@ -297,7 +299,7 @@ export class PersonalInformation extends Component<Props, State> {
                 const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
                 const item = newqualificationDoc?.find(i => i.qualification_id === id)
                 item.url = res.imgUrl;
-                this.setState({ basicDetailsData: newBasicData });
+                this.setState({ basicDetailsData: newBasicData, isEditProfileModalChanged: true });
             }
         }
         if (type === "remainingQualification") {
@@ -306,7 +308,7 @@ export class PersonalInformation extends Component<Props, State> {
                 const data: Array<any> = [...this.state.remainingQualificationDoc];
                 const item = data?.find(i => i._id === id)
                 item.url = res.imgUrl;
-                this.setState({ remainingQualificationDoc: data });
+                this.setState({ remainingQualificationDoc: data, isEditProfileModalChanged: true });
             }
         }
     }
@@ -331,51 +333,51 @@ export class PersonalInformation extends Component<Props, State> {
             }
         }
 
-        if (this.userType === 1) { 
-          const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
-          console.log(newQualificationDoc, "newQualificationDoc validation");
-          if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
-              // newErrors.qualificationDoc = "Please upload all selected documents";
-              setShowToast(true, "Please upload all selected documents");
-              return;
-          }
+        if (this.userType === 1) {
+            const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
+            console.log(newQualificationDoc, "newQualificationDoc validation");
+            if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
+                // newErrors.qualificationDoc = "Please upload all selected documents";
+                setShowToast(true, "Please upload all selected documents");
+                return;
+            }
 
-          const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
-          console.log(newRemainingDoc, "newRemainingDoc validation");
-          if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
-              // newErrors.qualificationDoc = "Please upload all selected documents";
-              setShowToast(true, "Please upload all selected documents");
-              return;
-          }
+            const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
+            console.log(newRemainingDoc, "newRemainingDoc validation");
+            if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
+                // newErrors.qualificationDoc = "Please upload all selected documents";
+                setShowToast(true, "Please upload all selected documents");
+                return;
+            }
         } else {
-          if (!this.state.basicDetailsData?.companyName) {
-            newErrors.companyName = Constants.errorStrings.companyNameEmpty;
-          } else {
-              const nameRegex = new RegExp(regex.fullname);
-              if (!nameRegex.test(this.state.basicDetailsData.companyName.trim())) {
-                  newErrors.companyName = Constants.errorStrings.companyNameErr;
-              }
-          }
-          if (!this.state.basicDetailsData?.position) {
-              newErrors.position = Constants.errorStrings.positionNameEmpty;
-          } else {
-              const positionRegex = new RegExp(regex.fullname);
-              if (!positionRegex.test(this.state.basicDetailsData.position.trim())) {
-                  newErrors.position = Constants.errorStrings.positionNameErr;
-              }
-          }
+            if (!this.state.basicDetailsData?.companyName) {
+                newErrors.companyName = Constants.errorStrings.companyNameEmpty;
+            } else {
+                const nameRegex = new RegExp(regex.fullname);
+                if (!nameRegex.test(this.state.basicDetailsData.companyName.trim())) {
+                    newErrors.companyName = Constants.errorStrings.companyNameErr;
+                }
+            }
+            if (!this.state.basicDetailsData?.position) {
+                newErrors.position = Constants.errorStrings.positionNameEmpty;
+            } else {
+                const positionRegex = new RegExp(regex.fullname);
+                if (!positionRegex.test(this.state.basicDetailsData.position.trim())) {
+                    newErrors.position = Constants.errorStrings.positionNameErr;
+                }
+            }
 
-          if (!this.state.basicDetailsData?.abn) {
-              newErrors.abn = Constants.errorStrings.abnEmpty;
-          } else {
-              const abnRegex = new RegExp(regex.abn);
-              if (!abnRegex.test(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
-                  newErrors.abn = Constants.errorStrings.abnErr
-              }
-              if (!validateABN(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
-                  newErrors.abn = Constants.errorStrings.abnErr
-              }
-          }
+            if (!this.state.basicDetailsData?.abn) {
+                newErrors.abn = Constants.errorStrings.abnEmpty;
+            } else {
+                const abnRegex = new RegExp(regex.abn);
+                if (!abnRegex.test(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
+                    newErrors.abn = Constants.errorStrings.abnErr
+                }
+                if (!validateABN(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
+                    newErrors.abn = Constants.errorStrings.abnErr
+                }
+            }
         }
 
         this.setState({ errors: newErrors });
@@ -434,7 +436,7 @@ export class PersonalInformation extends Component<Props, State> {
     changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newBasicDetails = { ...this.state.basicDetailsData };
         newBasicDetails[`${e.target.name}`] = e.target.value;
-        this.setState({ basicDetailsData: newBasicDetails });
+        this.setState({ basicDetailsData: newBasicDetails, isEditProfileModalChanged: true });
     }
 
     submitBasicProfileDetails = async () => {
@@ -443,11 +445,11 @@ export class PersonalInformation extends Component<Props, State> {
             const filledQualification = this.userType === 1 ? [...this.state.basicDetailsData?.qualificationDoc]?.filter(({ isSelected }: { isSelected: string }) => !isSelected?.length) : [];
             const remainingQualification = this.state.remainingQualificationDoc?.map(({ _id, url }: { _id: string, url: string }) => url?.length && { qualification_id: _id, url: url });
             const newRemainingQualification = remainingQualification?.filter((i: any) => (i && Object.keys(i)?.length > 0));
-            
+
             const builderData = {
-              companyName: basicDetails?.companyName,
-              position: basicDetails?.position,
-              abn: basicDetails?.abn,
+                companyName: basicDetails?.companyName,
+                position: basicDetails?.position,
+                abn: basicDetails?.abn,
             }
 
             const data = {
@@ -758,6 +760,7 @@ export class PersonalInformation extends Component<Props, State> {
             confirmationModalClicked,
             changeEmailModalClicked,
             isProfileViewDataChanged,
+            isEditProfileModalChanged,
             addQualificationClicked,
             localQualificationDoc,
             remainingQualificationDoc,
@@ -878,7 +881,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                 const { formattedValue, value } = values;
                                                 const newBasicDetails = { ...this.state.basicDetailsData };
                                                 newBasicDetails.mobileNumber = value;
-                                                this.setState({ basicDetailsData: newBasicDetails });
+                                                this.setState({ basicDetailsData: newBasicDetails, isEditProfileModalChanged: true });
                                             }}
                                         />
                                     </div>
@@ -886,7 +889,7 @@ export class PersonalInformation extends Component<Props, State> {
                                 </div>
                                 <div className="form_field">
                                     <label className="form_label">Email</label>
-                                    <div className="text_field">
+                                    <div className="text_field f_spacebw">
                                         {/* <input type="text" placeholder="Enter Email" value={basicDetailsData?.email} name='email' onChange={this.changeHandler} /> */}
                                         <span className="show_label">{basicDetailsData?.email}</span>
                                     </div>
@@ -1022,36 +1025,39 @@ export class PersonalInformation extends Component<Props, State> {
                                             )
                                         })}
                                 </div>)}
-                                <div className="form_field">
-                                    <label className="form_label">Company Name</label>
-                                    <div className="text_field">
-                                        <input type="text" placeholder="Company Name" name='companyName' value={basicDetailsData?.companyName} onChange={this.changeHandler} />
-                                    </div>
-                                    {!!errors?.companyName && <span className="error_msg">{errors?.companyName}</span>}
-                                </div>
-                                <div className="form_field">
-                                    <label className="form_label">Your Position</label>
-                                    <div className="text_field">
-                                        <input type="text" placeholder="Your Position" name='position' value={basicDetailsData?.position} onChange={this.changeHandler} />
-                                    </div>
-                                    {!!errors?.position && <span className="error_msg">{errors?.position}</span>}
-                                </div>
-                                <div className="form_field">
-                                    <label className="form_label">Australian Business Number</label>
-                                    <div className="text_field">
-                                        <input type="text" placeholder="Company Name" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
-                                    </div>
-                                    {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
-                                </div>
+                                {this.userType === 2 &&
+                                    <>
+                                        <div className="form_field">
+                                            <label className="form_label">Company Name</label>
+                                            <div className="text_field">
+                                                <input type="text" placeholder="Company Name" name='companyName' value={basicDetailsData?.companyName} onChange={this.changeHandler} />
+                                            </div>
+                                            {!!errors?.companyName && <span className="error_msg">{errors?.companyName}</span>}
+                                        </div>
+                                        <div className="form_field">
+                                            <label className="form_label">Your Position</label>
+                                            <div className="text_field">
+                                                <input type="text" placeholder="Your Position" name='position' value={basicDetailsData?.position} onChange={this.changeHandler} />
+                                            </div>
+                                            {!!errors?.position && <span className="error_msg">{errors?.position}</span>}
+                                        </div>
+                                        <div className="form_field">
+                                            <label className="form_label">Australian Business Number</label>
+                                            <div className="text_field">
+                                                <input type="text" placeholder="Company Name" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
+                                            </div>
+                                            {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
+                                        </div>
+                                    </>}
                             </div>
 
                             {(this.userType === 1 && basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <><div className="form_field">
                                 <button className="fill_grey_btn full_btn btn-effect" onClick={() => this.setState({ addQualificationClicked: true })}>Add qualification documents </button>
                             </div>
-                            <span className="info_note">Don’t worry, nobody will see it. This is for verification only!</span></>}
+                                <span className="info_note">Don’t worry, nobody will see it. This is for verification only!</span></>}
                         </div>
                         <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect" onClick={this.submitBasicProfileDetails}>Save changes</button>
+                            <button className={`fill_btn full_btn btn-effect ${isEditProfileModalChanged ? '' : 'disable_btn'}`} onClick={this.submitBasicProfileDetails}>Save changes</button>
                         </div>
                     </div>
                 </Modal>
@@ -1126,9 +1132,9 @@ export class PersonalInformation extends Component<Props, State> {
 
                 <div className="section_wrapper">
                     {isSkeletonLoading ? <Skeleton /> : <span className="sub_title">{'Areas of specialisation'}
-                        <span className="edit_icon" title="Edit" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
+                        {this.userType === 1 && <span className="edit_icon" title="Edit" onClick={() => this.setState({ areasOfSpecsModalClicked: true })}>
                             <img src={editIconBlue} alt="edit" />
-                        </span>
+                        </span>}
                     </span>}
                     <div className="tags_wrap">
                         {isSkeletonLoading ? <Skeleton count={3} /> : <ul>

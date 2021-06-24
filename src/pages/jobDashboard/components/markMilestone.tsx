@@ -239,7 +239,7 @@ const MarkMilestone = ({
                 onClick={() => history.push('/active-jobs')}
               ></button>
               <span className="xs_sub_title">{jobName}</span>
-              <span className="dot_menu" title="Edit">
+              <span className="dot_menu">
                 <img src={editIconBlue} alt="edit" />
                 <div className="edit_menu">
                   <ul>
