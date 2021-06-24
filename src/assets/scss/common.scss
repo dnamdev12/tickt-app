@@ -1598,7 +1598,7 @@ body {
 
 .review_card {
   max-width: 280px;
-  min-height: 208px;
+  min-height: 180px;
   margin: 0 0 30px;
   padding: 16px;
   @include border-radius(3px);
@@ -3440,7 +3440,7 @@ body {
 }
 
 .tradie_card {
-	min-height: 274px;
+	min-height: 285px;
 	padding: 16px;
 	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
 	background-color: var(--white);
