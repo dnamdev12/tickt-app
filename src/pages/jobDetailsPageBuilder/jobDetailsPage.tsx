@@ -65,27 +65,30 @@ const options = {
     },
 };
 
+
+const defaultQuestionValues = {
+    askQuestionsClicked: false,
+    showAllQuestionsClicked: false,
+    submitQuestionsClicked: false,
+    deleteQuestionsClicked: false,
+    updateQuestionsClicked: false,
+    questionsClickedType: '',
+    confirmationClicked: false,
+    showAnswerButton: true,
+    questionId: '',
+    answerId: '',
+    questionData: '',
+    answerShownHideList: [],
+    showHideAnswer: {},
+    questionIndex: null
+}
+
 const JobDetailsPage = (props: PropsType) => {
     const [errors, setErrors] = useState<any>({});
     const [jobDetailsData, setJobDetailsData] = useState<any>('');
     const [questionList, setQuestionList] = useState<Array<any>>([]);
     const [questionListPageNo, setQuestionListPageNo] = useState<number>(1);
-    const [questionsData, setQuestionsData] = useState<any>({
-        askQuestionsClicked: false,
-        showAllQuestionsClicked: false,
-        submitQuestionsClicked: false,
-        deleteQuestionsClicked: false,
-        updateQuestionsClicked: false,
-        questionsClickedType: '',
-        confirmationClicked: false,
-        showAnswerButton: true,
-        questionId: '',
-        answerId: '',
-        questionData: '',
-        answerShownHideList: [],
-        showHideAnswer: {},
-        questionIndex: null
-    })
+    const [questionsData, setQuestionsData] = useState<any>(defaultQuestionValues)
 
     const [toggler, setToggler] = useState(false);
     const [showEditBtn, setEditBtn] = useState(false);
@@ -214,7 +217,7 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const submitQuestionHandler = async (type: string) => {
-        console.log('Here!------->')
+        console.log('Here!------->', { questionsData })
         if (['askQuestion', 'deleteQuestion', 'updateQuestion'].includes(type)) {
             if (!validateForm(type)) {
                 return;
@@ -245,6 +248,9 @@ const JobDetailsPage = (props: PropsType) => {
 
             if (response.success) {
                 fetchQuestionsList(true);
+                if (type === 'deleteQuestion') {
+                    questionHandler('showAnswerClicked', questionsData.questionId)
+                }
             }
 
         }
@@ -395,9 +401,9 @@ const JobDetailsPage = (props: PropsType) => {
         } else {
             return (
                 <>
-                    { jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
-                    { jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
-                    { jobDetailsData?.status}
+                    {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
+                    {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
+                    {jobDetailsData?.status}
                 </>
             )
         }
@@ -568,7 +574,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 </ul>
                                 <button className="fill_grey_btn ques_btn" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
                                     <img src={question} alt="question" />
-                                    {`${jobDetailsData?.questionsCount || '0'} questions`}
+                                    {`${jobDetailsData?.questionsCount || '0'} ${jobDetailsData?.questionsCount === 1 ? 'question' : 'questions'}`}
                                 </button>
                             </div>
                             {/* show all questions modal */}
@@ -576,14 +582,19 @@ const JobDetailsPage = (props: PropsType) => {
                                 <Modal
                                     className="ques_ans_modal"
                                     open={questionsData.showAllQuestionsClicked}
-                                    onClose={() => modalCloseHandler('1showAllQuestionsClicked')}
+                                    onClose={() => {
+                                        modalCloseHandler('showAllQuestionsClicked')
+                                    }}
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
                                     <>
                                         <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                             <div className="heading">
-                                                <span className="sub_title">{`${jobDetailsData?.questionsCount || 0} questions`}</span>
+                                                <span
+                                                    className="sub_title">
+                                                    {`${jobDetailsData?.questionsCount || 0} ${jobDetailsData?.questionsCount === 1 ? 'question' : 'questions'}`}
+                                                </span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('showAllQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
@@ -694,7 +705,11 @@ const JobDetailsPage = (props: PropsType) => {
                                     aria-labelledby="simple-modal-title"
                                     aria-describedby="simple-modal-description"
                                 >
-                                    <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                    <div
+                                        className="custom_wh ask_ques"
+                                        data-aos="zoom-in"
+                                        data-aos-delay="30"
+                                        data-aos-duration="1000">
                                         <div className="heading">
                                             <span className="sub_title">
                                                 {questionsData.updateQuestionsClicked ? 'Edit Answer' : `Answer`}

@@ -150,7 +150,7 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
                                     onChange={(e: any) => { setReason(e.target.value) }}
                                     placeholder="Your reason..."
                                 ></textarea>
-                            <span className="char_count">{'character length:'}{reason?.length}</span>
+                            <span className="char_count">{'character length: '}{reason?.length + ' / 250'}</span>
                             </div>
                         {reason?.length > 250 && (
                             <span className="error_msg">{'Maximum 250 characters are allowed.'}</span>
