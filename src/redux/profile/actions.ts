@@ -75,9 +75,7 @@ export const tradieChangeEmail = async (data: any) => {
 }
 
 export const verifyEmailOtp = async (data: object) => {
-  setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.verifyEmailOtp, data);
-  setLoading(false);
   if (response.status_code === 200) {
     return { success: true };
   }

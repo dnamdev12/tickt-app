@@ -20,7 +20,7 @@ interface PropsTypes {
 const NewEmail = (props: PropsTypes) => {
     const [errors, setErrors] = useState<any>({});
     const [newEmail, setNewEmail] = useState<string>(props.newEmail);
-    const [password, setPassword] = useState<string>(props.currentPassword);
+    const [currentPassword, setCurrentPassword] = useState<string>(props.currentPassword);
     const [showPassword, setShowPassword] = useState<boolean>(false);
 
     const validateChangeEmailForm = () => {
@@ -29,38 +29,42 @@ const NewEmail = (props: PropsTypes) => {
             newErrors.newEmail = Constants.errorStrings.emailEmpty;
         } else {
             const emailRegex = new RegExp(regex.email);
-            if (!emailRegex.test(newEmail)) {
+            if (!emailRegex.test(newEmail.trim())) {
                 newErrors.newEmail = Constants.errorStrings.emailErr;
+            }else if (newEmail.trim() === props.currentEmail) {
+                newErrors.newEmail = "Your new email is same as current email";
             }
         }
 
-        if (!password) {
+        if (!currentPassword) {
             newErrors.currentPassword = Constants.errorStrings.password;
         } else {
             const passwordRegex = new RegExp(regex.password);
-            if (!passwordRegex.test(password.trim())) {
+            if (!passwordRegex.test(currentPassword.trim())) {
                 newErrors.currentPassword = Constants.errorStrings.passwordError;
             }
         }
 
-        setErrors({ errors: newErrors });
-        return !Object.keys(newErrors).length;
+        setErrors(newErrors);
+        return !Object.keys(newErrors)?.length;
     }
 
     const changeEmailHandler = async () => {
+        console.log(newEmail,"newEmail",newEmail.trim(),props.currentEmail,"props.currentEmail","qazx",props.currentEmail.trim(),"trim")
         if (validateChangeEmailForm()) {
             const data = {
                 currentEmail: props.currentEmail,
-                newEmail: newEmail,
-                password: password,
+                newEmail: newEmail.trim(),
+                password: currentPassword.trim(),
                 user_type: storageService.getItem('userType'),
             }
             const res = await tradieChangeEmail(data);
             if (res?.success) {
-                props.updateSteps(2);
+                props.updateSteps(2, {newEmail: newEmail.trim(), currentPassword: currentPassword.trim()});
             }
         }
     }
+    console.log(errors, "errors new Email Modal");
 
     return (
         <>
@@ -69,7 +73,7 @@ const NewEmail = (props: PropsTypes) => {
                     <button className="back" onClick={props.backButtonHandler}></button>
                     <div className="md_heading">
                         <span className="sub_title">Change email</span>
-                        <span className="show_label">Enter your password too and we will send you message to verify new email</span>
+                        <span className="show_label">Enter your password too and we will send you message to verify your new email</span>
                     </div>
                 </div>
                 <button className="close_btn" onClick={props.closeModalHandler}>
@@ -88,7 +92,7 @@ const NewEmail = (props: PropsTypes) => {
                     <div className="form_field">
                         <label className="form_label">Current Password</label>
                         <div className="text_field">
-                            <input type={showPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Current Password" name='password' value={password} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)} />
+                            <input type={showPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Current Password" name='password' value={currentPassword} onChange={(e: React.ChangeEvent<HTMLInputElement>) => setCurrentPassword(e.target.value)} />
                             <span className="detect_icon" onClick={() => setShowPassword(!showPassword)}>
                                 <img src={showPassword ? eyeIconOpen : eyeIconClose} />
                             </span>

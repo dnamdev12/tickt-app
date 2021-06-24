@@ -397,7 +397,7 @@ const BuilderInfo = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 {props.isSkeletonLoading ? <Skeleton count={2} /> : <div>
                                     <span className="sub_title">About</span>
-                                    <p className="commn_para">{profileData?.about || ''}</p>
+                                    <p className="commn_para">{profileData?.aboutCompany || ''}</p>
                                 </div>}
                             </div>
                             <div className="flex_col_sm_4">
@@ -675,7 +675,7 @@ const BuilderInfo = (props: PropsType) => {
             >
                 <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                     <div className="heading">
-                        {reviewsData.deleteReviewsClicked && <span className="xs_sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>}
+                        <span className="xs_sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>
                         <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                             <img src={cancel} alt="cancel" />
                         </button>

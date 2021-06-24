@@ -64,6 +64,7 @@ const VerifyNewEmail = (props: PropsTypes) => {
         e.preventDefault();
         if (validateForm()) {
             const data = {
+                newEmail: props.newEmail,
                 otp: otp
             }
             const res: any = await verifyEmailOtp(data);
@@ -105,7 +106,7 @@ const VerifyNewEmail = (props: PropsTypes) => {
                             {!!errors.otp && <span className="error_msg">{errors.otp}</span>}
                         </div>
                         <div className="form_field">
-                            <span className="show_label">We have sent a verification code to your email.
+                            <span className="show_label">We have sent a verification code to your new email.
                                 Please check email and enter the 5-digit code here.</span>
                         </div>
                         {counter === 0 && <div className="form_field f_spacebw">

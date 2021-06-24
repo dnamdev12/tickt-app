@@ -2,10 +2,6 @@ import React, { useState, useEffect } from 'react';
 import Modal from '@material-ui/core/Modal';
 import NewEmail from './components/newEmail';
 import VerifyNewEmail from './components/verifyNewEmail';
-import SuccessPage from './components/successPage';
-
-
-
 interface Propstype {
     history: any,
     isChangeEmailModalClicked: boolean,
@@ -86,9 +82,6 @@ const ChangeEmailModal = (props: Propstype) => {
             aria-describedby="simple-modal-description"
         >
             <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                {/* <button className="close_btn" onClick={closeModalHandler}>
-                    <img src={cancel} alt="cancel" />
-                </button> */}
                 {renderPages()}
             </div >
         </Modal >

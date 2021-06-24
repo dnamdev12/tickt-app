@@ -118,6 +118,8 @@ const Urls = {
     builderDeletePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}deletePortfolio`,
     builderUpdateProfileDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}editProfile`,
     builderChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}changeEmail`,
+    republishJob: `${versions.v1}${ServiceEnum.job}republishJob`,
+    publishJobAgain: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}publishJobAgain`,
 }
 
 export const urlFor = (service: String): string => {

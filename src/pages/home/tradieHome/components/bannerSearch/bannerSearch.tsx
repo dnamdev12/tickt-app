@@ -389,12 +389,13 @@ const BannerSearch = (props: PropsType) => {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
         } else if (!stateData?.searchedJob) {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJobEmpty;
-        } else {
-            const searchJobRegex = new RegExp(regex.alphaSpecial);
-            if (!searchJobRegex.test(stateData.searchedJob.trim())) {
-                newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
-            }
-        }
+        } 
+        // else {
+        //     const searchJobRegex = new RegExp(regex.alphaNumeric);
+        //     if (!searchJobRegex.test(stateData.searchedJob.trim())) {
+        //         newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
+        //     }
+        // }
         if (!stateData?.isMapLocationSelected && stateData?.selectedMapLocation) {
             newErrors.selectedMapLocation = Constants.errorStrings.bannerSearchLocation;
         }
@@ -443,7 +444,7 @@ const BannerSearch = (props: PropsType) => {
                 defaultLat: props.currentCoordinates?.coordinates[1] ? props.currentCoordinates?.coordinates[1] : queryParamsData.defaultLat,
                 defaultLong: props.currentCoordinates?.coordinates[0] ? props.currentCoordinates?.coordinates[0] : queryParamsData.defaultLong,
                 ...(stateData.selectedMapLocation && { address: stateData.selectedMapLocation.replaceAll("#", "") }),
-                searchJob: newSearchData?.searchedJob ? newSearchData?.searchedJob : stateData?.searchedJob,
+                searchJob: newSearchData?.searchedJob ? newSearchData?.searchedJob.replaceAll("&", "xxx") : stateData?.searchedJob.replaceAll("&", "xxx"),
                 jobResults: null
             }
             delete newData.location;

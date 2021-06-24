@@ -375,11 +375,15 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     let paramStatus: any = '';
+    let paramJobId: any = '';
     if (props.location?.search) {
         let location_search = window.atob((props.location?.search).substring(1))
         const params = new URLSearchParams(location_search);
         if (params.get('status')) {
             paramStatus = params.get('status');
+        }
+        if (params.get('jobId')) {
+            paramJobId = params.get('jobId');
         }
     }
 
@@ -499,6 +503,13 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon clock">{jobDetailsData.duration}</li>
                                         </ul>
                                     </div>
+                                    {paramStatus === 'EXPIRED' && (
+                                        <button
+                                            className="fill_btn full_btn btn-effect"
+                                            onClick={() => props.history.push(`/post-new-job?jobId=${paramJobId}`)}>
+                                            Edit
+                                        </button>
+                                    )}
 
                                     {/* {paramStatus ? (
                                         <button
