@@ -474,7 +474,7 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             {!jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && isTradieWorking && (
                                 <div className="flex_col_sm_4 text-right">
-                                    <span className="dot_menu" title="Edit">
+                                    <span className="dot_menu">
                                         <img src={editIconBlue} alt="edit" />
                                         <div className="edit_menu">
                                             <ul>
@@ -518,7 +518,7 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card">
+                                    {jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         {/* {!jobDetailsData?.isChangeRequest && <div className="chang_req_card"> */}
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
@@ -539,7 +539,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon calendar">{jobDetailsData?.duration || ''}</li>
                                         </ul>}
                                     </div>
-                                    {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card">
+                                    {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
                                             Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid.

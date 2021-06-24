@@ -324,7 +324,7 @@ const JobDetails = ({
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    <span className="title">{data?.jobName}
+                                    <span className="title line-3 pr-20" title={data?.jobName}>{data?.jobName}
                                         <span onClick={() => { forwardScreenStep(1) }} className="edit_icon" title="Edit">
                                             <img src={editIconBlue} alt="edit" />
                                         </span>
@@ -346,7 +346,7 @@ const JobDetails = ({
                                     </div>
                                     <button
                                         onClick={handlePost}
-                                        className="fill_btn full_btn btn-effect">Post job</button>
+                                        className="fill_btn full_btn btn-effect mt-15">Post job</button>
                                 </div>
                             </div>
                         </div>

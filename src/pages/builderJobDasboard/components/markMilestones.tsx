@@ -144,7 +144,7 @@ const MarkMilestones = (props: any) => {
                         {item_detail && Object.keys(item_detail).length ? item_detail.jobName : ''}
                     </span>
 
-                    <span className="dot_menu" title="Edit">
+                    <span className="dot_menu">
                         <img src={editIconBlue} alt="edit" />
                         <div className="edit_menu">
                             <ul>
@@ -208,8 +208,8 @@ const MarkMilestones = (props: any) => {
                                     <span>
                                         {renderTime(fromDate, toDate)}
                                     </span>
-                                </div>
-                                {isActive === 1 ? (
+
+                                    {isActive === 1 ? (
                                     <button
                                         className="fill_btn full_btn btn-effect"
                                         onClick={() => {
@@ -234,6 +234,9 @@ const MarkMilestones = (props: any) => {
                                         {'Check and Approve'}
                                     </button>
                                 ) : null}
+                                
+                                </div>
+                                
                             </li>
                         );
                     }

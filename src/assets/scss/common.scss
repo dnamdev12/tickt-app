@@ -195,7 +195,10 @@ body {
   line-height: 1.13;
   color: #748092;
   display: block;
-  margin-bottom: 10px;
+  margin-bottom: 15px;
+  &.mb30{
+    margin-bottom: 30px;
+  }
 }
 
 
@@ -1298,7 +1301,18 @@ body {
       padding: 15px 10px 15px 15px;
       box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.19);
       background-color: var(--white);
-      margin-bottom: 15px;
+      &.mt-sm{
+        margin-top: 15px;
+        @media (max-width: 768px){
+          margin: 0;
+        }
+      }
+      &.mb-sm{
+        margin-bottom: 15px;
+        @media (max-width: 768px){
+          margin: 0;
+        }
+      }
       @media (max-width: 768px){
         margin-bottom: 30px;
       }
@@ -1390,7 +1404,7 @@ body {
         font-size: 17px;
       }
       .edit_icon{
-        top: auto;
+        right: 0;
       }
     }
     .sub_title {
@@ -4634,7 +4648,7 @@ body {
     }
   }
   .tradie_card {
-    min-height: 264px;
+    min-height: 337px;
     .user_wrap{
       margin: 0 0 16px;
     }
@@ -4682,6 +4696,7 @@ body {
       font-size: 16px;
       padding-left: 30px;
       max-width: 86%;
+      height: 20px;
       @media(max-width: 650px){
         max-width: 80%;
       }
@@ -5077,6 +5092,7 @@ body {
     }
     .info{
       padding-left: 40px;
+      margin-bottom: 15px;
       label {
         font-size: 16px;
         color: var(--blue);
@@ -5089,6 +5105,9 @@ body {
         margin: 3px 0;
         display: block;
         font-size: 14px;
+      }
+      .fill_btn{
+        margin-top: 15px;
       }
     }
   }
