@@ -254,7 +254,11 @@ a.fill_grey_btn {
   }
 }
 
-
+.w85per{
+  @media (max-width: 650px) {
+    width: 85% !important;
+  }
+}
 
 
 .view_all {

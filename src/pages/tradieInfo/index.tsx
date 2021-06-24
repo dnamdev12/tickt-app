@@ -1,4 +1,6 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux';
 import {
     getBuilderProfile,
     tradieReviewReply,
@@ -14,11 +16,15 @@ import {
     HomeTradieProfile,
     CancelInviteForJob,
 } from '../../redux/jobs/actions';
-import { getTradieProfile } from '../../redux/profile/actions';
-
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux';
-
+import {
+    getTradieProfile,
+    getTradieProfileView
+} from '../../redux/profile/actions';
+import { setShowToast } from '../../redux/common/actions';
+import { SaveTradie } from '../../redux/jobs/actions';
+import storageService from '../../utils/storageService';
+import { portfolio, portfolioModal } from '../builderInfo/builderInfo'
+import VoucherDetail from './voucherDetail';
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import Modal from '@material-ui/core/Modal';
 import ReviewInfoBox from '../../common/reviewInfoBox';
@@ -27,25 +33,28 @@ import profilePlaceholder from '../../assets/images/ic-placeholder-detail.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
 import noData from '../../assets/images/no-search-data.png';
+import menu from '../../assets/images/menu-line-blue.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
-import { portfolio, portfolioModal } from '../builderInfo/builderInfo'
-import { setShowToast } from '../../redux/common/actions';
-import { SaveTradie } from '../../redux/jobs/actions'
+import Skeleton from 'react-loading-skeleton';
 
 import vouch from '../../assets/images/ic-template.png';
-import VoucherDetail from './voucherDetail';
+import _ from 'lodash';
 
+const USER_TYPE = storageService.getItem('userType');
 interface Props {
     tradieInfo: any,
     tradieId: any,
     jobId: any,
     tradieReviews: any,
+    userType: number,
+    tradieProfileViewData: any,
     getTradieProfile: (data: any) => void,
     getTradieReviewListOnBuilder: (data: any) => void,
     getAcceptDeclineTradie: (data: any) => void,
+    getTradieProfileView: () => void,
 }
 
 interface State {
@@ -148,11 +157,21 @@ class TradieInfo extends Component<Props, State> {
         let jobId = urlParams.get('jobId')
         let specializationId = urlParams.get('specializationId')
         let tradeId = urlParams.get('tradeId')
-        return { jobId, specializationId, tradeId };
+        let user_type = urlParams.get('type')
+        return { jobId, specializationId, tradeId, user_type };
     }
 
     componentDidMount() {
         this.setItems();
+    }
+
+    static getDerivedStateFromProps(nextProps: any, prevState: any) {
+        if (nextProps.tradieProfileViewData && !_.isEqual(nextProps.tradieProfileViewData, prevState.tradieInfo)) {
+            return {
+                tradieInfo: nextProps.tradieProfileViewData
+            }
+        }
+        return null;
     }
 
     componentDidUpdate() {
@@ -322,9 +341,12 @@ class TradieInfo extends Component<Props, State> {
     }
 
     setItems = async () => {
-        const { jobId, tradeId } = this.getItemsFromLocation();
+        const { jobId, tradeId, user_type } = this.getItemsFromLocation();
 
-        if (jobId) {
+        if (user_type == '1' || this.props.userType == 1) {
+            console.log(USER_TYPE, "USER_TYPE", user_type, "user_type", this.props.userType, "this.props.userType");
+            this.props.getTradieProfileView();
+        } else if (jobId) {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
             console.log({ res_profile })
             if (res_profile.success) {
@@ -333,14 +355,14 @@ class TradieInfo extends Component<Props, State> {
         } else {
             let res_profile: any = await HomeTradieProfile({ tradieId: tradeId });
             console.log({ res_profile })
-            if (res_profile.success) {
+            if (res_profile?.success) {
                 this.setState({ tradieInfo: res_profile.data })
             }
         }
 
         let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: 1 });
         console.log({ res_trade })
-        if (res_trade.success) {
+        if (res_trade?.success) {
             this.setState({ tradieReviews: res_trade.data })
         }
     }
@@ -387,22 +409,18 @@ class TradieInfo extends Component<Props, State> {
     render() {
         let props: any = this.props;
         // let tradieInfo: any = props.tradieInfo;
+        const { user_type } = this.getItemsFromLocation();
         let { portfolioData, toggleVoucher } = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
+        let userType: number = Number(user_type);
         let tradieReviews: any = this.state.tradieReviews;
+        let isSkeletonLoading: boolean = props.isSkeletonLoading;
+
+        console.log(tradieInfo, "tradieInfo", userType, "userType");
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
-
-        let profileReviewsData = [];
-        if (profileData?.reviewData) {
-            profileReviewsData = profileData?.reviewData
-        }
-
-        if (profileData?.reviews) {
-            profileReviewsData = profileData?.reviews
-        }
 
         return (
             <div className="app_wrapper">
@@ -428,139 +446,160 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
-                                        <img
-                                            src={tradieInfo?.tradieImage || profilePlaceholder}
+                                        {isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img
+                                            src={userType === 1 ? tradieInfo?.userImage : tradieInfo?.tradieImage ? tradieInfo?.tradieImage : profilePlaceholder}
                                             alt="profile-pic"
-                                        />
+                                        />}
                                     </figure>
                                 </div>
                                 <div className="flex_col_sm_4 relative">
                                     <div className="detail_card">
-                                        <span className="title">{tradieInfo?.tradieName || ''}</span>
-                                        <span className="tagg">{tradieInfo?.position || ''}</span>
-                                        {/* <span className="xs_sub_title">{profileData?.companyName}</span> */}
-                                        <ul className="review_job">
-                                            <li>
-                                                <span className="icon reviews">{tradieInfo?.ratings || ''}</span>
-                                                <span className="review_count">{`${tradieInfo?.reviewsCount || ''} reviews`}</span>
-                                            </li>
-                                            <li>
-                                                <span className="icon job">{tradieInfo?.jobCompletedCount || ''}</span>
-                                                <span className="review_count"> jobs completed</span>
-                                            </li>
-                                        </ul>
+                                        {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
+                                            <>
+                                                <span className="title">{userType === 1 ? tradieInfo?.userName : tradieInfo?.tradieName ? tradieInfo?.tradieName : ''}</span>
+                                                <span className="tagg">{userType === 1 ? 'Tradesperson' : tradieInfo?.position ? tradieInfo?.position : ''}</span>
+                                                <ul className="review_job">
+                                                    <li>
+                                                        <span className="icon reviews">{tradieInfo?.ratings || '0'}</span>
+                                                        <span className="review_count">{`${tradieInfo?.reviewsCount || '0'} reviews`}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span className="icon job">{tradieInfo?.jobCompletedCount || '0'}</span>
+                                                        <span className="review_count"> jobs completed</span>
+                                                    </li>
+                                                </ul>
 
-                                        {!tradieInfo?.isRequested ? (
-                                            <div className="form_field">
-                                                {tradieInfo?.isInvited ? (
-                                                    <div className="bottom_btn">
-                                                        <span
-                                                            onClick={() => {
-                                                                this.savedTradie({ tradieInfo })
-                                                            }}
-                                                            className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-                                                        <button className="fill_btn full_btn btn-effect">
-                                                            {'Cancel Invite'}
-                                                        </button>
+                                                {userType === 1 ? (
+                                                    <div className="form_field">
+                                                        <div className="bottom_btn">
+                                                            <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
+                                                        </div>
+                                                    </div>
+                                                ) : (!tradieInfo?.isRequested ? (
+                                                    <div className="form_field">
+                                                        {tradieInfo?.isInvited ? (
+                                                            <div className="bottom_btn">
+                                                                <span
+                                                                    onClick={() => {
+                                                                        this.savedTradie({ tradieInfo })
+                                                                    }}
+                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
+                                                                <button className="fill_btn full_btn btn-effect">
+                                                                    {'Cancel Invite'}
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="bottom_btn">
+                                                                <span
+                                                                    onClick={() => {
+                                                                        this.savedTradie({ tradieInfo })
+                                                                    }}
+                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        console.log({ tradieInfo })
+                                                                        props.history.push({
+                                                                            pathname: '/choose-the-job',
+                                                                            state: {
+                                                                                tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+                                                                                path: props.location.search,
+                                                                            }
+                                                                        })
+                                                                    }}
+                                                                    className="fill_btn full_btn btn-effect">
+                                                                    {'Invite'}
+                                                                </button>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 ) : (
-                                                    <div className="bottom_btn">
-                                                        <span
-                                                            onClick={() => {
-                                                                this.savedTradie({ tradieInfo })
-                                                            }}
-                                                            className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-                                                        <button
-                                                            onClick={() => {
-                                                                console.log({ tradieInfo })
-                                                                props.history.push({
-                                                                    pathname: '/choose-the-job',
-                                                                    state: {
-                                                                        tradieId: tradieInfo?._id || tradieInfo?.tradieId,
-                                                                        path: props.location.search,
-                                                                    }
-                                                                })
-                                                            }}
-                                                            className="fill_btn full_btn btn-effect">
-                                                            {'Invite'}
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <div className="form_field">
-                                                    <button
-                                                        onClick={() => { submitAcceptDeclineRequest(1) }}
-                                                        className="fill_btn full_btn btn-effect">Accept</button>
-                                                </div>
-                                                <div className="form_field">
-                                                    <button
-                                                        onClick={() => { submitAcceptDeclineRequest(2) }}
-                                                        className="fill_grey_btn full_btn btn-effect">Decline</button>
-                                                </div>
-                                            </>
-                                        )}
-
+                                                    <>
+                                                        <div className="form_field">
+                                                            <button
+                                                                onClick={() => { submitAcceptDeclineRequest(1) }}
+                                                                className="fill_btn full_btn btn-effect">Accept</button>
+                                                        </div>
+                                                        <div className="form_field">
+                                                            <button
+                                                                onClick={() => { submitAcceptDeclineRequest(2) }}
+                                                                className="fill_grey_btn full_btn btn-effect">Decline</button>
+                                                        </div>
+                                                    </>
+                                                ))}
+                                            </>}
                                     </div>
                                 </div>
                             </div>
                             <div className="flex_row description">
                                 <div className="flex_col_sm_8">
-                                    {tradieInfo?.about?.length > 0 && (
+                                    {props.isSkeletonLoading ? <Skeleton count={2} /> : tradieInfo?.about?.length > 0 ? (
                                         <div>
                                             <span className="sub_title">About</span>
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
-                                    )}
+                                    ) : null}
                                 </div>
                                 <div className="flex_col_sm_4">
-                                    {tradieInfo?.areasOfSpecialization?.length > 0 && (
+                                    {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
                                         <>
                                             <span className="sub_title">Areas of specialisation</span>
                                             <div className="tags_wrap">
                                                 <ul>
+                                                    <li className="main">
+                                                        <img src={tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
+                                                    </li>
+                                                    {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any) => {
+                                                        return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                    })}
+                                                </ul>
+                                            </div>
+                                        </>
+                                    ) : (tradieInfo?.areasOfSpecialization?.length > 0 ? (
+                                        <>
+                                            <span className="sub_title">Areas of specialisation</span>
+                                            <div className="tags_wrap">
+                                                <ul>
+                                                    {tradieInfo?.tradeName && <li className="main">
+                                                        <img src={tradieInfo?.tradeSelectedUrl || menu} alt="" />{tradieInfo?.tradeName || ''}
+                                                    </li>}
                                                     {tradieInfo?.areasOfSpecialization?.map((item: any) => {
                                                         return <li key={item.specializationId}>{item.specializationName}</li>
                                                     })}
                                                 </ul>
                                             </div>
                                         </>
-                                    )}
+                                    ) : null)}
                                 </div>
                             </div>
 
                         </div>
                     </div>
                 </div>
-                {tradieInfo?.portfolio?.length ?
-                    <div className="section_wrapper">
-                        <div className="custom_container">
-                            <span className="sub_title">Portfolio</span>
-                            {/* <ul className="portfolio_wrappr"> */}
-                            {portfolio && (<Carousel
-                                responsive={portfolio}
-                                showDots={false}
-                                arrows={true}
-                                infinite={true}
-                                className="portfolio_wrappr"
-                                partialVisbile
-                            >
-                                {tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
-                                    return (
-                                        <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
-                                            <figure className="portfolio_img">
-                                                <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
-                                                <span className="xs_sub_title">{item.jobName}</span>
-                                            </figure>
-                                        </div>
-                                    )
-                                }) : <img alt="" src={portfolioPlaceholder} />}
-                            </Carousel>)}
-                            {/* </ul> */}
-                        </div>
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
+                        <Carousel
+                            responsive={portfolio}
+                            showDots={false}
+                            arrows={true}
+                            infinite={true}
+                            className="portfolio_wrappr"
+                            partialVisbile
+                        >
+                            {props.isSkeletonLoading ? <Skeleton height={256} /> : tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
+                                return (
+                                    <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
+                                        <figure className="portfolio_img">
+                                            <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
+                                            <span className="xs_sub_title">{item.jobName}</span>
+                                        </figure>
+                                    </div>
+                                )
+                            }) : <img alt="" src={portfolioPlaceholder} />}
+                        </Carousel>
                     </div>
-                    : null}
+                </div>
+
                 {/* portfolio Image modal desc */}
                 {portfolioData?.portfolioImageClicked &&
                     <Modal
@@ -607,7 +646,6 @@ class TradieInfo extends Component<Props, State> {
                                     </Carousel>
                                 </div>
                                 <div className="flex_col_sm_6">
-                                    {/* <span className="xs_sub_title">{portfolioData?.portfolioDetails?.jobDescription}</span> */}
                                     <span className="xs_sub_title">Job Description</span>
                                     <div className="job_content">
                                         <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
@@ -617,36 +655,33 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </Modal>}
 
-                {console.log({ profileData })}
-                {profileReviewsData?.length ?
-                    <div className="section_wrapper">
-                        <div className="custom_container">
-                            <span className="sub_title">Reviews</span>
-                            <div className="flex_row review_parent">
-                                {profileReviewsData?.length > 0 ?
-                                    (profileReviewsData?.slice(0, 8)?.map((jobData: any) => {
-                                        return <ReviewInfoBox item={jobData} {...props} />
-                                    })) :
-                                    <div className="no_record">
-                                        <figure className="no_data_img">
-                                            <img src={noData} alt="data not found" />
-                                        </figure>
-                                        <span>No Data Found</span>
-                                    </div>}
-                            </div>
-                            <button
-                                className="fill_grey_btn full_btn view_more"
-                                onClick={() => {
-                                    this.setState((prevData: any) => ({
-                                        reviewsData: {
-                                            ...prevData.reviewsData, showAllReviewsClicked: true
-                                        }
-                                    }))
-                                }}>
-                                {`View all ${profileReviewsData?.length} reviews`}</button>
-                        </div>
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Reviews'}</span>
+                        {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
+                            {tradieInfo?.reviewData?.length > 0 ?
+                                (tradieInfo?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                    return <ReviewInfoBox item={jobData} {...props} />
+                                })) :
+                                <div className="no_record">
+                                    <figure className="no_data_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                    <span>No Data Found</span>
+                                </div>}
+                        </div>}
+                        {props.isSkeletonLoading ? <Skeleton height={25}/> : <button
+                            className="fill_grey_btn full_btn view_more"
+                            onClick={() => {
+                                this.setState((prevData: any) => ({
+                                    reviewsData: {
+                                        ...prevData.reviewsData, showAllReviewsClicked: true
+                                    }
+                                }))
+                            }}>
+                            {`View all ${tradieInfo?.reviewsCount || 0} reviews`}</button>}
                     </div>
-                    : null}
+                </div>
 
                 {tradieInfo?.vouchesData?.length ?
                     <div className="section_wrapper">
@@ -696,7 +731,7 @@ class TradieInfo extends Component<Props, State> {
                                     </div>
                                 ))}
                             </div>
-                            {console.log({tradieInfo})}
+                            {console.log({ tradieInfo })}
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {
@@ -724,7 +759,7 @@ class TradieInfo extends Component<Props, State> {
                     >
                         <div className="custom_wh">
                             <div className="heading">
-                                <span className="sub_title">{`${props.tradieReviews?.length} questions`}</span>
+                                <span className="sub_title">{`${tradieInfo.reviewsCount} reviews`}</span>
                                 <button className="close_btn"
                                     onClick={() => modalCloseHandler('showAllReviewsClicked')}
                                 >
@@ -926,15 +961,19 @@ class TradieInfo extends Component<Props, State> {
 
 const mapState = (state: any) => ({
     tradieInfo: state.profile.tradieInfo,
+    userType: state.profile.userType,
     tradieReviews: state.jobs.tradieReviews,
     tradieRequestStatus: state.jobs.tradieRequestStatus,
+    tradieProfileViewData: state.profile.tradieProfileViewData,
+    isSkeletonLoading: state.common.isSkeletonLoading
 });
 
 const mapProps = (dispatch: any) => {
     return bindActionCreators({
         getTradieProfile,
         getTradieReviewListOnBuilder,
-        getAcceptDeclineTradie
+        getAcceptDeclineTradie,
+        getTradieProfileView
     }, dispatch);
 };
 

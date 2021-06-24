@@ -6,6 +6,7 @@ import { tradieChangeEmail } from '../../../../../../redux/profile/actions';
 import eyeIconClose from '../../../../../../assets/images/icon-eye-closed.png';
 import eyeIconOpen from '../../../../../../assets/images/icon-eye-open.png';
 import cancel from "../../../../../../assets/images/ic-cancel.png";
+import storageService from '../../../../../../utils/storageService';
 
 interface PropsTypes {
     currentEmail: string,
@@ -52,7 +53,7 @@ const NewEmail = (props: PropsTypes) => {
                 currentEmail: props.currentEmail,
                 newEmail: newEmail,
                 password: password,
-                user_type: 1
+                user_type: storageService.getItem('userType'),
             }
             const res = await tradieChangeEmail(data);
             if (res?.success) {

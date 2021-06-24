@@ -4,7 +4,8 @@ import TradieEditProfileComponent from './tradieEditProfile';
 import {
     getTradieProfileView,
     getTradieBasicDetails,
-    cleanTradieBasicDetails
+    cleanTradieBasicDetails,
+    cleanTradieProfileViewData
 } from './../../redux/profile/actions';
 
 import { callTradeList } from '../../redux/auth/actions';
@@ -13,10 +14,13 @@ import { callTradieProfileData } from '../../redux/profile/actions';
 
 const mapStateToProps = (state: any) => {
     return {
+        tradieProfileData: state.profile.tradieProfileData,
+        builderProfile: state.profile.builderProfile,
         tradieProfileViewData: state.profile.tradieProfileViewData,
         tradieBasicDetailsData: state.profile.tradieBasicDetailsData,
         tradeListData: state.auth.tradeListData,
-        isLoading: state.common.isLoading
+        isLoading: state.common.isLoading,
+        isSkeletonLoading: state.common.isSkeletonLoading
     }
 }
 
@@ -27,6 +31,7 @@ const mapDispatchToProps = (dispatch: any) => {
         cleanTradieBasicDetails,
         callTradeList,
         callTradieProfileData,
+        cleanTradieProfileViewData,
     }, dispatch);
 }
 

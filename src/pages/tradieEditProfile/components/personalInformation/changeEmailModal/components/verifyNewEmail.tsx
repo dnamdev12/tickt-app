@@ -6,6 +6,7 @@ import { verifyEmailOtp } from '../../../../../../redux/profile/actions';
 import OtpInput from "react-otp-input";
 
 import cancel from "../../../../../../assets/images/ic-cancel.png";
+import storageService from '../../../../../../utils/storageService';
 
 interface PropsTypes {
     history: any,
@@ -51,7 +52,7 @@ const VerifyNewEmail = (props: PropsTypes) => {
             currentEmail: props.currentEmail,
             newEmail: props.newEmail,
             password: props.currentPassword,
-            user_type: 1
+            user_type: storageService.getItem('userType'),
         }
         const res = await tradieChangeEmail(data);
         if (res.success) {
@@ -65,11 +66,8 @@ const VerifyNewEmail = (props: PropsTypes) => {
             const data = {
                 otp: otp
             }
-            const res: any = await verifyEmailOtp(data)
-            if (res.success || true) {
-                // alert('verify otp started!!!');
-                // return;
-                // props.updateSteps(3);
+            const res: any = await verifyEmailOtp(data);
+            if (res.success) {
                 props.history?.push('/email-updated-successfully');
             }
         }
@@ -88,9 +86,9 @@ const VerifyNewEmail = (props: PropsTypes) => {
                     <img src={cancel} alt="cancel" />
                 </button>
             </div>
-            <div className="inner_wrap">
-                <div className="form_wrapper">
-                    <form onSubmit={onSubmit}>
+            <form onSubmit={onSubmit}>
+                <div className="inner_wrap">
+                    <div className="form_wrapper">
                         <span className="show_label">Verification Code</span>
                         <div className="form_field">
                             <div className="otp_input_wrapper">
@@ -117,13 +115,13 @@ const VerifyNewEmail = (props: PropsTypes) => {
                         {counter > 0 && <div>
                             <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
                         </div>}
-                       
-                    </form>
+
+                    </div>
                 </div>
                 <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect">Next</button>
-                        </div>
-            </div>
+                    <button className="fill_btn full_btn btn-effect">Next</button>
+                </div>
+            </form>
         </>
     )
 }

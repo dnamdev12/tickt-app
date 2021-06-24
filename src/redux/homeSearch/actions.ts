@@ -1,7 +1,7 @@
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
 import * as actionTypes from './constants';
-import { setShowToast, setLoading } from '../common/actions';
+import { setShowToast, setLoading, setSkeletonLoading } from '../common/actions';
 
 // export const getJobType = () => ({ type: actionTypes.GET_JOB_TYPE})
 export const getSearchJobList = (searchJob: string) => ({ type: actionTypes.GET_SEARCH_JOB_LIST, searchJob });
@@ -21,9 +21,9 @@ export const postHomeSearchData = (jobData: object) => ({ type: actionTypes.POST
 export const resetHomeSearchJobData = () => ({ type: actionTypes.RESET_HOME_SEARCH_DATA });
 
 export const getHomeJobDetails = async (data: any) => {
-    setLoading(true);
+    setSkeletonLoading(true);
     const response: FetchResponse = await NetworkOps.get(Urls.homeJobDetails + `?jobId=${data.jobId}&tradeId=${data.tradeId}&specializationId=${data.specializationId}`);
-    setLoading(false);
+    setSkeletonLoading(false);
     if (response.status_code === 200) {
         return { success: true, data: response.result };
     }

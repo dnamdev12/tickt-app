@@ -5,6 +5,7 @@ const initialState = {
   tradieProfileData: '',
   tradieProfileViewData: '',
   tradieBasicDetailsData: '',
+  builderProfileViewData: '',
   bankDetails: {},
   error: '',
   tradieInfo: [],
@@ -29,6 +30,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         tradieBasicDetailsData: action.payload,
+      };
+    case actionTypes.SET_BUILDER_PROFILE_VIEW:
+      return {
+        ...state,
+        builderProfileViewData: action.payload,
       };
 
     case actionTypes.GET_BANK_DETAILS_END:

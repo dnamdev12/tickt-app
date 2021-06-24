@@ -2,19 +2,24 @@ import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
 import * as actionTypes from './constants';
 import { setShowToast, setLoading } from '../common/actions';
+import storageService from '../../utils/storageService';
 
 
 export const callTradieProfileData = () => ({ type: actionTypes.GET_TRADIE_PROFILE_DATA });
 
 export const getTradieProfileView = () => ({ type: actionTypes.GET_TRADIE_PROFILE_VIEW });
 
+export const getBuilderProfileView = () => ({ type: actionTypes.GET_BUILDER_PROFILE_VIEW });
+
 export const getTradieBasicDetails = () => ({ type: actionTypes.GET_TRADIE_BASIC_DETAILS });
 
 export const cleanTradieBasicDetails = () => ({ type: actionTypes.CLEAN_TRADIE_BASIC_DETAILS });
 
+export const cleanTradieProfileViewData = () => ({ type: actionTypes.CLEAN_TRADIE_PROFILE_VIEW_DATA });
+
 export const tradieUpdateProfileDetails = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdateProfileDetails, data);
+  const response: FetchResponse = await NetworkOps.putToJson(storageService.getItem('userType') === 1 ? Urls.tradieUpdateProfileDetails : Urls.builderUpdateProfileDetails, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -25,7 +30,7 @@ export const tradieUpdateProfileDetails = async (data: any) => {
 
 export const tradieUpdateBasicDetails = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieEditBasicDetails, data);
+  const response: FetchResponse = await NetworkOps.putToJson(storageService.getItem('userType') === 1 ? Urls.tradieEditBasicDetails : Urls.builderEditBasicDetails, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -37,7 +42,7 @@ export const tradieUpdateBasicDetails = async (data: any) => {
 
 export const tradieAddPortfolioJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(Urls.tradieAddPortfolioJob, data);
+  const response: FetchResponse = await NetworkOps.postToJson(storageService.getItem('userType') === 1 ? Urls.tradieAddPortfolioJob : Urls.builderAddPortfolioJob, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -49,7 +54,7 @@ export const tradieAddPortfolioJob = async (data: any) => {
 
 export const tradieUpdatePortfolioJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieUpdatePortfolioJob, data);
+  const response: FetchResponse = await NetworkOps.putToJson(storageService.getItem('userType') === 1 ? Urls.tradieUpdatePortfolioJob : Urls.builderUpdatePortfolioJob, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -61,7 +66,7 @@ export const tradieUpdatePortfolioJob = async (data: any) => {
 
 export const tradieChangeEmail = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieChangeEmail, data);
+  const response: FetchResponse = await NetworkOps.putToJson(storageService.getItem('userType') === 1 ? Urls.tradieChangeEmail : Urls.builderChangeEmail, data);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true };
@@ -82,7 +87,7 @@ export const verifyEmailOtp = async (data: object) => {
 
 export const tradieDeletePortfolioJob = async (portfolioId: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.delete(Urls.tradieDeletePortfolioJob +  `?portfolioId=${portfolioId}`);
+  const response: FetchResponse = await NetworkOps.delete((storageService.getItem('userType') === 1 ? Urls.tradieDeletePortfolioJob : Urls.builderDeletePortfolioJob) +  `?portfolioId=${portfolioId}`);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -119,7 +124,7 @@ export const getProfileBuilder = () => ({ type: actionTypes.GET_PROFILE_BUILDER 
 
 export const tradieUpdatePassword = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.tradieChangePassword, data);
+  const response: FetchResponse = await NetworkOps.putToJson(storageService.getItem('userType') === 1 ? Urls.tradieChangePassword : Urls.builderChangePassword, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);

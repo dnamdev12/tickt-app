@@ -6,8 +6,6 @@ import templateImage from '../../../../../../assets/images/thanks-bg.jpg';
 
 interface Propstype {
     history: any,
-    // updateSteps: (step: number, newData?: any) => void,
-    // closeModalHandler: () => void,
 }
 
 const SuccessPage = (props: Propstype) => {

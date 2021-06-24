@@ -199,10 +199,8 @@ const Header = (props: any) => {
                                             {renderByType({ name: 'userName' })}
                                             {/* {props?.builderProfile?.userName || props?.tradieProfileData?.userName} */}
                                         </span>
-                                        <MenuItem onClick={handleClose}>
-                                            <span className="setting_icon"
-                                             onClick={() => props.userType === 1 && history.push(`/tradie-info?tradeId=${renderByType({ name: 'userId' })}`)}
-                                             >
+                                        <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); } }>
+                                            <span className="setting_icon">
                                                 <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" />
                                                 {'My Profile'}
                                             </span>
@@ -225,8 +223,8 @@ const Header = (props: any) => {
                                                 {'App Guide'}
                                             </span>
                                         </MenuItem> */}
-                                        <MenuItem onClick={handleClose}>
-                                            <span className="setting_icon logout" onClick={logoutHandler}>Logout</span>
+                                        <MenuItem onClick={() => { handleClose(); logoutHandler(); } }>
+                                            <span className="setting_icon logout">Logout</span>
                                         </MenuItem>
                                     </Menu>
                                 </div>

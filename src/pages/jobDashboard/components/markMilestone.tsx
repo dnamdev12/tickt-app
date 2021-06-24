@@ -111,6 +111,16 @@ const MarkMilestone = ({
   const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
 
   useEffect(() => {
+    const params = new URLSearchParams(history.location?.search);
+    const jobActionType: any = params.get('jobAction');
+    if (jobActionType === 'dispute') {
+      setToggleItem((prev: any) => ({ ...prev, lodge: true }));
+    } else if (jobActionType === 'cancel') {
+      setToggleItem((prev: any) => ({ ...prev, cancel: true }));
+    }
+  }, []);
+
+  useEffect(() => {
     getMilestoneList(params.jobId);
     getBankDetails();
   }, [params.jobId, getMilestoneList, getBankDetails]);
@@ -188,6 +198,12 @@ const MarkMilestone = ({
   const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
 
   const backTab = (name: string) => {
+    const params = new URLSearchParams(history.location?.search);
+    const jobActionType: any = params.get('jobAction');
+    if (jobActionType) {
+      history.goBack();
+      return;
+    }
     setToggleItem((prev: any) => ({ ...prev, [name]: false }))
   }
 

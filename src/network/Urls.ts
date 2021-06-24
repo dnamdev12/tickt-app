@@ -85,6 +85,8 @@ const Urls = {
     tradieUpdatePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}editPortfolio`,
     tradieDeletePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}deletePortfolio`,
     tradieChangePassword: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changePassword`,
+    replyChangeRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}replyChangeRequest`,
+    replyCancellation: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}replyCancellation`,
     tradieChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}changeEmail`,
     verifyEmailOtp: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}verifyEmail`,
     jobDetailsTradie: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}jobDetails`,
@@ -107,6 +109,15 @@ const Urls = {
     tradieCancelJob: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}cancelJob`,
     jobHome: `${versions.v1}${ServiceEnum.home}`,
     builder: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
+    builderProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}view`,
+    getBuilderBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getBasicDetails`,
+    builderChangePassword: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}changePassword`,
+    builderEditBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}editBasicDetails`,
+    builderAddPortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}addPortfolio`,
+    builderUpdatePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}editPortfolio`,
+    builderDeletePortfolioJob: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}deletePortfolio`,
+    builderUpdateProfileDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}editProfile`,
+    builderChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}changeEmail`,
 }
 
 export const urlFor = (service: String): string => {

@@ -3,9 +3,10 @@ import * as actionTypes from './constants';
 import { MARK_MILESTONE_COMPLETE } from '../jobs/constants';
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
-import { setLoading, setShowToast } from '../common/actions';
+import { setLoading, setShowToast, setSkeletonLoading } from '../common/actions';
 import { markMilestoneComplete } from '../jobs/actions';
 import * as commonActions from '../common/actions';
+import storageService from '../../utils/storageService';
 
 function* callTradieProfileData() {
   const response: FetchResponse = yield NetworkOps.get(Urls.profileTradie);
@@ -20,9 +21,10 @@ function* callTradieProfileData() {
 }
 
 function* getTradieProfileView() {
-  setLoading(true);
-  const response: FetchResponse = yield NetworkOps.get(Urls.tradieProfileView);
-  setLoading(false);
+  yield put({ type: actionTypes.SET_TRADIE_PROFILE_VIEW, payload: '' });
+  setSkeletonLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(storageService.getItem('userType') === 1 ? Urls.tradieProfileView : Urls.builderProfileView);
+  setSkeletonLoading(false);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_TRADIE_PROFILE_VIEW,
@@ -33,8 +35,27 @@ function* getTradieProfileView() {
   }
 }
 
+function* cleanTradieProfileViewData() {
+  yield put({ type: actionTypes.SET_TRADIE_PROFILE_VIEW, payload: '' });
+}
+
+function* getBuilderProfileView() {
+  yield put({ type: actionTypes.SET_BUILDER_PROFILE_VIEW, payload: '' });
+  setSkeletonLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(Urls.builderProfileView);
+  setSkeletonLoading(false);
+  if (response.status_code === 200) {
+    yield put({
+      type: actionTypes.SET_BUILDER_PROFILE_VIEW,
+      payload: response.result,
+    });
+  } else {
+    yield put({ type: actionTypes.SET_BUILDER_PROFILE_VIEW, payload: '' });
+  }
+}
+
 function* getTradieBasicDetails() {
-  const response: FetchResponse = yield NetworkOps.get(Urls.getTradieBasicDetails);
+  const response: FetchResponse = yield NetworkOps.get(storageService.getItem('userType') === 1 ? Urls.getTradieBasicDetails : Urls.getBuilderBasicDetails);
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_TRADIE_BASIC_DETAILS,
@@ -144,9 +165,9 @@ function* getTradieProfile({ data }: any) {
 }
 
 function* getProfileBuilder() {
-  commonActions.setLoading(true);
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.builder)
-  commonActions.setLoading(false);
+  setLoading(false);
   if (response.status_code === 200) {
     yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: response.result });
   } else {
@@ -163,8 +184,10 @@ function* authWatcher() {
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE, getTradieProfile);
   yield takeLatest(actionTypes.GET_PROFILE_BUILDER, getProfileBuilder);
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE_VIEW, getTradieProfileView);
+  yield takeLatest(actionTypes.GET_BUILDER_PROFILE_VIEW, getBuilderProfileView);
   yield takeLatest(actionTypes.GET_TRADIE_BASIC_DETAILS, getTradieBasicDetails);
   yield takeLatest(actionTypes.CLEAN_TRADIE_BASIC_DETAILS, cleanTradieBasicDetails);
+  yield takeLatest(actionTypes.CLEAN_TRADIE_PROFILE_VIEW_DATA, cleanTradieProfileViewData);
 }
 
 export default authWatcher;
