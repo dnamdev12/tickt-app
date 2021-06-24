@@ -67,15 +67,15 @@ const PastJobs = (props: Proptypes) => {
                 </div>
               </div>
               {/* for staging build comment line  70 - 78 and uncomment line 79-81 */}
-              {!item?.isRated && <NavLink to={{
-                  pathname: "/review-builder",
-                  state: { item: item }
-                }}
-                >
-                  <button className="fill_grey_btn full_btn">
-                    <img src={rateStar} alt="rating-star" /> Rate this job
+              {!item?.isRated && ['COMPLETED'].includes(item?.status) && <NavLink to={{
+                pathname: "/review-builder",
+                state: { item: item }
+              }}
+              >
+                <button className="fill_grey_btn full_btn">
+                  <img src={rateStar} alt="rating-star" /> Rate this job
                 </button>
-                </NavLink>}
+              </NavLink>}
               {/* <button className="fill_grey_btn full_btn" onClick={() => setShowToast(true, 'Under Development')}>
                 <img src={rateStar} alt="rating-star" /> Rate this job
               </button> */}

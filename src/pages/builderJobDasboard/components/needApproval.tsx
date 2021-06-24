@@ -70,13 +70,13 @@ class NeedApproval extends Component<Props, State> {
         if (moment(fromDate).isValid() && moment(toDate).isValid()) {
             let yearEnd = moment().endOf("year").toISOString();
             let monthEnd = moment(fromDate).endOf("month").toISOString();
-        
+
             let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
             let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
-        
+
             let monthDiff = parseInt(item.toString());
             let yearDiff = parseInt(item_year.toString());
-        
+
             if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
                 return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
             }
@@ -199,6 +199,7 @@ class NeedApproval extends Component<Props, State> {
                                 <figure className="no_img">
                                     <img src={noDataFound} alt="data not found" />
                                 </figure>
+                                <span>{'No Data Found'}</span>
                             </div>
                         )}
                 </div>

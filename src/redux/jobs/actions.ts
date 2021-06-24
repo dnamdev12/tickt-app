@@ -1,7 +1,7 @@
 import NetworkOps, { FetchResponse } from "../../network/NetworkOps";
 import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
-import { setShowToast, setLoading } from '../common/actions';
+import { setShowToast, setLoading, setSkeletonLoading } from '../common/actions';
 
 //jobTypeList
 export const callCategories = async () => {
@@ -106,9 +106,7 @@ export const getBuilderHomeData = async (item: any) => {
 export const isHandleChanges = (data: any) => ({ type: actionTypes.GET_LOCAL_CHANGES, data });
 
 export const getTradieQuestionList = async (data: any) => {
-  setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.tradieQuestionList + `?jobId=${data.jobId}&page=${data.page}`);
-  setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -117,9 +115,7 @@ export const getTradieQuestionList = async (data: any) => {
 }
 
 export const getTradieReviewList = async (data: any) => {
-  setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.tradieReviewList + `?builderId=${data.builderId}&page=${data.page}`);
-  setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -245,10 +241,10 @@ export const tradieRemoveReviewReply = async (data: any) => {
   return { success: false };
 }
 
-export const getBuilderProfile = async (builderId: string) => {
-  setLoading(true);
+export const getBuilderProfile = async (builderId: any) => {
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`);
-  setLoading(false);
+  setSkeletonLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -385,10 +381,7 @@ export const removeReviewReply = async (data: any) => {
 }
 
 export const getTradeReviews = async (data: any) => {
-  setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
-  setLoading(false);
-
   if (response?.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -396,14 +389,13 @@ export const getTradeReviews = async (data: any) => {
 }
 
 export const getTradeProfile = async (data: any) => {
-  setLoading(true);
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.tradieProfile + `?tradieId=${data.tradieId}&jobId=${data.jobId}`);
-  setLoading(false);
-
+  setSkeletonLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
-  return { success: false, data: response.result };
+  return { success: false };
 }
 
 
@@ -418,9 +410,9 @@ export const ratingTradieProfile = async (data: any) => {
 
 
 export const getJobDetails = async (jobId: string) => {
-  setLoading(true);
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.jobDetailsTradie + `?jobId=${jobId}`);
-  setLoading(false);
+  setSkeletonLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -451,7 +443,7 @@ export const tradielodgeDispute = async (data: any) => {
 
 export const CancelJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}canceljob`, data);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}canceljob`, data);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message)
@@ -503,6 +495,26 @@ export const changeRequest = async (data: any) => {
   return { success: false };
 }
 
+export const replyCancellation = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.replyCancellation, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  return { success: false };
+}
+
+export const replyChangeRequest = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.replyChangeRequest, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  return { success: false };
+}
+
 export const SaveTradie = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.jobBuilder}saveTradie?tradieId=${data.tradieId}&isSave=${data.isSave}`,);
@@ -515,9 +527,9 @@ export const SaveTradie = async (data: any) => {
 
 
 export const HomeTradieProfile = async (data: any) => {
-  setLoading(true);
+  setSkeletonLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.jobHome}tradieProfile?tradieId=${data.tradieId}`,);
-  setLoading(false);
+  setSkeletonLoading(false);
   if (response?.status_code === 200) {
     return { success: true, data: response.result };
   }

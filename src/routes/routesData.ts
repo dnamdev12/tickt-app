@@ -22,7 +22,6 @@ import BuilderInfo from '../pages/builderInfo/index';
 import BuilderReviewSubmitted from '../pages/jobDashboard/components/reviewBuilder/builderReviewSubmitted';
 import TradieInfo from '../pages/tradieInfo';
 import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
-import BuilderProfile from '../pages/builderProfile';
 import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
 import TradieEditProfile from '../pages/tradieEditProfile';
 import EmailUpdatedSuccess from '../pages/tradieEditProfile/components/personalInformation/changeEmailModal/components/successPage';
@@ -36,6 +35,7 @@ import ChooseTheJob from '../pages/chooseTheJob/index';
 import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
+import RequestMonitored from '../pages/jobDetailsPage/components/requestMonitored';
 
 import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmAndPay/suceess';
 
@@ -69,12 +69,6 @@ const routes = [
         authRoute: true,
     },
     {
-        name: 'myprofile',
-        path: '/my-profile',
-        component: BuilderProfile,
-        // authRoute: true,
-    },
-    {
         name: 'postnewjob',
         path: '/post-new-job',
         component: PostJob,
@@ -99,6 +93,11 @@ const routes = [
         name: 'milestoneRequestSent',
         path: '/milestone-request-sent-success',
         component: MilestoneRequestSentSuccess,
+    },
+    {
+        name: 'requestMonitered',
+        path: '/request-monitored',
+        component: RequestMonitored,
     },
     {
         name: 'popularbuilders',

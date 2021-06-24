@@ -15,10 +15,12 @@ import { callTradieProfileData } from '../../redux/profile/actions';
 const mapStateToProps = (state: any) => {
     return {
         tradieProfileData: state.profile.tradieProfileData,
+        builderProfile: state.profile.builderProfile,
         tradieProfileViewData: state.profile.tradieProfileViewData,
         tradieBasicDetailsData: state.profile.tradieBasicDetailsData,
         tradeListData: state.auth.tradeListData,
-        isLoading: state.common.isLoading
+        isLoading: state.common.isLoading,
+        isSkeletonLoading: state.common.isSkeletonLoading
     }
 }
 

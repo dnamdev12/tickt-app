@@ -38,8 +38,10 @@ import cancel from "../../assets/images/ic-cancel.png";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 
+import Skeleton from 'react-loading-skeleton';
 
 import vouch from '../../assets/images/ic-template.png';
+import _ from 'lodash';
 
 const USER_TYPE = storageService.getItem('userType');
 interface Props {
@@ -164,7 +166,7 @@ class TradieInfo extends Component<Props, State> {
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
-        if (nextProps.tradieProfileViewData && prevState.tradieInfo === null) {
+        if (nextProps.tradieProfileViewData && !_.isEqual(nextProps.tradieProfileViewData, prevState.tradieInfo)) {
             return {
                 tradieInfo: nextProps.tradieProfileViewData
             }
@@ -413,20 +415,12 @@ class TradieInfo extends Component<Props, State> {
         let tradieInfo: any = this.state.tradieInfo;
         let userType: number = Number(user_type);
         let tradieReviews: any = this.state.tradieReviews;
+        let isSkeletonLoading: boolean = props.isSkeletonLoading;
 
         console.log(tradieInfo, "tradieInfo", userType, "userType");
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
-
-        let profileReviewsData = [];
-        if (profileData?.reviewData) {
-            profileReviewsData = profileData?.reviewData
-        }
-
-        if (profileData?.reviews) {
-            profileReviewsData = profileData?.reviews
-        }
 
         return (
             <div className="app_wrapper">
@@ -452,100 +446,101 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
-                                        <img
+                                        {isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img
                                             src={userType === 1 ? tradieInfo?.userImage : tradieInfo?.tradieImage ? tradieInfo?.tradieImage : profilePlaceholder}
                                             alt="profile-pic"
-                                        />
+                                        />}
                                     </figure>
                                 </div>
                                 <div className="flex_col_sm_4 relative">
                                     <div className="detail_card">
-                                        <span className="title">{userType === 1 ? tradieInfo?.userName : tradieInfo?.tradieName ? tradieInfo?.tradieName : ''}</span>
-                                        <span className="tagg">{userType === 1 ? 'Tradesperson' : tradieInfo?.position ? tradieInfo?.position : ''}</span>
-                                        {/* <span className="xs_sub_title">{profileData?.companyName}</span> */}
-                                        <ul className="review_job">
-                                            <li>
-                                                <span className="icon reviews">{tradieInfo?.ratings || '0'}</span>
-                                                <span className="review_count">{`${tradieInfo?.reviewsCount || '0'} reviews`}</span>
-                                            </li>
-                                            <li>
-                                                <span className="icon job">{tradieInfo?.jobCompletedCount || '0'}</span>
-                                                <span className="review_count"> jobs completed</span>
-                                            </li>
-                                        </ul>
+                                        {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
+                                            <>
+                                                <span className="title">{userType === 1 ? tradieInfo?.userName : tradieInfo?.tradieName ? tradieInfo?.tradieName : ''}</span>
+                                                <span className="tagg">{userType === 1 ? 'Tradesperson' : tradieInfo?.position ? tradieInfo?.position : ''}</span>
+                                                <ul className="review_job">
+                                                    <li>
+                                                        <span className="icon reviews">{tradieInfo?.ratings || '0'}</span>
+                                                        <span className="review_count">{`${tradieInfo?.reviewsCount || '0'} reviews`}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span className="icon job">{tradieInfo?.jobCompletedCount || '0'}</span>
+                                                        <span className="review_count"> jobs completed</span>
+                                                    </li>
+                                                </ul>
 
-                                        {userType === 1 ? (
-                                            <div className="form_field">
-                                                <div className="bottom_btn">
-                                                    <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
-                                                </div>
-                                            </div>
-                                        ) : (!tradieInfo?.isRequested ? (
-                                            <div className="form_field">
-                                                {tradieInfo?.isInvited ? (
-                                                    <div className="bottom_btn">
-                                                        <span
-                                                            onClick={() => {
-                                                                this.savedTradie({ tradieInfo })
-                                                            }}
-                                                            className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-                                                        <button className="fill_btn full_btn btn-effect">
-                                                            {'Cancel Invite'}
-                                                        </button>
+                                                {userType === 1 ? (
+                                                    <div className="form_field">
+                                                        <div className="bottom_btn">
+                                                            <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
+                                                        </div>
+                                                    </div>
+                                                ) : (!tradieInfo?.isRequested ? (
+                                                    <div className="form_field">
+                                                        {tradieInfo?.isInvited ? (
+                                                            <div className="bottom_btn">
+                                                                <span
+                                                                    onClick={() => {
+                                                                        this.savedTradie({ tradieInfo })
+                                                                    }}
+                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
+                                                                <button className="fill_btn full_btn btn-effect">
+                                                                    {'Cancel Invite'}
+                                                                </button>
+                                                            </div>
+                                                        ) : (
+                                                            <div className="bottom_btn">
+                                                                <span
+                                                                    onClick={() => {
+                                                                        this.savedTradie({ tradieInfo })
+                                                                    }}
+                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
+                                                                <button
+                                                                    onClick={() => {
+                                                                        console.log({ tradieInfo })
+                                                                        props.history.push({
+                                                                            pathname: '/choose-the-job',
+                                                                            state: {
+                                                                                tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+                                                                                path: props.location.search,
+                                                                            }
+                                                                        })
+                                                                    }}
+                                                                    className="fill_btn full_btn btn-effect">
+                                                                    {'Invite'}
+                                                                </button>
+                                                            </div>
+                                                        )}
                                                     </div>
                                                 ) : (
-                                                    <div className="bottom_btn">
-                                                        <span
-                                                            onClick={() => {
-                                                                this.savedTradie({ tradieInfo })
-                                                            }}
-                                                            className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-                                                        <button
-                                                            onClick={() => {
-                                                                console.log({ tradieInfo })
-                                                                props.history.push({
-                                                                    pathname: '/choose-the-job',
-                                                                    state: {
-                                                                        tradieId: tradieInfo?._id || tradieInfo?.tradieId,
-                                                                        path: props.location.search,
-                                                                    }
-                                                                })
-                                                            }}
-                                                            className="fill_btn full_btn btn-effect">
-                                                            {'Invite'}
-                                                        </button>
-                                                    </div>
-                                                )}
-                                            </div>
-                                        ) : (
-                                            <>
-                                                <div className="form_field">
-                                                    <button
-                                                        onClick={() => { submitAcceptDeclineRequest(1) }}
-                                                        className="fill_btn full_btn btn-effect">Accept</button>
-                                                </div>
-                                                <div className="form_field">
-                                                    <button
-                                                        onClick={() => { submitAcceptDeclineRequest(2) }}
-                                                        className="fill_grey_btn full_btn btn-effect">Decline</button>
-                                                </div>
-                                            </>
-                                        ))}
-
+                                                    <>
+                                                        <div className="form_field">
+                                                            <button
+                                                                onClick={() => { submitAcceptDeclineRequest(1) }}
+                                                                className="fill_btn full_btn btn-effect">Accept</button>
+                                                        </div>
+                                                        <div className="form_field">
+                                                            <button
+                                                                onClick={() => { submitAcceptDeclineRequest(2) }}
+                                                                className="fill_grey_btn full_btn btn-effect">Decline</button>
+                                                        </div>
+                                                    </>
+                                                ))}
+                                            </>}
                                     </div>
                                 </div>
                             </div>
                             <div className="flex_row description">
                                 <div className="flex_col_sm_8">
-                                    {tradieInfo?.about?.length > 0 && (
+                                    {props.isSkeletonLoading ? <Skeleton count={2} /> : tradieInfo?.about?.length > 0 ? (
                                         <div>
                                             <span className="sub_title">About</span>
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
-                                    )}
+                                    ) : null}
                                 </div>
                                 <div className="flex_col_sm_4">
-                                    {userType === 1 ? (
+                                    {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
                                         <>
                                             <span className="sub_title">Areas of specialisation</span>
                                             <div className="tags_wrap">
@@ -564,9 +559,9 @@ class TradieInfo extends Component<Props, State> {
                                             <span className="sub_title">Areas of specialisation</span>
                                             <div className="tags_wrap">
                                                 <ul>
-                                                    <li className="main">
+                                                    {tradieInfo?.tradeName && <li className="main">
                                                         <img src={tradieInfo?.tradeSelectedUrl || menu} alt="" />{tradieInfo?.tradeName || ''}
-                                                    </li>
+                                                    </li>}
                                                     {tradieInfo?.areasOfSpecialization?.map((item: any) => {
                                                         return <li key={item.specializationId}>{item.specializationName}</li>
                                                     })}
@@ -580,34 +575,31 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                 </div>
-                {tradieInfo?.portfolio?.length ?
-                    <div className="section_wrapper">
-                        <div className="custom_container">
-                            <span className="sub_title">Portfolio</span>
-                            {/* <ul className="portfolio_wrappr"> */}
-                            {portfolio && (<Carousel
-                                responsive={portfolio}
-                                showDots={false}
-                                arrows={true}
-                                infinite={true}
-                                className="portfolio_wrappr"
-                                partialVisbile
-                            >
-                                {tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
-                                    return (
-                                        <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
-                                            <figure className="portfolio_img">
-                                                <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
-                                                <span className="xs_sub_title">{item.jobName}</span>
-                                            </figure>
-                                        </div>
-                                    )
-                                }) : <img alt="" src={portfolioPlaceholder} />}
-                            </Carousel>)}
-                            {/* </ul> */}
-                        </div>
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
+                        <Carousel
+                            responsive={portfolio}
+                            showDots={false}
+                            arrows={true}
+                            infinite={true}
+                            className="portfolio_wrappr"
+                            partialVisbile
+                        >
+                            {props.isSkeletonLoading ? <Skeleton height={256} /> : tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
+                                return (
+                                    <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
+                                        <figure className="portfolio_img">
+                                            <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
+                                            <span className="xs_sub_title">{item.jobName}</span>
+                                        </figure>
+                                    </div>
+                                )
+                            }) : <img alt="" src={portfolioPlaceholder} />}
+                        </Carousel>
                     </div>
-                    : null}
+                </div>
+
                 {/* portfolio Image modal desc */}
                 {portfolioData?.portfolioImageClicked &&
                     <Modal
@@ -654,7 +646,6 @@ class TradieInfo extends Component<Props, State> {
                                     </Carousel>
                                 </div>
                                 <div className="flex_col_sm_6">
-                                    {/* <span className="xs_sub_title">{portfolioData?.portfolioDetails?.jobDescription}</span> */}
                                     <span className="xs_sub_title">Job Description</span>
                                     <div className="job_content">
                                         <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
@@ -664,36 +655,33 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </Modal>}
 
-                {console.log({ profileData })}
-                {profileReviewsData?.length ?
-                    <div className="section_wrapper">
-                        <div className="custom_container">
-                            <span className="sub_title">Reviews</span>
-                            <div className="flex_row review_parent">
-                                {profileReviewsData?.length > 0 ?
-                                    (profileReviewsData?.slice(0, 8)?.map((jobData: any) => {
-                                        return <ReviewInfoBox item={jobData} {...props} />
-                                    })) :
-                                    <div className="no_record">
-                                        <figure className="no_data_img">
-                                            <img src={noData} alt="data not found" />
-                                        </figure>
-                                        <span>No Data Found</span>
-                                    </div>}
-                            </div>
-                            <button
-                                className="fill_grey_btn full_btn view_more"
-                                onClick={() => {
-                                    this.setState((prevData: any) => ({
-                                        reviewsData: {
-                                            ...prevData.reviewsData, showAllReviewsClicked: true
-                                        }
-                                    }))
-                                }}>
-                                {`View all ${profileReviewsData?.length} reviews`}</button>
-                        </div>
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Reviews'}</span>
+                        {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
+                            {tradieInfo?.reviewData?.length > 0 ?
+                                (tradieInfo?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                    return <ReviewInfoBox item={jobData} {...props} />
+                                })) :
+                                <div className="no_record">
+                                    <figure className="no_data_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                    <span>No Data Found</span>
+                                </div>}
+                        </div>}
+                        {props.isSkeletonLoading ? <Skeleton height={25}/> : <button
+                            className="fill_grey_btn full_btn view_more"
+                            onClick={() => {
+                                this.setState((prevData: any) => ({
+                                    reviewsData: {
+                                        ...prevData.reviewsData, showAllReviewsClicked: true
+                                    }
+                                }))
+                            }}>
+                            {`View all ${tradieInfo?.reviewsCount || 0} reviews`}</button>}
                     </div>
-                    : null}
+                </div>
 
                 {tradieInfo?.vouchesData?.length ?
                     <div className="section_wrapper">
@@ -771,7 +759,7 @@ class TradieInfo extends Component<Props, State> {
                     >
                         <div className="custom_wh">
                             <div className="heading">
-                                <span className="sub_title">{`${props.tradieReviews?.length} questions`}</span>
+                                <span className="sub_title">{`${tradieInfo.reviewsCount} reviews`}</span>
                                 <button className="close_btn"
                                     onClick={() => modalCloseHandler('showAllReviewsClicked')}
                                 >
@@ -977,6 +965,7 @@ const mapState = (state: any) => ({
     tradieReviews: state.jobs.tradieReviews,
     tradieRequestStatus: state.jobs.tradieRequestStatus,
     tradieProfileViewData: state.profile.tradieProfileViewData,
+    isSkeletonLoading: state.common.isSkeletonLoading
 });
 
 const mapProps = (dispatch: any) => {

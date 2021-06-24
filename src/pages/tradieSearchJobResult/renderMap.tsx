@@ -11,7 +11,7 @@ const mapContainerStyle = {
 }
 
 const options: any = {
-    styles: mapStyles[1],
+    styles: mapStyles[0],
     disableDefaultUI: true,
     zoomControl: true,
 }
@@ -89,7 +89,7 @@ const RenderMap = (props: any) => {
     return (
         <GoogleMap
             mapContainerStyle={mapContainerStyle}
-            zoom={15}
+            zoom={13}
             center={center}
             options={options}
             // onClick={onMapClick}

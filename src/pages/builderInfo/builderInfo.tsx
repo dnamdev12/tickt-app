@@ -20,12 +20,23 @@ import dummy from '../../assets/images/u_placeholder.jpg';
 import portfolioPlaceholder from '../../assets/images/portfolio-placeholder.jpg';
 import noDataFound from '../../assets/images/no-search-data.png';
 import cancel from "../../assets/images/ic-cancel.png";
+import menu from '../../assets/images/menu-line-blue.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
+import storageService from '../../utils/storageService';
+
+import Skeleton from 'react-loading-skeleton';
 
 interface PropsType {
     location: any,
     history: any,
+    tradieProfileViewData: any,
+    getTradieProfileView: () => void,
+    isLoading: boolean,
+    isSkeletonLoading: boolean,
+    userType: number,
+    builderProfileViewData: any,
+    getBuilderProfileView: () => void,
 }
 
 const portfolio = {
@@ -94,22 +105,61 @@ const BuilderInfo = (props: PropsType) => {
     console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo");
 
     useEffect(() => {
-        (async () => {
-            const builderId: any = new URLSearchParams(props.location?.search).get('builderId');
+        setItems();
+        // (async () => {
+        //     const builderId: any = new URLSearchParams(props.location?.search).get('builderId');
+        //     const res1 = await getBuilderProfile(builderId);
+        //     if (res1?.success) {
+        //         setProfileData(res1.data);
+        //         const data = {
+        //             builderId: res1.data?.builderId,
+        //             page: 1
+        //         }
+        //         const res2 = await getTradieReviewList(data);
+        //         if (res2.success) {
+        //             setReviewList(res2.data);
+        //         }
+        //     }
+        // })();
+    }, []);
+
+    useEffect(() => {
+        if (props.builderProfileViewData) {
+            setProfileData(props.builderProfileViewData);
+        }
+    }, [props.builderProfileViewData]);
+
+    const getItemsFromLocation = () => {
+        const urlParams = new URLSearchParams(props.location.search);
+        // let jobId = urlParams.get('jobId')
+        // let specializationId = urlParams.get('specializationId')
+        let builderId: any = urlParams.get('builderId');
+        let user_type = urlParams.get('type');
+        return { builderId, user_type };
+    }
+
+    const setItems = async () => {
+        const { builderId, user_type }: { builderId: any, user_type: any } = getItemsFromLocation();
+
+        if (user_type == '2' || props.userType == 2) {
+            console.log(user_type, "user_type", props.userType, "this.props.userType");
+            props.getBuilderProfileView();
+        } else {
             const res1 = await getBuilderProfile(builderId);
             if (res1?.success) {
                 setProfileData(res1.data);
-                const data = {
-                    builderId: res1.data?.builderId,
-                    page: 1
-                }
-                const res2 = await getTradieReviewList(data);
-                if (res2.success) {
-                    setReviewList(res2.data);
-                }
             }
-        })();
-    }, [])
+        }
+
+        const data = {
+            builderId: builderId,
+            page: 1
+        }
+        const res2 = await getTradieReviewList(data);
+        if (res2.success) {
+            setReviewList(res2.data);
+        }
+    }
 
     const portfolioImageHandler = (data: any) => {
         setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: true, portfolioDetails: data }));
@@ -300,6 +350,8 @@ const BuilderInfo = (props: PropsType) => {
         props.history?.push(`/builder-posted-jobs?bId=${profileData?.builderId}&jobCount=${profileData?.totalJobPostedCount}`);
     }
 
+    const { user_type } = getItemsFromLocation();
+    let userType: number = Number(user_type);
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -313,43 +365,61 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
-                                    <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" />
+                                    {props.isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" />}
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    <span className="title">{profileData?.builderName || ''}</span>
-                                    <span className="tagg">{profileData?.position || ''}</span>
-                                    <span className="xs_sub_title">{profileData?.companyName || ''}</span>
-                                    <ul className="review_job">
-                                        <li>
-                                            <span className="icon reviews">{profileData?.ratings || '0'}</span>
-                                            <span className="review_count">{`${profileData?.reviewsCount || '0'} reviews`}</span>
-                                        </li>
-                                        <li>
-                                            <span className="icon job">{profileData?.jobCompletedCount || '0'}</span>
-                                            <span className="review_count"> jobs completed</span>
-                                        </li>
-                                    </ul>
-                                    <button className="fill_btn full_btn btn-effect">Write a message</button>
+                                    {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
+                                        <>
+                                            <span className="title">{profileData?.builderName || ''}</span>
+                                            <span className="tagg">{profileData?.position || ''}</span>
+                                            <span className="xs_sub_title">{profileData?.companyName || ''}</span>
+                                            <ul className="review_job">
+                                                <li>
+                                                    <span className="icon reviews">{profileData?.ratings || '0'}</span>
+                                                    <span className="review_count">{`${profileData?.reviewsCount || '0'} reviews`}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="icon job">{profileData?.jobCompletedCount || '0'}</span>
+                                                    <span className="review_count"> jobs completed</span>
+                                                </li>
+                                            </ul>
+                                            {userType === 2 ?
+                                                <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
+                                                :
+                                                <button className="fill_btn full_btn btn-effect">Write a message</button>}
+                                        </>}
                                 </div>
                             </div>
                         </div>
                         <div className="flex_row description">
                             <div className="flex_col_sm_8">
-                                <div>
+                                {props.isSkeletonLoading ? <Skeleton count={2} /> : <div>
                                     <span className="sub_title">About</span>
                                     <p className="commn_para">{profileData?.about || ''}</p>
-                                </div>
+                                </div>}
                             </div>
                             <div className="flex_col_sm_4">
-                                <span className="sub_title">Areas of jobs</span>
+                                <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of specialisation'}</span>
                                 <div className="tags_wrap">
-                                    <ul>
-                                        {profileData?.areasOfjobs?.map((item: any) => {
-                                            return <li key={item.specializationId}>{item.specializationName || ''}</li>
-                                        })}
-                                    </ul>
+                                    {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
+                                        <ul>
+                                            {profileData?.areasOfSpecialization?.tradeData[0]?.tradeName && <li className="main">
+                                                <img src={profileData?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{profileData?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
+                                            </li>}
+                                            {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
+                                                return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                            })}
+                                        </ul>) : (
+                                        <ul>
+                                            {profileData?.tradeName && <li className="main">
+                                                <img src={profileData?.tradeSelectedUrl || menu} alt="" />{profileData?.tradeName || ''}
+                                            </li>}
+                                            {profileData?.areasOfjobs?.map((item: any) => {
+                                                return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                            })}
+                                        </ul>)}
                                 </div>
                             </div>
                         </div>
@@ -359,7 +429,7 @@ const BuilderInfo = (props: PropsType) => {
 
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <span className="sub_title">Portfolio</span>
+                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
                     <Carousel
                         responsive={portfolio}
                         showDots={false}
@@ -368,7 +438,7 @@ const BuilderInfo = (props: PropsType) => {
                         className="portfolio_wrappr"
                         partialVisbile
                     >
-                        {profileData?.portfolio?.length ? profileData?.portfolio?.map((item: any) => {
+                        {props.isSkeletonLoading ? <Skeleton height={256} /> : profileData?.portfolio?.length ? profileData?.portfolio?.map((item: any) => {
                             return (
                                 <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
                                     <figure className="portfolio_img">
@@ -436,9 +506,9 @@ const BuilderInfo = (props: PropsType) => {
 
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <span className="sub_title">Job posted</span>
-                    <div className="flex_row tradies_row">
-                        {profileData?.jobPostedData?.length > 0 ?
+                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Job posted'}</span>
+                    {props.isSkeletonLoading ? <Skeleton height={250} /> : <div className="flex_row tradies_row">
+                        {(props.isSkeletonLoading || props.isLoading || profileData?.jobPostedData?.length > 0) ?
                             (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
                                 return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
                             })) :
@@ -448,22 +518,22 @@ const BuilderInfo = (props: PropsType) => {
                                 </figure>
                                 <span>No Data Found</span>
                             </div>}
-                    </div>
-                    <button
+                    </div>}
+                    {props.isSkeletonLoading ? <Skeleton /> : <button
                         className={`fill_grey_btn full_btn m-tb40 view_more ${profileData?.totalJobPostedCount === 0 ? 'disable_btn' : ''}`}
                         disabled={profileData?.totalJobPostedCount === 0}
                         onClick={builderAllJobsClicked}
                     >
-                        {`View all ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount === 1 ? `${profileData?.totalJobPostedCount} job` : `${profileData?.totalJobPostedCount} jobs`}` : ''}`}
-                    </button>
+                        {`View ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount === 1 ? `${profileData?.totalJobPostedCount} job` : `all ${profileData?.totalJobPostedCount} jobs`}` : ''}`}
+                    </button>}
                 </div>
             </div >
 
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <span className="sub_title">Reviews</span>
-                    <div className="flex_row review_parent">
-                        {profileData?.reviewData?.length > 0 ?
+                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Reviews'}</span>
+                    {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
+                        {(props.isSkeletonLoading || props.isLoading || profileData?.reviewData?.length > 0) ?
                             (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
                                 return <ReviewInfoBox item={jobData} {...props} />
                             })) :
@@ -473,14 +543,14 @@ const BuilderInfo = (props: PropsType) => {
                                 </figure>
                                 <span>No Data Found</span>
                             </div>}
-                    </div>
-                    <button
+                    </div>}
+                    {props.isSkeletonLoading ? <Skeleton /> : <button
                         className={`fill_grey_btn full_btn view_more ${profileData?.reviewsCount === 0 ? 'disable_btn' : ''}`}
                         disabled={profileData?.reviewsCount === 0}
                         onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
                     >
-                        {`View all ${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `${profileData?.reviewsCount} reviews`}` : ''}`}
-                    </button>
+                        {`View ${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `all ${profileData?.reviewsCount} reviews`}` : ''}`}
+                    </button>}
                 </div>
             </div>
 
