@@ -294,16 +294,14 @@ export default function NotFound() {
                                 </div>
                             </div>
                             <div className="view_detail_col">
-                                <div className="flex_row center_flex">
-                                    <div className="flex_col_sm_10">
-                                        <span className="title">Wire up circuit box</span>
-                                    </div>
-                                    <div className="flex_col_sm_2 text-right">
-                                        <span className="close">
-                                            <img src={close} alt="close" />
-                                        </span>
-                                    </div>
+                                <div className="f_spacebw relative">
+                                    <span className="title line-2 pr-20">Wire up circuit box</span>
+                                    <span className="close">
+                                        <img src={close} alt="close" />
+                                    </span>
                                 </div>
+
+
                                 <div className="job_info">
                                     <ul>
                                         <li className="icon clock">32 minutes ago</li>

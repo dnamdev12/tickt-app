@@ -792,7 +792,7 @@ export class PersonalInformation extends Component<Props, State> {
                     </div>
                     <div className="flex_col_sm_8">
                         <div className="title_view_wrap">
-                            {isSkeletonLoading ? <Skeleton /> : <span className="title">{basicDetailsData?.fullName}
+                            {isSkeletonLoading ? <Skeleton /> : <span className="title line-2" title={basicDetailsData?.fullName}>{basicDetailsData?.fullName}
                                 <span className="edit_icon" title="Edit" onClick={() => this.setState({ profileModalClicked: true })}>
                                     <img src={editIconBlue} alt="edit" />
                                 </span>
