@@ -707,6 +707,96 @@ body {
       color: #ed1c24;
     }
   }
+  &.notifications{
+    .MuiMenu-paper {
+      width: 433px;
+      @media(max-width: 650px){
+        margin: 45px 0 0 0px;
+      }
+      .sub_title{
+        font-size: 26px;
+        margin-bottom: 20px;
+      }
+    }
+    .mark_all{
+      position: absolute;
+      right: 15px;
+      top: 15px;
+    }
+    
+    .MuiListItem-button{
+      background-color: #f6f7f9;
+      padding-bottom: 10px;
+      margin: 0 -32px 0px;
+      &:last-child{
+        padding-bottom: 0;
+      }
+      &.unread{
+        background-color: var(--white);
+        &:hover{
+          background-color: #f6f7f9;
+        }
+        .who{
+          font-family: 'Neue Haas Grotesk Text Pro Bold';
+        }
+      }
+    }
+    .notif{
+      position: relative;
+      width: 92%;
+      span{
+        font-size: 14px;
+        line-height: 1.43;
+        color: var(--greyish-brown);
+        margin: 2px 0;
+        display: block !important;
+      }
+      .time{
+        position: absolute;
+        top: 0;
+        right: 0;
+        color: #748092;
+      }
+      .not_img{
+        width: 64px;
+        height: 64px;
+        margin-right: 10px;
+        border-radius: 50%;
+        display: inline-block;
+        vertical-align: top;
+        position: relative;
+        img{
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          border-radius: 50%;
+        }
+        .dot{
+          width: 12px;
+          height: 12px;
+          background-color: var(--yellow);
+          border-radius: 50%;
+          position: absolute;
+          top: 3px;
+          left: 0;
+        }
+      }
+      .see{
+        color: #123f95;
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        padding: 2px 8px;
+        border-radius: 6px;
+        background-color: #dfe5ef;
+        display: inline-block !important;
+      }
+      .info{
+        width: 55%;
+        display: inline-block;
+      }
+      
+      
+    }
+  }
 }
 
 //--------------------Header sub menu close------------------------//
@@ -1345,6 +1435,10 @@ body {
         li {
           flex: 1 1 50%;
           margin: 13px 0;
+          &.job_status {
+            font-size: 12px;
+            padding-left: 5px;
+          }
           &.icon{
             padding-left: 38px;
             @media (max-width: 650px) {
@@ -3439,6 +3533,17 @@ body {
   }
 }
 
+.job_status{
+  font-size: 10px;
+  color: var(--blue-two);
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  line-height: 1.7;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  display: block;
+  padding-left: 2px;
+}
+
 .tradie_card {
 	min-height: 285px;
 	padding: 16px;
@@ -3467,16 +3572,6 @@ body {
       width: 20px;
       height: 20px;
     }
-  }
-  .job_status{
-    font-size: 10px;
-    color: var(--blue-two);
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
-    line-height: 1.7;
-    letter-spacing: 0.3px;
-    text-transform: uppercase;
-    display: block;
-    padding-left: 2px;
   }
 	.more_detail {
 		position: absolute;
@@ -4595,7 +4690,7 @@ body {
   }
   @media(max-width: 768px){
     width: 100%;
-    padding: 30px 20px 0;
+    padding: 30px 20px 0 !important;
     margin-left: 0 !important;
     .flex_col_sm_2 {
       width: 20%;
@@ -4605,7 +4700,7 @@ body {
     }
   }
   @media(max-width: 650px){
-    padding: 30px 10px 0;
+    padding: 30px 10px 0 !important;
     .flex_col_sm_6 {
       width: 100%;
     }
@@ -4760,11 +4855,14 @@ body {
 }
 .profile_info{
   padding: 48px 0px 0 40px;
-  @media(max-width: 650px){
-    padding: 30px 10px 0;
+  @media(max-width: 768px){
+    margin-top: 15px;
   }
   .title_view_wrap{
     position: relative;
+    @media(max-width: 768px){
+      font-size: 12px;
+    }
     .view_profile{
       display: flex;
       align-items: center;
@@ -4776,9 +4874,6 @@ body {
       color: var(--blue-two);
       @media(max-width: 768px){
         font-size: 12px;
-      }
-      @media(max-width: 650px){
-        top: 30px;
       }
       &:hover{
         color: var(--blue);
@@ -4804,16 +4899,17 @@ body {
   .title{
     position: relative;
     margin-bottom: 12px;
-    max-width: 72%;
-    height: 37px;
+    max-width: 55%;
+    min-height: 37px;
+    padding-right: 35px;
     @media(max-width: 768px){
-      max-width: 65%;
+      max-width: 60%;
     }
     @media(max-width: 650px){
-      max-width: 100%;
+      max-width: 55%;
     }
     .edit_icon {
-      top: auto;
+      right: 10px;
     }
   }
   .tagg{
@@ -5333,6 +5429,9 @@ div#light-box div {
 //----------------------Utilities-------------------------//
 .padding_0 {
   padding: 0px;
+  .flex_col_sm_6{
+    width: 66.666667%;
+  }
 }
 
 //---------------------- Job Dashboard -------------------------//
@@ -5439,6 +5538,9 @@ div#light-box div {
     z-index: 9;
     opacity: 0;
     visibility: hidden;
+    @media(max-width: 650px){
+      padding: 8px 10px 8px 35px;
+    }
   }
   &.active{
     input{
@@ -5477,7 +5579,7 @@ div#light-box div {
 
 
 //----------Chat-------------//
-.chat_wrapr{
+  .chat_wrapr{
   .side_nav_col {
     width: 490px;
     @media(max-width: 768px){
@@ -5485,6 +5587,9 @@ div#light-box div {
     }
     &.active{
       @media(max-width: 768px){
+        width: 550px;
+      }
+      @media(max-width: 650px){
         width: 360px;
       }
     }
@@ -5506,6 +5611,14 @@ div#light-box div {
     top: 45px;
     right: 15px;
     overflow: initial;
+    @media(max-width: 768px){
+      top: 22px;
+      right: 85px;
+    }
+    @media(max-width: 650px){
+      top: 5px;
+      right: 45px;
+    }
     &.active{
       input{
         background-color: var(--white);
@@ -5521,6 +5634,10 @@ div#light-box div {
       img{
         width: 42px;
         height: 42px;
+        @media(max-width: 650px){
+          width: 30px;
+          height: 30px;
+        }
       }
     }
   }
@@ -5537,13 +5654,11 @@ div#light-box div {
       width: 100%;
       position: relative;
       padding: 20px;
-      @media(max-width: 650px){
-        padding: 10px 0;
-      }
       &.active{
         width: 55%;
         @media(max-width: 768px){
           width: 100%;
+          padding: 5px 0;
         }
       }
       .chat_user{
@@ -5570,6 +5685,9 @@ div#light-box div {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          @media(max-width: 650px){
+            width: 48%;
+          }
         }
         .view_detail{
           position: absolute;
@@ -5581,11 +5699,17 @@ div#light-box div {
           font-size: 14px;
           cursor: pointer;
           @media(max-width: 650px){
-            top: -15px;
-            right: 20px;
+            top: 10px;
+            right: 5px;
+            font-size: 11px;
           }
           img{
             margin-left: 10px;
+            @media(max-width: 650px){
+              width: 15px;
+              height: 15px;
+              margin-left: 5px;
+            }
           }
         }
       }
@@ -5600,6 +5724,9 @@ div#light-box div {
         // justify-content: flex-end;
         @media (max-width: 1366px){
           height: 415px;
+        }
+        @media(max-width: 768px){
+          height: 100%;
         }
         .date_time{
           text-align: center;
@@ -5705,12 +5832,26 @@ div#light-box div {
       padding: 20px;
       @media(max-width: 768px){
         width: 100%;
+        right: -100%;
+        position: absolute;
+        border: none;
+        background-color: #fff;
+      }
+      &.active{
+        @media(max-width: 768px){
+          right: 0;
+        }
       }
       .center_flex{
         margin-bottom: 24px;
         .title{
           margin: 0;
         }
+      }
+      .close{
+        position: absolute;
+        top: 10px;
+        right: 0;
       }
     }
   }
