@@ -94,7 +94,7 @@ const Vouchers = (props: any) => {
                                     }}
                                     className="back"></button>
                                 <span className="title">
-                                    {`${stateData.length} Vouchers`}
+                                    {`${stateData.length} Vouches`}
                                 </span>
                             </div>
                         </div>
@@ -110,7 +110,7 @@ const Vouchers = (props: any) => {
                     {state_data?.length ?
                         <div className="section_wrapper">
                             <div className="custom_container">
-                                <span className="sub_title">Vouchers</span>
+                                <span className="sub_title">Vouches</span>
                                 <div className="flex_row">
                                     {state_data.map((item: any) => (
                                         <div className="flex_col_sm_3">

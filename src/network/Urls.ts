@@ -72,6 +72,7 @@ const Urls = {
     builderProfile: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}builderProfile`,
     deleteRecentSearch: `${versions.v1}${ServiceEnum.admin}deleteRecentSearch`, //admin
     tradieReviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewList`,
+    builderProfileReviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewList`,
     tradieQuestionList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}questionList`,
     tradieReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewReply`,
     tradieUpdateReviewReply: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}updateReviewReply`,
@@ -91,6 +92,7 @@ const Urls = {
     verifyEmailOtp: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}verifyEmail`,
     jobDetailsTradie: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}jobDetails`,
     reviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewList`,
+    tradieProfileReviewList: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}reviewList`,
     acceptDeclineRequest: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}acceptDeclineRequest`,
     milestoneListBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneList`,
     milestoneDetails: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}milestoneDetails`,
