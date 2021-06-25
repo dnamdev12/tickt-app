@@ -79,13 +79,13 @@ class TradieEditProfile extends Component<Props, State> {
                                         }}
                                     >
                                         <a className={`icon applicants ${activeMenuType === 'personal-information' ? 'active' : ''}`}>
-                                            <span className="menu_txt">Personal information</span>
+                                            <span className="menu_txt">Personal Information</span>
                                         </a>
                                     </li>
                                     <li>
                                         {/* <li onClick={() => { this.setSelected('banking-details') }}> */}
                                         <a className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
-                                            <span className="menu_txt">Banking details</span>
+                                            <span className="menu_txt">Banking Details</span>
                                         </a>
                                     </li>
                                     {storageService.getItem('userType') === 2 && (
@@ -105,7 +105,7 @@ class TradieEditProfile extends Component<Props, State> {
                                     <li>
                                         {/* <li onClick={() => { this.setSelected('support-chat') }}> */}
                                         <a className={`icon chat ${activeMenuType === 'support-chat' ? 'active' : ''}`}>
-                                            <span className="menu_txt">Support chat</span>
+                                            <span className="menu_txt">Support Chat</span>
                                         </a>
                                     </li>
                                     <li>
@@ -117,7 +117,7 @@ class TradieEditProfile extends Component<Props, State> {
                                     <li>
                                         {/* <li onClick={() => { this.setSelected('terms-of-use') }}> */}
                                         <a className={`icon tnc ${activeMenuType === 'terms-of-use' ? 'active' : ''}`}>
-                                            <span className="menu_txt">Terms of use</span>
+                                            <span className="menu_txt">Terms Of Use</span>
                                         </a>
                                     </li>
                                 </ul>
