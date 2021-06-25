@@ -36,6 +36,7 @@ import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
 import RequestMonitored from '../pages/jobDetailsPage/components/requestMonitored';
+import ChangePasswordSuccess from '../pages/tradieEditProfile/components/personalInformation/changePasswordSuccess';
 
 import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmAndPay/suceess';
 
@@ -98,6 +99,11 @@ const routes = [
         name: 'requestMonitered',
         path: '/request-monitored',
         component: RequestMonitored,
+    },
+    {
+        name: 'changePasswordSuccess',
+        path: '/change-password-success',
+        component: ChangePasswordSuccess,
     },
     {
         name: 'popularbuilders',

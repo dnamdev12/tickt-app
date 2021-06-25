@@ -19,7 +19,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 import { useDispatch } from 'react-redux'
 
-const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404', '/email-updated-successfully'];
+const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404', '/email-updated-successfully', '/change-password-success'];
 
 const Header = (props: any) => {
     let type = storageService.getItem('userType');

@@ -125,7 +125,6 @@ export const tradieUpdatePassword = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putToJson(storageService.getItem('userType') === 1 ? Urls.tradieChangePassword : Urls.builderChangePassword, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message);
     return { success: true };
   }
   setShowToast(true, response.message);

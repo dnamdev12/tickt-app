@@ -484,7 +484,8 @@ export class PersonalInformation extends Component<Props, State> {
             }
             const res = await tradieUpdatePassword(data);
             if (res.success) {
-                this.passwordModalCloseHandler();
+                this.props.history.push('/change-password-success');
+                // this.passwordModalCloseHandler();
             }
         }
     }
