@@ -765,7 +765,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         </button>
                                     </div>
                                     <div className="form_field">
-                                        <label className="form_label">Your question</label>
+                                        <label className="form_label">Your Question</label>
                                         <div className="text_field">
                                             <textarea placeholder="Text" maxLength={250} value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                             <span className="char_count">{`${questionsData.questionData?.length}/250`}</span>
