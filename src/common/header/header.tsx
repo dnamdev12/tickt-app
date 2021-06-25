@@ -183,6 +183,8 @@ const Header = (props: any) => {
                                         <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
                                             <img src={renderByType({ name: 'userImage' }) || dummy} alt="profile-img" />
                                         </figure>}
+
+
                                     <Menu className="sub_menu"
                                         id="simple-menu"
                                         anchorEl={anchorEl}
@@ -199,7 +201,7 @@ const Header = (props: any) => {
                                             {renderByType({ name: 'userName' })}
                                             {/* {props?.builderProfile?.userName || props?.tradieProfileData?.userName} */}
                                         </span>
-                                        <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); } }>
+                                        <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
                                             <span className="setting_icon">
                                                 {/* <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" /> */}
                                                 <img src={profile} alt="profile" />
@@ -224,10 +226,88 @@ const Header = (props: any) => {
                                                 {'App Guide'}
                                             </span>
                                         </MenuItem> */}
-                                        <MenuItem onClick={() => { handleClose(); logoutHandler(); } }>
+                                        <MenuItem onClick={() => { handleClose(); logoutHandler(); }}>
                                             <span className="setting_icon logout">Logout</span>
                                         </MenuItem>
                                     </Menu>
+
+
+
+                                    {/* Notification */}
+                                    
+                                    {/* <Menu className="sub_menu notifications"
+                                        id="simple-menu"
+                                        anchorEl={anchorEl}
+                                        keepMounted
+                                        open={Boolean(anchorEl)}
+                                        onClose={handleClose}
+                                        transformOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
+                                    >
+                                        <span className="sub_title">Notifications</span>
+                                        <a href="javascript:void(0)" className="link mark_all">Mark all as read</a>
+
+                                        <MenuItem className="unread">
+                                            <div className="notif">
+                                                <figure className="not_img">
+                                                    <img src={dummy} alt="img" />
+                                                    <span className="dot"></span>
+                                                </figure>
+                                                <div className="info">
+                                                    <span className="who line-1">Wire up circuit box</span>
+                                                    <span className="line-1">1 new message from builder</span>
+                                                    <span className="see">See the message</span>
+                                                </div>
+                                                <span className="time">St 12:30 AM</span>
+                                            </div>
+                                        </MenuItem>
+                                        <MenuItem className="unread">
+                                            <div className="notif">
+                                                <figure className="not_img">
+                                                    <img src={dummy} alt="img" />
+                                                    <span className="dot"></span>
+                                                </figure>
+                                                <div className="info">
+                                                    <span className="who">John Oldman</span>
+                                                    <span>Work was approved </span>
+                                                    <span className="see">See a rating</span>
+                                                </div>
+                                                <span className="time">St 12:30 AM</span>
+                                            </div>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <div className="notif">
+                                                <figure className="not_img">
+                                                    <img src={dummy} alt="img" />
+                                                </figure>
+                                                <div className="info">
+                                                    <span className="who">John Oldman</span>
+                                                    <span>reviewed you!</span>
+                                                    <span>Read review</span>
+                                                </div>
+                                                <span className="time">St 12:30 AM</span>
+                                            </div>
+                                        </MenuItem>
+                                        <MenuItem>
+                                            <div className="notif">
+                                                <figure className="not_img">
+                                                    <img src={dummy} alt="img" />
+                                                </figure>
+                                                <div className="info">
+                                                    <span className="who">John Oldman</span>
+                                                    <span>reviewed you!</span>
+                                                    <span>Read review</span>
+                                                </div>
+                                                <span className="time">St 12:30 AM</span>
+                                            </div>
+                                        </MenuItem>
+                                    </Menu> */}
+                                    {/* Notofication close */}
+
+
+
                                 </div>
                             </div>
                             {!storageService.getItem("jwtToken") &&
