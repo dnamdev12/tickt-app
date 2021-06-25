@@ -242,11 +242,7 @@ const JobDetails = ({
             delete data_clone?.urls
         }
 
-        if (jobId) {
-            data_clone.jobId = jobId;
-        }
-
-        const createJob = jobId ? publishJobAgain : createPostJob;
+        const createJob = jobId ? publishJobAgain : createPostJob; 
 
         let response: any = await createJob(data_clone);
         if (response?.success) {

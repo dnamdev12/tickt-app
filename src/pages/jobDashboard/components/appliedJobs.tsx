@@ -46,11 +46,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) 
                 <div className="progress_wrapper">
                   <span className="completed-digit" id="digit-progress">
                     <b>Job Milestones {milestoneNumber}</b> of {totalMilestones}
-                  </span>
-                  <span className="approval_info">
-                    <img src={waiting} alt="icon" />
-                    PENDING
-                  </span>
+                  </span>                 
                   <span className="progress_bar">
                     <input
                       className="done_progress"
