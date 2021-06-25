@@ -136,13 +136,13 @@ const MarkMilestone = ({
 
   const validateActualHours = (value: any) => {
     if (!value) {
-      return 'Time Spent is required';
+      return 'Time Spent is required.';
     }
 
     let pattern =
       '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
     if (value.match(pattern) === null) {
-      return 'Hours should be in hh:mm format';
+      return 'Hours should be in hh:mm format.';
     }
 
     return '';
