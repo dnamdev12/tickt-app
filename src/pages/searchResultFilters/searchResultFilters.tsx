@@ -4,6 +4,7 @@ import { setShowToast } from '../../redux/common/actions';
 import { getSearchParamsData } from '../../utils/common';
 import Menu from '@material-ui/core/Menu';
 import Modal from '@material-ui/core/Modal';
+import NumberFormat from 'react-number-format';
 
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
@@ -33,6 +34,7 @@ const SearchResultFilters = (props: any) => {
         payTypeClicked: false,
         pay_type: "Fixed price",
         max_budget: null,
+        maxBudgetView: null,
     });
 
     const [sortBySorting, setSortBySorting] = useState<any>({
@@ -127,6 +129,10 @@ const SearchResultFilters = (props: any) => {
     }
 
     const showResultsByAllFilter = (item?: any) => {
+        if (item === "callViewNearByJobApi") {
+            props.searchByFilter("callViewNearByJobApi");
+            return;
+        }
         const data = {
             ...(sortByFilter.tradeId?.length && { tradeId: sortByFilter.tradeId }),
             ...(sortByFilter.jobTypes?.length && { jobTypes: sortByFilter.jobTypes }),
@@ -144,7 +150,12 @@ const SearchResultFilters = (props: any) => {
             setSortByFilter((prevData: any) => ({ ...prevData, showResultsButtonClicked: true }));
             showResultsByAllFilter();
         } else {
-            setShowToast(true, "Please select atleast one field");
+            // setShowToast(true, "Please select atleast one field");
+            sortByFilterClose();
+            setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], jobTypes: [], specializationId: [], allSpecializationClicked: false, showResultsButtonClicked: false, sortByFilterClicked: false }));
+            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Fixed price', max_budget: null, payTypeClicked: false }));
+            setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
+            showResultsByAllFilter("callViewNearByJobApi");
         }
     }
 
@@ -232,6 +243,15 @@ const SearchResultFilters = (props: any) => {
     }
 
     const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
+
+    useEffect(() => {
+        if (specializationList?.length) {
+            const newSpecialization = specializationList.map(({ _id }: { _id: string }) => {
+                return _id
+            })
+            setSortByFilter((prevData: any) => ({ ...prevData, specializationId: newSpecialization, allSpecializationClicked: true }));
+        }
+    }, [specializationList]);
 
     console.log('tradiefilters----------', sortByFilter, sortByPrice, sortBySorting)
     return (
@@ -342,7 +362,22 @@ const SearchResultFilters = (props: any) => {
 
                     <div className="form_field">
                         <div className="text_field">
-                            <input type="text" placeholder="0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={9} className="detect_input_ltr" />
+                            {/* <input type="text" placeholder="0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={9} className="detect_input_ltr" /> */}
+                            <NumberFormat
+                                value={sortByPrice.maxBudgetView}
+                                displayType={'input'}
+                                type={'text'}
+                                placeholder="0"
+                                className="detect_input_ltr"
+                                thousandSeparator={true}
+                                thousandsGroupStyle="lakh"
+                                decimalScale={2}
+                                maxLength={11}
+                                onValueChange={(values) => {
+                                    const { formattedValue, value } = values;
+                                    setSortByPrice((prevData: any) => ({ ...prevData, maxBudgetView: formattedValue, max_budget: value }));
+                                }}
+                            />
                             <span className="detect_icon_ltr">$</span>
                         </div>
                         {!!errors.maxBudget && <span className="error_msg">{errors.maxBudget}</span>}

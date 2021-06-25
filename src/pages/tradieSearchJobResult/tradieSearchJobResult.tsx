@@ -51,9 +51,6 @@ const TradieSearchJobResult = (props: any) => {
                         coordinates: [queryParamsData.long ? queryParamsData.long : queryParamsData.defaultLong, queryParamsData.lat ? queryParamsData.lat : queryParamsData.defaultLat]
                     }
                 }),
-                // location: {
-                //     coordinates: [queryParamsData.long ? queryParamsData.long : queryParamsData.defaultLong, queryParamsData.lat ? queryParamsData.lat : queryParamsData.defaultLat]
-                // }
             }
             console.log(data, "data tradie search result");
             props.postHomeSearchData(data);
@@ -69,7 +66,7 @@ const TradieSearchJobResult = (props: any) => {
         //     }
         //     props.postHomeSearchData(data);
         // } 
-    }, [])
+    }, []);
 
     const getQueryParamsData = () => {
         const params = new URLSearchParams(props.history?.location?.search);
@@ -124,6 +121,18 @@ const TradieSearchJobResult = (props: any) => {
 
     const searchByFilter = (allFiltersData: any) => {
         const newParamsData = getQueryParamsData();
+        if (allFiltersData === "callViewNearByJobApi") {
+            const data = {
+                page: 1,
+                long: newParamsData.defaultLong,
+                lat: newParamsData.defaultLat
+            }
+            props.getViewNearByJob(data);
+            props.history.replace(`/search-job-results?jobResults=viewNearByJob&defaultLat=${newParamsData.defaultLat}&defaultLong=${newParamsData.defaultLong}`);
+            getQueryParamsData();
+            setSearchResultData((prevData: any) => ({ ...prevData, searchByFilter: false }));
+            return;
+        }
         var headingType: string = '';
         console.log(allFiltersData, 'allFiltersData', newParamsData);
 
@@ -175,12 +184,6 @@ const TradieSearchJobResult = (props: any) => {
             delete data.jobResults;
         }
 
-        // if (!allFiltersData.max_budget) {
-        //     delete data.max_budget;
-        // }
-
-        // if (!newParamsData.searchJob && allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length && allFiltersData?.jobTypes?.length) {
-        // if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length && allFiltersData?.jobTypes?.length) {
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length) {
             const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
             const specializationName = specializationList?.find((i: any) => i._id === allFiltersData?.specializationId[0])?.name;
@@ -209,15 +212,6 @@ const TradieSearchJobResult = (props: any) => {
                     coordinates: [data.long ? data.long : data.defaultLong, data.lat ? data.lat : data.defaultLat]
                 }
             }),
-            // location: {
-            //     coordinates: [newParamsData.long ? newParamsData.long : newParamsData.defaultLong, newParamsData.lat ? newParamsData.lat : newParamsData.defaultLat]
-            // },
-            // ...(allFiltersData.tradeId?.length && { tradeId: allFiltersData.tradeId }),
-            // ...(allFiltersData.jobTypes?.length && { jobTypes: allFiltersData.jobTypes }),
-            // ...(allFiltersData.specializationId?.length && { specializationId: allFiltersData.specializationId }),
-            // ...(allFiltersData.pay_type && { pay_type: allFiltersData.pay_type }),
-            // ...(allFiltersData.max_budget && { max_budget: allFiltersData.max_budget }),
-            // ...(allFiltersData.sortBy && { sortBy: allFiltersData.sortBy })
         }
         Object.keys(data).forEach(key => (data[key] === undefined || data[key] === null || data[key] === 0 || data[key] === "0") && delete data[key]);
         var url = 'search-job-results?';
