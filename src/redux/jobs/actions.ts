@@ -2,6 +2,7 @@ import NetworkOps, { FetchResponse } from "../../network/NetworkOps";
 import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
 import { setShowToast, setLoading, setSkeletonLoading } from '../common/actions';
+import storageService from '../../utils/storageService';
 
 //jobTypeList
 export const callCategories = async () => {
@@ -115,7 +116,10 @@ export const getTradieQuestionList = async (data: any) => {
 }
 
 export const getTradieReviewList = async (data: any) => {
-  const response: FetchResponse = await NetworkOps.get(Urls.tradieReviewList + `?builderId=${data.builderId}&page=${data.page}`);
+  //applying condition to get review list of builder, when logged in either by tradie/builder
+  const userType: any = storageService.getItem('userType');
+  const reviewList: string = userType === 1 ? Urls.tradieReviewList : Urls.builderProfileReviewList;
+  const response: FetchResponse = await NetworkOps.get(reviewList + `?${userType === 1 ? 'builderId' : 'tradieId'}=${data.builderId}&page=${data.page}`);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -381,7 +385,10 @@ export const removeReviewReply = async (data: any) => {
 }
 
 export const getTradeReviews = async (data: any) => {
-  const response: FetchResponse = await NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
+  //applying condition to get review list of tradie, when logged in either by tradie/builder
+  const userType: any = storageService.getItem('userType');
+  const reviewList: string = userType === 1 ? Urls.tradieProfileReviewList : Urls.reviewList;
+  const response: FetchResponse = await NetworkOps.get(reviewList + `?${userType === 1 ? 'builderId' : 'tradieId'}=${data.tradieId}&page=${data.page}`);
   if (response?.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -572,7 +579,7 @@ export const republishJob = async (jobId: string) => {
   const response: FetchResponse = await NetworkOps.get(Urls.republishJob + `?jobId=${jobId}`);
   setLoading(false);
   if (response.status_code === 200) {
-      return { success: true, data: response.result };
+    return { success: true, data: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };

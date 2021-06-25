@@ -99,7 +99,7 @@ const Header = (props: any) => {
         setToggleMenu(false);
         if (userType === 1) {
             setActiveLink('jobs');
-            history.push('/applied-jobs');
+            history.push('/active-jobs');
         } else if (userType === 2) {
             setActiveLink('jobs');
             history.push('/jobs')
@@ -201,7 +201,8 @@ const Header = (props: any) => {
                                         </span>
                                         <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); } }>
                                             <span className="setting_icon">
-                                                <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" />
+                                                {/* <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" /> */}
+                                                <img src={profile} alt="profile" />
                                                 {'My Profile'}
                                             </span>
                                         </MenuItem>

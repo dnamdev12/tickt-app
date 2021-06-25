@@ -2,7 +2,7 @@
 header {
     position: fixed;
     width: 100%;
-    padding: 20px 0;
+    padding: 17px 0;
     -webkit-transition: 0.5s all;
     transition: 0.5s all;
     background-color: var(--blue);
@@ -225,13 +225,14 @@ header {
   
       .user_profile {
         margin-left: 20px;
+        border-radius: 50%;
+        border: 3px solid transparent;
         figure {
           width: 40px;
           height: 40px;
           overflow: hidden;
           cursor: pointer;
           border-radius: 50%;
-          border: solid 1px rgba(160, 159, 167, 0.35);
           img {
             width: 40px;
             height: 40px;
@@ -239,8 +240,8 @@ header {
           }
         }
         &.active{
-          border: 3px solid var(--yellow);
-          border-radius: 50%;
+          border-color: var(--yellow);
+          
           figure{
             border: none;
           }

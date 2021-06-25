@@ -247,7 +247,7 @@ const JobDetails = ({
         }
 
         const createJob = jobId ? publishJobAgain : createPostJob;
-      
+
         let response: any = await createJob(data_clone);
         if (response?.success) {
             clearParentStates();

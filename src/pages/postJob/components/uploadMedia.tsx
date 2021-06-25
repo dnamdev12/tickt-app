@@ -55,7 +55,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             return true;
         }
 
-        if (hasDescription && !description.trim()) {
+        if (hasDescription && (!description.trim() || description.length > 250)) {
             return true;
         }
 
@@ -260,13 +260,20 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     </div>
                     <div className="flex_row">
                         <div className="flex_col_sm_8">
-                            {hasDescription && <div className="form_field">
-                                <label className="form_label">Photo Description</label>
-                                <div className="text_field">
-                                    <input type="text" placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} maxLength={250} />
+                            {hasDescription && (
+                                <div className="form_field">
+                                    <label className="form_label">Photo Description</label>
+                                    <div className="text_field">
+                                        <textarea placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
+                                        {description.length ?
+                                          <span className="char_count">
+                                            {`character length : ${description.length} / 250`}
+                                          </span>
+                                        : ''}
+                                    </div>
+                                    <span className="error_msg">{submitClicked && !description.trim() ? 'Photo Description is required.' : description.length > 250 ? 'Maximum 250 characters are allowed.' : ''}</span>
                                 </div>
-                                <span className="error_msg">{submitClicked && !description.trim() ? 'Photo Description is required' : ''}</span>
-                            </div>}
+                            )}
                             <div className="form_field">
                                 <button
                                     onClick={() => {

@@ -682,7 +682,7 @@ class TradieInfo extends Component<Props, State> {
                 {tradieInfo?.vouchesData?.length ?
                     <div className="section_wrapper">
                         <div className="custom_container">
-                            <span className="sub_title">Vouchers</span>
+                            <span className="sub_title">Vouches</span>
                             <div className="flex_row">
 
                                 {tradieInfo?.vouchesData.map((item: any) => (
@@ -739,7 +739,7 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouchesData?.length} vouchers`}</button>
+                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}</button>
                         </div>
                     </div>
                     : null}

@@ -512,7 +512,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         style={{ height: '410px', width: '800px' }}
                                                     />
                                                 )
-                                            }) : <img alt="" src={jobDummyImage} />}
+                                            }) : <img alt=" " src={jobDummyImage} />}
                                     </OwlCarousel>}
                                 </figure>
                             </div>
@@ -765,7 +765,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         </button>
                                     </div>
                                     <div className="form_field">
-                                        <label className="form_label">Your question</label>
+                                        <label className="form_label">Your Question</label>
                                         <div className="text_field">
                                             <textarea placeholder="Text" maxLength={250} value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                             <span className="char_count">{`${questionsData.questionData?.length}/250`}</span>
@@ -841,20 +841,19 @@ const JobDetailsPage = (props: PropsType) => {
                                 <div className="flex_col_sm_3">
                                     {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
                                         <a href="javascript:void(0)" className="chat circle"></a>
-                                        <div className="user_wrap">
+                                        <div className="user_wrap"
+                                            onClick={() => {
+                                                if (jobDetailsData?.postedBy?.builderName) {
+                                                    props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                                                }
+                                            }}>
                                             <figure className="u_img">
                                                 {jobDetailsData?.postedBy?.builderImage ? (
                                                     <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
                                                 ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
                                             </figure>
                                             <div className="details">
-                                                <span
-                                                    className="name"
-                                                    onClick={() => {
-                                                        if (jobDetailsData?.postedBy?.builderName) {
-                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
-                                                        }
-                                                    }}>
+                                                <span className="name">
                                                     {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
                                                 </span>
                                                 {/* <span className="prof">Project Manager</span> */}
