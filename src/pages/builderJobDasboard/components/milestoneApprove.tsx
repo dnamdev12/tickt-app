@@ -12,7 +12,7 @@ import { withRouter } from 'react-router-dom';
 //     resetStateLocal: any
 // }
 
-const MilestoneApprove = ( props:any) => {
+const MilestoneApprove = (props: any) => {
     const { backToScreen, data, resetStateLocal } = props;
     const [isToggle, setToggle] = useState(false);
     const [IsToggleAccept, setToggleAccept] = useState(false);
@@ -52,6 +52,7 @@ const MilestoneApprove = ( props:any) => {
         if (IsToggleAccept) {
             return (
                 <FixedRate
+                    data={props.data}
                     toggleBack={toggleBack}
                     onSubmitAccept={onSubmitAccept}
                 />
@@ -84,9 +85,16 @@ const MilestoneApprove = ( props:any) => {
                     {console.log({ images })}
                     {images && Array.isArray(images) && images?.length ?
                         <div className="upload_img_video">
-                            {images.map((image: any) => (
+                            {images.map((media_item: any) => (
                                 <figure className="img_video">
-                                    <img src={image} alt="media" />
+                                    {media_item?.mediaType == 1 && (
+                                        <img src={media_item?.link} alt="media" />
+                                    )}
+
+                                    {media_item?.mediaType == 2 && ( 
+                                        <video src={media_item?.link} />
+                                    )}
+
                                     {/* <img src={close} alt="remove" className="remove" /> */}
                                 </figure>
                             ))}

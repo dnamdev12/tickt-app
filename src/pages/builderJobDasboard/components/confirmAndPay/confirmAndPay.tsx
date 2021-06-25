@@ -8,7 +8,16 @@ import { withRouter } from 'react-router-dom';
 
 const ConfirmAndPay = (props: any) => {
     const [toggle, setToggle] = useState(false);
-    const [paymentDetail, setPaymentDetail] = useState<any>([]);
+    const [selected, setSelected] = useState('');
+    const [paymentDetail, setPaymentDetail] = useState<any>([
+        {
+            name: 'Credit Card',
+            number: '4034',
+            cardholderName:'',
+            cvv: '515',
+            date: '06/22'
+        }
+    ]);
 
     const backToScreen = () => {
         setToggle(false);
@@ -48,11 +57,19 @@ const ConfirmAndPay = (props: any) => {
                 </div>
                 <div className="mb130">
                     {paymentDetail?.length ?
-                        paymentDetail.map((item: any) => (
-                            <button className="card_btn full_btn">
+                        paymentDetail.map((item: any, index: any) => (
+                            <button
+                                onClick={() => {
+                                    setSelected(index);
+                                }}
+                                className="card_btn full_btn">
                                 <img src={cardIcon} alt="card-icon" className="card" />
-                                {item?.name} <span className="show_label"> XXXX {(item?.number).substring(0,4)}</span>
-                                <img src={check} alt="check" className="check" />
+                                {item?.name} <span className="show_label">
+                                    XXXX {(item?.number).substring(0, 4)}
+                                </span>
+                                {selected == index ? (
+                                    <img src={check} alt="check" className="check" />
+                                ) : null}
                             </button>
                         ))
                         : null}

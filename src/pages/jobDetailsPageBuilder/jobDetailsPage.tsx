@@ -376,6 +376,7 @@ const JobDetailsPage = (props: PropsType) => {
 
     let paramStatus: any = '';
     let paramJobId: any = '';
+    let isPastJob: boolean = false;
     if (props.location?.search) {
         let location_search = window.atob((props.location?.search).substring(1))
         const params = new URLSearchParams(location_search);
@@ -385,8 +386,10 @@ const JobDetailsPage = (props: PropsType) => {
         if (params.get('jobId')) {
             paramJobId = params.get('jobId');
         }
+        if (params.get('job')) {
+            isPastJob = true;
+        }
     }
-
 
 
     const renderByStatus = ({ status }: any) => {
@@ -488,20 +491,37 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
-                                        <ul>
-                                            <li className="icon calendar">
-                                                {jobDetailsData?.time ?
-                                                    jobDetailsData.time :
-                                                    renderTime(
-                                                        jobDetailsData.fromDate,
-                                                        jobDetailsData?.toDate
-                                                    )
-                                                }
-                                            </li>
-                                            <li className="icon dollar">{jobDetailsData.amount}</li>
-                                            <li className="icon location line-3">{jobDetailsData.locationName}</li>
-                                            <li className="icon clock">{jobDetailsData.duration}</li>
-                                        </ul>
+                                        {!isPastJob ? (
+                                            <ul>
+                                                <li className="icon clock">{jobDetailsData.duration}</li>
+                                                <li className="icon dollar">{jobDetailsData.amount}</li>
+                                                <li className="icon location line-3">{jobDetailsData.locationName}</li>
+                                                <li className="icon calendar">
+                                                    {jobDetailsData?.time ?
+                                                        jobDetailsData.time :
+                                                        renderTime(
+                                                            jobDetailsData.fromDate,
+                                                            jobDetailsData?.toDate
+                                                        )
+                                                    }
+                                                </li>
+                                            </ul>
+                                        ) : (
+                                            <ul>
+                                                <li className="icon clock">
+                                                    {jobDetailsData?.time ?
+                                                        jobDetailsData.time :
+                                                        renderTime(
+                                                            jobDetailsData.fromDate,
+                                                            jobDetailsData?.toDate
+                                                        )
+                                                    }
+                                                </li>
+                                                <li className="icon dollar">{jobDetailsData?.amount}</li>
+                                                <li className="icon location line-1">{jobDetailsData?.locationName}</li>
+                                                <li className="job_status">{jobDetailsData?.status}</li>
+                                            </ul>
+                                        )}
                                     </div>
                                     {paramStatus === 'EXPIRED' && (
                                         <button

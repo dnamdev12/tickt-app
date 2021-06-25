@@ -797,12 +797,11 @@ class TradieInfo extends Component<Props, State> {
                                                         {'Show review'}
                                                     </span>
                                                 ) : (
-                                                    <span
-                                                        className="action link"
-                                                        onClick={() => {
+                                                    <span className="action link">
+                                                        {/* onClick={() => {
                                                             reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
-                                                        }}>
-                                                        {'Reply'}
+                                                        }}> */}
+                                                        {/* {'Reply'} */}
                                                     </span>
                                                 )}
                                                 {/* {Object.keys(replyData).length > 0 &&

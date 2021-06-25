@@ -1,16 +1,27 @@
 import React, { useEffect, useState } from 'react'
+import deleteIcon from '../../../../assets/images/ic-bin.png'
+import cardValidator, { cardholderName } from "card-validator";
+import moment from 'moment';
 
+// import DateFnsUtils from '@date-io/date-fns';
+// import {
+//   KeyboardDatePicker,
+// } from '@material-ui/pickers';
+
+const defaultValues = {
+    name: '',
+    number: '',
+    cardholderName: '',
+    date: '',
+    cvv: ''
+}
 
 const PaymentDetails = (props: any) => {
-    const [stateData, setStateData] = useState({
-        name: '',
-        number: '',
-        date: '',
-        cvv: ''
-    });
+    const [stateData, setStateData] = useState(defaultValues);
     const [errors, setErrors] = useState({
         name: '',
         number: '',
+        cardholderName: '',
         date: '',
         cvv: ''
     });
@@ -21,6 +32,7 @@ const PaymentDetails = (props: any) => {
             !stateData?.name?.length ||
             !stateData?.number?.length ||
             !stateData?.date?.length ||
+            !stateData?.cardholderName.length ||
             !stateData?.cvv?.length
         ) {
             return true
@@ -36,18 +48,96 @@ const PaymentDetails = (props: any) => {
     }
 
 
-    useEffect(() => {
+    // useEffect(() => {
+    //     if (JSON.stringify(stateData) !== JSON.stringify(defaultValues)) {
+    //         setErrors((prev: any) => ({
+    //             name: stateData?.name?.length > 50 ? 'Maximum 50 characters are allowed.' : '',
+    //             number: !stateData?.number?.length ? 'Account Number is required' : stateData?.number?.length && !cardValidator.number(stateData?.number).isValid ? 'Please enter a valid Account Number' : '',
+    //             cardholderName: '',
+    //             date: !stateData?.date?.length ? 'Expiration Date is required' : stateData?.date?.length && !checkValidExpiration(stateData?.date) ? `Please add a valid pattern like ${moment().format('MM/YY')}` : '',
+    //             cvv: stateData?.cvv?.length > 3 ? 'Maximum 3 characters are allowed' : ''
+    //         }))
+    //     }
+    // }, [stateData]);
+
+
+    const checkIsValid = ({ name, value }: any) => {
+        if (name === 'name') {
+            if (!value.length) {
+                return 'Account Name is required';
+            } else {
+                if (value.length > 50) {
+                    return 'Maximum 50 characters are allowed';
+                }
+            }
+        }
+
+        if (name === 'cardholderName') {
+            if (!value.length) {
+                return 'Cardholder Name is required';
+            } else {
+                if (value.length > 50) {
+                    return 'Maximum 50 characters are allowed';
+                }
+            }
+        }
+
+        if (name === 'date') {
+            if (!value.length) {
+                return 'Expiration Date is required';
+            } else {
+                console.log({
+                    check:checkValidExpiration(value),
+                    value
+                })
+                if (!checkValidExpiration(value)) {
+                    return `Please add a valid pattern like ${moment().format('MM/YY')}`;
+                }
+            }
+        }
+
+        if (name === 'number') {
+            if (!value.length) {
+                return 'Account Number is required';
+            } else {
+                if (!cardValidator.number(value).isValid) {
+                    return 'Please enter a valid Account Number'
+                }
+            }
+        }
+
+        if (name === 'cvv') {
+            if (!value.length) {
+                return 'CVV/CVC is required';
+            } else {
+                if (value?.length > 3) {
+                    return 'Maximum 3 characters are allowed';
+                }
+            }
+        }
+
+    }
+
+    const setErrorsOnChange = ({ name, value }: any) => {
         setErrors((prev: any) => ({
-            name: stateData?.name?.length > 50 ? 'Maximum 50 characters are allowed.' : '',
-            number: stateData?.number?.length > 10 ? 'Maximum 10 characters are allowed.' : '',
-            date: stateData?.date?.length > 6 ? 'Maximum 6 characters are allowed.' : '',
-            cvv: stateData?.cvv?.length > 3 ? 'Maximum 3 characters are allowed.' : ''
-        }))
-    }, [stateData]);
+            ...prev,
+            [name]: checkIsValid({ name, value }) //value.length > 50 ? 'Maximum 50 characters are allowed.' : '',
+        }));
+    }
+
+
+    const checkValidExpiration = (date: any) => {
+        let currentDate = moment().format('MM/YY');
+        if ((date).match('^(0[1-9]|1[0-2])\/?([0-9]{2})$')) {
+            if (moment(date, 'MM/YY').isSameOrAfter(moment(currentDate, 'MM/YY'))) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     let isTrue = Object.values(stateData).includes('');
     let isError = handleCheck();
-    
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
@@ -55,15 +145,11 @@ const PaymentDetails = (props: any) => {
                     <button className="back" onClick={() => { props.backToScreen() }}></button>
                     <span className="xs_sub_title">{'Wire up circuit'}</span>
                     <>
-                        {/* <span className="edit_icon" title="Edit">
-                  <img src={editIconBlue} alt="edit" onClick={() => setReadOnly(!readOnly)} />
-                </span>
-                <span className="edit_icon remove_icon" title="Remove" onClick={() => removeBankDetails()} >
-                  <img src={removeIconBlue} alt="remove" />
-                </span> */}
                         <div className="edit_delete">
-                            <span className="edit" title="Edit" onClick={() => { }}></span>
-                            <span className="delete" title="Remove" onClick={() => { }}></span>
+                            {/* <span className="edit" title="Edit" onClick={() => { }}></span> */}
+                            {/* <span onClick={() => { }}>
+                                <img src={deleteIcon} alt='dlt-icon' />
+                            </span> */}
                         </div>
                     </>
                 </div>
@@ -71,14 +157,19 @@ const PaymentDetails = (props: any) => {
                 <p className="commn_para">Enter your bank account details</p>
 
                 <div className="form_field">
-                    <label className="form_label">Account Name</label>
+                    <label className="form_label">
+                        {'Account Name'}
+                    </label>
                     <div className="text_field">
                         <input
                             type="text"
                             placeholder="Enter Account Name"
                             name="account_name"
                             value={stateData?.name}
-                            onChange={(e: any) => { setStateData((prev: any) => ({ ...prev, name: e.target.value })) }}
+                            onChange={(e: any) => {
+                                setStateData((prev: any) => ({ ...prev, name: e.target.value }));
+                                setErrorsOnChange({ name: 'name', value: e.target.value });
+                            }}
                             // maxLength={50}
                             readOnly={false}
                         />
@@ -86,19 +177,47 @@ const PaymentDetails = (props: any) => {
                     <span className="error_msg">{errors.name}</span>
                 </div>
                 <div className="form_field">
-                    <label className="form_label">Account Number</label>
+                    <label className="form_label">
+                        {'Account Number'}
+                    </label>
                     <div className="text_field">
                         <input
                             type="number"
-                            placeholder="Enter Account number"
+                            placeholder="Enter Account Number"
                             name="account_number"
                             value={stateData?.number}
-                            onChange={(e: any) => { setStateData((prev: any) => ({ ...prev, number: e.target.value })) }}
+                            onChange={(e: any) => {
+                                setStateData((prev: any) => ({ ...prev, number: e.target.value }));
+                                setErrorsOnChange({ name: 'number', value: e.target.value });
+                            }}
                             maxLength={10}
                             readOnly={false}
                         />
                     </div>
                     <span className="error_msg">{errors.number}</span>
+                </div>
+
+                <div className="form_field">
+                    <label className="form_label">
+                        {'Cardholder Name'}
+                    </label>
+                    <div className="text_field">
+                        <input
+                            type="text"
+                            placeholder="Enter Cardholder Name"
+                            name="cardholder_name"
+                            value={stateData?.cardholderName}
+                            onChange={(e: any) => {
+                                setStateData((prev: any) => ({ ...prev, cardholderName: e.target.value }));
+                                setErrorsOnChange({ name: 'cardholderName', value: e.target.value });
+                            }}
+                            // maxLength={50}
+                            readOnly={false}
+                        />
+                    </div>
+                    <span className="error_msg">
+                        {errors.cardholderName}
+                    </span>
                 </div>
 
                 <div className="flex_row">
@@ -109,16 +228,21 @@ const PaymentDetails = (props: any) => {
                             </label>
                             <div className="text_field">
                                 <input
-                                    type="number"
+                                    type="text"
                                     placeholder="Enter Expiration Date"
                                     name="bsb_number"
                                     value={stateData?.date}
-                                    onChange={(e: any) => { setStateData((prev: any) => ({ ...prev, date: e.target.value })) }}
-                                    maxLength={6}
+                                    onChange={(e: any) => {
+                                        setStateData((prev: any) => ({ ...prev, date: e.target.value }))
+                                        setErrorsOnChange({ name: 'date', value: e.target.value });
+                                    }}
+                                    maxLength={7}
                                     readOnly={false}
                                 />
                             </div>
-                            <span className="error_msg">{errors.date}</span>
+                            <span className="error_msg">
+                                {errors.date}
+                            </span>
                         </div>
                     </div>
                     <div className="flex_col_sm_4">
@@ -132,7 +256,10 @@ const PaymentDetails = (props: any) => {
                                     placeholder="Enter CVV/CVC"
                                     name="bsb_number"
                                     value={stateData?.cvv}
-                                    onChange={(e: any) => { setStateData((prev: any) => ({ ...prev, cvv: e.target.value })) }}
+                                    onChange={(e: any) => {
+                                        setStateData((prev: any) => ({ ...prev, cvv: e.target.value }));
+                                        setErrorsOnChange({ name: 'cvv', value: e.target.value });
+                                    }}
                                     maxLength={3}
                                     readOnly={false}
                                 />
