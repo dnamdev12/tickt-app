@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, Route, Switch, useHistory } from 'react-router-dom';
+import { NavLink, Route, Switch, useHistory, useLocation } from 'react-router-dom';
 
 import ActiveJobsPage from './components/activeJobs';
 import AppliedJobsPage from './components/appliedJobs';
@@ -59,6 +59,8 @@ const JobDashboard = ({
   bankDetails,
 }: Proptypes) => {
   const history = useHistory();
+  const { pathname } = useLocation();
+
   let params: any = new URLSearchParams(history.location?.search);
   params = {
     jobId: params.get('jobId'),
@@ -152,7 +154,7 @@ const JobDashboard = ({
               <span className="title">Job Dashboard</span>
               <ul className="dashboard_menu">
                 <li>
-                  <NavLink className="icon star" to="/active-jobs">
+                  <NavLink className="icon star" to="/active-jobs" isActive={() => ['/active-jobs', '/mark-milestone'].includes(pathname)}>
                     <span className="menu_txt">Active</span>
                   </NavLink>
                 </li>

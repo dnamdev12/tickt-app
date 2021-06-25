@@ -99,7 +99,7 @@ const Header = (props: any) => {
         setToggleMenu(false);
         if (userType === 1) {
             setActiveLink('jobs');
-            history.push('/applied-jobs');
+            history.push('/active-jobs');
         } else if (userType === 2) {
             setActiveLink('jobs');
             history.push('/jobs')
