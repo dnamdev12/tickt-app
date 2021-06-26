@@ -229,12 +229,12 @@ const JobDetails = ({
         data_clone['milestones'] = filter_milestones;
         let from_date = data_clone?.from_date;
         let to_date = data_clone?.to_date;
-        console.log({from_date,to_date})
+        console.log({ from_date, to_date })
         if (moment(from_date).isSame(moment(to_date))) {
             delete data_clone?.to_date;
         }
 
-        if(!to_date?.length){
+        if (!to_date?.length) {
             delete data_clone?.to_date;
         }
 
@@ -279,26 +279,36 @@ const JobDetails = ({
 
     const renderTime = (data: any) => {
         let format = 'YYYY-MM-DD';
-        let currentTime = moment().format('YYYY-MM-DD');
-        console.log({
-            start: moment(data?.from_date, format).isValid(),
-            end: moment(data?.to_date, format).isValid()
-        })
+        let current_date = moment().startOf('day').toDate();
+        let start_date = moment(data?.from_date, format).isValid() ? moment(data?.from_date, format).startOf('day').toDate() : false;
+        let end_date = moment(data?.to_date, format).isValid() ? moment(data?.to_date, format).startOf('day').toDate() : false;
+        let result = null;
 
-        data.to_date = moment(data?.from_date, format).isSame(moment(data?.to_date, format)) ? '' : data?.to_date;
-
-        if (moment(data?.from_date, format)?.isValid() && !moment(data?.to_date, format)?.isValid()) {
-
-            return moment(data?.from_date).format('DD MMM');
-        }
-
-        if (moment(data?.from_date, format)?.isValid() && moment(data?.to_date, format)?.isValid()) {
-            if (moment(data?.from_date, format).isSameOrBefore(moment(currentTime, format))) {
-                return moment(data?.to_date, format).diff(moment(data?.from_date, format), 'days') + 1 + ' ' + 'days';
-            } else {
-                return moment(data?.from_date, format).diff(moment(currentTime, format), 'days') + ' ' + 'days overdue';
+        if (start_date && end_date) {
+            if (moment(start_date).isSame(moment(end_date))) {
+                end_date = false;
             }
         }
+
+        if (start_date && !end_date) {
+            if (moment(start_date).isSame(moment(current_date))) {
+                result = 'Today';
+            }
+
+            if (moment(start_date).isAfter(moment(current_date))) {
+                let days_diff = moment(start_date).diff(moment(current_date), 'days');
+                result = `${days_diff} days`;
+            }
+        }
+
+        if (start_date) {
+            if (moment(start_date).isAfter(moment(current_date))) {
+                let days_diff = moment(start_date).diff(moment(current_date), 'days');
+                result = `${days_diff} days`;
+            }
+        }
+
+        return result;
     }
 
     const format = 'MM-DD-YYYY';
