@@ -162,20 +162,17 @@ export class PersonalInformation extends Component<Props, State> {
 
     componentWillUnmount() {
         this.props.cleanTradieProfileViewData();
-        console.log('componentWillUnmount');
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         console.log(nextProps, "nextProps--------------", prevState, "prevState-------------");
         if (nextProps.tradieProfileViewData && Object.keys(prevState.profileViewData).length === 0 && !_.isEqual(nextProps.tradieProfileViewData, prevState.profileViewData)) {
-            console.log('different basic details 2222222222');
             return {
                 profileViewData: nextProps.tradieProfileViewData,
                 userImage: nextProps.tradieProfileViewData?.userImage || nextProps.tradieProfileViewData?.builderImage
             }
         }
         if (nextProps.tradieBasicDetailsData && Object.keys(prevState.basicDetailsData).length === 0 && !_.isEqual(nextProps.tradieBasicDetailsData, prevState.basicDetailsData)) {
-            console.log('different basic details 1111111111');
             return {
                 basicDetailsData: nextProps.tradieBasicDetailsData
             }
@@ -487,7 +484,8 @@ export class PersonalInformation extends Component<Props, State> {
             }
             const res = await tradieUpdatePassword(data);
             if (res.success) {
-                this.passwordModalCloseHandler();
+                this.props.history.push('/change-password-success');
+                // this.passwordModalCloseHandler();
             }
         }
     }
@@ -727,7 +725,8 @@ export class PersonalInformation extends Component<Props, State> {
             profileModalClicked: false,
             basicDetailsData: this.props.tradieBasicDetailsData ? this.props.tradieBasicDetailsData : {},
             addQualificationClicked: false,
-            remainingQualificationDoc: []
+            remainingQualificationDoc: [],
+            errors: {},
         }));
     }
 
@@ -794,7 +793,7 @@ export class PersonalInformation extends Component<Props, State> {
                     </div>
                     <div className="flex_col_sm_8">
                         <div className="title_view_wrap">
-                            {isSkeletonLoading ? <Skeleton /> : <span className="title">{basicDetailsData?.fullName}
+                            {isSkeletonLoading ? <Skeleton /> : <span className="title line-2" title={basicDetailsData?.fullName}>{basicDetailsData?.fullName}
                                 <span className="edit_icon" title="Edit" onClick={() => this.setState({ profileModalClicked: true })}>
                                     <img src={editIconBlue} alt="edit" />
                                 </span>
@@ -1085,7 +1084,7 @@ export class PersonalInformation extends Component<Props, State> {
                         <div className="inner_wrap">
                             <div className="inner_wrappr">
                                 <div className="form_field">
-                                    <label className="form_label">Password</label>
+                                    <label className="form_label">Old Password</label>
                                     <div className="text_field">
                                         <input type={showPassword ? 'text' : 'password'} className="detect_input" placeholder="Enter Password" name='password' value={password} onChange={this.passwordHandler} />
                                         <span className="detect_icon" onClick={() => this.setState((prevState: any) => ({ showPassword: !prevState.showPassword }))}>
@@ -1222,14 +1221,14 @@ export class PersonalInformation extends Component<Props, State> {
                 <Modal
                     className="custom_modal"
                     open={aboutModalClicked}
-                    onClose={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false })}
+                    onClose={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false, errors: {} })}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
                     <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
                             <span className="sub_title">About {this.userType === 2 && 'company'}</span>
-                            <button className="close_btn" onClick={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false })}>
+                            <button className="close_btn" onClick={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false, errors: {} })}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
@@ -1245,7 +1244,7 @@ export class PersonalInformation extends Component<Props, State> {
                             <button className="fill_btn full_btn btn-effect" onClick={() => {
                                 let err: any = {};
                                 if (about.trim().length < 1) {
-                                    err.about = 'Text is required';
+                                    err.about = 'Description is required';
                                     this.setState({ errors: err });
                                 } else {
                                     const newData = { ...profileViewData };
@@ -1253,7 +1252,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     this.setState({ profileViewData: newData, aboutModalClicked: false, isProfileViewDataChanged: true });
                                 }
                             }}>Save changes</button>
-                            <button className="fill_grey_btn btn-effect" onClick={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false })}>Cancel</button>
+                            <button className="fill_grey_btn btn-effect" onClick={() => this.setState({ about: profileViewData?.about ? profileViewData?.about : '', aboutModalClicked: false, errors: {} })}>Cancel</button>
                         </div>
                     </div>
                 </Modal>

@@ -133,7 +133,7 @@ export const getSearchParamsData = (location?: any) => {
         jobResults: params.get('jobResults'),
         heading: params.get('heading'),
         jobTypes: jobTypesArray,
-        searchJob: params.get('searchJob'),
+        searchJob: params.get('searchJob')?.replaceAll("xxx", "&"),
         max_budget: Number(params.get('max_budget')),
         pay_type: params.get('pay_type'),
         sortBy: Number(params.get('sortBy'))
