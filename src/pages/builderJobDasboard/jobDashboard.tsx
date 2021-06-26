@@ -296,6 +296,7 @@ class JobDashboard extends Component<Props, State> {
                                     dataItems={approvalJobs}
                                     jobType={jobtype}
                                     setJobLabel={setSelected}
+                                    activeType={activeType}
                                     history={props.history}
                                 />
                             )}

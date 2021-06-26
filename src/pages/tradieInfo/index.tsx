@@ -406,6 +406,12 @@ class TradieInfo extends Component<Props, State> {
         })
     }
 
+    renderBtn = ({ hideInvite }: any) => {
+        if (hideInvite) {
+
+        }
+    }
+
     render() {
         let props: any = this.props;
         // let tradieInfo: any = props.tradieInfo;
@@ -421,6 +427,16 @@ class TradieInfo extends Component<Props, State> {
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
+
+        const urlParams = new URLSearchParams(props.location.search)
+        let hideInvite: any = false;
+        let haveJobId: any = false;
+
+        if (urlParams.get('hideInvite')) {
+            hideInvite = urlParams.get('hideInvite') === "false" ? false : true;
+        }
+
+        haveJobId = urlParams.get('jobId') == null ? false : true;
 
         return (
             <div className="app_wrapper">
@@ -471,7 +487,7 @@ class TradieInfo extends Component<Props, State> {
 
                                                 {userType === 1 ? (
                                                     <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
-                                                ) : (!tradieInfo?.isRequested ? (
+                                                ) : (!tradieInfo?.isRequested && !hideInvite ? (
                                                     <div className="form_field">
                                                         {tradieInfo?.isInvited ? (
                                                             <div className="bottom_btn">
@@ -508,7 +524,7 @@ class TradieInfo extends Component<Props, State> {
                                                             </div>
                                                         )}
                                                     </div>
-                                                ) : (
+                                                ) : haveJobId ? (
                                                     <>
                                                         <div className="form_field">
                                                             <button
@@ -521,7 +537,7 @@ class TradieInfo extends Component<Props, State> {
                                                                 className="fill_grey_btn full_btn btn-effect">Decline</button>
                                                         </div>
                                                     </>
-                                                ))}
+                                                ) : null)}
                                             </>}
                                     </div>
                                 </div>

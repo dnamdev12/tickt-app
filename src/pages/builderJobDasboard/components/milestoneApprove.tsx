@@ -87,12 +87,12 @@ const MilestoneApprove = (props: any) => {
                         <div className="upload_img_video">
                             {images.map((media_item: any) => (
                                 <figure className="img_video">
-                                    {media_item?.mediaType == 1 && (
+                                    {media_item?.mediaType == 1 ? (
                                         <img src={media_item?.link} alt="media" />
-                                    )}
-
-                                    {media_item?.mediaType == 2 && ( 
+                                    ) : media_item?.mediaType == 2 ? ( 
                                         <video src={media_item?.link} />
+                                    ) : (
+                                        <img src={media_item} alt="media" />
                                     )}
 
                                     {/* <img src={close} alt="remove" className="remove" /> */}

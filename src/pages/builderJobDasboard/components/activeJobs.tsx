@@ -8,12 +8,15 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob';
+import { renderTime } from '../../../utils/common'
 
 interface Active {
     amount: any,
     durations: any,
     jobId: any,
     jobName: any,
+    fromDate: any,
+    toDate: any,
     milestoneNumber: any,
     specializationId: any,
     specializationName: any,
@@ -39,9 +42,12 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
 
-    const resetStateLocal = () => {
+    const resetStateLocal = (isTrue: boolean) => {
         setJobLabel(activeType);
         setLocalState(false)
+        if (isTrue) {
+            history.push('/decline-milestone-success');
+        }
     }
 
     useEffect(() => {
@@ -64,8 +70,8 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
             />)
     }
 
-    
 
+    console.log({ listData })
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -76,6 +82,8 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                         durations,
                         jobId,
                         jobName,
+                        fromDate,
+                        toDate,
                         milestoneNumber,
                         specializationId,
                         specializationName,
@@ -118,7 +126,10 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                                 {total}
                                             </span>
                                         </li>
-                                        <li className="icon calendar">{durations}</li>
+                                        <li className="icon calendar">
+                                            {/* {durations} */}
+                                            {renderTime(fromDate, toDate)}
+                                        </li>
                                         <li className="">
                                             <span>
                                                 {timeLeft}
@@ -151,16 +162,18 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                             />
                                         </span>
                                     </div>
-                                    <button
-                                        onClick={() => {
-                                            setLocalState(true);
-                                            setSelectedIndex(index);
-                                        }}
-                                        className="fill_grey_btn full_btn btn-effect">
-                                        {'Approve'}
-                                        {/* <img src={rateStar} alt="rating-star" />
+                                    {status === "NEEDS APPROVAL" && (
+                                        <button
+                                            onClick={() => {
+                                                setLocalState(true);
+                                                setSelectedIndex(index);
+                                            }}
+                                            className="fill_grey_btn full_btn btn-effect">
+                                            {'Approve'}
+                                            {/* <img src={rateStar} alt="rating-star" />
                                         {'Rate this job'} */}
-                                    </button>
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>

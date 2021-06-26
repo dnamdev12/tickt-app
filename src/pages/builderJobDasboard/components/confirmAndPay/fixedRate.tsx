@@ -98,7 +98,11 @@ const FixedRate = (props: any) => {
                     })}
 
                 </div>
-                <div className="bank_detail view_more">
+                <div 
+                onClick={() => {
+                    setToggle(true);
+                }}
+                className="bank_detail view_more">
                     <span className="xs_head">Bank Details</span>
                     <span className="show_label">Credit card </span>
                 </div>

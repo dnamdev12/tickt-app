@@ -11,9 +11,8 @@ const ConfirmAndPay = (props: any) => {
     const [selected, setSelected] = useState('');
     const [paymentDetail, setPaymentDetail] = useState<any>([
         {
-            name: 'Credit Card',
+            cardholderName: 'Credit Card',
             number: '4034',
-            cardholderName:'',
             cvv: '515',
             date: '06/22'
         }
@@ -64,7 +63,9 @@ const ConfirmAndPay = (props: any) => {
                                 }}
                                 className="card_btn full_btn">
                                 <img src={cardIcon} alt="card-icon" className="card" />
-                                {item?.name} <span className="show_label">
+                                {/* {item?.cardholderName} */}
+                                {'Credit Card'}{' '}
+                                <span className="show_label">
                                     XXXX {(item?.number).substring(0, 4)}
                                 </span>
                                 {selected == index ? (
@@ -82,7 +83,9 @@ const ConfirmAndPay = (props: any) => {
                         onClick={() => {
                             setToggle(true);
                         }}
-                        className="fill_grey_btn full_btn btn-effect">Add another card</button>
+                        className="fill_grey_btn full_btn btn-effect">
+                        {paymentDetail?.length ? 'Add another card' : 'Add card'}
+                    </button>
                 </div>
 
                 <div className="form_field">

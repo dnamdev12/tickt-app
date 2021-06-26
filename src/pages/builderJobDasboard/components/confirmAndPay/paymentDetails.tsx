@@ -9,7 +9,6 @@ import moment from 'moment';
 // } from '@material-ui/pickers';
 
 const defaultValues = {
-    name: '',
     number: '',
     cardholderName: '',
     date: '',
@@ -19,7 +18,6 @@ const defaultValues = {
 const PaymentDetails = (props: any) => {
     const [stateData, setStateData] = useState(defaultValues);
     const [errors, setErrors] = useState({
-        name: '',
         number: '',
         cardholderName: '',
         date: '',
@@ -29,7 +27,6 @@ const PaymentDetails = (props: any) => {
 
     const handleCheck = () => {
         if (
-            !stateData?.name?.length ||
             !stateData?.number?.length ||
             !stateData?.date?.length ||
             !stateData?.cardholderName.length ||
@@ -98,10 +95,10 @@ const PaymentDetails = (props: any) => {
 
         if (name === 'number') {
             if (!value.length) {
-                return 'Account Number is required';
+                return 'Card Number is required';
             } else {
                 if (!cardValidator.number(value).isValid) {
-                    return 'Please enter a valid Account Number'
+                    return 'Please enter a valid Card Number'
                 }
             }
         }
@@ -155,7 +152,7 @@ const PaymentDetails = (props: any) => {
                 </div>
                 <span className="sub_title">Payment Details</span>
                 <p className="commn_para">Enter your bank account details</p>
-
+{/* 
                 <div className="form_field">
                     <label className="form_label">
                         {'Account Name'}
@@ -175,15 +172,15 @@ const PaymentDetails = (props: any) => {
                         />
                     </div>
                     <span className="error_msg">{errors.name}</span>
-                </div>
+                </div> */}
                 <div className="form_field">
                     <label className="form_label">
-                        {'Account Number'}
+                        {'Card Number'}
                     </label>
                     <div className="text_field">
                         <input
                             type="number"
-                            placeholder="Enter Account Number"
+                            placeholder="Enter Card Number"
                             name="account_number"
                             value={stateData?.number}
                             onChange={(e: any) => {
