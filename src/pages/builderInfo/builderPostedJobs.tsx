@@ -4,6 +4,8 @@ import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import { getBuildersJob } from '../../redux/jobs/actions';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import noData from '../../assets/images/no-search-data.png';
+import storageService from '../../utils/storageService';
+import { getAllPostedJob } from '../../redux/profile/actions';
 
 interface PropsType {
     location: any,
@@ -15,6 +17,7 @@ const BuilderPostedJobs = (props: PropsType) => {
     const params = new URLSearchParams(props.location?.search);
     const builderId: any = params.get('bId');
     const totalJobsCount: any = Number(params.get('jobCount'));
+    const userType = storageService.getItem('userType');
 
     const [buildersJob, setBuildersJob] = useState<Array<any>>([]);
     const [buildersJobPageNo, setBuildersJobPageNo] = useState<number>(1);
@@ -33,7 +36,7 @@ const BuilderPostedJobs = (props: PropsType) => {
             builderId: builderId,
             page: buildersJobPageNo
         }
-        const res1 = await getBuildersJob(data);
+        const res1 = userType === 1 ? await getBuildersJob(data) : await getAllPostedJob(data.page);
         if (res1.success) {
             const allJobs = [...buildersJob, ...res1.data];
             if (res1.data?.length < 10) {

@@ -777,6 +777,13 @@ export class PersonalInformation extends Component<Props, State> {
         const isSkeletonLoading: any = props.isSkeletonLoading;
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === trade[0])?.specialisations;
 
+        // const addedTradeList = profileViewData?.areasOfSpecialization?.tradeData?.map(({ tradeId }: { tradeId: string }) => tradeId) || [];
+        // const addedSpecializationList = profileViewData?.areasOfSpecialization?.specializationData?.map(({ specializationId }: { specializationId: string }) => specializationId) || [];
+        // const addedTradeData = tradeList.filter(({ _id }: { _id: string }) => addedTradeList.includes(_id));
+        // addedTradeData.forEach(({ specialisations }: any, index: number) => {
+        //   addedTradeData[index].specialisations = specialisations.filter(({ _id }: { _id: string }) => addedSpecializationList.includes(_id));
+        // });
+
         return (
             <>
                 <div className="flex_row f_col">
@@ -808,7 +815,7 @@ export class PersonalInformation extends Component<Props, State> {
                             {isSkeletonLoading ? <Skeleton /> : <a href="javascript:void(0)" className="view_profile"
                                 onClick={() => {
                                     props.cleanTradieProfileViewData();
-                                    props.history.push(`/tradie-info?tradeId=${basicDetailsData?.userId}&type=1`);
+                                    props.history.push(`/${this.userType === 1 ? 'tradie' : 'builder'}-info?${this.userType === 1 ? 'trade' : 'builder'}Id=${basicDetailsData?.userId}&type=${this.userType}`);
                                 }}>
                                 <img src={viewProfile} alt="view-profile" />View public profile</a>}
                         </div>
@@ -1151,9 +1158,27 @@ export class PersonalInformation extends Component<Props, State> {
                     </span>}
                     <div className="tags_wrap">
                         {isSkeletonLoading ? <Skeleton count={3} /> : <ul>
-                            {profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName && <li className="main">
-                                <img src={profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName}
-                            </li>}
+                            {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
+                                <React.Fragment key={_id}>
+                                  <li className="main">
+                                      <img src={selected_url || menu} alt="" />{trade_name}
+                                  </li>
+                                  {specialisations?.map(({ _id, name }: { _id: string, name: string }) => {
+                                    return <li key={_id}>{name}</li>
+                                  })}
+                                </React.Fragment>
+                            ))} */}
+                            {profileViewData?.areasOfSpecialization?.tradeData?.map(({ tradeId, tradeName, tradeSelectedUrl }: { tradeId: string, tradeName: string, tradeSelectedUrl: string }, index: number) => {
+                              if (this.userType === 1 && index > 0) {
+                                return null;
+                              }
+
+                              return (
+                                <li key={tradeId} className="main">
+                                    <img src={tradeSelectedUrl || menu} alt="" />{tradeName}
+                                </li>
+                              )
+                            })}
                             {
                                 profileViewData?.areasOfSpecialization?.specializationData?.map(({ specializationId, specializationName }: { specializationId: string, specializationName: string }) => {
                                     return <li key={specializationId}>{specializationName}</li>

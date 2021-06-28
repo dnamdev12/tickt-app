@@ -123,6 +123,7 @@ const Urls = {
     builderChangeEmail: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}changeEmail`,
     republishJob: `${versions.v1}${ServiceEnum.job}republishJob`,
     publishJobAgain: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}publishJobAgain`,
+    getAllPostedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getAllJobs`,
 }
 
 export const urlFor = (service: String): string => {
