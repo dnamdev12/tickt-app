@@ -7,7 +7,7 @@ const ChooseJobSuccess = (props: any) => {
   return (
     <div className="img_text_wrap">
       <figure className="full_image">
-        <img src={templateImage} alt="template-item" />
+        <img src={templateImage} alt="template-item" loading="eager" />
         <div className="short_info">
           <div className="content">
             <h1 className="title">

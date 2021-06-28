@@ -7,6 +7,8 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 import waiting from '../../../assets/images/exclamation.png';
 import moment from 'moment';
+import MarkMilestones from './markMilestones';
+
 interface Active {
     amount: any,
     durations: any,
@@ -32,7 +34,9 @@ interface Active {
 
 }
 interface State {
-    isToggleApplicants: boolean
+    isToggleApplicants: boolean,
+    selectedIndex: any,
+    localState: any,
 }
 
 interface Props {
@@ -41,14 +45,17 @@ interface Props {
     applicantsList?: any,
     jobType: any,
     history?: any,
-    isLoading: any
+    isLoading: any,
+    activeType: any,
 }
 
 class NeedApproval extends Component<Props, State> {
     constructor(props: any) {
         super(props)
         this.state = {
-            isToggleApplicants: false
+            isToggleApplicants: false,
+            selectedIndex: '',
+            localState: ''
         }
     }
 
@@ -88,11 +95,30 @@ class NeedApproval extends Component<Props, State> {
         }
     }
 
+    resetStateLocal = () => {
+        let activeType = this.props.activeType;
+        this.setState({
+            localState: false,
+        }, () => {
+            this.props.setJobLabel(activeType);
+        })
+    }
+
     render() {
         const { setJobLabel, dataItems, applicantsList, jobType, isLoading } = this.props;
         let listData: any = dataItems
-        let { isToggleApplicants } = this.state;
+        let { isToggleApplicants, localState, selectedIndex } = this.state;
         console.log({ applicantsList, isToggleApplicants })
+
+        if (localState && selectedIndex !== null) {
+            return (
+                <MarkMilestones
+                    resetStateLocal={this.resetStateLocal}
+                    selectedIndex={selectedIndex}
+                    listData={listData}
+                />)
+        }
+
         return (
             <React.Fragment>
                 <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -120,7 +146,7 @@ class NeedApproval extends Component<Props, State> {
                             location,
                             tradeSelectedUrl,
                             tradieImage,
-                        }: Active) => (
+                        }: Active, index: number) => (
                             <div className="flex_col_sm_6">
                                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                     <span
@@ -169,9 +195,9 @@ class NeedApproval extends Component<Props, State> {
                                                 <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
                                             </span>
                                             <span className="approval_info">
-                                                {console.log({status})}
-                                                {status === "Approved" && <img src={approved} alt="icon" />}
-                                                {status === "NEED APPROVAL" && <img src={waiting} alt="icon" />}
+                                                {status === "APPROVED" && <img src={approved} alt="icon" />}
+                                                {status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
+                                                {status === 'NEED APPROVAL' && <img src={waiting} alt="icon" />}
                                                 {status}
                                             </span>
                                             <span className="progress_bar">
@@ -184,6 +210,52 @@ class NeedApproval extends Component<Props, State> {
                                                 />
                                             </span>
                                         </div>
+                                        {(status === 'NEED APPROVAL' || status === "NEEDS APPROVAL") && (
+                                            <button
+                                                onClick={() => {
+                                                    this.setState({
+                                                        localState: true,
+                                                        selectedIndex: index
+                                                    })
+                                                }}
+                                                className="fill_grey_btn full_btn btn-effect">
+                                                {'Approve'}
+                                            </button>
+                                        )}
+                                    </div>
+                                    {/* <div className="job_progress_wrap" id="scroll-progress-bar">
+                                        <div className="progress_wrapper">
+                                            <span className="completed-digit" id="digit-progress">
+                                                <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
+                                            </span>
+                                            <span className="approval_info">
+                                                {console.log({ status })}
+                                                {status === "Approved" && <img src={approved} alt="icon" />}
+                                                {status === "NEED APPROVAL" && <img src={waiting} alt="icon" />}
+                                                {status}
+                                            </span>
+                                            <div className="progress_bar">
+                                                <input
+                                                    className="done_progress"
+                                                    id="progress-bar"
+                                                    type="range"
+                                                    min="0"
+                                                    value={milestoneNumber / totalMilestones * 100}
+                                                />
+                                                {status === "NEEDS APPROVAL" && (
+                                                    <button
+                                                        onClick={() => {
+                                                            this.setState({
+                                                                localState: true,
+                                                                selectedIndex: index
+                                                            })
+                                                        }}
+                                                        className="fill_grey_btn full_btn btn-effect">
+                                                        {'Approve'}
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
                                         {tradieId?.length ? (
                                             <button
                                                 onClick={() => {
@@ -194,7 +266,8 @@ class NeedApproval extends Component<Props, State> {
                                                 {'Applications'}
                                             </button>
                                         ) : null}
-                                    </div>
+                                    </div> */}
+
                                 </div>
                             </div>
                         )) : !isLoading && (

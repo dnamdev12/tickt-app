@@ -125,6 +125,7 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
                             index={index}
                             specializationId={specializationId}
                             jobId={jobid}
+                            hideInvite={true}
                         />
                     ))
                     :

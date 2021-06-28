@@ -22,6 +22,7 @@ import { withRouter } from 'react-router-dom';
 const EditMilestone = (props: any) => {
     const { item, item: { jobId, jobName }, details: { milestones }, history } = props;
 
+    const propsMile = Object.freeze(props?.details?.milestones);
     const [stateData, setStateData] = useState<any>([]);
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [open, setOpen] = React.useState(false);
@@ -166,9 +167,18 @@ const EditMilestone = (props: any) => {
     }
 
     const addNewMile = (item: any) => {
+        let state_data: any = stateData;
         if (itemData.edit) { // edit
-            stateData[itemData.editId] = item;
-            setStateData(stateData)
+            let index = parseInt(itemData.editId);
+
+            state_data[itemData.editId]['isPhotoevidence'] = item.isPhotoevidence;
+            state_data[itemData.editId]['milestoneName'] = item.milestoneName;
+            state_data[itemData.editId]['recommendedHours'] = item.recommendedHours;
+
+            state_data[index]['fromDate'] = moment(item.fromDate).isValid() ? moment(item.fromDate).toISOString() : '';
+            state_data[index]['toDate'] = moment(item.toDate).isValid() ? moment(item.toDate).toISOString() : '';
+            setStateData(state_data)
+
         } else {
             setStateData((prev: any) => ([...prev, item]));
         }
@@ -187,12 +197,13 @@ const EditMilestone = (props: any) => {
     }
 
     const removeMilestoneByIndex = (index: any) => {
-        setStateData(stateData.filter((_: any, index_: any) => index_ === index));
+        setStateData(stateData.filter((_: any, index_: any) => index_ !== index));
         resetItems();
     }
 
     const checkIfChange = () => {
-        if (JSON.stringify(stateData) !== JSON.stringify(props?.details?.milestones)) {
+        // if (JSON.stringify(stateData) !== JSON.stringify(props?.details?.milestones)) {
+        if (JSON.stringify(propsMile) == JSON.stringify(stateData)) {
             return true;
         }
         return false;
@@ -339,7 +350,7 @@ const EditMilestone = (props: any) => {
                                                 key={`${index}-${milestoneName}`}
                                                 draggableId={`${milestoneName}-${index}`}
                                                 index={index}
-                                                isDragDisabled={status === 1 ? true : false}
+                                                isDragDisabled={(status === 1 || status === 2) ? true : false}
                                             >
                                                 {(provided: any, snapshot: any) => (
                                                     <li
@@ -380,7 +391,7 @@ const EditMilestone = (props: any) => {
                                                                 checked={editItem[index]}
                                                                 onChange={(e: any) => {
 
-                                                                    if (status !== 1) {
+                                                                    if (status !== 1 && status !== 2) {
                                                                         checkOnClick(e, index)
                                                                     }
                                                                 }}
@@ -462,7 +473,8 @@ const EditMilestone = (props: any) => {
                                             }
                                         }
                                     }}
-                                    className={`fill_btn full_btn btn-effect ${!checkIfChange() ? 'disable_btn' : ''}`}>
+                                    className={`fill_btn full_btn btn-effect`}>
+                                    {/* className={`fill_btn full_btn btn-effect ${checkIfChange() ? 'disable_btn' : ''}`}> */}
                                     {'Send to tradie'}
                                 </button>
                             </div>

@@ -41,7 +41,8 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
         let response: any = await milestoneAcceptOrDecline(data);
         if (response?.success) {
             console.log({response})
-            resetStateLocal();
+            resetStateLocal(true);
+            
         }
     }
 

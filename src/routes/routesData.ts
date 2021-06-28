@@ -40,6 +40,8 @@ import ChangePasswordSuccess from '../pages/tradieEditProfile/components/persona
 
 import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmAndPay/suceess';
 
+import declineMilestoneSuccess from '../pages/builderJobDasboard/components/declineMilestoneSuccess'
+
 const routes = [
     {
         name: 'main',
@@ -94,6 +96,11 @@ const routes = [
         name: 'milestoneRequestSent',
         path: '/milestone-request-sent-success',
         component: MilestoneRequestSentSuccess,
+    },
+    {
+        name: 'decline-milestone-success',
+        path: '/decline-milestone-success',
+        component: declineMilestoneSuccess,
     },
     {
         name: 'requestMonitered',
