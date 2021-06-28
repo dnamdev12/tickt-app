@@ -1387,8 +1387,8 @@ body {
       width: 100%;
     }
     .chang_req_card{
-      min-height: 190px;
-      padding: 15px 10px 15px 15px;
+      min-height: 150px;
+      padding: 14px 10px 14px 14px;
       box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.19);
       background-color: var(--white);
       &.mt-sm{
@@ -1411,7 +1411,7 @@ body {
       }
       button{
         width: 140px;
-        padding: 18px 10px;
+        padding: 15px 10px;
         &:last-child{
           margin-left: 15px;
         }
