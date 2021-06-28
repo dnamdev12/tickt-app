@@ -62,27 +62,27 @@ const ConfirmAndPay = (props: any) => {
                                     setSelected(index);
                                 }}
                                 className="card_btn full_btn">
-                                <img src={cardIcon} alt="card-icon" className="card" />
+                                <img src={cardIcon} alt="card-icon" className="pos card" />
                                 {/* {item?.cardholderName} */}
                                 {'Credit Card'}{' '}
                                 <span className="show_label">
                                     XXXX {(item?.number).substring(0, 4)}
                                 </span>
                                 {selected == index ? (
-                                    <img src={check} alt="check" className="check" />
+                                    <img src={check} alt="check" className="pos check" />
                                 ) : null}
                             </button>
                         ))
                         : null}
                     {/* <button className="card_btn full_btn">
-                        <img src={cardIcon} alt="card-icon" className="card" />
+                        <img src={cardIcon} alt="card-icon" className="pos card" />
                         Credit Card <span className="show_label"> XXXX 4034</span>
 
                         <div className="checkbox_wrap agree_check pos check">
                             <input name="Select" className="filter-type filled-in" type="checkbox" id="select1" />
                             <label htmlFor="select1"></label>
                         </div>
-                        
+
                     </button> */}
 
 
