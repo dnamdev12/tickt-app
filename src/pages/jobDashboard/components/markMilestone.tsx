@@ -6,7 +6,7 @@ import UploadMedia from '../../postJob/components/uploadMedia';
 import { renderTime } from '../../../utils/common';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob'
-import cardIcon from '../../../assets/images/ic-credit.png';
+
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import removeIconBlue from '../../../assets/images/ic-cancel-blue.png';
@@ -532,27 +532,7 @@ const MarkMilestone = ({
             <button className="fill_grey_btn bank_btn">
               {data.userId && <img src={check} alt="check" />} Bank account
             </button>
-
-            <button
-
-
-              className="card_btn full_btn">
-              <img src={cardIcon} alt="card-icon" className="pos card" />
-              {/* {item?.cardholderName} */}
-              {'Credit Card'}{' '}
-              <span className="show_label">
-                XXXX
-              </span>
-
-              <img src={check} alt="check" className="pos check" />
-
-              {/* <div className="checkbox_wrap agree_check pos check">
-                <input name="Select" className="filter-type filled-in" type="checkbox" id="select1" />
-                <label htmlFor="select1"></label>
-              </div> */}
-
-            </button>
-
+            
           </div>
           <div className="flex_col_sm_9">
             <div className="form_field">
