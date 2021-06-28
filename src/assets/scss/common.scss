@@ -5031,6 +5031,9 @@ body {
     &.check{
       right: 0px;
     }
+    ~img{
+      right: 12px !important;
+    }
   }
 }
 

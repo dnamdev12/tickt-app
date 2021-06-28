@@ -544,7 +544,7 @@ const MarkMilestone = ({
                 XXXX
               </span>
 
-              <img src={check} alt="check" className="check" />
+              <img src={check} alt="check" className="pos check" />
 
               {/* <div className="checkbox_wrap agree_check pos check">
                 <input name="Select" className="filter-type filled-in" type="checkbox" id="select1" />
