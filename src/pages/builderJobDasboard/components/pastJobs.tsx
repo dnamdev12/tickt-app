@@ -38,7 +38,7 @@ export default function PastJobs(props: any): ReactElement {
 
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&job=past`)
             props.history.push(`/job-detail?${urlEncode}`);
         }
     }

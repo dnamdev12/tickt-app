@@ -2,6 +2,10 @@ import React, { useEffect, useState } from 'react'
 import ConfirmPay from './confirmAndPay';
 
 const FixedRate = (props: any) => {
+    console.log({ props });
+    const indexMile: any = props?.data?.selectedMilestoneIndex?.index;
+    const milestones: any = props?.data?.itemDetails?.milestones;
+    const selectedItems: any = milestones[indexMile];
     const [toggle, setToggle] = useState(false);
 
     const backToScreen = () => {
@@ -21,6 +25,25 @@ const FixedRate = (props: any) => {
         )
     }
 
+    const renderItem = ({ title, value, bold }: any) => {
+        if (value) {
+            return (
+                <div className="f_spacebw">
+                    <span className="form_label">
+                        {bold ? (
+                            <b>{title}</b>
+                        ) : title}
+                    </span>
+                    <span className="form_label">
+                        {bold ? <b>{value}</b> : value}
+                    </span>
+                </div>
+            )
+        }
+        return null;
+    }
+
+    console.log({ selectedItems });
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
@@ -41,28 +64,45 @@ const FixedRate = (props: any) => {
                 </div>
                 <div className="payment_details">
                     <span className="inner_title">Milestone payment details</span>
-                    <div className="f_spacebw">
-                        <span className="form_label">Hours worked</span>
-                        <span className="form_label">5</span>
-                    </div>
-                    <div className="f_spacebw">
-                        <span className="form_label">Hours rate</span>
-                        <span className="form_label">$5</span>
-                    </div>
-                    <div className="f_spacebw">
-                        <span className="form_label">Subtotal</span>
-                        <span className="form_label">$150</span>
-                    </div>
-                    <div className="f_spacebw">
-                        <span className="form_label">Tax GST (10%)</span>
-                        <span className="show_label">$190.0</span>
-                    </div>
-                    <div className="f_spacebw">
-                        <span className="show_label">Total</span>
-                        <span className="show_label">$190.0</span>
-                    </div>
+
+
+                    {renderItem({
+                        title: 'Hours worked',
+                        value: selectedItems?.hoursWorked
+                    })}
+
+                    {renderItem({
+                        title: 'Hours rate',
+                        value: selectedItems?.hourlyRate
+                    })}
+
+                    {renderItem({
+                        title: 'Milestone Amount',
+                        value: selectedItems?.milestoneAmount
+                    })}
+
+                    {renderItem({
+                        title: 'Taxes',
+                        value: selectedItems?.taxes
+                    })}
+
+                    {renderItem({
+                        title: 'Platform fees',
+                        value: selectedItems?.platformFees
+                    })}
+
+                    {renderItem({
+                        title: 'Total',
+                        value: selectedItems?.total,
+                        bold: true
+                    })}
+
                 </div>
-                <div className="bank_detail view_more">
+                <div 
+                onClick={() => {
+                    setToggle(true);
+                }}
+                className="bank_detail view_more">
                     <span className="xs_head">Bank Details</span>
                     <span className="show_label">Credit card </span>
                 </div>

@@ -133,7 +133,7 @@ const AddEditMile = (props: any) => {
             fromDate: date.selection.startDate,
             toDate: date.selection.endDate
         };
-        console.log({selection:date.selection})
+        console.log({ selection: date.selection })
         let index = props?.milestones?.length;
         addTimeToMileStone(time, index);
         // setCalender(date.selection);
@@ -197,15 +197,15 @@ const AddEditMile = (props: any) => {
                 })
             }
         }
-        console.log({checkIsValid});
+        console.log({ checkIsValid });
         if (!checkIsValid) {
             setShowToast(true, 'Please add unique date.');
             return;
         }
 
         setCalender({
-            startDate:moment(time.fromDate).toDate(),
-            endDate:moment(time.toDate).toDate(),
+            startDate: moment(time.fromDate).toDate(),
+            endDate: moment(time.toDate).toDate(),
             key: "selection"
         })
         // milestone_clone[index]['fromDate'] = time.fromDate;
@@ -386,22 +386,26 @@ const AddEditMile = (props: any) => {
                                     console.log({ stateData, props })
                                     if (props.editMile !== '') {
                                         // edit
-                                        props.addNewMile({
-                                            milestoneName: stateData.name,
-                                            isPhotoevidence: stateData.isPhoto,
-                                            recommendedHours: stateData.recommended,
-                                            fromDate: calenderItems.startDate,
-                                            toDate: calenderItems.endDate,
-                                        })
+                                        if (props?.addNewMile) {
+                                            props?.addNewMile({
+                                                milestoneName: stateData.name,
+                                                isPhotoevidence: stateData.isPhoto,
+                                                recommendedHours: stateData.recommended,
+                                                fromDate: calenderItems.startDate,
+                                                toDate: calenderItems.endDate,
+                                            })
+                                        }
                                     } else {
                                         // add
-                                        props.addNewMile({
-                                            milestoneName: stateData.name,
-                                            isPhotoevidence: stateData.isPhoto,
-                                            recommendedHours: stateData.recommended,
-                                            fromDate: calenderItems.startDate,
-                                            toDate: calenderItems.endDate,
-                                        })
+                                        if (props?.addNewMile) {
+                                            props?.addNewMile({
+                                                milestoneName: stateData.name,
+                                                isPhotoevidence: stateData.isPhoto,
+                                                recommendedHours: stateData.recommended,
+                                                fromDate: calenderItems.startDate,
+                                                toDate: calenderItems.endDate,
+                                            })
+                                        }
                                     }
                                     props.resetItems();
                                 }}

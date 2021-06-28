@@ -109,7 +109,7 @@ export default class EditMilestone extends Component<Props, State> {
         const { editMileStone, milestones, editMilestoneTiming } = this.props;
         let item = milestones[editMileStone];
 
-        if (Object.keys(item).length) {
+        if (item && Object.keys(item).length) {
             let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
 
             let isValid: any = null;

@@ -1,12 +1,8 @@
 import React from 'react';
 import templateImage from '../../../assets/images/job-complete-bg.png';
+import { withRouter } from 'react-router-dom';
 
-
-interface Props {
-    
-}
-
-const DeclineMilestoneSuccess = (props: Props) => {
+const DeclineMilestoneSuccess = (props: any) => {
     return (
         <div className="img_text_wrap">
       <figure className="full_image">
@@ -17,7 +13,11 @@ const DeclineMilestoneSuccess = (props: Props) => {
             <span className="show_label">The tradesperson will review and get in touch with you. 
             </span>
             <div className="btn_wrapr">
-              <button className="fill_btn btn-effect">OK</button>
+              <button
+              onClick={() => {
+                props?.history.push('/');
+              }}
+              className="fill_btn btn-effect">OK</button>
             </div>
           </div>
         </div>
@@ -26,4 +26,4 @@ const DeclineMilestoneSuccess = (props: Props) => {
     )
 }
 
-export default DeclineMilestoneSuccess;
+export default withRouter(DeclineMilestoneSuccess);

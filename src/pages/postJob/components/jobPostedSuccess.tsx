@@ -18,7 +18,7 @@ const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, han
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={templateImage} alt="template-image" />
+                <img src={templateImage} alt="template-image" loading="eager" />
 
                 <div className="short_info">
                     <div className="content">

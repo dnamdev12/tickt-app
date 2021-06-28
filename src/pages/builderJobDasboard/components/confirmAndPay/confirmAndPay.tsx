@@ -8,7 +8,15 @@ import { withRouter } from 'react-router-dom';
 
 const ConfirmAndPay = (props: any) => {
     const [toggle, setToggle] = useState(false);
-    const [paymentDetail, setPaymentDetail] = useState<any>([]);
+    const [selected, setSelected] = useState('');
+    const [paymentDetail, setPaymentDetail] = useState<any>([
+        {
+            cardholderName: 'Credit Card',
+            number: '4034',
+            cvv: '515',
+            date: '06/22'
+        }
+    ]);
 
     const backToScreen = () => {
         setToggle(false);
@@ -48,11 +56,21 @@ const ConfirmAndPay = (props: any) => {
                 </div>
                 <div className="mb130">
                     {paymentDetail?.length ?
-                        paymentDetail.map((item: any) => (
-                            <button className="card_btn full_btn">
+                        paymentDetail.map((item: any, index: any) => (
+                            <button
+                                onClick={() => {
+                                    setSelected(index);
+                                }}
+                                className="card_btn full_btn">
                                 <img src={cardIcon} alt="card-icon" className="card" />
-                                {item?.name} <span className="show_label"> XXXX {(item?.number).substring(0,4)}</span>
-                                <img src={check} alt="check" className="check" />
+                                {/* {item?.cardholderName} */}
+                                {'Credit Card'}{' '}
+                                <span className="show_label">
+                                    XXXX {(item?.number).substring(0, 4)}
+                                </span>
+                                {selected == index ? (
+                                    <img src={check} alt="check" className="check" />
+                                ) : null}
                             </button>
                         ))
                         : null}
@@ -65,7 +83,9 @@ const ConfirmAndPay = (props: any) => {
                         onClick={() => {
                             setToggle(true);
                         }}
-                        className="fill_grey_btn full_btn btn-effect">Add another card</button>
+                        className="fill_grey_btn full_btn btn-effect">
+                        {paymentDetail?.length ? 'Add another card' : 'Add card'}
+                    </button>
                 </div>
 
                 <div className="form_field">

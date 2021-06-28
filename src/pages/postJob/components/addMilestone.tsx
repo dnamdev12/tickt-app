@@ -267,7 +267,7 @@ export default class AddMilestone extends Component<Props, State> {
                 to_date_format = date_to_moment //moment(date_to_moment, 'MM-DD-YYYY').format('MMM DD');
             }
         }
-
+        console.log({props:this.props})
         let check_errors = this.checkErrors();
         return (
             <div className="app_wrapper">
@@ -316,10 +316,10 @@ export default class AddMilestone extends Component<Props, State> {
                                             onClick={() => {
                                                 if (check_errors) {
                                                     if (milestone_name?.length || isPhotoevidence == true || recommended_hours?.length || from_date_format?.length) {
-                                                        this.setItems(true);
+                                                        // this.setItems(true);
                                                         this.toggleOpen()
                                                     } else {
-                                                        this.setItems(true);
+                                                        // this.setItems(true);
                                                         handleStepBack();
                                                     }
                                                 } else {

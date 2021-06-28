@@ -9,7 +9,7 @@ import ErrorBoundary from '../src/hoc/errorBoundary';
 import '../src/assets/scss/common.scss'
 
 // added this check to remove console from code (In-Production)
-if (process.env.NODE_ENV !== "development"){
+if (process.env.NODE_ENV !== "development") {
   console.log = () => { };
 }
 

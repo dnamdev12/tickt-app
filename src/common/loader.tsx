@@ -1,14 +1,32 @@
 import { connect } from 'react-redux';
 import loader from '../assets/images/loader.gif';
+import { setShowToast } from '../redux/common/actions';
+
+//@ts-ignore
+import { Detector } from "react-detect-offline";
+
+
 
 const Loader = (props: any) => {
+  // Add active class next to loader class to show loader
   return (
-    // Add active class next to loader class to show loader
-    <div className={`loader ${props.isLoading ? 'active' : ''}`}>
-      <figure>
-        <img src={loader} alt="loader" />
-      </figure>
-    </div>
+    <>
+      <Detector
+        render={({ online }: any) => (
+          online ? (
+            <div className={`loader ${props.isLoading ? 'active' : ''}`}>
+              <figure>
+                <img src={loader} alt="loader" />
+              </figure>
+            </div>
+          ) : (
+            <div className="offline-mode">
+            <span>{'No Internet connection'}</span> 
+            </div>
+          )
+        )}
+      />
+    </>
   )
 }
 
