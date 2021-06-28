@@ -532,6 +532,7 @@ const MarkMilestone = ({
             <button className="fill_grey_btn bank_btn">
               {data.userId && <img src={check} alt="check" />} Bank account
             </button>
+            
           </div>
           <div className="flex_col_sm_9">
             <div className="form_field">

@@ -13,7 +13,8 @@ import {
     deleteQuestion,
     updateQuestion,
     replyCancellation,
-    replyChangeRequest
+    replyChangeRequest,
+    acceptDeclineJobInvitation
 } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
 
@@ -68,6 +69,7 @@ const JobDetailsPage = (props: PropsType) => {
     const [jobDetailsData, setJobDetailsData] = useState<any>('');
     const [redirectFrom, setRedirectFrom] = useState<string>('');
     const [isTradieWorking, setIsTradieWorking] = useState<string>('');
+    const [jobInviteAction, setJobInviteAction] = useState<string>('');
     const [jobConfirmation, setJobConfirmation] = useState<any>({
         isJobModalOpen: false,
         tradieTradeId: '',
@@ -102,12 +104,14 @@ const JobDetailsPage = (props: PropsType) => {
     });
 
 
-    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation");
+    console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation", jobInviteAction, "jobInviteAction");
 
     useEffect(() => {
         const params = new URLSearchParams(props.location?.search);
         const isTradieWorking: any = params.get('isActive');
+        const jobInviteAction: any = params.get('jobAction');
         setIsTradieWorking(isTradieWorking);
+        setJobInviteAction(jobInviteAction);
         (async () => {
             const redirectFrom: any = params.get('redirect_from');
             setRedirectFrom(redirectFrom);
@@ -395,6 +399,19 @@ const JobDetailsPage = (props: PropsType) => {
         }));
     }
 
+    const inviteJobActionHandler = async (type: number) => {
+        let data = {
+            jobId: jobDetailsData?.jobId,
+            builderId: jobDetailsData?.postedBy?.builderId,
+            isAccept: type === 1 ? true : false
+        };
+        const res: any = await acceptDeclineJobInvitation(data);
+        if (res.success) {
+            setJobInviteAction('');
+            props.history.replace(`job-details-page?jobId=${jobDetailsData?.jobId}&redirect_from=jobs`);
+        }
+    }
+
 
 
     const renderBuilderAvatar = (item: any) => {
@@ -472,7 +489,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
-                            {!jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && isTradieWorking && (
+                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && isTradieWorking && (
                                 <div className="flex_col_sm_4 text-right">
                                     <span className="dot_menu">
                                         <img src={editIconBlue} alt="edit" />
@@ -518,7 +535,7 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
+                                    {!jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         {/* {!jobDetailsData?.isChangeRequest && <div className="chang_req_card"> */}
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
@@ -539,10 +556,10 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon calendar">{jobDetailsData?.duration || ''}</li>
                                         </ul>}
                                     </div>
-                                    {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
+                                    {!jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
-                                            Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid.
+                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
                                         </p>
                                         <button className="fill_btn btn-effect"
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestAcceptedClicked: true }))}>Accept</button>
@@ -560,6 +577,20 @@ const JobDetailsPage = (props: PropsType) => {
                                             {paramStatus}
                                         </button>
                                     ) : null}
+                                    {props.isSkeletonLoading ? <Skeleton /> : jobInviteAction === 'invite' &&
+                                        <>
+                                            <div className="form_field">
+                                                <button
+                                                    onClick={() => { inviteJobActionHandler(1) }}
+                                                    className="fill_btn full_btn btn-effect">Accept</button>
+                                            </div>
+                                            <div className="form_field">
+                                                <button
+                                                    onClick={() => { inviteJobActionHandler(2) }}
+                                                    className="fill_grey_btn full_btn btn-effect">Decline</button>
+                                            </div>
+                                        </>
+                                    }
                                 </div>
                             </div>
                         </div>
