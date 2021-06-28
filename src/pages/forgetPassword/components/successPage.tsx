@@ -22,11 +22,11 @@ const SuccessPage = (props: Propstype) => {
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={templateImage} alt="template-image" />
+                <img src={templateImage} alt="template-image" loading="eager" />
 
                 <div className="short_info">
                     <figure className="logo_img">
-                        <img src={colorLogo} alt="Tickt-logo" />
+                        <img src={colorLogo} alt="Tickt-logo" loading="eager" />
                     </figure>
                     <div className="content">
                         <h1 className="title">Thanks!</h1>
