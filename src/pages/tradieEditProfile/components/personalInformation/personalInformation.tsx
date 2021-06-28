@@ -270,8 +270,11 @@ export class PersonalInformation extends Component<Props, State> {
         // }
         const formData = new FormData();
         const newFile = e.target.files[0];
+        var uploadFileName = newFile.name.split('.');
+        uploadFileName.pop();
+        uploadFileName = uploadFileName.join('.');
         var fileType = newFile?.type?.split('/')[1]?.toLowerCase();
-        const docTypes: Array<any> = ["jpeg", "jpg", "png"];
+        const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf", "msword", "doc", "docx", "vnd.openxmlformats-officedocument.wordprocessingml.document"];
         var selectedFileSize = newFile?.size / 1024 / 1024;
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
             alert('The file must be in proper format or size');
@@ -296,6 +299,7 @@ export class PersonalInformation extends Component<Props, State> {
                 const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
                 const item = newqualificationDoc?.find(i => i.qualification_id === id)
                 item.url = res.imgUrl;
+                item.fileName = uploadFileName;
                 this.setState({ basicDetailsData: newBasicData, isEditProfileModalChanged: true });
             }
         }
@@ -305,6 +309,7 @@ export class PersonalInformation extends Component<Props, State> {
                 const data: Array<any> = [...this.state.remainingQualificationDoc];
                 const item = data?.find(i => i._id === id)
                 item.url = res.imgUrl;
+                item.fileName = uploadFileName;
                 this.setState({ remainingQualificationDoc: data, isEditProfileModalChanged: true });
             }
         }
@@ -384,11 +389,11 @@ export class PersonalInformation extends Component<Props, State> {
     validatePasswordForm = () => {
         const newErrors: any = {};
         if (!this.state.password) {
-            newErrors.password = Constants.errorStrings.password;
+            newErrors.password = Constants.errorStrings.oldPassword;
         } else {
             const passwordRegex = new RegExp(regex.password);
             if (!passwordRegex.test(this.state.password.trim())) {
-                newErrors.password = Constants.errorStrings.passwordError;
+                newErrors.password = 'Invalid Old Password';
             }
         }
         if (!this.state.newPassword) {
@@ -409,7 +414,7 @@ export class PersonalInformation extends Component<Props, State> {
     validateChangeEmailForm = () => {
         const newErrors: any = {};
         if (!this.state.newEmail) {
-            newErrors.newEmail = Constants.errorStrings.emailEmpty;
+            newErrors.newEmail = 'New Email Address is required';
         } else {
             const emailRegex = new RegExp(regex.email);
             if (!emailRegex.test(this.state.basicDetailsData?.email)) {
@@ -418,11 +423,11 @@ export class PersonalInformation extends Component<Props, State> {
         }
 
         if (!this.state.password) {
-            newErrors.currentPassword = Constants.errorStrings.password;
+            newErrors.currentPassword = 'Current Password is required';
         } else {
             const passwordRegex = new RegExp(regex.password);
             if (!passwordRegex.test(this.state.password.trim())) {
-                newErrors.currentPassword = Constants.errorStrings.passwordError;
+                newErrors.currentPassword = 'Invalid Current Password';
             }
         }
 
@@ -439,7 +444,7 @@ export class PersonalInformation extends Component<Props, State> {
     submitBasicProfileDetails = async () => {
         if (this.validateBasicDetailsForm()) {
             const basicDetails = { ...this.state.basicDetailsData };
-            const filledQualification = this.userType === 1 ? [...this.state.basicDetailsData?.qualificationDoc]?.filter(({ isSelected }: { isSelected: string }) => !isSelected?.length) : [];
+            const filledQualification = this.userType === 1 ? [...this.state.basicDetailsData?.qualificationDoc]?.map(({ url, qualification_id }: { url: string, qualification_id: string }) => url?.length && { qualification_id: qualification_id, url: url }) : [];
             const remainingQualification = this.state.remainingQualificationDoc?.map(({ _id, url }: { _id: string, url: string }) => url?.length && { qualification_id: _id, url: url });
             const newRemainingQualification = remainingQualification?.filter((i: any) => (i && Object.keys(i)?.length > 0));
 
@@ -656,6 +661,7 @@ export class PersonalInformation extends Component<Props, State> {
             const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
             const item = newqualificationDoc?.find(i => i.qualification_id === id)
             item.url = '';
+            item.fileName = '';
             newBasicData.qualificationDoc = newqualificationDoc;
             this.setState({ basicDetailsData: newBasicData });
         }
@@ -663,6 +669,7 @@ export class PersonalInformation extends Component<Props, State> {
             const data: Array<any> = [...this.state.remainingQualificationDoc];
             const item = data?.find(i => i._id === id)
             item.url = '';
+            item.fileName = '';
             this.setState({ remainingQualificationDoc: data });
         }
     }
@@ -906,7 +913,7 @@ export class PersonalInformation extends Component<Props, State> {
 
                                     {(basicDetailsData?.qualificationDoc?.length > 0 && localQualificationDoc.length > 0) &&
                                         <>
-                                            {basicDetailsData?.qualificationDoc?.map(({ qualification_id, url, isSelected }: { qualification_id: string, url: string, isSelected: string }) => {
+                                            {basicDetailsData?.qualificationDoc?.map(({ qualification_id, url, isSelected, fileName }: { qualification_id: string, url: string, isSelected: string, fileName: string }) => {
                                                 const qualificationName: string = localQualificationDoc.find(({ _id }: { _id: string }) => _id === qualification_id)?.name;
                                                 const docDetails: any = url && this.qualificationFileDetails(url);
                                                 return (
@@ -935,7 +942,9 @@ export class PersonalInformation extends Component<Props, State> {
                                                                 <label htmlFor={qualificationName}>{qualificationName}</label>
                                                             </div>
                                                             {url ?
-                                                                (<div className="file_upload_box">
+                                                                (<div className="file_upload_box"
+                                                                // onClick={() => window.open(url, '_blank')}
+                                                                >
                                                                     <span className="close" onClick={() => this.removeQualificationFileHandler(qualification_id, "filledQualification")}>
                                                                         <img src={removeFile} />
                                                                     </span>
@@ -943,18 +952,18 @@ export class PersonalInformation extends Component<Props, State> {
                                                                         <img src={docDetails?.fileType} />
                                                                     </span>
                                                                     <div className="file_details">
-                                                                        <span className="name">{docDetails?.fileName}</span>
+                                                                        <span className="name">{fileName ? fileName : docDetails?.fileName}</span>
                                                                     </div>
                                                                 </div>) :
                                                                 (<div className="upload_doc">
                                                                     <label
-                                                                        className={`upload_btn ${!isSelected ? "disable" : ""}`}
+                                                                        className={`upload_btn ${isSelected ? "disable" : ""}`}
                                                                         htmlFor={qualificationName + 'upload'}>Upload</label>
                                                                     <input
                                                                         type="file"
                                                                         className="none"
                                                                         id={qualificationName + 'upload'}
-                                                                        accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
+                                                                        accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                                                         disabled={!!isSelected ? true : false}
                                                                         onChange={(e) => this.onFileChange(e, "filledQualification", qualification_id)}
                                                                     />
@@ -967,7 +976,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     }
 
                                     {(addQualificationClicked && remainingQualificationDoc?.length > 0) &&
-                                        remainingQualificationDoc?.map(({ _id, name, url, isSelected }: { _id: string, name: string, url: string, isSelected: string }) => {
+                                        remainingQualificationDoc?.map(({ _id, name, url, isSelected, fileName }: { _id: string, name: string, url: string, isSelected: string, fileName: string }) => {
                                             const docDetails: any = url && this.qualificationFileDetails(url);
                                             return (
                                                 // <div className="form_field">
@@ -995,16 +1004,18 @@ export class PersonalInformation extends Component<Props, State> {
                                                             <label htmlFor={name}>{name}</label>
                                                         </div>
                                                         {url ?
-                                                            (<div className="file_upload_box">
+                                                            (<div className="file_upload_box"
+                                                                // onClick={() => window.open(url, '_blank')}
+                                                            >
                                                                 <span className="close" onClick={() => this.removeQualificationFileHandler(_id, "remainingQualification")}>
                                                                     <img src={removeFile} />
                                                                 </span>
-                                                                {/* onClick={() => window.open(url, '_blank')} */}
                                                                 <span className="file_icon">
                                                                     <img src={docDetails?.fileType} />
                                                                 </span>
                                                                 <div className="file_details">
-                                                                    <span className="name">{docDetails?.fileName}</span>
+                                                                    {/* <span className="name">{docDetails?.fileName}</span> */}
+                                                                    <span className="name">{fileName}</span>
                                                                 </div>
                                                             </div>) :
                                                             (<div className="upload_doc">
@@ -1015,7 +1026,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                                     type="file"
                                                                     className="none"
                                                                     id={name + 'upload'}
-                                                                    accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc"
+                                                                    accept="image/jpeg,image/jpg,image/png,application/pdf,application/msword,.doc,application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                                                                     disabled={!!isSelected ? false : true}
                                                                     onChange={(e) => this.onFileChange(e, "remainingQualification", _id)}
                                                                 />
@@ -1116,7 +1127,9 @@ export class PersonalInformation extends Component<Props, State> {
                             </div>
                         </div>
                         <div className="bottom_btn custom_btn">
-                            <button className="fill_btn full_btn btn-effect" onClick={this.updatePasswordHandler}>Save changes</button>
+                            <button
+                                className={`fill_btn full_btn btn-effect ${(password && newPassword && confirmNewPassword) ? '' : 'disable_btn'}`}
+                                onClick={this.updatePasswordHandler}>Save changes</button>
                         </div>
                     </div >
                 </Modal >
@@ -1365,7 +1378,7 @@ export class PersonalInformation extends Component<Props, State> {
                             <div className="relate">
                                 <button className="back" onClick={this.closeAddEditPortofolioModal} />
                                 <div className="md_heading">
-                                    <span className="sub_title">Machine Maintenance</span>
+                                    <span className="sub_title">{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}</span>
                                     <span className="info_note">Tradies who have a portfolio with photos get job faster. </span>
                                 </div>
                             </div>

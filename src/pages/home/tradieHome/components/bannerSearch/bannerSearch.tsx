@@ -317,9 +317,9 @@ const BannerSearch = (props: PropsType) => {
                     }
                 }
                 setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: suggestion?.formattedSuggestion?.mainText, isMapLocationSelected: true }))
+                setInputFocus2(false);
             }
             );
-        setInputFocus2(false);
     }
 
     const filterFromAddress = (results: any) => {
@@ -389,7 +389,7 @@ const BannerSearch = (props: PropsType) => {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
         } else if (!stateData?.searchedJob) {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJobEmpty;
-        } 
+        }
         // else {
         //     const searchJobRegex = new RegExp(regex.alphaNumeric);
         //     if (!searchJobRegex.test(stateData.searchedJob.trim())) {
@@ -494,7 +494,7 @@ const BannerSearch = (props: PropsType) => {
                 </span>}
                 {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
             </div>
-            {suggestions?.length > 0 && stateData?.selectedMapLocation.length >= 3 && inputFocus2 ? <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+            {(suggestions?.length > 0 && stateData?.selectedMapLocation.length >= 3 && inputFocus2) ? <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                 <div className="flex_row recent_search auto_loc">
                     <div className="flex_col_sm_4">
                         {loading && <div>Loading...</div>}
@@ -519,8 +519,8 @@ const BannerSearch = (props: PropsType) => {
                         })}
                     </div>
                 </div>
-            </div> : !loading && stateData?.selectedMapLocation.length >= 3 && inputFocus2 && suggestions?.length === 0 ? (
-                <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+            </div> : (!loading && !stateData?.isMapLocationSelected && stateData?.selectedMapLocation.length >= 3 && inputFocus2 && suggestions?.length < 1) ?
+                (<div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                     <div className="flex_row recent_search auto_loc">
                         <div className="flex_col_sm_4">
                             <div className="loc_suggestions">
