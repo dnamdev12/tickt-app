@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import loader from '../assets/images/loader.gif';
 import { setShowToast } from '../redux/common/actions';
+import noInternet from '../assets/images/internet-connection-graphic.png'
 
 //@ts-ignore
 import { Detector } from "react-detect-offline";
@@ -20,8 +21,16 @@ const Loader = (props: any) => {
               </figure>
             </div>
           ) : (
-            <div className="offline-mode">
-            <span>{'No Internet connection'}</span> 
+
+            // Add hide_scroll class to body when it appears
+            
+            <div className="offline_mode">
+              <figure className="no_img">
+                <img src={noInternet} alt="no-internet" />
+              </figure>
+              <div className="content">
+                <h1>{'No Internet Connection'}</h1>
+              </div>
             </div>
           )
         )}

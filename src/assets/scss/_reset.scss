@@ -658,16 +658,25 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
     text-transform: lowercase;
 }
 
-.offline-mode {
-    background: #ed1c24;
+.offline_mode {
+    background: #e7e7ec;
     position: absolute;
-    top: 0;
-    left: 0;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 9999;
-    padding: 1rem 10rem;
-    right: 0;
-    margin-left: 0;
-    margin-right: 0;
+    width: 450px;
+    height: 270px;
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    justify-content: center;
+    color: #161d4a;
+    font-size: 18px;
     text-align: center;
-    color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 0 20px 0 #00000014;
+    .no_img{
+        margin-bottom: 15px;
+    }
 }
