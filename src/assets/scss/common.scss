@@ -1464,7 +1464,7 @@ body {
               }
             }
             &.location {
-              min-height: 24px;
+              min-height: 32px;
               &::before {
                 background: url('../images/location-1.png') center no-repeat;
               }
@@ -5006,7 +5006,7 @@ body {
 }
 
 .card_btn{
-  padding: 15px 10px;
+  padding: 16px 10px;
   margin-bottom: 24px;
   border-radius: 3px;
   border: solid 1px #0b41a8;
@@ -5018,8 +5018,9 @@ body {
   span{
     display: inline-block;
     font-family: 'Neue Haas Grotesk Text Pro Roman';
+    margin: 0;
   }
-  img{
+  .pos{
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
@@ -5028,7 +5029,7 @@ body {
       left: 12px;
     }
     &.check{
-      right: 12px;
+      right: 0px;
     }
   }
 }

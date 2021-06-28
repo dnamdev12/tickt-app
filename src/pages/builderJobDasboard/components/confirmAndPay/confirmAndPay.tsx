@@ -77,8 +77,16 @@ const ConfirmAndPay = (props: any) => {
                     {/* <button className="card_btn full_btn">
                         <img src={cardIcon} alt="card-icon" className="card" />
                         Credit Card <span className="show_label"> XXXX 4034</span>
-                        <img src={check} alt="check" className="check" />
+
+                        <div className="checkbox_wrap agree_check pos check">
+                            <input name="Select" className="filter-type filled-in" type="checkbox" id="select1" />
+                            <label htmlFor="select1"></label>
+                        </div>
+                        
                     </button> */}
+
+
+
                     <button
                         onClick={() => {
                             setToggle(true);
