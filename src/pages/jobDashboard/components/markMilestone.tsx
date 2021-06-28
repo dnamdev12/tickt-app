@@ -103,7 +103,7 @@ const MarkMilestone = ({
     account_number: '',
     bsb_number: '',
   });
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
   const [stepCompleted, setStepCompleted] = useState<Array<number>>([]);
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
@@ -422,7 +422,7 @@ const MarkMilestone = ({
     case 2:
       page = (
         <UploadMedia
-          jobName={'adf' || jobName}
+          jobName={jobName}
           title="Photo required"
           para="Your job point of contact has indicated they want to be notified when you reach the following milestones. Tap the milestone and Submit when a milestone is completed"
           stepCompleted={stepCompleted.includes(2)}
