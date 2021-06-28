@@ -108,7 +108,7 @@ const BuilderInfo = (props: PropsType) => {
 
     useEffect(() => {
         setItems();
-        props.callTradeList();
+        // props.callTradeList();
         // (async () => {
         //     const builderId: any = new URLSearchParams(props.location?.search).get('builderId');
         //     const res1 = await getBuilderProfile(builderId);
@@ -356,12 +356,12 @@ const BuilderInfo = (props: PropsType) => {
     const { user_type } = getItemsFromLocation();
     let userType: number = Number(user_type);
 
-    const addedTradeList = profileData?.areasOfSpecialization?.tradeData?.map(({ tradeId }: { tradeId: string }) => tradeId) || [];
-    const addedSpecializationList = profileData?.areasOfSpecialization?.specializationData?.map(({ specializationId }: { specializationId: string }) => specializationId) || [];
-    const addedTradeData = props.tradeListData.filter(({ _id }: { _id: string }) => addedTradeList.includes(_id));
-    addedTradeData.forEach(({ specialisations }: any, index: number) => {
-      addedTradeData[index].specialisations = specialisations.filter(({ _id }: { _id: string }) => addedSpecializationList.includes(_id));
-    });
+    // const addedTradeList = profileData?.areasOfSpecialization?.tradeData?.map(({ tradeId }: { tradeId: string }) => tradeId) || [];
+    // const addedSpecializationList = profileData?.areasOfSpecialization?.specializationData?.map(({ specializationId }: { specializationId: string }) => specializationId) || [];
+    // const addedTradeData = props.tradeListData.filter(({ _id }: { _id: string }) => addedTradeList.includes(_id));
+    // addedTradeData.forEach(({ specialisations }: any, index: number) => {
+    //   addedTradeData[index].specialisations = specialisations.filter(({ _id }: { _id: string }) => addedSpecializationList.includes(_id));
+    // });
 
     return (
         <div className="app_wrapper">
@@ -416,7 +416,7 @@ const BuilderInfo = (props: PropsType) => {
                                 <div className="tags_wrap">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
                                         <ul>
-                                            {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
+                                            {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
                                               <Fragment key={_id}>
                                                 <li className="main">
                                                     <img src={selected_url || menu} alt="" />{trade_name}
@@ -425,7 +425,15 @@ const BuilderInfo = (props: PropsType) => {
                                                   return <li key={_id}>{name}</li>
                                                 })}
                                               </Fragment>
+                                            ))} */}
+                                            {profileData?.areasOfSpecialization?.tradeData?.map(({ tradeId, tradeSelectedUrl, tradeName }: { tradeId: string, tradeSelectedUrl: string, tradeName: string }) => (
+                                                <li key={tradeId} className="main">
+                                                    <img src={tradeSelectedUrl || menu} alt="" />{tradeName || ''}
+                                                </li>
                                             ))}
+                                            {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
+                                                return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                            })}
                                         </ul>) : (
                                         <ul>
                                             {profileData?.tradeName && <li className="main">
