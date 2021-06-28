@@ -617,7 +617,7 @@ export class PersonalInformation extends Component<Props, State> {
         var newSpecializationData: Array<any> = newSpecialization?.map(({ specializationId }: { specializationId: string }) => specializationId?.length > 0 && specializationId);
         const data = {
             fullName: this.state.basicDetailsData?.fullName,
-            userImage: this.state.profileViewData?.userImage || this.state.profileViewData?.builderImage,
+            userImage: this.state.profileViewData?.tradieImage || this.state.profileViewData?.builderImage,
             trade: [this.state.profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeId],
             specialization: newSpecializationData,
             about: this.userType === 1 ? this.state.profileViewData?.about || '' : undefined,
