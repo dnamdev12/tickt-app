@@ -1279,7 +1279,9 @@ export class PersonalInformation extends Component<Props, State> {
                                 <li className="media" key={portfolioId} onClick={() => this.setState({ portfolioJobClicked: true, portfolioJobDetail: { jobDescription, jobName, portfolioId, portfolioImage }, portfolioJobIndex: index })}>
                                     <figure className="portfolio_img">
                                         <img src={portfolioImage[0] ? portfolioImage[0] : profilePlaceholder} alt="portfolio-images" />
-                                        <span className="xs_sub_title">{jobName}</span>
+                                        <span className="xs_sub_title">
+                                                <p className="line-3" title={jobName}>{jobName}</p>
+                                            </span>
                                     </figure>
                                 </li>
                             )

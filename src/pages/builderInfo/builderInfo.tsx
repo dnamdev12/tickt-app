@@ -443,7 +443,9 @@ const BuilderInfo = (props: PropsType) => {
                                 <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
                                     <figure className="portfolio_img">
                                         <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
-                                        <span className="xs_sub_title">{item.jobName || ''}</span>
+                                        <span className="xs_sub_title">
+                                            <p className="line-3" title={item.jobName || ''}>{item.jobName || ''}</p>
+                                        </span>
                                     </figure>
                                 </div>
                             )
