@@ -169,7 +169,7 @@ export class PersonalInformation extends Component<Props, State> {
         if (nextProps.tradieProfileViewData && Object.keys(prevState.profileViewData).length === 0 && !_.isEqual(nextProps.tradieProfileViewData, prevState.profileViewData)) {
             return {
                 profileViewData: nextProps.tradieProfileViewData,
-                userImage: nextProps.tradieProfileViewData?.userImage || nextProps.tradieProfileViewData?.builderImage
+                userImage: nextProps.tradieProfileViewData?.tradieImage || nextProps.tradieProfileViewData?.builderImage
             }
         }
         if (nextProps.tradieBasicDetailsData && Object.keys(prevState.basicDetailsData).length === 0 && !_.isEqual(nextProps.tradieBasicDetailsData, prevState.basicDetailsData)) {

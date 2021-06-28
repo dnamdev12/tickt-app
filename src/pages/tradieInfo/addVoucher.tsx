@@ -174,7 +174,7 @@ const AddVoucherComponent = (props: any) => {
             <div className="custom_wh profile_modal vouch_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                 <div className="heading">
                     <span className="sub_title">
-                        {'Leave a voucher'}
+                        {'Leave a vouch'}
                     </span>
                     <span className="info_note">
                         {'Upload the vouch and write the description.'}

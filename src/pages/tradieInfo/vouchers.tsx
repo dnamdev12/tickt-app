@@ -117,7 +117,7 @@ const Vouchers = (props: any) => {
                                             <div className="review_card vouchers">
                                                 <div className="pic_shot_dtl">
                                                     <figure className="u_img">
-                                                        <img src={item?.userImage || dummy} alt="user-img" />
+                                                        <img src={item?.builderImage || dummy} alt="user-img" />
                                                     </figure>
                                                     <div className="name_wrap">
                                                         <span className="user_name" title={item?.builderName || ''}>
