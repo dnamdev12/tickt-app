@@ -1,12 +1,13 @@
-import React from 'react';
-import templateImage from '../../../assets/images/job-posted-bg.jpg';
+import React, { useState } from 'react';
+// import templateImage from '../../../assets/images/job-posted-bg.jpg';
 import { withRouter } from 'react-router-dom'
-
+import Skeleton from 'react-loading-skeleton';
 
 interface Proptypes {
     data: any;
     history: any
     editDetailPage: any;
+    templateImage: any;
     stepCompleted: Boolean;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
@@ -14,11 +15,23 @@ interface Proptypes {
 }
 //  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
-const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, templateImage, handleStepComplete, handleStepBack }: Proptypes) => {
+    const [isLoad, setImageLoad] = useState(false);
+
+    console.log({ isLoad })
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={templateImage} alt="template-image" loading="eager" />
+
+                <img
+                    onLoad={() => {
+                        setImageLoad(true);
+                    }}
+                    style={{ display: isLoad ? '' : 'none' }}
+                    src={templateImage || 'https://appinventiv-development.s3.amazonaws.com/1624879540474job-posted-bg.jpg'}
+                    alt="template-image"
+                    loading="eager"
+                />
 
                 <div className="short_info">
                     <div className="content">

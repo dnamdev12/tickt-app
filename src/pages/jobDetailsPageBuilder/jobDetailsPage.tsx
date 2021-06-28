@@ -391,7 +391,7 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-
+    console.log({paramStatus})
     const renderByStatus = ({ status }: any) => {
         if (status) {
             return (
@@ -519,7 +519,8 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </li>
                                                 <li className="icon dollar">{jobDetailsData?.amount}</li>
                                                 <li className="icon location line-1">{jobDetailsData?.locationName}</li>
-                                                <li className="job_status">{jobDetailsData?.status}</li>
+                                                <li className="job_status">{paramStatus}</li>
+                                                {/* <li className="job_status">{jobDetailsData?.status}</li> */}
                                             </ul>
                                         )}
                                     </div>

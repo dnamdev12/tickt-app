@@ -53,7 +53,7 @@ const Toast = (props: any) => {
                 }, 2000);
             return;
         }
-        // setShowToast(true, "Please check you internet connection");
+        // setShowToast(true, "Please check your internet connection");
         return setNetwork(false);
     }
 
@@ -66,7 +66,7 @@ const Toast = (props: any) => {
             setTimeout(() => {
                 setRestrictNoInternetToast((prevValue: any) => prevValue.restrictNoInternetToast + 1);
             }, 3000);
-            return "Please check you internet connection";
+            return "Please check your internet connection";
         }
         return props.toastMessage;
     }

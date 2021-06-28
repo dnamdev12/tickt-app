@@ -19,6 +19,8 @@ import moment from 'moment';
 import { setShowToast } from '../../redux/common/actions';
 import { useHistory } from 'react-router-dom';
 
+import templateImage from '../../assets/images/job-posted-bg.jpg';
+
 interface Proptypes {
     callTradeList: () => void;
     tradeListData: Array<any>;
@@ -463,6 +465,7 @@ const PostJob = (props: Proptypes) => {
                 <JobPostedSuccess
                     history={props.history}
                     data={data}
+                    templateImage={templateImage}
                     editDetailPage={editDetailPage}
                     stepCompleted={stepsCompleted.includes(12)}
                     handleStepComplete={handleStepComplete}

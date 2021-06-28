@@ -41,8 +41,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
 
-
-
     useEffect(() => {
         if (stepCompleted) {
             setFilesUrl(data?.urls);
