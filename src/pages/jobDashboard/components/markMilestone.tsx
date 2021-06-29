@@ -274,6 +274,10 @@ const MarkMilestone = ({
               Submit when a milestone is completed
             </p>
 
+           <div className="declined_info hvr-ripple-out">
+              <span>3 Milestones were declined</span>
+           </div>
+
             <ul className="milestones_check">
               {milestones?.map(
                 (
@@ -536,7 +540,7 @@ const MarkMilestone = ({
             {isLastMilestone && (
               <div className="f_spacebw total_payment">
                 <span>Total payment</span>
-                <span>${totalAmount}</span>
+                <span>${totalAmount?.toFixed(2)}</span>
               </div>
             )}
             <button className="fill_grey_btn bank_btn">
@@ -670,7 +674,7 @@ const MarkMilestone = ({
                   milestoneId: milestones[milestoneIndex].milestoneId,
                   description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
                   actualHours: data.actualHours,
-                  totalAmount: `${totalAmount}`,
+                  totalAmount: `${totalAmount?.toFixed(2)}`,
                 };
 
                 const updatedBankDetails = {

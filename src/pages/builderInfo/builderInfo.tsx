@@ -376,7 +376,7 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
-                                    {props.isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" />}
+                                    {props.isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img src={`${profileData?.builderImage ? `${profileData?.builderImage}?version=${new Date().getTime()}` : ''}` || profilePlaceholder} alt="profile-pic" />}
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">
