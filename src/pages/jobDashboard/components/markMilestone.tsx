@@ -274,7 +274,7 @@ const MarkMilestone = ({
               Submit when a milestone is completed
             </p>
 
-            {<div className="declined_info hvr-ripple-out">
+            {milestoneDeclineData.multipleDeclineListCount > 1 && <div className="declined_info hvr-ripple-out">
               <span>{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
             </div>}
 
