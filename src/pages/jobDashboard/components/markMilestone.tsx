@@ -310,7 +310,7 @@ const MarkMilestone = ({
                           : isActive
                             ? 'active'
                             : status === 3
-                              ? ''
+                              ? 'declined'
                               : 'disabled'
                       }
                     >
