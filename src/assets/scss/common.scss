@@ -4656,6 +4656,9 @@ body {
   background-color: #dfe5ef;
   display: flex;
   align-items: center;
+  &::before{
+    border-radius: 6px;
+  }
   span{
     font: 18px/1.11 "Neue Haas Grotesk Text Pro Bold";
     color: #123f95;
