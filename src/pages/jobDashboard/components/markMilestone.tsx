@@ -274,9 +274,9 @@ const MarkMilestone = ({
               Submit when a milestone is completed
             </p>
 
-           <div className="declined_info hvr-ripple-out">
-              <span>3 Milestones were declined</span>
-           </div>
+            {<div className="declined_info hvr-ripple-out">
+              <span>{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
+            </div>}
 
             <ul className="milestones_check">
               {milestones?.map(
