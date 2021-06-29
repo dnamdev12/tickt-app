@@ -526,7 +526,7 @@ const MarkMilestone = ({
             {isLastMilestone && (
               <div className="f_spacebw total_payment">
                 <span>Total payment</span>
-                <span>${totalAmount}</span>
+                <span>${totalAmount?.toFixed(2)}</span>
               </div>
             )}
             <button className="fill_grey_btn bank_btn">
@@ -660,7 +660,7 @@ const MarkMilestone = ({
                   milestoneId: milestones[milestoneIndex].milestoneId,
                   description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
                   actualHours: data.actualHours,
-                  totalAmount: `${totalAmount}`,
+                  totalAmount: `${totalAmount?.toFixed(2)}`,
                 };
 
                 const updatedBankDetails = {
