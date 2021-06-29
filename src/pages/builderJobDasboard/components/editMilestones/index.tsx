@@ -259,10 +259,11 @@ const EditMilestone = (props: any) => {
         })
 
         console.log({ filtered });
+        console.log({props})
 
         let data = {
             "jobId": item.jobId,
-            "tradieId": item.tradeId,
+            "tradieId": props?.details?.tradieId,
             "milestones": filtered,
             "description": description
         };
@@ -271,7 +272,7 @@ const EditMilestone = (props: any) => {
             props.history.push('/milestone-request-sent-success');
         }
     }
-    console.log({ stateData })
+  
     return (
         <React.Fragment>
 

@@ -22,6 +22,8 @@ import CancelJobs from './cancelJobs/cancelJob'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import { CancelJob } from '../../../redux/jobs/actions';
 
+import SeeDetailsComponents from './seeDetails';
+
 interface Mile {
     milestoneId: any,
     milestoneName: any,
@@ -37,12 +39,16 @@ const MarkMilestones = (props: any) => {
     const [itemDetails, setDetails] = useState(null);
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
     const [selectedMile, setMilestone] = useState(null);
+    const [expandItem, setExpandItem] = useState<any>({});
+
+    const [toggleSeeDetails, setSeeDetails] = useState(false);
 
     const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
 
     const backToScreen = () => {
         preFetch();
         setEnableApprove(false);
+        setSeeDetails(false);
     }
 
     const selectedItem: any = listData[selectedIndex];
@@ -57,7 +63,11 @@ const MarkMilestones = (props: any) => {
                 let response: any = await getMilestoneDetails({ milestoneId, jobId });
                 if (response.success) {
                     setMilestone(response.data);
-                    setEnableApprove(true);
+                    if (selectedMilestoneIndex?.type === "detail") {
+                        setSeeDetails(true);
+                    } else {
+                        setEnableApprove(true);
+                    }
                 }
             }
         }
@@ -95,6 +105,16 @@ const MarkMilestones = (props: any) => {
             />)
     }
 
+    if (toggleSeeDetails) {
+        return (
+            <SeeDetailsComponents
+                resetStateLocal={resetStateLocal}
+                backToScreen={backToScreen}
+                data={{ selectedMile, selectedMilestoneIndex, selectedItem, itemDetails }}
+            />
+        )
+    }
+
     const backTab = (name: string) => {
         setToggleItem((prev: any) => ({ ...prev, [name]: false }))
     }
@@ -129,6 +149,7 @@ const MarkMilestones = (props: any) => {
             item_status = true;
         }
     }
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
@@ -181,17 +202,18 @@ const MarkMilestones = (props: any) => {
                     }: Mile,
                         index: number
                     ) => {
-                        // const prevMilestoneStatus = item_details?.milestones[index - 1]?.status;
-                        // const isActive =
-                        //     status === 0 &&
-                        //     (prevMilestoneStatus === 1 ||
-                        //         prevMilestoneStatus === undefined);
                         const isActive = status;
                         return (
                             <li
                                 key={milestoneId}
+                                onClick={() => {
+                                    setExpandItem((prev: any) => ({
+                                        ...prev,
+                                        [milestoneId]: prev[milestoneId] === undefined ? true : !prev[milestoneId]
+                                    }));
+                                }}
                                 className={
-                                    (status === 1 || status === 2)
+                                    (isActive === 1 || isActive === 2)
                                         ? `check`
                                         : isActive
                                             ? 'active'
@@ -209,28 +231,35 @@ const MarkMilestones = (props: any) => {
                                         {renderTime(fromDate, toDate)}
                                     </span>
 
-                                    {isActive === 1 ? (
+                                    {isActive === 2 && expandItem[milestoneId] ? (
                                         <button
                                             className="fill_btn full_btn btn-effect"
-                                            onClick={() => {
-                                                // setShowToast(true, 'under development.')
+                                            style={{ backgroundColor: '#DFE5EF' }}
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 setMilestoneIndex({
                                                     index,
                                                     milestoneId,
+                                                    type: 'detail',
                                                     jobId: item_details?.jobId
                                                 });
+                                            }}>
+                                            {'See Details'}
+                                        </button>
+                                    ) : null}
 
-                                                if (index === item_details?.milestones?.length - 1) {
-                                                    // setIsLastMilestone(true);
-                                                }
+                                    {isActive === 1 && expandItem[milestoneId] ? (
+                                        <button
+                                            className="fill_btn full_btn btn-effect"
+                                            onClick={() => {
 
-                                                if (isPhotoevidence) {
-                                                    // setStep(2);
-                                                } else {
-                                                    // setStep(3);
-                                                }
-                                            }}
-                                        >
+                                                setMilestoneIndex({
+                                                    index,
+                                                    milestoneId,
+                                                    type: 'approve',
+                                                    jobId: item_details?.jobId
+                                                });
+                                            }}>
                                             {'Check and Approve'}
                                         </button>
                                     ) : null}

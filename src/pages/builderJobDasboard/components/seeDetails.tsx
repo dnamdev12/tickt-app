@@ -1,19 +1,16 @@
 import React, { useState } from 'react'
-import media from '../../../assets/images/portfolio-placeholder.jpg';
-import DeclineMilestone from './declineMilestone';
-import { milestoneAcceptOrDecline } from '../../../redux/homeSearch/actions'
-
-import FixedRate from './confirmAndPay/fixedRate';
 import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 
-const MilestoneApprove = (props: any) => {
+
+const SeeDetails = (props: any) => {
     const { backToScreen, data, resetStateLocal } = props;
     const [isToggle, setToggle] = useState(false);
     const [IsToggleAccept, setToggleAccept] = useState(false);
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+
 
     if (data) {
         let {
@@ -24,50 +21,6 @@ const MilestoneApprove = (props: any) => {
         } = data;
 
         let item: any = milestones[index];
-
-        const onSubmitAccept = async () => {
-            let data = {
-                "status": 1,
-                "jobId": jobId,
-                "milestoneId": item?.milestoneId,
-                // "reason": "Not approved",
-                // "url":[]
-            }
-
-            let response: any = await milestoneAcceptOrDecline(data);
-            if (response?.success) {
-                resetStateLocal();
-                props.history.push('/need-approval-success');
-            }
-        }
-
-        const toggleBack = () => {
-            setToggle(false);
-            setToggleAccept(false);
-        }
-
-        if (IsToggleAccept) {
-            return (
-                <FixedRate
-                    data={props.data}
-                    toggleBack={toggleBack}
-                    onSubmitAccept={onSubmitAccept}
-                />
-            )
-        }
-
-
-        if (isToggle) {
-            return (
-                <DeclineMilestone
-                    milestoneAcceptOrDecline={milestoneAcceptOrDecline}
-                    jobId={jobId}
-                    jobName={jobName}
-                    toggleBack={toggleBack}
-                    resetStateLocal={resetStateLocal}
-                    milestoneId={item?.milestoneId}
-                />)
-        }
 
 
         const renderFilteredItems = () => {
@@ -154,25 +107,19 @@ const MilestoneApprove = (props: any) => {
                         <span className="show_label">{`${hoursWorked || 0} hours`}</span>
                     </div>
                     <div className="form_field">
-                        {/* onSubmitAccept */}
                         <button
                             onClick={() => {
                                 setToggleAccept(true)
                             }}
                             className="fill_btn full_btn">Approve</button>
                     </div>
-                    <div className="form_field">
-                        <button
-                            onClick={() => { setToggle(true) }}
-                            className="fill_grey_btn full_btn btn-effect mt-15">
-                            {'Decline'}
-                        </button>
-                    </div>
+                  
                 </div>
             </div>
         )
     }
+
     return null;
 }
 
-export default withRouter(MilestoneApprove);
+export default SeeDetails;
