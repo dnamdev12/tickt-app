@@ -98,13 +98,14 @@ const FixedRate = (props: any) => {
                     })}
 
                 </div>
-                <div 
-                onClick={() => {
-                    setToggle(true);
-                }}
-                className="bank_detail view_more">
-                    <span className="xs_head">Bank Details</span>
-                    <span className="show_label">Credit card </span>
+                <div
+                    onClick={() => {
+                        setToggle(true);
+                    }}
+                    style={{cursor:'pointer'}}
+                    className="bank_detail view_more">
+                    <span className="xs_head">Credit card </span>
+                    <span className="show_label">xxxx 8431</span>
                 </div>
                 <button
                     onClick={() => {

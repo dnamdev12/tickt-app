@@ -13,6 +13,10 @@ export const validateABN = (abn: number) => {
 }
 
 export const renderTime = (fromDate: any, toDate: any, format?: any) => {
+    if(!toDate) {
+        toDate = '';
+    }
+
     if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
         return `${moment(fromDate).format('DD MMM')}`
     }
@@ -38,6 +42,9 @@ export const renderTime = (fromDate: any, toDate: any, format?: any) => {
 }
 
 export const renderTimeWithFormat = (fromDate: any, toDate: any, format: any) => {
+    if(!toDate) {
+        toDate = '';
+    }
 
     if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
         return `${moment(fromDate, format).format('DD MMM')}`
@@ -65,10 +72,11 @@ export const renderTimeWithFormat = (fromDate: any, toDate: any, format: any) =>
 
 
 export const renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: any, formatSet?: any, text?: string) => {
-    console.log({
-        start:moment(fromDate, format).isValid(),
-        end:moment(toDate, format).isValid()
-    })
+
+    if(!toDate) {
+        toDate = '';
+    }
+    
     if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
         return `${moment(fromDate, format).format(formatSet[0])}`
     }

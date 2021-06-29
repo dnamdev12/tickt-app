@@ -6,16 +6,29 @@ import PaymentDetails from './paymentDetails';
 import Success from './suceess';
 import { withRouter } from 'react-router-dom';
 
+import dotMenu from '../../../../assets/images/menu-dot.png'
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+
+
 const ConfirmAndPay = (props: any) => {
     const [toggle, setToggle] = useState(false);
     const [selected, setSelected] = useState('');
+    const [editItem, setEditItem] = useState('');
+    const [deleteToggle, setDeleteToggle] = useState(false);
     const [paymentDetail, setPaymentDetail] = useState<any>([
-        {
-            cardholderName: 'Credit Card',
-            number: '4034',
-            cvv: '515',
-            date: '06/22'
-        }
+       {
+        number: '371449635398431',
+        cardholderName: 'Sam william',
+        date: '07/22',
+        cvv: '124'
+       }
     ]);
 
     const backToScreen = () => {
@@ -23,12 +36,17 @@ const ConfirmAndPay = (props: any) => {
     }
 
     const setDetials = (data: any) => {
-        setPaymentDetail((prev: any) => ([...prev, data]))
+        if (data?.index) {
+            paymentDetail[data?.index] = data;
+        } else {
+            setPaymentDetail((prev: any) => ([...prev, data]))
+        }
     }
 
     if (toggle) {
         return (
             <PaymentDetails
+                editItem={editItem}
                 backToScreen={backToScreen}
                 setDetials={setDetials}
                 onSubmitAccept={props.onSubmitAccept}
@@ -48,6 +66,58 @@ const ConfirmAndPay = (props: any) => {
                     <span className="xs_sub_title">
                         {'Wire up circuit box'}
                     </span>
+
+                    <Dialog
+                        open={deleteToggle}
+                        onClose={() => {
+                            setDeleteToggle((prev: any) => !prev)
+                        }}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {"Are you sure you want to delete ?"}
+                        </DialogTitle>
+                        <DialogActions>
+                            <Button
+                                onClick={() => {
+                                    paymentDetail.splice(selected, 1);
+                                    setPaymentDetail(paymentDetail);
+                                    setDeleteToggle((prev: any) => !prev)
+                                }}
+                                color="primary" autoFocus>
+                                {'Yes'}
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setDeleteToggle((prev: any) => !prev)
+                                }}
+                                color="primary">
+                                {'No'}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
+                    <span className="dot_menu">
+                        <img src={dotMenu} alt="edit" />
+                        <div className="edit_menu">
+                            <ul>
+                                <li
+                                    onClick={() => {
+                                        let item = paymentDetail.find((_: any, index: any) => index === selected);
+                                        item['index'] = selected;
+                                        setEditItem(item);
+                                        setToggle(true);
+                                    }}
+                                    className="icon lodge">Edit</li>
+                                <li
+                                    onClick={() => {
+                                        setDeleteToggle((prev: any) => !prev)
+                                    }}
+                                    className="icon delete">Delete</li>
+                            </ul>
+                        </div>
+                    </span>
                 </div>
                 <div className="form_field">
                     <span className="sub_title">
@@ -66,7 +136,7 @@ const ConfirmAndPay = (props: any) => {
                                 {/* {item?.cardholderName} */}
                                 {'Credit Card'}{' '}
                                 <span className="show_label">
-                                    XXXX {(item?.number).substring(0, 4)}
+                                    XXXX {(item?.number).substring(item?.number?.length - 4, item?.number?.length)}
                                 </span>
                                 {selected == index ? (
                                     <img src={check} alt="check" className="pos check" />
@@ -111,7 +181,9 @@ const ConfirmAndPay = (props: any) => {
                         // this will submit the accept request.
                         props.onSubmitAccept();
                     }}
-                    className="fill_btn full_btn btn-effect">Continue</button>
+                    className={`fill_btn full_btn btn-effect ${!paymentDetail?.length ? 'disable_btn' : ''}`}>
+                    {'Continue'}
+                </button>
             </div>
         </div>
     )

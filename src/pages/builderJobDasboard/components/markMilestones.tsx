@@ -191,7 +191,7 @@ const MarkMilestones = (props: any) => {
                             <li
                                 key={milestoneId}
                                 className={
-                                    status === 1
+                                    (status === 1 || status === 2)
                                         ? `check`
                                         : isActive
                                             ? 'active'
@@ -210,33 +210,33 @@ const MarkMilestones = (props: any) => {
                                     </span>
 
                                     {isActive === 1 ? (
-                                    <button
-                                        className="fill_btn full_btn btn-effect"
-                                        onClick={() => {
-                                            // setShowToast(true, 'under development.')
-                                            setMilestoneIndex({
-                                                index,
-                                                milestoneId,
-                                                jobId: item_details?.jobId
-                                            });
+                                        <button
+                                            className="fill_btn full_btn btn-effect"
+                                            onClick={() => {
+                                                // setShowToast(true, 'under development.')
+                                                setMilestoneIndex({
+                                                    index,
+                                                    milestoneId,
+                                                    jobId: item_details?.jobId
+                                                });
 
-                                            if (index === item_details?.milestones?.length - 1) {
-                                                // setIsLastMilestone(true);
-                                            }
+                                                if (index === item_details?.milestones?.length - 1) {
+                                                    // setIsLastMilestone(true);
+                                                }
 
-                                            if (isPhotoevidence) {
-                                                // setStep(2);
-                                            } else {
-                                                // setStep(3);
-                                            }
-                                        }}
-                                    >
-                                        {'Check and Approve'}
-                                    </button>
-                                ) : null}
-                                
+                                                if (isPhotoevidence) {
+                                                    // setStep(2);
+                                                } else {
+                                                    // setStep(3);
+                                                }
+                                            }}
+                                        >
+                                            {'Check and Approve'}
+                                        </button>
+                                    ) : null}
+
                                 </div>
-                                
+
                             </li>
                         );
                     }

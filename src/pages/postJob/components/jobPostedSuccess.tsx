@@ -18,37 +18,14 @@ interface Proptypes {
 const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, templateImage, handleStepComplete, handleStepBack }: Proptypes) => {
     const [isLoad, setImageLoad] = useState(false);
 
-    console.log({ isLoad })
+    const redirectToSuccess = () => {
+        history.push('/post-job-success');
+    }
+
     return (
-        <div className="img_text_wrap">
-            <figure className="full_image">
-
-                <img
-                    onLoad={() => {
-                        setImageLoad(true);
-                    }}
-                    style={{ display: isLoad ? '' : 'none' }}
-                    src={templateImage || 'https://appinventiv-development.s3.amazonaws.com/1624879540474job-posted-bg.jpg'}
-                    alt="template-image"
-                    loading="eager"
-                />
-
-                <div className="short_info">
-                    <div className="content">
-                        <h1 className="title">Job posted!</h1>
-                        <span className="show_label">Your job will be sent to the most suitable candidates in your area.</span>
-                        <button
-                            onClick={() => {
-                                if (history) {
-                                    history.push('/');
-                                    // handleStepForward(1)
-                                }
-                            }}
-                            className="fill_btn full_btn btn-effect">OK</button>
-                    </div>
-                </div>
-            </figure>
-        </div>
+        <>
+            {redirectToSuccess()}
+        </>
     )
 }
 

@@ -417,6 +417,7 @@ const JobDetails = ({
                                     // onClick={() => {
                                     //     setShowToast(true, 'Under development.')
                                     // }}
+                                    style={{cursor:'default'}}
                                     className="fill_grey_btn ques_btn">
                                     <img src={question} alt="question" />
                                     {'0 questions'}

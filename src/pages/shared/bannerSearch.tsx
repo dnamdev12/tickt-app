@@ -35,7 +35,7 @@ import { renderTime, renderTimeWithCustomFormat } from '../../utils/common';
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
 Geocode.setRegion("au");
-// Geocode.setLocationType("ROOFTOP");
+// Geocode?.setLocationType("ROOFTOP");
 
 interface PropsType {
     history: any,
@@ -179,6 +179,9 @@ const BannerSearch = (props: PropsType) => {
                 let lat = item.location.coordinates[1];
                 let long = item.location.coordinates[0];
                 let response = await Geocode.fromLatLng(lat, long);
+                console.log({
+                    results:response?.results
+                })
                 let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
                 let cityText: any = null;
                 if (formatedCityText?.formatted_address.includes(',')) {

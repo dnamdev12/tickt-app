@@ -3,6 +3,7 @@ import deleteIcon from '../../../../assets/images/ic-bin.png'
 import cardValidator, { cardholderName } from "card-validator";
 import moment from 'moment';
 
+
 // import DateFnsUtils from '@date-io/date-fns';
 // import {
 //   KeyboardDatePicker,
@@ -16,6 +17,7 @@ const defaultValues = {
 }
 
 const PaymentDetails = (props: any) => {
+    const { editItem } = props;
     const [stateData, setStateData] = useState(defaultValues);
     const [errors, setErrors] = useState({
         number: '',
@@ -23,6 +25,13 @@ const PaymentDetails = (props: any) => {
         date: '',
         cvv: ''
     });
+
+
+    useEffect(() => {
+        if(editItem){
+            setStateData(editItem);
+        }
+    }, [editItem])
 
 
     const handleCheck = () => {
@@ -84,11 +93,11 @@ const PaymentDetails = (props: any) => {
                 return 'Expiration Date is required';
             } else {
                 console.log({
-                    check:checkValidExpiration(value),
+                    check: checkValidExpiration(value),
                     value
                 })
                 if (!checkValidExpiration(value)) {
-                    return `Please add a valid pattern like ${moment().format('MM/YY')}`;
+                    return `Please add a valid Expiration Date`;
                 }
             }
         }
@@ -149,10 +158,13 @@ const PaymentDetails = (props: any) => {
                             </span> */}
                         </div>
                     </>
+
+
+
                 </div>
                 <span className="sub_title">Payment Details</span>
                 <p className="commn_para">Enter your bank account details</p>
-{/* 
+                {/* 
                 <div className="form_field">
                     <label className="form_label">
                         {'Account Name'}

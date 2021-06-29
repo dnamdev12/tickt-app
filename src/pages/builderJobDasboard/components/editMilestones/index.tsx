@@ -42,10 +42,11 @@ const EditMilestone = (props: any) => {
     }, [props])
 
     const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
+        console.log({ list, startIndex, endIndex });
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
-
+        console.log({ result })
         return result;
     };
 
@@ -62,11 +63,11 @@ const EditMilestone = (props: any) => {
             source.index,
             destination.index
         );
-        setStateData(reOrderItems)
+        setStateData((prev: any) => (reOrderItems));
     };
 
     const checkIfValidDates = (item: any) => {
-        console.log({ stateData })
+
         let isfilter = stateData.filter((item_: any) => {
             if (item_.hasOwnProperty('fromDate')) {
                 if (moment(item_?.fromDate).isValid()) {
@@ -74,7 +75,7 @@ const EditMilestone = (props: any) => {
                 }
             }
         });
-        console.log({ isfilter })
+
         if (!isfilter?.length) {
             return true;
         } else {
@@ -89,10 +90,7 @@ const EditMilestone = (props: any) => {
                 }
             });
             setSortedItems(newarr);
-            console.log({
-                newarr,
-                filteredItem
-            })
+            console.log({ newarr, filteredItem })
             return JSON.stringify(newarr) === JSON.stringify(filteredItem);
         }
     }
@@ -100,7 +98,7 @@ const EditMilestone = (props: any) => {
 
     const checkIfDatesValid = () => {
         let data = item;
-        console.log({ data, stateData }, '----->');
+
         let start_selection: any = data?.fromDate;
         let end_selection: any = null;
         if (moment(data?.toDate).isValid()) {
@@ -110,26 +108,20 @@ const EditMilestone = (props: any) => {
         }
 
         let item_find: any = false;
-        let filteredItem = stateData.filter((item: any) => {
-            if (item.hasOwnProperty('fromDate')) {
-                if (moment(item?.fromDate).isValid()) {
-                    return item;
-                }
-            }
-        });
+        let filteredItem = stateData;
 
         if (filteredItem?.length) {
             filteredItem.forEach((item_date: any) => {
                 let start: any = moment(item_date.fromDate).isValid() ? item_date.fromDate : null;
                 let end: any = moment(item_date.toDate).isValid() ? item_date.toDate : null;
 
-                if (start && end) {
-                    if (start_selection && end_selection) {
-                        if (moment(start_selection).isAfter(moment(start)) || moment(end_selection).isBefore(moment(end))) {
-                            item_find = true
-                        }
-                    }
-                }
+                // if (start && end) {
+                //     if (start_selection && end_selection) {
+                //         if (moment(start_selection).isAfter(moment(start)) || moment(end_selection).isBefore(moment(end))) {
+                //             item_find = true
+                //         }
+                //     }
+                // }
 
                 if (start && !end) {
                     if (moment(start_selection).isAfter(moment(start))) {
@@ -170,11 +162,11 @@ const EditMilestone = (props: any) => {
         let state_data: any = stateData;
         if (itemData.edit) { // edit
             let index = parseInt(itemData.editId);
-
+            console.log({ item }, '---->')
             state_data[itemData.editId]['isPhotoevidence'] = item.isPhotoevidence;
             state_data[itemData.editId]['milestoneName'] = item.milestoneName;
             state_data[itemData.editId]['recommendedHours'] = item.recommendedHours;
-
+            state_data[itemData.editId]['description'] = item.description;
             state_data[index]['fromDate'] = moment(item.fromDate).isValid() ? moment(item.fromDate).toISOString() : '';
             state_data[index]['toDate'] = moment(item.toDate).isValid() ? moment(item.toDate).toISOString() : '';
             setStateData(state_data)
@@ -185,10 +177,15 @@ const EditMilestone = (props: any) => {
     }
 
     if (itemData?.add || itemData?.edit) {
+        let filtered = stateData.filter((item: any) => {
+            if (!item?.isDeleteRequest) {
+                return item;
+            }
+        })
         return (
             <AddEditMile
                 item={item}
-                milestones={stateData}
+                milestones={filtered}
                 editMile={itemData.editId}
                 addNewMile={addNewMile}
                 resetItems={resetItems}
@@ -197,27 +194,56 @@ const EditMilestone = (props: any) => {
     }
 
     const removeMilestoneByIndex = (index: any) => {
-        setStateData(stateData.filter((_: any, index_: any) => index_ !== index));
+        stateData[index]['isDeleteRequest'] = true;
         resetItems();
     }
+    // setStateData(stateData.filter((_: any, index_: any) => index_ !== index));
 
     const checkIfChange = () => {
         // if (JSON.stringify(stateData) !== JSON.stringify(props?.details?.milestones)) {
-        if (JSON.stringify(propsMile) == JSON.stringify(stateData)) {
+        // if (JSON.stringify(propsMile) == JSON.stringify(stateData)) {
+        // return true;
+        // }
+        // return false;
+
+        let isTrue = true;
+
+        if (!stateData?.length) {
             return true;
+        } else {
+            stateData?.forEach((dt: any) => {
+                if (dt?.description?.length) {
+                    isTrue = false;
+                }
+            });
+            return isTrue;
         }
-        return false;
     }
 
+
     const submitData = () => {
+        let description = '';
         let filtered = stateData.map((item: any) => {
-            let data = {
+            let data: any = {
                 "milestoneId": item?.milestoneId || '',
                 "milestone_name": item?.milestoneName,
                 "isPhotoevidence": item?.isPhotoevidence,
                 "from_date": moment(item?.fromDate).format("YYYY-MM-DD"),
                 "to_date": moment(item?.toDate).isValid() ? moment(item?.toDate).format("YYYY-MM-DD") : '',
-                "recommended_hours": item?.recommendedHours
+                "recommended_hours": item?.recommendedHours,
+                "description": item?.description
+            }
+
+            if (item.description?.length) {
+                description = item.description;
+            }
+
+            if (!data?.to_date?.length) {
+                delete data?.to_date;
+            }
+
+            if (item?.isDeleteRequest) {
+                data['isDeleteRequest'] = true;
             }
 
             if (!item?.milestoneId) {
@@ -225,13 +251,20 @@ const EditMilestone = (props: any) => {
             }
 
             return data;
+        }).filter((item: any) => {
+            if (item?.description?.length) {
+                delete item?.description;
+                return item;
+            }
         })
 
+        console.log({ filtered });
 
         let data = {
             "jobId": item.jobId,
             "tradieId": item.tradeId,
-            "milestones": filtered
+            "milestones": filtered,
+            "description": description
         };
         let response: any = changeRequest(data);
         if (response?.success) {
@@ -331,7 +364,11 @@ const EditMilestone = (props: any) => {
                                 <ul ref={provided.innerRef}
                                     className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}>
                                     {stateData?.length > 0 &&
-                                        stateData.map(({
+                                        stateData.filter((item: any) => {
+                                            if (!item?.isDeleteRequest) {
+                                                return item;
+                                            }
+                                        }).map(({
                                             milestoneName,
                                             isPhotoevidence,
                                             recommendedHours,
@@ -350,7 +387,7 @@ const EditMilestone = (props: any) => {
                                                 key={`${index}-${milestoneName}`}
                                                 draggableId={`${milestoneName}-${index}`}
                                                 index={index}
-                                                isDragDisabled={(status === 1 || status === 2) ? true : false}
+                                            // isDragDisabled={(status === 1 || status === 2) ? true : false}
                                             >
                                                 {(provided: any, snapshot: any) => (
                                                     <li
@@ -406,7 +443,7 @@ const EditMilestone = (props: any) => {
                                                                 <span>
                                                                     {renderTimeWithCustomFormat(
                                                                         fromDate,
-                                                                        toDate,
+                                                                        moment(fromDate).isSame(moment(toDate)) ? '' : toDate,
                                                                         '',
                                                                         ['DD MMM', 'DD MMM YY']
                                                                     )}
@@ -469,12 +506,12 @@ const EditMilestone = (props: any) => {
                                             if (check) {
                                                 submitData()
                                             } else {
-                                                setShowToast(true, "Please arrange milestonea date wise.")
+                                                setShowToast(true, "Please arrange milestone date wise.")
                                             }
                                         }
                                     }}
-                                    className={`fill_btn full_btn btn-effect`}>
-                                    {/* className={`fill_btn full_btn btn-effect ${checkIfChange() ? 'disable_btn' : ''}`}> */}
+                                    // className={`fill_btn full_btn btn-effect`}>
+                                    className={`fill_btn full_btn btn-effect ${checkIfChange() ? 'disable_btn' : ''}`}>
                                     {'Send to tradie'}
                                 </button>
                             </div>

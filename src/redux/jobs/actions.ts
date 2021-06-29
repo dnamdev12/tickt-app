@@ -607,3 +607,17 @@ export const publishJobAgain = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+
+export const handleCancelReply = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}replyCancellation` , data);
+  setLoading(false);
+  setShowToast(true, response?.message);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+
+  setShowToast(true, response.message);
+  return { success: false };
+}

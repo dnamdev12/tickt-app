@@ -32,6 +32,13 @@ const AddEditMile = (props: any) => {
     const [errors, setErrors] = useState<any>({ name: '', duration: '', hours: '', pattern_error: '' });
     const [toggleCalender, setToggleCalender] = useState(false);
 
+    const [changesFor, setChangesFor] = useState({
+        name: false,
+        isPhoto: false,
+        duration: false,
+        recommended: false
+    })
+
     const [toggleItem, setToggleItem] = useState(false);
 
     const [calenderItems, setCalender] = useState<any>({
@@ -169,21 +176,21 @@ const AddEditMile = (props: any) => {
                                 checkIsValid = true;
                             }
 
-                            if (!checkIfSame) {
-                                if (
-                                    moment(time_start).isSameOrAfter(moment(mile_start)) &&
-                                    moment(time_start).isSameOrBefore(moment(mile_end))
-                                ) {
-                                    checkIsValid = false;
-                                }
+                            // if (!checkIfSame) {
+                            //     if (
+                            //         moment(time_start).isSameOrAfter(moment(mile_start)) &&
+                            //         moment(time_start).isSameOrBefore(moment(mile_end))
+                            //     ) {
+                            //         checkIsValid = false;
+                            //     }
 
-                                if (
-                                    moment(time_end).isSameOrAfter(moment(mile_start)) &&
-                                    moment(time_end).isSameOrBefore(moment(mile_end))
-                                ) {
-                                    checkIsValid = false;
-                                }
-                            }
+                            //     if (
+                            //         moment(time_end).isSameOrAfter(moment(mile_start)) &&
+                            //         moment(time_end).isSameOrBefore(moment(mile_end))
+                            //     ) {
+                            //         checkIsValid = false;
+                            //     }
+                            // }
                         }
 
                         if (!tew) {
@@ -280,7 +287,10 @@ const AddEditMile = (props: any) => {
                         className="item-modal-ctm custom_wh portfolio_preview ">
                         <DateRangePicker
                             ranges={[ItemCal]}
-                            onChange={(date: any) => { handleCalender(date) }}
+                            onChange={(date: any) => {
+                                handleCalender(date)
+                                setChangesFor((prev: any) => ({ ...prev, duration: true }))
+                            }}
                             months={2}
                             direction="horizontal"
                             moveRangeOnFirstSelection={false}
@@ -330,7 +340,10 @@ const AddEditMile = (props: any) => {
                                 <input
                                     type="text"
                                     placeholder="Enter Milestone Name"
-                                    onChange={(e: any) => { handleChange('name', e.target.value) }}
+                                    onChange={(e: any) => {
+                                        handleChange('name', e.target.value)
+                                        setChangesFor((prev: any) => ({ ...prev, name: true }))
+                                    }}
                                     value={name}
                                     name="milestone_name" />
                             </div>
@@ -340,7 +353,10 @@ const AddEditMile = (props: any) => {
 
                             <div className="checkbox_wrap agree_check">
                                 <input
-                                    onChange={() => { setStateData((prev: any) => ({ ...prev, isPhoto: !prev.isPhoto })) }}
+                                    onChange={() => {
+                                        setStateData((prev: any) => ({ ...prev, isPhoto: !prev.isPhoto }))
+                                        setChangesFor((prev: any) => ({ ...prev, isPhoto: true }))
+                                    }}
                                     checked={isPhoto}
                                     className="filter-type filled-in"
                                     type="checkbox"
@@ -368,7 +384,10 @@ const AddEditMile = (props: any) => {
                             </label>
                             <div className="text_field">
                                 <input
-                                    onChange={(e) => { handleChange('recommended', e.target.value) }}
+                                    onChange={(e) => {
+                                        handleChange('recommended', e.target.value)
+                                        setChangesFor((prev: any) => ({ ...prev, recommended: true }))
+                                    }}
                                     autoComplete='off'
                                     value={recommended}
                                     type="text"
@@ -383,7 +402,11 @@ const AddEditMile = (props: any) => {
                         <div className="form_field">
                             <button
                                 onClick={() => {
-                                    console.log({ stateData, props })
+                                    let description: any = '';
+                                    if (Object.values(changesFor).includes(true)) {
+                                        description = `This job has Milestones change request with changes in ${changesFor?.name ? 'Milestone Name, ' : ''}${changesFor?.isPhoto ? 'Photo evidence required, ' : ''}${changesFor?.duration ? 'Duration of Milestone, ' : ''}${changesFor?.recommended ? 'Recommended Hours ' : ''}.`;
+                                    }
+                                    console.log({changesFor})
                                     if (props.editMile !== '') {
                                         // edit
                                         if (props?.addNewMile) {
@@ -393,6 +416,7 @@ const AddEditMile = (props: any) => {
                                                 recommendedHours: stateData.recommended,
                                                 fromDate: calenderItems.startDate,
                                                 toDate: calenderItems.endDate,
+                                                description: description
                                             })
                                         }
                                     } else {
@@ -404,6 +428,7 @@ const AddEditMile = (props: any) => {
                                                 recommendedHours: stateData.recommended,
                                                 fromDate: calenderItems.startDate,
                                                 toDate: calenderItems.endDate,
+                                                description: description
                                             })
                                         }
                                     }

@@ -14,7 +14,8 @@ import {
     getQuestionsList,
     answerQuestion,
     updateAnswer,
-    deleteAnswer
+    deleteAnswer,
+    handleCancelReply
 } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
 
@@ -99,36 +100,39 @@ const JobDetailsPage = (props: PropsType) => {
 
     useEffect(() => {
         (async () => {
-            let location_search = window.atob((props.location?.search).substring(1))
-            const params = new URLSearchParams(location_search);
-
-            if (params.get('edit')) {
-                setEditBtn((prev: any) => true);
-            }
-
-            if (params.get('jobId') && params.get('tradeId') && params.get('specializationId')) {
-                const res1 = await getHomeJobDetails({
-                    jobId: params.get('jobId'),
-                    tradeId: params.get('tradeId'),
-                    specializationId: params.get('specializationId')
-                });
-                if (res1.success) {
-                    setJobDetailsData(res1.data);
-                }
-            } else {
-                if (params.get('jobId')) {
-                    let res = await jobDetailsBuilder({ jobId: params.get('jobId') });
-                    console.log({ res }, '---->')
-                    if (res.success) {
-                        setJobDetailsData(res.data);
-                    }
-                }
-            }
-
-
-            fetchQuestionsList();
+            await preFetch();
         })();
     }, [])
+
+
+    const preFetch = async () => {
+        let location_search = window.atob((props.location?.search).substring(1))
+        const params = new URLSearchParams(location_search);
+
+        if (params.get('edit')) {
+            setEditBtn((prev: any) => true);
+        }
+
+        if (params.get('jobId') && params.get('tradeId') && params.get('specializationId')) {
+            const res1 = await getHomeJobDetails({
+                jobId: params.get('jobId'),
+                tradeId: params.get('tradeId'),
+                specializationId: params.get('specializationId')
+            });
+            if (res1.success) {
+                setJobDetailsData(res1.data);
+            }
+        } else {
+            if (params.get('jobId')) {
+                let res = await jobDetailsBuilder({ jobId: params.get('jobId') });
+                console.log({ res }, '---->')
+                if (res.success) {
+                    setJobDetailsData(res.data);
+                }
+            }
+        }
+        fetchQuestionsList();
+    }
 
 
     const fetchQuestionsList = async (isTrue?: boolean) => {
@@ -391,7 +395,7 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    console.log({paramStatus})
+    console.log({ paramStatus })
     const renderByStatus = ({ status }: any) => {
         if (status) {
             return (
@@ -411,6 +415,18 @@ const JobDetailsPage = (props: PropsType) => {
             )
         }
 
+    }
+
+    const handleCancelJob = async (type: any, job_detail: any) => {
+        let data = {
+            "jobId": job_detail?.jobId,
+            "status": type,
+            "note": type === 1 ? "this is accepted" : "this is rejected"
+        }
+        let response = await handleCancelReply(data);
+        if (response?.success) {
+            await preFetch();
+        }
     }
 
     const renderFilteredItems = (itemsMedia: any) => {
@@ -532,6 +548,29 @@ const JobDetailsPage = (props: PropsType) => {
                                         </button>
                                     )}
 
+                                    {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
+                                        <span className="sub_title">Job cancellation request</span>
+                                        <p className="commn_para">
+                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ?
+                                                'I got a better job' :
+                                                'I am not the right fit for the job'}
+                                        </p>
+                                        <button
+                                            onClick={() => {
+                                                handleCancelJob(1, jobDetailsData)
+                                            }}
+                                            className="fill_btn btn-effect">
+                                            {'Accept'}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                handleCancelJob(2, jobDetailsData)
+                                            }}
+                                            className="fill_grey_btn btn-effect">
+                                            {'Reject'}
+                                        </button>
+                                    </div>}
+
                                     {/* {paramStatus ? (
                                         <button
                                             className="fill_btn full_btn btn-effect">
@@ -583,6 +622,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         return (
                                             <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
+                                                {console.log({item})}
                                                 <span>{renderTime(item?.fromDate, item?.toDate)}</span>
                                                 {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
                                                     `${moment(item?.fromDate).format('MMM DD')}` :

@@ -37,10 +37,10 @@ import ChooseJobSuccess from '../pages/chooseTheJob/success';
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
 import RequestMonitored from '../pages/jobDetailsPage/components/requestMonitored';
 import ChangePasswordSuccess from '../pages/tradieEditProfile/components/personalInformation/changePasswordSuccess';
-
 import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmAndPay/suceess';
-
 import declineMilestoneSuccess from '../pages/builderJobDasboard/components/declineMilestoneSuccess'
+
+import PostJobSuccess from '../pages/postJob/sucess';
 
 const routes = [
     {
@@ -160,6 +160,11 @@ const routes = [
         path: '/cancel-job-success',
         component: CancelJobSuccess,
     },
+    {
+        name:'postJobSuccess',
+        path:'/post-job-success',
+        component: PostJobSuccess,
+    },  
     {
         name: 'builderinfo',
         path: '/builder-info',
