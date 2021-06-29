@@ -26,22 +26,22 @@ const NewEmail = (props: PropsTypes) => {
     const validateChangeEmailForm = () => {
         const newErrors: any = {};
         if (!newEmail) {
-            newErrors.newEmail = Constants.errorStrings.emailEmpty;
+            newErrors.newEmail = 'New Email Address is required';
         } else {
             const emailRegex = new RegExp(regex.email);
             if (!emailRegex.test(newEmail.trim())) {
-                newErrors.newEmail = Constants.errorStrings.emailErr;
+                newErrors.newEmail = 'Invalid Email Address';
             }else if (newEmail.trim() === props.currentEmail) {
-                newErrors.newEmail = "Your new email is same as current email";
+                newErrors.newEmail = "New Email Address and Current Email Address is same";
             }
         }
 
         if (!currentPassword) {
-            newErrors.currentPassword = Constants.errorStrings.password;
+            newErrors.currentPassword = 'Current Password is required';
         } else {
             const passwordRegex = new RegExp(regex.password);
             if (!passwordRegex.test(currentPassword.trim())) {
-                newErrors.currentPassword = Constants.errorStrings.passwordError;
+                newErrors.currentPassword = 'Invalid Current Password';
             }
         }
 
@@ -102,7 +102,7 @@ const NewEmail = (props: PropsTypes) => {
                 </div>
             </div>
             <div className="bottom_btn custom_btn">
-                <button className="fill_btn full_btn btn-effect" onClick={changeEmailHandler}>Next</button>
+                <button className={`fill_btn full_btn btn-effect ${(newEmail && currentPassword) ? '' : 'disable_btn'}`} onClick={changeEmailHandler}>Next</button>
             </div>
         </>
     )

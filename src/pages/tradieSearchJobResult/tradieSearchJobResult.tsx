@@ -162,7 +162,8 @@ const TradieSearchJobResult = (props: any) => {
             ...newParamsData,
             isFilterOn: "isFilterOn",
             jobResults: null,
-            ...(allFiltersData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
+            // ...(allFiltersData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
+            isFiltered: true,
             ...(allFiltersData.tradeId?.length && { tradeId: allFiltersData.tradeId }),
             ...(allFiltersData.jobTypes?.length && { jobTypes: allFiltersData.jobTypes }),
             ...((allFiltersData.jobTypes?.length && !allFiltersData.tradeId?.length) && { jobResults: 'jobTypeList' }),
@@ -197,7 +198,7 @@ const TradieSearchJobResult = (props: any) => {
         }
 
         const newObjData = {
-            ...(data.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
+            isFiltered: true,
             ...(data.sortBy && { sortBy: data.sortBy }),
             ...(data.page ? { page: data.page } : { page: searchResultData.page }),
             ...(data.tradeId && { tradeId: data.tradeId }),

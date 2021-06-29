@@ -336,9 +336,6 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
         @media (max-width: 1366px){
             bottom: 100px;
         }
-        // @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-		// 	bottom: 100px;
-		// }
     }
     .react-multi-carousel-dot {
         button{
@@ -437,8 +434,7 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
     }
     .rdrWeekDay{
         color: var(--blue);
-        font-family: 'Neue Haas Grotesk Text Pro Bold';
-        font-size: 14px;
+        font: 14px 'Neue Haas Grotesk Text Pro Bold';
     }
     .rdrPprevButton {
         background-color: transparent;
@@ -482,14 +478,6 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
     .rdrDayToday .rdrDayNumber span:after{
         background: transparent !important;
     }
-    // .rdrDayToday, .rdrDayToday .rdrDayNumber {
-    //     background: var(--yellow) !important;
-    //     color: var(--blue);
-    //     font-family: 'Neue Haas Grotesk Text Pro Bold';
-    //     .rdrInRange{
-    //     background: var(--yellow) !important;
-    //     }
-    // }
 
     .rdrInRange{
         background-color: #a09fa726 !important;
@@ -532,7 +520,7 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
 }
 
 .map_label{
-    background-color: var(--orange);
+    background-color: var(--blue-two);
     color: var(--white);
     padding: 8px;
     border-radius: 12px;
@@ -603,9 +591,6 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
 .css-1pahdxg-control{
     border: 1px solid var(--blue) !important;
     min-height: 48px !important;
-    // svg{
-    //     transform: rotate(180deg);
-    // }
 }
 .react-select__option, .css-1uccc91-singleValue{
     font-size: 14px;
@@ -647,7 +632,7 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
 
 
 
-// -------------------------//
+// ------------Text format-------------//
 .uppercase{
     text-transform: uppercase;
 }
@@ -657,6 +642,8 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
 .lowercase{
     text-transform: lowercase;
 }
+
+// -----------No Internet-------------//
 
 .offline_mode {
     background: #fafafa;

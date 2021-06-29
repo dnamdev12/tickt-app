@@ -2,8 +2,7 @@
 
 .link {
 	position: relative;
-	font-size: 14px;
-	font-family: 'Neue Haas Grotesk Text Pro Bold';
+	font: 14px 'Neue Haas Grotesk Text Pro Bold';
 	color: var(--blue-two);
 	cursor: pointer;
 	@media (max-width: 812px) {
@@ -32,36 +31,6 @@
 
 
 /*-------------------Link hover effect close---------------*/
-
-
-/*-------------------Tab hover effect---------------*/
-
-.tab_link {
-	font-size: 14px;
-	font-family: 'Neue Haas Grotesk Text Pro Bold';
-	line-height: 1.29;
-	color: var(--blue);
-	position: relative;
-	&:hover,
-	&.active {
-		color: #ed1c24;
-		&::after {
-			content: "";
-			@include position(absolute, auto, auto, -8px, 50%);
-			transform: translateX(-50%);
-			width: 6px;
-			height: 6px;
-			@include border-radius(50%);
-			background-color: #ed1c24;
-			-webkit-transition: all ease .4s;
-			-o-transition: all ease .4s;
-			transition: all ease .4s;
-		}
-	}
-}
-
-
-/*-------------------Tab hover effect close---------------*/
 
 
 /*--------------------------video media effect------------------------*/
@@ -228,13 +197,10 @@
 .view_more {
 	position: relative;
 	&:after {
-		// content: '»';
 		content: '';
-		position: absolute;
+		@include position(absolute, 50%, 0px, auto, auto);
 		opacity: 0;
-		top: 50%;
 		transform: translateY(-50%);
-		right: 0px;
 		font-size: 30px;
 		transition: 0.5s;
 		background: url('../images/icon-direction-right.png') center no-repeat;
@@ -337,39 +303,6 @@
 
 
 /*--------------------btn effect close--------------------------*/
-
-
-/*--------------------arrow effect--------------------------*/
-
-// .bounce{
-//   &:hover{
-//     -moz-animation: bounce 3s infinite;
-//     -webkit-animation: bounce 3s infinite;
-//     animation: bounce 3s infinite;
-//   }
-// }
-// @keyframes bounce {
-//   0%, 20%, 50%, 80%, 100% {
-//     -moz-transform: translateX(0);
-//     -ms-transform: translateX(0);
-//     -webkit-transform: translateX(0);
-//     transform: translateX(0);
-//   }
-//   40% {
-//     -moz-transform: translateX(-30px);
-//     -ms-transform: translateX(-30px);
-//     -webkit-transform: translateX(-30px);
-//     transform: translateX(-30px);
-//   }
-//   60% {
-//     -moz-transform: translateX(-15px);
-//     -ms-transform: translateX(-15px);
-//     -webkit-transform: translateX(-15px);
-//     transform: translateX(-15px);
-//   }
-// }
-
-/*--------------------arrow effect close--------------------------*/
 
 
 /*--------------------circle effect---------------------*/

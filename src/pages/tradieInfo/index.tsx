@@ -463,7 +463,7 @@ class TradieInfo extends Component<Props, State> {
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
                                         {isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img
-                                            src={userType === 1 ? tradieInfo?.userImage : tradieInfo?.tradieImage ? tradieInfo?.tradieImage : profilePlaceholder}
+                                            src={tradieInfo?.tradieImage || profilePlaceholder}
                                             alt="profile-pic"
                                         />}
                                     </figure>
@@ -472,8 +472,8 @@ class TradieInfo extends Component<Props, State> {
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
-                                                <span className="title line-3" title="">{userType === 1 ? tradieInfo?.userName : tradieInfo?.tradieName ? tradieInfo?.tradieName : ''}</span>
-                                                <span className="tagg  mb30">{userType === 1 ? 'Tradesperson' : tradieInfo?.position ? tradieInfo?.position : ''}</span>
+                                                <span className="title line-3" title="">{tradieInfo?.tradieName || ''}</span>
+                                                <span className="tagg  mb30">{tradieInfo?.position || ''}</span>
                                                 <ul className="review_job">
                                                     <li>
                                                         <span className="icon reviews">{tradieInfo?.ratings || '0'}</span>
@@ -561,9 +561,9 @@ class TradieInfo extends Component<Props, State> {
                                             <span className="sub_title">Areas of specialisation</span>
                                             <div className="tags_wrap">
                                                 <ul>
-                                                    <li className="main">
+                                                    {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName && <li className="main">
                                                         <img src={tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
-                                                    </li>
+                                                    </li>}
                                                     {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any) => {
                                                         return <li key={item.specializationId}>{item.specializationName || ''}</li>
                                                     })}
@@ -712,7 +712,7 @@ class TradieInfo extends Component<Props, State> {
                                         <div className="review_card vouchers">
                                             <div className="pic_shot_dtl">
                                                 <figure className="u_img">
-                                                    <img src={item?.userImage || dummy} alt="user-img" />
+                                                    <img src={item?.builderImage || dummy} alt="user-img" />
                                                 </figure>
                                                 <div className="name_wrap">
                                                     <span className="user_name" title={item?.builderName || ''}>
