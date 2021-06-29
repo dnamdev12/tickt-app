@@ -4763,11 +4763,6 @@ body {
           background-size: contain;
          }
       }
-      .info{
-        label, span{
-          color: var(--dark-grey);
-        }
-      }
     }
     .circle_stepper{
       @include position(absolute, 0px, auto, auto, 0px);
