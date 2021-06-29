@@ -108,9 +108,7 @@ body {
 }
 
 .title {
-	font-size: 32px;
-	font-family: 'Neue Haas Grotesk Text Pro Bold';
-	line-height: 1.16;
+  font: 32px/1.16 'Neue Haas Grotesk Text Pro Bold';
 	color: var(--blue);
 	margin-bottom: 32px;
 	display: block;
@@ -131,9 +129,7 @@ body {
 }
 
 .sub_title {
-  font-size: 24px;
-  font-family: "Neue Haas Grotesk Text Pro Bold";
-  line-height: 1.33;
+  font: 24px/1.33 'Neue Haas Grotesk Text Pro Bold';
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 16px;
@@ -151,9 +147,7 @@ body {
 }
 
 .xs_sub_title {
-  font-size: 18px;
-  font-family: "Neue Haas Grotesk Text Pro Bold";
-  line-height: 1.33;
+  font: 18px/1.33 'Neue Haas Grotesk Text Pro Bold';
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 16px;
@@ -170,9 +164,7 @@ body {
 }
 
 .inner_title {
-  font-size: 16px;
-  font-family: "Neue Haas Grotesk Text Pro Bold";
-  line-height: 1.33;
+  font: 16px/1.33 'Neue Haas Grotesk Text Pro Bold';
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 15px;
@@ -183,8 +175,7 @@ body {
 }
 
 .xs_head {
-  font-size: 14px;
-  font-family: "Neue Haas Grotesk Text Pro Bold";
+  font: 14px 'Neue Haas Grotesk Text Pro Bold';
   color: var(--blue);
   margin-bottom: 10px;
   display: block;
@@ -193,7 +184,7 @@ body {
 .tagg{
   font-size: 15px;
   line-height: 1.13;
-  color: #748092;
+  color: var(--dark-grey);
   display: block;
   margin-bottom: 15px;
   &.mb30{
@@ -204,10 +195,10 @@ body {
 
 .edit_icon{
 	position: absolute;
-    right: auto;
-    margin-left: 10px;
-    top: 0px !important;
-    cursor: pointer;
+  right: auto;
+  margin-left: 10px;
+  top: 0px !important;
+  cursor: pointer;
 	img{
 		width: 24px !important;
 		height: 24px !important;
@@ -227,9 +218,7 @@ body {
   }
   &:before {
     content: "";
-    position: absolute;
-    left: 0;
-    top: 50%;
+    @include position(absolute, 50%, auto, auto, 0);
     transform: translateY(-50%);
   }
 }
@@ -261,9 +250,7 @@ body {
       padding: 8px;
       @include border-radius(6px);
       background-color: #f6f7f9;
-      font-size: 12px;
-      font-family: "Neue Haas Grotesk Text Pro Bold";
-      line-height: 1.3;
+      font: 12px/1.3 'Neue Haas Grotesk Text Pro Bold';
       color: var(--blue);
       cursor: pointer;
       &.active {
@@ -290,7 +277,7 @@ body {
         font-size: 11px;
       }
       &.main {
-        background-color: #dfe5ef;
+        background-color: var(--grey);
         img {
           width: 15px;
           height: 15px;
@@ -305,9 +292,7 @@ body {
 .tag_status {
   padding: 4px 8px;
   @include border-radius(4px);
-  font-size: 10px;
-  font-family: 'Neue Haas Grotesk Text Pro Bold';
-  line-height: 1.3;
+  font: 10px/1.3 'Neue Haas Grotesk Text Pro Bold';
   letter-spacing: 0.5px;
   background-color: var(--light-gray);
   color: var(--greyish-brown);
@@ -323,7 +308,7 @@ body {
   }
   &.active {
     background-color: rgba(252, 110, 32, 0.1);
-    color: var(--orange);
+    color: var(--blue-two);
   }
   &.nverified,
   &.inactive {
@@ -333,11 +318,6 @@ body {
 }
 
 //------------------------Tags close------------------//
-.image_uploader {
-  img {
-    @include border-radius(12px);
-  }
-}
 
 .hide {
   display: none;
@@ -384,9 +364,7 @@ body {
   border-radius: 3px;
   z-index: 99;
   .close {
-    position: absolute;
-    right: -8px;
-    top: -8px;
+    @include position(absolute, -8px, -8px, auto, auto);
     cursor: pointer;
     img {
       width: 18px;
@@ -496,10 +474,8 @@ body {
 .back {
   background: url("../images/icon-direction-left.png") center no-repeat;
   background-size: contain;
-  position: absolute;
-  top: 50%;
+  @include position(absolute, 50%, auto, auto, 0px);
   transform: translateY(-50%);
-  left: 0px;
   width: 24px;
   height: 24px;
   &.bk_white{
@@ -507,9 +483,7 @@ body {
   }
 }
 .share {
-  font-size: 14px;
-  font-family: 'Neue Haas Grotesk Text Pro Bold';
-  line-height: 1.14;
+  font: 14px/1.14 'Neue Haas Grotesk Text Pro Bold';
   letter-spacing: 0.1px;
   color: var(--greyish-brown);
   position: relative;
@@ -519,7 +493,7 @@ body {
     padding-left: 20px;
   }
   &::before {
-    @include position(absolute, 50%, auto, auto, 0);
+    @include position(absolute, 50%, auto, auto, 0px);
     transform: translateY(-50%);
     content: "";
     width: 24px;
@@ -545,7 +519,7 @@ body {
     padding-left: 20px;
   }
   &::before {
-    @include position(absolute, 50%, auto, auto, 0);
+    @include position(absolute, 50%, auto, auto, 0px);
     transform: translateY(-50%);
     content: "";
     width: 16px;
@@ -573,7 +547,7 @@ body {
     padding-left: 18px;
   }
   &::before {
-    @include position(absolute, 50%, auto, auto, 0);
+    @include position(absolute, 50%, auto, auto, 0px);
     transform: translateY(-50%);
     content: "";
     width: 12px;
@@ -601,11 +575,10 @@ body {
 }
 
 .autosuggestion_icon {
-  font-size: 14px;
+  font: 14px 'Neue Haas Grotesk Text Pro Bold';
   color: var(--greyish-brown);
   position: relative;
   padding-left: 55px;
-  font-family: 'Neue Haas Grotesk Text Pro Bold';
   cursor: pointer;
   &::before {
     @include position(absolute, 50%, auto, auto, 0);
@@ -638,10 +611,10 @@ body {
   cursor: pointer;
   margin-right: 10px;
   box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.09);
-  background: #dfe5ef url('../images/bookmark.png') center no-repeat;
+  background: var(--grey) url('../images/bookmark.png') center no-repeat;
   background-size: auto;
   &.active{
-    background: #dfe5ef url('../images/bookmarked.png') center no-repeat;
+    background: var(--grey) url('../images/bookmarked.png') center no-repeat;
     background-size: auto;
   }
 }
@@ -719,9 +692,7 @@ body {
       }
     }
     .mark_all{
-      position: absolute;
-      right: 15px;
-      top: 15px;
+      @include position(absolute, 15px, 15px, auto, auto);
     }
     
     .MuiListItem-button{
@@ -752,10 +723,8 @@ body {
         display: block !important;
       }
       .time{
-        position: absolute;
-        top: 0;
-        right: 0;
-        color: #748092;
+        @include position(absolute, 0, 0, auto, auto);
+        color: var(--dark-grey);
       }
       .not_img{
         width: 64px;
@@ -776,9 +745,7 @@ body {
           height: 12px;
           background-color: var(--yellow);
           border-radius: 50%;
-          position: absolute;
-          top: 3px;
-          left: 0;
+          @include position(absolute, 3px, auto, auto, 0px);
         }
       }
       .see{
@@ -786,7 +753,7 @@ body {
         font-family: 'Neue Haas Grotesk Text Pro Bold';
         padding: 2px 8px;
         border-radius: 6px;
-        background-color: #dfe5ef;
+        background-color: var(--grey);
         display: inline-block !important;
       }
       .info{
@@ -800,138 +767,6 @@ body {
 }
 
 //--------------------Header sub menu close------------------------//
-//-------------------Discover Items card---------------//
-.article_card {
-  margin: 0 15px 15px;
-  width: 350px;
-  @media (max-width: 1024px) {
-    max-width: 300px;
-    width: 100%;
-  }
-  @media (max-width: 812px) {
-    margin: 0 auto;
-  }
-  .item_card {
-    margin-bottom: 0;
-  }
-}
-
-.item_card {
-  min-height: 290px;
-  display: flex;
-  flex-flow: column;
-  @include border-radius(12px);
-  margin-bottom: 30px;
-  &:hover {
-    box-shadow: 2px 0 20px 0 rgba(46, 61, 73, 0.2);
-  }
-  @media (max-width: 768px) {
-    margin-bottom: 20px;
-  }
-  .thumb {
-    height: 200px;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    overflow: hidden;
-    position: relative;
-    &:before {
-      @include position(absolute, 50%, auto, auto, 50%);
-      z-index: 2;
-      display: block;
-      content: "";
-      width: 0;
-      height: 0;
-      background: rgba(255, 255, 255, 0.2);
-      @include border-radius(100%);
-      -webkit-transform: translate(-50%, -50%);
-      transform: translate(-50%, -50%);
-      opacity: 0;
-    }
-    img,
-    video {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      @include border-radius(0);
-    }
-  }
-  .bookmark {
-    cursor: pointer;
-    @include position(absolute, 15px, auto, auto, 15px);
-    z-index: 9;
-    width: 25px;
-    height: 25px;
-  }
-  .tag {
-    @include position(absolute, auto, auto, 16px, 16px);
-    padding: 5px 11px;
-    @include border-radius(4px);
-    background-color: var(--white);
-    font-size: 10px;
-    font-family: "Neue Haas Grotesk Text Pro Bold";
-    text-transform: uppercase;
-    color: var(--greyish-brown);
-  }
-  .details {
-    padding: 8px 10px;
-    .name {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 1.29;
-      display: block;
-      margin-bottom: 5px;
-      color: var(--greyish-brown);
-    }
-    .by {
-      font-size: 14px;
-      font-weight: 500;
-      line-height: 1.13;
-      display: block;
-      margin-bottom: 15px;
-      color: var(--greyish-brown);
-    }
-    .cost {
-      font-size: 16px;
-      line-height: 1.13;
-      color: var(--greyish-brown);
-      font-weight: 500;
-      display: block;
-      .perday {
-        color: var(--greyish-brown);
-      }
-    }
-    .total_cost {
-      font-size: 16px;
-      line-height: 1.13;
-      color: var(--greyish-brown);
-      font-weight: 500;
-      display: block;
-    }
-  }
-  &:hover {
-    .thumb {
-      &:before {
-        -webkit-animation: circle 0.75s;
-        animation: circle 0.75s;
-      }
-    }
-  }
-  @keyframes circle {
-    0% {
-      opacity: 1;
-    }
-    40% {
-      opacity: 1;
-    }
-    100% {
-      width: 220px;
-      height: 220px;
-      opacity: 0;
-    }
-  }
-}
-
-//-------------------Discover Items card close---------------//
 
 //------------------------Onboard Model-------------------------//
 .onboard_modal {
@@ -1034,9 +869,7 @@ body {
 }
 
 .bottom_txt {
-  position: absolute;
-  bottom: 25%;
-  left: 50%;
+  @include position(absolute, auto, auto, 25%, 50%);
   transform: translateX(-50%);
   z-index: 9;
   @media (max-width: 1366px) {
@@ -1046,9 +879,7 @@ body {
     bottom: 10%;
   }
   .reg {
-    font-size: 14px;
-    font-family: "Neue Haas Grotesk Text Pro Bold";
-    line-height: 1.29;
+    font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
     letter-spacing: 0.1px;
     color: var(--white);
   }
@@ -1078,24 +909,18 @@ body {
 }
 
 .logo {
-  position: absolute;
-  top: 10%;
-  left: 50%;
+  @include position(absolute, 10%, auto, auto, 50%);
   transform: translateX(-50%);
 }
 
 .slider_txt {
   z-index: 9;
   text-align: center;
-  position: absolute;
-  top: 45%;
-  left: 50%;
+  @include position(absolute, 45%, auto, auto, 50%);
   transform: translate(-50%, 50%);
   width: 100%;
   span {
-    font-size: 26px;
-    font-family: "Neue Haas Grotesk Text Pro Bold";
-    line-height: 1.25;
+    font: 26px/1.25 'Neue Haas Grotesk Text Pro Bold';
     letter-spacing: 0.1px;
     color: var(--white);
     max-width: 262px;
@@ -1108,125 +933,7 @@ body {
 }
 
 //----------------------Onboard Model close----------------------//
-//--------------------Stories---------------------//
-.stories {
-  padding-top: 48px;
-  position: relative;
-  .story_card {
-    display: flex;
-    align-items: center;
-    @media (max-width: 768px) {
-      margin-bottom: 20px;
-    }
-    .thumb {
-      width: 160px;
-      height: 124px;
-      margin: 0 16px 0 0;
-      overflow: hidden;
-      @include border-radius(12px);
-      position: relative;
-      &:before {
-        @include position(absolute, 50%, auto, auto, 50%);
-        z-index: 2;
-        display: block;
-        content: "";
-        width: 0;
-        height: 0;
-        background: rgba(255, 255, 255, 0.2);
-        @include border-radius(100%);
-        -webkit-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-        opacity: 0;
-      }
-      @media (max-width: 768px) {
-        width: 140px;
-        height: 100px;
-      }
-      img,
-      video {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        position: relative;
-      }
-    }
-    .details {
-      width: 50%;
-      @media (max-width: 650px) {
-        width: 60%;
-      }
-      span {
-        font-size: 16px;
-        font-weight: 500;
-        line-height: 1.31;
-        margin-bottom: 8px;
-        color: var(--greyish-brown);
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        -webkit-box-orient: vertical;
-        @media (max-width: 768px) {
-          font-size: 14px;
-        }
-      }
-      p {
-        font-size: 14px;
-        line-height: 1.29;
-        color: var(--greyish-brown);
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        @media (max-width: 768px) {
-          font-size: 12px;
-        }
-      }
-    }
-    &:hover {
-      .thumb {
-        &:before {
-          -webkit-animation: circle 0.75s;
-          animation: circle 0.75s;
-        }
-      }
-    }
-    @keyframes circle {
-      0% {
-        opacity: 1;
-      }
-      40% {
-        opacity: 1;
-      }
-      100% {
-        width: 200%;
-        height: 200%;
-        opacity: 0;
-      }
-    }
-  }
-  &.story_list {
-    .story_card {
-      flex-flow: column;
-      margin-bottom: 30px;
-      .thumb {
-        width: 100%;
-        height: 240px;
-        margin: 0 0 15px 0;
-      }
-      .details {
-        width: 100%;
-        span {
-          font-size: 20px;
-        }
-      }
-    }
-  }
-}
 
-//------------------------Stories close---------------------//
 //----------------------Job/Story/Profile Detail-------------------//
 .vid_img_wrapper {
   .flex_col_sm_3 {
@@ -1367,8 +1074,7 @@ body {
   }
   .detail_card {
     padding: 0 0 0 10px;
-    position: absolute;
-    bottom: 0;
+    @include position(absolute, auto, auto, 0px, auto);
     width: 95%;
     .form_field{
       margin-bottom: 15px;
@@ -1546,7 +1252,6 @@ body {
   }
 }
 
-
 .review_job{
   display: flex;
   align-items: center;
@@ -1570,9 +1275,8 @@ body {
       .icon{
           position: relative;
           padding-left: 35px;
-          font-size: 24px;
+          font: 24px 'Neue Haas Grotesk Text Pro Bold';
           color: var(--blue);
-          font-family: 'Neue Haas Grotesk Text Pro Bold';
           margin-bottom: 8px;
           display: block;
           min-height: 30px;
@@ -1595,7 +1299,7 @@ body {
       }
       .review_count{
         font-size: 14px;
-        color: #313d48;
+        color: var(--greyish-brown);
         line-height: 1;
         margin-top: 10px;
       }
@@ -1609,7 +1313,6 @@ body {
   margin-bottom: 30px;
   .media{
       display: inline-block;
-      // margin: 0px 24px 0px 0px;
       cursor: pointer;
       .portfolio_img{
           width: 256px;
@@ -1623,9 +1326,7 @@ body {
               object-fit: cover;
           }
           .xs_sub_title{
-              position: absolute;
-              bottom: -100%;
-              left: 0;
+            @include position(absolute, auto, auto, -100%, 0px);
               margin: 0;
               color: var(--white);
               line-height: 1.3;
@@ -1668,9 +1369,7 @@ body {
       
   }
 }
-
-
-//----------------------Item/Story/Profile Detail close---------------------------//
+//----------------------Item/Profile Detail close---------------------------//
 
 //-------------------Review Rating card-----------------------//
 .review_parent {
@@ -1723,9 +1422,7 @@ body {
       width: 80%;
       .user_name {
         display: block;
-        font-size: 14px;
-        font-family: "Neue Haas Grotesk Text Pro Bold";
-        line-height: 1.43;
+        font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
         color: var(--blue);
         max-width: 135px;
         text-overflow: ellipsis;
@@ -1736,7 +1433,7 @@ body {
         font-size: 12px;
         line-height: 1.67;
         text-align: left;
-        color: #313d48;
+        color: var(--greyish-brown);
       }
     }
   }
@@ -1759,17 +1456,13 @@ body {
       @include border-radius(6px);
       background-color: var(--white);
       display: inline-flex;
-      font-size: 12px;
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
-      line-height: 1.5;
+      font: 12px/1.5 'Neue Haas Grotesk Text Pro Bold';
       text-align: center;
       color: var(--greyish-brown);
     }
   }
   .bottom_note {
-    font-size: 14px;
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
-    line-height: 1.29;
+    font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
     color: var(--blue);
   }
   &.vouchers{
@@ -1810,56 +1503,8 @@ body {
     }
   }
 }
-
-
-.supplier_review_card {
-  margin: 0 0 24px;
-  padding: 10px 15px;
-  @include border-radius(5px);
-  min-height: 63px;
-  cursor: pointer;
-  .pic_shot_dtl {
-    display: flex;
-    .user_img {
-      width: 40px;
-      height: 40px;
-      overflow: hidden;
-      @include border-radius(5px);
-      margin: 0 10px 0 0;
-      border: 1px solid #fff0f0;
-      img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
-    }
-  }
-  .name_rate_item {
-    width: 80%;
-    .user_name {
-      font-size: 14px;
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
-      line-height: 1.29;
-      color: var(--greyish-brown);
-      display: block;
-      margin-bottom: 5px;
-    }
-    .rating_reach {
-      margin: 0 20px 0 0;
-      display: inline-block;
-    }
-    .count {
-      font-size: 14px;
-      line-height: 1.29;
-      color: #262628;
-    }
-  }
-  &:hover {
-    box-shadow: 2px 0 20px 0 rgba(46, 61, 73, 0.2);
-  }
-}
-
 //-------------------Review Rating card close-----------------------//
+
 //-------------------Question Answer/ Custom/ Filter model------------------------//
 .custom_wh{
   position: relative;
@@ -1974,9 +1619,7 @@ body {
       }
     }
     .dialog_actions{
-      position: absolute;
-      bottom: 18;
-      left: 50%;
+      @include position(absolute, auto, auto, 18px, 50%);
       transform: translateX(-50%);
       .fill_btn, .fill_grey_btn{
         padding: 12px 25px;
@@ -2232,8 +1875,7 @@ body {
     height: 90px;
     position: relative;
     .bottom_btn {
-      position: absolute;
-      bottom: 0;
+      @include position(absolute, auto, auto, 0px, auto);
       @media (max-width: 1024px) {
         width: 100%;
         display: flex;
@@ -2297,9 +1939,7 @@ body {
     justify-content: space-between;
     align-items: center;
     z-index: 9;
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
+    @include position(absolute, auto, auto, 20px, 20px);
     .fill_btn {
       margin: 0;
     }
@@ -2344,7 +1984,7 @@ body {
     }
   }
   .new {
-    color: var(--orange);
+    color: var(--blue-two);
     cursor: pointer;
   }
 }
@@ -2384,9 +2024,7 @@ body {
       box-shadow: 2px 0 20px 0 rgba(46, 61, 73, 0.2);
     }
     .remove_card{
-      position: absolute;
-      top: -5px;
-      right: -5px;
+      @include position(absolute, -5px, -5px, auto, auto);
       overflow: initial;
       img{
         width: 18px;
@@ -2514,9 +2152,7 @@ body {
 		margin-bottom: 18px;
 	}
 	.close_btn {
-		position: absolute;
-		right: 30px;
-		top: 30px;
+    @include position(absolute, 30px, 30px, auto, auto);
 		display: flex;
 		align-items: center;
 		cursor: pointer;
@@ -2531,7 +2167,7 @@ body {
 			width: 376px;
 			padding: 25px 32px 20px;
 			border-radius: 3px;
-  			box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.14);
+  		box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.14);
 			background-color: var(--white);
 			z-index: 99;
 			margin: 65px 0 0;
@@ -2557,9 +2193,7 @@ body {
 			}
 		}
 		.price {
-			font-size: 14px;
-			font-family: 'Neue Haas Grotesk Text Pro Bold';
-			line-height: 1.29;
+      font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
 			color: var(--blue);
 			margin-bottom: 8px;
 			display: block;
@@ -2569,9 +2203,7 @@ body {
 				width: 18px;
 				height: 18px;
 				content: "";
-				position: absolute;
-				right: auto;
-				top: 1px;
+        @include position(absolute, 1px, auto, auto, auto);
 				margin-left: 10px;
 			}
 			&.down{
@@ -2601,9 +2233,7 @@ body {
 
 //----------------Edit menu---------------------//
 .edit_menu {
-  position: absolute;
-  top: 30px;
-  right: -100%;
+  @include position(absolute, 30px, -100%, auto, auto);
   transition: all ease-in .3s;
   opacity: 0;
   visibility: hidden;
@@ -2628,8 +2258,7 @@ body {
       }
       &.icon {
         padding-left: 32px;
-        font-size: 14px;
-        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        font: 14px 'Neue Haas Grotesk Text Pro Bold';
         text-align: left;
         &:before {
           width: 24px;
@@ -2662,9 +2291,7 @@ body {
 }
 
 .dot_menu{
-  position: absolute;
-  right: 30px;
-  top: 25px;
+  @include position(absolute, 25px, 30px, auto, auto);
   cursor: pointer;
   width: 25px;
   height: 25px;
@@ -2700,9 +2327,7 @@ body {
       object-position: 0px 0px;
     }
     .short_info {
-      position: absolute;
-      top: 50%;
-      left: 50%;
+      @include position(absolute, 50%, auto, auto, 50%);
       transform: translate(-50%, -50%);
       text-align: center;
     }
@@ -2786,10 +2411,8 @@ body {
   .content {
     text-align: center;
     h1 {
-      font-size: 30px;
       color: var(--blue);
-      line-height: 1.5;
-      font-family: "Neue Haas Grotesk Text Pro Bold";
+      font: 30px/1.5 'Neue Haas Grotesk Text Pro Bold';
       margin-bottom: 20px;
     }
   }
@@ -2813,13 +2436,11 @@ body {
     }
   }
   h2 {
-    font-size: 24px;
     max-width: 40%;
     margin: 0 auto 10px;
     text-align: center;
     color: var(--blue);
-    line-height: 1.5;
-    font-family: "Neue Haas Grotesk Text Pro Bold";
+    font: 24px/1.5 'Neue Haas Grotesk Text Pro Bold';
     @media (max-width: 1024px) {
       max-width: 52%;
     }
@@ -2865,9 +2486,7 @@ body {
         width: 24px;
         height: 24px;
         content: "";
-        position: absolute;
-        right: -5px;
-        top: 5px;
+        @include position(absolute, 5px, -5px, auto, auto);
         background: url("../images/yellow-tick.png") center no-repeat;
         background-size: contain;
         opacity: 0;
@@ -2892,7 +2511,7 @@ body {
         margin-bottom: 8px;
         width: 80px;
         height: 80px;
-        background-color: #dfe5ef;
+        background-color: var(--grey);
         border-radius: 50%;
         overflow: hidden;
         display: flex;
@@ -2927,11 +2546,9 @@ body {
 //------------Select sphere close---------------//
 //-------------Toast-----------------//
 .body-message {
-  position: fixed;
+  @include position(fixed, 0px, 50px, auto, auto);
   width: 305px;
   min-height: 55px;
-  right: 50px;
-  top: 0;
   margin: 15px 0;
   display: flex;
   background-color: #f0f3fa !important;
@@ -2965,13 +2582,11 @@ body {
   }
   .commn_para {
     margin: 0 0 7px 0;
-    max-width: 85%;
+    max-width: 92%;
   }
   .cross-icon {
     display: inline-block;
-    position: absolute;
-    right: 5px;
-    top: 5px;
+    @include position(absolute, 5px, 5px, auto, auto);
     cursor: pointer;
     width: 18px;
     height: 18px;
@@ -2995,9 +2610,7 @@ body {
   align-items: center;
   width: 100%;
   height: 100%;
-  position: fixed;
-  left: 0;
-  top: 0;
+  @include position(fixed, 0px, auto, auto, 0px);
   background-color: #0000004f;
   z-index: 9999;
   &.active {
@@ -3054,9 +2667,7 @@ body {
       background-position: bottom;
       width: 100%;
       height: 100px;
-      position: absolute;
-      top: 0px;
-      left: 0;
+      @include position(absolute, 0px, auto, auto, 0px);
       @media (max-width: 768px){
         display: none;
       }
@@ -3066,9 +2677,7 @@ body {
     }
   }
   .banner_container {
-    position: absolute;
-    top: 20px;
-    left: 50%;
+    @include position(absolute, 20px, auto, auto, 50%);
     transform: translateX(-50%);
     width: 864px;
     z-index: 9;
@@ -3121,14 +2730,11 @@ body {
     }
   }
   .heading {
-    font-size: 34px;
-    font-family: "Neue Haas Grotesk Text Pro Bold";
-    line-height: 1;
+    font: 34px/1 'Neue Haas Grotesk Text Pro Bold';
     letter-spacing: 0.3px;
     color: var(--white);
     margin: 0 auto 5px;
     white-space: nowrap;
-    // width: 0;
     overflow: hidden;
     @media (max-width: 650px) {
       font-size: 24px;
@@ -3211,11 +2817,6 @@ body {
         }
       }
     }
-		.error_msg{
-			position: absolute;
-      bottom: 4px;
-      left: 15px;
-		}
 		ul {
 			display: flex;
 			flex: 1;
@@ -3254,9 +2855,7 @@ body {
 				}
 			}
 			.search_btn {
-				position: absolute;
-				right: 0;
-				top: 0;
+        @include position(absolute, 0px, 0px, auto, auto);
 				@media (max-width: 768px) {
 					top: auto;
 					bottom: 0px;
@@ -3290,9 +2889,7 @@ body {
   background-color: var(--blue);
   width: 100%;
   height: 90px;
-  position: fixed;
-  top: 80px;
-  left: 50%;
+  @include position(fixed, 80px, auto, auto, 50%);
   transform: translateX(-50%);
   z-index: 99;
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
@@ -3302,8 +2899,7 @@ body {
     margin: auto;
   }
   .modal_srch_close {
-    position: absolute;
-    right: 9px;
+    @include position(absolute, auto, 9px, auto, auto);
     z-index: 99;
     background-color: transparent;
     padding: 5px;
@@ -3334,14 +2930,9 @@ body {
   border-radius: 3px;
   border-top: 1px solid #d9d9d9;
   box-shadow: 0 20px 20px 0 rgba(163, 163, 164, 0.2);
-  position: absolute;
-  top: 64px;
-  left: auto;
-  right: 0;
+  @include position(absolute, 64px, 0px, auto, auto);
   padding: 10px 10px 10px 12px;
-  // max-height: 387px;
   min-height: 120px;
-  // overflow-y: auto;
   z-index: 99;
   @media (max-width: 768px) {
     top: 60px;
@@ -3421,7 +3012,7 @@ body {
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: #dfe5ef;
+        background-color: var(--grey);
         margin-right: 15px;
         img {
           width: 20px;
@@ -3434,14 +3025,14 @@ body {
         .name {
           font-size: 14px;
           line-height: 1.43;
-          color: #313d48;
+          color: var(--greyish-brown);
           font-family: "Neue Haas Grotesk Text Pro Medium";
           display: block;
         }
         .prof {
           font-size: 12px;
           line-height: 1.67;
-          color: #313d48;
+          color: var(--greyish-brown);
         }
       }
     }
@@ -3472,12 +3063,10 @@ body {
   height: 56px;
   padding: 16px 32px;
   border-radius: 3px;
-  background-color: #dfe5ef;
+  background-color: var(--grey);
   display: flex;
   align-items: center;
-  font-size: 14px;
-  font-family: "Neue Haas Grotesk Text Pro Bold";
-  line-height: 1.43;
+  font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
   text-align: center;
   color: #120e24;
   @media (max-width: 768px) {
@@ -3509,13 +3098,11 @@ body {
   position: relative;
   &::before {
     content: "";
-    position: absolute;
+    @include position(absolute, -5px, auto, auto, 35px);
     width: 20px;
     height: 20px;
     background: #5278c1;
     transform: rotate(45deg);
-    top: -5px;
-    left: 35px;
   }
 }
 
@@ -3534,10 +3121,8 @@ body {
 }
 
 .job_status{
-  font-size: 10px;
   color: var(--blue-two);
-  font-family: 'Neue Haas Grotesk Text Pro Bold';
-  line-height: 1.7;
+  font: 10px/1.7 'Neue Haas Grotesk Text Pro Bold';
   letter-spacing: 0.3px;
   text-transform: uppercase;
   display: block;
@@ -3574,9 +3159,7 @@ body {
     }
   }
 	.more_detail {
-		position: absolute;
-		top: 16px;
-		right: 16px;
+    @include position(absolute, 16px, 16px, auto, auto);
 		width: 40px;
 		height: 40px;
 		background: url('../images/more.png') center no-repeat;
@@ -3604,16 +3187,15 @@ body {
 			width: 70%;
       min-height: 57px;
 			.name {
-				font-size: 16px;
 				display: block;
-				font-family: 'Neue Haas Grotesk Text Pro Bold';
+        font: 16px 'Neue Haas Grotesk Text Pro Bold';
 				color: var(--blue);
 				margin-bottom: 2px;
 			}
 			.prof{
 				font-size: 14px;
 				line-height: 1;
-				color: #313d48;
+				color: var(--greyish-brown);
         display: block;
         margin-bottom: 4px;
 			}
@@ -3628,9 +3210,7 @@ body {
   .count_wrap{
     display: flex;
     align-items: center;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
+    @include position(absolute, auto, 20px, 20px, auto);
     li {
       &.icon {
         padding-left: 30px;
@@ -3657,9 +3237,7 @@ body {
     background-color: transparent;
     box-shadow: none;
     .chat {
-      position: absolute;
-      top: 16px;
-      right: 16px;
+      @include position(absolute, 16px, 16px, auto, auto);
       width: 40px;
       height: 40px;
       background: url("../images/chat.png") center no-repeat;
@@ -3792,7 +3370,7 @@ body {
         height: 80px;
         border-radius: 50%;
         overflow: hidden;
-        background-color: #dfe5ef;
+        background-color: var(--grey);
         margin-bottom: 16px;
         display: flex;
         align-items: center;
@@ -3813,9 +3391,7 @@ body {
         }
       }
       .categ_name {
-        font-size: 12px;
-        font-family: "Neue Haas Grotesk Text Pro Bold";
-        line-height: 1.29;
+        font: 12px/1.29 'Neue Haas Grotesk Text Pro Bold';
         text-align: center;
         color: var(--greyish-brown);
       }
@@ -3871,7 +3447,7 @@ body {
     justify-content: center;
     align-items: center;
     padding: 14px;
-    background-color: #dfe5ef;
+    background-color: var(--grey);
     border-radius: 3px;
     margin: 0px 20px 20px 0;
 	  cursor: pointer;
@@ -3882,7 +3458,7 @@ body {
       margin: 0px 10px 10px 0 !important;
       padding: 10px 5px !important;
     }
-    border: 2px solid #dfe5ef;
+    border: 2px solid var(--grey);
     &.active {
       border-color: var(--blue-two);
     }
@@ -3975,9 +3551,8 @@ body {
       }
     }
     .name {
-      font-size: 20px;
-      color: var(--bue);
-      font-family: "Neue Haas Grotesk Text Pro Bold";
+      color: var(--blue);
+      font: 20px 'Neue Haas Grotesk Text Pro Bold';
       display: block;
       margin-bottom: 8px;
       @media (max-width: 768px) {
@@ -4008,9 +3583,7 @@ body {
   display: block !important;
 }
 .edit_delete {
-  position: absolute;
-  top: 12px;
-  right: 12px;
+  @include position(absolute, 12px, 12px, auto, auto);
   display: flex;
   align-items: center;
   &.tr{
@@ -4042,7 +3615,7 @@ body {
   margin-bottom: 30px;
   li {
     border-radius: 3px;
-    border: solid 1px #dfe5ef;
+    border: solid 1px var(--grey);
     min-height: 95px;
     position: relative;
     padding: 11px 8px;
@@ -4068,7 +3641,7 @@ body {
       flex-flow: column;
       padding-left: 32px;
       font-size: 14px;
-      color: #313d48;
+      color: var(--greyish-brown);
       span {
         margin: 3px 0;
       }
@@ -4091,9 +3664,7 @@ body {
 	  cursor: pointer;
     .name {
       color: var(--blue);
-      font-size: 14px;
-      line-height: 1.43;
-      font-family: "Neue Haas Grotesk Text Pro Bold";
+      font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
       max-width: 500px;
       display: block;
       width: 100%;
@@ -4131,10 +3702,10 @@ body {
       font-size: 12px;
       line-height: 1.4;
       text-align: right;
-      color: #313d48;
+      color: var(--greyish-brown);
       span {
         font-size: 10px;
-        color: #748092;
+        color: var(--dark-grey);
         display: block;
       }
     }
@@ -4216,7 +3787,7 @@ body {
 		.count {
 		  margin: 8px 0 0;
 		  font-size: 16px;
-		  color: #748092;
+		  color: var(--dark-grey);
 		  line-height: 1.13;
 		  display: block;
 		  font-family: 'Neue Haas Grotesk Text Pro Roman';
@@ -4243,8 +3814,8 @@ body {
 			  color: var(--blue);
 			  padding: 13px 15px;
 			  border-radius: 6px;
-			  border: 1px solid #dfe5ef;
-			  background-color: #dfe5ef;
+			  border: 1px solid var(--grey);
+			  background-color: var(--grey);
 			  display: flex;
 			  align-items: center;
 			  @media (max-width: 650px) {
@@ -4276,14 +3847,12 @@ body {
 		}
 	}
 	.map_btn{
-		font-size: 14px;
-		font-family: 'Neue Haas Grotesk Text Pro Bold';
-		line-height: 1.43;
+    font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
 		color: var(--blue);
 		padding: 13px 15px;
 		border-radius: 6px;
-		border: 1px solid #dfe5ef;
-		background-color: #dfe5ef;
+		border: 1px solid var(--grey);
+		background-color: var(--grey);
 		display: inline-flex;
 		align-items: center;
 		cursor: pointer;
@@ -4346,9 +3915,7 @@ body {
 }
 .map_stick {
 	height: 100vh;
-	position: fixed;
-	top: 206px;
-	right: 0;
+  @include position(fixed, 206px, 0px, auto, auto);
 	width: 40%;
 	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
 	z-index: 99;
@@ -4363,9 +3930,7 @@ body {
 		height: 100%;
 	}
 	.close_map{
-		position: absolute;
-		left: 20px;
-		top: 20px;
+    @include position(absolute, 20px, auto, auto, 20px);
 		z-index: 9;
 		cursor: pointer;
 		img {
@@ -4444,12 +4009,10 @@ body {
 		}
   }
 	span {
-		font-size: 16px;
 		text-align: center;
 		color: #2f5cb5;
     margin: 0 0 10px;
-		line-height: 1;
-		font-family: 'Neue Haas Grotesk Text Pro Bold';
+    font: 16px/1 'Neue Haas Grotesk Text Pro Bold';
 	}
 }
 //----------------Data not found close---------------------//
@@ -4461,9 +4024,7 @@ body {
 }
 
 .mob_side_nav {
-  position: absolute;
-  right: 15px;
-  top: 12px;
+  @include position(absolute, 12px, 15px, auto, auto);
   width: 22px;
   height: 22px;
   cursor: pointer;
@@ -4514,9 +4075,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    right: 18px;
-    top: 18px;
+    @include position(absolute, 18px, 18px, auto, auto);
     z-index: 999;
     display: none;
     @media(max-width: 650px){
@@ -4665,18 +4224,15 @@ body {
   .badge_count {
     width: 25px;
     height: 25px;
-    font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
     border-radius: 50%;
     background-color: var(--yellow);
-    position: absolute;
-    right: -40px;
-    top: 50%;
+    @include position(absolute, 50%, -40px, auto, auto);
     transform: translateY(-50%);
     color: var(--blue);
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    font: 14px 'Neue Haas Grotesk Text Pro Bold';
   }
 }
 .detail_col {
@@ -4805,8 +4361,7 @@ body {
   hr{
     width: 1px;
     height: 100vh;
-    position: absolute;
-    left: 50%;
+    @include position(absolute, auto, auto, auto, 50%);
     transform: translateX(95px);
     background-color: #f7f8fa;
     margin: 0;
@@ -4867,11 +4422,8 @@ body {
     .view_profile{
       display: flex;
       align-items: center;
-      position: absolute;
-      top: 0;
-      right: 0;
-      font-size: 14px;
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      @include position(absolute, 0px, 0px, auto, auto);
+      font: 14px 'Neue Haas Grotesk Text Pro Bold';
       color: var(--blue-two);
       @media(max-width: 768px){
         font-size: 12px;
@@ -4979,7 +4531,7 @@ body {
       margin: 0;
     }
     .info_note{
-      color: #748092;
+      color: var(--dark-grey);
       line-height: 1.4;
     }
   }
@@ -5013,16 +4565,14 @@ body {
   background-color: #f7f8fa;
   position: relative;
   display: block;
-  font-size: 14px;
-  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px 'Neue Haas Grotesk Text Pro Bold';
   span{
     display: inline-block;
     font-family: 'Neue Haas Grotesk Text Pro Roman';
     margin: 0;
   }
   .pos{
-    position: absolute;
-    top: 50%;
+    @include position(absolute, 50%, auto, auto, auto);
     transform: translateY(-50%);
     height: 20px;
     &.card{
@@ -5040,7 +4590,7 @@ body {
 .payment_note{
   font-size: 14px;
   line-height: 1.43;
-  color: #313d48;
+  color: var(--greyish-brown);
   padding-left: 30px;
   position: relative;
   display: block;
@@ -5064,13 +4614,9 @@ body {
         position: relative;
     }
     .approval_info{
-        position: absolute;
-        top: 2px;
-        right: 0;
-        font-size: 10px;
-        line-height: 1.8;
+      @include position(absolute, 2px, 0px, auto, auto);
+      font: 10px/1.8 'Neue Haas Grotesk Text Pro Bold';
         letter-spacing: 0.3px;
-        font-family: 'Neue Haas Grotesk Text Pro Bold';
         display: flex;
         align-items: center;
         color: var(--blue-two);
@@ -5109,10 +4655,8 @@ body {
     position: relative;
     margin-bottom: 30px;
     &::before{
-      position: absolute;
-      left: 11px;
-      top: 32px;
-      border: 1px dashed #dfe5ef;
+      @include position(absolute, 32px, auto, auto, 11px);
+      border: 1px dashed var(--grey);
       height: 80%;
       width: 0px;
       z-index: -1;
@@ -5170,18 +4714,16 @@ body {
       }
       .info{
         label, span{
-          color: #748092;
+          color: var(--dark-grey);
         }
       }
     }
     .circle_stepper{
-      position: absolute;
-      top: 0px;
-      left: 0px;
+      @include position(absolute, 0px, auto, auto, 0px);
       width: 24px;
       height: 24px;
       border-radius: 50%;
-      border: solid 2px #dfe5ef;
+      border: solid 2px var(--grey);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -5380,9 +4922,7 @@ body {
     .details {
       width: 80%;
       .user_name {
-        font-size: 14px;
-        font-family: "Neue Haas Grotesk Text Pro Bold";
-        line-height: 1.29;
+        font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
         color: var(--black-two);
         display: block;
       }
@@ -5409,9 +4949,7 @@ body {
   .action {
     cursor: pointer;
     display: inline-block;
-    font-size: 14px;
-    font-family: "Neue Haas Grotesk Text Pro Bold";
-    line-height: 1.29;
+    font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
     color: var(--blue-two);
     margin-right: 16px;
   }
@@ -5430,8 +4968,6 @@ div#light-box div {
   height: '10%' !important;
   width: '100%' !important;
 }
-
-//----------------------Utilities-------------------------//
 .padding_0 {
   padding: 0px;
   .flex_col_sm_6{
@@ -5612,9 +5148,7 @@ div#light-box div {
     }
   }
   .search_bar{
-    position: absolute;
-    top: 45px;
-    right: 15px;
+    @include position(absolute, 45px, 15px, auto, auto);
     overflow: initial;
     @media(max-width: 768px){
       top: 22px;
@@ -5683,8 +5217,7 @@ div#light-box div {
           }
         }
         .name{
-          font-size: 20px;
-          font-family: 'Neue Haas Grotesk Text Pro Bold';
+          font: 20px 'Neue Haas Grotesk Text Pro Bold';
           display: block;
           width: 74%;
           white-space: nowrap;
@@ -5695,13 +5228,11 @@ div#light-box div {
           }
         }
         .view_detail{
-          position: absolute;
-          right: 0;
+          @include position(absolute, auto, 0px, auto, auto);
           display: flex;
           align-items: center;
           color: var(--blue-two);
-          font-family: 'Neue Haas Grotesk Text Pro Bold';
-          font-size: 14px;
+          font: 14px 'Neue Haas Grotesk Text Pro Bold';
           cursor: pointer;
           @media(max-width: 650px){
             top: 10px;
@@ -5755,9 +5286,7 @@ div#light-box div {
             font-size: 12px;
             line-height: 1.33;
             color: #aeaeae;
-            position: absolute;
-            bottom: 0;
-            left: -38px;
+            @include position(absolute, auto, auto, 0px, -38px);
           }
           .media{
             width: 84px;
@@ -5777,7 +5306,7 @@ div#light-box div {
             font-size: 14px;
             line-height: 1.29;
             text-align: left;
-            color: #313d48;
+            color: var(--greyish-brown);
             max-width: 345px;
             background-color: var(--grey);
             display: inline-block;
@@ -5802,9 +5331,7 @@ div#light-box div {
         }
       }
       .send_msg {
-        position: absolute;
-        bottom: 0;
-        left: 0;
+        @include position(absolute, auto, auto, 0px, 0px);
         width: 100%;
         background: var(--white);
         box-shadow: 0 -2px 40px 0 rgba(174, 174, 174, 0.2);
@@ -5833,14 +5360,14 @@ div#light-box div {
     }
     .view_detail_col{
       width: 45%;
-      border-left: 1px solid #dfe5ef;
+      border-left: 1px solid var(--grey);
       padding: 20px;
       @media(max-width: 768px){
         width: 100%;
         right: -100%;
         position: absolute;
         border: none;
-        background-color: #fff;
+        background-color: var(--white);
       }
       &.active{
         @media(max-width: 768px){
@@ -5854,9 +5381,7 @@ div#light-box div {
         }
       }
       .close{
-        position: absolute;
-        top: 10px;
-        right: 0;
+        @include position(absolute, 10px, 0px, auto, auto);
       }
     }
   }
@@ -5882,7 +5407,7 @@ div#light-box div {
         padding: 12px 10px 12px 40px;
       }
       &.active, &:hover{
-        background: #ffffff;
+        background: var(--white);
       }
       .u_img{
         width: 64px;
@@ -5914,28 +5439,22 @@ div#light-box div {
       .date_time{
         font-size: 14px;
         line-height: 1.43;
-        color: #748092;
-        position: absolute;
-        top: 15px;
-        right: 15px;
+        color: var(--dark-grey);
+        @include position(absolute, 15px, 15px, auto, auto);
       }
       .count{
-        font-size: 12px;
-        line-height: 1.67;
-        color: #313d48;
+        font: 12px/1.67 'Neue Haas Grotesk Text Pro Bold';
+        color: var(--greyish-brown);
         width: 20px;
         height: 20px;
         border-radius: 50%;
-        font-family: 'Neue Haas Grotesk Text Pro Bold';
         background-color: var(--yellow);
-        position: absolute;
-        bottom: 20px;
-        right: 15px;
+        @include position(absolute, auto, 15px, 20px, auto);
         display: flex;
         justify-content: center;
         align-items: center;
         &.grey{
-          background-color: #748092;
+          background-color: var(--dark-grey);
           color: var(--white);
         }
       }
