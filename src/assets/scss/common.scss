@@ -4746,6 +4746,24 @@ body {
         }
       }
     }
+    &.declined{
+      &::before{
+        display: none;
+      }
+      .circle_stepper{
+        border: none;
+        span{
+          opacity: 1;
+          visibility: visible;
+          display: inline-block;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          background: var(--blue-two) url('../images/ic-exclamation.png') center no-repeat;
+          background-size: contain;
+         }
+      }
+    }
     .circle_stepper{
       @include position(absolute, 0px, auto, auto, 0px);
       width: 24px;
