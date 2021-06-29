@@ -4648,6 +4648,31 @@ body {
   }
 }
 
+.declined_info{
+  min-height: 77px;
+  margin-bottom: 23px;
+  padding: 10px;
+  border-radius: 6px;
+  background-color: #dfe5ef;
+  display: flex;
+  align-items: center;
+  span{
+    font: 18px/1.11 "Neue Haas Grotesk Text Pro Bold";
+    color: #123f95;
+    padding-left: 55px;
+    position: relative;
+    &::before{
+      @include position(absolute, 50%, auto, auto, 5px);
+      transform: translateY(-50%);
+      width: 35px;
+      height: 35px;
+      content: "";
+      background: url('../images/exclamation-icon.png') center no-repeat;
+      background-size: contain;
+    }
+  }
+}
+
 .milestones_check{
   margin: 20px 0px;
   li{
