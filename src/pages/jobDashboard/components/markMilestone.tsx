@@ -109,6 +109,11 @@ const MarkMilestone = ({
   const [milestoneIndex, setMilestoneIndex] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
+  const [milestoneDeclineData, setMilestoneDeclineData] = useState<any>({
+    multipleDeclineListCount: 0,
+    prevMilestoneDeclineId: '',
+    currentMilestoneDeclineId: '',
+  });
 
   useEffect(() => {
     const params = new URLSearchParams(history.location?.search);
@@ -196,6 +201,15 @@ const MarkMilestone = ({
 
   const hoursMinutes = data.actualHours.split(':').map((key: string) => parseInt(key));
   const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
+
+  useEffect(() => {
+    const multipleList: any = milestones?.filter(({ status }: { status: number }) => status === 3);
+    if (multipleList?.length > 1) {
+      const id: any = milestones?.find(({ status }: { status: number }) => status === 3)?.milestoneId;
+      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: id, currentMilestoneDeclineId: id }));
+    }
+  }, [milestones]);
+  console.log(milestoneDeclineData, "milestoneDeclineData");
 
   const backTab = (name: string) => {
     const params = new URLSearchParams(history.location?.search);
@@ -296,7 +310,7 @@ const MarkMilestone = ({
                               : 'disabled'
                       }
                     >
-                      <div className="circle_stepper">
+                      <div className="circle_stepper" onClick={() => setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))}>
                         <span></span>
                       </div>
                       <div className="info">
@@ -308,15 +322,11 @@ const MarkMilestone = ({
                           {renderTime(fromDate, toDate)}
                         </span>
                       </div>
-                      {isDeclined && (
+                      {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
                         <>
                           <div className="decline_reason">
                             <label className="form_label">Decline reason:</label>
                             <div className="text_field">
-                              {/* <textarea
-                                value={declinedReason?.reason}
-                                readOnly
-                              ></textarea> */}
                               <p className="commn_para">{declinedReason?.reason}</p>
                             </div>
 
@@ -356,7 +366,7 @@ const MarkMilestone = ({
                                 setStep(3);
                               }
                             }}
-                            className='fill_btn full_btn btn-effect' >Remark as Complete</button>
+                            className={`fill_btn full_btn btn-effect ${milestoneDeclineData.prevMilestoneDeclineId !== milestoneId ? 'disable_btn' : ''}`} >Remark as Complete</button>
                         </>
                       )}
                       {isActive && (
@@ -532,7 +542,7 @@ const MarkMilestone = ({
             <button className="fill_grey_btn bank_btn">
               {data.userId && <img src={check} alt="check" />} Bank account
             </button>
-            
+
           </div>
           <div className="flex_col_sm_9">
             <div className="form_field">
