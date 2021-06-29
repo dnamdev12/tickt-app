@@ -165,10 +165,8 @@
     }
 
     h1{
-      font-size: 32px;
       position: relative;
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
-      line-height: 1.16;
+      font: 32px/1.16 'Neue Haas Grotesk Text Pro Bold';
       color: var(--white);
       margin-bottom: 15px;
       @media (max-width: 650px){
@@ -220,8 +218,7 @@
 .upload_btn{
   @include border-radius(3px);
   background-color: var(--grey);
-  font-size: 12px;
-  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  font: 12px 'Neue Haas Grotesk Text Pro Bold';
   color: var(--blue);
   padding: 10px 15px;
   display: inline-block;
