@@ -390,13 +390,21 @@ class TradieInfo extends Component<Props, State> {
         }
     }
 
-    cancelInvite = async () => {
-        let data = {
-
-        };
-        let response: any = CancelInviteForJob(data);
-        if (response.success) {
-            await this.setItems()
+    cancelInvite = async ({
+        invitationId,
+        tradieId,
+        jobId,
+    }: any) => {
+        if (jobId) {
+            let data = {
+                tradieId,
+                jobId,
+                invitationId
+            };
+            let response: any = await CancelInviteForJob(data);
+            if (response.success) {
+                await this.setItems()
+            }
         }
     }
 
@@ -412,8 +420,17 @@ class TradieInfo extends Component<Props, State> {
         }
     }
 
+
+    renderPopup = () => {
+
+    }
+
     render() {
         let props: any = this.props;
+        console.log({
+            props,
+            path: props.location.pathname + props.location.search
+        })
         // let tradieInfo: any = props.tradieInfo;
         const { user_type } = this.getItemsFromLocation();
         let { portfolioData, toggleVoucher } = this.state;
@@ -496,7 +513,27 @@ class TradieInfo extends Component<Props, State> {
                                                                         this.savedTradie({ tradieInfo })
                                                                     }}
                                                                     className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-                                                                <button className="fill_btn full_btn btn-effect">
+                                                                <button
+                                                                    onClick={() => {
+                                                                        console.log({haveJobId, tradieInfo})
+                                                                        if (haveJobId) {
+                                                                            this.cancelInvite({
+                                                                                invitationId: tradieInfo?.invitationId,
+                                                                                tradieId: tradieInfo?.tradieId,
+                                                                                jobId: urlParams.get('jobId')
+                                                                            })
+                                                                        } else {
+                                                                            // props.history.push({
+                                                                            //     pathname: '/cancel-the-job',
+                                                                            //     state: {
+                                                                            //         tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+                                                                            //         path: props.location.search,
+                                                                            //         invitationId: tradieInfo?.invitationId
+                                                                            //     }
+                                                                            // })
+                                                                        }
+                                                                    }}
+                                                                    className="fill_btn full_btn btn-effect">
                                                                     {'Cancel Invite'}
                                                                 </button>
                                                             </div>
@@ -802,7 +839,6 @@ class TradieInfo extends Component<Props, State> {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.review}</p>
-                                                {console.log({ item })}
                                                 {Object.keys(reviewsData.replyShownHideList).length &&
                                                     reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                     <span

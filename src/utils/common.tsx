@@ -13,7 +13,7 @@ export const validateABN = (abn: number) => {
 }
 
 export const renderTime = (fromDate: any, toDate: any, format?: any) => {
-    if(!toDate) {
+    if (!toDate) {
         toDate = '';
     }
 
@@ -42,7 +42,7 @@ export const renderTime = (fromDate: any, toDate: any, format?: any) => {
 }
 
 export const renderTimeWithFormat = (fromDate: any, toDate: any, format: any) => {
-    if(!toDate) {
+    if (!toDate) {
         toDate = '';
     }
 
@@ -73,10 +73,10 @@ export const renderTimeWithFormat = (fromDate: any, toDate: any, format: any) =>
 
 export const renderTimeWithCustomFormat = (fromDate: any, toDate: any, format: any, formatSet?: any, text?: string) => {
 
-    if(!toDate) {
+    if (!toDate) {
         toDate = '';
     }
-    
+
     if (moment(fromDate, format).isValid() && !moment(toDate, format).isValid()) {
         return `${moment(fromDate, format).format(formatSet[0])}`
     }
@@ -147,4 +147,16 @@ export const getSearchParamsData = (location?: any) => {
         sortBy: Number(params.get('sortBy'))
     }
     return queryParamsData;
+}
+
+
+export const updateQueryStringParameter = ({ uri, key, value }: any) => {
+    var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+    var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+    if (uri.match(re)) {
+        return uri.replace(re, '$1' + key + "=" + value + '$2');
+    }
+    else {
+        return uri + separator + key + "=" + value;
+    }
 }

@@ -482,7 +482,7 @@ export const InviteForJob = async (data: any) => {
 
 export const CancelInviteForJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}cancelInviteForJob`, data);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}cancelInviteForJob?tradieId=${data.tradieId}&jobId=${data?.jobId}&invitationId=${data.invitationId}`,{});
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message)
@@ -618,6 +618,18 @@ export const handleCancelReply = async (data: any) => {
     return { success: true, data: response.result };
   }
 
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+
+export const invitedJobIds = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}invitedJobIds?tradieId=${data?.tradieId}&page=${data?.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
   setShowToast(true, response.message);
   return { success: false };
 }

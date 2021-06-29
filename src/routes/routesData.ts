@@ -182,7 +182,7 @@ const routes = [
     },
     {
         name: 'chooseTheJob',
-        path: '/choose-the-job',
+        path: ['/choose-the-job','/cancel-the-job'],
         component: ChooseTheJob,
     },
     {

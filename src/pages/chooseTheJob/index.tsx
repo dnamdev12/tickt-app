@@ -3,14 +3,14 @@ import milestonesPlaceholder from '../../assets/images/Job milestones-preview.pn
 import { renderTimeWithCustomFormat } from '../../utils/common';
 import CancelJobSuccess from './success';
 
-import { ChooseJob, InviteForJob } from '../../redux/jobs/actions';
+import { ChooseJob, InviteForJob , invitedJobIds} from '../../redux/jobs/actions';
 import { withRouter } from 'react-router-dom';
 
 const ChooseTheJob = (props: any) => {
 
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [stateData, setStateData] = useState([]);
-    const { tradieId, path } = props?.location?.state;
+    const { tradieId, path, invitationId, jobId } = props?.location?.state;
     const checkOnClick = (e: any, index: any) => {
         setEditItems((prev) => ({ [index]: e.target.checked }));
     }
@@ -20,9 +20,19 @@ const ChooseTheJob = (props: any) => {
     }, [])
 
     const preFetch = async () => {
-        let response = await ChooseJob({ page: 1 });
-        if (response?.success) {
-            setStateData(response.data);
+        console.log({
+            state:props?.location?.state
+        })
+        if(invitationId){
+            let response = await invitedJobIds({ tradieId, page: 1 });
+            if (response?.success) {
+                setStateData(response.data);
+            }  
+        } else {
+            let response = await ChooseJob({ page: 1 });
+            if (response?.success) {
+                setStateData(response.data);
+            }
         }
     }
 
