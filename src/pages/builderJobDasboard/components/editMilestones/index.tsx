@@ -221,7 +221,7 @@ const EditMilestone = (props: any) => {
     }
 
 
-    const submitData = () => {
+    const submitData = async () => {
         let description = '';
         let filtered = stateData.map((item: any) => {
             let data: any = {
@@ -258,16 +258,13 @@ const EditMilestone = (props: any) => {
             }
         })
 
-        console.log({ filtered });
-        console.log({ props })
-
         let data = {
             "jobId": item.jobId,
             "tradieId": props?.details?.tradieId,
             "milestones": filtered,
             "description": description
         };
-        let response: any = changeRequest(data);
+        let response: any = await changeRequest(data);
         if (response?.success) {
             props.history.push('/milestone-request-sent-success');
         }

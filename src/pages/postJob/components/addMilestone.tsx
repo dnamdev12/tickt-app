@@ -50,6 +50,7 @@ const label: { [index: string]: string } = {
 }
 
 const pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
+// "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 export default class AddMilestone extends Component<Props, State> {
     constructor(props: any) {
         super(props)
@@ -267,7 +268,7 @@ export default class AddMilestone extends Component<Props, State> {
                 to_date_format = date_to_moment //moment(date_to_moment, 'MM-DD-YYYY').format('MMM DD');
             }
         }
-        console.log({props:this.props})
+        console.log({ props: this.props })
         let check_errors = this.checkErrors();
         return (
             <div className="app_wrapper">
@@ -374,7 +375,7 @@ export default class AddMilestone extends Component<Props, State> {
                                         <button
                                             onClick={() => { handleStepForward(8) }}
                                             className="fill_btn fill_grey_btn choose_btn">
-                                                {console.log({from_date_format,to_date_format})}
+                                            {console.log({ from_date_format, to_date_format })}
                                             {renderTimeWithCustomFormat(
                                                 from_date_format,
                                                 to_date_format,
@@ -401,6 +402,9 @@ export default class AddMilestone extends Component<Props, State> {
 
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
+                                                        if (!((+rh_value.split(':')[1]) % 5 === 0)) {
+                                                            error_item['pattern_error'] = 'Please enter Recommended Hours in the mutiples of 5 like 10:05, 10:10';
+                                                        }
                                                     } else {
                                                         error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
                                                     }

@@ -146,11 +146,13 @@ const MarkMilestone = ({
 
     let pattern =
       '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
-    if (value.match(pattern) === null) {
-      return 'Hours should be in hh:mm format.';
+    if (value.match(pattern) !== null) {
+      if (!((+value.split(':')[1]) % 5 === 0)) {
+        return 'Please enter time in the mutiples of 5 like 10:05, 10:10';
+      }
+      return '';
     }
-
-    return '';
+    return 'Hours should be in hh:mm format.';
   };
 
   const errorLabel = {
@@ -464,7 +466,7 @@ const MarkMilestone = ({
               <button
                 className="back"
                 onClick={() => {
-                  if (milestones[milestoneIndex].isPhotoevidence) {
+                  if (milestones[milestoneIndex]?.isPhotoevidence) {
                     setStep(2);
                   } else {
                     setStep(1);

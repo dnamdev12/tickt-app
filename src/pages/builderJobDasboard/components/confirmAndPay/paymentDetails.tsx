@@ -28,7 +28,7 @@ const PaymentDetails = (props: any) => {
 
 
     useEffect(() => {
-        if(editItem){
+        if (editItem) {
             setStateData(editItem);
         }
     }, [editItem])
@@ -103,6 +103,11 @@ const PaymentDetails = (props: any) => {
         }
 
         if (name === 'number') {
+            console.log({
+                name,
+                value,
+                isValid:cardValidator.number(value).isValid
+            })
             if (!value.length) {
                 return 'Card Number is required';
             } else {
@@ -121,6 +126,8 @@ const PaymentDetails = (props: any) => {
                 }
             }
         }
+
+        return ''
 
     }
 
@@ -143,7 +150,17 @@ const PaymentDetails = (props: any) => {
     }
 
     let isTrue = Object.values(stateData).includes('');
+    let isErrors:any = false;
     let isError = handleCheck();
+
+    let errorValues = Object.values(errors);
+    if(errorValues?.length){
+        let isHave = errorValues.find((item:any ) => item !== '');
+        if(isHave){
+            isErrors = true;
+        }
+    }
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
@@ -277,11 +294,18 @@ const PaymentDetails = (props: any) => {
                         </div>
                     </div>
                 </div>
+                {/* {console.log({
+                    isTrue,
+                    isError,
+                    isErrors,
+                    stateData,
+                    errors
+                })} */}
                 <button
                     onClick={() => {
                         handleContinue()
                     }}
-                    className={`fill_btn full_btn btn-effect ${!isTrue && !isError ? '' : 'disable_btn'}`}>
+                    className={`fill_btn full_btn btn-effect ${!isTrue && !isError &&!isErrors ? 'disable_btn' : ''}`}>
                     {'Continue'}
                 </button>
             </div>

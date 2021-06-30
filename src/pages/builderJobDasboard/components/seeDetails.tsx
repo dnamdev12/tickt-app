@@ -110,9 +110,9 @@ const SeeDetails = (props: any) => {
                     <div className="form_field">
                         <button
                             onClick={() => {
-                                setToggleAccept(true)
+                                backToScreen() 
                             }}
-                            className="fill_btn full_btn">Approve</button>
+                            className="fill_btn full_btn">OK</button>
                     </div>
                   
                 </div>

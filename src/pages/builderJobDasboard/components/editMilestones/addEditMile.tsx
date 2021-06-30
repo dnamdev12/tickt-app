@@ -54,6 +54,9 @@ const AddEditMile = (props: any) => {
     const checkHoursVal = (value: any, lable: any, name: any) => {
         if (value?.length) {
             if (value.match(pattern) !== null) {
+                if (!((+value.split(':')[1]) % 5 === 0)) {
+                    return 'Please enter Recommended Hours in the mutiples of 5 like 10:05, 10:10';
+                }
                 return '';
             } else {
                 return 'Please enter a valid pattern like : 04:03'
@@ -406,7 +409,7 @@ const AddEditMile = (props: any) => {
                                     if (Object.values(changesFor).includes(true)) {
                                         description = `This job has Milestones change request with changes in ${changesFor?.name ? 'Milestone Name, ' : ''}${changesFor?.isPhoto ? 'Photo evidence required, ' : ''}${changesFor?.duration ? 'Duration of Milestone, ' : ''}${changesFor?.recommended ? 'Recommended Hours ' : ''}.`;
                                     }
-                                    console.log({changesFor})
+                                    console.log({ changesFor })
                                     if (props.editMile !== '') {
                                         // edit
                                         if (props?.addNewMile) {

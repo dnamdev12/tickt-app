@@ -121,6 +121,10 @@ class NeedApproval extends Component<Props, State> {
                 />)
         }
 
+        if(this?.props?.isLoading){ 
+            return null;
+        }
+
         return (
             <React.Fragment>
                 <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>

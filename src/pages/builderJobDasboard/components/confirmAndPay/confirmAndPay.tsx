@@ -19,16 +19,16 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 
 const ConfirmAndPay = (props: any) => {
     const [toggle, setToggle] = useState(false);
-    const [selected, setSelected] = useState('');
+    const [selected, setSelected] = useState('0');
     const [editItem, setEditItem] = useState('');
     const [deleteToggle, setDeleteToggle] = useState(false);
     const [paymentDetail, setPaymentDetail] = useState<any>([
-       {
-        number: '371449635398431',
-        cardholderName: 'Sam william',
-        date: '07/22',
-        cvv: '124'
-       }
+        {
+            number: '371449635398431',
+            cardholderName: 'Sam william',
+            date: '07/22',
+            cvv: '124'
+        }
     ]);
 
     const backToScreen = () => {
@@ -104,10 +104,23 @@ const ConfirmAndPay = (props: any) => {
                             <ul>
                                 <li
                                     onClick={() => {
-                                        let item = paymentDetail.find((_: any, index: any) => index === selected);
-                                        item['index'] = selected;
-                                        setEditItem(item);
-                                        setToggle(true);
+                                        try {
+                                            console.log({
+                                                paymentDetail,
+                                                selected
+                                            })
+                                            let item = paymentDetail.find((_: any, index: any) => {
+                                                console.log({_, index})
+                                                if(index == selected){
+                                                    return _;
+                                                }
+                                            });
+                                            item['index'] = selected;
+                                            setEditItem(item);
+                                            setToggle(true);
+                                        } catch (err) {
+                                            console.log(err);
+                                        }
                                     }}
                                     className="icon lodge">Edit</li>
                                 <li

@@ -379,6 +379,9 @@ export default class EditMilestone extends Component<Props, State> {
 
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
+                                                        if (!((+rh_value.split(':')[1]) % 5 === 0)) {
+                                                            error_item['pattern_error'] = 'Please enter Recommended Hours in the mutiples of 5 like 10:05, 10:10';
+                                                        }
                                                     } else {
                                                         error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
                                                     }
