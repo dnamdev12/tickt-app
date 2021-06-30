@@ -576,7 +576,7 @@ export const ChooseJob = async (data: any) => {
 
 export const getVouchers = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.get(`${Urls.jobBuilder}getVoucher?tradieId=${data.tradieId}&page=${data.page}`);
+  const response: FetchResponse = await NetworkOps.get(storageService.getItem('userType') === 1 ? `${Urls.tradieProfileVoucher}?tradieId=${data.tradieId}&page=${data.page}` : `${Urls.jobBuilder}getVoucher?tradieId=${data.tradieId}&page=${data.page}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };

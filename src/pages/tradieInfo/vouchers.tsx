@@ -8,6 +8,7 @@ import {
     ChooseJob,
     getVouchers
 } from '../../redux/jobs/actions';
+import storageService from '../../utils/storageService';
 
 import AddVoucherModal from './addVoucher';
 import VoucherDetailModal from './voucherDetail';
@@ -23,11 +24,13 @@ const Vouchers = (props: any) => {
 
     const { id, path } = props?.location?.state;
 
-    const closeToggle = () => {
+    const closeToggle = (isRecall?: string) => {
         setToggleRecommendation({ isTrue: false, item: {} });
         setSelectedItem({});
         setToggle((prev: any) => false);
-        prefetch();
+        if (isRecall === 'isRecall') {
+            prefetch();
+        }
     }
 
     useEffect(() => {
@@ -36,7 +39,7 @@ const Vouchers = (props: any) => {
 
 
     const prefetch = async () => {
-        let res_profile: any = await getVouchers({ tradieId: id, page:1 })
+        let res_profile: any = await getVouchers({ tradieId: id, page: 1 })
         // let res_profile: any = await HomeTradieProfile({ tradieId: id });
         if (res_profile.success) {
 
@@ -78,11 +81,11 @@ const Vouchers = (props: any) => {
                         id={id}
                         closeToggle={closeToggle}
                     />
-                    <AddVoucherModal
+                    {storageService.getItem('userType') === 2 && <AddVoucherModal
                         toggleProps={toggle}
                         id={id}
                         closeToggle={closeToggle}
-                    />
+                    />}
 
                     <div className="flex_row">
                         <div className="flex_col_sm_6">
@@ -98,13 +101,13 @@ const Vouchers = (props: any) => {
                                 </span>
                             </div>
                         </div>
-                        <div className="flex_col_sm_6 text-right">
+                        {storageService.getItem('userType') === 2 && <div className="flex_col_sm_6 text-right">
                             <button
                                 onClick={() => { setToggle((prev: any) => true) }}
                                 className="fill_btn btn-effect add_vouch">
                                 {'+ Leave a voucher'}
                             </button>
-                        </div>
+                        </div>}
                     </div>
 
                     {state_data?.length ?
