@@ -1,4 +1,4 @@
-import reviewBuilderSuccess from '../../../assets/images/review-builder-success.png';
+import templateImage from '../../../assets/images/thanks-bg.jpg';
 
 interface PropsType {
     history: any
@@ -8,7 +8,7 @@ const RequestMonitored = (props: PropsType) => {
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={reviewBuilderSuccess} alt="template-image" />
+                <img src={templateImage} alt="template-image" />
                 <div className="short_info">
                     <div className="content">
                         <h1 className="title">Got it!</h1>
