@@ -54,7 +54,7 @@ const AddVoucherComponent = (props: any) => {
     useEffect(() => {
         console.log({ toggle })
         if (!toggle) {
-            closeToggle();
+            closeToggle('isRecall');
             setReactSelect((prev: any) => ({ ...prev, label: '', value: '' }));
             setJobDesciption("");
             setFilesUrl([]);
@@ -165,7 +165,7 @@ const AddVoucherComponent = (props: any) => {
             className="custom_modal"
             open={toggle}
             onClose={() => {
-                closeToggle();
+                closeToggle('isRecall');
                 setToggle((prev: any) => !prev)
             }}
             aria-labelledby="simple-modal-title"
@@ -181,7 +181,7 @@ const AddVoucherComponent = (props: any) => {
                     </span>
                     <button
                         onClick={() => {
-                            closeToggle();
+                            closeToggle('isRecall');
                             setToggle((prev: any) => !prev)
                         }}
                         className="close_btn">

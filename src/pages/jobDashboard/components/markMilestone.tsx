@@ -209,6 +209,9 @@ const MarkMilestone = ({
     if (multipleList?.length > 1) {
       const id: any = milestones?.find(({ status }: { status: number }) => status === 3)?.milestoneId;
       setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: id, currentMilestoneDeclineId: id }));
+    } else if (multipleList?.length === 1) {
+      const id: any = milestones?.find(({ status }: { status: number }) => status === 3)?.milestoneId;
+      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: id, currentMilestoneDeclineId: id }));
     }
   }, [milestones]);
   console.log(milestoneDeclineData, "milestoneDeclineData");

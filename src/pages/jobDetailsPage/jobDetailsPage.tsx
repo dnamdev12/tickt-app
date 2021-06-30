@@ -539,7 +539,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         {/* {!jobDetailsData?.isChangeRequest && <div className="chang_req_card"> */}
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
-                                            Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid.
+                                            {jobDetailsData?.reasonForChangeRequest}
                                         </p>
                                         <button className="fill_btn btn-effect"
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestAcceptedClicked: true }))}>Accept</button>

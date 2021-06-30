@@ -108,6 +108,7 @@ const Urls = {
     needApproval: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}needApproval`,
     reviewTradie: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}reviewTradie`,
     jobBuilder: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}`,
+    tradieProfileVoucher: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}getVoucher`,
     tradieLodgeDispute: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}lodgeDispute`,
     tradieCancelJob: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}cancelJob`,
     jobHome: `${versions.v1}${ServiceEnum.home}`,
