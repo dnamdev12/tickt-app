@@ -18,6 +18,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 
 import { useDispatch } from 'react-redux'
+import { setShowToast } from '../../redux/common/actions';
 
 const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404', '/email-updated-successfully', '/change-password-success'];
 
@@ -88,14 +89,12 @@ const Header = (props: any) => {
     }
 
     const postClicked = () => {
-        // return;
         setToggleMenu(false);
         setActiveLink('post');
         history.push('/post-new-job')
     }
 
     const jobClick = () => {
-        // return;
         setToggleMenu(false);
         if (userType === 1) {
             setActiveLink('jobs');
@@ -201,9 +200,9 @@ const Header = (props: any) => {
                                             {renderByType({ name: 'userName' })}
                                             {/* {props?.builderProfile?.userName || props?.tradieProfileData?.userName} */}
                                         </span>
-                                        <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
+                                        <MenuItem onClick={() => setShowToast(true, 'Under Development')}>
+                                        {/* <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}> */}
                                             <span className="setting_icon">
-                                                {/* <img src={renderByType({ name: 'userImage' }) || profile} alt="profile" /> */}
                                                 <img src={profile} alt="profile" />
                                                 {'My Profile'}
                                             </span>

@@ -34,6 +34,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 import Skeleton from 'react-loading-skeleton';
+import { setShowToast } from '../../redux/common/actions';
 interface PropsType {
     history: any,
     location: any,
@@ -562,8 +563,13 @@ const JobDetailsPage = (props: PropsType) => {
                                             {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
                                         </p>
                                         <button className="fill_btn btn-effect"
-                                            onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestAcceptedClicked: true }))}>Accept</button>
-                                        <button className="fill_grey_btn btn-effect" onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}>Reject</button>
+                                            // onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestAcceptedClicked: true }))}
+                                            onClick={() => setShowToast(true, 'Under Development')}
+                                        >Accept</button>
+                                        <button className="fill_grey_btn btn-effect"
+                                            // onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}
+                                            onClick={() => setShowToast(true, 'Under Development')}
+                                        >Reject</button>
                                     </div>}
                                     {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus ? (
                                         <div className="bottom_btn">
