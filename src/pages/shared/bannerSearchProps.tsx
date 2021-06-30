@@ -127,14 +127,17 @@ const BannerSearch = (props: PropsType) => {
 
     const [checkRender, setRender] = useState(false);
 
+
+    useEffect(() => {
+        console.log({ selectedAddress }, '!!@')
+    }, [selectedAddress])
+
     useEffect(() => {
         let state = props.location.state;
         let local_info: any = props.localInfo;
 
         if (!searchText?.length && !checkRender) {
             setSearchText(state.name);
-            console.log('Here ----------->')
-
             setStateData({
                 createdAt: null,
                 image: null,
@@ -147,12 +150,17 @@ const BannerSearch = (props: PropsType) => {
             if (state.calender && Object.keys(state.calender).length) {
                 setCalenderRange1(state.calender);
             }
-
-            if (state.location && Object.keys(state.location).length) {
+          
+            if (state?.location && state?.location?.coordinates?.length) {
                 let coordinates = state.location.coordinates;
-                let lat = coordinates[0];
-                let lng = coordinates[1];
-                setSelectedAddress({ lat, lng });
+                let valueItem = {
+                    lat: coordinates[0],
+                    lng: coordinates[1]
+                };
+                setSelectedAddress(valueItem);
+            }
+
+            if (state?.address) {
                 setAddressText(state.address);
             }
             setRender(true);
@@ -192,8 +200,8 @@ const BannerSearch = (props: PropsType) => {
                 document.getElementById('location_search_static')?.focus();
             }
         }
-        if (!addressText || !addressText?.length) {
-            setSelectedAddress({});
+        if ((!addressText || !addressText?.length) && inputFocus2) {
+            setSelectedAddress({}); 
             setSelectedTrade({});
         }
     }, [addressText])
@@ -540,7 +548,7 @@ const BannerSearch = (props: PropsType) => {
             if (response && ["australia", "au"].includes(country)) {
                 if (response?.results && Array.isArray(response.results) && response?.results?.length) {
                     const address = response.results[0].formatted_address;
-                    setSelectedAddress({ lat, lng });
+                    setSelectedAddress({ lat, lng }); 
                     setAddressText(address);
                     setInputFocus2(true);
                     setInputFocus1(false);
@@ -671,7 +679,7 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
-                                    searchOptions={{ componentRestrictions: { country: "au" } }}
+                                    searchOptions={{ componentRestrictions: { country: "au" }, types: ["address"] }}
                                     shouldFetchSuggestions={addressText?.length > 2}
                                     onChange={(item: any) => {
                                         setAddressText(item);
@@ -814,7 +822,7 @@ const BannerSearch = (props: PropsType) => {
                                                 setSelectedAddress({
                                                     lat: location_coordinates[1],
                                                     lng: location_coordinates[0]
-                                                });
+                                                }); 
                                             }}>
                                             <div className="autosuggestion_icon card loc name">
                                                 <span>{item.allText?.mainText}</span>

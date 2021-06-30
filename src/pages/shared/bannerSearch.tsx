@@ -618,7 +618,7 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
-                                    searchOptions={{ componentRestrictions: { country: "au" } }}
+                                    searchOptions={{ componentRestrictions: { country: "au" }, types: ["address"] }}
                                     onChange={(item: any) => {
                                         setAddressText(item)
                                         if (!addressText.length) {
