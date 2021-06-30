@@ -259,7 +259,7 @@ const EditMilestone = (props: any) => {
         })
 
         console.log({ filtered });
-        console.log({props})
+        console.log({ props })
 
         let data = {
             "jobId": item.jobId,
@@ -272,7 +272,7 @@ const EditMilestone = (props: any) => {
             props.history.push('/milestone-request-sent-success');
         }
     }
-  
+
     return (
         <React.Fragment>
 
@@ -427,10 +427,11 @@ const EditMilestone = (props: any) => {
                                                         <div className="checkbox_wrap agree_check">
                                                             <input
                                                                 checked={editItem[index]}
-                                                                onChange={(e: any) => {
-
+                                                                onClick={(e: any) => {
                                                                     if (status !== 1 && status !== 2) {
                                                                         checkOnClick(e, index)
+                                                                    } else {
+                                                                        e.preventDefault();
                                                                     }
                                                                 }}
                                                                 className="filter-type filled-in"

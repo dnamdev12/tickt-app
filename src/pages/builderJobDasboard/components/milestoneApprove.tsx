@@ -7,6 +7,8 @@ import FixedRate from './confirmAndPay/fixedRate';
 import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+import Skeleton from 'react-loading-skeleton';
+
 
 const MilestoneApprove = (props: any) => {
     const { backToScreen, data, resetStateLocal } = props;
@@ -14,6 +16,7 @@ const MilestoneApprove = (props: any) => {
     const [IsToggleAccept, setToggleAccept] = useState(false);
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+    const [loadingTrue, setLoadingTrue] = useState(false);
 
     if (data) {
         let {
@@ -134,10 +137,16 @@ const MilestoneApprove = (props: any) => {
                                             onClick={() => { setItemToggle(index) }}
                                             src={media_item?.link} />
                                     ) : (
-                                        <img
-                                            style={{ cursor: 'pointer' }}
-                                            onClick={() => { setItemToggle(index) }}
-                                            src={media_item} alt="media" />
+                                        <>
+                                            <img
+                                                style={{ cursor: 'pointer'}}
+                                                onClick={() => { setItemToggle(index) }}
+                                                onLoad={() => {
+                                                    setLoadingTrue(true)
+                                                }}
+                                                src={media_item}
+                                                alt="media" />
+                                        </>
                                     )}
                                 </figure>
                             ))}

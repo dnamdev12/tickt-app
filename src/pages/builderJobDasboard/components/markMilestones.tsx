@@ -83,6 +83,7 @@ const MarkMilestones = (props: any) => {
         if (getMilestoneList) {
             const res: any = await getMilestoneList(jobId);
             if (res.success) {
+                setExpandItem({});
                 setDetails(res.data);
             }
         }
@@ -116,7 +117,8 @@ const MarkMilestones = (props: any) => {
     }
 
     const backTab = (name: string) => {
-        setToggleItem((prev: any) => ({ ...prev, [name]: false }))
+        setToggleItem((prev: any) => ({ ...prev, [name]: false }));
+        setExpandItem({});
     }
 
     if (toggleItem?.edit) {
@@ -248,7 +250,7 @@ const MarkMilestones = (props: any) => {
                                         </button>
                                     ) : null}
 
-                                    {isActive === 1 && expandItem[milestoneId] ? (
+                                    {isActive === 1 && !expandItem[milestoneId] ? (
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={() => {
@@ -278,7 +280,7 @@ const MarkMilestones = (props: any) => {
                 <div
                     onClick={() => {
                         console.log({ item_details })
-                        props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}&hideInvite=true`);
+                        props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}&hideInvite=false`);
                     }}
                     className="tradie_card posted_by view_more ">
                     <span

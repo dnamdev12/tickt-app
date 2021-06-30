@@ -233,6 +233,10 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [searchText])
 
+    useEffect(() => {
+
+    }, [selectedAddress])
+
     const getRecentLocationData = async () => {
         var recentLocationDetails: any = [];
 
@@ -721,11 +725,18 @@ const BannerSearch = (props: PropsType) => {
                                                         />
                                                     </span> : null}
                                             </div>
-                                            {suggestions?.length && inputFocus2 && addressText?.length ?
-                                                <div className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                            {suggestions?.length &&
+                                                inputFocus2 &&
+                                                addressText?.length ?
+                                                <div
+                                                    className="custom_autosuggestion location"
+                                                    id="autocomplete-dropdown-container">
                                                     <div className="flex_row recent_search auto_loc">
                                                         <div className="flex_col_sm_4">
-                                                            {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>}
+                                                            {!!errors.selectedMapLocation &&
+                                                                <span className="error_msg">
+                                                                    {errors.selectedMapLocation}
+                                                                </span>}
                                                             {loading && <div>Loading...</div>}
                                                             {suggestions.map((suggestion: any) => {
                                                                 const className = 'autosuggestion_icon card loc name';
@@ -735,15 +746,26 @@ const BannerSearch = (props: PropsType) => {
                                                                 return (
                                                                     <div
                                                                         {...getSuggestionItemProps(suggestion, { className, style, })}>
-                                                                        <span>{suggestion.formattedSuggestion.mainText}</span>
-                                                                        <span className="name">{suggestion.formattedSuggestion.secondaryText}</span>
+                                                                        <span>
+                                                                            {suggestion.formattedSuggestion.mainText}
+                                                                        </span>
+                                                                        <span className="name">
+                                                                            {suggestion.formattedSuggestion.secondaryText}
+                                                                        </span>
 
                                                                     </div>
                                                                 );
                                                             })}
                                                         </div>
                                                     </div>
-                                                </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
+                                                </div>
+                                                : null}
+                                            {!loading &&
+                                                addressText?.length > 2 &&
+                                                !suggestions?.length &&
+                                                !enableCurrentLocation &&
+                                                !Object.keys(selectedAddress).length
+                                                ? (
                                                     <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
                                                         <div className="flex_row recent_search auto_loc">
                                                             <div className="flex_col_sm_4">

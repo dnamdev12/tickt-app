@@ -523,14 +523,14 @@ class TradieInfo extends Component<Props, State> {
                                                                                 jobId: urlParams.get('jobId')
                                                                             })
                                                                         } else {
-                                                                            // props.history.push({
-                                                                            //     pathname: '/cancel-the-job',
-                                                                            //     state: {
-                                                                            //         tradieId: tradieInfo?._id || tradieInfo?.tradieId,
-                                                                            //         path: props.location.search,
-                                                                            //         invitationId: tradieInfo?.invitationId
-                                                                            //     }
-                                                                            // })
+                                                                            props.history.push({
+                                                                                pathname: '/cancel-the-job',
+                                                                                state: {
+                                                                                    tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+                                                                                    path: props.location.search,
+                                                                                    cancelJob:true
+                                                                                }
+                                                                            })
                                                                         }
                                                                     }}
                                                                     className="fill_btn full_btn btn-effect">

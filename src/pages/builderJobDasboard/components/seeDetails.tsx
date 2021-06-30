@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+import Skeleton from 'react-loading-skeleton';
 
 
 const SeeDetails = (props: any) => {

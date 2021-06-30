@@ -3,14 +3,14 @@ import milestonesPlaceholder from '../../assets/images/Job milestones-preview.pn
 import { renderTimeWithCustomFormat } from '../../utils/common';
 import CancelJobSuccess from './success';
 
-import { ChooseJob, InviteForJob , invitedJobIds} from '../../redux/jobs/actions';
+import { ChooseJob, InviteForJob, invitedJobIds, CancelInviteForJob } from '../../redux/jobs/actions';
 import { withRouter } from 'react-router-dom';
 
 const ChooseTheJob = (props: any) => {
 
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [stateData, setStateData] = useState([]);
-    const { tradieId, path, invitationId, jobId } = props?.location?.state;
+ 
     const checkOnClick = (e: any, index: any) => {
         setEditItems((prev) => ({ [index]: e.target.checked }));
     }
@@ -20,14 +20,12 @@ const ChooseTheJob = (props: any) => {
     }, [])
 
     const preFetch = async () => {
-        console.log({
-            state:props?.location?.state
-        })
-        if(invitationId){
+        const { tradieId, path, cancelJob } = props?.location?.state;
+        if (cancelJob) {
             let response = await invitedJobIds({ tradieId, page: 1 });
             if (response?.success) {
                 setStateData(response.data);
-            }  
+            }
         } else {
             let response = await ChooseJob({ page: 1 });
             if (response?.success) {
@@ -41,24 +39,31 @@ const ChooseTheJob = (props: any) => {
     }, [editItem])
 
     const handleSubmit = async () => {
+        const { tradieId, path, cancelJob } = props?.location?.state;
         let key: any = '';
-
         if (Object.keys(editItem).length) {
             key = Object.keys(editItem)[0];
         }
 
-        let data = {
-            tradieId: tradieId,
-            jobId: key
-        }
-        console.log({data},'--->');
-        let response = await InviteForJob(data);
-        if (response.success) {
-            props.history.push('/choose-the-job-success');
+        let data: any = { tradieId: tradieId, jobId: key }
+        if (!cancelJob) {
+            let response = await InviteForJob(data);
+            if (response.success) {
+                props.history.push('/choose-the-job-success');
+            }
+        } else {
+            let filter:any = stateData.find((item: any) => item.jobId === key);
+            if (filter?.invitationId) {
+                data['invitationId'] = filter?.invitationId;
+                let response = await CancelInviteForJob(data);
+                if (response.success) {
+                    props.history.push(`/tradie-info${path}`);
+                }
+            }
         }
     }
-    console.log({ props, stateData })
-
+    
+    const { tradieId, path, cancelJob } = props?.location?.state;
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -73,7 +78,7 @@ const ChooseTheJob = (props: any) => {
                                             className="back"
                                             onClick={() => {
                                                 props.history.push(`/tradie-info${path}`)
-                                             }}
+                                            }}
                                         >
                                         </button>
                                         <span className="title">
@@ -129,7 +134,7 @@ const ChooseTheJob = (props: any) => {
                                     <button
                                         onClick={handleSubmit}
                                         className={`fill_btn full_btn btn-effect ${!Object.keys(editItem).length ? 'disable_btn' : ''}`}>
-                                        {'Invite for the job'}
+                                        {`${cancelJob ? 'Cancel' : ''} Invite `}
                                     </button>
                                 </div>
                             </ul>
