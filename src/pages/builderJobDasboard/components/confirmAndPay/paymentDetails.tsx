@@ -300,12 +300,12 @@ const PaymentDetails = (props: any) => {
                     isErrors,
                     stateData,
                     errors
-                })} */}
+                })}  */}
                 <button
                     onClick={() => {
                         handleContinue()
                     }}
-                    className={`fill_btn full_btn btn-effect ${!isTrue && !isError &&!isErrors ? 'disable_btn' : ''}`}>
+                    className={`fill_btn full_btn btn-effect ${!isTrue && !isError && !isErrors ? '' : 'disable_btn'}`}>
                     {'Continue'}
                 </button>
             </div>
