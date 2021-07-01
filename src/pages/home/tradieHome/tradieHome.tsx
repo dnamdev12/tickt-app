@@ -49,9 +49,6 @@ const TradieHome = (props: any) => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, showError);
         }
-        if (props.homeSearchJobData.length) {
-            props.resetHomeSearchJobData();
-        }
     }, [])
 
     console.log(tradieHomeData, "stateData tradie home")

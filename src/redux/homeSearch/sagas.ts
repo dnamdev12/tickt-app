@@ -55,6 +55,9 @@ function* getViewNearByJob(action: any) {
         yield put({ type: actionTypes.SET_VIEW_NEARBY_JOBS, payload: [] });
     }
 }
+function* resetViewNearByJobData() {
+    yield put({ type: actionTypes.SET_VIEW_NEARBY_JOBS, payload: [] });
+}
 
 // function* getJobType() {
 //     const response: FetchResponse = yield NetworkOps.get(Urls.jobType)
@@ -109,6 +112,7 @@ function* authWatcher() {
     yield takeLatest(actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, getJobWithJobTypeLatLong);
     yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
     yield takeLatest(actionTypes.RESET_HOME_SEARCH_DATA, resetHomeSearchJobData);
+    yield takeLatest(actionTypes.RESET_VIEW_NEARBY_JOBS, resetViewNearByJobData);
 }
 
 export default authWatcher;

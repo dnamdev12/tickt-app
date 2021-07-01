@@ -1,4 +1,4 @@
-import BannerSearch from './bannerSearch/index';
+import BannerSearch from '../../../../common/tradieBannerSearch/index';
 
 import bannerimg from '../../../../assets/images/tradie-banner.png';
 

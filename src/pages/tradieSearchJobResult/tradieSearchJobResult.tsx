@@ -1,16 +1,31 @@
 import { useState, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 
-import BannerSearch from '../home/tradieHome/components/bannerSearch/index';
+import BannerSearch from '../../common/tradieBannerSearch/index';
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import SearchResultFilters from '../searchResultFilters/index';
 import RenderMap from './renderMap';
+import InfiniteScroll from 'react-infinite-scroll-component';
 
 import mapIcon from '../../assets/images/map.png';
 import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
-const TradieSearchJobResult = (props: any) => {
+interface PropsType {
+    history: any,
+    location?: any,
+    isLoading: boolean,
+    tradeListData: Array<any>,
+    jobTypeListData: Array<any>,
+    viewNearByJobData: Array<any>,
+    homeSearchJobData: Array<any>,
+    getViewNearByJob: (data: any) => void,
+    postHomeSearchData: (data: any) => void,
+    resetHomeSearchJobData: () => void,
+    resetViewNearByJobData: () => void,
+}
+
+const TradieSearchJobResult = (props: PropsType) => {
     const [searchResultData, setSearchResultData] = useState({
         page: 1,
         searchByFilter: false,
@@ -21,13 +36,14 @@ const TradieSearchJobResult = (props: any) => {
     })
     const [paramsData, setParamsData] = useState<any>({});
     const [isToggleModifySearch, setToggleModifySearch] = useState<boolean>(false);
-
-    const location: any = useLocation();
+    const [jobListData, setJobListData] = useState<Array<any>>([]);
+    const [apiRequestData, setApiRequestData] = useState<any>({});
+    const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
 
     useEffect(() => {
         var queryParamsData = getQueryParamsData();
 
-        if (queryParamsData.jobResults == 'viewNearByJob') {
+        if (queryParamsData.jobResults === 'viewNearByJob') {
             const data = {
                 page: 1,
                 long: queryParamsData.defaultLong,
@@ -37,7 +53,7 @@ const TradieSearchJobResult = (props: any) => {
         } else {
             const data: any = {
                 page: 1,
-                ...(queryParamsData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
+                ...(queryParamsData.isFiltered ? { isFiltered: true } : { isFiltered: false }),
                 ...(queryParamsData.tradeId?.length && { tradeId: queryParamsData.tradeId }),
                 ...(queryParamsData.jobTypes?.length && { jobTypes: queryParamsData.jobTypes }),
                 ...(queryParamsData.specializationId?.length && { specializationId: queryParamsData.specializationId }),
@@ -52,20 +68,14 @@ const TradieSearchJobResult = (props: any) => {
                     }
                 }),
             }
-            console.log(data, "data tradie search result");
             props.postHomeSearchData(data);
+            setApiRequestData(data);
+
         }
-        // else if (queryParamsData.jobResults == 'jobTypeList') {
-        //     const data = {
-        //         page: 1,
-        //         isFiltered: false,
-        //         jobTypes: queryParamsData.jobTypes,
-        //         // location: {
-        //         //     coordinates: [queryParamsData.defaultLong, queryParamsData.defaultLat]
-        //         // }
-        //     }
-        //     props.postHomeSearchData(data);
-        // } 
+        return () => {
+            props.resetViewNearByJobData();
+            props.resetHomeSearchJobData();
+        }
     }, []);
 
     const getQueryParamsData = () => {
@@ -99,25 +109,66 @@ const TradieSearchJobResult = (props: any) => {
         return queryParamsData;
     }
 
-    console.log(paramsData, "paramsData");
+    console.log(paramsData, "paramsData", jobListData, "jobListData", apiRequestData, "apiRequestData", hasMoreItems, "hasMoreItems");
 
-
-    const renderJobsData = () => {
-        var jobsData: any;
-        const jobResultsParam = new URLSearchParams(props.location?.search).get('jobResults');
-        if (searchResultData.searchByFilter) {
-            jobsData = props.homeSearchJobData;
-            return jobsData;
-        }
-        if (jobResultsParam == 'viewNearByJob') {
-            jobsData = props.viewNearByJobData;
-            return jobsData;
+    const callJobList = () => {
+        if (!hasMoreItems) { return }
+        const data = { ...apiRequestData };
+        data.page = searchResultData.page;
+        if (paramsData.jobResults === 'viewNearByJob') {
+            props.getViewNearByJob(data);
         } else {
-            jobsData = props.homeSearchJobData;
-            return jobsData;
+            props.postHomeSearchData(data);
         }
-        return null;
     }
+
+    useEffect(() => {
+        const jobResultsParam = new URLSearchParams(props.history?.location?.search).get('jobResults');
+        if (searchResultData.searchByFilter && props.homeSearchJobData?.length) {
+            if (searchResultData.page === 1) {
+                setJobListData(props.homeSearchJobData);
+            } else {
+                setJobListData((prevData: any) => ([...prevData, ...props.homeSearchJobData]));
+            }
+            setSearchResultData((prevData: any) => ({ ...prevData, page: prevData.page + 1 }));
+            if (props.homeSearchJobData?.length < 10) { setHasMoreItems(false); }
+            return;
+        }
+        if (jobResultsParam === 'viewNearByJob' && props.viewNearByJobData?.length) {
+            if (searchResultData.page === 1) {
+                setJobListData(props.viewNearByJobData);
+            } else {
+                setJobListData((prevData: any) => ([...prevData, ...props.viewNearByJobData]));
+            }
+            setSearchResultData((prevData: any) => ({ ...prevData, page: prevData.page + 1 }));
+            if (props.viewNearByJobData?.length < 10) { setHasMoreItems(false); }
+            return;
+        } else if (props.homeSearchJobData?.length) {
+            if (searchResultData.page === 1) {
+                setJobListData(props.homeSearchJobData);
+            } else {
+                setJobListData((prevData: any) => ([...prevData, ...props.homeSearchJobData]));
+            }
+            setSearchResultData((prevData: any) => ({ ...prevData, page: prevData.page + 1 }));
+            if (props.homeSearchJobData?.length < 10) { setHasMoreItems(false); }
+        }
+    }, [props.homeSearchJobData, props.viewNearByJobData]);
+
+    // const renderJobsData = () => {
+    //     var jobsData: any;
+    //     const jobResultsParam = new URLSearchParams(location?.search).get('jobResults');
+    //     if (searchResultData.searchByFilter) {
+    //         jobsData = props.homeSearchJobData;
+    //         return jobsData;
+    //     }
+    //     if (jobResultsParam === 'viewNearByJob') {
+    //         jobsData = props.viewNearByJobData;
+    //         return jobsData;
+    //     } else {
+    //         jobsData = props.homeSearchJobData;
+    //         return jobsData;
+    //     }
+    // }
 
     const searchByFilter = (allFiltersData: any) => {
         const newParamsData = getQueryParamsData();
@@ -130,7 +181,7 @@ const TradieSearchJobResult = (props: any) => {
             props.getViewNearByJob(data);
             props.history.replace(`/search-job-results?jobResults=viewNearByJob&defaultLat=${newParamsData.defaultLat}&defaultLong=${newParamsData.defaultLong}`);
             getQueryParamsData();
-            setSearchResultData((prevData: any) => ({ ...prevData, searchByFilter: false }));
+            setSearchResultData((prevData: any) => ({ ...prevData, searchByFilter: false, page: 1 }));
             return;
         }
         var headingType: string = '';
@@ -139,20 +190,16 @@ const TradieSearchJobResult = (props: any) => {
         if (newParamsData.tradeId?.length) {
             delete newParamsData.tradeId;
         }
-
         if (newParamsData.jobTypes?.length) {
             delete newParamsData.jobTypes;
         }
-
         if (newParamsData.specializationId?.length) {
             delete newParamsData.specializationId;
         }
-
         if (allFiltersData.jobTypes?.length && !allFiltersData.tradeId?.length) {
             headingType = props.jobTypeListData?.find((i: any) => i._id === allFiltersData.jobTypes[0])?.name;
             delete newParamsData.searchJob;
         }
-
         if (allFiltersData.tradeId?.length && !allFiltersData.specializationId?.length) {
             headingType = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.trade_name;
             delete newParamsData.searchJob;
@@ -162,7 +209,6 @@ const TradieSearchJobResult = (props: any) => {
             ...newParamsData,
             isFilterOn: "isFilterOn",
             jobResults: null,
-            // ...(allFiltersData.sortBy === 2 ? { isFiltered: true } : { isFiltered: false }),
             isFiltered: true,
             ...(allFiltersData.tradeId?.length && { tradeId: allFiltersData.tradeId }),
             ...(allFiltersData.jobTypes?.length && { jobTypes: allFiltersData.jobTypes }),
@@ -179,12 +225,10 @@ const TradieSearchJobResult = (props: any) => {
         if (allFiltersData.sortBy === 400) {
             delete data.sortBy;
         }
-
         if (data.searchJob) {
             delete data.heading;
             delete data.jobResults;
         }
-
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length) {
             const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
             const specializationName = specializationList?.find((i: any) => i._id === allFiltersData?.specializationId[0])?.name;
@@ -194,13 +238,12 @@ const TradieSearchJobResult = (props: any) => {
                     searchJob: specializationName
                 }
             }
-            console.log(specializationName, "specializationName");
         }
 
         const newObjData = {
+            page: 1,
             isFiltered: true,
             ...(data.sortBy && { sortBy: data.sortBy }),
-            ...(data.page ? { page: data.page } : { page: searchResultData.page }),
             ...(data.tradeId && { tradeId: data.tradeId }),
             ...(data.specializationId && { specializationId: data.specializationId }),
             ...(data.from_date && { from_date: data.from_date }),
@@ -221,106 +264,114 @@ const TradieSearchJobResult = (props: any) => {
             url += `${key}=${value}&`
         }
         const newUrl = url.slice(0, url.length - 1);
-
-        console.log(newUrl, "newUrl", data, "data", newObjData, "newObjData", newParamsData);
         props.postHomeSearchData(newObjData);
         props.history.replace(newUrl);
+        setJobListData([]);
         setParamsData(data);
-        setSearchResultData((prevData: any) => ({ ...prevData, searchByFilter: true }))
+        setApiRequestData(newObjData);
+        setSearchResultData((prevData: any) => ({ ...prevData, page: 1, searchByFilter: true }));
+        setHasMoreItems(true);
+        console.log(newUrl, "newUrl", data, "data", newObjData, "newObjData", newParamsData);
     }
 
-    const cleanFiltersHandler = (isFiltersClean: boolean) => {
-        setSearchResultData((prevData: any) => ({ ...prevData, cleanFiltersData: isFiltersClean }));
-        if (isFiltersClean) {
-            getQueryParamsData();
-        }
-    }
+    // const cleanFiltersHandler = (isFiltersClean: boolean) => {
+    //     setSearchResultData((prevData: any) => ({ ...prevData, cleanFiltersData: isFiltersClean }));
+    //     if (isFiltersClean) { getQueryParamsData(); }
+    // }
 
-    const refreshParams = () => {
+    const refreshParams = (data: any) => {
+        setJobListData([]);
         getQueryParamsData();
+        setApiRequestData(data);
+        setSearchResultData((prevData: any) => ({ ...prevData, page: 1, cleanFiltersData: true }));
+        setHasMoreItems(true);
     }
 
     const handleChangeToggle = (value: boolean) => { setToggleModifySearch(value) }
 
     return (
-        <div className="app_wrapper" >
-            <div className={`top_search ${isToggleModifySearch ? 'active' : ''}`}>
-                <BannerSearch
-                    {...props}
-                    handleChangeToggle={handleChangeToggle}
-                    paramsData={paramsData}
-                    cleanFiltersHandler={cleanFiltersHandler}
-                    cleanFiltersData={searchResultData.cleanFiltersData}
-                    refreshParams={refreshParams}
-                />
-            </div>
-            <div className="search_result">
-                <div className="section_wrapper">
-                    <div className="custom_container">
+        <InfiniteScroll
+            dataLength={jobListData.length}
+            next={callJobList}
+            hasMore={true}
+            loader={<h4></h4>}
+        >
+            <div className="app_wrapper" >
+                <div className={`top_search ${isToggleModifySearch ? 'active' : ''}`}>
+                    <BannerSearch
+                        {...props}
+                        handleChangeToggle={handleChangeToggle}
+                        paramsData={paramsData}
+                        refreshParams={refreshParams}
+                    />
+                </div>
+                <div className="search_result">
+                    <div className="section_wrapper">
+                        <div className="custom_container">
 
-                        <div className="flex_row mob_srch_option">
-                            <div className="flex_col_sm_6"></div>
-                            <div className="flex_col_sm_6 text-right">
-                                <button onClick={() => { setToggleModifySearch(true) }} className="fill_grey_btn btn-effect">Modify Search</button>
-                            </div>
-                        </div>
-
-                        <div className="result_heading">
-                            <div className="flex_row">
-                                <div className="flex_col_sm_8">
-                                    {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
-                                    <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
-                                        <span className="count">{`${renderJobsData()?.length ? renderJobsData()?.length === 1 ? `${renderJobsData()?.length} result` : `${renderJobsData()?.length} results` : ''}`}</span>
-                                    </span>
-                                    <SearchResultFilters
-                                        searchByFilter={searchByFilter}
-                                        cleanFiltersData={searchResultData.cleanFiltersData}
-                                        cleanFiltersHandler={cleanFiltersHandler}
-                                        history={props?.history}
-                                    />
+                            <div className="flex_row mob_srch_option">
+                                <div className="flex_col_sm_6"></div>
+                                <div className="flex_col_sm_6 text-right">
+                                    <button onClick={() => { setToggleModifySearch(true) }} className="fill_grey_btn btn-effect">Modify Search</button>
                                 </div>
-                                {renderJobsData()?.length > 0 && !mapData.showMap && <div className="flex_col_sm_4 text-right">
-                                    <a className="map_btn" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
-                                        <img src={mapIcon} alt="map" /> Map
-                                    </a>
-                                </div>}
                             </div>
-                        </div>
-                        <div className="flex_row tradies_row">
-                            {/* If the map does not come, then this div not only class (card_col) will be hidden */}
-                            {mapData.showMap ? <div className="card_col">
-                                {renderJobsData()?.length > 0 ?
-                                    (renderJobsData()?.map((jobData: any) => {
+
+                            <div className="result_heading">
+                                <div className="flex_row">
+                                    <div className="flex_col_sm_8">
+                                        {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
+                                        <span className="title">{paramsData.jobResults === 'viewNearByJob' ? 'All around me' : paramsData.jobResults === 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
+                                            <span className="count">{`${jobListData.length ? `${jobListData.length === 1 ? '1 result' : `${jobListData.length} results`}` : ''}`}</span>
+                                        </span>
+                                        <SearchResultFilters
+                                            searchByFilter={searchByFilter}
+                                            cleanFiltersData={searchResultData.cleanFiltersData}
+                                            history={props?.history}
+                                        />
+                                    </div>
+                                    {jobListData.length > 0 && !mapData.showMap && <div className="flex_col_sm_4 text-right">
+                                        <a className="map_btn" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
+                                            <img src={mapIcon} alt="map" /> Map
+                                        </a>
+                                    </div>}
+                                </div>
+                            </div>
+                            <div className="flex_row tradies_row">
+                                {/* If the map does not come, then this div not only class (card_col) will be hidden */}
+                                {mapData.showMap ? <div className="card_col">
+                                    {jobListData.length > 0 ?
+                                        (jobListData.map((jobData: any) => {
+                                            return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
+                                        })) :
+                                        <div className="no_record">
+                                            <figure className="no_img">
+                                                <img src={noData} alt="data not found" />
+                                                <span>No Data Found</span>
+                                            </figure>
+                                        </div>}
+                                </div> : (jobListData.length > 0 || props.isLoading) ?
+                                    (jobListData.map((jobData: any) => {
                                         return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
-                                    })) :
-                                    <div className="no_record">
+                                    })) : <div className="no_record">
                                         <figure className="no_img">
                                             <img src={noData} alt="data not found" />
-                                            <span>No Data Found</span>
                                         </figure>
+                                        <span>No Data Found</span>
                                     </div>}
-                            </div> : (renderJobsData()?.length > 0 || props.isLoading) ?
-                                (renderJobsData()?.map((jobData: any) => {
-                                    return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
-                                })) : <div className="no_record">
-                                    <figure className="no_img">
-                                        <img src={noData} alt="data not found" />
-                                    </figure>
-                                    <span>No Data Found</span>
+                                {<div className="map_col" style={!mapData.showMap ? { display: "none" } : {}}>
+                                    <div className="map_stick">
+                                        <span className="close_map" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
+                                            <img src={closeMap} alt="close-map" />
+                                        </span>
+                                        <RenderMap {...props} searchByFilter={searchResultData.searchByFilter} />
+                                    </div>
                                 </div>}
-                            {<div className="map_col" style={!mapData.showMap ? { display: "none" } : {}}>
-                                <div className="map_stick">
-                                    <span className="close_map" onClick={() => setMapData((prevData: any) => ({ ...prevData, showMap: !prevData.showMap }))}>
-                                        <img src={closeMap} alt="close-map" />
-                                    </span>
-                                    <RenderMap {...props} searchByFilter={searchResultData.searchByFilter} />
-                                </div>
-                            </div>}
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
+        </InfiniteScroll>
     )
 }
 

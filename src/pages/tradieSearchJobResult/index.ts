@@ -4,7 +4,9 @@ import SearchResultsComponent from './tradieSearchJobResult';
 import {
     getJobWithJobTypeLatLong,
     getViewNearByJob,
-    postHomeSearchData
+    postHomeSearchData,
+    resetViewNearByJobData,
+    resetHomeSearchJobData
 } from '../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
@@ -22,7 +24,9 @@ const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         getJobWithJobTypeLatLong,
         getViewNearByJob,
-        postHomeSearchData
+        postHomeSearchData,
+        resetViewNearByJobData,
+        resetHomeSearchJobData
     }, dispatch);
 }
 
