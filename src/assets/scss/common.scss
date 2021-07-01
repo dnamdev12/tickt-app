@@ -1325,6 +1325,9 @@ body {
   .media{
       display: inline-block;
       cursor: pointer;
+      .line-3{
+        -webkit-line-clamp: 7;
+      }
       .portfolio_img{
           width: 256px;
           height: 256px;
@@ -4425,6 +4428,7 @@ body {
   @media(max-width: 768px){
     margin-top: 15px;
   }
+
   .title_view_wrap{
     position: relative;
     @media(max-width: 768px){
