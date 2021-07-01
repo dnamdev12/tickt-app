@@ -224,6 +224,9 @@ body {
 }
 
 //------------------------Tags------------------//
+.show_more{
+  margin: 0 0 0 10px;
+}
 .tags_wrap {
   &.form_wrapper {
     width: 100%;
@@ -243,6 +246,14 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 0 0 40px;
+    &.more_tags{
+      height: 80px;
+      overflow: hidden;
+      margin: 0 0 8px;
+      &.active{
+        height: auto;
+      }
+    }
     li {
       display: flex;
       align-items: center;
