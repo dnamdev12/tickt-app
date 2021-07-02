@@ -17,8 +17,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) 
   }, [getAppliedJobList]);
 
   return (
-    <>
-      {/* Applied Jobs */}
+    <div className="detail_col">
       <span className="sub_title">Applied Jobs</span>
       <div className="flex_row tradies_row">
         {appliedJobList.length ? appliedJobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
@@ -30,8 +29,8 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) 
                   <img src={tradeSelectedUrl || dummy} alt="traide-img" />
                 </figure>
                 <div className="details">
-                    <span className="name">{tradeName}</span>
-                    <span className="prof">{jobName}</span>
+                  <span className="name">{tradeName}</span>
+                  <span className="prof">{jobName}</span>
                 </div>
               </div>
               <div className="job_info">
@@ -41,12 +40,12 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) 
                   <li className="icon location line-1">{locationName}</li>
                   <li className="icon calendar">{durations}</li>
                 </ul>
-              </div>  
+              </div>
               <div className="job_progress_wrap" id="scroll-progress-bar">
                 <div className="progress_wrapper">
                   <span className="completed-digit" id="digit-progress">
                     <b>Job Milestones {milestoneNumber}</b> of {totalMilestones}
-                  </span>                 
+                  </span>
                   <span className="progress_bar">
                     <input
                       className="done_progress"
@@ -70,8 +69,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList }: Proptypes) 
           </div>
         )}
       </div>
-      {/* Applied Jobs close */}
-    </>
+    </div>
   );
 };
 

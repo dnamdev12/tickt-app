@@ -15,8 +15,7 @@ const NewJobs = ({ loading, getNewJobList, newJobList }: Proptypes) => {
   }, [getNewJobList]);
 
   return (
-    <>
-      {/* New Jobs */}
+    <div className="detail_col">
       <span className="sub_title">New Jobs</span>
       <div className="flex_row tradies_row">
         {newJobList.length ? newJobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, jobDescription, time, amount, locationName, durations, viewersCount, questionsCount }) => (
@@ -58,8 +57,7 @@ const NewJobs = ({ loading, getNewJobList, newJobList }: Proptypes) => {
           </div>
         )}
       </div>
-      {/* New Jobs close */}
-    </>
+    </div>
   );
 };
 

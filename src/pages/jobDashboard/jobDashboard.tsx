@@ -34,6 +34,7 @@ interface Proptypes {
   getBankDetails: () => void;
   removeBankDetails: () => void;
   bankDetails: any;
+  resetPastJobList: () => void;
 }
 
 const JobDashboard = ({
@@ -57,6 +58,7 @@ const JobDashboard = ({
   getBankDetails,
   removeBankDetails,
   bankDetails,
+  resetPastJobList,
 }: Proptypes) => {
   const history = useHistory();
   const { pathname } = useLocation();
@@ -73,7 +75,7 @@ const JobDashboard = ({
   const [jobComplete, setJobComplete] = useState<boolean | number>(false);
 
   const jobCompleteCount = jobComplete && `${jobComplete}${`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'}`;
-  
+
   return milestoneComplete ? (
     <div className="img_text_wrap">
       <figure className="full_image">
@@ -172,7 +174,7 @@ const JobDashboard = ({
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
                     <span className="menu_txt">New
-                    {!!newJobsCount && (
+                      {!!newJobsCount && (
                         <span className="badge_count">
                           {newJobsCount > 9 ? '9+' : newJobsCount}
                         </span>
@@ -185,7 +187,7 @@ const JobDashboard = ({
                 <li>
                   <NavLink className="icon approved" to="/approved-milestones">
                     <span className="menu_txt">Approved Milestones
-                    {!!milestonesCount && (
+                      {!!milestonesCount && (
                         <span className="badge_count">
                           {milestonesCount > 9 ? '9+' : milestonesCount}
                         </span>
@@ -196,7 +198,8 @@ const JobDashboard = ({
               </ul>
             </div>
           </div>
-          <div className="detail_col">
+          {/* <div className="detail_col"> */}
+          <>
             <Switch>
               <Route
                 path="/active-jobs"
@@ -224,10 +227,12 @@ const JobDashboard = ({
                 path="/past-jobs"
                 render={(props) => (
                   <PastJobsPage
-                    loading={loading}
-                    getPastJobList={getPastJobList}
-                    pastJobList={pastJobList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    pastJobList={pastJobList}
+                    getPastJobList={getPastJobList}
+                    resetPastJobList={resetPastJobList}
                   />
                 )}
               />
@@ -280,7 +285,8 @@ const JobDashboard = ({
                 )}
               />
             </Switch>
-          </div>
+          </>
+          {/* </div> */}
         </div>
       </div>
     </div>

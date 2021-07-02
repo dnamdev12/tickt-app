@@ -271,6 +271,8 @@ export const getPastJobList = (page: number) => ({
   page,
 });
 
+export const resetPastJobList = () => ({ type: actionTypes.RESET_PAST_JOBS_START });
+
 export const getNewJobList = (page: number) => ({
   type: actionTypes.GET_NEW_JOBS_START,
   page,
@@ -482,7 +484,7 @@ export const InviteForJob = async (data: any) => {
 
 export const CancelInviteForJob = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}cancelInviteForJob?tradieId=${data.tradieId}&jobId=${data?.jobId}&invitationId=${data.invitationId}`,{});
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}cancelInviteForJob?tradieId=${data.tradieId}&jobId=${data?.jobId}&invitationId=${data.invitationId}`, {});
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message)
@@ -611,7 +613,7 @@ export const publishJobAgain = async (data: any) => {
 
 export const handleCancelReply = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}replyCancellation` , data);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}replyCancellation`, data);
   setLoading(false);
   setShowToast(true, response?.message);
   if (response.status_code === 200) {

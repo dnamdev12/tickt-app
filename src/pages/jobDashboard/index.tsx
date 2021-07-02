@@ -8,6 +8,7 @@ import {
   getNewJobList,
   getApprovedMilestoneList,
   getMilestoneList,
+  resetPastJobList
 } from '../../redux/jobs/actions';
 import {
   getBankDetails,
@@ -63,6 +64,7 @@ const mapDispatchToProps = (dispatch: any) => {
       addBankDetails,
       updateBankDetails,
       removeBankDetails,
+      resetPastJobList,
     },
     dispatch
   );

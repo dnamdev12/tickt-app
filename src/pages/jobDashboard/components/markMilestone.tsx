@@ -247,9 +247,10 @@ const MarkMilestone = ({
   }
 
   let page = null;
+  const renderSteps = () => {
   switch (step) {
     case 1:
-      page = (
+      return page = (
         <div className="flex_row">
           <div className="flex_col_sm_6">
             <div className="relate">
@@ -439,7 +440,7 @@ const MarkMilestone = ({
       );
       break;
     case 2:
-      page = (
+      return page = (
         <UploadMedia
           jobName={jobName}
           title="Photo required"
@@ -462,7 +463,7 @@ const MarkMilestone = ({
       );
       break;
     case 3:
-      page = (
+      return page = (
         <div className="flex_row">
           <div className="flex_col_sm_8">
             <div className="relate">
@@ -527,7 +528,7 @@ const MarkMilestone = ({
       );
       break;
     case 4:
-      page = (
+      return page = (
         <div className="flex_row">
           <div className="flex_col_sm_7">
             <div className="relate">
@@ -573,7 +574,7 @@ const MarkMilestone = ({
       );
       break;
     case 5:
-      page = (
+      return page = (
         <div className="flex_row">
           <div className="flex_col_sm_8">
             <div className="relate">
@@ -711,10 +712,15 @@ const MarkMilestone = ({
       break;
 
     default:
-      page = null;
+      return null;
   }
+}
 
-  return page;
+  return (
+    <div className="detail_col">
+      {renderSteps()}
+    </div>
+  )
 };
 
 export default MarkMilestone;

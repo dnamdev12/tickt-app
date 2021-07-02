@@ -37,8 +37,6 @@ function* getActiveJobList({ page }: any) {
 
     return;
   }
-
-  // yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
 }
 
 // appliedJobList
@@ -58,8 +56,6 @@ function* getAppliedJobList({ page }: any) {
 
     return;
   }
-
-  // yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
 }
 
 // pastJobList
@@ -79,8 +75,9 @@ function* getPastJobList({ page }: any) {
 
     return;
   }
-
-  // yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
+}
+function* resetPastJobList() {
+  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
 }
 
 // newJobList
@@ -100,8 +97,6 @@ function* getNewJobList({ page }: any) {
 
     return;
   }
-
-  // yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
 }
 
 // approvedMilestoneList
@@ -121,8 +116,6 @@ function* getApprovedMilestoneList({ page }: any) {
 
     return;
   }
-
-  // yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
 }
 
 // milestoneList
@@ -140,8 +133,6 @@ function* getMilestoneList({ jobId }: any) {
 
     return;
   }
-
-  // yield put({ type: actionTypes.GET_MILESTONES_END, payload: {} });
 }
 
 // milestoneList
@@ -266,7 +257,7 @@ function* getAcceptDeclineTradie({ data }: any) {
 }
 
 function* getNewApprovalList({ page }: any) {
-  console.log({page},'--->?')
+  console.log({ page }, '--->?')
   const response: FetchResponse = yield NetworkOps.get(`${Urls.needApproval}?page=${page}`);
   if (response.status_code === 200) {
     yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: response.result });
@@ -282,6 +273,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_ACTIVE_JOBS_START, getActiveJobList);
     yield takeLatest(actionTypes.GET_APPLIED_JOBS_START, getAppliedJobList);
     yield takeLatest(actionTypes.GET_PAST_JOBS_START, getPastJobList);
+    yield takeLatest(actionTypes.RESET_PAST_JOBS_START, resetPastJobList);
     yield takeLatest(actionTypes.GET_NEW_JOBS_START, getNewJobList);
     yield takeLatest(actionTypes.GET_APPROVED_MILESTONE_START, getApprovedMilestoneList);
     yield takeLatest(actionTypes.GET_MILESTONES_START, getMilestoneList);

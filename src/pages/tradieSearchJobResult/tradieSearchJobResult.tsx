@@ -42,16 +42,17 @@ const TradieSearchJobResult = (props: PropsType) => {
 
     useEffect(() => {
         var queryParamsData = getQueryParamsData();
+        let data: any = {};
 
         if (queryParamsData.jobResults === 'viewNearByJob') {
-            const data = {
+            data = {
                 page: 1,
                 long: queryParamsData.defaultLong,
                 lat: queryParamsData.defaultLat
             }
             props.getViewNearByJob(data);
         } else {
-            const data: any = {
+            data = {
                 page: 1,
                 ...(queryParamsData.isFiltered ? { isFiltered: true } : { isFiltered: false }),
                 ...(queryParamsData.tradeId?.length && { tradeId: queryParamsData.tradeId }),
@@ -69,9 +70,8 @@ const TradieSearchJobResult = (props: PropsType) => {
                 }),
             }
             props.postHomeSearchData(data);
-            setApiRequestData(data);
-
         }
+        setApiRequestData(data);
         return () => {
             props.resetViewNearByJobData();
             props.resetHomeSearchJobData();
