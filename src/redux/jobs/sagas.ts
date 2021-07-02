@@ -76,8 +76,26 @@ function* getPastJobList({ page }: any) {
     return;
   }
 }
+
+
+function* resetActiveJobList() {
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
+}
+
+function* resetAppliedJobList() {
+  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
+}
+
 function* resetPastJobList() {
   yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
+}
+
+function* resetNewJobList() {
+  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
+}
+
+function* resetApprovedMilestoneList() {
+  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
 }
 
 // newJobList
@@ -273,11 +291,16 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_ACTIVE_JOBS_START, getActiveJobList);
     yield takeLatest(actionTypes.GET_APPLIED_JOBS_START, getAppliedJobList);
     yield takeLatest(actionTypes.GET_PAST_JOBS_START, getPastJobList);
-    yield takeLatest(actionTypes.RESET_PAST_JOBS_START, resetPastJobList);
     yield takeLatest(actionTypes.GET_NEW_JOBS_START, getNewJobList);
     yield takeLatest(actionTypes.GET_APPROVED_MILESTONE_START, getApprovedMilestoneList);
     yield takeLatest(actionTypes.GET_MILESTONES_START, getMilestoneList);
     yield takeLatest(actionTypes.MARK_MILESTONE_COMPLETE, markMilestoneComplete);
+
+    yield takeLatest(actionTypes.RESET_PAST_JOBS_START, resetPastJobList);
+    yield takeLatest(actionTypes.RESET_ACTIVE_JOBS_START, resetActiveJobList);
+    yield takeLatest(actionTypes.RESET_APPLIED_JOBS_START, resetAppliedJobList);
+    yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetNewJobList);
+    yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetApprovedMilestoneList);
 
     yield takeLatest(actionTypes.GET_BUILDER_ACTIVE_JOBS, getActiveJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_PAST_JOBS, getPastJobsBuilder);

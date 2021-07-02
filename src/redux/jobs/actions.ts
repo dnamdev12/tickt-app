@@ -271,7 +271,11 @@ export const getPastJobList = (page: number) => ({
   page,
 });
 
+export const resetActiveJobList = () => ({ type: actionTypes.RESET_ACTIVE_JOBS_START });
+export const resetAppliedJobList = () => ({ type: actionTypes.RESET_APPLIED_JOBS_START });
 export const resetPastJobList = () => ({ type: actionTypes.RESET_PAST_JOBS_START });
+export const resetNewJobList = () => ({ type: actionTypes.RESET_NEW_JOBS_START });
+export const resetApprovedMilestoneList = () => ({ type: actionTypes.RESET_APPROVED_MILESTONE_START });
 
 export const getNewJobList = (page: number) => ({
   type: actionTypes.GET_NEW_JOBS_START,

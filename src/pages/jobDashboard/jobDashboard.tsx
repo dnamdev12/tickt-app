@@ -34,7 +34,11 @@ interface Proptypes {
   getBankDetails: () => void;
   removeBankDetails: () => void;
   bankDetails: any;
+  resetActiveJobList: () => void;
+  resetAppliedJobList: () => void;
   resetPastJobList: () => void;
+  resetNewJobList: () => void;
+  resetApprovedMilestoneList: () => void;
 }
 
 const JobDashboard = ({
@@ -58,7 +62,11 @@ const JobDashboard = ({
   getBankDetails,
   removeBankDetails,
   bankDetails,
+  resetActiveJobList,
+  resetAppliedJobList,
   resetPastJobList,
+  resetNewJobList,
+  resetApprovedMilestoneList,
 }: Proptypes) => {
   const history = useHistory();
   const { pathname } = useLocation();
@@ -206,7 +214,9 @@ const JobDashboard = ({
                 render={(props) => (
                   <ActiveJobsPage
                     loading={loading}
+                    newJobsCount={newJobsCount}
                     getActiveJobList={getActiveJobList}
+                    resetActiveJobList={resetActiveJobList}
                     activeJobList={activeJobList}
                     {...props}
                   />
@@ -216,10 +226,12 @@ const JobDashboard = ({
                 path="/applied-jobs"
                 render={(props) => (
                   <AppliedJobsPage
-                    loading={loading}
-                    getAppliedJobList={getAppliedJobList}
-                    appliedJobList={appliedJobList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    appliedJobList={appliedJobList}
+                    getAppliedJobList={getAppliedJobList}
+                    resetAppliedJobList={resetAppliedJobList}
                   />
                 )}
               />
@@ -240,10 +252,12 @@ const JobDashboard = ({
                 path="/new-jobs"
                 render={(props) => (
                   <NewJobsPage
-                    loading={loading}
-                    getNewJobList={getNewJobList}
-                    newJobList={newJobList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    newJobList={newJobList}
+                    getNewJobList={getNewJobList}
+                    resetNewJobList={resetNewJobList}
                   />
                 )}
               />
@@ -251,10 +265,12 @@ const JobDashboard = ({
                 path="/approved-milestones"
                 render={(props) => (
                   <ApprovedMilestonesPage
-                    loading={loading}
-                    getApprovedMilestoneList={getApprovedMilestoneList}
-                    approvedMilestoneList={approvedMilestoneList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    approvedMilestoneList={approvedMilestoneList}
+                    getApprovedMilestoneList={getApprovedMilestoneList}
+                    resetApprovedMilestoneList={resetApprovedMilestoneList}
                   />
                 )}
               />
