@@ -104,6 +104,7 @@ const BuilderInfo = (props: PropsType) => {
         showReviewReply: false,
         replyShownHideList: []
     })
+    const [showSpecs, setShowSpecs] = useState<boolean>(false);
     console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo");
 
     useEffect(() => {
@@ -416,7 +417,7 @@ const BuilderInfo = (props: PropsType) => {
                                 <div className="tags_wrap">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
                                         // Add active class when click on show more
-                                       <ul className="more_tags">   
+                                        <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
                                             {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
                                               <Fragment key={_id}>
                                                 <li className="main">
@@ -436,7 +437,7 @@ const BuilderInfo = (props: PropsType) => {
                                                 return <li key={item.specializationId}>{item.specializationName || ''}</li>
                                             })}
                                         </ul>) : (
-                                        <ul>
+                                        <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
                                             {profileData?.tradeName && <li className="main">
                                                 <img src={profileData?.tradeSelectedUrl || menu} alt="" />{profileData?.tradeName || ''}
                                             </li>}
@@ -444,7 +445,11 @@ const BuilderInfo = (props: PropsType) => {
                                                 return <li key={item.specializationId}>{item.specializationName || ''}</li>
                                             })}
                                         </ul>)}
-                                    <a href="javascript:void(0)" className="link show_more">Show more</a>
+                                    {profileData?.areasOfjobs?.length > 7 && <a href="javascript:void(0)" className="link show_more"
+                                        onClick={(e: any) => {
+                                            e.preventDefault();
+                                            setShowSpecs(!showSpecs);
+                                        }}>{showSpecs ? 'Show less' : 'Show more'}</a>}
                                 </div>
 
                             </div>
