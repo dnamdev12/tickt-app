@@ -1,52 +1,14 @@
 import { connect } from 'react-redux';
 import loader from '../assets/images/loader.gif';
-import { setShowToast } from '../redux/common/actions';
-import noInternet from '../assets/images/internet-connection-graphic.png'
-
-//@ts-ignore
-import { Detector } from "react-detect-offline";
-
-
 
 const Loader = (props: any) => {
   // Add active class next to loader class to show loader
-
-
-  const addRemoveClass = (if_add: boolean) => {
-    var element = document.getElementsByTagName("BODY")[0];
-    if(if_add){
-      element.classList.add("hide_scroll");
-    } else {
-      element.classList.remove("hide_scroll");
-    }
-  }
-
   return (
-    <>
-      <Detector
-        render={({ online }: any) => (
-          online ? (
-            <div className={`loader ${props.isLoading ? 'active' : ''}`}>
-              {addRemoveClass(false)}
-              <figure>
-                <img src={loader} alt="loader" />
-              </figure>
-            </div>
-          ) : (
-            // Add hide_scroll class to body when it appears
-            <div className="offline_mode">
-              {addRemoveClass(true)}
-              <figure className="no_img">
-                <img src={noInternet} alt="no-internet" />
-              </figure>
-              <div className="content">
-                <h1>{'No Internet Connection'}</h1>
-              </div>
-            </div>
-          )
-        )}
-      />
-    </>
+    <div className={`loader ${props.isLoading ? 'active' : ''}`}>
+      <figure>
+        <img src={loader} alt="loader" />
+      </figure>
+    </div>
   )
 }
 

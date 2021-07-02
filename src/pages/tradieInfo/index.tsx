@@ -40,6 +40,7 @@ import 'react-multi-carousel/lib/styles.css';
 
 import Skeleton from 'react-loading-skeleton';
 
+import AddVoucherComponent from './addVoucher';
 import vouch from '../../assets/images/ic-template.png';
 import _ from 'lodash';
 
@@ -86,7 +87,8 @@ interface State {
     toggleVoucher: {
         item: string,
         isTrue: boolean
-    }
+    },
+    toggleAddVoucher: boolean
 }
 
 class TradieInfo extends Component<Props, State> {
@@ -117,7 +119,8 @@ class TradieInfo extends Component<Props, State> {
             replyShownHideList: []
         },
         tradieReviewList: [],
-        toggleVoucher: { item: '', isTrue: false }
+        toggleVoucher: { item: '', isTrue: false },
+        toggleAddVoucher: false
     };
 
 
@@ -425,6 +428,18 @@ class TradieInfo extends Component<Props, State> {
 
     }
 
+    closeAddVoucher = (isRecall?:any) => {
+        if(isRecall === "isRecall"){
+            this.setState({
+                toggleAddVoucher:false
+            }, () => {
+                if(this.state.toggleAddVoucher === false){
+                    this.setItems();
+                }
+            })
+        }
+    }
+
     render() {
         let props: any = this.props;
         console.log({
@@ -515,7 +530,7 @@ class TradieInfo extends Component<Props, State> {
                                                                     className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
                                                                 <button
                                                                     onClick={() => {
-                                                                        console.log({haveJobId, tradieInfo})
+                                                                        console.log({ haveJobId, tradieInfo })
                                                                         if (haveJobId) {
                                                                             this.cancelInvite({
                                                                                 invitationId: tradieInfo?.invitationId,
@@ -528,7 +543,7 @@ class TradieInfo extends Component<Props, State> {
                                                                                 state: {
                                                                                     tradieId: tradieInfo?._id || tradieInfo?.tradieId,
                                                                                     path: props.location.search,
-                                                                                    cancelJob:true
+                                                                                    cancelJob: true
                                                                                 }
                                                                             })
                                                                         }
@@ -587,10 +602,11 @@ class TradieInfo extends Component<Props, State> {
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
                                     ) :
-                                        <div>
-                                            <span className="sub_title">About</span>
-                                            <p className="commn_para">You have not added your information yet, Please go to edit and add.</p>
-                                        </div>}
+                                        // <div>
+                                        //     <span className="sub_title">About</span>
+                                        //     <p className="commn_para">You have not added your information yet, Please go to edit and add.</p>
+                                        // </div>
+                                        null}
                                 </div>
                                 <div className="flex_col_sm_4">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
@@ -801,7 +817,27 @@ class TradieInfo extends Component<Props, State> {
                                 {`View all ${tradieInfo?.vouchesData?.length} vouches`}</button>
                         </div>
                     </div>
-                    : null}
+                    : (
+                        <div className="section_wrapper">
+                            <div className="custom_container">
+                                <button
+                                    className="fill_grey_btn full_btn"
+                                    onClick={() => {
+                                        this.setState({
+                                            toggleAddVoucher: !this.state.toggleAddVoucher
+                                        })
+                                    }}>
+                                    {`+ Leave a voucher`}</button>
+                            </div>
+                        </div>
+                    )}
+
+                {console.log({ toggleAddVoucher: this.state.toggleAddVoucher })}
+                <AddVoucherComponent
+                    toggleProps={this.state.toggleAddVoucher}
+                    id={tradieInfo?.tradieId}
+                    closeToggle={this.closeAddVoucher}
+                />
 
                 {
                     reviewsData.showAllReviewsClicked && tradieReviews?.length &&

@@ -8,7 +8,9 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob';
-import { renderTime } from '../../../utils/common'
+import { renderTime } from '../../../utils/common';
+
+
 
 interface Active {
     amount: any,
@@ -41,7 +43,7 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
-
+  
     const resetStateLocal = (isTrue: boolean) => {
         setJobLabel(activeType);
         setLocalState(false)
@@ -54,12 +56,12 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
         console.log('here!')
     }, [jobType])
 
-    const redirectToInfo = ({ jobId, status }: any) => {
-        if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true`)
-            history.push(`/job-detail?${urlEncode}`);
-        }
-    }
+    // const redirectToInfo = ({ jobId, status }: any) => {
+    //     if (jobId?.length && status?.length) {
+    //         let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true`)
+    //         history.push(`/job-detail?${urlEncode}`);
+    //     }
+    // }
 
     if (localState && selectedIndex !== null) {
         return (
@@ -104,7 +106,9 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                 <span className="more_detail circle"
                                     onClick={() => {
-                                        redirectToInfo({ jobId, tradieId, specializationId, status });
+                                        setLocalState(true);
+                                        setSelectedIndex(index);
+                                        // redirectToInfo({ jobId, tradieId, specializationId, status });
                                     }}>
                                 </span>
                                 <div className="user_wrap">

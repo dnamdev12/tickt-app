@@ -4,6 +4,7 @@ import moment from 'moment';
 import ReactStars from "react-rating-stars-component";
 import { reviewBuilder } from '../../../../redux/jobs/actions';
 import { setShowToast } from '../../../../redux/common/actions';
+import { renderTime } from '../../../../utils/common';
 
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 import more from '../../../../assets/images/icon-direction-right.png';
@@ -14,8 +15,6 @@ interface Proptypes {
 }
 const ReviewBuilder = (props: Proptypes) => {
     const [reviewBuilderData, setReviewBuilderData] = useState({
-        startDate: '',
-        endDate: '',
         rating: 0,
         review: '',
     });
@@ -33,25 +32,23 @@ const ReviewBuilder = (props: Proptypes) => {
         }
     }
 
-    const startDate = moment(item?.fromDate).format('MMM DD');
-    const endDate = moment(item?.toDate).format('MMM DD');
-
     const submitReviewClicked = async () => {
-        if(reviewBuilderData.rating === 0){
+        if (reviewBuilderData.rating === 0) {
             setShowToast(true, 'Star rating is required');
             return;
         }
-        if(reviewBuilderData.review.trim().length < 1){
-            setShowToast(true, 'Review text is required');
-            return;
-        }
-        if(reviewBuilderData.review.trim().length > 1 && reviewBuilderData.rating > 0){
-            const data = {
+        // if (reviewBuilderData.review.trim().length < 1) {
+        //     setShowToast(true, 'Review text is required');
+        //     return;
+        // }
+        if (reviewBuilderData.rating > 0) {
+            let data: any = {
                 jobId: item?.jobId,
                 builderId: item?.builderData?.builderId,
                 rating: reviewBuilderData.rating,
                 review: reviewBuilderData.review.trim()
             }
+            if (!data.review) delete data.review;
             const response = await reviewBuilder(data);
             if (response?.success) {
                 props?.history?.push('/builder-review-submitted')
@@ -68,54 +65,56 @@ const ReviewBuilder = (props: Proptypes) => {
     }
 
     return (
-        <div className="flex_row">
-            <div className="flex_col_sm_6">
-                <div className="relate">
-                    <button className="back" onClick={() => props?.history?.goBack()}></button>
-                    <span className="xs_sub_title">{item?.jobName}</span>
-                </div>
-                <div className="form_field">
-                    <span className="sub_title">Review completed job</span>
-                </div>
-                <span className="inner_title">Rate this builder</span>
-                <div className="form_field">
-                    <ReactStars
-                        count={5}
-                        onChange={ratingChanged}
-                        size={55}
-                        isHalf={true}
-                        emptyIcon={<i className="far fa-star"></i>}
-                        halfIcon={<i className="fa fa-star-half-alt"></i>}
-                        fullIcon={<i className="fa fa-star"></i>}
-                        activeColor="#fee600"
-                    />
-                </div>
-                <div className="form_field">
-                    <label className="form_label">Comment</label>
-                    <div className="text_field">
-                        <input type="text" placeholder="Thanks.." maxLength={250} onChange={handleChange} />
+        <div className="detail_col">
+            <div className="flex_row">
+                <div className="flex_col_sm_6">
+                    <div className="relate">
+                        <button className="back" onClick={() => props?.history?.goBack()}></button>
+                        <span className="xs_sub_title">{item?.jobName}</span>
+                    </div>
+                    <div className="form_field">
+                        <span className="sub_title">Review completed job</span>
+                    </div>
+                    <span className="inner_title">Rate this builder</span>
+                    <div className="form_field">
+                        <ReactStars
+                            count={5}
+                            onChange={ratingChanged}
+                            size={55}
+                            isHalf={true}
+                            emptyIcon={<i className="far fa-star"></i>}
+                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                            fullIcon={<i className="fa fa-star"></i>}
+                            activeColor="#fee600"
+                        />
+                    </div>
+                    <div className="form_field">
+                        <label className="form_label">Comment</label>
+                        <div className="text_field">
+                            <input type="text" placeholder="Thanks.." maxLength={250} onChange={handleChange} />
+                        </div>
+                    </div>
+                    <div className="form_field">
+                        <button className="fill_btn full_btn btn-effect" onClick={submitReviewClicked}>Leave review</button>
                     </div>
                 </div>
-                <div className="form_field">
-                    <button className="fill_btn full_btn btn-effect" onClick={submitReviewClicked}>Leave review</button>
-                </div>
-            </div>
-            <div className="flex_col_sm_6 col_ruler">
-                <div className="relate">
-                    <span className="sub_title">Job details</span>
-                    <span className="edit_icon" title="More" onClick={jobClickHandler}>
-                        <img src={more} alt="more" />
-                    </span>
-                </div>
-                <div className="tradie_card posted_by view_more ">
-                    <div className="user_wrap">
-                        <figure className="u_img">
-                            <img src={item.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
-                        </figure>
-                        <div className="details" onClick={() => builderClicked()}>
-                            <span className="name">{item?.tradeName}</span>
-                            <span className="prof">{item?.jobName}</span>
-                            <span className="prof">{`${startDate} - ${endDate}`}</span>
+                <div className="flex_col_sm_6 col_ruler">
+                    <div className="relate">
+                        <span className="sub_title">Job details</span>
+                        <span className="edit_icon" title="More" onClick={jobClickHandler}>
+                            <img src={more} alt="more" />
+                        </span>
+                    </div>
+                    <div className="tradie_card posted_by view_more ">
+                        <div className="user_wrap" onClick={() => builderClicked()}>
+                            <figure className="u_img">
+                                <img src={item.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
+                            </figure>
+                            <div className="details">
+                                <span className="name">{item.builderData?.builderName}</span>
+                                <span className="prof">{item?.jobName}</span>
+                                <span className="prof">{renderTime(item?.fromDate, item?.toDate)}</span>
+                            </div>
                         </div>
                     </div>
                 </div>

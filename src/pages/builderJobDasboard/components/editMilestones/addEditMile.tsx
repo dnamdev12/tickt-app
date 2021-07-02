@@ -28,7 +28,7 @@ const pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 const AddEditMile = (props: any) => {
     const { resetItems, item } = props;
     const [isToggle, setToggle] = useState(false);
-    const [stateData, setStateData] = useState({ name: '', isPhoto: false, duration: '', recommended: '' });
+    const [stateData, setStateData] = useState({ name: '', isPhoto: false, duration: '', recommended: '', status: -1 });
     const [errors, setErrors] = useState<any>({ name: '', duration: '', hours: '', pattern_error: '' });
     const [toggleCalender, setToggleCalender] = useState(false);
 
@@ -55,11 +55,11 @@ const AddEditMile = (props: any) => {
         if (value?.length) {
             if (value.match(pattern) !== null) {
                 if (!((+value.split(':')[1]) % 5 === 0)) {
-                    return 'Please enter Recommended Hours in the mutiples of 5 like 10:05, 10:10';
+                    return 'Time should be in mutiples of 5 like 10:05, 10:10';
                 }
                 return '';
             } else {
-                return 'Please enter a valid pattern like : 04:03'
+                return 'Please enter a valid pattern like : 10:05'
             }
         }
         return `${label[name]} is required.`
@@ -109,7 +109,8 @@ const AddEditMile = (props: any) => {
                     name: editItem.milestoneName,
                     isPhoto: editItem.isPhotoevidence,
                     duration: renderTimeWithCustomFormat(editItem.fromDate, editItem.toDate, '', ['DD MMM', 'DD MMM YY']),
-                    recommended: editItem?.recommendedHours
+                    recommended: editItem?.recommendedHours,
+                    status: editItem?.status
                 });
 
                 setCalender({
@@ -407,7 +408,8 @@ const AddEditMile = (props: any) => {
                                 onClick={() => {
                                     let description: any = '';
                                     if (Object.values(changesFor).includes(true)) {
-                                        description = `This job has Milestones change request with changes in ${changesFor?.name ? 'Milestone Name, ' : ''}${changesFor?.isPhoto ? 'Photo evidence required, ' : ''}${changesFor?.duration ? 'Duration of Milestone, ' : ''}${changesFor?.recommended ? 'Recommended Hours ' : ''}.`;
+                                        // description = `This job has Milestones change request with changes in ${changesFor?.name ? 'Milestone Name, ' : ''}${changesFor?.isPhoto ? 'Photo evidence required, ' : ''}${changesFor?.duration ? 'Duration of Milestone, ' : ''}${changesFor?.recommended ? 'Recommended Hours ' : ''}.`;
+                                        description = `${stateData.name} details are updated.`;
                                     }
                                     console.log({ changesFor })
                                     if (props.editMile !== '') {
@@ -419,7 +421,7 @@ const AddEditMile = (props: any) => {
                                                 recommendedHours: stateData.recommended,
                                                 fromDate: calenderItems.startDate,
                                                 toDate: calenderItems.endDate,
-                                                description: description
+                                                description: description,
                                             })
                                         }
                                     } else {

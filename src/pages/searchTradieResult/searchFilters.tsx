@@ -211,14 +211,17 @@ const SearchFilter = (props: any) => {
 
     const showResultSearch = () => {
         if (!sortByFilter?.tradeId?.length) {
-            setShowToast(true, 'Please select atleast one field');
-            return;
+            updateOnChange();
+            sortByFilterClose();
+            setFilterEnable(false);
+            return
         }
 
-        // if (!sortByFilter?.specializationId?.length) {
-        //     setShowToast(true, 'Please select all fields.');
+        // if (!sortByFilter?.tradeId?.length) {
+        //     setShowToast(true, 'Please select atleast one field');
         //     return;
         // }
+
         updateOnChange();
         sortByFilterClose();
         setFilterEnable(true);
@@ -320,6 +323,21 @@ const SearchFilter = (props: any) => {
         }
     }
 
+    const checksForActive = ({ checkIfAllSelected, sortByFilter }: any) => {
+
+        if(sortByFilter?.allSpecializationClicked){
+            return true
+        }
+
+        if (sortByFilter?.specializationId?.length) {
+            return false;
+        }
+
+        if (checkIfAllSelected || sortByFilter?.tradeId?.length) {
+            return true;
+        }
+    }
+
     return (
         <div className="filters_wrapr">
             {renderFilterButtons()}
@@ -384,9 +402,14 @@ const SearchFilter = (props: any) => {
                                 </div>
                                 <div className="tags_wrap">
                                     <ul>
+                                        {console.log({
+                                            specializationList,
+                                            checkIfAllSelected,
+                                            sortByFilter: sortByFilter.allSpecializationClicked
+                                        })}
                                         {specializationList?.length > 0 &&
                                             <li
-                                                className={checkIfAllSelected || sortByFilter.allSpecializationClicked ? 'selected' : ''}
+                                                className={checksForActive({ checkIfAllSelected, sortByFilter }) ? 'selected' : ''}
                                                 // className={sortByFilter.allSpecializationClicked ? 'selected' : ''}
                                                 onClick={() => {
                                                     let items: any = props.tradeListData.find((dt: any) => dt._id == sortByFilter.tradeId);

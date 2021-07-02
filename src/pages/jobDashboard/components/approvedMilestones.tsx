@@ -1,29 +1,63 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
-import { format } from 'date-fns';
+import { renderTime } from '../../../utils/common';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
-import waiting from '../../../assets/images/exclamation.png';
 import noDataFound from "../../../assets/images/no-search-data.png";
-import { renderTime } from '../../../utils/common';
 
 interface Proptypes {
   loading: boolean;
-  getApprovedMilestoneList: (page: number) => void,
+  newJobsCount: number,
   approvedMilestoneList: Array<any>,
+  getApprovedMilestoneList: (page: number) => void,
+  resetApprovedMilestoneList: () => void,
 };
 
-const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilestoneList }: Proptypes) => {
+const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilestoneList, newJobsCount, resetApprovedMilestoneList }: Proptypes) => {
+  const [jobList, setJobList] = useState<Array<any>>([]);
+  const [pageNo, setPageNo] = useState<number>(1);
+  const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
+
+  let totalJobsCount: number = newJobsCount;
+  console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
+
   useEffect(() => {
-    getApprovedMilestoneList(1);
-  }, [getApprovedMilestoneList]);
+    callJobList();
+
+    return () => resetApprovedMilestoneList();
+  }, []);
+
+  const callJobList = async () => {
+    if (newJobsCount && jobList.length >= totalJobsCount) {
+      setHasMoreItems(false);
+      return;
+    }
+    getApprovedMilestoneList(pageNo);
+  }
+
+  useEffect(() => {
+    if (approvedMilestoneList.length) {
+      const allJobs = [...jobList, ...approvedMilestoneList];
+      console.log(jobList, "jobList", approvedMilestoneList, "props.approvedMilestoneList", allJobs, "allJobs");
+      setJobList(allJobs);
+      setPageNo(pageNo + 1);
+      if (approvedMilestoneList.length < 10) { setHasMoreItems(false); }
+    }
+  }, [approvedMilestoneList]);
 
   return (
-    <>
-      {/* Approved Milestones */}
-      <span className="sub_title">Approved Milestones</span>
-      <div className="flex_row tradies_row">
-        {approvedMilestoneList.length ? approvedMilestoneList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
+    <InfiniteScroll
+      dataLength={jobList.length}
+      next={callJobList}
+      hasMore={hasMoreItems}
+      loader={<h4></h4>}
+    >
+      <div className="detail_col">
+        <span className="sub_title">Approved Milestones</span>
+        <div className="flex_row tradies_row">
+          {jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
             <div key={jobId} className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
@@ -45,7 +79,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                     <li className="icon location line-1">{locationName}</li>
                     <li className="icon calendar">{timeLeft}</li>
                   </ul>
-                </div>  
+                </div>
                 <div className="job_progress_wrap" id="scroll-progress-bar">
                   <div className="progress_wrapper">
                     <span className="completed-digit" id="digit-progress">
@@ -69,17 +103,17 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                 </div>
               </div>
             </div>
-        )) : !loading && (
-          <div className="no_record  m-t-vh">
-            <figure className="no_img">
-              <img src={noDataFound} alt="data not found" />
-            </figure>
-            <span>No Data Found</span>
-          </div>
-        )}
+          )) : !loading && (
+            <div className="no_record  m-t-vh">
+              <figure className="no_img">
+                <img src={noDataFound} alt="data not found" />
+              </figure>
+              <span>No Data Found</span>
+            </div>
+          )}
+        </div>
       </div>
-      {/* Approved Milestones close */}
-    </>
+    </InfiniteScroll>
   );
 };
 

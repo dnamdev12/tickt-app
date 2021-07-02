@@ -81,11 +81,12 @@ const Vouchers = (props: any) => {
                         id={id}
                         closeToggle={closeToggle}
                     />
-                    {storageService.getItem('userType') === 2 && <AddVoucherModal
-                        toggleProps={toggle}
-                        id={id}
-                        closeToggle={closeToggle}
-                    />}
+                    {storageService.getItem('userType') === 2 &&
+                        <AddVoucherModal
+                            toggleProps={toggle}
+                            id={id}
+                            closeToggle={closeToggle}
+                        />}
 
                     <div className="flex_row">
                         <div className="flex_col_sm_6">

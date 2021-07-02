@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import templateImage from '../../../assets/images/thanks-bg.jpg';
+import { setLoading, setShowToast } from '../../../redux/common/actions';
 
 interface Propstype {
     history: any,
@@ -10,6 +11,7 @@ interface Propstype {
 }
 
 const SuccessPage = (props: Propstype) => {
+    const [isLoad, setImageLoad] = useState(true);
     const goToLogin = () => {
         if (props.showModal) {
             props.modalUpdateSteps(0)
@@ -19,10 +21,24 @@ const SuccessPage = (props: Propstype) => {
         props.history.push('/login')
     }
 
+
+    useEffect(() => { setLoading(true) }, [])
+
+    useEffect(() => {
+        if (!isLoad) { setLoading(false) }
+    }, [isLoad])
+
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={templateImage} alt="template-image" loading="eager" />
+                <img
+                    src={templateImage}
+                    alt="template"
+                    loading="eager"
+                    onLoad={() => {
+                        setImageLoad(false)
+                    }}
+                />
 
                 <div className="short_info">
                     <figure className="logo_img">

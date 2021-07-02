@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import Constants from '../../../../../utils/constants';
+import Constants from '../../utils/constants';
 import { useDetectClickOutside } from 'react-detect-click-outside';
-import { deleteRecentSearch } from '../../../../../redux/homeSearch/actions';
-import { setShowToast, setLoading } from '../../../../../redux/common/actions';
+import { deleteRecentSearch } from '../../redux/homeSearch/actions';
+import { setShowToast } from '../../redux/common/actions';
 // @ts-ignore
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
-import regex from '../../../../../utils/regex';
 // @ts-ignore
 import { format, differenceInCalendarYears } from 'date-fns';
 // @ts-ignore
@@ -17,13 +16,13 @@ import 'react-date-range/dist/theme/default.css';
 import Geocode from "react-geocode";
 
 
-import Searchicon from "../../../../../assets/images/main-search.png";
-import search from "../../../../../assets/images/ic-search.png";
-import Location from "../../../../../assets/images/ic-location.png";
-import cross from "../../../../../assets/images/close-black.png";
-import icgps from "../../../../../assets/images/ic-gps.png";
-import residential from "../../../../../assets/images/ic-residential.png";
-import close from "../../../../../assets/images/icon-close-1.png";
+import Searchicon from "../../assets/images/main-search.png";
+import search from "../../assets/images/ic-search.png";
+import Location from "../../assets/images/ic-location.png";
+import cross from "../../assets/images/close-black.png";
+import icgps from "../../assets/images/ic-gps.png";
+import residential from "../../assets/images/ic-residential.png";
+import close from "../../assets/images/icon-close-1.png";
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -32,23 +31,21 @@ interface PropsType {
     history: any,
     location?: any,
     paramsData?: any,
-    currentCoordinates: any,
+    currentCoordinates?: any,
     searchJobListData: Array<any>,
     recentSearchJobData: Array<any>,
     recentLocationData: Array<any>,
     homeSearchJobData: Array<any>,
-    cleanFiltersData?: boolean,
-    setTradieHomeData: (data: any) => void,
+    setTradieHomeData?: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
-    cleanFiltersHandler?: (data: any) => void,
     getRecentSearchList: () => void,
     getRecentLocationList: () => void,
-    refreshParams?: () => void,
-    handleChangeToggle?: (data: any) => void,
+    refreshParams?: (data: any) => void,
+    handleChangeToggle?: (data: boolean) => void,
 }
 
-const BannerSearch = (props: PropsType) => {
+const TradieBannerSearch = (props: PropsType) => {
     const { paramsData } = props;
     const [stateData, setStateData] = useState<any>({
         page: 1,
@@ -74,7 +71,7 @@ const BannerSearch = (props: PropsType) => {
         endDate: '',
     });
 
-    const [errors, setErrors] = useState<any>({});
+    // const [errors, setErrors] = useState<any>({});
     const [inputFocus1, setInputFocus1] = useState<boolean>(false)
     const [inputFocus2, setInputFocus2] = useState<boolean>(false)
     const [inputFocus3, setInputFocus3] = useState<boolean>(false)
@@ -95,7 +92,7 @@ const BannerSearch = (props: PropsType) => {
         props.getRecentSearchList();
         props.getRecentLocationList();
         getRecentLocationData();
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (paramsData) {
@@ -121,7 +118,7 @@ const BannerSearch = (props: PropsType) => {
             }
             if (paramsData?.from_date || paramsData?.to_date) {
                 const differenceInYears: number = differenceInCalendarYears(new Date(), paramsData?.to_date);
-                if (differenceInYears != 0) {
+                if (differenceInYears !== 0) {
                     data.startDate = moment(paramsData?.from_date).format('DD MMM YYYY');
                     data.endDate = moment(paramsData?.to_date).format('DD MMM YYYY');
                 } else {
@@ -139,7 +136,7 @@ const BannerSearch = (props: PropsType) => {
             const differenceInYears: number = differenceInCalendarYears(new Date(), calenderRange1.endDate);
             var startDate: string;
             var endDate: string;
-            if (differenceInYears != 0) {
+            if (differenceInYears !== 0) {
                 startDate = format(new Date(calenderRange1.startDate), 'dd MMM yyyy');
                 endDate = format(new Date(calenderRange1.endDate), 'dd MMM yyyy');
             } else {
@@ -206,12 +203,7 @@ const BannerSearch = (props: PropsType) => {
         setCalenderRange1(item.selection1);
     };
 
-    console.log(stateData, "stateData", recentLocation, "recentLocation")
-
-    const checkInputValidation = (e: any) => {
-        const alphaRegex = new RegExp(regex.alphaSpecial);
-        return alphaRegex.test(e.target.value);
-    }
+    console.log(stateData, "stateData", recentLocation, "recentLocation");
 
     const handleJobChange = (e: any) => {
         e.target.value.length >= 3 && props.getSearchJobList(e.target.value);
@@ -232,7 +224,7 @@ const BannerSearch = (props: PropsType) => {
     const searchedJobClicked = (item: any, isRecentSearchesClicked?: string) => {
         setStateData((prevData: any) => ({ ...prevData, searchedJob: item.name, tradeId: [item._id], specializationId: [item.specializationsId], isSearchedJobSelected: true, isFirstJobSelectedCount: 1 }));
         setInputFocus1(false);
-        if (isRecentSearchesClicked == 'isRecentSearchesClicked') {
+        if (isRecentSearchesClicked === 'isRecentSearchesClicked') {
             const newSearchData = {
                 tradeId: [item._id],
                 specializationId: [item.specializationsId],
@@ -347,8 +339,6 @@ const BannerSearch = (props: PropsType) => {
         const showPosition = (position: any) => {
             const lat = position.coords.latitude;
             const long = position.coords.longitude;
-            // const lat = props.currentCoordinates?.coordinates[1] ? props.currentCoordinates?.coordinates[1] : paramsData?.defaultLat ? paramsData?.defaultLat : position.coords.latitude;
-            // const long = props.currentCoordinates?.coordinates[0] ? props.currentCoordinates?.coordinates[0] : paramsData?.defaultLong ? paramsData?.defaultLong : position.coords.longitude;
             var latlng = new google.maps.LatLng(lat, long);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, function (results, status) {
@@ -356,8 +346,8 @@ const BannerSearch = (props: PropsType) => {
                 if (status !== google.maps.GeocoderStatus.OK) {
                     alert(status);
                 }
-                if (status == google.maps.GeocoderStatus.OK) {
-                    const { city, state, country } = filterFromAddress(results);
+                if (status === google.maps.GeocoderStatus.OK) {
+                    const { country } = filterFromAddress(results);
                     if (["australia", "au"].includes(country)) {
                         setInputFocus2(false);
                         setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: results[0].formatted_address, isMapLocationSelected: true, locationDenied: false }));
@@ -370,7 +360,7 @@ const BannerSearch = (props: PropsType) => {
         }
 
         const showError = (error: any) => {
-            if (error.code == error.PERMISSION_DENIED) {
+            if (error.code === error.PERMISSION_DENIED) {
                 setStateData((prevData: any) => ({ ...prevData, bannerLocation: '', locationDenied: true }));
             }
         }
@@ -381,7 +371,7 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const validateForm = (type?: string) => {
-        if (type == 'isRecentSearchesClicked' && props.history?.location?.pathname == '/') {
+        if (type === 'isRecentSearchesClicked' && props.history?.location?.pathname === '/') {
             return true;
         }
         const newErrors: any = {};
@@ -390,16 +380,10 @@ const BannerSearch = (props: PropsType) => {
         } else if (!stateData?.searchedJob) {
             newErrors.searchedJob = Constants.errorStrings.bannerSearchJobEmpty;
         }
-        // else {
-        //     const searchJobRegex = new RegExp(regex.alphaNumeric);
-        //     if (!searchJobRegex.test(stateData.searchedJob.trim())) {
-        //         newErrors.searchedJob = Constants.errorStrings.bannerSearchJob;
-        //     }
-        // }
         if (!stateData?.isMapLocationSelected && stateData?.selectedMapLocation) {
             newErrors.selectedMapLocation = Constants.errorStrings.bannerSearchLocation;
         }
-        if (type == 'showErrorToast') {
+        if (type === 'showErrorToast') {
             return newErrors;
         }
         // setErrors(newErrors);
@@ -460,15 +444,12 @@ const BannerSearch = (props: PropsType) => {
             }
             const newUrl = url.slice(0, url.length - 1)
             console.log(newUrl, "newUrl", data, "data", newData, "newData");
-            if (props.history?.location?.pathname == '/') {
+            if (props.history?.location?.pathname === '/') {
                 props.history.push(newUrl);
             } else {
                 props.history.replace(newUrl);
                 if (props?.refreshParams) {
-                    props?.refreshParams();
-                }
-                if (!props.cleanFiltersData && props?.cleanFiltersHandler) {
-                    props?.cleanFiltersHandler(true);
+                    props?.refreshParams(data);
                 }
             }
         }
@@ -667,4 +648,4 @@ const BannerSearch = (props: PropsType) => {
     )
 }
 
-export default BannerSearch;
+export default TradieBannerSearch;

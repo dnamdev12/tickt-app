@@ -20,6 +20,8 @@ export const postHomeSearchData = (jobData: object) => ({ type: actionTypes.POST
 
 export const resetHomeSearchJobData = () => ({ type: actionTypes.RESET_HOME_SEARCH_DATA });
 
+export const resetViewNearByJobData = () => ({ type: actionTypes.RESET_VIEW_NEARBY_JOBS });
+
 export const getHomeJobDetails = async (data: any) => {
     setSkeletonLoading(true);
     const response: FetchResponse = await NetworkOps.get(Urls.homeJobDetails + `?jobId=${data.jobId}&tradeId=${data.tradeId}&specializationId=${data.specializationId}`);
@@ -100,6 +102,16 @@ export const milestoneAcceptOrDecline = async (data: any) => {
     const response: FetchResponse = await NetworkOps.putToJson(Urls.milestoneApproveDecline, data)
     setLoading(false);
     setShowToast(true, response.message);
+    if (response.status_code === 200) {
+        return { success: true, data: response.result };
+    }
+    return { success: false, data: response.result };
+}
+
+
+export const searchTradies = async (data: any) => {
+    
+    const response: FetchResponse = await NetworkOps.postToJson(Urls.homeSearch, data)
     if (response.status_code === 200) {
         return { success: true, data: response.result };
     }

@@ -69,33 +69,7 @@ class NeedApproval extends Component<Props, State> {
         }
     }
 
-    setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants });
-
-
-    // renderTime = ({ fromDate, toDate }: any) => {
-    //     if (moment(fromDate).isValid() && !moment(toDate).isValid()) {
-    //         return `${moment(fromDate).format('DD MMM')}`
-    //     }
-
-    //     if (moment(fromDate).isValid() && moment(toDate).isValid()) {
-    //         let yearEnd = moment().endOf("year").toISOString();
-    //         let monthEnd = moment(fromDate).endOf("month").toISOString();
-
-    //         let item: any = moment(toDate).diff(moment(fromDate), 'months', true);
-    //         let item_year: any = moment(toDate).diff(moment(fromDate), 'years', true);
-
-    //         let monthDiff = parseInt(item.toString());
-    //         let yearDiff = parseInt(item_year.toString());
-
-    //         if (yearDiff > 0 || moment(toDate).isAfter(yearEnd) || moment(toDate).isAfter(yearEnd)) {
-    //             return `${moment(fromDate).format('DD MMM YY')} - ${moment(toDate).format('DD MMM YY')}`
-    //         }
-    //         if (monthDiff > 0 || moment(toDate).isAfter(monthEnd)) {
-    //             return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD MMM')}`
-    //         }
-    //         return `${moment(fromDate).format('DD MMM')} - ${moment(toDate).format('DD')}`
-    //     }
-    // }
+    setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants })
 
     resetStateLocal = () => {
         let activeType = this.props.activeType;
@@ -121,7 +95,7 @@ class NeedApproval extends Component<Props, State> {
                 />)
         }
 
-        if(this?.props?.isLoading){ 
+        if (this?.props?.isLoading) {
             return null;
         }
 
@@ -156,7 +130,13 @@ class NeedApproval extends Component<Props, State> {
                             <div className="flex_col_sm_6">
                                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                     <span
-                                        onClick={() => { this.redirectToInfo({ jobId, status }) }}
+                                        onClick={() => {
+                                            this.setState({
+                                                localState: true,
+                                                selectedIndex: index
+                                            })
+                                            // this.redirectToInfo({ jobId, status }) 
+                                        }}
                                         className="more_detail circle">
                                     </span>
                                     <div className="user_wrap">

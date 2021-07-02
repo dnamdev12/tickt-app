@@ -144,15 +144,16 @@ const MarkMilestone = ({
       return 'Time Spent is required.';
     }
 
-    let pattern =
-      '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
+    let pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
     if (value.match(pattern) !== null) {
       if (!((+value.split(':')[1]) % 5 === 0)) {
-        return 'Please enter time in the mutiples of 5 like 10:05, 10:10';
+        return 'Time should be in mutiples of 5 like 10:05, 10:10';
       }
       return '';
     }
-    return 'Hours should be in hh:mm format.';
+    return 'Please enter a valid pattern like : 10:05';
+    // '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
+    // return 'Hours should be in hh:mm format.';
   };
 
   const errorLabel = {
@@ -247,122 +248,142 @@ const MarkMilestone = ({
   }
 
   let page = null;
-  switch (step) {
-    case 1:
-      page = (
-        <div className="flex_row">
-          <div className="flex_col_sm_6">
-            <div className="relate">
-              <button
-                className="back"
-                onClick={() => history.push('/active-jobs')}
-              ></button>
-              <span className="xs_sub_title">{jobName}</span>
-              <span className="dot_menu">
-                <img src={editIconBlue} alt="edit" />
-                <div className="edit_menu">
-                  <ul>
-                    <li
-                      onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
-                      className="icon lodge">Lodge dispute</li>
-                    <li
-                      onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
-                      className="icon delete">Cancel job</li>
-                  </ul>
-                </div>
-              </span>
-            </div>
-            {/* <span className="sub_title">Job Milestones</span> */}
-            <p className="commn_para">
-              Your job point of contact has indicated they want to be notified
-              when you reach the following milestones. Tap the milestone and
-              Submit when a milestone is completed
-            </p>
+  const renderSteps = () => {
+    switch (step) {
+      case 1:
+        return page = (
+          <div className="flex_row">
+            <div className="flex_col_sm_6">
+              <div className="relate">
+                <button
+                  className="back"
+                  onClick={() => history.push('/active-jobs')}
+                ></button>
+                <span className="xs_sub_title">{jobName}</span>
+                <span className="dot_menu">
+                  <img src={editIconBlue} alt="edit" />
+                  <div className="edit_menu">
+                    <ul>
+                      <li
+                        onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
+                        className="icon lodge">Lodge dispute</li>
+                      <li
+                        onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
+                        className="icon delete">Cancel job</li>
+                    </ul>
+                  </div>
+                </span>
+              </div>
+              {/* <span className="sub_title">Job Milestones</span> */}
+              <p className="commn_para">
+                Your job point of contact has indicated they want to be notified
+                when you reach the following milestones. Tap the milestone and
+                Submit when a milestone is completed
+              </p>
 
-            {milestoneDeclineData.multipleDeclineListCount > 1 && <div className="declined_info hvr-ripple-out">
-              <span>{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
-            </div>}
+              {milestoneDeclineData.multipleDeclineListCount > 1 && <div className="declined_info hvr-ripple-out">
+                <span>{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
+              </div>}
 
-            <ul className="milestones_check">
-              {milestones?.map(
-                (
-                  {
-                    milestoneId,
-                    milestoneName,
-                    isPhotoevidence,
-                    status,
-                    fromDate,
-                    toDate,
-                    declinedReason,
-                    declinedCount,
-                  },
-                  index
-                ) => {
-                  const prevMilestoneStatus = milestones[index - 1]?.status;
-                  const isActive =
-                    status === 0 &&
-                    // completed or approved
-                    ([1, 2].includes(prevMilestoneStatus) ||
-                      prevMilestoneStatus === undefined);
-                  const isDeclined = status === 3;
+              <ul className="milestones_check">
+                {milestones?.map(
+                  (
+                    {
+                      milestoneId,
+                      milestoneName,
+                      isPhotoevidence,
+                      status,
+                      fromDate,
+                      toDate,
+                      declinedReason,
+                      declinedCount,
+                    },
+                    index
+                  ) => {
+                    const prevMilestoneStatus = milestones[index - 1]?.status;
+                    const isActive =
+                      status === 0 &&
+                      // completed or approved
+                      ([1, 2].includes(prevMilestoneStatus) ||
+                        prevMilestoneStatus === undefined);
+                    const isDeclined = status === 3;
 
-                  return (
-                    <li
-                      key={milestoneId}
-                      className={
-                        [1, 2].includes(status)
-                          ? `check`
-                          : isActive
-                            ? 'active'
-                            : status === 3
-                              ? 'declined'
-                              : 'disabled'
-                      }
-                    >
-                      <div className="circle_stepper" onClick={() => setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))}>
-                        <span></span>
-                      </div>
-                      <div className="info">
-                        <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
-                        {isPhotoevidence && (
-                          <span>Photo evidence required</span>
-                        )}
-                        <span>
-                          {renderTime(fromDate, toDate)}
-                        </span>
-                      </div>
-                      {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
-                        <>
-                          <div className="decline_reason">
-                            <label className="form_label">Decline reason:</label>
-                            <div className="text_field">
-                              <p className="commn_para">{declinedReason?.reason}</p>
-                            </div>
+                    return (
+                      <li
+                        key={milestoneId}
+                        className={
+                          [1, 2].includes(status)
+                            ? `check`
+                            : isActive
+                              ? 'active'
+                              : status === 3
+                                ? 'declined'
+                                : 'disabled'
+                        }
+                      >
+                        <div className="circle_stepper" onClick={() => setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))}>
+                          <span></span>
+                        </div>
+                        <div className="info">
+                          <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
+                          {isPhotoevidence && (
+                            <span>Photo evidence required</span>
+                          )}
+                          <span>
+                            {renderTime(fromDate, toDate)}
+                          </span>
+                        </div>
+                        {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
+                          <>
+                            <div className="decline_reason">
+                              <label className="form_label">Decline reason:</label>
+                              <div className="text_field">
+                                <p className="commn_para">{declinedReason?.reason}</p>
+                              </div>
 
-                            {declinedReason?.url?.length > 0 &&
-                              <Carousel
-                                className="decline_media"
-                                responsive={declinedImages}
-                                showDots={false}
-                                arrows={true}
-                              >
-                                {declinedReason?.url?.map((image: string) => {
-                                  return (
-                                    <div className="upload_img_video">
-                                      <figure className="img_video">
-                                        <img src={image} alt="image" />
-                                      </figure>
-                                    </div>)
-                                })}
-                              </Carousel>
-                            }
-                          </div>
-                          <button
-                            onClick={() => {
-                              if (declinedCount >= 5) {
-                                setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
-                                return;
+                              {declinedReason?.url?.length > 0 &&
+                                <Carousel
+                                  className="decline_media"
+                                  responsive={declinedImages}
+                                  showDots={false}
+                                  arrows={true}
+                                >
+                                  {declinedReason?.url?.map((image: string) => {
+                                    return (
+                                      <div className="upload_img_video">
+                                        <figure className="img_video">
+                                          <img src={image} alt="image" />
+                                        </figure>
+                                      </div>)
+                                  })}
+                                </Carousel>
                               }
+                            </div>
+                            <button
+                              onClick={() => {
+                                if (declinedCount >= 5) {
+                                  setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
+                                  return;
+                                }
+                                setMilestoneIndex(index);
+
+                                if (index === milestones?.length - 1) {
+                                  setIsLastMilestone(true);
+                                }
+
+                                if (isPhotoevidence) {
+                                  setStep(2);
+                                } else {
+                                  setStep(3);
+                                }
+                              }}
+                              className={`fill_btn full_btn btn-effect ${milestoneDeclineData.prevMilestoneDeclineId !== milestoneId ? 'disable_btn' : ''}`} >Remark as Complete</button>
+                          </>
+                        )}
+                        {isActive && (
+                          <button
+                            className="fill_btn full_btn btn-effect"
+                            onClick={() => {
                               setMilestoneIndex(index);
 
                               if (index === milestones?.length - 1) {
@@ -375,346 +396,332 @@ const MarkMilestone = ({
                                 setStep(3);
                               }
                             }}
-                            className={`fill_btn full_btn btn-effect ${milestoneDeclineData.prevMilestoneDeclineId !== milestoneId ? 'disable_btn' : ''}`} >Remark as Complete</button>
-                        </>
-                      )}
-                      {isActive && (
-                        <button
-                          className="fill_btn full_btn btn-effect"
-                          onClick={() => {
-                            setMilestoneIndex(index);
+                          >
+                            Done
+                          </button>
+                        )}
 
-                            if (index === milestones?.length - 1) {
-                              setIsLastMilestone(true);
-                            }
-
-                            if (isPhotoevidence) {
-                              setStep(2);
-                            } else {
-                              setStep(3);
-                            }
-                          }}
-                        >
-                          Done
-                        </button>
-                      )}
-
-                    </li>
-                  );
-                }
-              )}
-            </ul>
-          </div>
-          <div className="flex_col_sm_6 col_ruler">
-            <span className="sub_title">Posted by</span>
-            <div className="tradie_card posted_by view_more ">
-              <a href="javascript:void(0)" className="chat circle"></a>
-              <div className="user_wrap">
-                <figure className="u_img">
-                  <img src={builderImage || dummy} alt="traide-img" />
-                </figure>
-                <div className="details">
-                  <span className="name">{builderName}</span>
-                  {/* <span className="prof">Project Manager</span> */}
-                  <span className="rating">{reviews} reviews</span>
+                      </li>
+                    );
+                  }
+                )}
+              </ul>
+            </div>
+            <div className="flex_col_sm_6 col_ruler">
+              <span className="sub_title">Posted by</span>
+              <div className="tradie_card posted_by view_more ">
+                <a href="javascript:void(0)" className="chat circle"></a>
+                <div className="user_wrap" onClick={() => history.push(`/builder-info?builderId=${builderId}`)}>
+                  <figure className="u_img">
+                    <img src={builderImage || dummy} alt="traide-img" />
+                  </figure>
+                  <div className="details">
+                    <span className="name">{builderName}</span>
+                    {/* <span className="prof">Project Manager</span> */}
+                    <span className="rating">{reviews} reviews</span>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div className="relate">
-              <span className="sub_title">Job details</span>
-              <span
-                className="edit_icon"
-                title="More"
-                onClick={() =>
-                  history.push(
-                    `/job-details-page?jobId=${params.jobId}&redirect_from=jobs&isActive=on`
-                  )
-                }
-              >
-                <img src={more} alt="more" />
-              </span>
+              <div className="relate">
+                <span className="sub_title">Job details</span>
+                <span
+                  className="edit_icon"
+                  title="More"
+                  onClick={() =>
+                    history.push(
+                      `/job-details-page?jobId=${params.jobId}&redirect_from=jobs&isActive=on`
+                    )
+                  }
+                >
+                  <img src={more} alt="more" />
+                </span>
+              </div>
             </div>
           </div>
-        </div>
-      );
-      break;
-    case 2:
-      page = (
-        <UploadMedia
-          jobName={jobName}
-          title="Photo required"
-          para="Your job point of contact has indicated they want to be notified when you reach the following milestones. Tap the milestone and Submit when a milestone is completed"
-          stepCompleted={stepCompleted.includes(2)}
-          data={data}
-          handleStepBack={() => setStep(1)}
-          handleStepForward={() => { }}
-          handleStepComplete={(stepData: any) => {
-            setData((prevData: any) => ({
-              ...prevData,
-              ...stepData,
-            }));
+        );
+        break;
+      case 2:
+        return page = (
+          <UploadMedia
+            jobName={jobName}
+            title="Photo required"
+            para="Your job point of contact has indicated they want to be notified when you reach the following milestones. Tap the milestone and Submit when a milestone is completed"
+            stepCompleted={stepCompleted.includes(2)}
+            data={data}
+            handleStepBack={() => setStep(1)}
+            handleStepForward={() => { }}
+            handleStepComplete={(stepData: any) => {
+              setData((prevData: any) => ({
+                ...prevData,
+                ...stepData,
+              }));
 
-            setStepCompleted((prevValue) => prevValue.concat([2]));
-            setStep(3);
-          }}
-          hasDescription
-        />
-      );
-      break;
-    case 3:
-      page = (
-        <div className="flex_row">
-          <div className="flex_col_sm_8">
-            <div className="relate">
-              <button
-                className="back"
-                onClick={() => {
-                  if (milestones[milestoneIndex]?.isPhotoevidence) {
-                    setStep(2);
-                  } else {
-                    setStep(1);
-                  }
-                }}
-              ></button>
-              <span className="xs_sub_title">{jobName}</span>
-            </div>
-            <span className="sub_title">Worked hours in this milestone</span>
-            {/* <p className="commn_para">
+              setStepCompleted((prevValue) => prevValue.concat([2]));
+              setStep(3);
+            }}
+            hasDescription
+          />
+        );
+        break;
+      case 3:
+        return page = (
+          <div className="flex_row">
+            <div className="flex_col_sm_8">
+              <div className="relate">
+                <button
+                  className="back"
+                  onClick={() => {
+                    if (milestones[milestoneIndex]?.isPhotoevidence) {
+                      setStep(2);
+                    } else {
+                      setStep(1);
+                    }
+                  }}
+                ></button>
+                <span className="xs_sub_title">{jobName}</span>
+              </div>
+              <span className="sub_title">Worked hours in this milestone</span>
+              {/* <p className="commn_para">
               Submit your actual hours worked to calculate any variation from
               the estimateed hours. The amount will be approved by the Builder
             </p> */}
 
-            <p className="commn_para">
-              The amount paid will be recalculated based on approval of the
-              actual hours by the Builder
-            </p>
+              <p className="commn_para">
+                The amount paid will be recalculated based on approval of the
+                actual hours by the Builder
+              </p>
 
-            <div className="form_field">
-              <label className="form_label">Time Spent</label>
-              <div className="text_field time_spent">
-                <input
-                  type="text"
-                  placeholder="hh:mm"
-                  name="actualHours"
-                  value={data.actualHours}
-                  onChange={handleChange}
-                  maxLength={5}
-                />
-                <span className="detect_icon">hours</span>
+              <div className="form_field">
+                <label className="form_label">Time Spent</label>
+                <div className="text_field time_spent">
+                  <input
+                    type="text"
+                    placeholder="hh:mm"
+                    name="actualHours"
+                    value={data.actualHours}
+                    onChange={handleChange}
+                    maxLength={5}
+                  />
+                  <span className="detect_icon">hours</span>
+                </div>
+                <span className="error_msg">{errors.actualHours}</span>
               </div>
-              <span className="error_msg">{errors.actualHours}</span>
-            </div>
-            <button
-              className="fill_btn full_btn btn-effect"
-              onClick={() => {
-                setStepCompleted((prevValue) => prevValue.concat([3]));
+              <button
+                className="fill_btn full_btn btn-effect"
+                onClick={() => {
+                  setStepCompleted((prevValue) => prevValue.concat([3]));
 
-                const error = validateActualHours(data.actualHours);
-                if (error) {
-                  setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    actualHours: error,
-                  }));
-                } else {
-                  setStep(4);
-                }
-              }}
-            >
-              Submit
-            </button>
-          </div>
-        </div>
-      );
-      break;
-    case 4:
-      page = (
-        <div className="flex_row">
-          <div className="flex_col_sm_7">
-            <div className="relate">
-              <button className="back" onClick={() => setStep(3)}></button>
-              <span className="xs_sub_title">{jobName}</span>
+                  const error = validateActualHours(data.actualHours);
+                  if (error) {
+                    setErrors((prevErrors) => ({
+                      ...prevErrors,
+                      actualHours: error,
+                    }));
+                  } else {
+                    setStep(4);
+                  }
+                }}
+              >
+                Submit
+              </button>
             </div>
-            <span className="sub_title">
-              {isLastMilestone ? 'Job Complete' : 'Add payment details'}
-            </span>
-            <p className="commn_para">
-              {isLastMilestone
-                ? 'Please enter your prefered payment method below so your point of contact can organise payment'
-                : 'You need to add your bank account details for payment from the builder after approving this milestone'}
-            </p>
-            {isLastMilestone && (
-              <div className="f_spacebw total_payment">
-                <span>Total payment</span>
-                <span>${totalAmount?.toFixed(2)}</span>
+          </div>
+        );
+        break;
+      case 4:
+        return page = (
+          <div className="flex_row">
+            <div className="flex_col_sm_7">
+              <div className="relate">
+                <button className="back" onClick={() => setStep(3)}></button>
+                <span className="xs_sub_title">{jobName}</span>
               </div>
-            )}
-            <button className="fill_grey_btn bank_btn">
-              {data.userId && <img src={check} alt="check" />} Bank account
-            </button>
-
-          </div>
-          <div className="flex_col_sm_9">
-            <div className="form_field">
-              <span className="payment_note">
-                Tickt does not store your payment information.{' '}
+              <span className="sub_title">
+                {isLastMilestone ? 'Job Complete' : 'Add payment details'}
               </span>
               <p className="commn_para">
-                {' '}
-                Tickt does not handle payment for jobs, we only facilitate
-                communication between tradies and builders. If you have problems
-                receiving your payment, please contact your builder.
+                {isLastMilestone
+                  ? 'Please enter your prefered payment method below so your point of contact can organise payment'
+                  : 'You need to add your bank account details for payment from the builder after approving this milestone'}
               </p>
+              {isLastMilestone && (
+                <div className="f_spacebw total_payment">
+                  <span>Total payment</span>
+                  <span>${totalAmount?.toFixed(2)}</span>
+                </div>
+              )}
+              <button className="fill_grey_btn bank_btn">
+                {data.userId && <img src={check} alt="check" />} Bank account
+              </button>
+
             </div>
-            <button className="fill_btn full_btn btn-effect" onClick={() => setStep(5)}>
-              {data.userId ? 'Continue' : 'Add Details'}
-            </button>
+            <div className="flex_col_sm_9">
+              <div className="form_field">
+                <span className="payment_note">
+                  Tickt does not store your payment information.{' '}
+                </span>
+                <p className="commn_para">
+                  {' '}
+                  Tickt does not handle payment for jobs, we only facilitate
+                  communication between tradies and builders. If you have problems
+                  receiving your payment, please contact your builder.
+                </p>
+              </div>
+              <button className="fill_btn full_btn btn-effect" onClick={() => setStep(5)}>
+                {data.userId ? 'Continue' : 'Add Details'}
+              </button>
+            </div>
           </div>
-        </div>
-      );
-      break;
-    case 5:
-      page = (
-        <div className="flex_row">
-          <div className="flex_col_sm_8">
-            <div className="relate">
-              <button className="back" onClick={() => setStep(4)}></button>
-              <span className="xs_sub_title">{jobName}</span>
-              {data?.userId && readOnly && (
-                <>
-                  {/* <span className="edit_icon" title="Edit">
+        );
+        break;
+      case 5:
+        return page = (
+          <div className="flex_row">
+            <div className="flex_col_sm_8">
+              <div className="relate">
+                <button className="back" onClick={() => setStep(4)}></button>
+                <span className="xs_sub_title">{jobName}</span>
+                {data?.userId && readOnly && (
+                  <>
+                    {/* <span className="edit_icon" title="Edit">
                     <img src={editIconBlue} alt="edit" onClick={() => setReadOnly(!readOnly)} />
                   </span>
                   <span className="edit_icon remove_icon" title="Remove" onClick={() => removeBankDetails()} >
                     <img src={removeIconBlue} alt="remove" />
                   </span> */}
-                  <div className="edit_delete">
-                    <span className="edit" title="Edit" onClick={() => setReadOnly(!readOnly)}></span>
-                    <span className="delete" title="Remove" onClick={() => removeBankDetails()}></span>
-                  </div>
-                </>
-              )}
-            </div>
-            <span className="sub_title">Payment Details</span>
-            <p className="commn_para">Enter your bank account details</p>
-
-            <div className="form_field">
-              <label className="form_label">Account Name</label>
-              <div className="text_field">
-                <input
-                  type="text"
-                  placeholder="Enter Account name"
-                  name="account_name"
-                  value={data.account_name}
-                  onChange={handleChange}
-                  maxLength={50}
-                  readOnly={readOnly}
-                />
+                    <div className="edit_delete">
+                      <span className="edit" title="Edit" onClick={() => setReadOnly(!readOnly)}></span>
+                      <span className="delete" title="Remove" onClick={() => removeBankDetails()}></span>
+                    </div>
+                  </>
+                )}
               </div>
-              <span className="error_msg">{errors.account_name}</span>
-            </div>
-            <div className="form_field">
-              <label className="form_label">Account Number</label>
-              <div className="text_field">
-                <input
-                  type="number"
-                  placeholder="Enter Account number"
-                  name="account_number"
-                  value={data.account_number}
-                  onChange={handleChange}
-                  maxLength={10}
-                  max={9999999999}
-                  readOnly={readOnly}
-                />
+              <span className="sub_title">Payment Details</span>
+              <p className="commn_para">Enter your bank account details</p>
+
+              <div className="form_field">
+                <label className="form_label">Account Name</label>
+                <div className="text_field">
+                  <input
+                    type="text"
+                    placeholder="Enter Account name"
+                    name="account_name"
+                    value={data.account_name}
+                    onChange={handleChange}
+                    maxLength={50}
+                    readOnly={readOnly}
+                  />
+                </div>
+                <span className="error_msg">{errors.account_name}</span>
               </div>
-              <span className="error_msg">{errors.account_number}</span>
-            </div>
-            <div className="form_field">
-              <label className="form_label">BSB Number</label>
-              <div className="text_field">
-                <input
-                  type="number"
-                  placeholder="Enter BSB number"
-                  name="bsb_number"
-                  value={data.bsb_number}
-                  onChange={handleChange}
-                  maxLength={6}
-                  max={999999}
-                  readOnly={readOnly}
-                />
+              <div className="form_field">
+                <label className="form_label">Account Number</label>
+                <div className="text_field">
+                  <input
+                    type="number"
+                    placeholder="Enter Account number"
+                    name="account_number"
+                    value={data.account_number}
+                    onChange={handleChange}
+                    maxLength={10}
+                    max={9999999999}
+                    readOnly={readOnly}
+                  />
+                </div>
+                <span className="error_msg">{errors.account_number}</span>
               </div>
-              <span className="error_msg">{errors.bsb_number}</span>
-            </div>
-            <button
-              className="fill_btn full_btn btn-effect"
-              onClick={() => {
-                setStepCompleted((prevValue) => prevValue.concat([5]));
+              <div className="form_field">
+                <label className="form_label">BSB Number</label>
+                <div className="text_field">
+                  <input
+                    type="number"
+                    placeholder="Enter BSB number"
+                    name="bsb_number"
+                    value={data.bsb_number}
+                    onChange={handleChange}
+                    maxLength={6}
+                    max={999999}
+                    readOnly={readOnly}
+                  />
+                </div>
+                <span className="error_msg">{errors.bsb_number}</span>
+              </div>
+              <button
+                className="fill_btn full_btn btn-effect"
+                onClick={() => {
+                  setStepCompleted((prevValue) => prevValue.concat([5]));
 
-                const hasErrors = [
-                  'account_name',
-                  'account_number',
-                  'bsb_number',
-                ].reduce((prevValue, name) => {
-                  const error = validateBankDetails(name, data[name]);
-                  setErrors((prevErrors) => ({
-                    ...prevErrors,
-                    [name]: error,
-                  }));
+                  const hasErrors = [
+                    'account_name',
+                    'account_number',
+                    'bsb_number',
+                  ].reduce((prevValue, name) => {
+                    const error = validateBankDetails(name, data[name]);
+                    setErrors((prevErrors) => ({
+                      ...prevErrors,
+                      [name]: error,
+                    }));
 
-                  return prevValue || error;
-                }, '');
+                    return prevValue || error;
+                  }, '');
 
-                const callback = (jobCompletedCount: number) => {
-                  if (isLastMilestone) {
-                    showJobCompletePage(jobCompletedCount);
-                  } else {
-                    setStepCompleted([]);
-                    setData(defaultData);
-                    showMilestoneCompletePage();
+                  const callback = (jobCompletedCount: number) => {
+                    if (isLastMilestone) {
+                      showJobCompletePage(jobCompletedCount);
+                    } else {
+                      setStepCompleted([]);
+                      setData(defaultData);
+                      showMilestoneCompletePage();
+                    }
+                  };
+
+                  const milestoneData = {
+                    evidence: milestones[milestoneIndex].isPhotoevidence ? data.urls : undefined,
+                    jobId: params.jobId,
+                    milestoneId: milestones[milestoneIndex].milestoneId,
+                    description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
+                    actualHours: data.actualHours,
+                    totalAmount: `${totalAmount?.toFixed(2)}`,
+                  };
+
+                  const updatedBankDetails = {
+                    account_name: data.account_name,
+                    account_number: data.account_number,
+                    bsb_number: data.bsb_number,
+                  };
+                  if (!hasErrors) {
+                    if (bankDetails.userId) {
+                      updateBankDetails(
+                        {
+                          userId: data.userId,
+                          ...updatedBankDetails,
+                        },
+                        milestoneData,
+                        callback
+                      );
+                    } else {
+                      addBankDetails(updatedBankDetails, milestoneData, callback);
+                    }
                   }
-                };
-
-                const milestoneData = {
-                  evidence: milestones[milestoneIndex].isPhotoevidence ? data.urls : undefined,
-                  jobId: params.jobId,
-                  milestoneId: milestones[milestoneIndex].milestoneId,
-                  description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
-                  actualHours: data.actualHours,
-                  totalAmount: `${totalAmount?.toFixed(2)}`,
-                };
-
-                const updatedBankDetails = {
-                  account_name: data.account_name,
-                  account_number: data.account_number,
-                  bsb_number: data.bsb_number,
-                };
-                if (!hasErrors) {
-                  if (bankDetails.userId) {
-                    updateBankDetails(
-                      {
-                        userId: data.userId,
-                        ...updatedBankDetails,
-                      },
-                      milestoneData,
-                      callback
-                    );
-                  } else {
-                    addBankDetails(updatedBankDetails, milestoneData, callback);
-                  }
-                }
-              }}
-            >
-              Continue
-            </button>
+                }}
+              >
+                Continue
+              </button>
+            </div>
           </div>
-        </div>
-      );
-      break;
+        );
+        break;
 
-    default:
-      page = null;
+      default:
+        return null;
+    }
   }
 
-  return page;
+  return (
+    <div className="detail_col">
+      {renderSteps()}
+    </div>
+  )
 };
 
 export default MarkMilestone;

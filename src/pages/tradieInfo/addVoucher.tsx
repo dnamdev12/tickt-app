@@ -40,6 +40,9 @@ const AddVoucherComponent = (props: any) => {
     }, [])
 
     useEffect(() => {
+        console.log({
+            toggleProps
+        })
         setToggle(toggleProps);
     }, [toggleProps])
 
@@ -159,7 +162,10 @@ const AddVoucherComponent = (props: any) => {
             await prefetch();
         }
     }
-
+    console.log({
+        toggleProps,
+        toggle
+    })
     return (
         <Modal
             className="custom_modal"

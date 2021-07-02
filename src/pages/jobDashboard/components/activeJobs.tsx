@@ -1,47 +1,80 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
+import { renderTime } from '../../../utils/common';
+import InfiniteScroll from 'react-infinite-scroll-component';
+
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import waiting from '../../../assets/images/exclamation.png';
-import close from '../../../assets/images/icon-close-1.png';
-import addMedia from "../../../assets/images/add-image.png";
 import noDataFound from "../../../assets/images/no-search-data.png";
-import { format } from 'date-fns';
-import { renderTime } from '../../../utils/common';
 
 interface Proptypes {
   loading: boolean;
-  getActiveJobList: (page: number) => void;
+  newJobsCount: number,
   activeJobList: Array<any>;
+  getActiveJobList: (page: number) => void;
+  resetActiveJobList: () => void;
 }
 
-const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => {
+const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, resetActiveJobList }: Proptypes) => {
+  const [jobList, setJobList] = useState<Array<any>>([]);
+  const [pageNo, setPageNo] = useState<number>(1);
+  const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
+
+  let totalJobsCount: number = newJobsCount;
+  console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
+
   useEffect(() => {
-    getActiveJobList(1);
-  }, [getActiveJobList]);
+    callJobList();
+
+    return () => resetActiveJobList();
+  }, []);
+
+  const callJobList = async () => {
+    if (newJobsCount && jobList.length >= totalJobsCount) {
+      setHasMoreItems(false);
+      return;
+    }
+    getActiveJobList(pageNo);
+  }
+
+  useEffect(() => {
+    if (activeJobList.length) {
+      const allJobs = [...jobList, ...activeJobList];
+      console.log(jobList, "jobList", activeJobList, "props.activeJobList", allJobs, "allJobs");
+      setJobList(allJobs);
+      setPageNo(pageNo + 1);
+      if (activeJobList.length < 10) { setHasMoreItems(false); }
+    }
+  }, [activeJobList]);
 
   return (
-    <>
-      {/* Active Jobs */}
-      <span className="sub_title">Active Jobs</span>
-      <div className="flex_row tradies_row">
-        {activeJobList.length ? activeJobList.map(
-          ({
-            jobId,
-            tradeId,
-            specializationId,
-            tradeSelectedUrl,
-            jobName,
-            tradeName,
-            fromDate,
-            toDate,
-            timeLeft,
-            amount,
-            locationName,
-            milestoneNumber,
-            totalMilestones,
-            status,
-          }) => (
+    <InfiniteScroll
+      dataLength={jobList.length}
+      next={callJobList}
+      hasMore={hasMoreItems}
+      loader={<h4></h4>}
+    >
+      <div className="detail_col">
+        <span className="sub_title">Active Jobs</span>
+        <div className="flex_row tradies_row">
+          {jobList.length ? jobList.map(
+            ({
+              jobId,
+              tradeId,
+              specializationId,
+              tradeSelectedUrl,
+              jobName,
+              tradeName,
+              fromDate,
+              toDate,
+              timeLeft,
+              amount,
+              locationName,
+              milestoneNumber,
+              totalMilestones,
+              status,
+            }) => (
               <div key={jobId} className="flex_col_sm_6">
                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                   <NavLink
@@ -92,80 +125,17 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList }: Proptypes) => 
                   </div>
                 </div>
               </div>
-        )) : !loading && (
-          <div className="no_record  m-t-vh">
-            <figure className="no_img">
-              <img src={noDataFound} alt="data not found" />
-            </figure>
-            <span>No Data Found</span>
-          </div>
-        )}
+            )) : !loading && (
+              <div className="no_record  m-t-vh">
+                <figure className="no_img">
+                  <img src={noDataFound} alt="data not found" />
+                </figure>
+                <span>No Data Found</span>
+              </div>
+            )}
+        </div>
       </div>
-      {/* Active Jobs close */}
-
-
-
-      {/* Lodge Dispute */}
-      {/* <div className="flex_row">
-        <div className="flex_col_sm_8">
-          <div className="relate">
-            <button className="back"></button>
-            <span className="xs_sub_title">Wire up circuit box</span>
-          </div>
-          <span className="sub_title">Lodge dispute</span>
-          <p className="commn_para">Enter reason text</p>
-
-          <div className="reason_wrap">
-          <div className="f_spacebw">
-            <div className="checkbox_wrap agree_check">
-              <input name="Reason" className="filter-type filled-in" type="checkbox" id="reason1" />
-              <label htmlFor="reason1">Reason</label>
-            </div>
-            <div className="checkbox_wrap agree_check">
-              <input name="Reason" className="filter-type filled-in" type="checkbox" id="reason2" />
-              <label htmlFor="reason2">Reason</label>
-            </div>
-          </div>
-
-          <div className="f_spacebw">
-            <div className="checkbox_wrap agree_check">
-              <input name="Reason" className="filter-type filled-in" type="checkbox" id="reason3" />
-              <label htmlFor="reason3">Reason</label>
-            </div>
-            <div className="checkbox_wrap agree_check">
-              <input name="Reason" className="filter-type filled-in" type="checkbox" id="reason4" />
-              <label htmlFor="reason4">Reason</label>
-            </div>
-          </div>
-          </div>
-
-        </div>
-
-        <div className="flex_col_sm_9">
-          <div className="form_field">
-            <label className="form_label">Details</label>
-            <div className="text_field">
-              <textarea placeholder="It’s really bad work, because..."></textarea>
-            </div>
-            <span className="error_msg"></span>
-          </div>
-          <div className="upload_img_video">
-            <label className="upload_media" htmlFor="upload_img_video">
-              <img src={addMedia} alt="add-media" />
-            </label>
-            <input
-              type="file"
-              accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
-              style={{ display: "none" }}
-              id="upload_img_video"
-            />
-          </div>
-          <button className="fill_btn full_btn btn-effect">Send</button>
-        </div>
-
-      </div> */}
-
-    </>
+    </InfiniteScroll>
   );
 };
 

@@ -950,7 +950,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                             </div>
                                                             {url ?
                                                                 (<div className="file_upload_box"
-                                                                // onClick={() => window.open(url, '_blank')}
+                                                                    onClick={() => window.open(url, '_blank')}
                                                                 >
                                                                     <span className="close" onClick={() => this.removeQualificationFileHandler(qualification_id, "filledQualification")}>
                                                                         <img src={removeFile} />
@@ -1012,7 +1012,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                         </div>
                                                         {url ?
                                                             (<div className="file_upload_box"
-                                                                // onClick={() => window.open(url, '_blank')}
+                                                                onClick={() => window.open(url, '_blank')}
                                                             >
                                                                 <span className="close" onClick={() => this.removeQualificationFileHandler(_id, "remainingQualification")}>
                                                                     <img src={removeFile} />
@@ -1169,15 +1169,15 @@ export class PersonalInformation extends Component<Props, State> {
                                 </React.Fragment>
                             ))} */}
                             {profileViewData?.areasOfSpecialization?.tradeData?.map(({ tradeId, tradeName, tradeSelectedUrl }: { tradeId: string, tradeName: string, tradeSelectedUrl: string }, index: number) => {
-                              if (this.userType === 1 && index > 0) {
-                                return null;
-                              }
+                                if (this.userType === 1 && index > 0) {
+                                    return null;
+                                }
 
-                              return (
-                                <li key={tradeId} className="main">
-                                    <img src={tradeSelectedUrl || menu} alt="" />{tradeName}
-                                </li>
-                              )
+                                return (
+                                    <li key={tradeId} className="main">
+                                        <img src={tradeSelectedUrl || menu} alt="" />{tradeName}
+                                    </li>
+                                )
                             })}
                             {
                                 profileViewData?.areasOfSpecialization?.specializationData?.map(({ specializationId, specializationName }: { specializationId: string, specializationName: string }) => {
@@ -1305,8 +1305,8 @@ export class PersonalInformation extends Component<Props, State> {
                                     <figure className="portfolio_img">
                                         <img src={portfolioImage[0] ? portfolioImage[0] : profilePlaceholder} alt="portfolio-images" />
                                         <span className="xs_sub_title">
-                                                <p className="line-3" title={jobName}>{jobName}</p>
-                                            </span>
+                                            <p className="line-3" title={jobName}>{jobName}</p>
+                                        </span>
                                     </figure>
                                 </li>
                             )
