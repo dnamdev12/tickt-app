@@ -403,10 +403,10 @@ export default class AddMilestone extends Component<Props, State> {
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
                                                         if (!((+rh_value.split(':')[1]) % 5 === 0)) {
-                                                            error_item['pattern_error'] = 'Please enter Recommended Hours in the mutiples of 5 like 10:05, 10:10';
+                                                            error_item['pattern_error'] = 'Time should be in mutiples of 5 like 10:05, 10:10';
                                                         }
                                                     } else {
-                                                        error_item['pattern_error'] = 'Please enter a valid pattern like : 04:03';
+                                                        error_item['pattern_error'] = 'Please enter a valid pattern like : 10:05';
                                                     }
                                                     this.setState({ errors: error_item });
                                                 });

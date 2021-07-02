@@ -144,15 +144,16 @@ const MarkMilestone = ({
       return 'Time Spent is required.';
     }
 
-    let pattern =
-      '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
+    let pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
     if (value.match(pattern) !== null) {
       if (!((+value.split(':')[1]) % 5 === 0)) {
-        return 'Please enter time in the mutiples of 5 like 10:05, 10:10';
+        return 'Time should be in mutiples of 5 like 10:05, 10:10';
       }
       return '';
     }
-    return 'Hours should be in hh:mm format.';
+    return 'Please enter a valid pattern like : 10:05';
+    // '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
+    // return 'Hours should be in hh:mm format.';
   };
 
   const errorLabel = {

@@ -1,13 +1,30 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import templateImage from '../../../../assets/images/job-complete-bg.png';
 import { withRouter } from 'react-router-dom';
+import { setLoading, setShowToast } from '../../../../redux/common/actions';
 
 
 const Success = (props: any) => {
+
+    const [isLoad, setImageLoad] = useState(true);
+
+    useEffect(() => { setLoading(true) }, [])
+
+    useEffect(() => {
+        if (!isLoad) { setLoading(false) }
+    }, [isLoad])
+
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={templateImage} alt="template-item" loading="eager" />
+                <img
+                    src={templateImage}
+                    alt="template-item"
+                    loading="eager"
+                    onLoad={() => {
+                        setImageLoad(false)
+                    }}
+                />
                 <div className="short_info">
                     <div className="content">
                         <h1 className="title">
@@ -34,7 +51,7 @@ const Success = (props: any) => {
                                         onClick={() => {
                                             props.history.push('/');
                                         }}
-                                        style={{backgroundColor:'#fff'}}
+                                        style={{ backgroundColor: '#fff' }}
                                         className="fill_btn btn-effect">
                                         {'See your transactions'}
                                     </button>

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { setLoading, setShowToast } from '../../redux/common/actions';
 import templateImage from '../../assets/images/job-posted-bg.jpg';
 import { withRouter } from 'react-router-dom'
 import Skeleton from 'react-loading-skeleton';
@@ -16,9 +17,14 @@ interface Proptypes {
 //  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
 const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
-    const [isLoad, setImageLoad] = useState(false);
+    const [isLoad, setImageLoad] = useState(true);
 
-    console.log({ isLoad })
+    useEffect(() => { setLoading(true) }, [])
+
+    useEffect(() => {
+        if (!isLoad) { setLoading(false) }
+    }, [isLoad])
+
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
@@ -27,6 +33,9 @@ const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, han
                     src={templateImage || 'https://appinventiv-development.s3.amazonaws.com/1624879540474job-posted-bg.jpg'}
                     alt="template"
                     loading="eager"
+                    onLoad={() => {
+                        setImageLoad(false)
+                    }}
                 />
 
                 <div className="short_info">

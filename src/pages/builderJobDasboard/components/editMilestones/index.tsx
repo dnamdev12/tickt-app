@@ -24,29 +24,44 @@ const EditMilestone = (props: any) => {
 
     const propsMile = Object.freeze(props?.details?.milestones);
     const [stateData, setStateData] = useState<any>([]);
+    const [stateItems, setItems] = useState<any>([]);
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [open, setOpen] = React.useState(false);
     const [deleteItem, setDeleteItem] = React.useState(null);
-
     const [itemData, setItemData] = useState({ add: false, edit: false, editId: '', deleteId: '' });
-
     const [sortedItems, setSortedItems] = React.useState([]);
-
     const [toggleItem, setToggleItem] = useState(false);
+
+    const [description, setDescription] = useState<any>([]);
 
     useEffect(() => {
         console.log({ milestones })
         if (!stateData?.length) {
             setStateData(milestones);
+            setItems(milestones);
         }
     }, [props])
 
-    const reorder = (list: Array<any>, startIndex: number, endIndex: number) => {
-        console.log({ list, startIndex, endIndex });
+    const reorder = (list: Array<any>, source: any, destination: any) => {
+        let startIndex = source.index;
+        let endIndex = destination.index;
+
+        let findItem = list.find((lt: any, index: any) => index === endIndex);
+        console.log({ findItem, list, destination, endIndex })
+        if (findItem) {
+            if ([1, 2].includes(findItem.status)) {
+                return list;
+            }
+        }
+
         const result = Array.from(list);
         const [removed] = result.splice(startIndex, 1);
         result.splice(endIndex, 0, removed);
         console.log({ result })
+        setDescription((prev: any) => ([
+            ...prev,
+            ...['Milestones are rearranged.']
+        ]));
         return result;
     };
 
@@ -60,8 +75,8 @@ const EditMilestone = (props: any) => {
         // if (source.droppableId === destination.droppableId) {
         const reOrderItems = reorder(
             stateData,
-            source.index,
-            destination.index
+            source,
+            destination
         );
         setStateData((prev: any) => (reOrderItems));
     };
@@ -71,6 +86,8 @@ const EditMilestone = (props: any) => {
         let isfilter = stateData.filter((item_: any) => {
             if (item_.hasOwnProperty('fromDate')) {
                 if (moment(item_?.fromDate).isValid()) {
+                    item_['fromDate'] = moment(item_.fromDate).startOf('day').toDate()
+                    item_['toDate'] = item_.toDate === '' ? moment(item_.fromDate).startOf('day').toDate() : moment(item_.toDate).startOf('day').toDate()
                     return item_;
                 }
             }
@@ -79,9 +96,20 @@ const EditMilestone = (props: any) => {
         if (!isfilter?.length) {
             return true;
         } else {
-            const newarr: any = isfilter.slice().sort((a: any, b: any) => {
-                return moment(a.fromDate).diff(moment(b.fromDate));
+            const newarr: any = isfilter.sort((a: any, b: any) => {
+                let start_a = a.fromDate;
+                let end_a = a.toDate;
+
+                let start_b = b.fromDate;
+                let end_b = b.toDate;
+
+
+                if (start_a === start_b) {
+                    return end_a - end_b;
+                }
+                return start_a - start_b;
             });
+
             let filteredItem: any = item.filter((item_reorder: any) => {
                 if (item_reorder.hasOwnProperty('fromDate')) {
                     if (moment(item_reorder?.fromDate).isValid()) {
@@ -90,7 +118,7 @@ const EditMilestone = (props: any) => {
                 }
             });
             setSortedItems(newarr);
-            console.log({ newarr, filteredItem })
+            console.log({ newarr, filteredItem });
             return JSON.stringify(newarr) === JSON.stringify(filteredItem);
         }
     }
@@ -167,6 +195,8 @@ const EditMilestone = (props: any) => {
             state_data[itemData.editId]['milestoneName'] = item.milestoneName;
             state_data[itemData.editId]['recommendedHours'] = item.recommendedHours;
             state_data[itemData.editId]['description'] = item.description;
+            state_data[itemData.editId]['status'] = item.status;
+
             state_data[index]['fromDate'] = moment(item.fromDate).isValid() ? moment(item.fromDate).toISOString() : '';
             state_data[index]['toDate'] = moment(item.toDate).isValid() ? moment(item.toDate).toISOString() : '';
             setStateData(state_data)
@@ -197,17 +227,9 @@ const EditMilestone = (props: any) => {
         stateData[index]['isDeleteRequest'] = true;
         resetItems();
     }
-    // setStateData(stateData.filter((_: any, index_: any) => index_ !== index));
 
     const checkIfChange = () => {
-        // if (JSON.stringify(stateData) !== JSON.stringify(props?.details?.milestones)) {
-        // if (JSON.stringify(propsMile) == JSON.stringify(stateData)) {
-        // return true;
-        // }
-        // return false;
-
         let isTrue = true;
-
         if (!stateData?.length) {
             return true;
         } else {
@@ -220,9 +242,8 @@ const EditMilestone = (props: any) => {
         }
     }
 
-
     const submitData = async () => {
-        let description = '';
+        let description_string = description;
         let filtered = stateData.map((item: any) => {
             let data: any = {
                 "milestoneId": item?.milestoneId || '',
@@ -235,15 +256,16 @@ const EditMilestone = (props: any) => {
             }
 
             if (item.description?.length) {
-                description = item.description;
+                description_string.push(item.description);
             }
 
             if (!data?.to_date?.length) {
                 delete data?.to_date;
             }
 
-            if (item?.isDeleteRequest) {
+            if (item?.isDeleteRequest && item?.status > -1) {
                 data['isDeleteRequest'] = true;
+                description_string.push(`${item?.milestoneName} was deleted.`);
             }
 
             if (!item?.milestoneId) {
@@ -256,14 +278,15 @@ const EditMilestone = (props: any) => {
                 delete item?.description;
                 return item;
             }
-        })
+        });
 
         let data = {
             "jobId": item.jobId,
             "tradieId": props?.details?.tradieId,
             "milestones": filtered,
-            "description": description
+            "description": Array.from(new Set(description_string))
         };
+
         let response: any = await changeRequest(data);
         if (response?.success) {
             props.history.push('/milestone-request-sent-success');
@@ -385,7 +408,7 @@ const EditMilestone = (props: any) => {
                                                 key={`${index}-${milestoneName}`}
                                                 draggableId={`${milestoneName}-${index}`}
                                                 index={index}
-                                            // isDragDisabled={(status === 1 || status === 2) ? true : false}
+                                                isDragDisabled={[3, 1, 2, 0].includes(status) ? true : false}
                                             >
                                                 {(provided: any, snapshot: any) => (
                                                     <li
@@ -425,7 +448,7 @@ const EditMilestone = (props: any) => {
                                                             <input
                                                                 checked={editItem[index]}
                                                                 onClick={(e: any) => {
-                                                                    if (status !== 1 && status !== 2) {
+                                                                    if (![3, 1, 2, 0].includes(status)) {
                                                                         checkOnClick(e, index)
                                                                     } else {
                                                                         e.preventDefault();

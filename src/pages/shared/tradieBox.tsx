@@ -11,9 +11,10 @@ interface State {
 type PropsType = RouteComponentProps & {
     item: any,
     index: any,
+    hideAos?: boolean,
     jobId?: any,
     specializationId?: any,
-    hideInvite?:boolean
+    hideInvite?: boolean
 }
 
 const randomRating = Math.floor(Math.random() * 5) + 1;
@@ -41,7 +42,7 @@ class TradieBox extends Component<PropsType, State> {
     redirectPath = (item: any) => {
         const { jobId, specializationId, history, hideInvite } = this.props;
 
-        console.log({item},'-->')
+        console.log({ item }, '-->')
 
         let tradieId = item?.tradieId;
 
@@ -53,13 +54,15 @@ class TradieBox extends Component<PropsType, State> {
     }
 
     render() {
-        const { item, index } = this.props;
+        const { item, index, hideAos } = this.props;
         let this_state: any = this.state;
         let isItemSpec = this_state.isItemSpec;
-
         return (
             <div className="flex_col_sm_4">
-                <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
+                <div className="tradie_card"
+                    data-aos={hideAos ? '' : "fade-in"}
+                    data-aos-delay={hideAos ? '' : "250"}
+                    data-aos-duration={hideAos ? '' : "1000"}>
                     <span
                         onClick={() => { this.redirectPath(item) }}
                         className="more_detail circle"></span>

@@ -1,3 +1,5 @@
+import React, { useState, useEffect } from 'react';
+import { setLoading, setShowToast } from '../../../redux/common/actions';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import templateImage from '../../../assets/images/lets-go-bg.jpg';
 
@@ -12,6 +14,13 @@ interface Propstype {
 }
 
 const LetsGo = (props: Propstype) => {
+    const [isLoad, setImageLoad] = useState(true);
+
+    useEffect(() => { setLoading(true) }, [])
+
+    useEffect(() => {
+        if (!isLoad) { setLoading(false) }
+    }, [isLoad])
 
     const goToLogin = () => {
         if (storageService.getItem('jwtToken')) {
@@ -28,7 +37,13 @@ const LetsGo = (props: Propstype) => {
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={templateImage} alt="template-image" />
+                <img
+                    src={templateImage}
+                    alt="template"
+                    onLoad={() => {
+                        setImageLoad(false)
+                    }}
+                />
 
                 <div className="short_info">
                     <figure className="logo_img">

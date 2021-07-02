@@ -266,8 +266,9 @@ function* getAcceptDeclineTradie({ data }: any) {
 }
 
 function* getNewApprovalList({ page }: any) {
-  console.log({page},'--->?')
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(`${Urls.needApproval}?page=${page}`);
+  setLoading(false);
   if (response.status_code === 200) {
     yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: response.result });
   } else {

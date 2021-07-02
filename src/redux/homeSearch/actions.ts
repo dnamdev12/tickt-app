@@ -105,3 +105,13 @@ export const milestoneAcceptOrDecline = async (data: any) => {
     }
     return { success: false, data: response.result };
 }
+
+
+export const searchTradies = async (data: any) => {
+    
+    const response: FetchResponse = await NetworkOps.postToJson(Urls.homeSearch, data)
+    if (response.status_code === 200) {
+        return { success: true, data: response.result };
+    }
+    return { success: false, data: response.result };
+}

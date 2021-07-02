@@ -93,6 +93,7 @@ function* postHomeSearchData(action: any) {
         yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
     }
 }
+
 function* resetHomeSearchJobData() {
     yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
 }

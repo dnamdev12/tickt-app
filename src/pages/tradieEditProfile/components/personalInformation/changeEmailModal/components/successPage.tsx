@@ -1,4 +1,5 @@
-import { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
+import { setLoading, setShowToast } from '../../../../../../redux/common/actions';
 import storageService from '../../../../../../utils/storageService';
 
 import colorLogo from '../../../../../../assets/images/ic-logo-yellow.png';
@@ -9,8 +10,14 @@ interface Propstype {
 }
 
 const SuccessPage = (props: Propstype) => {
+    const [isLoad, setImageLoad] = useState(true);
 
     useEffect(() => {
+        if (!isLoad) { setLoading(false) }
+    }, [isLoad])
+
+    useEffect(() => {
+        setLoading(true)
         storageService.clearAll();
     }, []);
 
@@ -23,7 +30,13 @@ const SuccessPage = (props: Propstype) => {
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
-                <img src={templateImage} alt="template-image" />
+                <img
+                    src={templateImage}
+                    alt="template"
+                    onLoad={() => {
+                        setImageLoad(false)
+                    }}
+                />
 
                 <div className="short_info">
                     <figure className="logo_img">
