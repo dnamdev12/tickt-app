@@ -407,7 +407,7 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_row description">
                             <div className="flex_col_sm_8">
                                 {props.isSkeletonLoading ? <Skeleton count={2} /> : <div>
-                                    <span className="sub_title">About</span>
+                                    <span className="sub_title">About company</span>
                                     <p className="commn_para">{profileData?.aboutCompany || ''}</p>
                                 </div>}
                             </div>
@@ -415,7 +415,8 @@ const BuilderInfo = (props: PropsType) => {
                                 <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of specialisation'}</span>
                                 <div className="tags_wrap">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
-                                        <ul>
+                                        // Add active class when click on show more
+                                       <ul className="more_tags">   
                                             {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
                                               <Fragment key={_id}>
                                                 <li className="main">
@@ -443,7 +444,9 @@ const BuilderInfo = (props: PropsType) => {
                                                 return <li key={item.specializationId}>{item.specializationName || ''}</li>
                                             })}
                                         </ul>)}
+                                    <a href="javascript:void(0)" className="link show_more">Show more</a>
                                 </div>
+
                             </div>
                         </div>
                     </div>

@@ -34,6 +34,11 @@ interface Proptypes {
   getBankDetails: () => void;
   removeBankDetails: () => void;
   bankDetails: any;
+  resetActiveJobList: () => void;
+  resetAppliedJobList: () => void;
+  resetPastJobList: () => void;
+  resetNewJobList: () => void;
+  resetApprovedMilestoneList: () => void;
 }
 
 const JobDashboard = ({
@@ -57,6 +62,11 @@ const JobDashboard = ({
   getBankDetails,
   removeBankDetails,
   bankDetails,
+  resetActiveJobList,
+  resetAppliedJobList,
+  resetPastJobList,
+  resetNewJobList,
+  resetApprovedMilestoneList,
 }: Proptypes) => {
   const history = useHistory();
   const { pathname } = useLocation();
@@ -73,7 +83,7 @@ const JobDashboard = ({
   const [jobComplete, setJobComplete] = useState<boolean | number>(false);
 
   const jobCompleteCount = jobComplete && `${jobComplete}${`${jobComplete}`.endsWith('1') ? 'st' : `${jobComplete}`.endsWith('2') ? 'nd' : `${jobComplete}`.endsWith('3') ? 'rd' : 'th'}`;
-  
+
   return milestoneComplete ? (
     <div className="img_text_wrap">
       <figure className="full_image">
@@ -172,7 +182,7 @@ const JobDashboard = ({
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
                     <span className="menu_txt">New
-                    {!!newJobsCount && (
+                      {!!newJobsCount && (
                         <span className="badge_count">
                           {newJobsCount > 9 ? '9+' : newJobsCount}
                         </span>
@@ -185,7 +195,7 @@ const JobDashboard = ({
                 <li>
                   <NavLink className="icon approved" to="/approved-milestones">
                     <span className="menu_txt">Approved Milestones
-                    {!!milestonesCount && (
+                      {!!milestonesCount && (
                         <span className="badge_count">
                           {milestonesCount > 9 ? '9+' : milestonesCount}
                         </span>
@@ -196,14 +206,17 @@ const JobDashboard = ({
               </ul>
             </div>
           </div>
-          <div className="detail_col">
+          {/* <div className="detail_col"> */}
+          <>
             <Switch>
               <Route
                 path="/active-jobs"
                 render={(props) => (
                   <ActiveJobsPage
                     loading={loading}
+                    newJobsCount={newJobsCount}
                     getActiveJobList={getActiveJobList}
+                    resetActiveJobList={resetActiveJobList}
                     activeJobList={activeJobList}
                     {...props}
                   />
@@ -213,10 +226,12 @@ const JobDashboard = ({
                 path="/applied-jobs"
                 render={(props) => (
                   <AppliedJobsPage
-                    loading={loading}
-                    getAppliedJobList={getAppliedJobList}
-                    appliedJobList={appliedJobList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    appliedJobList={appliedJobList}
+                    getAppliedJobList={getAppliedJobList}
+                    resetAppliedJobList={resetAppliedJobList}
                   />
                 )}
               />
@@ -224,10 +239,12 @@ const JobDashboard = ({
                 path="/past-jobs"
                 render={(props) => (
                   <PastJobsPage
-                    loading={loading}
-                    getPastJobList={getPastJobList}
-                    pastJobList={pastJobList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    pastJobList={pastJobList}
+                    getPastJobList={getPastJobList}
+                    resetPastJobList={resetPastJobList}
                   />
                 )}
               />
@@ -235,10 +252,12 @@ const JobDashboard = ({
                 path="/new-jobs"
                 render={(props) => (
                   <NewJobsPage
-                    loading={loading}
-                    getNewJobList={getNewJobList}
-                    newJobList={newJobList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    newJobList={newJobList}
+                    getNewJobList={getNewJobList}
+                    resetNewJobList={resetNewJobList}
                   />
                 )}
               />
@@ -246,10 +265,12 @@ const JobDashboard = ({
                 path="/approved-milestones"
                 render={(props) => (
                   <ApprovedMilestonesPage
-                    loading={loading}
-                    getApprovedMilestoneList={getApprovedMilestoneList}
-                    approvedMilestoneList={approvedMilestoneList}
                     {...props}
+                    loading={loading}
+                    newJobsCount={newJobsCount}
+                    approvedMilestoneList={approvedMilestoneList}
+                    getApprovedMilestoneList={getApprovedMilestoneList}
+                    resetApprovedMilestoneList={resetApprovedMilestoneList}
                   />
                 )}
               />
@@ -280,7 +301,8 @@ const JobDashboard = ({
                 )}
               />
             </Switch>
-          </div>
+          </>
+          {/* </div> */}
         </div>
       </div>
     </div>

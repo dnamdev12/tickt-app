@@ -587,10 +587,11 @@ class TradieInfo extends Component<Props, State> {
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
                                     ) :
-                                        <div>
-                                            <span className="sub_title">About</span>
-                                            <p className="commn_para">You have not added your information yet, Please go to edit and add.</p>
-                                        </div>}
+                                        // <div>
+                                        //     <span className="sub_title">About</span>
+                                        //     <p className="commn_para">You have not added your information yet, Please go to edit and add.</p>
+                                        // </div>
+                                    null}
                                 </div>
                                 <div className="flex_col_sm_4">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (

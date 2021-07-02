@@ -1,12 +1,12 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import BannerSearchComponent from './bannerSearch';
+import BannerSearchComponent from './tradieBannerSearch';
 import {
     getSearchJobList,
     getRecentSearchList,
     postHomeSearchData,
     getRecentLocationList
-} from '../../../../../redux/homeSearch/actions';
+} from '../../redux/homeSearch/actions';
 
 const mapStateToProps = (state: any) => {
     return {
