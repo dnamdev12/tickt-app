@@ -667,3 +667,8 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
         margin-bottom: 15px;
     }
 }
+
+.disable_milstone {
+    opacity: 0.6;
+    pointer-events: none;
+}
