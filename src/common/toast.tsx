@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import close from '../assets/images/cancel.png';
 import { setShowToast } from '../redux/common/actions';
+import noInternet from '../assets/images/internet-connection-graphic.png';
 
 export const TYPES = {
     success: 'success',
@@ -32,7 +33,8 @@ const Toast = (props: any) => {
 
     useEffect(() => {
         if (isOnline) {
-            setRestrictNoInternetToast(1);
+            // setRestrictNoInternetToast(1);
+            addRemoveClass(false);
         }
     }, [isOnline]);
 
@@ -53,7 +55,6 @@ const Toast = (props: any) => {
                 }, 2000);
             return;
         }
-        // setShowToast(true, "Please check your internet connection");
         return setNetwork(false);
     }
 
@@ -61,30 +62,45 @@ const Toast = (props: any) => {
         setShowToast(false);
     }
 
-    const renderToast = () => {
-        if (!isOnline) {
-            setTimeout(() => {
-                setRestrictNoInternetToast((prevValue: any) => prevValue.restrictNoInternetToast + 1);
-            }, 3000);
-            return "Please check your internet connection";
+    const addRemoveClass = (if_add: boolean) => {
+        var element = document.getElementsByTagName("BODY")[0];
+        if (if_add) {
+            element.classList.add("hide_scroll");
+        } else {
+            element.classList.remove("hide_scroll");
         }
+    }
+
+    const renderToast = () => {
+        // if (!isOnline) {
+        //     setTimeout(() => {
+        //         setRestrictNoInternetToast((prevValue: any) => prevValue.restrictNoInternetToast + 1);
+        //     }, 3000);
+        //     return "Please check your internet connection";
+        // }
         return props.toastMessage;
     }
 
     return !!props.showToast ? (
         <div className={`body-message active ${props.toastType}`}>
-            {/* <span className="cross-icon" >
-                <img src={close} alt="close" onClick={hideToast} />
-            </span> */}
             <div className="wrapppr">
                 <p className="commn_para">{renderToast()}</p>
-                {/* <button className="fill_btn btn-effect" onClick={hideToast}>Close</button> */}
             </div>
         </div>
-    ) : (!isOnline && restrictNoInternetToast === 1) ? (
-        <div className={`body-message active ${props.toastType}`}>
-            <div className="wrapppr">
-                <p className="commn_para">{renderToast()}</p>
+    ) : !isOnline ? (
+        // ) : (!isOnline && restrictNoInternetToast === 1) ? (
+        // <div className={`body-message active ${props.toastType}`}>
+        //     <div className="wrapppr">
+        //         <p className="commn_para">{renderToast()}</p>
+        //     </div>
+        // </div>
+        <div className="offline_mode">
+            {addRemoveClass(true)}
+            <figure className="no_img">
+                <img src={noInternet} alt="no-internet" />
+            </figure>
+            <div className="content">
+                <h1>{'No Internet Connection'}</h1>
             </div>
         </div>
     ) : null;

@@ -111,7 +111,7 @@ const ReviewBuilder = (props: Proptypes) => {
                                 <img src={item.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
                             </figure>
                             <div className="details">
-                                <span className="name">{item?.tradeName}</span>
+                                <span className="name">{item.builderData?.builderName}</span>
                                 <span className="prof">{item?.jobName}</span>
                                 <span className="prof">{renderTime(item?.fromDate, item?.toDate)}</span>
                             </div>
