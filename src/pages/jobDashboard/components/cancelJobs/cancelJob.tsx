@@ -147,80 +147,82 @@ const LodgeDispute = (props: PropTypes) => {
 
     const { sources, types } = renderFilteredItems();
     return (
-        <div className="flex_row">
-            <div className="flex_col_sm_8">
-                <div className="relate">
+        <div className="detail_col">
+            <div className="flex_row">
+                <div className="flex_col_sm_8">
+                    <div className="relate">
+                        <button
+                            onClick={() => { props.backTab('cancel') }}
+                            className="back"></button>
+                        <span className="xs_sub_title">
+                            {jobName || ''}
+                        </span>
+                    </div>
+
+                    <span className="sub_title">
+                        {'Your reason for canceling job'}
+                    </span>
+                    <p className="commn_para">
+                        {'Let the builder and Tickt know why you are cancelling the job.'}
+                    </p>
+
+                    <FsLightbox
+                        toggler={toggler}
+                        slide={selectedSlide}
+                        sources={sources}
+                        types={types}
+                    />
+
+                    <div className="reason_wrap">
+                        <div className="f_spacebw">
+                            <div className="checkbox_wrap agree_check">
+                                <input
+                                    value={reason}
+                                    onClick={() => { setStateData((prev: any) => ({ ...prev, reason: prev.reason === 1 ? 0 : 1 })) }}
+                                    checked={reason === 1}
+                                    name="Reason" className="filter-type filled-in" type="checkbox" id="reason1" />
+                                <label htmlFor="reason1">
+                                    {'I got a better job'}
+                                </label>
+                            </div>
+                            <div className="checkbox_wrap agree_check">
+                                <input
+                                    value={reason}
+                                    onClick={() => { setStateData((prev: any) => ({ ...prev, reason: prev.reason === 2 ? 0 : 2 })) }}
+                                    checked={reason === 2}
+                                    name="Reason" className="filter-type filled-in" type="checkbox" id="reason2" />
+                                <label htmlFor="reason2">
+                                    {'I am not the right fit for the job'}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div className="flex_col_sm_9">
+                    <div className="form_field">
+                        <label className="form_label">Add note</label>
+                        <div className="text_field">
+                            <textarea
+                                value={detail}
+                                onChange={(e: any) => {
+                                    setStateData((prev: any) => ({ ...prev, detail: e.target.value }))
+                                }}
+                                placeholder="It’s really bad work, because..."
+                                maxLength={250}
+                            />
+                        </div>
+                        <span className="error_msg">
+                            {errorData.detail}
+                        </span>
+                    </div>
                     <button
-                        onClick={() => { props.backTab('cancel') }}
-                        className="back"></button>
-                    <span className="xs_sub_title">
-                        {jobName || ''}
-                    </span>
+                        onClick={handleSubmit}
+                        className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}>
+                        {'Send'}
+                    </button>
                 </div>
-
-                <span className="sub_title">
-                    {'Your reason for canceling job'}
-                </span>
-                <p className="commn_para">
-                    {'Let the tradesperson and Tickt know why you are cancelling the job.'}
-                </p>
-
-                <FsLightbox
-                    toggler={toggler}
-                    slide={selectedSlide}
-                    sources={sources}
-                    types={types}
-                />
-
-                <div className="reason_wrap">
-                    <div className="f_spacebw">
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: prev.reason === 1 ? 0 : 1 })) }}
-                                checked={reason === 1}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason1" />
-                            <label htmlFor="reason1">
-                                {'I got a better job'}
-                            </label>
-                        </div>
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: prev.reason === 2 ? 0 : 2 })) }}
-                                checked={reason === 2}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason2" />
-                            <label htmlFor="reason2">
-                                {'I am not the right fit for the job'}
-                            </label>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-
-            <div className="flex_col_sm_9">
-                <div className="form_field">
-                    <label className="form_label">Details</label>
-                    <div className="text_field">
-                        <textarea
-                            value={detail}
-                            onChange={(e: any) => {
-                                setStateData((prev: any) => ({ ...prev, detail: e.target.value }))
-                            }}
-                            placeholder="It’s really bad work, because..."
-                            maxLength={250}
-                        />
-                    </div>
-                    <span className="error_msg">
-                        {errorData.detail}
-                    </span>
-                </div>
-                <button
-                    onClick={handleSubmit}
-                    className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}>
-                    {'Send'}
-                </button>
             </div>
         </div>
     )
