@@ -413,6 +413,7 @@ const EditMilestone = (props: any) => {
                                                 {(provided: any, snapshot: any) => (
                                                     <li
                                                         key={index}
+                                                        className={[3, 1, 2, 0].includes(status) ? 'disable_milstone' : ''}
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}

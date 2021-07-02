@@ -74,16 +74,23 @@ const JobTypes = (props: any) => {
                                             name_item = item?.specialisations[0].name;
                                             specializations = item?.specialisations.map((item_spec: any) => item_spec?._id);
                                         }
+
+                                        let data = {
+                                            name: name_item,
+                                            tradeId: [item?._id],
+                                            specializations: specializations,
+                                            location: null,
+                                            calender: null,
+                                            address: null,
+                                        }
+
+                                        if(!specializations?.length){
+                                            delete data.specializations;
+                                        }
+
                                         props.history.push({
                                             pathname: `search-tradie-results`,
-                                            state: {
-                                                name: name_item,
-                                                tradeId: [item?._id],
-                                                specializations: specializations,
-                                                location: null,
-                                                calender: null,
-                                                address: null,
-                                            }
+                                            state: data
                                         })
                                     }}>
                                         <figure>
