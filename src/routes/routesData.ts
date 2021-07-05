@@ -41,6 +41,7 @@ import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmA
 import declineMilestoneSuccess from '../pages/builderJobDasboard/components/declineMilestoneSuccess'
 
 import PostJobSuccess from '../pages/postJob/sucess';
+import CommonViewAll from '../pages/home/builderHome/components/commonViewAll';
 
 const routes = [
     {
@@ -86,6 +87,16 @@ const routes = [
         name: 'savedjobs',
         path: '/saved-jobs',
         component: SavedJobs,
+    },
+    {
+        name: 'view-all',
+        path: [
+            '/saved-tradespeople',
+            '/popular tradespeople',
+            '/recommended-tradespeople',
+            '/most-viewed-tradespeople'
+        ],
+        component: CommonViewAll,
     },
     {
         name: 'mostviewedjobs',
@@ -161,10 +172,10 @@ const routes = [
         component: CancelJobSuccess,
     },
     {
-        name:'postJobSuccess',
-        path:'/post-job-success',
+        name: 'postJobSuccess',
+        path: '/post-job-success',
         component: PostJobSuccess,
-    },  
+    },
     {
         name: 'builderinfo',
         path: '/builder-info',
@@ -182,7 +193,7 @@ const routes = [
     },
     {
         name: 'chooseTheJob',
-        path: ['/choose-the-job','/cancel-the-job'],
+        path: ['/choose-the-job', '/cancel-the-job'],
         component: ChooseTheJob,
     },
     {
