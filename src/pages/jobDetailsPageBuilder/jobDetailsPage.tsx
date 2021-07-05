@@ -815,7 +815,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </button>
                                             </div>
                                             <div className="modal_message">
-                                                <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'ask'} a answer?`}</p>
+                                                <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'post'} a answer?`}</p>
                                             </div>
                                             <div className="dialog_actions">
                                                 <button className="fill_btn" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>

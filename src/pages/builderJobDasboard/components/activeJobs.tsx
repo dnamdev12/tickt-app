@@ -43,7 +43,7 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
-  
+
     const resetStateLocal = (isTrue: boolean) => {
         setJobLabel(activeType);
         setLocalState(false)
@@ -152,9 +152,9 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                             <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
                                         </span>
                                         <span className="approval_info">
-                                            {status === "APPROVED" && <img src={approved} alt="icon" />}
-                                            {status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
-                                            {status}
+                                            {(status).toUpperCase() === "APPROVED" && <img src={approved} alt="icon" />}
+                                            {((status).toUpperCase() === "NEEDS APPROVAL" || (status).toUpperCase() === "NEED APPROVAL") && <img src={waiting} alt="icon" />}
+                                            {(status).toUpperCase() === "ACCEPTED CHANGE REQUEST" ? "ACCEPTED C.R " : status}
                                         </span>
                                         <span className="progress_bar">
                                             <input

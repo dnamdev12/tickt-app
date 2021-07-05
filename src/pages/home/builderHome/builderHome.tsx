@@ -193,14 +193,14 @@ const BuilderHome = (props: any) => {
                             className="fill_grey_btn full_btn m-tb40 view_more"
                             onClick={() => {
                                 // setShowToast(true, 'Under development');
-                                if (props?.history) {
-                                    props?.history?.push({
+                                if (props?.history && props?.history?.push) {
+                                    props?.history.push({
                                         pathname: '/popular tradespeople',
                                         state: {
                                             data: home_data?.popular_tradespeople,
                                             title: 'Popular tradespeople',
                                             popular: true,
-                                            history:props?.history
+                                            history: null, //props?.history
                                         }
                                     })
                                 }

@@ -2,6 +2,8 @@ import TradieBox from '../../../shared/tradieBox';
 import noData from '../../../../assets/images/no-search-data.png';
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 
+import { withRouter } from 'react-router-dom';
+
 
 const SavedJobs = (props: any) => {
 
@@ -87,4 +89,4 @@ const SavedJobs = (props: any) => {
     // }
 }
 
-export default SavedJobs;
+export default withRouter(SavedJobs);

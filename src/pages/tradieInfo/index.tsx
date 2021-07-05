@@ -428,12 +428,12 @@ class TradieInfo extends Component<Props, State> {
 
     }
 
-    closeAddVoucher = (isRecall?:any) => {
-        if(isRecall === "isRecall"){
+    closeAddVoucher = (isRecall?: any) => {
+        if (isRecall === "isRecall") {
             this.setState({
-                toggleAddVoucher:false
+                toggleAddVoucher: false
             }, () => {
-                if(this.state.toggleAddVoucher === false){
+                if (this.state.toggleAddVoucher === false) {
                     this.setItems();
                 }
             })
@@ -814,12 +814,25 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}</button>
+                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}
+                            </button>
                         </div>
                     </div>
                     : (
                         <div className="section_wrapper">
                             <div className="custom_container">
+                                <span className="sub_title">Vouches</span>
+
+
+                                <div className="flex_row review_parent">
+                                    <div className="no_record">
+                                        <figure className="no_data_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                        <span>No Data Found</span>
+                                    </div>
+                                </div>
+
                                 <button
                                     className="fill_grey_btn full_btn"
                                     onClick={() => {
@@ -827,7 +840,8 @@ class TradieInfo extends Component<Props, State> {
                                             toggleAddVoucher: !this.state.toggleAddVoucher
                                         })
                                     }}>
-                                    {`+ Leave a voucher`}</button>
+                                    {`Leave a vouche`}
+                                </button>
                             </div>
                         </div>
                     )}
