@@ -430,12 +430,12 @@ class TradieInfo extends Component<Props, State> {
 
     }
 
-    closeAddVoucher = (isRecall?:any) => {
-        if(isRecall === "isRecall"){
+    closeAddVoucher = (isRecall?: any) => {
+        if (isRecall === "isRecall") {
             this.setState({
-                toggleAddVoucher:false
+                toggleAddVoucher: false
             }, () => {
-                if(this.state.toggleAddVoucher === false){
+                if (this.state.toggleAddVoucher === false) {
                     this.setItems();
                 }
             })
@@ -501,7 +501,7 @@ class TradieInfo extends Component<Props, State> {
                                             src={tradieInfo?.tradieImage || profilePlaceholder}
                                             alt="profile-pic"
                                             onLoad={() => this.setState({
-                                              profilePictureLoading: false,
+                                                profilePictureLoading: false,
                                             })}
                                             hidden={this.state.profilePictureLoading}
                                         />}
@@ -651,7 +651,7 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                 </div>
-                <div className="section_wrapper">
+                {tradieInfo?.portfolio?.length ? <div className="section_wrapper">
                     <div className="custom_container">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
                         <Carousel
@@ -676,7 +676,7 @@ class TradieInfo extends Component<Props, State> {
                             }) : <img alt="" src={portfolioPlaceholder} />}
                         </Carousel>
                     </div>
-                </div>
+                </div> : null}
 
                 {/* portfolio Image modal desc */}
                 {portfolioData?.portfolioImageClicked &&

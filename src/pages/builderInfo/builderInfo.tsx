@@ -460,7 +460,7 @@ const BuilderInfo = (props: PropsType) => {
                 </div>
             </div>
 
-            <div className="section_wrapper">
+            {profileData?.portfolio?.length > 0 && <div className="section_wrapper">
                 <div className="custom_container">
                     <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
                     <Carousel
@@ -482,15 +482,10 @@ const BuilderInfo = (props: PropsType) => {
                                     </figure>
                                 </div>
                             )
-                        }) :
-                            <div className="media">
-                                <figure className="portfolio_img">
-                                    <img src={portfolioPlaceholder} alt="portfolio-images" />
-                                </figure>
-                            </div>}
+                        }) : null}
                     </Carousel>
                 </div>
-            </div>
+            </div>}
 
             <Modal
                 className="custom_modal"
