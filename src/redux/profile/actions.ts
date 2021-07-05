@@ -71,6 +71,7 @@ export const tradieChangeEmail = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true };
   }
+  setShowToast(true, response.message);
   return { success: false };
 }
 

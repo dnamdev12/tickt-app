@@ -265,9 +265,6 @@ export class PersonalInformation extends Component<Props, State> {
     }
 
     onFileChange = async (e: any, type?: string, id?: string) => {
-        // if (type === "qualificationDoc") {
-        //     return;
-        // }
         const formData = new FormData();
         const newFile = e.target.files[0];
         var uploadFileName = newFile.name.split('.');
@@ -445,6 +442,7 @@ export class PersonalInformation extends Component<Props, State> {
         if (this.validateBasicDetailsForm()) {
             const basicDetails = { ...this.state.basicDetailsData };
             const filledQualification = this.userType === 1 ? [...this.state.basicDetailsData?.qualificationDoc]?.map(({ url, qualification_id }: { url: string, qualification_id: string }) => url?.length && { qualification_id: qualification_id, url: url }) : [];
+            const newFilledQualification = filledQualification?.filter((i: any) => (i && Object.keys(i)?.length > 0));
             const remainingQualification = this.state.remainingQualificationDoc?.map(({ _id, url }: { _id: string, url: string }) => url?.length && { qualification_id: _id, url: url });
             const newRemainingQualification = remainingQualification?.filter((i: any) => (i && Object.keys(i)?.length > 0));
 
@@ -458,7 +456,7 @@ export class PersonalInformation extends Component<Props, State> {
                 fullName: basicDetails?.fullName,
                 mobileNumber: basicDetails?.mobileNumber,
                 email: basicDetails?.email,
-                qualificationDoc: this.userType === 1 ? [...filledQualification, ...newRemainingQualification] : undefined,
+                qualificationDoc: this.userType === 1 ? [...newFilledQualification, ...newRemainingQualification] : undefined,
                 ...(this.userType === 1 ? {} : builderData),
             }
             const res = await tradieUpdateBasicDetails(data);
@@ -655,7 +653,8 @@ export class PersonalInformation extends Component<Props, State> {
         }
     }
 
-    removeQualificationFileHandler = (id: string, type: string) => {
+    removeQualificationFileHandler = (e: any, id: string, type: string) => {
+        e.stopPropagation();
         if (type === "filledQualification") {
             const newBasicData: any = { ...this.state.basicDetailsData };
             const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
@@ -952,7 +951,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                                 (<div className="file_upload_box"
                                                                     onClick={() => window.open(url, '_blank')}
                                                                 >
-                                                                    <span className="close" onClick={() => this.removeQualificationFileHandler(qualification_id, "filledQualification")}>
+                                                                    <span className="close" onClick={(e) => this.removeQualificationFileHandler(e, qualification_id, "filledQualification")}>
                                                                         <img src={removeFile} />
                                                                     </span>
                                                                     <span className="file_icon">
@@ -1014,7 +1013,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                             (<div className="file_upload_box"
                                                                 onClick={() => window.open(url, '_blank')}
                                                             >
-                                                                <span className="close" onClick={() => this.removeQualificationFileHandler(_id, "remainingQualification")}>
+                                                                <span className="close" onClick={(e) => this.removeQualificationFileHandler(e, _id, "remainingQualification")}>
                                                                     <img src={removeFile} />
                                                                 </span>
                                                                 <span className="file_icon">

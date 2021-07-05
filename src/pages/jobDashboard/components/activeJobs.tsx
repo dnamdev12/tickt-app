@@ -83,7 +83,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                   ></NavLink>
                   <div className="user_wrap">
                     <figure className="u_img">
-                      <img src={tradeSelectedUrl || dummy} alt="traide-img" />
+                      <img src={tradeSelectedUrl || dummy} alt="" />
                     </figure>
                     <div className="details">
                       <span className="name">{tradeName}</span>

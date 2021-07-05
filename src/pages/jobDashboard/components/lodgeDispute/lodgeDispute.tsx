@@ -209,7 +209,7 @@ const LodgeDispute = (props: PropTypes) => {
 
                 <div className="flex_col_sm_9">
                     <div className="form_field">
-                        <label className="form_label">Details</label>
+                        <label className="form_label">Details (optional)</label>
                         <div className="text_field">
                             <textarea
                                 value={detail}
