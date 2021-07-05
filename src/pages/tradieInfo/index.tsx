@@ -833,11 +833,11 @@ class TradieInfo extends Component<Props, State> {
                     )}
 
                 {console.log({ toggleAddVoucher: this.state.toggleAddVoucher })}
-                <AddVoucherComponent
+                {storageService.getItem('userType') === 2 && <AddVoucherComponent
                     toggleProps={this.state.toggleAddVoucher}
                     id={tradieInfo?.tradieId}
                     closeToggle={this.closeAddVoucher}
-                />
+                />}
 
                 {
                     reviewsData.showAllReviewsClicked && tradieReviews?.length &&
