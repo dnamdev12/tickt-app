@@ -544,7 +544,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={() => props.history.push(`/post-new-job?jobId=${paramJobId}`)}>
-                                            Edit
+                                            Publish again
                                         </button>
                                     )}
 

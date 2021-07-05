@@ -99,18 +99,14 @@ export const getBankDetails = () => ({
   type: actionTypes.GET_BANK_DETAILS_START,
 });
 
-export const addBankDetails = (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => ({
+export const addBankDetails = (data: any) => ({
   type: actionTypes.ADD_BANK_DETAILS_START,
   data,
-  milestoneData,
-  callback,
 });
 
-export const updateBankDetails = (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => ({
+export const updateBankDetails = (data: any) => ({
   type: actionTypes.UPDATE_BANK_DETAILS_START,
   data,
-  milestoneData,
-  callback,
 });
 
 export const removeBankDetails = () => ({

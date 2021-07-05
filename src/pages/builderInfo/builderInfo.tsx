@@ -80,6 +80,7 @@ const portfolioModal = {
 
 const BuilderInfo = (props: PropsType) => {
     const [errors, setErrors] = useState<any>({});
+    const [profilePictureLoading, setProfilePictureLoading] = useState(true);
     const [profileData, setProfileData] = useState<any>('');
     const [reviewList, setReviewList] = useState<Array<any>>([]);
     const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
@@ -377,7 +378,8 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
-                                    {props.isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img src={`${profileData?.builderImage ? `${profileData?.builderImage}?version=${new Date().getTime()}` : ''}` || profilePlaceholder} alt="profile-pic" />}
+                                    {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
+                                    {!props.isSkeletonLoading && <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" onLoad={() => setProfilePictureLoading(false)} hidden={profilePictureLoading} />}
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">

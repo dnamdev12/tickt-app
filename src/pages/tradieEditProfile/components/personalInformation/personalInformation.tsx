@@ -427,7 +427,7 @@ export class PersonalInformation extends Component<Props, State> {
         } else {
             const passwordRegex = new RegExp(regex.password);
             if (!passwordRegex.test(this.state.password.trim())) {
-                newErrors.currentPassword = 'Invalid Current Password';
+                newErrors.currentPassword = Constants.errorStrings.passwordError;
             }
         }
 

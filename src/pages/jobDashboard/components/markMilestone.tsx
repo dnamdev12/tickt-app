@@ -57,14 +57,11 @@ interface Proptypes {
   milestoneList: JobDetails;
   showMilestoneCompletePage: () => void;
   showJobCompletePage: (jobCompletedCount: number) => void;
-  addBankDetails: (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => void;
-  updateBankDetails: (
-    data: any,
-    milestoneData: any,
-    callback: (jobCompletedCount: number) => void
-  ) => void;
+  addBankDetails: (data: any) => void;
+  updateBankDetails: (data: any) => void;
   getBankDetails: () => void;
   removeBankDetails: () => void;
+  markMilestoneComplete: (data: any, callback: (jobCompletedCount: number) => void) => void;
   bankDetails: BankDetails;
 }
 
@@ -77,6 +74,7 @@ const MarkMilestone = ({
   addBankDetails,
   updateBankDetails,
   removeBankDetails,
+  markMilestoneComplete,
   bankDetails,
 }: Proptypes) => {
   const history = useHistory();
@@ -103,7 +101,7 @@ const MarkMilestone = ({
     account_number: '',
     bsb_number: '',
   });
-  const [step, setStep] = useState(1);
+  const [step, setStep] = useState(5);
   const [stepCompleted, setStepCompleted] = useState<Array<number>>([]);
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
@@ -648,23 +646,7 @@ const MarkMilestone = ({
               </div>
               <button
                 className="fill_btn full_btn btn-effect"
-                onClick={() => {
-                  setStepCompleted((prevValue) => prevValue.concat([5]));
-
-                  const hasErrors = [
-                    'account_name',
-                    'account_number',
-                    'bsb_number',
-                  ].reduce((prevValue, name) => {
-                    const error = validateBankDetails(name, data[name]);
-                    setErrors((prevErrors) => ({
-                      ...prevErrors,
-                      [name]: error,
-                    }));
-
-                    return prevValue || error;
-                  }, '');
-
+                onClick={readOnly ? () => {
                   const callback = (jobCompletedCount: number) => {
                     if (isLastMilestone) {
                       showJobCompletePage(jobCompletedCount);
@@ -684,6 +666,24 @@ const MarkMilestone = ({
                     totalAmount: `${totalAmount?.toFixed(2)}`,
                   };
 
+                  markMilestoneComplete(milestoneData, callback);
+                } : () => {
+                  setStepCompleted((prevValue) => prevValue.concat([5]));
+
+                  const hasErrors = [
+                    'account_name',
+                    'account_number',
+                    'bsb_number',
+                  ].reduce((prevValue, name) => {
+                    const error = validateBankDetails(name, data[name]);
+                    setErrors((prevErrors) => ({
+                      ...prevErrors,
+                      [name]: error,
+                    }));
+
+                    return prevValue || error;
+                  }, '');
+
                   const updatedBankDetails = {
                     account_name: data.account_name,
                     account_number: data.account_number,
@@ -696,16 +696,14 @@ const MarkMilestone = ({
                           userId: data.userId,
                           ...updatedBankDetails,
                         },
-                        milestoneData,
-                        callback
                       );
                     } else {
-                      addBankDetails(updatedBankDetails, milestoneData, callback);
+                      addBankDetails(updatedBankDetails);
                     }
                   }
                 }}
               >
-                Continue
+                {readOnly ? 'Continue' : 'Save changes'}
               </button>
             </div>
           </div>
