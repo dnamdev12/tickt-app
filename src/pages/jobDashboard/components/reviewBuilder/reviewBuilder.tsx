@@ -89,7 +89,7 @@ const ReviewBuilder = (props: Proptypes) => {
                         />
                     </div>
                     <div className="form_field">
-                        <label className="form_label">Comment</label>
+                        <label className="form_label">Comment (optional)</label>
                         <div className="text_field">
                             <input type="text" placeholder="Thanks.." maxLength={250} onChange={handleChange} />
                         </div>

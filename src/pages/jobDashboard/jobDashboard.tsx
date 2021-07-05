@@ -29,10 +29,11 @@ interface Proptypes {
   milestoneList: any;
   milestonesCount: number;
   newJobsCount: number;
-  addBankDetails: (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => void;
-  updateBankDetails: (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => void;
+  addBankDetails: (data: any) => void;
+  updateBankDetails: (data: any) => void;
   getBankDetails: () => void;
   removeBankDetails: () => void;
+  markMilestoneComplete: (data: any, callback: (jobCompletedCount: number) => void) => void;
   bankDetails: any;
   resetActiveJobList: () => void;
   resetAppliedJobList: () => void;
@@ -61,6 +62,7 @@ const JobDashboard = ({
   updateBankDetails,
   getBankDetails,
   removeBankDetails,
+  markMilestoneComplete,
   bankDetails,
   resetActiveJobList,
   resetAppliedJobList,
@@ -286,6 +288,7 @@ const JobDashboard = ({
                     addBankDetails={addBankDetails}
                     updateBankDetails={updateBankDetails}
                     removeBankDetails={removeBankDetails}
+                    markMilestoneComplete={markMilestoneComplete}
                     bankDetails={bankDetails}
                     {...props}
                   />
