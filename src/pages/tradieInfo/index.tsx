@@ -59,6 +59,7 @@ interface Props {
 }
 
 interface State {
+    profilePictureLoading: boolean,
     tradieInfo: any,
     tradieReviews: any,
     profileData: any,
@@ -93,6 +94,7 @@ interface State {
 
 class TradieInfo extends Component<Props, State> {
     state = {
+        profilePictureLoading: true,
         tradieInfo: null,
         tradieReviews: null,
         profileData: {},
@@ -494,9 +496,14 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
-                                        {isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img
+                                        {this.state.profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
+                                        {!isSkeletonLoading && <img
                                             src={tradieInfo?.tradieImage || profilePlaceholder}
                                             alt="profile-pic"
+                                            onLoad={() => this.setState({
+                                              profilePictureLoading: false,
+                                            })}
+                                            hidden={this.state.profilePictureLoading}
                                         />}
                                     </figure>
                                 </div>

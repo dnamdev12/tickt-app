@@ -30,7 +30,7 @@ const NewEmail = (props: PropsTypes) => {
         } else {
             const emailRegex = new RegExp(regex.email);
             if (!emailRegex.test(newEmail.trim())) {
-                newErrors.newEmail = 'Invalid Email Address';
+                newErrors.newEmail = Constants.errorStrings.emailErr;
             }else if (newEmail.trim() === props.currentEmail) {
                 newErrors.newEmail = "New Email Address and Current Email Address is same";
             }
@@ -41,7 +41,7 @@ const NewEmail = (props: PropsTypes) => {
         } else {
             const passwordRegex = new RegExp(regex.password);
             if (!passwordRegex.test(currentPassword.trim())) {
-                newErrors.currentPassword = 'Invalid Current Password';
+                newErrors.currentPassword = Constants.errorStrings.passwordError;
             }
         }
 
