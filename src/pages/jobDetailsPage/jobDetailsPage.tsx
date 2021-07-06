@@ -597,14 +597,57 @@ const JobDetailsPage = (props: PropsType) => {
 
                         <Modal
                             className="custom_modal"
-                            open={jobActionState.isCancelRequestAcceptedClicked || jobActionState.isChangeRequestAcceptedClicked}
+                            open={jobActionState.isChangeRequestAcceptedClicked}
+                            onClose={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                <div className="heading">
+                                    <span className="sub_title">{`Change Request Details`}</span>
+                                    <button className="close_btn" onClick={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}>
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                {jobDetailsData?.changeRequestData?.map((item: any) => {
+                                    return (
+                                        <>
+                                            <div>
+                                                <p className="xs_sub_title">New Milestone Name</p>
+                                                <p>{item?.milestone_name}</p>
+                                            </div>
+                                            <div>
+                                                <p className="xs_sub_title">New Duration</p>
+                                                <p>{renderTime(item?.from_date, item?.to_date)}</p>
+                                            </div>
+                                            <div>
+                                                <p className="xs_sub_title">New Recommended Hours</p>
+                                                <p>{item?.recommended_hours}</p>
+                                            </div>
+                                            <div>
+                                                <p className="xs_sub_title">Photo Evidence Required</p>
+                                                <p>{item?.isPhotoevidence ? 'Yes' : 'No'}</p>
+                                            </div>
+                                        </>
+                                    )
+                                })}
+                                <div className="bottom_btn custom_btn">
+                                    <button className="fill_btn full_btn btn-effect" onClick={() => replyChangeRequestHandler('acceptChangeRequest')}>Accept</button>
+                                    {/* <button className="fill_grey_btn btn-effect" onClick={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}>No</button> */}
+                                </div>
+                            </div>
+                        </Modal>
+
+                        <Modal
+                            className="custom_modal"
+                            open={jobActionState.isCancelRequestAcceptedClicked}
                             onClose={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}
                             aria-labelledby="simple-modal-title"
                             aria-describedby="simple-modal-description"
                         >
                             <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                 <div className="heading">
-                                    <span className="xs_sub_title">{`Accept Job ${jobActionState.isCancelRequestAcceptedClicked ? 'Cancellation' : 'Change'} Request`}</span>
+                                    <span className="xs_sub_title">{`Accept Job Cancellation Request`}</span>
                                     <button className="close_btn" onClick={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}>
                                         <img src={cancel} alt="cancel" />
                                     </button>
@@ -613,8 +656,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <p>Are you sure you still want to proceed?</p>
                                 </div>
                                 <div className="dialog_actions">
-                                    {jobActionState.isCancelRequestAcceptedClicked && <button className="fill_btn btn-effect" onClick={() => replyCancellationHandler('acceptJobCancelRequest')}>Yes</button>}
-                                    {jobActionState.isChangeRequestAcceptedClicked && <button className="fill_btn btn-effect" onClick={() => replyChangeRequestHandler('acceptChangeRequest')}>Yes</button>}
+                                    <button className="fill_btn btn-effect" onClick={() => replyCancellationHandler('acceptJobCancelRequest')}>Yes</button>
                                     <button className="fill_grey_btn btn-effect"
                                         onClick={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}>No</button>
                                 </div>
@@ -765,7 +807,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             )
                                         })}
                                         {jobDetailsData?.questionsCount > questionList.length && <div className="text-center">
-                                            <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>Load more</button>
+                                            <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>View more</button>
                                         </div>}
                                     </div>
                                     <div className="bottom_btn custom_btn">

@@ -447,7 +447,7 @@ const BuilderInfo = (props: PropsType) => {
                                                 return <li key={item.specializationId}>{item.specializationName || ''}</li>
                                             })}
                                         </ul>)}
-                                    {profileData?.areasOfjobs?.length > 7 && <a href="javascript:void(0)" className="link show_more"
+                                    {(profileData?.areasOfjobs?.length > 6 || (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) && <a href="javascript:void(0)" className="link show_more"
                                         onClick={(e: any) => {
                                             e.preventDefault();
                                             setShowSpecs(!showSpecs);
