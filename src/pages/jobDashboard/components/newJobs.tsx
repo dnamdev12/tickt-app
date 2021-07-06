@@ -61,7 +61,7 @@ const NewJobs = ({ loading, getNewJobList, newJobList, newJobsCount, resetNewJob
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs&jobAction=invite`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
-                    <img src={dummy || tradeSelectedUrl} alt="traide-img" />
+                    <img src={tradeSelectedUrl || dummy} alt="" />
                   </figure>
                   <div className="details">
                     <span className="name">{tradeName}</span>

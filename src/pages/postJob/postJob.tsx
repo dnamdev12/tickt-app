@@ -147,67 +147,6 @@ const PostJob = (props: Proptypes) => {
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
 
-    // const addTimeToMileStone = (time: any, index: any, skip: any) => {
-    //     let milestone_clone: any = milestones;
-    //     let checkIsValid: any = true;
-    //     if (!skip && milestone_clone?.length) {
-    //         let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
-    //         if (filter_milestone?.length) {
-    //             filter_milestone.forEach((mile: any) => {
-    //                 let validStart = moment(mile.from_date).isValid();
-    //                 let validEnd = moment(mile.to_date).isValid();
-
-    //                 let validStartInput = moment(time.from_date).isValid();
-    //                 let validEndInput = moment(time.to_date).isValid();
-
-    //                 if (validStart && validEnd) {
-    //                     if (validStartInput && validEndInput) {
-    //                         if (moment(time.from_date).isSameOrAfter(mile.from_date) && moment(time.to_date).isSameOrBefore(mile.to_date)) {
-    //                             checkIsValid = false
-    //                         }
-    //                     }
-
-    //                     if (validStartInput) {
-    //                         // if (moment(time.from_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-    //                         if (moment(time.from_date).isSameOrAfter(mile.from_date) && moment(time.from_date).isSameOrBefore(mile.to_date)) {
-    //                             checkIsValid = false
-    //                         }
-    //                     }
-
-    //                     if (validEndInput) {
-    //                         // if (moment(time.to_date).add(1, 'day').isBetween(mile.from_date, mile.to_date)) {
-    //                         if (moment(time.to_date).isSameOrAfter(mile.from_date) && moment(time.to_date).isSameOrBefore(mile.to_date)) {
-    //                             checkIsValid = false
-    //                         }
-    //                     }
-    //                 }
-
-    //                 if (validStart && validStartInput && !validEnd) {
-    //                     if (moment(time.from_date).isSame(mile.from_date)) {
-    //                         checkIsValid = false
-    //                     }
-    //                 }
-
-    //                 if (validEnd && validEndInput && !validStart) {
-    //                     if (moment(time.to_date).isSame(mile.to_date)) {
-    //                         checkIsValid = false
-    //                     }
-    //                 }
-    //             })
-    //         }
-    //     }
-
-    //     if (!checkIsValid) {
-    //         setShowToast(true, 'Please add unique date.');
-    //         return;
-    //     }
-
-    //     milestone_clone[index]['from_date'] = time.from_date;
-    //     milestone_clone[index]['to_date'] = time.to_date;
-    //     setMileStones(milestone_clone);
-    //     Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
-    // }
-
     const addTimeToMileStone = (time: any, index: any, skip: any) => {
         const default_format = 'MM-DD-YYYY';
         let milestone_clone: any = milestones;

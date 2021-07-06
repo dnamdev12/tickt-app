@@ -70,7 +70,7 @@ function* cleanTradieBasicDetails() {
   yield put({ type: actionTypes.SET_TRADIE_BASIC_DETAILS, payload: '' });
 }
 
-function* addBankDetails({ data, milestoneData, callback }: any) {
+function* addBankDetails({ data }: any) {
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.postToJson(
     Urls.addBankDetails,
@@ -84,8 +84,6 @@ function* addBankDetails({ data, milestoneData, callback }: any) {
       payload: response.result
     });
 
-    yield put({ type: MARK_MILESTONE_COMPLETE, data: milestoneData, callback });
-
     return;
   }
 
@@ -93,7 +91,7 @@ function* addBankDetails({ data, milestoneData, callback }: any) {
   yield put({ type: actionTypes.ADD_BANK_DETAILS_END, payload: data });
 }
 
-function* updateBankDetails({ data, milestoneData, callback }: any) {
+function* updateBankDetails({ data }: any) {
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.putToJson(
     Urls.updateBankDetails,
@@ -106,8 +104,6 @@ function* updateBankDetails({ data, milestoneData, callback }: any) {
       type: actionTypes.UPDATE_BANK_DETAILS_END,
       payload: response.result
     });
-
-    yield put({ type: MARK_MILESTONE_COMPLETE, data: milestoneData, callback });
 
     return;
   }

@@ -112,6 +112,8 @@ const Urls = {
     tradieLodgeDispute: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}lodgeDispute`,
     tradieCancelJob: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}cancelJob`,
     jobHome: `${versions.v1}${ServiceEnum.home}`,
+    job: `${versions.v1}${ServiceEnum.job}`,
+    profile: `${versions.v1}${ServiceEnum.profile}`,
     builder: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
     builderProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}view`,
     getBuilderBasicDetails: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getBasicDetails`,

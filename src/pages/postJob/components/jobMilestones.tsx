@@ -12,6 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { useHistory, useLocation } from "react-router-dom";
 
 import { renderTimeWithFormat } from '../../../utils/common';
 
@@ -41,6 +42,14 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
     const [open, setOpen] = React.useState(false);
     const [deleteItem, setDeleteItem] = React.useState(null);
     const [sortedItems, setSortedItems] = React.useState([]);
+
+    let location = useLocation();
+    let jobId: any = null;
+
+    if (location.search) {
+        let urlParams = new URLSearchParams(location.search);
+        jobId = urlParams.get('jobId');
+    }
 
     const handleClickOpen = (id: any) => {
         setOpen(true)
@@ -82,12 +91,16 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         console.log({ data })
         let start_selection: any = moment(data?.from_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
         let end_selection: any = null;
+
+        console.log({
+            start_selection
+        })
         if (moment(data?.to_date, 'YYYY-MM-DD').isValid()) {
             if (!moment(data?.to_date, 'YYYY-MM-DD').isSame(moment(data?.from_date, 'YYYY-MM-DD'))) {
                 end_selection = moment(data?.to_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
             }
         }
-    
+
         let item_find: any = false;
         let filteredItem = localMilestones.filter((item: any) => {
             if (item.hasOwnProperty('from_date')) {
@@ -96,26 +109,36 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
             }
         });
-    
+
+        let not_lie_between = false;
         if (filteredItem?.length) {
             filteredItem.forEach((item_date: any) => {
                 let start: any = moment(item_date.from_date, 'MM-DD-YYYY').isValid() ? item_date.from_date : null;
                 let end: any = moment(item_date.to_date, 'MM-DD-YYYY').isValid() ? item_date.to_date : null;
-    
+
                 if (start && end) {
                     if (start_selection && end_selection) {
                         if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
                             item_find = true
                         }
                     }
+
+                    if (start_selection && !end_selection) {
+                        if (
+                            moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))
+                        ) {
+                            item_find = true;
+                            not_lie_between = true;
+                        }
+                    }
                 }
-    
+
                 if (start && !end) {
                     if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
                         item_find = true; // true;
                     }
                 }
-    
+
                 if (start_selection && end_selection && !end) {
                     if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
                         item_find = false;
@@ -123,17 +146,28 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                         item_find = true
                     }
                 }
+                console.log({
+                    start,
+                    end,
+                    start_selection,
+                    end_selection,
+                    item_date
+                })
             });
         }
-    
+
         if (item_find) {
-            setShowToast(true, 'Please check the milestone dates.');
+            if (not_lie_between) {
+                setShowToast(true, 'Milestones dates should be lie between the job details');
+            } else {
+                setShowToast(true, 'Please check the milestone dates.');
+            }
             return item_find;
         }
-    
+
         return item_find;
     }
-    
+
     const checkIfValidDates = (item: any) => {
         let isfilter = localMilestones.filter((item_: any) => {
             if (item_.hasOwnProperty('from_date')) {
@@ -386,9 +420,13 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                     <div className="form_field">
                                         <button
                                             onClick={() => {
+
+
                                                 let checkIfItem: boolean = checkIfDatesValid();
+                                                console.log({ checkIfItem })
                                                 if (!checkIfItem) {
                                                     let check: boolean = checkIfValidDates(localMilestones);
+                                                    console.log({ check })
                                                     if (check) {
                                                         handleCombineMileStones(localMilestones);
                                                         if (editDetailPage?.currentScreen) {

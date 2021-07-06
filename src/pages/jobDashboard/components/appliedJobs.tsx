@@ -61,7 +61,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
-                    <img src={tradeSelectedUrl || dummy} alt="traide-img" />
+                    <img src={tradeSelectedUrl || dummy} alt="" />
                   </figure>
                   <div className="details">
                     <span className="name">{tradeName}</span>

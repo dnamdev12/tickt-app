@@ -49,7 +49,7 @@ const Success = (props: any) => {
                                 <div className="btn_wrapr">
                                     <button
                                         onClick={() => {
-                                            props.history.push('/');
+                                            setShowToast(true, 'Under development');
                                         }}
                                         style={{ backgroundColor: '#fff' }}
                                         className="fill_btn btn-effect">

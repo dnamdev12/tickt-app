@@ -288,6 +288,15 @@ const JobDetails = ({
             if (moment(start_date).isSame(moment(end_date))) {
                 end_date = false;
             }
+
+            if (moment(start_date).isSame(moment(current_date))) {
+                result = 'Today';
+            }
+
+            if (moment(start_date).isAfter(moment(current_date))) {
+                let days_diff = moment(start_date).diff(moment(current_date), 'days');
+                result = `${days_diff} days`;
+            }
         }
 
         if (start_date && !end_date) {

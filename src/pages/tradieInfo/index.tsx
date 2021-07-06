@@ -59,6 +59,7 @@ interface Props {
 }
 
 interface State {
+    profilePictureLoading: boolean,
     tradieInfo: any,
     tradieReviews: any,
     profileData: any,
@@ -93,6 +94,7 @@ interface State {
 
 class TradieInfo extends Component<Props, State> {
     state = {
+        profilePictureLoading: true,
         tradieInfo: null,
         tradieReviews: null,
         profileData: {},
@@ -428,12 +430,12 @@ class TradieInfo extends Component<Props, State> {
 
     }
 
-    closeAddVoucher = (isRecall?:any) => {
-        if(isRecall === "isRecall"){
+    closeAddVoucher = (isRecall?: any) => {
+        if (isRecall === "isRecall") {
             this.setState({
-                toggleAddVoucher:false
+                toggleAddVoucher: false
             }, () => {
-                if(this.state.toggleAddVoucher === false){
+                if (this.state.toggleAddVoucher === false) {
                     this.setItems();
                 }
             })
@@ -494,9 +496,14 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
-                                        {isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img
+                                        {this.state.profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
+                                        {!isSkeletonLoading && <img
                                             src={tradieInfo?.tradieImage || profilePlaceholder}
                                             alt="profile-pic"
+                                            onLoad={() => this.setState({
+                                                profilePictureLoading: false,
+                                            })}
+                                            hidden={this.state.profilePictureLoading}
                                         />}
                                     </figure>
                                 </div>
@@ -644,7 +651,7 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                 </div>
-                <div className="section_wrapper">
+                {tradieInfo?.portfolio?.length ? <div className="section_wrapper">
                     <div className="custom_container">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
                         <Carousel
@@ -669,7 +676,7 @@ class TradieInfo extends Component<Props, State> {
                             }) : <img alt="" src={portfolioPlaceholder} />}
                         </Carousel>
                     </div>
-                </div>
+                </div> : null}
 
                 {/* portfolio Image modal desc */}
                 {portfolioData?.portfolioImageClicked &&
@@ -814,12 +821,25 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}</button>
+                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}
+                            </button>
                         </div>
                     </div>
                     : (
                         <div className="section_wrapper">
                             <div className="custom_container">
+                                <span className="sub_title">Vouches</span>
+
+
+                                <div className="flex_row review_parent">
+                                    <div className="no_record">
+                                        <figure className="no_data_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                        <span>No Data Found</span>
+                                    </div>
+                                </div>
+
                                 <button
                                     className="fill_grey_btn full_btn"
                                     onClick={() => {
@@ -827,17 +847,18 @@ class TradieInfo extends Component<Props, State> {
                                             toggleAddVoucher: !this.state.toggleAddVoucher
                                         })
                                     }}>
-                                    {`+ Leave a voucher`}</button>
+                                    {`Leave a vouche`}
+                                </button>
                             </div>
                         </div>
                     )}
 
                 {console.log({ toggleAddVoucher: this.state.toggleAddVoucher })}
-                <AddVoucherComponent
+                {storageService.getItem('userType') === 2 && <AddVoucherComponent
                     toggleProps={this.state.toggleAddVoucher}
                     id={tradieInfo?.tradieId}
                     closeToggle={this.closeAddVoucher}
-                />
+                />}
 
                 {
                     reviewsData.showAllReviewsClicked && tradieReviews?.length &&
@@ -891,12 +912,15 @@ class TradieInfo extends Component<Props, State> {
                                                         {'Show review'}
                                                     </span>
                                                 ) : (
-                                                    <span className="action link">
-                                                        {/* onClick={() => {
+                                                    storageService.getItem('userType') === 1 ?
+                                                    (<span
+                                                        className="action link"
+                                                        onClick={() => {
                                                             reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
-                                                        }}> */}
-                                                        {/* {'Reply'} */}
-                                                    </span>
+                                                        }}>
+                                                        {'Reply'}
+                                                    </span>)
+                                                    : ''
                                                 )}
                                                 {/* {Object.keys(replyData).length > 0 &&
                                                     !(reviewsData?.replyShownHideList.includes(replyId) ||

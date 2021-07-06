@@ -6,6 +6,7 @@ import UploadMedia from '../../postJob/components/uploadMedia';
 import { renderTime } from '../../../utils/common';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob'
+import FsLightbox from 'fslightbox-react';
 
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
@@ -14,6 +15,7 @@ import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
+
 
 const declinedImages = {
   desktop: {
@@ -57,14 +59,11 @@ interface Proptypes {
   milestoneList: JobDetails;
   showMilestoneCompletePage: () => void;
   showJobCompletePage: (jobCompletedCount: number) => void;
-  addBankDetails: (data: any, milestoneData: any, callback: (jobCompletedCount: number) => void) => void;
-  updateBankDetails: (
-    data: any,
-    milestoneData: any,
-    callback: (jobCompletedCount: number) => void
-  ) => void;
+  addBankDetails: (data: any) => void;
+  updateBankDetails: (data: any) => void;
   getBankDetails: () => void;
   removeBankDetails: () => void;
+  markMilestoneComplete: (data: any, callback: (jobCompletedCount: number) => void) => void;
   bankDetails: BankDetails;
 }
 
@@ -77,6 +76,7 @@ const MarkMilestone = ({
   addBankDetails,
   updateBankDetails,
   removeBankDetails,
+  markMilestoneComplete,
   bankDetails,
 }: Proptypes) => {
   const history = useHistory();
@@ -114,6 +114,9 @@ const MarkMilestone = ({
     prevMilestoneDeclineId: '',
     currentMilestoneDeclineId: '',
   });
+  const [mediaList, setMediaList] = useState([]);
+  const [toggler, setToggler] = useState(false);
+  const [selectedSlide, setSelectSlide] = useState(1);
 
   useEffect(() => {
     const params = new URLSearchParams(history.location?.search);
@@ -208,14 +211,43 @@ const MarkMilestone = ({
   useEffect(() => {
     const multipleList: any = milestones?.filter(({ status }: { status: number }) => status === 3);
     if (multipleList?.length > 1) {
-      const id: any = milestones?.find(({ status }: { status: number }) => status === 3)?.milestoneId;
-      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: id, currentMilestoneDeclineId: id }));
+      const list: any = milestones?.find(({ status }: { status: number }) => status === 3);
+      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: list?.milestoneId, currentMilestoneDeclineId: list?.milestoneId }));
+      setMediaList(list?.declinedReason?.url);
     } else if (multipleList?.length === 1) {
-      const id: any = milestones?.find(({ status }: { status: number }) => status === 3)?.milestoneId;
-      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: id, currentMilestoneDeclineId: id }));
+      const list: any = milestones?.find(({ status }: { status: number }) => status === 3);
+      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: list?.milestoneId, currentMilestoneDeclineId: list?.milestoneId }));
+      setMediaList(list?.declinedReason?.url);
     }
   }, [milestones]);
   console.log(milestoneDeclineData, "milestoneDeclineData");
+
+  const setItemToggle = (index: any) => {
+    setToggler((prev: boolean) => !prev);
+    setSelectSlide(index + 1);
+  }
+
+  const renderFilteredItems = () => {
+    let sources: any = [];
+    let types: any = [];
+
+    if (mediaList?.length) {
+      mediaList.forEach((item: any) => {
+        if (item?.mediaType === 2) {
+          sources.push(item.link);
+          types.push('video');
+        } else if (item?.mediaType === 1) {
+          sources.push(item.link);
+          types.push('image');
+        } else {
+          sources.push(item);
+          types.push('image');
+        }
+      })
+    }
+
+    return { sources, types };
+  }
 
   const backTab = (name: string) => {
     const params = new URLSearchParams(history.location?.search);
@@ -246,6 +278,9 @@ const MarkMilestone = ({
       />
     )
   }
+
+
+  const { sources, types } = renderFilteredItems();
 
   let page = null;
   const renderSteps = () => {
@@ -321,7 +356,10 @@ const MarkMilestone = ({
                                 : 'disabled'
                         }
                       >
-                        <div className="circle_stepper" onClick={() => setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))}>
+                        <div className="circle_stepper" onClick={() => {
+                          setMediaList(declinedReason?.url);
+                          setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))
+                        }}>
                           <span></span>
                         </div>
                         <div className="info">
@@ -333,9 +371,17 @@ const MarkMilestone = ({
                             {renderTime(fromDate, toDate)}
                           </span>
                         </div>
+
+
                         {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
                           <>
                             <div className="decline_reason">
+                              <FsLightbox
+                                toggler={toggler}
+                                slide={selectedSlide}
+                                sources={sources}
+                                types={types}
+                              />
                               <label className="form_label">Decline reason:</label>
                               <div className="text_field">
                                 <p className="commn_para">{declinedReason?.reason}</p>
@@ -348,11 +394,11 @@ const MarkMilestone = ({
                                   showDots={false}
                                   arrows={true}
                                 >
-                                  {declinedReason?.url?.map((image: string) => {
+                                  {declinedReason?.url?.map((image: string, index: number) => {
                                     return (
                                       <div className="upload_img_video">
                                         <figure className="img_video">
-                                          <img src={image} alt="image" />
+                                          <img src={image} alt="image" onClick={() => setItemToggle(index)} />
                                         </figure>
                                       </div>)
                                   })}
@@ -648,23 +694,7 @@ const MarkMilestone = ({
               </div>
               <button
                 className="fill_btn full_btn btn-effect"
-                onClick={() => {
-                  setStepCompleted((prevValue) => prevValue.concat([5]));
-
-                  const hasErrors = [
-                    'account_name',
-                    'account_number',
-                    'bsb_number',
-                  ].reduce((prevValue, name) => {
-                    const error = validateBankDetails(name, data[name]);
-                    setErrors((prevErrors) => ({
-                      ...prevErrors,
-                      [name]: error,
-                    }));
-
-                    return prevValue || error;
-                  }, '');
-
+                onClick={readOnly ? () => {
                   const callback = (jobCompletedCount: number) => {
                     if (isLastMilestone) {
                       showJobCompletePage(jobCompletedCount);
@@ -684,6 +714,24 @@ const MarkMilestone = ({
                     totalAmount: `${totalAmount?.toFixed(2)}`,
                   };
 
+                  markMilestoneComplete(milestoneData, callback);
+                } : () => {
+                  setStepCompleted((prevValue) => prevValue.concat([5]));
+
+                  const hasErrors = [
+                    'account_name',
+                    'account_number',
+                    'bsb_number',
+                  ].reduce((prevValue, name) => {
+                    const error = validateBankDetails(name, data[name]);
+                    setErrors((prevErrors) => ({
+                      ...prevErrors,
+                      [name]: error,
+                    }));
+
+                    return prevValue || error;
+                  }, '');
+
                   const updatedBankDetails = {
                     account_name: data.account_name,
                     account_number: data.account_number,
@@ -696,16 +744,14 @@ const MarkMilestone = ({
                           userId: data.userId,
                           ...updatedBankDetails,
                         },
-                        milestoneData,
-                        callback
                       );
                     } else {
-                      addBankDetails(updatedBankDetails, milestoneData, callback);
+                      addBankDetails(updatedBankDetails);
                     }
                   }
                 }}
               >
-                Continue
+                {readOnly ? 'Continue' : 'Save changes'}
               </button>
             </div>
           </div>

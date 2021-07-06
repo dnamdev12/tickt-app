@@ -23,7 +23,7 @@ const label: { [index: string]: string } = {
     recommended: 'Recommended Hours',
 }
 
-const pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
+const pattern = "^([0-9][0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 
 const AddEditMile = (props: any) => {
     const { resetItems, item } = props;

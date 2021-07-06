@@ -64,7 +64,7 @@ const PastJobs = (props: Proptypes) => {
                 <NavLink to={`/job-details-page?jobId=${item.jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
-                    <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="traide-img" />
+                    <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="" />
                   </figure>
                   <div className="details">
                     <span className="name">{item.tradeName}</span>

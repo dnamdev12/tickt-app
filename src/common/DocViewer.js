@@ -5,7 +5,9 @@ const DocViewer = ({ src, width, height }) => {
         <div>
             <iframe
                 src={'https://docs.google.com/viewer?url=' + src + '&embedded=true'}
-                sandbox=''
+                sandbox='allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation'
+                allow="fullscreen"
+                allowFullScreen="allow" 
                 title="file"
                 width={width || '100%'}
                 style={{minHeight: height || '800px', maxHeight:'2000px'}}

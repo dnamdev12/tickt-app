@@ -451,6 +451,7 @@ export const tradielodgeDispute = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true };
   }
+  setShowToast(true, response.message);
   return { success: false };
 }
 
@@ -472,6 +473,7 @@ export const tradieCancelJob = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true };
   }
+  setShowToast(true, response.message);
   return { success: false };
 }
 
@@ -632,6 +634,17 @@ export const handleCancelReply = async (data: any) => {
 export const invitedJobIds = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.home}invitedJobIds?tradieId=${data?.tradieId}&page=${data?.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const getSavedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.profile}/builder/getSavedTradies?page=${data?.page}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };

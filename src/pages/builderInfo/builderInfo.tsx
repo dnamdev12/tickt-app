@@ -80,6 +80,7 @@ const portfolioModal = {
 
 const BuilderInfo = (props: PropsType) => {
     const [errors, setErrors] = useState<any>({});
+    const [profilePictureLoading, setProfilePictureLoading] = useState(true);
     const [profileData, setProfileData] = useState<any>('');
     const [reviewList, setReviewList] = useState<Array<any>>([]);
     const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
@@ -377,7 +378,8 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
-                                    {props.isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <img src={`${profileData?.builderImage ? `${profileData?.builderImage}?version=${new Date().getTime()}` : ''}` || profilePlaceholder} alt="profile-pic" />}
+                                    {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
+                                    {!props.isSkeletonLoading && <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" onLoad={() => setProfilePictureLoading(false)} hidden={profilePictureLoading} />}
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">
@@ -392,9 +394,12 @@ const BuilderInfo = (props: PropsType) => {
                                                     <span className="icon reviews">{profileData?.ratings || '0'}</span>
                                                     <span className="review_count">{`${profileData?.reviewsCount || '0'} reviews`}</span>
                                                 </li>
+                                                {console.log({
+                                                    jobCompletedCount: profileData?.jobCompletedCount
+                                                })}
                                                 <li>
                                                     <span className="icon job">{profileData?.jobCompletedCount || '0'}</span>
-                                                    <span className="review_count"> jobs completed</span>
+                                                    <span className="review_count"> jobs completed --</span>
                                                 </li>
                                             </ul>
                                             {userType === 2 ?
@@ -445,7 +450,7 @@ const BuilderInfo = (props: PropsType) => {
                                                 return <li key={item.specializationId}>{item.specializationName || ''}</li>
                                             })}
                                         </ul>)}
-                                    {profileData?.areasOfjobs?.length > 7 && <a href="javascript:void(0)" className="link show_more"
+                                    {(profileData?.areasOfjobs?.length > 6 || (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) && <a href="javascript:void(0)" className="link show_more"
                                         onClick={(e: any) => {
                                             e.preventDefault();
                                             setShowSpecs(!showSpecs);
@@ -458,7 +463,7 @@ const BuilderInfo = (props: PropsType) => {
                 </div>
             </div>
 
-            <div className="section_wrapper">
+            {profileData?.portfolio?.length > 0 && <div className="section_wrapper">
                 <div className="custom_container">
                     <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
                     <Carousel
@@ -480,15 +485,10 @@ const BuilderInfo = (props: PropsType) => {
                                     </figure>
                                 </div>
                             )
-                        }) :
-                            <div className="media">
-                                <figure className="portfolio_img">
-                                    <img src={portfolioPlaceholder} alt="portfolio-images" />
-                                </figure>
-                            </div>}
+                        }) : null}
                     </Carousel>
                 </div>
-            </div>
+            </div>}
 
             <Modal
                 className="custom_modal"
