@@ -946,6 +946,22 @@ body {
 //----------------------Onboard Model close----------------------//
 
 //----------------------Job/Story/Profile Detail-------------------//
+.change_req_detail{
+  ul{
+    &:not(:last-child){
+      border-bottom: 1px solid var(--grey);
+      margin-bottom: 10px;
+    }
+    li{
+      margin-bottom: 10px;
+    }
+  }
+  .inner_title{
+    margin: 0;
+    font: 15px/1.33 'Neue Haas Grotesk Text Pro Medium';
+  }
+}
+
 .vid_img_wrapper {
   .flex_col_sm_3 {
     @media (max-width: 1024px) {
