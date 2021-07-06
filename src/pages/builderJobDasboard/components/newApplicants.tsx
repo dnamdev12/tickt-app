@@ -25,22 +25,30 @@ interface Applicant {
     specializationId: any,
     tradeName: any,
     tradieId: any,
+    isLoading?:any,
     tradeSelectedUrl: any,
+    activeType?:any
 }
 
 const NewApplicants = (props: any) => {
     const { dataItems, jobType, setJobLabel, isLoading } = props;
     let listData: any = dataItems;
-    console.log({ dataItems })
+    console.log({ dataItems, isLoading })
 
 
     const redirectToInfo = ({ jobId }: any) => {
         console.log({ jobId });
         const props_: any = props;
+        console.log({props_})
         if (jobId?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}`)
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
             props_.history.push(`/job-detail?${urlEncode}`);
         }
+    }
+
+
+    if(isLoading){
+        return null;
     }
 
     return (

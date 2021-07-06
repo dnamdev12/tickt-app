@@ -37,10 +37,17 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
         sortBySortingClose();
         setJobLabel('applicantList', jobid, num)
     }
-    console.log({ activeType })
+
+    if(isLoading){
+        return (
+            <>
+            {''}
+            </>
+        )
+    }
+    
     return (
         <>
-
             <div className="flex_row center_flex">
                 <React.Fragment>
                     <div className="flex_col_sm_6">

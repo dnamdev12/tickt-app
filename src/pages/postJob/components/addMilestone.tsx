@@ -49,7 +49,7 @@ const label: { [index: string]: string } = {
     recommended_hours: 'Recommended Hours',
 }
 
-const pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
+const pattern = "^([0-9][0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 // "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 export default class AddMilestone extends Component<Props, State> {
     constructor(props: any) {

@@ -2,7 +2,7 @@ import id from 'date-fns/esm/locale/id/index.js';
 import { isError } from 'lodash';
 import React, { useEffect, useState } from 'react';
 import Constants from '../../../utils/constants';
-
+import { useHistory, useLocation } from "react-router-dom";
 interface Proptypes {
   data: any,
   editDetailPage: any,
@@ -25,6 +25,15 @@ const PostNewJob = ({
   const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>({ jobName: '', job_description: '' });
   const [errors, setErrors] = useState({ jobName: '', job_description: '' });
   const [continueClicked, setContinueClicked] = useState(false);
+
+
+  let location = useLocation();
+  let jobId: any = null;
+
+  if (location.search) {
+    let urlParams = new URLSearchParams(location.search);
+    jobId = urlParams.get('jobId');
+  }
 
   useEffect(() => {
     if (stepCompleted) {
@@ -125,14 +134,16 @@ const PostNewJob = ({
                     <div className="relate">
                       <button className="back" onClick={() => { handleStepForward(14) }}></button>
                       <span className="title">
-                        {'Post new job'}
+                        {jobId ? 'Republish a job' : 'Post new job'}
                       </span>
                     </div>
                     <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
                   </React.Fragment>
                   : (
                     <React.Fragment>
-                      <span className="title">Post new job</span>
+                      <span className="title">
+                        {jobId ? 'Republish a job' : 'Post new job'}
+                      </span>
                       <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
                     </React.Fragment>
                   )}

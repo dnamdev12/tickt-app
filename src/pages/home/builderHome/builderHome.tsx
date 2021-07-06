@@ -13,9 +13,7 @@ import { getBuilderHomeData } from '../../../redux/jobs/actions';
 import TradieHome from '../../shared/tradieHome';
 import JobTypes from './components/jobTypes';
 import axios from 'axios';
-
 import dummy from '../../../assets/images/u_placeholder.jpg';
-
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -78,7 +76,7 @@ const BuilderHome = (props: any) => {
         let permission: any = await navigator.permissions.query({ name: 'geolocation' });
         if (permission.state === 'denied') {
             if (getKey() !== "true") {
-                setShowToast(true, 'Please enable the location permission from the settings so that Tickt app can access your location');
+                setShowToast(true, 'Please enable the location permission from the browser settings so that Tickt app can access your location');
                 setKey();
             }
         }
@@ -157,7 +155,9 @@ const BuilderHome = (props: any) => {
             <TradieHome
                 data={home_data?.saved_tradespeople}
                 title={"Saved tradespeople"}
-                length={3} // redirectPath={"/saved-trade-people"}
+                length={3}
+                redirectPath={"/saved-tradespeople"}
+                history={props?.history}
             />
 
             {home_data?.popular_tradespeople?.length > 0 &&
@@ -173,6 +173,11 @@ const BuilderHome = (props: any) => {
                                         key={`${item.userName}item${index}`}
                                         data-aos="flip-right"
                                         data-aos-delay="200"
+                                        onClick={() => {
+                                            if (props?.history && item?.tradieId) {
+                                                props?.history?.push(`tradie-info?tradeId=${item?.tradieId}&hideInvite=${false}`);
+                                            }
+                                        }}
                                         data-aos-duration="1000">
                                         <figure className="tradies_img">
                                             <img src={item.userImage || dummy} alt="tradies-img" />
@@ -181,16 +186,22 @@ const BuilderHome = (props: any) => {
                                         <span className="post">{item.trade}</span>
                                     </li>)
                             })}
-
-                            {/* <span>
-                                {'No Data Found'}
-                            </span> */}
-
                         </ul>
                         <button
                             className="fill_grey_btn full_btn m-tb40 view_more"
                             onClick={() => {
-                                setShowToast(true, 'Under development');
+                                // setShowToast(true, 'Under development');
+                                if (props?.history && props?.history?.push) {
+                                    props?.history.push({
+                                        pathname: '/popular-tradespeople',
+                                        state: {
+                                            data: home_data?.popular_tradespeople,
+                                            title: 'Popular tradespeople',
+                                            popular: true,
+                                            history: null, //props?.history
+                                        }
+                                    })
+                                }
                             }}>
                             {'View all'}
                         </button>
@@ -200,14 +211,18 @@ const BuilderHome = (props: any) => {
 
             <TradieHome
                 data={home_data?.recomended_tradespeople}
-                title={"Recommended tradespeople"} // redirectPath={'/recommended-trade-people'}
+                title={"Recommended tradespeople"}
+                redirectPath={'/recommended-tradespeople'}
                 length={9}
+                history={props?.history}
             />
 
             <TradieHome
                 data={home_data?.mostViewed_tradespeople}
-                title={"Most Viewed tradespeople"} // redirectPath={'/recommended-trade-people'}
+                title={"Most Viewed tradespeople"}
+                redirectPath={'/most-viewed-tradespeople'}
                 length={9}
+                history={props?.history}
             />
         </div>
     )

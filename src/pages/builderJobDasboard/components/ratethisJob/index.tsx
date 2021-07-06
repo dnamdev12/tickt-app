@@ -22,9 +22,9 @@ const RateThisJob = (props: any) => {
         rating: 0,
         review: '',
     });
-    
+
     let data: any = props?.data;
-   
+
     const ratingChanged = (newRating: number) => {
         console.log(newRating);
         setReviewBuilderData((prevdata: any) => ({ ...prevdata, rating: newRating }))
@@ -45,16 +45,21 @@ const RateThisJob = (props: any) => {
             return;
         }
         if (reviewBuilderData.review.trim().length < 1) {
-            setShowToast(true, 'Review text is required');
-            return;
+            // setShowToast(true, 'Comment is required');
+            // return;
         }
-        if (reviewBuilderData.review.trim().length > 1 && reviewBuilderData.rating > 0) {
-            const dataItem = {
+        // if (reviewBuilderData.review.trim().length > 1 && reviewBuilderData.rating > 0) {
+        if (reviewBuilderData.rating > 0) {
+            const dataItem:any = {
                 jobId: data?.jobId,
                 tradieId: data?.tradieId,
-                rating: reviewBuilderData.rating,
-                review: reviewBuilderData.review.trim()
+                rating: reviewBuilderData.rating
             }
+
+            if (reviewBuilderData.review.trim().length > 1) {
+                dataItem['review'] = reviewBuilderData?.review?.length ? reviewBuilderData.review.trim() : '';
+            }
+
             const response = await ratingTradieProfile(dataItem);
             if (response?.success) {
                 props?.history?.push('/rate-success')
@@ -127,7 +132,9 @@ const RateThisJob = (props: any) => {
                     />
                 </div>
                 <div className="form_field">
-                    <label className="form_label">Comment</label>
+                    <label className="form_label">
+                        {'Comment (optional)'}
+                    </label>
                     <div className="text_field">
                         <input
                             type="text"

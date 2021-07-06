@@ -23,7 +23,7 @@ const initialState = {
   builderNewApplicantsList: [],
   tradieReviewList: [],
   tradieReviews: [],
-  newApprovalList:[],
+  newApprovalList: [],
   tradieRequestStatus: false
 }
 
@@ -170,6 +170,7 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         newApprovalList: action.payload,
       };
+
 
     default: return state;
   }
