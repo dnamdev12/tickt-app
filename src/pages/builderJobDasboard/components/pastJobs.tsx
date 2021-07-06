@@ -61,6 +61,16 @@ export default function PastJobs(props: any): ReactElement {
         )
     }
 
+
+    if (isLoading) {
+        return (
+            <React.Fragment>
+                {''}
+            </React.Fragment>
+        );
+    }
+
+
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>

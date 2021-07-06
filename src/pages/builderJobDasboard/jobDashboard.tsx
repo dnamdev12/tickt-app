@@ -89,7 +89,7 @@ class JobDashboard extends Component<Props, State> {
             activeType_,
             activeType,
             jobtype
-        },'nextProps')
+        }, 'nextProps')
         if (activeType_) {
             if (activeType_ !== activeType) {
                 this.setState({
@@ -104,7 +104,7 @@ class JobDashboard extends Component<Props, State> {
                     this.setAfterItems({
                         jobtype: activeType_,
                         currentPage: 1,
-                        dataItemsAddons: null
+                        dataItemsAddons: { page: 1, jobId: null, sortBy: 1 }
                     })
                 })
             }
@@ -181,7 +181,7 @@ class JobDashboard extends Component<Props, State> {
         if (['active', 'past', 'open', 'applicant', 'approval'].includes(jobtype)) {
             this.setState({ activeType: jobtype }, () => {
                 // this.props.history.replace('/jobs')
-                this.props.history.push('/jobs');
+                this.props.history.push(`/jobs?active=${jobtype}`);
             })
         }
         this.setState({

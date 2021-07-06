@@ -131,7 +131,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
       }
 
     } else {
-      setError('Please enable the location permission from the settings so that Tickt app can access your location');
+      setError('Please enable the location permission from the browser settings so that Tickt app can access your location');
     }
   }
 
