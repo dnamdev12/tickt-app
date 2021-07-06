@@ -267,13 +267,19 @@ export class PersonalInformation extends Component<Props, State> {
     onFileChange = async (e: any, type?: string, id?: string) => {
         const formData = new FormData();
         const newFile = e.target.files[0];
-        var uploadFileName = newFile.name.split('.');
+        var uploadFileName = newFile?.name?.split('.');
         uploadFileName.pop();
         uploadFileName = uploadFileName.join('.');
         var fileType = newFile?.type?.split('/')[1]?.toLowerCase();
         const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf", "msword", "doc", "docx", "vnd.openxmlformats-officedocument.wordprocessingml.document"];
+        const docTypes2: Array<any> = ["jpeg", "jpg", "png"];
         var selectedFileSize = newFile?.size / 1024 / 1024;
-        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+        if (type === "profileImage" || type === "addJobPhotos") {
+            if (docTypes2.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+                alert('The file must be in proper format or size');
+                return;
+            }
+        } else if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
             alert('The file must be in proper format or size');
             return;
         }
@@ -1472,7 +1478,7 @@ export class PersonalInformation extends Component<Props, State> {
 
                                         <input
                                             type="file"
-                                            accept="image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"
+                                            accept="image/png,image/jpg,image/jpeg"
                                             style={{ display: "none" }}
                                             id="upload_img_video"
                                             onChange={(e) => this.onFileChange(e, "addJobPhotos")}

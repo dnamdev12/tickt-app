@@ -552,7 +552,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount || ''}</li>
                                             <li className="icon location line-3">{jobDetailsData?.locationName || ''}</li>
-                                            <li className="icon calendar">{jobDetailsData?.duration || ''}</li>
+                                            {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? null : <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
                                         </ul>}
                                     </div>
                                     {!jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
