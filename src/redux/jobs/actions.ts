@@ -639,3 +639,14 @@ export const invitedJobIds = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+export const getSavedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.profile}/builder/getSavedTradies?page=${data?.page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}

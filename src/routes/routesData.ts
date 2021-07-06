@@ -92,7 +92,7 @@ const routes = [
         name: 'view-all',
         path: [
             '/saved-tradespeople',
-            '/popular tradespeople',
+            '/popular-tradespeople',
             '/recommended-tradespeople',
             '/most-viewed-tradespeople'
         ],

@@ -41,7 +41,8 @@ interface Props {
     applicantsList?: any,
     jobType: any,
     history?: any,
-    isLoading: any
+    isLoading: any,
+    activeType?:any
 }
 
 class OpenJobs extends Component<Props, State> {
@@ -53,9 +54,9 @@ class OpenJobs extends Component<Props, State> {
     }
 
     redirectToInfo = ({ jobId, status }: any) => {
-        console.log({ jobId, status })
+        let props:any = this.props;
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}`)
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType}`)
             this.props.history.push(`/job-detail?${urlEncode}`);
         }
     }
@@ -65,6 +66,9 @@ class OpenJobs extends Component<Props, State> {
     render() {
         const { setJobLabel, dataItems, applicantsList, jobType, isLoading } = this.props;
         let listData: any = dataItems
+        console.log({
+            props:this.props
+        })
         let { isToggleApplicants } = this.state;
         console.log({ applicantsList, isToggleApplicants })
         return (

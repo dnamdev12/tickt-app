@@ -380,6 +380,7 @@ const JobDetailsPage = (props: PropsType) => {
 
     let paramStatus: any = '';
     let paramJobId: any = '';
+    let activeType: any = '';
     let isPastJob: boolean = false;
     if (props.location?.search) {
         let location_search = window.atob((props.location?.search).substring(1))
@@ -392,6 +393,9 @@ const JobDetailsPage = (props: PropsType) => {
         }
         if (params.get('job')) {
             isPastJob = true;
+        }
+        if (params.get('activeType')) {
+            activeType = params.get('activeType');
         }
     }
 
@@ -468,7 +472,16 @@ const JobDetailsPage = (props: PropsType) => {
                     <div className="vid_img_wrapper pt-20">
                         <div className="flex_row">
                             <div className="flex_col_sm_8 relative">
-                                <button className="back" onClick={() => props.history?.goBack()}></button>
+                                <button
+                                    className="back"
+                                    onClick={() => {
+                                        if(activeType){
+                                            props.history.push(`/jobs?active=${activeType}`)
+                                        } else {
+                                            props.history?.goBack()
+                                        }
+                                    }}>
+                                </button>
                             </div>
                         </div>
                         <div className="flex_row">
@@ -622,7 +635,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         return (
                                             <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
-                                                {console.log({item})}
+                                                {console.log({ item })}
                                                 <span>{renderTime(item?.fromDate, item?.toDate)}</span>
                                                 {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
                                                     `${moment(item?.fromDate).format('MMM DD')}` :

@@ -13,9 +13,7 @@ import { getBuilderHomeData } from '../../../redux/jobs/actions';
 import TradieHome from '../../shared/tradieHome';
 import JobTypes from './components/jobTypes';
 import axios from 'axios';
-
 import dummy from '../../../assets/images/u_placeholder.jpg';
-
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -195,7 +193,7 @@ const BuilderHome = (props: any) => {
                                 // setShowToast(true, 'Under development');
                                 if (props?.history && props?.history?.push) {
                                     props?.history.push({
-                                        pathname: '/popular tradespeople',
+                                        pathname: '/popular-tradespeople',
                                         state: {
                                             data: home_data?.popular_tradespeople,
                                             title: 'Popular tradespeople',

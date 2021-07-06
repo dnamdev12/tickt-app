@@ -1,16 +1,42 @@
 import TradieBox from '../../../shared/tradieBox';
 import noData from '../../../../assets/images/no-search-data.png';
 import dummy from '../../../../assets/images/u_placeholder.jpg';
-
+import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom';
-
+import { getSavedTradies } from '../../../../redux/jobs/actions'
 
 const SavedJobs = (props: any) => {
+    const [stateData, setStateData] = useState<any>([]);
+    const [isLoad, setLoad] = useState(false);
 
     const backButtonClicked = () => {
         props.history?.goBack();
     }
 
+    const preFetch = async () => {
+        let response = await getSavedTradies({ page: 1 });
+        if (response?.success) {
+            setStateData(response.data);
+            setLoad(true);
+        }
+    }
+
+    useEffect(() => {
+        console.log({
+            state:props?.location?.state
+        })
+        setLoad(false);
+        if (props?.location?.state?.title === "Saved tradespeople") {
+            preFetch();
+        } else {
+            setStateData(props?.location?.state?.data);
+            setLoad(true);
+        }
+    }, []);
+
+    if (!isLoad) {
+        return null;
+    }
 
     return (
         <div className={'app_wrapper'} >
@@ -25,8 +51,8 @@ const SavedJobs = (props: any) => {
                     {!props?.location?.state?.popular ? (
 
                         <div className="flex_row tradies_row">
-                            {props?.location?.state?.data?.length > 0 ?
-                                (props?.location?.state?.data?.map((item: any, index: any) => (
+                            {stateData.length > 0 ?
+                                (stateData?.map((item: any, index: any) => (
                                     <TradieBox
                                         item={item}
                                         index={index}
@@ -41,8 +67,8 @@ const SavedJobs = (props: any) => {
                         </div>
                     ) : (
                         <ul className="popular_tradies">
-                            {props?.location?.state?.data?.length > 0 ?
-                                (props?.location?.state?.data?.map((item: any, index: any) => {
+                            {stateData?.length > 0 ?
+                                (stateData?.map((item: any, index: any) => {
                                     return (
                                         <li
                                             key={`${item.userName}item${index}`}
@@ -74,19 +100,6 @@ const SavedJobs = (props: any) => {
             </div>
         </div>
     )
-
-    // else {
-    //     return (
-    //         <div className="section_wrapper bg_gray">
-    //             <div className="custom_container">
-    //                 <span className="title">
-    //                     {'Popular tradespeople'}
-    //                 </span>
-
-    //             </div>
-    //         </div>
-    //     )
-    // }
 }
 
 export default withRouter(SavedJobs);

@@ -77,11 +77,39 @@ class JobDashboard extends Component<Props, State> {
     componentDidMount() {
         this.props.getActiveJobsBuilder(1);
     }
-
+    // milestone dates should be lie betwwn job details
     componentDidUpdate(prevProps: any) {
         let nextProps: any = this.props;
         let { activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs, approvalJobs } = nextProps;
-        let { selectedItem: { jobtype } } = this.state;
+        let { activeType, selectedItem: { jobtype } } = this.state;
+
+        let urlParams = new URLSearchParams(nextProps?.location?.search);
+        let activeType_ = urlParams.get('active');
+        console.log({
+            activeType_,
+            activeType,
+            jobtype
+        },'nextProps')
+        if (activeType_) {
+            if (activeType_ !== activeType) {
+                this.setState({
+                    activeType: activeType_,
+                    selectedItem: {
+                        jobtype: activeType_,
+                        jobid: null,
+                        sortby: 1,
+                        specializationId: ''
+                    }
+                }, () => {
+                    this.setAfterItems({
+                        jobtype: activeType_,
+                        currentPage: 1,
+                        dataItemsAddons: null
+                    })
+                })
+            }
+        }
+
         if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state.activeJobs)) {
             let { active, needApprovalCount, newApplicantsCount } = activeJobs;
             this.setState({
@@ -151,18 +179,27 @@ class JobDashboard extends Component<Props, State> {
         }
 
         if (['active', 'past', 'open', 'applicant', 'approval'].includes(jobtype)) {
-            this.setState({ activeType: jobtype })
+            this.setState({ activeType: jobtype }, () => {
+                // this.props.history.replace('/jobs')
+                this.props.history.push('/jobs');
+            })
         }
         this.setState({
             selectedItem: { jobtype, jobid, sortby, specializationId }, applicantsListJobs: []
         }, () => {
-            if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
-            if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
-            if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
-            if (jobtype === 'applicant') { getNewApplicantsBuilder(currentPage); }
-            if (jobtype === 'approval') { getNewApprovalList(currentPage); }
-            if (jobtype === 'applicantList') { getnewJobApplicationListBuilder(dataItemsAddons); }
+            this.setAfterItems({ jobtype, currentPage, dataItemsAddons });
         });
+    }
+
+    setAfterItems = ({ jobtype, currentPage, dataItemsAddons }: any) => {
+        const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, getNewApprovalList } = this.props;
+
+        if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
+        if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
+        if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
+        if (jobtype === 'applicant') { getNewApplicantsBuilder(currentPage); }
+        if (jobtype === 'approval') { getNewApprovalList(currentPage); }
+        if (jobtype === 'applicantList') { getnewJobApplicationListBuilder(dataItemsAddons); }
     }
 
     render() {
@@ -238,8 +275,8 @@ class JobDashboard extends Component<Props, State> {
                                         {/* <span className="icon approved"> */}
                                         <span className={`icon approved ${activeType === "approval" ? 'active' : ''}`}>
                                             <span
-                                                onClick={() => { 
-                                                    setSelected('approval') 
+                                                onClick={() => {
+                                                    setSelected('approval')
                                                 }}
                                                 className="menu_txt">
                                                 {'Need approval'}
@@ -257,12 +294,13 @@ class JobDashboard extends Component<Props, State> {
                         <div className="detail_col">
                             {/* <FixedRate />
                             <ConfirmAndPay /> */}
-                             {jobtype === 'past' && (
-              
+                            {jobtype === 'past' && (
+
                                 <PastJobsComponent
                                     isLoading={isLoading}
                                     dataItems={pastJobs}
                                     jobType={jobtype}
+                                    activeType={activeType}
                                     history={props.history}
                                 />)}
                             {jobtype === 'active' && (
@@ -280,6 +318,7 @@ class JobDashboard extends Component<Props, State> {
                                     dataItems={openJobs}
                                     jobType={jobtype}
                                     setJobLabel={setSelected}
+                                    activeType={activeType}
                                     history={props.history}
                                 />)}
                             {jobtype === 'applicant' && (
@@ -309,7 +348,7 @@ class JobDashboard extends Component<Props, State> {
                                     setJobLabel={setSelected}
                                     activeType={activeType}
                                     history={props.history}
-                                />)} 
+                                />)}
                         </div>
                     </div>
                 </div>

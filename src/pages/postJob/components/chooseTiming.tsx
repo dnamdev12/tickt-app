@@ -7,12 +7,11 @@ import React, { useState, useEffect } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
-
-
-
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
-import { stat } from 'node:fs';
+import { useHistory, useLocation } from "react-router-dom";
+
+
 interface Proptypes {
     data: any;
     milestones: any,
@@ -23,6 +22,14 @@ interface Proptypes {
 
 const default_format = 'YYYY-MM-DD';
 const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
+    let location = useLocation();
+    let jobId: any = null;
+
+    if (location.search) {
+        let urlParams = new URLSearchParams(location.search);
+        jobId = urlParams.get('jobId');
+    }
+
     const [range, setRange] = useState<{ [index: string]: any }>({
         startDate: '',//new Date(), // ''
         endDate: '',// new Date(),
@@ -35,11 +42,19 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
 
     useEffect(() => {
         if (stepCompleted) {
-            setRange({
-                startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
-                endDate: data.to_date ? moment(data.to_date).toDate() : '',
-                key: 'selection',
-            });
+            if (jobId) {
+                setRange({
+                    startDate: moment(data.from_date, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')) ? moment(data.from_date).toDate() : '',
+                    endDate: moment(data.to_date, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')) ? moment(data.to_date).toDate() : '',
+                    key: 'selection',
+                });
+            } else {
+                setRange({
+                    startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
+                    endDate: data.to_date ? moment(data.to_date).toDate() : '',
+                    key: 'selection',
+                });
+            }
             setLocalChanges(true);
         }
     }, [data, stepCompleted])
@@ -77,7 +92,8 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
                 }
 
             });
-            if (item_find) {
+
+            if (item_find && !jobId) {
                 setShowToast(true, 'Please check the milestone dates.');
                 return;
             }
