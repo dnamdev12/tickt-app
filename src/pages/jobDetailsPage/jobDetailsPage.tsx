@@ -545,7 +545,6 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestAcceptedClicked: true }))}>Accept</button>
                                         <button className="fill_grey_btn btn-effect" onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestRejectedClicked: true }))}>Reject</button>
                                     </div>}
-
                                     <span className="title line-1" title={jobDetailsData?.jobName}>{props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.jobName ? jobDetailsData?.jobName : ''}</span>
                                     <span className="tagg">{props.isSkeletonLoading ? <Skeleton /> : 'Job details'}</span>
                                     <div className="job_info">
@@ -559,7 +558,8 @@ const JobDetailsPage = (props: PropsType) => {
                                     {!jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
-                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                            <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li>
+                                            <li>{jobDetailsData?.reasonNoteForCancelJobRequest}</li>
                                         </p>
                                         <button className="fill_btn btn-effect"
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestAcceptedClicked: true }))}>Accept</button>
@@ -695,11 +695,6 @@ const JobDetailsPage = (props: PropsType) => {
                                         return (
                                             <li key={item.milestoneId}>
                                                 <span>{`${index + 1}. ${item?.milestoneName || ''}`}</span>
-                                                {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
-                                                    `${moment(item?.fromDate).format('MMM DD')}` :
-                                                    item?.fromDate?.length && item?.toDate?.length ?
-                                                        `${moment(item?.fromDate).format('MMM DD ')}-${moment(item?.toDate).format(' DD')}` : ''
-                                                }</span> */}
                                                 <span>{renderTime(item?.fromDate, item?.toDate)}</span>
                                             </li>
                                         )
