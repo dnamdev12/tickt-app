@@ -200,8 +200,7 @@ const Header = (props: any) => {
                                             {renderByType({ name: 'userName' })}
                                             {/* {props?.builderProfile?.userName || props?.tradieProfileData?.userName} */}
                                         </span>
-                                        <MenuItem onClick={() => setShowToast(true, 'Under Development')}>
-                                        {/* <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}> */}
+                                        <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
                                             <span className="setting_icon">
                                                 <img src={profile} alt="profile" />
                                                 {'My Profile'}
@@ -233,7 +232,7 @@ const Header = (props: any) => {
 
 
                                     {/* Notification */}
-                                    
+
                                     {/* <Menu className="sub_menu notifications"
                                         id="simple-menu"
                                         anchorEl={anchorEl}
