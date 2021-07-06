@@ -4,6 +4,7 @@ import dummy from '../../../../assets/images/u_placeholder.jpg';
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom';
 import { getSavedTradies } from '../../../../redux/jobs/actions'
+import { setShowToast, setLoading } from '../../../../redux/common/actions';
 
 const SavedJobs = (props: any) => {
     const [stateData, setStateData] = useState<any>([]);
@@ -75,6 +76,7 @@ const SavedJobs = (props: any) => {
                                             data-aos="flip-right"
                                             data-aos-delay="200"
                                             onClick={() => {
+                                                // setShowToast(true,'Under development');
                                                 if (props?.history && item?.tradieId) {
                                                     props?.history?.push(`tradie-info?tradeId=${item?.tradieId}&hideInvite=${false}`);
                                                 }

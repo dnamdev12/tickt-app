@@ -912,12 +912,15 @@ class TradieInfo extends Component<Props, State> {
                                                         {'Show review'}
                                                     </span>
                                                 ) : (
-                                                    <span className="action link">
-                                                        {/* onClick={() => {
+                                                    storageService.getItem('userType') === 1 ?
+                                                    (<span
+                                                        className="action link"
+                                                        onClick={() => {
                                                             reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
-                                                        }}> */}
-                                                        {/* {'Reply'} */}
-                                                    </span>
+                                                        }}>
+                                                        {'Reply'}
+                                                    </span>)
+                                                    : ''
                                                 )}
                                                 {/* {Object.keys(replyData).length > 0 &&
                                                     !(reviewsData?.replyShownHideList.includes(replyId) ||
