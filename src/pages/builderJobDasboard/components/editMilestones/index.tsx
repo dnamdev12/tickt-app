@@ -225,6 +225,7 @@ const EditMilestone = (props: any) => {
 
     const removeMilestoneByIndex = (index: any) => {
         stateData[index]['isDeleteRequest'] = true;
+        setStateData(stateData);
         resetItems();
     }
 
@@ -265,6 +266,7 @@ const EditMilestone = (props: any) => {
 
             if (item?.isDeleteRequest && item?.status > -1) {
                 data['isDeleteRequest'] = true;
+                data['description'] = `${item?.milestoneName} was deleted.`;
                 description_string.push(`${item?.milestoneName} was deleted.`);
             }
 
@@ -286,6 +288,14 @@ const EditMilestone = (props: any) => {
             "milestones": filtered,
             "description": Array.from(new Set(description_string))
         };
+
+
+        console.log({
+            data  ,
+            stateData
+        },'---------->')
+
+        return
 
         let response: any = await changeRequest(data);
         if (response?.success) {

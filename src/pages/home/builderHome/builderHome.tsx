@@ -174,6 +174,7 @@ const BuilderHome = (props: any) => {
                                         data-aos="flip-right"
                                         data-aos-delay="200"
                                         onClick={() => {
+                                            // setShowToast(true,'Under development');
                                             if (props?.history && item?.tradieId) {
                                                 props?.history?.push(`tradie-info?tradeId=${item?.tradieId}&hideInvite=${false}`);
                                             }

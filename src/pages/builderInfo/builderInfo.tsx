@@ -394,9 +394,12 @@ const BuilderInfo = (props: PropsType) => {
                                                     <span className="icon reviews">{profileData?.ratings || '0'}</span>
                                                     <span className="review_count">{`${profileData?.reviewsCount || '0'} reviews`}</span>
                                                 </li>
+                                                {console.log({
+                                                    jobCompletedCount: profileData?.jobCompletedCount
+                                                })}
                                                 <li>
                                                     <span className="icon job">{profileData?.jobCompletedCount || '0'}</span>
-                                                    <span className="review_count"> jobs completed</span>
+                                                    <span className="review_count"> jobs completed --</span>
                                                 </li>
                                             </ul>
                                             {userType === 2 ?
