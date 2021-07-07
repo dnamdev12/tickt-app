@@ -154,7 +154,15 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                         <span className="approval_info">
                                             {(status).toUpperCase() === "APPROVED" && <img src={approved} alt="icon" />}
                                             {((status).toUpperCase() === "NEEDS APPROVAL" || (status).toUpperCase() === "NEED APPROVAL") && <img src={waiting} alt="icon" />}
-                                            {(status).toUpperCase() === "ACCEPTED CHANGE REQUEST" ? "ACCEPTED C.R " : status}
+                                            {status}
+                                            {/* {(status).toUpperCase() === "ACCEPTED CHANGE REQUEST"
+                                                ? "ACCEPTED C.R "
+                                                : (status).toUpperCase()  === 'PENDING CHANGE REQUEST'
+                                                    ? 'PENDING C.R'
+                                                    : status}
+                                                    {console.log({
+                                                        status
+                                                    })} */}
                                         </span>
                                         <span className="progress_bar">
                                             <input
@@ -166,7 +174,7 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                             />
                                         </span>
                                     </div>
-                                    {status === "NEEDS APPROVAL" && (
+                                    {(status === "NEEDS APPROVAL" || status === "NEED APPROVAL" || status === "need approval") && (
                                         <button
                                             onClick={() => {
                                                 setLocalState(true);

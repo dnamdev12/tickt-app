@@ -289,14 +289,6 @@ const EditMilestone = (props: any) => {
             "description": Array.from(new Set(description_string))
         };
 
-
-        console.log({
-            data  ,
-            stateData
-        },'---------->')
-
-        return
-
         let response: any = await changeRequest(data);
         if (response?.success) {
             props.history.push('/milestone-request-sent-success');
