@@ -847,7 +847,7 @@ class TradieInfo extends Component<Props, State> {
                                             toggleAddVoucher: !this.state.toggleAddVoucher
                                         })
                                     }}>
-                                    {`Leave a vouche`}
+                                    {`Leave a Vouch`}
                                 </button>
                             </div>
                         </div>

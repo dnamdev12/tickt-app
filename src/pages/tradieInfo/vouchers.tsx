@@ -106,7 +106,7 @@ const Vouchers = (props: any) => {
                             <button
                                 onClick={() => { setToggle((prev: any) => true) }}
                                 className="fill_btn btn-effect add_vouch">
-                                {'+ Leave a vouche'}
+                                {'+ Leave a Vouch'}
                             </button>
                         </div>}
                     </div>

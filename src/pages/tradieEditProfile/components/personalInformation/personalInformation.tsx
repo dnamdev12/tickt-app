@@ -825,7 +825,7 @@ export class PersonalInformation extends Component<Props, State> {
                                 <img src={viewProfile} alt="view-profile" />View public profile</a>}
                         </div>
 
-                        <span className="tagg">{isSkeletonLoading ? <Skeleton /> : 'Tradesperson'}</span>
+                        <span className="tagg">{isSkeletonLoading ? <Skeleton /> : basicDetailsData?.position}</span>
 
                         <div className="flex_row">
                             <div className="flex_col_sm_4 w85per">

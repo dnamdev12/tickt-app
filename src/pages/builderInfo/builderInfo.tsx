@@ -399,13 +399,19 @@ const BuilderInfo = (props: PropsType) => {
                                                 })}
                                                 <li>
                                                     <span className="icon job">{profileData?.jobCompletedCount || '0'}</span>
-                                                    <span className="review_count"> jobs completed --</span>
+                                                    <span className="review_count"> {"jobs completed"} </span>
                                                 </li>
                                             </ul>
                                             {userType === 2 ?
-                                                <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
+                                                <button
+                                                    className="fill_btn full_btn btn-effect"
+                                                    onClick={() => props.history.push('/update-user-info')}>
+                                                    {"Edit"}
+                                                </button>
                                                 :
-                                                <button className="fill_btn full_btn btn-effect">Write a message</button>}
+                                                <button className="fill_btn full_btn btn-effect">
+                                                    {"Write a message"}
+                                                </button>}
                                         </>}
                                 </div>
                             </div>
