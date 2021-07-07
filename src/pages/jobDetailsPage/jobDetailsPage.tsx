@@ -552,7 +552,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount || ''}</li>
                                             <li className="icon location line-3">{jobDetailsData?.locationName || ''}</li>
-                                            <li className="icon calendar">{jobDetailsData?.duration || ''}</li>
+                                            {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? null : <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
                                         </ul>}
                                     </div>
                                     {!jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
@@ -609,10 +609,11 @@ const JobDetailsPage = (props: PropsType) => {
                                         <img src={cancel} alt="cancel" />
                                     </button>
                                 </div>
-                                {jobDetailsData?.changeRequestData?.map((item: any) => {
-                                    return (
-                                        <>
-                                            <div>
+                                <div className="inner_wrap change_req_detail">
+                                    {jobDetailsData?.changeRequestData?.map((item: any) => {
+                                        return (
+                                            <>
+                                                {/* <div>
                                                 <p className="xs_sub_title">New Milestone Name</p>
                                                 <p>{item?.milestone_name}</p>
                                             </div>
@@ -627,10 +628,30 @@ const JobDetailsPage = (props: PropsType) => {
                                             <div>
                                                 <p className="xs_sub_title">Photo Evidence Required</p>
                                                 <p>{item?.isPhotoevidence ? 'Yes' : 'No'}</p>
-                                            </div>
-                                        </>
-                                    )
-                                })}
+                                            </div> */}
+
+                                                <ul>
+                                                    <li>
+                                                        <span className="show_label">New Milestone Name</span>
+                                                        <span className="inner_title">{item?.milestone_name}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span className="show_label">New Duration</span>
+                                                        <span className="inner_title">{renderTime(item?.from_date, item?.to_date)}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span className="show_label">New Recommended Hours</span>
+                                                        <span className="inner_title">{item?.recommended_hours}</span>
+                                                    </li>
+                                                    <li>
+                                                        <span className="show_label">Photo Evidence Required</span>
+                                                        <span className="inner_title">{item?.isPhotoevidence ? 'Yes' : 'No'}</span>
+                                                    </li>
+                                                </ul>
+                                            </>
+                                        )
+                                    })}
+                                </div>
                                 <div className="bottom_btn custom_btn">
                                     <button className="fill_btn full_btn btn-effect" onClick={() => replyChangeRequestHandler('acceptChangeRequest')}>Accept</button>
                                     {/* <button className="fill_grey_btn btn-effect" onClick={() => closeJobActionConfirmationModal('isCancelRequestAcceptedClicked')}>No</button> */}
