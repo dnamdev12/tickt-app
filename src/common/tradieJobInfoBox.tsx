@@ -1,32 +1,34 @@
 import dummy from '../assets/images/u_placeholder.jpg';
-
+import storageService from '../utils/storageService';
 
 const TradieJobInfoBox = (props: any) => {
     const jobClickHandler = (item: any) => {
-        // let string_redirect: any = `/job-details-page?jobId=${item.jobId}`;
-        // if (item?.tradeId) { string_redirect += `&tradeId=${item.tradeId}` }
-        // if (item?.specializationId) { string_redirect += `&specializationId=${item.specializationId}` }
-        // if (item?.jobStatus) { string_redirect += `&jobStatus=${item.jobStatus}` }
-        // console.log({ item, string_redirect })
-        // props.history.push(string_redirect);
+        if (storageService.getItem('userType') === 1) {
+            let string_redirect: any = `/job-details-page?jobId=${item.jobId}`;
+            if (item?.tradeId) { string_redirect += `&tradeId=${item.tradeId}` }
+            if (item?.specializationId) { string_redirect += `&specializationId=${item.specializationId}` }
+            if (item?.jobStatus) { string_redirect += `&jobStatus=${item.jobStatus}` }
+            console.log({ item, string_redirect })
+            props.history.push(string_redirect);
+        } else {
+            let status = '';
+            if (item?.jobStatus) {
+                status = (item?.jobStatus).toLowerCase();
+            }
 
-        let status = '';
-        if (item?.jobStatus) {
-            status = (item?.jobStatus).toLowerCase();
+            let string_item = `?jobId=${item?.jobId}&status=${status}&edit=true`
+            if (['expired', 'completed'].includes(status)) {
+                string_item += `&job=past`
+            }
+            console.log({
+                string_item,
+                status,
+                jobStatus: item?.jobStatus
+            })
+            // 'P2pvYklkPTYwOGY4Y2VkNjk0OWViMWIwMjM1ZjE2MSZzdGF0dXM9ZXhwaXJlZCZlZGl0PXRydWUmam9iPXBhc3Q=' 
+            let urlEncode: any = window.btoa(string_item)
+            props.history.push(`/job-detail?${urlEncode}`);
         }
-
-        let string_item = `?jobId=${item?.jobId}&status=${status}&edit=true`
-        if (['expired', 'completed'].includes(status)) {
-            string_item += `&job=past`
-        }
-        console.log({
-            string_item,
-            status,
-            jobStatus: item?.jobStatus
-        })
-        // 'P2pvYklkPTYwOGY4Y2VkNjk0OWViMWIwMjM1ZjE2MSZzdGF0dXM9ZXhwaXJlZCZlZGl0PXRydWUmam9iPXBhc3Q=' 
-        let urlEncode: any = window.btoa(string_item)
-        props.history.push(`/job-detail?${urlEncode}`);
     }
 
     const { item } = props;
