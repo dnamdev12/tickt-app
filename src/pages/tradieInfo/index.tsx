@@ -825,7 +825,7 @@ class TradieInfo extends Component<Props, State> {
                             </button>
                         </div>
                     </div>
-                    : (
+                    : (storageService.getItem('userType') === 2 ?
                         <div className="section_wrapper">
                             <div className="custom_container">
                                 <span className="sub_title">Vouches</span>
@@ -850,7 +850,7 @@ class TradieInfo extends Component<Props, State> {
                                     {`Leave a Vouch`}
                                 </button>
                             </div>
-                        </div>
+                        </div> : null
                     )}
 
                 {console.log({ toggleAddVoucher: this.state.toggleAddVoucher })}
@@ -913,14 +913,14 @@ class TradieInfo extends Component<Props, State> {
                                                     </span>
                                                 ) : (
                                                     storageService.getItem('userType') === 1 ?
-                                                    (<span
-                                                        className="action link"
-                                                        onClick={() => {
-                                                            reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
-                                                        }}>
-                                                        {'Reply'}
-                                                    </span>)
-                                                    : ''
+                                                        (<span
+                                                            className="action link"
+                                                            onClick={() => {
+                                                                reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
+                                                            }}>
+                                                            {'Reply'}
+                                                        </span>)
+                                                        : ''
                                                 )}
                                                 {/* {Object.keys(replyData).length > 0 &&
                                                     !(reviewsData?.replyShownHideList.includes(replyId) ||
