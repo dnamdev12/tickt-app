@@ -822,7 +822,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <>
                                         <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                             <div className="heading">
-                                                <span className="xs_sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Answer Confirmation`}</span>
+                                                <span className="xs_sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Post'} Answer Confirmation`}</span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>

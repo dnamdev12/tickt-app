@@ -1411,7 +1411,13 @@ export class PersonalInformation extends Component<Props, State> {
                                 <button className="back" onClick={this.closeAddEditPortofolioModal} />
                                 <div className="md_heading">
                                     <span className="sub_title">{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}</span>
-                                    <span className="info_note">Tradies who have a portfolio with photos get job faster. </span>
+                                    <span className="info_note">
+                                        {storageService.getItem('userType') === 1 ?
+                                            'Tradies who have a portfolio with photos get job faster.'
+                                            :
+                                            'Builders who have a portfolio with photos get job faster.'
+                                        }
+                                    </span>
                                 </div>
                             </div>
                             <button className="close_btn" onClick={this.closeAddEditPortofolioModal}>
