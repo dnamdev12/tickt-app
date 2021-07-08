@@ -409,6 +409,10 @@ const JobDetailsPage = (props: PropsType) => {
         if (res.success) {
             setJobInviteAction('');
             props.history.replace(`job-details-page?jobId=${jobDetailsData?.jobId}&redirect_from=jobs`);
+
+            if (type === 1) {
+              props.history.push('/active-jobs');
+            }
         }
     }
 
