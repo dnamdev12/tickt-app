@@ -89,11 +89,13 @@ interface State {
         item: string,
         isTrue: boolean
     },
-    toggleAddVoucher: boolean
+    toggleAddVoucher: boolean,
+    toggleSpecialisation: boolean
 }
 
 class TradieInfo extends Component<Props, State> {
     state = {
+        toggleSpecialisation: true,
         profilePictureLoading: true,
         tradieInfo: null,
         tradieReviews: null,
@@ -128,6 +130,7 @@ class TradieInfo extends Component<Props, State> {
 
     componentWillUnmount() {
         this.setState({
+            toggleSpecialisation: true,
             tradieInfo: null,
             tradieReviews: null,
             profileData: {},
@@ -471,7 +474,7 @@ class TradieInfo extends Component<Props, State> {
         }
 
         haveJobId = urlParams.get('jobId') == null ? false : true;
-
+        let toggleSpecialisation = this.state.toggleSpecialisation;
         return (
             <div className="app_wrapper">
                 <div className="section_wrapper">
@@ -619,15 +622,28 @@ class TradieInfo extends Component<Props, State> {
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
                                         <>
                                             <span className="sub_title">Areas of specialisation</span>
-                                            <div className="tags_wrap">
+                                            <div className={`tags_wrap ${toggleSpecialisation ? 'active' : ''}`}>
                                                 <ul>
-                                                    {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName && <li className="main">
-                                                        <img src={tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu} alt="" />{tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
-                                                    </li>}
-                                                    {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any) => {
-                                                        return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                    {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName &&
+                                                        <li className="main">
+                                                            <img
+                                                                src={tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu}
+                                                                alt=""
+                                                            />
+                                                            {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
+                                                        </li>}
+                                                    {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any, index: any) => {
+                                                        return toggleSpecialisation  ? index <= 4 && <li key={item.specializationId}>{item.specializationName || ''}</li> : <li key={item.specializationId}>{item.specializationName || ''}</li>
                                                     })}
                                                 </ul>
+                                                <span className="link show_more"
+                                                    onClick={(e: any) => {
+                                                        e.preventDefault();
+                                                        this.setState({ toggleSpecialisation: !this.state.toggleSpecialisation })
+                                                        // setShowSpecs(!showSpecs);
+                                                    }}>
+                                                    {toggleSpecialisation ? 'Show more' : 'Show less'}
+                                                </span>
                                             </div>
                                         </>
                                     ) : (tradieInfo?.areasOfSpecialization?.length > 0 ? (
