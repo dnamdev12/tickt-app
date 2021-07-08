@@ -38,12 +38,13 @@ const NewEmail = (props: PropsTypes) => {
 
         if (!currentPassword) {
             newErrors.currentPassword = 'Current Password is required';
-        } else {
-            const passwordRegex = new RegExp(regex.password);
-            if (!passwordRegex.test(currentPassword.trim())) {
-                newErrors.currentPassword = Constants.errorStrings.passwordError;
-            }
         }
+        //  else {
+        //     const passwordRegex = new RegExp(regex.password);
+        //     if (!passwordRegex.test(currentPassword.trim())) {
+        //         newErrors.currentPassword = Constants.errorStrings.passwordError;
+        //     }
+        // }
 
         setErrors(newErrors);
         return !Object.keys(newErrors)?.length;
