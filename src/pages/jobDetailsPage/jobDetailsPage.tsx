@@ -197,7 +197,7 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const validateForm = (type: string) => {
-        if (type == 'deleteQuestion') return true;
+        if (type === 'deleteQuestion') return true;
         const newErrors: any = {};
         if (!questionsData.questionData.trim()?.length) {
             newErrors.questionData = Constants.errorStrings.askQuestion;
@@ -213,7 +213,7 @@ const JobDetailsPage = (props: PropsType) => {
             }
             var response: any;
             var data: any;
-            if (type == 'askQuestion') {
+            if (type === 'askQuestion') {
                 data = {
                     jobId: jobDetailsData?.jobId,
                     builderId: jobDetailsData?.postedBy?.builderId,
@@ -222,13 +222,13 @@ const JobDetailsPage = (props: PropsType) => {
                     specializationId: jobDetailsData?.specializationId
                 }
                 response = await postAskQuestion(data);
-            } else if (type == 'deleteQuestion') {
+            } else if (type === 'deleteQuestion') {
                 data = {
                     jobId: jobDetailsData?.jobId,
                     questionId: questionsData.questionId
                 }
                 response = await deleteQuestion(data);
-            } else if (type == 'updateQuestion') {
+            } else if (type === 'updateQuestion') {
                 data = {
                     questionId: questionsData.questionId,
                     question: questionsData.questionData.trim()
@@ -236,7 +236,7 @@ const JobDetailsPage = (props: PropsType) => {
                 response = await updateQuestion(data);
             }
             if (response?.success) {
-                if (type == 'askQuestion' && response.data?.questionData?.question) {
+                if (type === 'askQuestion' && response.data?.questionData?.question) {
                     const askData: any = {
                         jobId: jobDetailsData?.jobId,
                         page: 1
@@ -255,7 +255,7 @@ const JobDetailsPage = (props: PropsType) => {
                 }
 
                 if (type === 'updateQuestion' && response.data?.question) {
-                    var updatedQuestionList = [...questionList];
+                    let updatedQuestionList = [...questionList];
                     var newList = updatedQuestionList.find((item: any) => item.questionData.questionId == response.data?.questionId);
                     newList.questionData.question = response.data?.question;
                     setQuestionList(updatedQuestionList);
@@ -263,7 +263,7 @@ const JobDetailsPage = (props: PropsType) => {
 
                 if (type === 'deleteQuestion') {
                     setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount - 1 }));
-                    var updatedQuestionList = [...questionList]
+                    let updatedQuestionList = [...questionList]
                     updatedQuestionList.splice(questionsData.questionIndex, 1);
                     setQuestionList(updatedQuestionList);
                 }
@@ -286,20 +286,20 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const questionHandler = (type: string, questionId?: string, question?: string, questionIndex?: number) => {
-        if (type == 'submitAskQuestion' && validateForm('askQuestion')) {
+        if (type === 'submitAskQuestion' && validateForm('askQuestion')) {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 submitQuestionsClicked: true,
                 confirmationClicked: true
             }));
-        } else if (type == 'askQuestion') {
+        } else if (type === 'askQuestion') {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 askQuestionsClicked: true,
                 showAllQuestionsClicked: false,
                 questionsClickedType: type,
             }));
-        } else if (type == 'deleteQuestion') {
+        } else if (type === 'deleteQuestion') {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 confirmationClicked: true,
@@ -308,7 +308,7 @@ const JobDetailsPage = (props: PropsType) => {
                 questionsClickedType: type,
                 questionIndex: questionIndex
             }));
-        } else if (type == 'updateQuestion') {
+        } else if (type === 'updateQuestion') {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 askQuestionsClicked: true,
@@ -318,7 +318,7 @@ const JobDetailsPage = (props: PropsType) => {
                 showAllQuestionsClicked: false,
                 questionData: question
             }));
-        } else if (type == 'questionCancelBtnClicked') {
+        } else if (type === 'questionCancelBtnClicked') {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 askQuestionsClicked: false,
@@ -330,10 +330,10 @@ const JobDetailsPage = (props: PropsType) => {
                 questionId: '',
             }));
             setErrors({});
-        } else if (type == 'hideAnswerClicked') {
+        } else if (type === 'hideAnswerClicked') {
             const newData = [...questionsData.answerShownHideList].filter(id => id !== questionId);
             setQuestionsData((prevData: any) => ({ ...prevData, answerShownHideList: newData }));
-        } else if (type == 'showAnswerClicked') {
+        } else if (type === 'showAnswerClicked') {
             const newData = [...questionsData.answerShownHideList];
             newData.push(questionId);
             setQuestionsData((prevData: any) => ({ ...prevData, answerShownHideList: newData }));
@@ -535,8 +535,13 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {!jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
-                                        {/* {!jobDetailsData?.isChangeRequest && <div className="chang_req_card"> */}
+                                    {jobDetailsData?.jobStatus === 'cancelled' && <div className="chang_req_card mb-sm">
+                                        <span className="sub_title">Job cancelled</span>
+                                        <p className="commn_para line-2">
+                                            {'Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. '}
+                                        </p>
+                                    </div>}
+                                    {jobDetailsData?.jobStatus !== 'cancelled' &&!jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
                                             {jobDetailsData?.reasonForChangeRequest}
@@ -551,11 +556,11 @@ const JobDetailsPage = (props: PropsType) => {
                                         {props.isSkeletonLoading ? <Skeleton count={2} /> : <ul>
                                             <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount || ''}</li>
-                                            <li className="icon location line-3">{jobDetailsData?.locationName || ''}</li>
+                                            <li className="icon location line-1" title={jobDetailsData?.locationName}>{jobDetailsData?.locationName || ''}</li>
                                             {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? null : <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
                                         </ul>}
                                     </div>
-                                    {!jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
+                                    {jobDetailsData?.jobStatus !== 'cancelled' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
                                             <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li>
@@ -615,43 +620,24 @@ const JobDetailsPage = (props: PropsType) => {
                                 <div className="inner_wrap change_req_detail">
                                     {jobDetailsData?.changeRequestData?.map((item: any) => {
                                         return (
-                                            <>
-                                                {/* <div>
-                                                <p className="xs_sub_title">New Milestone Name</p>
-                                                <p>{item?.milestone_name}</p>
-                                            </div>
-                                            <div>
-                                                <p className="xs_sub_title">New Duration</p>
-                                                <p>{renderTime(item?.from_date, item?.to_date)}</p>
-                                            </div>
-                                            <div>
-                                                <p className="xs_sub_title">New Recommended Hours</p>
-                                                <p>{item?.recommended_hours}</p>
-                                            </div>
-                                            <div>
-                                                <p className="xs_sub_title">Photo Evidence Required</p>
-                                                <p>{item?.isPhotoevidence ? 'Yes' : 'No'}</p>
-                                            </div> */}
-
-                                                <ul>
-                                                    <li>
-                                                        <span className="show_label">New Milestone Name</span>
-                                                        <span className="inner_title">{item?.milestone_name}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span className="show_label">New Duration</span>
-                                                        <span className="inner_title">{renderTime(item?.from_date, item?.to_date)}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span className="show_label">New Recommended Hours</span>
-                                                        <span className="inner_title">{item?.recommended_hours}</span>
-                                                    </li>
-                                                    <li>
-                                                        <span className="show_label">Photo Evidence Required</span>
-                                                        <span className="inner_title">{item?.isPhotoevidence ? 'Yes' : 'No'}</span>
-                                                    </li>
-                                                </ul>
-                                            </>
+                                            <ul>
+                                                <li>
+                                                    <span className="show_label">New Milestone Name</span>
+                                                    <span className="inner_title">{item?.milestone_name}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="show_label">New Duration</span>
+                                                    <span className="inner_title">{renderTime(item?.from_date, item?.to_date)}</span>
+                                                </li>
+                                                <li>
+                                                    <span className="show_label">New Recommended Hours</span>
+                                                    <span className="inner_title">{item?.recommended_hours}</span>
+                                                </li>
+                                                {item?.isPhotoevidence && <li>
+                                                    <span className="show_label">Photo Evidence Required</span>
+                                                    <span className="inner_title">{item?.isPhotoevidence ? 'Yes' : 'No'}</span>
+                                                </li>}
+                                            </ul>
                                         )
                                     })}
                                 </div>

@@ -162,6 +162,7 @@ export class PersonalInformation extends Component<Props, State> {
 
     componentWillUnmount() {
         this.props.cleanTradieProfileViewData();
+        this.props.cleanTradieBasicDetails();
     }
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
@@ -393,11 +394,6 @@ export class PersonalInformation extends Component<Props, State> {
         const newErrors: any = {};
         if (!this.state.password) {
             newErrors.password = Constants.errorStrings.oldPassword;
-        } else {
-            const passwordRegex = new RegExp(regex.password);
-            if (!passwordRegex.test(this.state.password.trim())) {
-                newErrors.password = 'Invalid Old Password';
-            }
         }
         if (!this.state.newPassword) {
             newErrors.newPassword = 'New Password is required';
