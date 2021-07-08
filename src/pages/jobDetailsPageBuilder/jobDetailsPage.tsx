@@ -524,7 +524,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <ul>
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
-                                                <li className="icon location line-3">{jobDetailsData.locationName}</li>
+                                                <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
                                                 <li className="icon calendar">
                                                     {jobDetailsData?.time ?
                                                         jobDetailsData.time :
@@ -547,7 +547,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     }
                                                 </li>
                                                 <li className="icon dollar">{jobDetailsData?.amount}</li>
-                                                <li className="icon location line-1">{jobDetailsData?.locationName}</li>
+                                                <li className="icon location line-1" title={jobDetailsData?.locationName}>{jobDetailsData?.locationName}</li>
                                                 <li className="job_status">{paramStatus}</li>
                                                 {/* <li className="job_status">{jobDetailsData?.status}</li> */}
                                             </ul>
