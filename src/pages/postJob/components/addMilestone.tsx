@@ -178,12 +178,24 @@ export default class AddMilestone extends Component<Props, State> {
     checkHoursVal = (value: any, lable: any, name: any) => {
         if (value?.length) {
             if (value.match(pattern) !== null) {
-                return '';
+                if (!((+value.split(':')[1]) % 5 === 0)) {
+                    return 'Time should be in mutiples of 5 like 10:05, 10:10';
+                }
             } else {
-                return 'Please enter a valid pattern like : 04:03'
+                return 'Please enter a valid pattern like : 10:05';
             }
+        } else {
+            return `${label[name]} is required.`
         }
-        return `${label[name]} is required.`
+
+        // if (value?.length) {
+        //     if (value.match(pattern) !== null) {
+        //         return '';
+        //     } else {
+        //         return 'Please enter a valid pattern like : 04:03'
+        //     }
+        // }
+        // return `${label[name]} is required.`
     }
 
     isInvalid = (name: string, value: string) => {
@@ -268,7 +280,7 @@ export default class AddMilestone extends Component<Props, State> {
                 to_date_format = date_to_moment //moment(date_to_moment, 'MM-DD-YYYY').format('MMM DD');
             }
         }
-        console.log({ props: this.props })
+
         let check_errors = this.checkErrors();
         return (
             <div className="app_wrapper">
@@ -371,30 +383,31 @@ export default class AddMilestone extends Component<Props, State> {
                                 </div>
                                 <div className="form_field">
                                     <div className="f_spacebw">
-                                        <label className="form_label">Duration of milestone</label>
+                                        <label className="form_label">
+                                            {'Duration of milestone'}
+                                        </label>
                                         <button
                                             onClick={() => { handleStepForward(8) }}
                                             className="fill_btn fill_grey_btn choose_btn">
-                                            {console.log({ from_date_format, to_date_format })}
                                             {renderTimeWithCustomFormat(
                                                 from_date_format,
                                                 to_date_format,
                                                 'MM-DD-YYYY',
                                                 ['MMM DD', 'MMM DD YYYY']
                                             )}
-                                            {/* {!to_date_format.length && from_date_format.length
-                                                ? `${from_date_format}` : to_date_format.length
-                                                    ? `${from_date_format} - ${to_date_format}`
-                                                    : 'Choose'} */}
                                         </button>
                                     </div>
                                 </div>
                                 <div className="form_field">
-                                    <label className="form_label">Recommended Hours</label>
+                                    <label className="form_label">
+                                        {'Recommended Hours'}
+                                    </label>
                                     <div className="text_field">
                                         <input
                                             onChange={(e) => {
-                                                this.setState({ recommended_hours: (e.target.value).trimLeft() }, () => {
+                                                this.setState({
+                                                    recommended_hours: (e.target.value).trimLeft()
+                                                }, () => {
                                                     this.setItems();
                                                     let rh_value = this.state.recommended_hours;
                                                     let error_item = this.state.errors;

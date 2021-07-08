@@ -178,21 +178,21 @@ const PostJob = (props: Proptypes) => {
                                 checkIsValid = true;
                             }
     
-                            if (!checkIfSame) {
-                                if (
-                                    moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
-                                    moment(time_start, default_format).isSameOrBefore(moment(mile_end, default_format))
-                                ) {
-                                    checkIsValid = false;
-                                }
+                            // if (!checkIfSame) {
+                            //     if (
+                            //         moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
+                            //         moment(time_start, default_format).isSameOrBefore(moment(mile_end, default_format))
+                            //     ) {
+                            //         checkIsValid = false;
+                            //     }
     
-                                if (
-                                    moment(time_end, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
-                                    moment(time_end, default_format).isSameOrBefore(moment(mile_end, default_format))
-                                ) {
-                                    checkIsValid = false;
-                                }
-                            }
+                            //     if (
+                            //         moment(time_end, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
+                            //         moment(time_end, default_format).isSameOrBefore(moment(mile_end, default_format))
+                            //     ) {
+                            //         checkIsValid = false;
+                            //     }
+                            // }
                         }
     
                         if (!tew) {

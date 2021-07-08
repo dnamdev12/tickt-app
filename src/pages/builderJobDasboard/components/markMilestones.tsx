@@ -83,6 +83,23 @@ const MarkMilestones = (props: any) => {
         if (getMilestoneList) {
             const res: any = await getMilestoneList(jobId);
             if (res.success) {
+
+                if (res?.data?.length) {
+                    res?.data.forEach((item: any, index: any) => {
+                        if (index === 0) {
+                            const isActive = item?.status;
+                            let isPrevDone: any = false;
+                                isPrevDone = false;
+                            let result = classChecks(isActive, isPrevDone);
+                            if(["check","active"].includes(result)){
+                                setExpandItem({
+                                    [item?.milestoneId]:true
+                                });   
+                            }
+                        }
+                    })
+                }
+
                 setExpandItem({});
                 setDetails(res.data);
             }
@@ -151,6 +168,30 @@ const MarkMilestones = (props: any) => {
             item_status = true;
         }
     }
+    let dataItems: any = [];
+    if (item_details?.milestones?.length) {
+        dataItems = item_details?.milestones;
+    }
+
+
+    // [1, 2].includes(isActive) ? `check`
+    // : isPrevDone === 2
+    //     ? 'active'
+    //     : 'disabled'
+
+    const classChecks = (isActive: any, isPrevDone: any) => {
+        if (isActive === 1 && isPrevDone === false) {
+            return 'active';
+        } else if (isActive === 2 && isPrevDone === false) {
+            return 'check';
+        } else if (isActive === 1 && isPrevDone === 2) {
+            return 'active';
+        } else if (isActive === 2 && isPrevDone === 2) {
+            return 'check';
+        } else {
+            return 'disable'
+        }
+    }
 
     return (
         <div className="flex_row">
@@ -194,7 +235,7 @@ const MarkMilestones = (props: any) => {
                 </p>
 
                 <ul className="milestones_check">
-                    {item_details?.milestones?.map(({
+                    {dataItems?.map(({
                         milestoneId,
                         milestoneName,
                         isPhotoevidence,
@@ -205,6 +246,13 @@ const MarkMilestones = (props: any) => {
                         index: number
                     ) => {
                         const isActive = status;
+                        let isPrevDone: any = false;
+                        if (index === 0) {
+                            isPrevDone = false;
+                        } else {
+                            isPrevDone = dataItems[index - 1].status;
+                        }
+                        console.log({isActive, isPrevDone, index})
                         return (
                             <li
                                 key={milestoneId}
@@ -214,26 +262,20 @@ const MarkMilestones = (props: any) => {
                                         [milestoneId]: prev[milestoneId] === undefined ? true : !prev[milestoneId]
                                     }));
                                 }}
-                                className={
-                                    (isActive === 1 || isActive === 2)
-                                        ? `check`
-                                        : isActive
-                                            ? 'active'
-                                            : 'disabled'
-                                }>
+                                className={classChecks(isActive, isPrevDone)}>
                                 <div className="circle_stepper">
                                     <span></span>
                                 </div>
                                 <div className="info">
                                     <label>{milestoneName}</label>
                                     {isPhotoevidence && (
-                                        <span>Photo evidence required</span>
+                                        <span>{'Photo evidence required'}</span>
                                     )}
                                     <span>
                                         {renderTime(fromDate, toDate)}
                                     </span>
 
-                                    {isActive === 2 && expandItem[milestoneId] ? (
+                                    {["check"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             style={{ backgroundColor: '#DFE5EF' }}
@@ -250,7 +292,7 @@ const MarkMilestones = (props: any) => {
                                         </button>
                                     ) : null}
 
-                                    {isActive === 1 && !expandItem[milestoneId] ? (
+                                    {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={() => {
