@@ -212,7 +212,7 @@ const JobDetails = ({
         e.preventDefault();
         let data_clone: any = data;
         let milestones_clone: any = milestones;
-        let filter_milestones = milestones_clone.filter((item: any) => {
+        let filter_milestones = milestones_clone.filter((item: any, index: any) => {
             if (Object.keys(item).length) {
                 if (!item?.to_date?.length) {
                     delete item?.to_date;
@@ -221,7 +221,8 @@ const JobDetails = ({
                 if (!item?.from_date?.length || item?.from_date === "Invalid date") {
                     delete item?.from_date;
                 }
-
+        
+                item['order'] = index + 1;
                 return item;
             }
         });
@@ -426,7 +427,7 @@ const JobDetails = ({
                                     // onClick={() => {
                                     //     setShowToast(true, 'Under development.')
                                     // }}
-                                    style={{cursor:'default'}}
+                                    style={{ cursor: 'default' }}
                                     className="fill_grey_btn ques_btn">
                                     <img src={question} alt="question" />
                                     {'0 questions'}

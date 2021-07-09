@@ -211,6 +211,9 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             source.index,
             destination.index
         );
+        console.log({
+            reOrderedMilestones
+        })
         setLocalMilestones(reOrderedMilestones);
         handleCombineMileStones(reOrderedMilestones);
         checkIfDatesValid();
@@ -385,7 +388,11 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             {!localMilestones?.length ? (
                                 <React.Fragment>
                                     <div className="form_field">
-                                        <button onClick={() => { handleStepForward(9) }} className="fill_btn fill_grey_btn full_btn btn-effect">
+                                        <button
+                                            onClick={() => {
+                                                handleStepForward(9)
+                                            }}
+                                            className="fill_btn fill_grey_btn full_btn btn-effect">
                                             {'Use template'}
                                         </button>
                                     </div>

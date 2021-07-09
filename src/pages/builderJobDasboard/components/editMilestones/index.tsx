@@ -245,7 +245,7 @@ const EditMilestone = (props: any) => {
 
     const submitData = async () => {
         let description_string = description;
-        let filtered = stateData.map((item: any) => {
+        let filtered = stateData.map((item: any, index: any) => {
             let data: any = {
                 "milestoneId": item?.milestoneId || '',
                 "milestone_name": item?.milestoneName,
@@ -273,7 +273,7 @@ const EditMilestone = (props: any) => {
             if (!item?.milestoneId) {
                 delete data.milestoneId;
             }
-
+            data['order'] = index + 1;
             return data;
         }).filter((item: any) => {
             if (item?.description?.length) {
