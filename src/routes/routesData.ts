@@ -117,7 +117,7 @@ const routes = [
     },
     {
         name: 'requestMonitered',
-        path: '/request-monitored',
+        path: '/request-monitored/:id',
         component: RequestMonitored,
     },
     {

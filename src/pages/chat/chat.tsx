@@ -14,7 +14,7 @@ import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
 
 
-import { auth } from '../../App';
+import { auth } from '../../firebase';
 
 const Chat = () => {
     const [toggle, setToggle] = useState(false);

@@ -5,13 +5,14 @@ import reportWebVitals from './reportWebVitals';
 
 import App from './App';
 import ErrorBoundary from '../src/hoc/errorBoundary';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
 import '../src/assets/scss/common.scss'
 
 // added this check to remove console from code (In-Production)
-if (process.env.NODE_ENV !== "development") {
-  console.log = () => { };
-}
+// if (process.env.NODE_ENV !== "development") {
+//   console.log = () => { };
+// }
 
 const app = (
   <React.StrictMode>
@@ -22,6 +23,11 @@ const app = (
 )
 
 ReactDOM.render(app, document.getElementById('root'));
+
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://cra.link/PWA
+serviceWorkerRegistration.register();
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
