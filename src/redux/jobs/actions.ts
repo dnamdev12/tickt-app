@@ -652,3 +652,61 @@ export const getSavedTradies = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+
+// PAYMENT ACTIONS
+
+export const getCardList = async () => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.payment}builder/cardList`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const addNewCard = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.payment}builder/addNewCard`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const payPayment = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(`${Urls.payment}builder/pay`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const updateCard = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.payment}builder/updateCard`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const deleteCard = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.delete(`${Urls.payment}builder/deleteCard`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}

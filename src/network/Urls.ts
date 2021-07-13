@@ -12,6 +12,7 @@ const ServiceEnum = {
     profile: 'profile/',
     builder: 'builder/',
     tradie: 'tradie/',
+    payment: 'payment/',
 }
 
 const Urls = {
@@ -127,6 +128,7 @@ const Urls = {
     republishJob: `${versions.v1}${ServiceEnum.job}republishJob`,
     publishJobAgain: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}publishJobAgain`,
     getAllPostedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getAllJobs`,
+    payment: `${versions.v1}${ServiceEnum.payment}`,
 }
 
 export const urlFor = (service: String): string => {

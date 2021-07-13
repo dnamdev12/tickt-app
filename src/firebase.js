@@ -32,7 +32,7 @@ const getRegisterToken = () => {
             saveToken(currentToken);
             sendTokenToServer(currentToken);
         } else {
-            console.log('No registration token available. Show permission request UI');
+            console.log('No registration token available.');
             setTokenSentToServer(false);
         }
     }).catch((err) => {
@@ -71,7 +71,7 @@ export function requestPermission() {
             }
         })
         .catch((err) => {
-            console.log('Unable to get permission to notify. error :', err);
+            console.log('Unable to get permission to show notification : ', err);
         });
 }
 
