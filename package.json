@@ -21,6 +21,7 @@
     "axios": "^0.21.1",
     "card-validator": "^8.1.1",
     "date-fns": "^2.21.1",
+    "firebase": "^8.7.1",
     "fslightbox-react": "^1.6.2",
     "lodash": "^4.17.21",
     "moment": "^2.29.1",

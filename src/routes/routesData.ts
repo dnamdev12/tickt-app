@@ -43,6 +43,8 @@ import declineMilestoneSuccess from '../pages/builderJobDasboard/components/decl
 import PostJobSuccess from '../pages/postJob/sucess';
 import CommonViewAll from '../pages/home/builderHome/components/commonViewAll';
 
+import ChatComponent from '../pages/chat';
+
 const routes = [
     {
         name: 'main',
@@ -273,6 +275,11 @@ const routes = [
         name: 'tradie-details',
         path: '/tradie-details',
         component: TradieDetails
+    },
+    {
+        name: 'chat',
+        path: '/chat',
+        component: ChatComponent
     },
     {
         name: 'search-builder-result',

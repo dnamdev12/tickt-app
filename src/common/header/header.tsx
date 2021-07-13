@@ -47,13 +47,29 @@ const Header = (props: any) => {
         if (pathname === '/') {
             setActiveLink('discover');
         }
-        if (['/jobs', '/active-jobs', '/applied-jobs', '/past-jobs', '/new-jobs', '/approved-milestones', '/mark-milestone', '/review-builder'].includes(pathname)) {
+
+        if ([
+            '/jobs',
+            '/active-jobs',
+            '/applied-jobs',
+            '/past-jobs',
+            '/new-jobs',
+            '/approved-milestones',
+            '/mark-milestone',
+            '/review-builder'
+        ].includes(pathname)) {
             setActiveLink('jobs');
         }
+
 
         if (pathname === '/post-new-job') {
             setActiveLink('post');
         }
+
+        if (pathname === '/chat') {
+            setActiveLink('chat');
+        }
+
     }, [pathname]);
 
     useEffect(() => {
@@ -92,6 +108,12 @@ const Header = (props: any) => {
         setToggleMenu(false);
         setActiveLink('post');
         history.push('/post-new-job')
+    }
+
+    const chatClicked = () => {
+        setToggleMenu(false);
+        setActiveLink('chat');
+        history.push('/chat')
     }
 
     const jobClick = () => {
@@ -158,7 +180,7 @@ const Header = (props: any) => {
                                     </a>
                                 </li>}
                             <li>
-                                <a className={activeLink === 'chat' ? 'active' : ''}>
+                                <a className={activeLink === 'chat' ? 'active' : ''} onClick={chatClicked}>
                                     {'Chat'}
                                 </a>
                             </li>
