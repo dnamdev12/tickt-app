@@ -321,7 +321,7 @@ const MarkMilestone = ({
               </div>}
 
               <ul className="milestones_check">
-                {milestones?.map(
+                {milestones?.sort(({ order: prevOrder }, { order }) => prevOrder - order)?.map(
                   (
                     {
                       milestoneId,
