@@ -59,7 +59,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
       }
 
       if (split_values[1].length > 2) {
-        return 'Price field must have 6 or less digits before decimal'
+        return 'Price field must have maximum 2 digits after decimal';
+        // return 'Price field must have 6 or less digits before decimal'
       }
 
     } else {

@@ -2,14 +2,10 @@ import React, { useEffect, useState } from 'react'
 import deleteIcon from '../../../../assets/images/ic-bin.png'
 import cardValidator, { cardholderName } from "card-validator";
 import moment from 'moment';
-
-
-// import DateFnsUtils from '@date-io/date-fns';
-// import {
-//   KeyboardDatePicker,
-// } from '@material-ui/pickers';
+import { addNewCard, updateCard } from '../../../../redux/jobs/actions'
 
 const defaultValues = {
+    cardId:'xxx',
     number: '',
     cardholderName: '',
     date: '',
@@ -50,25 +46,40 @@ const PaymentDetails = (props: any) => {
     }
 
 
+
     const handleContinue = async () => {
-        
-        props.setDetials(stateData)
-        props.backToScreen();
+        let splitItem: any = [];
+        if (stateData?.date?.length) {
+            splitItem = stateData?.date.split('/');
+        }
+
+        let data: any = {
+            "number": stateData?.number,
+            "exp_month": splitItem[0],
+            "exp_year": `20${splitItem[1]}`,
+            "cvc": stateData?.cvv,
+            "name": stateData?.cardholderName
+        }
+
+        if (!stateData?.fetched) {
+            let result = await addNewCard(data);
+            if (result?.success) {
+                props.setDetials(stateData)
+                props.backToScreen();
+            }
+        } else {
+            if (stateData?.cardId) {
+                data['cardId'] = stateData?.cardId;
+                delete data.cvc;
+                delete data.number;
+            }
+            let result = await updateCard(data);
+            if (result?.success) {
+                props.setDetials(stateData)
+                props.backToScreen();
+            }
+        }
     }
-
-
-    // useEffect(() => {
-    //     if (JSON.stringify(stateData) !== JSON.stringify(defaultValues)) {
-    //         setErrors((prev: any) => ({
-    //             name: stateData?.name?.length > 50 ? 'Maximum 50 characters are allowed.' : '',
-    //             number: !stateData?.number?.length ? 'Account Number is required' : stateData?.number?.length && !cardValidator.number(stateData?.number).isValid ? 'Please enter a valid Account Number' : '',
-    //             cardholderName: '',
-    //             date: !stateData?.date?.length ? 'Expiration Date is required' : stateData?.date?.length && !checkValidExpiration(stateData?.date) ? `Please add a valid pattern like ${moment().format('MM/YY')}` : '',
-    //             cvv: stateData?.cvv?.length > 3 ? 'Maximum 3 characters are allowed' : ''
-    //         }))
-    //     }
-    // }, [stateData]);
-
 
     const checkIsValid = ({ name, value }: any) => {
         if (name === 'name') {
@@ -169,7 +180,7 @@ const PaymentDetails = (props: any) => {
             <div className="flex_col_sm_8">
                 <div className="relate">
                     <button className="back" onClick={() => { props.backToScreen() }}></button>
-                    <span className="xs_sub_title">{'Wire up circuit'}</span>
+                    <span className="xs_sub_title">{props?.jobName}</span>
                     <>
                         <div className="edit_delete">
                         </div>
@@ -177,7 +188,7 @@ const PaymentDetails = (props: any) => {
                 </div>
                 <span className="sub_title">Payment Details</span>
                 <p className="commn_para">Enter your bank account details</p>
-             
+
                 <div className="form_field">
                     <label className="form_label">
                         {'Card Number'}
@@ -302,13 +313,13 @@ const PaymentDetails = (props: any) => {
                         </div>
                     </div>
                 </div>
-                {/* {console.log({
+                {console.log({
                     isTrue,
                     isError,
                     isErrors,
                     stateData,
                     errors
-                })}  */}
+                })} 
                 <button
                     onClick={() => {
                         handleContinue()

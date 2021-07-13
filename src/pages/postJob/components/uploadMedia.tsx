@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import React, { SyntheticEvent, useRef, useEffect, useState } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import menu from '../../../assets/images/menu-line-white.svg';
 import bell from '../../../assets/images/ic-notification.png';
@@ -11,6 +11,7 @@ import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+import Skeleton from 'react-loading-skeleton';
 
 interface Proptypes {
     jobName?: string;
@@ -40,6 +41,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [submitClicked, setSubmitClicked] = useState(false);
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+    const [isLoadImage, setLoadImage] = useState({});
 
     useEffect(() => {
         if (stepCompleted) {
@@ -67,13 +69,13 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     }
 
     const onFileChange = async (e: any) => {
-      const formData = new FormData();
-      const newFile = e.target.files[0];
-      var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
+        const formData = new FormData();
+        const newFile = e.target.files[0];
+        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
 
         if (hasDescription && !imageFormats.includes(fileType)) {
-          setShowToast(true, "The file must be in proper format.");
-          return;
+            setShowToast(true, "The file must be in proper format.");
+            return;
         }
 
         if (filesUrl?.length === 6) {
@@ -142,6 +144,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         let split_item_name = item.split('/');
         let get_split_name = split_item_name[split_item_name.length - 1];
         let image_render: any = null;
+
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
                 image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={item} alt="media" />
@@ -157,10 +160,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
             return (
                 <figure className="img_video">
-                    {image_render}
-                    <img
-                        onClick={() => { removeFromItem(index) }}
-                        src={remove} alt="remove" className="remove" />
+                    <React.Fragment>
+                        {image_render}
+                        <img
+                            onClick={() => { removeFromItem(index) }}
+                            src={remove} alt="remove" className="remove" />
+                    </React.Fragment>
                     {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
                 </figure>
             )
@@ -192,6 +197,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     }
 
     const { sources, types } = renderFilteredItems();
+    console.log({ isLoadImage })
     return (
         <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
@@ -264,10 +270,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     <div className="text_field">
                                         <textarea placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
                                         {description.length ?
-                                          <span className="char_count">
-                                            {`character length : ${description.length} / 250`}
-                                          </span>
-                                        : ''}
+                                            <span className="char_count">
+                                                {`character length : ${description.length} / 250`}
+                                            </span>
+                                            : ''}
                                     </div>
                                     <span className="error_msg">{submitClicked && !description.trim() ? 'Photo Description is required.' : description.length > 250 ? 'Maximum 250 characters are allowed.' : ''}</span>
                                 </div>

@@ -52,6 +52,7 @@ const MilestoneApprove = (props: any) => {
         if (IsToggleAccept) {
             return (
                 <FixedRate
+                    jobName={jobName}
                     data={props.data}
                     toggleBack={toggleBack}
                     onSubmitAccept={onSubmitAccept}
@@ -139,7 +140,7 @@ const MilestoneApprove = (props: any) => {
                                     ) : (
                                         <>
                                             <img
-                                                style={{ cursor: 'pointer'}}
+                                                style={{ cursor: 'pointer' }}
                                                 onClick={() => { setItemToggle(index) }}
                                                 onLoad={() => {
                                                     setLoadingTrue(true)

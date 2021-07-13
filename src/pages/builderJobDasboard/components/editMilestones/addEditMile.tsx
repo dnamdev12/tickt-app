@@ -28,7 +28,7 @@ const pattern = "^([0-9][0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
 const AddEditMile = (props: any) => {
     const { resetItems, item } = props;
     const [isToggle, setToggle] = useState(false);
-    const [stateData, setStateData] = useState({ name: '', isPhoto: false, duration: '', recommended: '', status: -1 });
+    const [stateData, setStateData] = useState({ name: '', isPhoto: false, duration: '', recommended: '', status: -1, order: -1 });
     const [errors, setErrors] = useState<any>({ name: '', duration: '', hours: '', pattern_error: '' });
     const [toggleCalender, setToggleCalender] = useState(false);
 
@@ -103,15 +103,15 @@ const AddEditMile = (props: any) => {
         const { milestones, editMile } = props;
         if (editMile > -1) {
             let editItem: any = milestones[editMile];
-            console.log({ editItem })
             if (editItem) {
-                setStateData({
+                setStateData((prev: any) => ({
+                    order: editItem?.order ? editItem?.order : -1 ,
                     name: editItem.milestoneName,
                     isPhoto: editItem.isPhotoevidence,
                     duration: renderTimeWithCustomFormat(editItem.fromDate, editItem.toDate, '', ['DD MMM', 'DD MMM YY']),
                     recommended: editItem?.recommendedHours,
-                    status: editItem?.status
-                });
+                    status: editItem?.status ? editItem?.status : ''
+                }));
 
                 setCalender({
                     startDate: moment(editItem?.fromDate).isValid() ? moment(editItem?.fromDate).toDate() : '',
@@ -411,13 +411,15 @@ const AddEditMile = (props: any) => {
                                         // description = `This job has Milestones change request with changes in ${changesFor?.name ? 'Milestone Name, ' : ''}${changesFor?.isPhoto ? 'Photo evidence required, ' : ''}${changesFor?.duration ? 'Duration of Milestone, ' : ''}${changesFor?.recommended ? 'Recommended Hours ' : ''}.`;
                                         description = `${stateData.name} details are updated.`;
                                     }
-                                    
+
                                     if (props.editMile !== '') {
                                         // edit
                                         if (props?.addNewMile) {
                                             props?.addNewMile({
                                                 milestoneName: stateData.name,
                                                 isPhotoevidence: stateData.isPhoto,
+                                                order: stateData.order,
+                                                status: stateData.status,
                                                 recommendedHours: stateData.recommended,
                                                 fromDate: calenderItems.startDate,
                                                 toDate: calenderItems.endDate,
@@ -430,6 +432,8 @@ const AddEditMile = (props: any) => {
                                             props?.addNewMile({
                                                 milestoneName: stateData.name,
                                                 isPhotoevidence: stateData.isPhoto,
+                                                status: -1,
+                                                order: (props?.milestones?.length + 1),
                                                 recommendedHours: stateData.recommended,
                                                 fromDate: calenderItems.startDate,
                                                 toDate: calenderItems.endDate,

@@ -19,6 +19,7 @@ const FixedRate = (props: any) => {
     if (toggle) {
         return (
             <ConfirmPay
+                jobName={props?.jobName}
                 backToScreen={backToScreen}
                 onSubmitAccept={props.onSubmitAccept}
             />
@@ -54,7 +55,7 @@ const FixedRate = (props: any) => {
                         }}
                         className="back"></button>
                     <span className="xs_sub_title">
-                        {'Wire up circuit box'}
+                        {props?.jobName}
                     </span>
                 </div>
                 <div className="form_field">
@@ -102,7 +103,7 @@ const FixedRate = (props: any) => {
                     onClick={() => {
                         setToggle(true);
                     }}
-                    style={{cursor:'pointer'}}
+                    style={{ cursor: 'pointer' }}
                     className="bank_detail view_more">
                     <span className="xs_head">Credit card </span>
                     <span className="show_label">xxxx 8431</span>

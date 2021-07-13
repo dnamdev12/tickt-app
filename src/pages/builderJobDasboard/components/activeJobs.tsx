@@ -72,8 +72,11 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
             />)
     }
 
+    if(isLoading || listData == undefined){
+        return null;
+    }
 
-    console.log({ listData })
+    console.log({ listData , isLoading})
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>

@@ -13,7 +13,8 @@ interface Props {
     isLoading: any,
 }
 
-const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading, activeType }: Props) => {
+const ApplicantsList = (props: Props) => {
+    const { items, jobid, specializationId, setJobLabel, isLoading, activeType } = props;
     const [sortBySorting, setSortBySorting] = useState<any>({
         sortBySorting: false,
         sortBy: 1
@@ -38,14 +39,14 @@ const ApplicantsList = ({ items, jobid, specializationId, setJobLabel, isLoading
         setJobLabel('applicantList', jobid, num)
     }
 
-    if(isLoading){
+    if(props?.isLoading || isLoading){
         return (
             <>
             {''}
             </>
         )
     }
-    
+
     return (
         <>
             <div className="flex_row center_flex">

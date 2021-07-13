@@ -35,7 +35,6 @@ const EditMilestone = (props: any) => {
     const [description, setDescription] = useState<any>([]);
 
     useEffect(() => {
-        console.log({ milestones })
         if (!stateData?.length) {
             setStateData(milestones);
             setItems(milestones);
@@ -196,6 +195,7 @@ const EditMilestone = (props: any) => {
             state_data[itemData.editId]['recommendedHours'] = item.recommendedHours;
             state_data[itemData.editId]['description'] = item.description;
             state_data[itemData.editId]['status'] = item.status;
+            state_data[itemData.editId]['order'] = item.order;
 
             state_data[index]['fromDate'] = moment(item.fromDate).isValid() ? moment(item.fromDate).toISOString() : '';
             state_data[index]['toDate'] = moment(item.toDate).isValid() ? moment(item.toDate).toISOString() : '';
@@ -230,17 +230,18 @@ const EditMilestone = (props: any) => {
     }
 
     const checkIfChange = () => {
-        let isTrue = true;
+        let isTrue = false;
+        console.log({ stateData })
         if (!stateData?.length) {
-            return true;
+            isTrue = true;
         } else {
             stateData?.forEach((dt: any) => {
                 if (dt?.description?.length) {
-                    isTrue = false;
+                    isTrue = true;
                 }
             });
-            return isTrue;
         }
+        return isTrue;
     }
 
     const submitData = async () => {
@@ -273,7 +274,7 @@ const EditMilestone = (props: any) => {
             if (!item?.milestoneId) {
                 delete data.milestoneId;
             }
-            data['order'] = index + 1;
+            data['order'] = item.order;
             return data;
         }).filter((item: any) => {
             if (item?.description?.length) {
@@ -410,12 +411,12 @@ const EditMilestone = (props: any) => {
                                                 key={`${index}-${milestoneName}`}
                                                 draggableId={`${milestoneName}-${index}`}
                                                 index={index}
-                                                isDragDisabled={![1].includes(status) ? true : false}
+                                                isDragDisabled={![1, -1].includes(status) ? true : false}
                                             >
                                                 {(provided: any, snapshot: any) => (
                                                     <li
                                                         key={index}
-                                                        className={![1].includes(status) ? 'disable_milstone' : ''}
+                                                        className={![1, -1].includes(status) ? 'disable_milstone' : ''}
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
@@ -451,7 +452,7 @@ const EditMilestone = (props: any) => {
                                                             <input
                                                                 checked={editItem[index]}
                                                                 onClick={(e: any) => {
-                                                                    if ([1].includes(status)) {
+                                                                    if ([1, -1].includes(status)) {
                                                                         checkOnClick(e, index)
                                                                     } else {
                                                                         e.preventDefault();

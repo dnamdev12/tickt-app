@@ -74,12 +74,15 @@ const MarkMilestones = (props: any) => {
     }
 
     useEffect(() => {
-        console.log({ props })
+        console.log({ props },'-----??')
         preFetch();
     }, []);
 
     useEffect(() => {
         console.log({ expandItem })
+        if(Object.keys(expandItem).length === 0){
+            preFetch();
+        }
     }, [expandItem]);
 
 

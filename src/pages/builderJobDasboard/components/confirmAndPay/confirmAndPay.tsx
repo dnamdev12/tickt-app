@@ -14,13 +14,13 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { getCardList } from '../../../../redux/jobs/actions'
+import { getCardList, deleteCard } from '../../../../redux/jobs/actions'
 
 
 
 const ConfirmAndPay = (props: any) => {
     const [toggle, setToggle] = useState(false);
-    const [selected, setSelected] = useState('0');
+    const [selected, setSelected] = useState(0);
     const [editItem, setEditItem] = useState('');
     const [deleteToggle, setDeleteToggle] = useState(false);
     const [paymentDetail, setPaymentDetail] = useState<any>([]);
@@ -33,6 +33,7 @@ const ConfirmAndPay = (props: any) => {
         if (data?.length) {
             let filterItems: any = data.map((item: any) => {
                 return {
+                    cardId: item?.cardId,
                     number: `${item?.last4}`,
                     cardholderName: item?.name,
                     date: `${item?.exp_month}/${((item?.exp_year).toString()).substring(2, 4)}`,
@@ -68,6 +69,7 @@ const ConfirmAndPay = (props: any) => {
     if (toggle) {
         return (
             <PaymentDetails
+                jobName={props?.jobName}
                 editItem={editItem}
                 backToScreen={backToScreen}
                 setDetials={setDetials}
@@ -86,7 +88,7 @@ const ConfirmAndPay = (props: any) => {
                         }}
                         className="back"></button>
                     <span className="xs_sub_title">
-                        {'Wire up circuit box'}
+                        {props?.jobName}
                     </span>
 
                     <Dialog
@@ -102,10 +104,13 @@ const ConfirmAndPay = (props: any) => {
                         </DialogTitle>
                         <DialogActions>
                             <Button
-                                onClick={() => {
-                                    paymentDetail.splice(selected, 1);
-                                    setPaymentDetail(paymentDetail);
-                                    setDeleteToggle((prev: any) => !prev)
+                                onClick={async (e) => {
+                                    e.preventDefault();
+                                    let result: any = await deleteCard({ cardId: paymentDetail[selected].cardId })
+                                    if (result.success) {
+                                        setDeleteToggle((prev: any) => !prev)
+                                        fetchMyAPI();
+                                    }
                                 }}
                                 color="primary" autoFocus>
                                 {'Yes'}
@@ -120,39 +125,41 @@ const ConfirmAndPay = (props: any) => {
                         </DialogActions>
                     </Dialog>
 
-                    <span className="dot_menu">
-                        <img src={dotMenu} alt="edit" />
-                        <div className="edit_menu">
-                            <ul>
-                                <li
-                                    onClick={() => {
-                                        try {
-                                            console.log({
-                                                paymentDetail,
-                                                selected
-                                            })
-                                            let item = paymentDetail.find((_: any, index: any) => {
-                                                console.log({ _, index })
-                                                if (index == selected) {
-                                                    return _;
-                                                }
-                                            });
-                                            item['index'] = selected;
-                                            setEditItem(item);
-                                            setToggle(true);
-                                        } catch (err) {
-                                            console.log(err);
-                                        }
-                                    }}
-                                    className="icon lodge">Edit</li>
-                                <li
-                                    onClick={() => {
-                                        setDeleteToggle((prev: any) => !prev)
-                                    }}
-                                    className="icon delete">Delete</li>
-                            </ul>
-                        </div>
-                    </span>
+                    {(selected > -1) ? (
+                        <span className="dot_menu">
+                            <img src={dotMenu} alt="edit" />
+                            <div className="edit_menu">
+                                <ul>
+                                    <li
+                                        onClick={() => {
+                                            try {
+                                                console.log({
+                                                    paymentDetail,
+                                                    selected
+                                                })
+                                                let item = paymentDetail.find((_: any, index: any) => {
+                                                    console.log({ _, index })
+                                                    if (index == selected) {
+                                                        return _;
+                                                    }
+                                                });
+                                                item['index'] = selected;
+                                                setEditItem(item);
+                                                setToggle(true);
+                                            } catch (err) {
+                                                console.log(err);
+                                            }
+                                        }}
+                                        className="icon lodge">Edit</li>
+                                    <li
+                                        onClick={() => {
+                                            setDeleteToggle((prev: any) => !prev)
+                                        }}
+                                        className="icon delete">Delete</li>
+                                </ul>
+                            </div>
+                        </span>
+                    ) : null}
                 </div>
                 <div className="form_field">
                     <span className="sub_title">
@@ -169,7 +176,7 @@ const ConfirmAndPay = (props: any) => {
                                 className="card_btn full_btn">
                                 <img src={cardIcon} alt="card-icon" className="pos card" />
                                 {/* {item?.cardholderName} */}
-                                {'Credit Card'}{' '}
+                                {`${item?.cardType?.charAt(0).toUpperCase() + item?.cardType?.slice(1)} Card`}{' '}
                                 <span className="show_label">
                                     XXXX {(item?.number).substring(item?.number?.length - 4, item?.number?.length)}
                                 </span>

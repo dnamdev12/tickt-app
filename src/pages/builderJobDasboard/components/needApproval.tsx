@@ -95,7 +95,7 @@ class NeedApproval extends Component<Props, State> {
                 />)
         }
 
-        if (this?.props?.isLoading) {
+        if (isLoading || listData == undefined) {
             return null;
         }
 

@@ -47,7 +47,7 @@ const NewApplicants = (props: any) => {
     }
 
 
-    if(isLoading){
+    if (isLoading || listData == undefined) {
         return null;
     }
 
