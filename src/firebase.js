@@ -1,12 +1,14 @@
 import firebase from "firebase/app";
 import "firebase/messaging";
+import 'firebase/auth';
+import 'firebase/database';
 
 import storageService from "./utils/storageService";
 import {
     setShowToast
 } from "./redux/common/actions";
 
-const firebaseConfig = {
+export const firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
     authDomain: "tickt-app.firebaseapp.com",
     databaseURL: "https://tickt-app.firebaseapp.com",
@@ -18,7 +20,7 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
-
+const auth = firebase.auth();
 const messaging = firebase.messaging();
 
 const getRegisterToken = () => {
@@ -117,5 +119,8 @@ export function deleteToken() {
     });
 }
 
+export {
+  auth
+}
 
 export default firebase;

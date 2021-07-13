@@ -2,9 +2,6 @@
 import firebase from "firebase/app";
 import "firebase/messaging";
 
-// importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js');
-// importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-messaging.js');
-
 const firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
     authDomain: "tickt-app.firebaseapp.com",
