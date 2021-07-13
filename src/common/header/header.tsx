@@ -61,7 +61,6 @@ const Header = (props: any) => {
             setActiveLink('jobs');
         }
 
-
         if (pathname === '/post-new-job') {
             setActiveLink('post');
         }
@@ -112,8 +111,8 @@ const Header = (props: any) => {
 
     const chatClicked = () => {
         setToggleMenu(false);
-        setActiveLink('chat');
-        history.push('/chat')
+        // setActiveLink('chat');
+        // history.push('/chat')
     }
 
     const jobClick = () => {

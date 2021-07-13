@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import cardIcon from '../../../../assets/images/ic-credit.png';
 import check from '../../../../assets/images/checked-2.png';
 
@@ -14,6 +14,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
+import { getCardList } from '../../../../redux/jobs/actions'
 
 
 
@@ -22,14 +23,35 @@ const ConfirmAndPay = (props: any) => {
     const [selected, setSelected] = useState('0');
     const [editItem, setEditItem] = useState('');
     const [deleteToggle, setDeleteToggle] = useState(false);
-    const [paymentDetail, setPaymentDetail] = useState<any>([
-        {
-            number: '371449635398431',
-            cardholderName: 'Sam william',
-            date: '07/22',
-            cvv: '124'
+    const [paymentDetail, setPaymentDetail] = useState<any>([]);
+
+
+
+    const fetchMyAPI = useCallback(async () => {
+        let result: any = await getCardList();
+        let data: any = result.data;
+        if (data?.length) {
+            let filterItems: any = data.map((item: any) => {
+                return {
+                    number: `${item?.last4}`,
+                    cardholderName: item?.name,
+                    date: `${item?.exp_month}/${((item?.exp_year).toString()).substring(2, 4)}`,
+                    cvv: '000',
+                    cardType: item?.funding,
+                    fetched: true
+                }
+            });
+
+            if (filterItems?.length) {
+                setPaymentDetail(filterItems)
+            }
         }
-    ]);
+    }, [])
+
+
+    useEffect(() => {
+        fetchMyAPI();
+    }, [])
 
     const backToScreen = () => {
         setToggle(false);
@@ -110,8 +132,8 @@ const ConfirmAndPay = (props: any) => {
                                                 selected
                                             })
                                             let item = paymentDetail.find((_: any, index: any) => {
-                                                console.log({_, index})
-                                                if(index == selected){
+                                                console.log({ _, index })
+                                                if (index == selected) {
                                                     return _;
                                                 }
                                             });
@@ -173,6 +195,7 @@ const ConfirmAndPay = (props: any) => {
                     <button
                         onClick={() => {
                             setToggle(true);
+                            setEditItem('')
                         }}
                         className="fill_grey_btn full_btn btn-effect">
                         {paymentDetail?.length ? 'Add another card' : 'Add card'}

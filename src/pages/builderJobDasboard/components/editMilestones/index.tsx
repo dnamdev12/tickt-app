@@ -410,12 +410,12 @@ const EditMilestone = (props: any) => {
                                                 key={`${index}-${milestoneName}`}
                                                 draggableId={`${milestoneName}-${index}`}
                                                 index={index}
-                                                isDragDisabled={[3, 1, 2, 0].includes(status) ? true : false}
+                                                isDragDisabled={![1].includes(status) ? true : false}
                                             >
                                                 {(provided: any, snapshot: any) => (
                                                     <li
                                                         key={index}
-                                                        className={[3, 1, 2, 0].includes(status) ? 'disable_milstone' : ''}
+                                                        className={![1].includes(status) ? 'disable_milstone' : ''}
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
@@ -451,7 +451,7 @@ const EditMilestone = (props: any) => {
                                                             <input
                                                                 checked={editItem[index]}
                                                                 onClick={(e: any) => {
-                                                                    if (![3, 1, 2, 0].includes(status)) {
+                                                                    if ([1].includes(status)) {
                                                                         checkOnClick(e, index)
                                                                     } else {
                                                                         e.preventDefault();

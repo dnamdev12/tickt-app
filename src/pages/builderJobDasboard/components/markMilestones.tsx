@@ -78,29 +78,48 @@ const MarkMilestones = (props: any) => {
         preFetch();
     }, []);
 
+    useEffect(() => {
+        console.log({ expandItem })
+    }, [expandItem]);
+
+
+    const classChecks = (isActive: any, isPrevDone: any) => {
+        if (isActive === 1 && isPrevDone === false) {
+            return 'active';
+        } else if (isActive === 2 && isPrevDone === false) {
+            return 'check';
+        } else if (isActive === 1 && isPrevDone === 2) {
+            return 'active';
+        } else if (isActive === 2 && isPrevDone === 2) {
+            return 'check';
+        } else {
+            return 'disable'
+        }
+    }
+
+
     const preFetch = async () => {
         let { jobId } = selectedItem;
         if (getMilestoneList) {
             const res: any = await getMilestoneList(jobId);
             if (res.success) {
-
-                if (res?.data?.length) {
-                    res?.data.forEach((item: any, index: any) => {
+                console.log({ res }, '---->')
+                if (res?.data?.milestones?.length) {
+                    res?.data?.milestones?.forEach((item: any, index: any) => {
                         if (index === 0) {
                             const isActive = item?.status;
                             let isPrevDone: any = false;
-                                isPrevDone = false;
+                            isPrevDone = false;
                             let result = classChecks(isActive, isPrevDone);
-                            if(["check","active"].includes(result)){
+                            console.log({ result }, '====>')
+                            if (["check", "active"].includes(result)) {
                                 setExpandItem({
-                                    [item?.milestoneId]:true
-                                });   
+                                    [item?.milestoneId]: true
+                                });
                             }
                         }
                     })
                 }
-
-                setExpandItem({});
                 setDetails(res.data);
             }
         }
@@ -173,26 +192,6 @@ const MarkMilestones = (props: any) => {
         dataItems = item_details?.milestones;
     }
 
-
-    // [1, 2].includes(isActive) ? `check`
-    // : isPrevDone === 2
-    //     ? 'active'
-    //     : 'disabled'
-
-    const classChecks = (isActive: any, isPrevDone: any) => {
-        if (isActive === 1 && isPrevDone === false) {
-            return 'active';
-        } else if (isActive === 2 && isPrevDone === false) {
-            return 'check';
-        } else if (isActive === 1 && isPrevDone === 2) {
-            return 'active';
-        } else if (isActive === 2 && isPrevDone === 2) {
-            return 'check';
-        } else {
-            return 'disable'
-        }
-    }
-
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
@@ -252,7 +251,7 @@ const MarkMilestones = (props: any) => {
                         } else {
                             isPrevDone = dataItems[index - 1].status;
                         }
-                        console.log({isActive, isPrevDone, index})
+                        console.log({ isActive, isPrevDone, index, expandItem })
                         return (
                             <li
                                 key={milestoneId}

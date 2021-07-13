@@ -411,7 +411,7 @@ const AddEditMile = (props: any) => {
                                         // description = `This job has Milestones change request with changes in ${changesFor?.name ? 'Milestone Name, ' : ''}${changesFor?.isPhoto ? 'Photo evidence required, ' : ''}${changesFor?.duration ? 'Duration of Milestone, ' : ''}${changesFor?.recommended ? 'Recommended Hours ' : ''}.`;
                                         description = `${stateData.name} details are updated.`;
                                     }
-                                    console.log({ changesFor })
+                                    
                                     if (props.editMile !== '') {
                                         // edit
                                         if (props?.addNewMile) {

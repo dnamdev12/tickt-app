@@ -13,7 +13,8 @@ const defaultValues = {
     number: '',
     cardholderName: '',
     date: '',
-    cvv: ''
+    cvv: '',
+    fetched: false
 }
 
 const PaymentDetails = (props: any) => {
@@ -23,7 +24,8 @@ const PaymentDetails = (props: any) => {
         number: '',
         cardholderName: '',
         date: '',
-        cvv: ''
+        cvv: '',
+        cardType: '',
     });
 
 
@@ -48,7 +50,8 @@ const PaymentDetails = (props: any) => {
     }
 
 
-    const handleContinue = () => {
+    const handleContinue = async () => {
+        
         props.setDetials(stateData)
         props.backToScreen();
     }
@@ -106,7 +109,7 @@ const PaymentDetails = (props: any) => {
             console.log({
                 name,
                 value,
-                isValid:cardValidator.number(value).isValid
+                isValid: cardValidator.number(value).isValid
             })
             if (!value.length) {
                 return 'Card Number is required';
@@ -150,13 +153,13 @@ const PaymentDetails = (props: any) => {
     }
 
     let isTrue = Object.values(stateData).includes('');
-    let isErrors:any = false;
+    let isErrors: any = false;
     let isError = handleCheck();
 
     let errorValues = Object.values(errors);
-    if(errorValues?.length){
-        let isHave = errorValues.find((item:any ) => item !== '');
-        if(isHave){
+    if (errorValues?.length) {
+        let isHave = errorValues.find((item: any) => item !== '');
+        if (isHave) {
             isErrors = true;
         }
     }
@@ -169,56 +172,46 @@ const PaymentDetails = (props: any) => {
                     <span className="xs_sub_title">{'Wire up circuit'}</span>
                     <>
                         <div className="edit_delete">
-                            {/* <span className="edit" title="Edit" onClick={() => { }}></span> */}
-                            {/* <span onClick={() => { }}>
-                                <img src={deleteIcon} alt='dlt-icon' />
-                            </span> */}
                         </div>
                     </>
-
-
-
                 </div>
                 <span className="sub_title">Payment Details</span>
                 <p className="commn_para">Enter your bank account details</p>
-                {/* 
-                <div className="form_field">
-                    <label className="form_label">
-                        {'Account Name'}
-                    </label>
-                    <div className="text_field">
-                        <input
-                            type="text"
-                            placeholder="Enter Account Name"
-                            name="account_name"
-                            value={stateData?.name}
-                            onChange={(e: any) => {
-                                setStateData((prev: any) => ({ ...prev, name: e.target.value }));
-                                setErrorsOnChange({ name: 'name', value: e.target.value });
-                            }}
-                            // maxLength={50}
-                            readOnly={false}
-                        />
-                    </div>
-                    <span className="error_msg">{errors.name}</span>
-                </div> */}
+             
                 <div className="form_field">
                     <label className="form_label">
                         {'Card Number'}
                     </label>
                     <div className="text_field">
-                        <input
-                            type="number"
-                            placeholder="Enter Card Number"
-                            name="account_number"
-                            value={stateData?.number}
-                            onChange={(e: any) => {
-                                setStateData((prev: any) => ({ ...prev, number: e.target.value }));
-                                setErrorsOnChange({ name: 'number', value: e.target.value });
-                            }}
-                            maxLength={10}
-                            readOnly={false}
-                        />
+                        {stateData?.fetched ?
+                            <input
+                                type="text"
+                                placeholder="Enter Card Number"
+                                name="account_number"
+                                value={`XXXX XXXX XXXX ${stateData?.number}`}
+                                onChange={(e: any) => {
+                                    setStateData((prev: any) => ({ ...prev, number: e.target.value }));
+                                    setErrorsOnChange({ name: 'number', value: e.target.value });
+                                }}
+                                maxLength={10}
+                                readOnly={true}
+                            />
+                            :
+                            <input
+                                type="number"
+                                placeholder="Enter Card Number"
+                                name="account_number"
+                                value={stateData?.number}
+                                onChange={(e: any) => {
+                                    setStateData((prev: any) => ({ ...prev, number: e.target.value }));
+                                    setErrorsOnChange({ name: 'number', value: e.target.value });
+                                }}
+                                maxLength={10}
+                                readOnly={false}
+                            />
+                        }
+
+
                     </div>
                     <span className="error_msg">{errors.number}</span>
                 </div>
@@ -277,18 +270,33 @@ const PaymentDetails = (props: any) => {
                                 {'CVV/CVC'}
                             </label>
                             <div className="text_field">
-                                <input
-                                    type="number"
-                                    placeholder="Enter CVV/CVC"
-                                    name="bsb_number"
-                                    value={stateData?.cvv}
-                                    onChange={(e: any) => {
-                                        setStateData((prev: any) => ({ ...prev, cvv: e.target.value }));
-                                        setErrorsOnChange({ name: 'cvv', value: e.target.value });
-                                    }}
-                                    maxLength={3}
-                                    readOnly={false}
-                                />
+                                {stateData?.fetched ?
+                                    <input
+                                        type="text"
+                                        placeholder="Enter CVV/CVC"
+                                        name="bsb_number"
+                                        value={'XXX'}
+                                        onChange={(e: any) => {
+                                            setStateData((prev: any) => ({ ...prev, cvv: e.target.value }));
+                                            setErrorsOnChange({ name: 'cvv', value: e.target.value });
+                                        }}
+                                        maxLength={3}
+                                        readOnly={true}
+                                    />
+                                    :
+                                    <input
+                                        type="number"
+                                        placeholder="Enter CVV/CVC"
+                                        name="bsb_number"
+                                        value={stateData?.cvv}
+                                        onChange={(e: any) => {
+                                            setStateData((prev: any) => ({ ...prev, cvv: e.target.value }));
+                                            setErrorsOnChange({ name: 'cvv', value: e.target.value });
+                                        }}
+                                        maxLength={3}
+                                        readOnly={false}
+                                    />
+                                }
                             </div>
                             <span className="error_msg">{errors.cvv}</span>
                         </div>
