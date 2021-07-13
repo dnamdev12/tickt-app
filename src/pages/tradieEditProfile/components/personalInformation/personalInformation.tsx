@@ -1406,12 +1406,12 @@ export class PersonalInformation extends Component<Props, State> {
                             <div className="relate">
                                 <button className="back" onClick={this.closeAddEditPortofolioModal} />
                                 <div className="md_heading">
-                                    <span className="sub_title">{profileViewData?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}</span>
+                                    <span className="sub_title">Portfolio</span>
                                     <span className="info_note">
                                         {storageService.getItem('userType') === 1 ?
                                             'Tradies who have a portfolio with photos get job faster.'
                                             :
-                                            'Builders who have a portfolio with photos get job faster.'
+                                            'Showcase your work and attract the best talent to your jobs.'
                                         }
                                     </span>
                                 </div>

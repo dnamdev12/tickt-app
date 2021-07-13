@@ -362,7 +362,7 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await replyCancellation(data);
         if (res.success) {
-            props.history.push('/request-monitored');
+            props.history.push('/request-monitored/cr');
             setJobActionState((prevData: any) => ({
                 ...prevData,
                 isCancelRequestAcceptedClicked: false,
@@ -380,7 +380,7 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await replyChangeRequest(data);
         if (res.success) {
-            props.history.push('/request-monitored');
+            props.history.push('/request-monitored/cr');
             setJobActionState((prevData: any) => ({
                 ...prevData,
                 isChangeRequestAcceptedClicked: false,
@@ -849,7 +849,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <div className="form_field">
                                         <label className="form_label">Your Question</label>
                                         <div className="text_field">
-                                            <textarea placeholder={`${questionsData.updateQuestionsClicked ? 'Text' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} a question`}`} maxLength={250} value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
+                                            <textarea placeholder={`${questionsData.updateQuestionsClicked ? 'Text' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} what do you want to know`}`} maxLength={250} value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                             <span className="char_count">{`${questionsData.questionData?.length}/250`}</span>
                                         </div>
                                         {!!errors.questionData && <span className="error_msg">{errors.questionData}</span>}

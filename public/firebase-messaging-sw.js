@@ -1,9 +1,9 @@
-// import firebase from "firebase/app";
-// import "firebase/messaging";
-
 // Give the service worker access to Firebase Messaging.
-importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js');
-importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-messaging.js');
+import firebase from "firebase/app";
+import "firebase/messaging";
+
+// importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js');
+// importScripts('https://www.gstatic.com/firebasejs/8.7.1/firebase-messaging.js');
 
 const firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
@@ -18,23 +18,26 @@ const firebaseConfig = {
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
 
-// messaging.setBackgroundMessageHandler((payload) => {
 messaging.onBackgroundMessage((payload) => {
     console.log(
         "[firebase-messaging-sw.js] Received background message ",
         payload,
     );
     // Customize notification here
-    const title = "Background Message Title";
+    const title = payload.notification.title;
     const options = {
-        body: "Background Message body.",
-        icon: '/firebase-logo.png'
+        body: payload.notification.body,
+        icon: '/firebase-logo.png',
+        data: {
+            time: new Date(Date.now()).toString,
+            action_click: payload.data.action_click
+        }
     };
 
-     return self.registration.showNotification(title, options);
+    window.self.registration.showNotification(title, options);
 });
 
-self.addEventListener("notificationClick", (event) => {
+window.self.addEventListener("notificationclick", (event) => {
     console.log(event);
     var action_click = event.notification.data.action_click
     event.notification.close();
@@ -43,6 +46,6 @@ self.addEventListener("notificationClick", (event) => {
     )
 })
 
-self.addEventListener("notificationClose", (event) => {
+window.self.addEventListener("notificationclose", (event) => {
     console.log('notification close');
 })

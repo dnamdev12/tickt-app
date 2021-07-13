@@ -8,14 +8,13 @@ import rootSaga from "./redux/rootSaga";
 import Loader from "./common/loader";
 import Toast from "./common/toast";
 
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
 import { useClearCache } from "react-clear-cache";
 
-import { requestPermission, deleteToken, onMessageListner } from "./firebase.js";
-import { setShowToast } from "./redux/common/actions";
+import { requestPermission, onMessageListner } from "./firebase.js";
 
 declare global {
   interface Window {
@@ -39,38 +38,9 @@ sagaMiddleware.run(rootSaga);
 const App = () => {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
-  const notificationLoader = () => {
-    // const messaging: any = firebase.messaging();
-    // messaging
-    //   .requestPermission()
-    //   .then(() => {
-    //     return messaging.getToken();
-    //   })
-    //   .then((token: any) => {
-    //     console.warn("token", token);
-    //   })
-    //   .catch((err: any) => {
-    //     console.log("notification permission denied inside app.tsx", err);
-    //   });
-
-    // await getToken().then((firebaseToken: any) => {
-    //   console.log(firebaseToken, "firebaseToken");
-    // });
-    // getToken()
-    //   .then((currentToken: string) => {
-    //     storageService.setItem("FCM token", currentToken);
-    //   })
-
-    onMessageListner()
-      .then((payload: any) => {
-        setShowToast(true, payload.notification.title);
-        console.log('payload.notification.title: ', payload.notification.title);
-      })
-  };
-
   useEffect(() => {
-    notificationLoader();
     requestPermission();
+    onMessageListner();
 
     AOS.init({
       duration: 2000,

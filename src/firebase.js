@@ -2,6 +2,9 @@ import firebase from "firebase/app";
 import "firebase/messaging";
 
 import storageService from "./utils/storageService";
+import {
+    setShowToast
+} from "./redux/common/actions";
 
 const firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
@@ -18,28 +21,7 @@ firebase.initializeApp(firebaseConfig);
 
 const messaging = firebase.messaging();
 
-// export const getToken = () => {
 const getRegisterToken = () => {
-    // return new Promise((resolve, reject) => {
-    //     messaging.getToken({
-    //             vapidKey: "BHtgSVj0gw6YQDd6ByTPx_gyRtBWKlHBVYKFsemnv1t6bTH9efAseLWaoJx2GvTu0NW314ZF4DOj_eJ7tub9kHI"
-    //         })
-    //         .then((currentToken) => {
-    //             if (currentToken) {
-    //                 console.log("current token for client : ", currentToken);
-    //                 resolve(currentToken);
-    //             } else {
-    //                 alert('please enable notification permission');
-    //                 return undefined;
-    //             }
-    //         })
-    //         .catch((err) => {
-    //             alert('please enable notification permission');
-    //             console.log("An error occured while retrieving token : ", err);
-    //             reject(err);
-    //         })
-    // });
-
     messaging.getToken({
         vapidKey: 'BHtgSVj0gw6YQDd6ByTPx_gyRtBWKlHBVYKFsemnv1t6bTH9efAseLWaoJx2GvTu0NW314ZF4DOj_eJ7tub9kHI'
     }).then((currentToken) => {
@@ -82,9 +64,9 @@ const saveToken = () => {
 export function requestPermission() {
     Notification.requestPermission().then((permission) => {
             console.log('Notification permission granted.');
-            if (isTokenSentToServer()) {
+            if (permission === 'granted' && isTokenSentToServer()) {
                 console.log('Token Already sent');
-            } else {
+            } else if (!isTokenSentToServer()) {
                 getRegisterToken();
             }
         })
@@ -93,39 +75,28 @@ export function requestPermission() {
         });
 }
 
-messaging.onMessage((payload) => {
-    console.log('firebase notification received: ', payload);
-    const title = payload.data.title;
-    const options = {
-        body: payload.data.body,
-        icon: '/firebase-logo.png',
-    };
-    var myNotifications = new Notification(title, options);
-})
-
 export const onMessageListner = () => {
     const messaging = firebase.messaging();
 
-    return new Promise((resolve) => {
-        messaging.onMessage((payload) => {
-            console.log('firebase notification received: ', payload);
-            const title = payload.data.title;
-            const options = {
-                body: payload.data.body,
-                icon: '/firebase-logo.png',
-                // data: {
-                //     time: new Date(Date.now()).toString,
-                //     action_click: payload.data.action_click
-                // }
-            };
-            var myNotifications = new Notification(title, options);
-            resolve(payload);
-        })
+    messaging.onMessage((payload) => {
+        console.log('firebase notification received event: ', payload);
+        const title = payload.notification.title;
+        const options = {
+            body: payload.notification.body,
+            icon: '/firebase-logo.png',
+            data: {
+                time: new Date(Date.now()).toString,
+                action_click: payload.data.action_click
+            }
+        };
+        // browser default notification
+        var myNotifications = new Notification(title, options);
+        // custom notification
+        // setShowToast(true, title);
     })
 }
 
-// eslint-disable-next-line no-restricted-globals
-window.self.addEventListener("notificationClick", (event) => {
+window.self.addEventListener("notificationclick", (event) => {
     console.log(event);
     var action_click = event.notification.data.action_click
     event.notification.close();
