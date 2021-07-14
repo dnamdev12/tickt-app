@@ -32,11 +32,12 @@ const ConfirmAndPay = (props: any) => {
         let data: any = result.data;
         if (data?.length) {
             let filterItems: any = data.map((item: any) => {
+                let exp_date = (item?.exp_month).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
                 return {
                     cardId: item?.cardId,
                     number: `${item?.last4}`,
                     cardholderName: item?.name,
-                    date: `${item?.exp_month}/${((item?.exp_year).toString()).substring(2, 4)}`,
+                    date: `${exp_date}/${((item?.exp_year).toString()).substring(2, 4)}`,
                     cvv: '000',
                     cardType: item?.funding,
                     fetched: true
@@ -53,6 +54,12 @@ const ConfirmAndPay = (props: any) => {
     useEffect(() => {
         fetchMyAPI();
     }, [])
+
+    useEffect(() => {
+        if(toggle == false){
+            fetchMyAPI();
+        }
+    }, [toggle]);
 
     const backToScreen = () => {
         setToggle(false);

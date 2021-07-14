@@ -52,16 +52,20 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
 
   const checkDecimal = (name: string, value: string) => {
     let split_values = value.split('.');
-    if (split_values.length > 1) {
-      if (split_values[0].length > 6) {
-        return 'Price field must have 6 or less digits before decimal';
-        // return 'Price field must have 6 digits before decimal or less.'
+    if (split_values.length) {
+      let first: any = split_values[0];
+      let last: any = split_values[1];
+
+
+      if (last && last?.length > 2) {
+        return 'Price field must have maximum 2 digits after decimal';
       }
 
-      if (split_values[1].length > 2) {
-        return 'Price field must have maximum 2 digits after decimal';
-        // return 'Price field must have 6 or less digits before decimal'
+      if (first && first?.length > 6) {
+        return 'Price field must have 6 or less digits before decimal';
       }
+
+      return ''
 
     } else {
       return ''

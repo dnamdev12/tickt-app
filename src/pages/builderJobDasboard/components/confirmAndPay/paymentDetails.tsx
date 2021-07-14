@@ -5,7 +5,7 @@ import moment from 'moment';
 import { addNewCard, updateCard } from '../../../../redux/jobs/actions'
 
 const defaultValues = {
-    cardId:'xxx',
+    cardId: 'xxx',
     number: '',
     cardholderName: '',
     date: '',
@@ -16,6 +16,8 @@ const defaultValues = {
 const PaymentDetails = (props: any) => {
     const { editItem } = props;
     const [stateData, setStateData] = useState(defaultValues);
+    const [isChange, setUpdateChange] = useState(false);
+    const [force, forceUpdate] = useState({});
     const [errors, setErrors] = useState({
         number: '',
         cardholderName: '',
@@ -24,13 +26,20 @@ const PaymentDetails = (props: any) => {
         cardType: '',
     });
 
-
     useEffect(() => {
         if (editItem) {
             setStateData(editItem);
         }
     }, [editItem])
 
+    useEffect(() => {
+        console.log({isChange})
+        if (Array.isArray(force)) {
+            forceUpdate({})
+        } else {
+            forceUpdate([])
+        }
+    }, [isChange])
 
     const handleCheck = () => {
         if (
@@ -64,7 +73,7 @@ const PaymentDetails = (props: any) => {
         if (!stateData?.fetched) {
             let result = await addNewCard(data);
             if (result?.success) {
-                props.setDetials(stateData)
+                // props.setDetials(stateData)
                 props.backToScreen();
             }
         } else {
@@ -75,7 +84,7 @@ const PaymentDetails = (props: any) => {
             }
             let result = await updateCard(data);
             if (result?.success) {
-                props.setDetials(stateData)
+                // props.setDetials(stateData)
                 props.backToScreen();
             }
         }
@@ -240,6 +249,13 @@ const PaymentDetails = (props: any) => {
                             onChange={(e: any) => {
                                 setStateData((prev: any) => ({ ...prev, cardholderName: e.target.value }));
                                 setErrorsOnChange({ name: 'cardholderName', value: e.target.value });
+                                if (stateData?.fetched) {
+                                    if (editItem?.cardholderName !== stateData?.cardholderName) {
+                                        setUpdateChange(() => true);
+                                    } else {
+                                        setUpdateChange(() => false);
+                                    }
+                                }
                             }}
                             // maxLength={50}
                             readOnly={false}
@@ -265,6 +281,13 @@ const PaymentDetails = (props: any) => {
                                     onChange={(e: any) => {
                                         setStateData((prev: any) => ({ ...prev, date: e.target.value }))
                                         setErrorsOnChange({ name: 'date', value: e.target.value });
+                                        if (stateData?.fetched) {
+                                            if (editItem?.date !== stateData?.date) {
+                                                setUpdateChange(() => true);
+                                            } else {
+                                                setUpdateChange(() => false);
+                                            }
+                                        }
                                     }}
                                     maxLength={7}
                                     readOnly={false}
@@ -313,22 +336,28 @@ const PaymentDetails = (props: any) => {
                         </div>
                     </div>
                 </div>
-                {console.log({
+                {/* {console.log({
                     isTrue,
                     isError,
                     isErrors,
                     stateData,
                     errors
-                })} 
-                <button
-                    onClick={() => {
-                        handleContinue()
-                    }}
-                    className={`fill_btn full_btn btn-effect ${!isTrue && !isError && !isErrors ? '' : 'disable_btn'}`}>
-                    {'Continue'}
-                </button>
+                })}  */}
+                {stateData?.fetched ? (
+                    <button
+                        onClick={() => { handleContinue() }}
+                        className={`fill_btn full_btn btn-effect ${!isTrue && !isError && !isErrors && isChange ? '' : 'disable_btn'}`}>
+                        {'Continue'}
+                    </button>
+                ) : (
+                    <button
+                        onClick={() => { handleContinue() }}
+                        className={`fill_btn full_btn btn-effect ${!isTrue && !isError && !isErrors ? '' : 'disable_btn'}`}>
+                        {'Continue'}
+                    </button>
+                )}
             </div>
-        </div>
+        </div >
     )
 }
 
