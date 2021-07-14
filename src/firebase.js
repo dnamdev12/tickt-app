@@ -75,8 +75,6 @@ export function requestPermission() {
 }
 
 export function deleteToken() {
-    const messaging = firebase.messaging();
-
     messaging.deleteToken().then(() => {
         console.log('Token deleted.');
         // ...
