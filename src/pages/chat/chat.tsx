@@ -14,25 +14,35 @@ import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
 
 
-import { auth } from '../../firebase';
+import { auth, db } from '../../firebase';
 
 const Chat = () => {
     const [toggle, setToggle] = useState(false);
 
 
 
-    const signup = ({ email, password, fullName }: any) => {
-        let promise = new Promise(function (resolve, reject) {
-            auth.createUserWithEmailAndPassword(email, password)
-                .then((ref: any) => {
-                    ref.user.updateProfile({
-                        displayName: fullName,
-                    });
-                    resolve(ref);
+    const signup = async ({ email, password, fullName }: any) => {
+        try {
+            let ref: any = await auth.createUserWithEmailAndPassword(email, password);
+            if (ref) {
+                let profile = await ref.user.updateProfile({ displayName: fullName, });
+                let docRef: any = await db.collection("users").doc("LA").set({
+                   email:'email',
+                    
                 })
-                .catch((error) => reject(error));
-        });
-        return promise;
+                console.log({
+                    ref,
+                    user: ref.user,
+                    profile,
+                    docRef
+                })
+                if (docRef) {
+                    console.log("Document written with ID: ", docRef.id);
+                }
+            }
+        } catch (err) {
+            console.log({ err });
+        }
     };
 
 
@@ -53,7 +63,7 @@ const Chat = () => {
                             <span
                                 onClick={() => {
                                     signup({
-                                        email: 'john-builder@gmail.com',
+                                        email: 'john-test@gmail.com',
                                         password: 'John@123',
                                         fullName: 'John'
                                     })

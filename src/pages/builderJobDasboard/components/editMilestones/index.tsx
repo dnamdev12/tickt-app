@@ -230,17 +230,20 @@ const EditMilestone = (props: any) => {
     }
 
     const checkIfChange = () => {
-        let isTrue = false;
-        console.log({ stateData })
+        let isTrue = true;
         if (!stateData?.length) {
-            isTrue = true;
+            isTrue = false;
         } else {
             stateData?.forEach((dt: any) => {
+                console.log({dt})
                 if (dt?.description?.length) {
-                    isTrue = true;
+                    isTrue = false;
                 }
             });
         }
+        console.log({
+            isTrue
+        })
         return isTrue;
     }
 
@@ -411,12 +414,12 @@ const EditMilestone = (props: any) => {
                                                 key={`${index}-${milestoneName}`}
                                                 draggableId={`${milestoneName}-${index}`}
                                                 index={index}
-                                                isDragDisabled={![1, -1].includes(status) ? true : false}
-                                            >
+                                                isDragDisabled={![0, 4, -1].includes(status) ? true : false}
+                                            >   
                                                 {(provided: any, snapshot: any) => (
                                                     <li
                                                         key={index}
-                                                        className={![1, -1].includes(status) ? 'disable_milstone' : ''}
+                                                        className={![0, 4, -1].includes(status) ? 'disable_milstone' : ''}
                                                         ref={provided.innerRef}
                                                         {...provided.draggableProps}
                                                         {...provided.dragHandleProps}
@@ -452,7 +455,7 @@ const EditMilestone = (props: any) => {
                                                             <input
                                                                 checked={editItem[index]}
                                                                 onClick={(e: any) => {
-                                                                    if ([1, -1].includes(status)) {
+                                                                    if ([0, 4, -1].includes(status)) {
                                                                         checkOnClick(e, index)
                                                                     } else {
                                                                         e.preventDefault();

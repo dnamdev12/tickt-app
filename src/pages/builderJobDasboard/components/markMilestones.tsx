@@ -74,13 +74,13 @@ const MarkMilestones = (props: any) => {
     }
 
     useEffect(() => {
-        console.log({ props },'-----??')
+        console.log({ props }, '-----??')
         preFetch();
     }, []);
 
     useEffect(() => {
         console.log({ expandItem })
-        if(Object.keys(expandItem).length === 0){
+        if (Object.keys(expandItem).length === 0) {
             preFetch();
         }
     }, [expandItem]);
@@ -258,14 +258,15 @@ const MarkMilestones = (props: any) => {
                         return (
                             <li
                                 key={milestoneId}
-                                onClick={() => {
-                                    setExpandItem((prev: any) => ({
-                                        ...prev,
-                                        [milestoneId]: prev[milestoneId] === undefined ? true : !prev[milestoneId]
-                                    }));
-                                }}
                                 className={classChecks(isActive, isPrevDone)}>
-                                <div className="circle_stepper">
+                                <div
+                                    onClick={() => {
+                                        setExpandItem((prev: any) => ({
+                                            ...prev,
+                                            [milestoneId]: prev[milestoneId] === undefined ? true : !prev[milestoneId]
+                                        }));
+                                    }}
+                                    className="circle_stepper">
                                     <span></span>
                                 </div>
                                 <div className="info">
@@ -296,7 +297,7 @@ const MarkMilestones = (props: any) => {
 
                                     {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
                                         <button
-                                            className="fill_btn full_btn btn-effect"
+                                            className="fill_btn full_btn btn-effect w-full"
                                             onClick={() => {
 
                                                 setMilestoneIndex({

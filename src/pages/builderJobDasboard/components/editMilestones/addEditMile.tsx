@@ -110,7 +110,7 @@ const AddEditMile = (props: any) => {
                     isPhoto: editItem.isPhotoevidence,
                     duration: renderTimeWithCustomFormat(editItem.fromDate, editItem.toDate, '', ['DD MMM', 'DD MMM YY']),
                     recommended: editItem?.recommendedHours,
-                    status: editItem?.status ? editItem?.status : ''
+                    status: editItem?.status
                 }));
 
                 setCalender({
