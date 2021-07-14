@@ -15,6 +15,7 @@ import "aos/dist/aos.css";
 import { useClearCache } from "react-clear-cache";
 
 import { requestPermission, onMessageListner } from "./firebase.js";
+import CustomNotification from "./common/customNotification";
 
 declare global {
   interface Window {
@@ -61,6 +62,7 @@ const App = () => {
       <Routes />
       <Loader />
       <Toast />
+      {/* <CustomNotification /> */}
     </Provider>
   );
 };
