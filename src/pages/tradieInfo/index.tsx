@@ -589,9 +589,9 @@ class TradieInfo extends Component<Props, State> {
                                                                     onClick={() => {
                                                                         this.savedTradie({ tradieInfo })
                                                                     }}
-                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-
-                                                                {/* <button
+                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}>
+                                                                    </span>
+                                                                 <button
                                                                     onClick={() => {
                                                                         console.log({ tradieInfo },'tradieInfo --><--')
                                                                         props.history.push({
@@ -604,7 +604,7 @@ class TradieInfo extends Component<Props, State> {
                                                                     }}
                                                                     className="fill_btn full_btn btn-effect">
                                                                     {'Invite for job'}
-                                                                </button> */}
+                                                                </button> 
                                                             </div>
                                                         )}
                                                     </div>
