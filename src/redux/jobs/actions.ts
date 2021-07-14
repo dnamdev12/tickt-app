@@ -710,3 +710,25 @@ export const deleteCard = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+export const lastUsedCard = async () => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.payment}builder/lastUsedCard`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const fetchVouchesJobs = async (data:any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.job}builder/vouchesJob?page=${data.page}&tradieId=${data.tradieId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}

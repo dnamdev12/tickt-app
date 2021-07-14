@@ -528,7 +528,11 @@ class TradieInfo extends Component<Props, State> {
                                                 </ul>
 
                                                 {userType === 1 ? (
-                                                    <button className="fill_btn full_btn btn-effect" onClick={() => props.history.push('/update-user-info')}>Edit</button>
+                                                    <button
+                                                        className="fill_btn full_btn btn-effect"
+                                                        onClick={() => {
+                                                            props.history.push('/update-user-info')
+                                                        }}>Edit</button>
                                                 ) : (!tradieInfo?.isRequested && !hideInvite ? (
                                                     <div className="form_field">
                                                         {tradieInfo?.isInvited ? (
@@ -538,29 +542,46 @@ class TradieInfo extends Component<Props, State> {
                                                                         this.savedTradie({ tradieInfo })
                                                                     }}
                                                                     className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-                                                                <button
-                                                                    onClick={() => {
-                                                                        console.log({ haveJobId, tradieInfo })
-                                                                        if (haveJobId) {
-                                                                            this.cancelInvite({
-                                                                                invitationId: tradieInfo?.invitationId,
-                                                                                tradieId: tradieInfo?.tradieId,
-                                                                                jobId: urlParams.get('jobId')
-                                                                            })
-                                                                        } else {
+                                                                {haveJobId ?
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            console.log({ haveJobId, tradieInfo })
+                                                                            if (haveJobId) {
+                                                                                this.cancelInvite({
+                                                                                    invitationId: tradieInfo?.invitationId,
+                                                                                    tradieId: tradieInfo?.tradieId,
+                                                                                    jobId: urlParams.get('jobId')
+                                                                                })
+                                                                            } else {
+                                                                                props.history.push({
+                                                                                    pathname: '/cancel-the-job',
+                                                                                    state: {
+                                                                                        tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+                                                                                        path: props.location.search,
+                                                                                        cancelJob: true
+                                                                                    }
+                                                                                })
+                                                                            }
+                                                                        }}
+                                                                        className="fill_btn full_btn btn-effect">
+                                                                        {'Cancel Invite'}
+                                                                    </button>
+                                                                    :
+                                                                    <button
+                                                                        onClick={() => {
+                                                                            console.log({ tradieInfo })
                                                                             props.history.push({
-                                                                                pathname: '/cancel-the-job',
+                                                                                pathname: '/choose-the-job',
                                                                                 state: {
                                                                                     tradieId: tradieInfo?._id || tradieInfo?.tradieId,
                                                                                     path: props.location.search,
-                                                                                    cancelJob: true
                                                                                 }
                                                                             })
-                                                                        }
-                                                                    }}
-                                                                    className="fill_btn full_btn btn-effect">
-                                                                    {'Cancel Invite'}
-                                                                </button>
+                                                                        }}
+                                                                        className="fill_btn full_btn btn-effect">
+                                                                        {'Invite for job'}
+                                                                    </button>
+                                                                }
                                                             </div>
                                                         ) : (
                                                             <div className="bottom_btn">
@@ -569,9 +590,10 @@ class TradieInfo extends Component<Props, State> {
                                                                         this.savedTradie({ tradieInfo })
                                                                     }}
                                                                     className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
-                                                                <button
+
+                                                                {/* <button
                                                                     onClick={() => {
-                                                                        console.log({ tradieInfo })
+                                                                        console.log({ tradieInfo },'tradieInfo --><--')
                                                                         props.history.push({
                                                                             pathname: '/choose-the-job',
                                                                             state: {
@@ -582,7 +604,7 @@ class TradieInfo extends Component<Props, State> {
                                                                     }}
                                                                     className="fill_btn full_btn btn-effect">
                                                                     {'Invite for job'}
-                                                                </button>
+                                                                </button> */}
                                                             </div>
                                                         )}
                                                     </div>
@@ -633,7 +655,7 @@ class TradieInfo extends Component<Props, State> {
                                                             {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
                                                         </li>}
                                                     {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any, index: any) => {
-                                                        return toggleSpecialisation  ? index <= 4 && <li key={item.specializationId}>{item.specializationName || ''}</li> : <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                        return toggleSpecialisation ? index <= 4 && <li key={item.specializationId}>{item.specializationName || ''}</li> : <li key={item.specializationId}>{item.specializationName || ''}</li>
                                                     })}
                                                 </ul>
                                                 <span className="link show_more"

@@ -14,7 +14,7 @@ import { onFileUpload } from '../../redux/auth/actions';
 
 import { ChooseJob } from '../../redux/jobs/actions'
 
-import { AddVoucher } from '../../redux/jobs/actions';
+import { AddVoucher, fetchVouchesJobs } from '../../redux/jobs/actions';
 import docThumbnail from '../../assets/images/add-document.png'
 
 import Select from 'react-select';
@@ -68,7 +68,7 @@ const AddVoucherComponent = (props: any) => {
     }, [toggle])
 
     const prefetch = async () => {
-        let res_jobs: any = await ChooseJob({ page: 1 });
+        let res_jobs: any = await fetchVouchesJobs({ page: 1, tradieId: props.id });
 
         if (res_jobs?.success) {
             let list_data: any = res_jobs.data;
