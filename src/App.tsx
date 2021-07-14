@@ -14,7 +14,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useClearCache } from "react-clear-cache";
 
-import { requestPermission, onMessageListner } from "./firebase.js";
+import { requestPermission } from "./firebase.js";
 
 declare global {
   interface Window {
@@ -39,7 +39,7 @@ const App = () => {
 
   useEffect(() => {
     requestPermission();
-    onMessageListner();
+    // onMessageListner();
 
     AOS.init({
       duration: 2000,
