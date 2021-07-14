@@ -2,13 +2,14 @@ import firebase from "firebase/app";
 import "firebase/messaging";
 import 'firebase/auth';
 import 'firebase/database';
+import 'firebase/firestore';
 
 import storageService from "./utils/storageService";
 import {
     setShowToast
 } from "./redux/common/actions";
 
-export const firebaseConfig = {
+let firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
     authDomain: "tickt-app.firebaseapp.com",
     databaseURL: "https://tickt-app.firebaseapp.com",
@@ -19,9 +20,23 @@ export const firebaseConfig = {
     measurementId: "G-KT3LTB6JMT"
 };
 
+if (localStorage.getItem('userType') == 2) {
+    firebaseConfig = {
+        apiKey: "AIzaSyDZVqTtKXaXgshCPPfKW70GFruj_1ATijQ",
+        authDomain: "tickt-web-7c921.firebaseapp.com",
+        projectId: "tickt-web-7c921",
+        storageBucket: "tickt-web-7c921.appspot.com",
+        messagingSenderId: "416293177899",
+        appId: "1:416293177899:web:566e39bc9e09614629b86e",
+        measurementId: "G-7RGDZDX6EH"
+    }
+}
+
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const messaging = firebase.messaging();
+var db = firebase.firestore();
+
 
 const getRegisterToken = () => {
     messaging.getToken({
@@ -65,13 +80,13 @@ const saveToken = () => {
 
 export function requestPermission() {
     Notification.requestPermission().then((permission) => {
-            console.log('Notification permission granted.');
-            if (permission === 'granted' && isTokenSentToServer()) {
-                console.log('Token Already sent');
-            } else if (!isTokenSentToServer()) {
-                getRegisterToken();
-            }
-        })
+        console.log('Notification permission granted.');
+        if (permission === 'granted' && isTokenSentToServer()) {
+            console.log('Token Already sent');
+        } else if (!isTokenSentToServer()) {
+            getRegisterToken();
+        }
+    })
         .catch((err) => {
             console.log('Unable to get permission to show notification : ', err);
         });
@@ -120,7 +135,9 @@ export function deleteToken() {
 }
 
 export {
-  auth
+    auth,
+    db,
+    firebaseConfig
 }
 
 export default firebase;

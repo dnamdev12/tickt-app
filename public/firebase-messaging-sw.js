@@ -2,7 +2,7 @@
 import firebase from "firebase/app";
 import "firebase/messaging";
 
-const firebaseConfig = {
+let firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
     authDomain: "tickt-app.firebaseapp.com",
     projectId: "tickt-app",
@@ -11,6 +11,18 @@ const firebaseConfig = {
     appId: "1:795502342919:web:37a2294b55f69051d30ba2",
     measurementId: "G-KT3LTB6JMT"
 };
+
+if (localStorage.getItem('userType') == 2) {
+    firebaseConfig = {
+        apiKey: "AIzaSyDZVqTtKXaXgshCPPfKW70GFruj_1ATijQ",
+        authDomain: "tickt-web-7c921.firebaseapp.com",
+        projectId: "tickt-web-7c921",
+        storageBucket: "tickt-web-7c921.appspot.com",
+        messagingSenderId: "416293177899",
+        appId: "1:416293177899:web:566e39bc9e09614629b86e",
+        measurementId: "G-7RGDZDX6EH"
+    }
+}
 
 firebase.initializeApp(firebaseConfig);
 const messaging = firebase.messaging();
