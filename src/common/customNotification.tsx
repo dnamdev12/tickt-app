@@ -10,6 +10,15 @@ const NOTIFICATION_TIMEOUT = 5000;
 
 const CustomNotification = (props: any) => {
 
+    // const title: string = payload.notification.title;
+    // const options: any = {
+    //     body: payload.notification.body,
+    //     data: {
+    //         time: new Date(Date.now()).toString(),
+    //         click_action: payload.data.click_action
+    //     }
+    // };
+
     useEffect(() => {
         if (props.showNotification) {
             setTimeout(() => setShowNotification(false), NOTIFICATION_TIMEOUT);

@@ -102,6 +102,7 @@ export function deleteToken() {
 
 export {
     auth,
+    messaging,
     db,
     firebaseConfig
 }

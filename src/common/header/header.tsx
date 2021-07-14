@@ -48,34 +48,24 @@ const Header = (props: any) => {
     let { pathname } = useLocation();
     let history = useHistory();
 
-    // const onMessageListner = () => {
-    //     messaging.onMessage((payload) => {
-    //         console.log('firebase notification received inside header : ', payload);
-    //         const title = payload.notification.title;
-    //         const options = {
-    //             body: payload.notification.body,
-    //             icon: '/firebase-logo.png',
-    //             data: {
-    //                 time: new Date(Date.now()).toString(),
-    //                 click_action: payload.data.click_action
-    //             }
-    //         };
-            
-    //         // var notifications = new Notification(title, options);
-    //         // notifications.onclick = function (event) {
-    //         //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
-    //         //     window.open('http://localhost:3000/active-jobs', '_self');
-    //         // }
+    const onMessageListner = () => {
+        messaging.onMessage((payload: any) => {
+            console.log('firebase notification received inside header : ', payload);
 
-    //         // custom notification
-    //         setShowNotification(true, payload);
-    //         setLatestNotifData(payload);
-    //     })
-    // }
+            // var notifications = new Notification(title, options);
+            // notifications.onclick = function (event) {
+            //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
+            //     window.open('http://localhost:3000/active-jobs', '_self');
+            // }
+
+            // custom notification
+            setShowNotification(true, payload);
+            setLatestNotifData(payload);
+        })
+    }
 
     useEffect(() => {
-        // onMessageListner();
-        setShowNotification(true, "jhuyfftgjh");
+        onMessageListner();
 
         setActiveLink('discover');
     }, []);
