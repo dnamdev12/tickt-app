@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation, withRouter } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -41,6 +41,9 @@ const Header = (props: any) => {
     const [toggleMenu, setToggleMenu] = useState(false);
     const [activeLink, setActiveLink] = useState('discover');
     const [latestNotifData, setLatestNotifData] = useState<any>('');
+    const [notificationData, setNotificationData] = useState<any>('');
+    const [notificationPgNo, setNotificationPgNo] = useState<number>(1);
+    const [notificationCount, setNotificationCount] = useState<number | null>(null);
     console.log('latestNotifData: ', latestNotifData);
 
     const dispatch = useDispatch();
@@ -63,12 +66,19 @@ const Header = (props: any) => {
             setLatestNotifData(payload);
         })
     }
-
+    
     useEffect(() => {
+        props.getNotificationList(notificationPgNo);
         onMessageListner();
-
         setActiveLink('discover');
     }, []);
+    
+    useEffect(() => {
+        if (props.notificationList) {
+            setNotificationData(props.notificationList?.list);
+            setNotificationCount(props.notificationList?.count);
+        }
+    }, [props.notificationList]);
 
     useEffect(() => {
         if (pathname === '/') {

@@ -101,6 +101,14 @@ function* resetHomeSearchJobData() {
     yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
 }
 
+function* getNotificationList({ page }: any) {
+    const response: FetchResponse = yield NetworkOps.get(Urls.notification + `?page=${page}`)
+    if (response.status_code === 200) {
+        yield put({ type: actionTypes.SET_NOTIFICATION_LIST, payload: response.result });
+    } else {
+        yield put({ type: actionTypes.SET_NOTIFICATION_LIST, payload: '' });
+    }
+}
 
 
 function* authWatcher() {
@@ -112,6 +120,7 @@ function* authWatcher() {
     yield takeLatest(actionTypes.GET_VIEW_NEARBY_JOBS, getViewNearByJob);
     yield takeLatest(actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, getJobWithJobTypeLatLong);
     yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
+    yield takeLatest(actionTypes.GET_NOTIFICATION_LIST, getNotificationList);
     yield takeLatest(actionTypes.RESET_HOME_SEARCH_DATA, resetHomeSearchJobData);
     yield takeLatest(actionTypes.RESET_VIEW_NEARBY_JOBS, resetViewNearByJobData);
 }
