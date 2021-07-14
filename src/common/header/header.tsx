@@ -18,7 +18,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 
 import { useDispatch } from 'react-redux'
-import { setShowToast } from '../../redux/common/actions';
+import { setShowNotification } from '../../redux/common/actions';
 import { messaging } from '../../firebase';
 
 const DISABLE_HEADER = [
@@ -48,36 +48,37 @@ const Header = (props: any) => {
     let { pathname } = useLocation();
     let history = useHistory();
 
-    const onMessageListner = () => {
-        messaging.onMessage((payload) => {
-            console.log('firebase notification received inside header : ', payload);
-            const title = payload.notification.title;
-            const options = {
-                body: payload.notification.body,
-                icon: '/firebase-logo.png',
-                data: {
-                    time: new Date(Date.now()).toString(),
-                    click_action: payload.data.click_action
-                }
-            };
-            // browser default notification
-            var notifications = new Notification(title, options);
-            notifications.onclick = function(event) {
-                console.log(event, "customNotification event")
-                event.preventDefault(); // prevent the browser from focusing the Notification's tab
-                // window.open('http://localhost:3000/active-jobs', '_self');
-                window.open(payload.data.click_action, '_blank');
-              }
-            // custom notification
-            setShowToast(true, title);
-            setLatestNotifData(payload);
-        })
-    }
+    // const onMessageListner = () => {
+    //     messaging.onMessage((payload) => {
+    //         console.log('firebase notification received inside header : ', payload);
+    //         const title = payload.notification.title;
+    //         const options = {
+    //             body: payload.notification.body,
+    //             icon: '/firebase-logo.png',
+    //             data: {
+    //                 time: new Date(Date.now()).toString(),
+    //                 click_action: payload.data.click_action
+    //             }
+    //         };
+            
+    //         // var notifications = new Notification(title, options);
+    //         // notifications.onclick = function (event) {
+    //         //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
+    //         //     window.open('http://localhost:3000/active-jobs', '_self');
+    //         // }
+
+    //         // custom notification
+    //         setShowNotification(true, payload);
+    //         setLatestNotifData(payload);
+    //     })
+    // }
 
     useEffect(() => {
-        onMessageListner();
+        // onMessageListner();
+        setShowNotification(true, "jhuyfftgjh");
+
         setActiveLink('discover');
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (pathname === '/') {

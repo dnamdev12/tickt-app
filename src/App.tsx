@@ -61,7 +61,7 @@ const App = () => {
       <Routes />
       <Loader />
       <Toast />
-      {/* <CustomNotification /> */}
+      <CustomNotification />
     </Provider>
   );
 };
