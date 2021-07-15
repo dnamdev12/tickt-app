@@ -111,8 +111,8 @@ const Header = (props: any) => {
 
     const chatClicked = () => {
         setToggleMenu(false);
-        // setActiveLink('chat');
-        // history.push('/chat')
+        setActiveLink('chat');
+        history.push('/chat')
     }
 
     const jobClick = () => {

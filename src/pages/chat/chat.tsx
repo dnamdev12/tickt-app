@@ -12,38 +12,35 @@ import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
-
+import moment from 'moment';
 
 import { auth, db } from '../../firebase';
+import { setShowToast } from '../../redux/common/actions';
 
 const Chat = () => {
     const [toggle, setToggle] = useState(false);
 
 
 
-    const signup = async ({ email, password, fullName }: any) => {
+    const signup = async ({ email, password, id, fullName }: any) => {
         try {
             let ref: any = await auth.createUserWithEmailAndPassword(email, password);
             if (ref) {
-                let profile = await ref.user.updateProfile({ displayName: fullName, });
-                let docRef: any = await db.collection("users").doc("LA").set({
-                   email:'email',
-                    
-                })
-                console.log({
-                    ref,
-                    user: ref.user,
-                    profile,
-                    docRef
-                })
-                if (docRef) {
-                    console.log("Document written with ID: ", docRef.id);
-                }
+                await ref.user.updateProfile({ displayName: fullName, });
+                await db.collection("users").doc(id).set({
+                    email: 'email',
+                    refId: id,
+                    createdAt: moment().toDate(),
+                    roleId: 2
+                });
             }
         } catch (err) {
+            setShowToast(true, err.message);
             console.log({ err });
         }
     };
+
+    
 
 
     return (
@@ -59,16 +56,17 @@ const Chat = () => {
                         </button>
                         <div className="stick">
                             <span className="title">Chat</span>
-                            <span className="title">Login</span>
+                            {/* <span className="title">Login</span>
                             <span
                                 onClick={() => {
                                     signup({
                                         email: 'john-test@gmail.com',
                                         password: 'John@123',
+                                        id: '608917d4905fe43acf9f3209',
                                         fullName: 'John'
                                     })
                                 }}
-                                className="title">Sign up</span>
+                                className="title">Sign up</span> */}
                             <div className="search_bar">
                                 <input type="text" placeholder="Search" />
                                 <span className="detect_icon_ltr">
@@ -76,7 +74,7 @@ const Chat = () => {
                                 </span>
                             </div>
                             <ul className="chat_list">
-                                <li>
+                                {/* <li>
                                     <a href="javascript:void(0)" className="chat active">
                                         <figure className="u_img">
                                             <img src={dummy} alt="img" />
@@ -103,7 +101,7 @@ const Chat = () => {
                                             <span className="count grey">2</span>
                                         </div>
                                     </a>
-                                </li>
+                                </li> */}
                             </ul>
                         </div>
                     </div>
@@ -114,14 +112,14 @@ const Chat = () => {
                                     <figure className="u_img">
                                         <img src={dummy} alt="user-img" />
                                     </figure>
-                                    <span className="name">John Oldman</span>
+                                    {/* <span className="name">John Oldman</span>
                                     <span
                                         onClick={() => {
                                             setToggle(true);
                                         }}
                                         className="view_detail">View Job Details
                                         <img src={viewMore} alt="view-more" />
-                                    </span>
+                                    </span> */}
                                 </div>
                                 <div className="message_wrapr">
                                     <div className="date_time">

@@ -295,23 +295,25 @@ const MarkMilestones = (props: any) => {
                                         </button>
                                     ) : null}
 
-                                    {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
-                                        <button
-                                            className="fill_btn full_btn btn-effect w-full"
-                                            onClick={() => {
 
-                                                setMilestoneIndex({
-                                                    index,
-                                                    milestoneId,
-                                                    type: 'approve',
-                                                    jobId: item_details?.jobId
-                                                });
-                                            }}>
-                                            {'Check and Approve'}
-                                        </button>
-                                    ) : null}
 
                                 </div>
+
+                                {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
+                                    <button
+                                        className="fill_btn full_btn btn-effect"
+                                        onClick={() => {
+
+                                            setMilestoneIndex({
+                                                index,
+                                                milestoneId,
+                                                type: 'approve',
+                                                jobId: item_details?.jobId
+                                            });
+                                        }}>
+                                        {'Check and Approve'}
+                                    </button>
+                                ) : null}
 
                             </li>
                         );

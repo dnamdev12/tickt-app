@@ -137,7 +137,8 @@ export function deleteToken() {
 export {
     auth,
     db,
-    firebaseConfig
+    firebaseConfig,
+    firebase
 }
 
 export default firebase;
