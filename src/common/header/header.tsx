@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
-import { NavLink, useLocation, withRouter } from "react-router-dom";
+import { useLocation, withRouter } from "react-router-dom";
 import { useHistory } from "react-router-dom";
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -18,30 +18,67 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 
 import { useDispatch } from 'react-redux'
-import { setShowToast } from '../../redux/common/actions';
+import { setShowNotification } from '../../redux/common/actions';
+import { messaging } from '../../firebase';
 
-const DISABLE_HEADER = ['/signup', '/login', '/reset-password', '/404', '/email-updated-successfully', '/change-password-success'];
+const DISABLE_HEADER = [
+    '/signup',
+    '/login',
+    '/reset-password',
+    '/404',
+    '/email-updated-successfully',
+    '/change-password-success'
+];
 
 const Header = (props: any) => {
     let type = storageService.getItem('userType');
 
     const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorElNotif, setAnchorElNotif] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
     const [showHeader, setShowHeader] = useState<boolean>(false);
     const [toggleMenu, setToggleMenu] = useState(false);
     const [activeLink, setActiveLink] = useState('discover');
+    const [latestNotifData, setLatestNotifData] = useState<any>('');
+    const [notificationData, setNotificationData] = useState<any>('');
+    const [notificationPgNo, setNotificationPgNo] = useState<number>(1);
+    const [notificationCount, setNotificationCount] = useState<number | null>(null);
+    console.log('latestNotifData: ', latestNotifData);
 
     const dispatch = useDispatch();
 
-    // const USER_TYPE = storageService.getItem('userType');
-
-    useEffect(() => {
-        setActiveLink('discover')
-    }, [])
-
     let { pathname } = useLocation();
     let history = useHistory();
+
+    const onMessageListner = () => {
+        messaging.onMessage((payload: any) => {
+            console.log('firebase notification received inside header : ', payload);
+
+            // var notifications = new Notification(title, options);
+            // notifications.onclick = function (event) {
+            //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
+            //     window.open('http://localhost:3000/active-jobs', '_self');
+            // }
+
+            // custom notification
+            setShowNotification(true, payload);
+            setLatestNotifData(payload);
+        })
+    }
+    
+    useEffect(() => {
+        props.getNotificationList(notificationPgNo);
+        onMessageListner();
+        setActiveLink('discover');
+    }, []);
+    
+    useEffect(() => {
+        if (props.notificationList) {
+            setNotificationData(props.notificationList?.list);
+            setNotificationCount(props.notificationList?.count);
+        }
+    }, [props.notificationList]);
 
     useEffect(() => {
         if (pathname === '/') {
@@ -89,12 +126,20 @@ const Header = (props: any) => {
         setUserType(storageService.getItem('userType'))
     }, [pathname, storageService.getItem('userType')])
 
-    const handleClick = (event: any) => {
-        setAnchorEl(event.currentTarget);
+    const handleClick = (event: any, type: string) => {
+        if (type === 'notification') {
+            setAnchorElNotif(event.currentTarget);
+        } else {
+            setAnchorEl(event.currentTarget);
+        }
     };
 
-    const handleClose = () => {
-        setAnchorEl(null);
+    const handleClose = (type: string) => {
+        if (type === 'notification') {
+            setAnchorElNotif(null);
+        } else {
+            setAnchorEl(null);
+        }
     };
 
     const logoutHandler = () => {
@@ -192,15 +237,16 @@ const Header = (props: any) => {
                                     onClick={() => { setToggleMenu(!toggleMenu) }} />
                             </li>
                             <div className="profile_notification">
-                                {storageService.getItem("jwtToken") && <div className="notification_bell">
-                                    <figure className="bell">
-                                        <span className="badge">4 </span>
-                                        <img src={bell} alt="notify" />
-                                    </figure>
-                                </div>}
+                                {storageService.getItem("jwtToken") &&
+                                    <div className="notification_bell" onClick={(event) => handleClick(event, 'notification')}>
+                                        <figure className="bell">
+                                            <span className="badge">4 </span>
+                                            <img src={bell} alt="notify" />
+                                        </figure>
+                                    </div>}
                                 <div className="user_profile">
                                     {storageService.getItem("jwtToken") &&
-                                        <figure aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+                                        <figure aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => handleClick(event, 'profile')}>
                                             <img src={renderByType({ name: 'userImage' }) || dummy} alt="profile-img" />
                                         </figure>}
 
@@ -210,18 +256,16 @@ const Header = (props: any) => {
                                         anchorEl={anchorEl}
                                         keepMounted
                                         open={Boolean(anchorEl)}
-                                        onClose={handleClose}
+                                        onClose={() => handleClose('profile')}
                                         transformOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
                                         }}
                                     >
-                                        {/* <span className="sub_title">{props.tradieProfileData?.userName}</span> */}
                                         <span className="sub_title">
                                             {renderByType({ name: 'userName' })}
-                                            {/* {props?.builderProfile?.userName || props?.tradieProfileData?.userName} */}
                                         </span>
-                                        <MenuItem onClick={() => { handleClose(); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
+                                        <MenuItem onClick={() => { handleClose('pofile'); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
                                             <span className="setting_icon">
                                                 <img src={profile} alt="profile" />
                                                 {'My Profile'}
@@ -245,21 +289,19 @@ const Header = (props: any) => {
                                                 {'App Guide'}
                                             </span>
                                         </MenuItem> */}
-                                        <MenuItem onClick={() => { handleClose(); logoutHandler(); }}>
+                                        <MenuItem onClick={() => { handleClose('profile'); logoutHandler(); }}>
                                             <span className="setting_icon logout">Logout</span>
                                         </MenuItem>
                                     </Menu>
 
 
-
                                     {/* Notification */}
-
-                                    {/* <Menu className="sub_menu notifications"
+                                    <Menu className="sub_menu notifications"
                                         id="simple-menu"
-                                        anchorEl={anchorEl}
+                                        anchorEl={anchorElNotif}
                                         keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={handleClose}
+                                        open={Boolean(anchorElNotif)}
+                                        onClose={() => handleClose('notification')}
                                         transformOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
@@ -322,10 +364,8 @@ const Header = (props: any) => {
                                                 <span className="time">St 12:30 AM</span>
                                             </div>
                                         </MenuItem>
-                                    </Menu> */}
-                                    {/* Notofication close */}
-
-
+                                    </Menu>
+                                    {/* Notification close */}
 
                                 </div>
                             </div>

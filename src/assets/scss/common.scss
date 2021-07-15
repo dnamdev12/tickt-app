@@ -724,56 +724,58 @@ body {
       }
     }
     .notif{
-      position: relative;
       width: 92%;
-      span{
-        font-size: 14px;
-        line-height: 1.43;
-        color: var(--greyish-brown);
-        margin: 2px 0;
-        display: block !important;
-      }
-      .time{
-        @include position(absolute, 0, 0, auto, auto);
-        color: var(--dark-grey);
-      }
-      .not_img{
-        width: 64px;
-        height: 64px;
-        margin-right: 10px;
-        border-radius: 50%;
-        display: inline-block;
-        vertical-align: top;
-        position: relative;
-        img{
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-        }
-        .dot{
-          width: 12px;
-          height: 12px;
-          background-color: var(--yellow);
-          border-radius: 50%;
-          @include position(absolute, 3px, auto, auto, 0px);
-        }
-      }
-      .see{
-        color: #123f95;
-        font-family: 'Neue Haas Grotesk Text Pro Bold';
-        padding: 2px 8px;
-        border-radius: 6px;
-        background-color: var(--grey);
-        display: inline-block !important;
-      }
-      .info{
-        width: 55%;
-        display: inline-block;
-      }
-      
-      
     }
+  }
+  
+}
+
+.notif{
+  position: relative;
+  span{
+    font-size: 14px;
+    line-height: 1.43;
+    color: var(--greyish-brown);
+    margin: 2px 0;
+    display: block;
+  }
+  .time{
+    @include position(absolute, 0, 0, auto, auto);
+    color: var(--dark-grey);
+  }
+  .not_img{
+    width: 64px;
+    height: 64px;
+    margin-right: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .dot{
+      width: 12px;
+      height: 12px;
+      background-color: var(--yellow);
+      border-radius: 50%;
+      @include position(absolute, 3px, auto, auto, 0px);
+    }
+  }
+  .see{
+    color: #123f95;
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    padding: 2px 8px;
+    border-radius: 6px;
+    background-color: var(--grey);
+    display: inline-block !important;
+  }
+  .info{
+    width: 55%;
+    display: inline-block;
   }
 }
 
@@ -2616,7 +2618,7 @@ body {
   }
   .cross-icon {
     display: inline-block;
-    @include position(absolute, 5px, 5px, auto, auto);
+    @include position(absolute, -5px, -5px, auto, auto);
     cursor: pointer;
     width: 18px;
     height: 18px;
@@ -2629,6 +2631,21 @@ body {
     padding: 8px 20px;
     font-size: 12px;
     color: var(--white);
+  }
+  .notif {
+    .not_img {
+      width: 45px;
+      height: 45px;
+    }
+    span{
+      font-size: 12px;
+      &.time{
+        font-size: 11px;
+      }
+      &.who{
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+      }
+    }
   }
 }
 

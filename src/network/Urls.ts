@@ -129,6 +129,7 @@ const Urls = {
     publishJobAgain: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}publishJobAgain`,
     getAllPostedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getAllJobs`,
     payment: `${versions.v1}${ServiceEnum.payment}`,
+    notification: `${versions.v1}${ServiceEnum.home}notification`,
 }
 
 export const urlFor = (service: String): string => {

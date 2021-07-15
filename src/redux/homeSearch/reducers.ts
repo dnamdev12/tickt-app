@@ -12,7 +12,8 @@ const initialState = {
     homeJobDetailsData: '',
     homeApplyJobData: '',
     error: '',
-    builderProfile: {}
+    builderProfile: {},
+    notificationList: ''
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -73,7 +74,11 @@ const reducer = (state = initialState, action: any) => {
                 ...state,
                 homeApplyJobData: action.payload
             }
-
+        case actionTypes.SET_NOTIFICATION_LIST:
+            return {
+                ...state,
+                notificationList: action.payload
+            }
 
         default: return state
     }

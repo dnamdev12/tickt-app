@@ -22,6 +22,8 @@ export const resetHomeSearchJobData = () => ({ type: actionTypes.RESET_HOME_SEAR
 
 export const resetViewNearByJobData = () => ({ type: actionTypes.RESET_VIEW_NEARBY_JOBS });
 
+export const getNotificationList = (page: number) => ({ type: actionTypes.GET_NOTIFICATION_LIST, page });
+
 export const getHomeJobDetails = async (data: any) => {
     setSkeletonLoading(true);
     const response: FetchResponse = await NetworkOps.get(Urls.homeJobDetails + `?jobId=${data.jobId}&tradeId=${data.tradeId}&specializationId=${data.specializationId}`);

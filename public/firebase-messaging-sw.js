@@ -2,6 +2,8 @@
 import firebase from "firebase/app";
 import "firebase/messaging";
 
+var self = this;
+
 let firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
     authDomain: "tickt-app.firebaseapp.com",
@@ -32,29 +34,30 @@ messaging.onBackgroundMessage((payload) => {
         "[firebase-messaging-sw.js] Received background message ",
         payload,
     );
-    // Customize notification here
+    // Customize notification type here => notification/data
     const title = payload.notification.title;
     const options = {
         body: payload.notification.body,
-        icon: '/firebase-logo.png',
-        data: {
-            time: new Date(Date.now()).toString,
-            action_click: payload.data.action_click
-        }
     };
-
-    window.self.registration.showNotification(title, options);
+   return self.registration.showNotification(title, options);
 });
 
-window.self.addEventListener("notificationclick", (event) => {
+    self.addEventListener("notificationclick", (event) => {
     console.log(event);
-    var action_click = event.notification.data.action_click
+    // var click_action = event.notification.data.click_action
     event.notification.close();
     event.waitUntil(
-        window.open(action_click)
+        self.clients.openWindow('http://localhost:3000/active-jobs')
     )
+    // Get all the Window clients
+    // event.waitUntil(self.clients.matchAll({ type: 'window' }).then(clientsArr => {
+    // If a Window tab matching the targeted URL already exists, focus that;
+    // const hadWindowToFocus = clientsArr.some(windowClient => windowClient.url === event.notification.data.click_action ? (windowClient.focus(), true) : false);
+    // Otherwise, open a new tab to the applicable URL and focus it.
+    // if (!hadWindowToFocus) self.clients.openWindow(event.notification.data.click_action).then(windowClient => windowClient ? windowClient.focus() : null);
+//   }));
 })
 
-window.self.addEventListener("notificationclose", (event) => {
+    self.addEventListener("notificationclose", (event) => {
     console.log('notification close');
 })

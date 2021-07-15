@@ -5,20 +5,23 @@ import {
     callTradieProfileData,
     getProfileBuilder
 } from '../../redux/profile/actions';
+import { getNotificationList } from './../../redux/homeSearch/actions';
 
 
 const mapStateToProps = (state: any) => {
     return {
         tradieProfileData: state.profile.tradieProfileData,
         builderProfile: state.profile.builderProfile,
-        userType: state.profile.userType
+        userType: state.profile.userType,
+        notificationList: state.homeSearch.notificationList
     }
 }
 
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators({
         callTradieProfileData,
-        getProfileBuilder
+        getProfileBuilder,
+        getNotificationList,
     }, dispatch);
 }
 

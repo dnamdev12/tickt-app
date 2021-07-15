@@ -5,9 +5,6 @@ import 'firebase/database';
 import 'firebase/firestore';
 
 import storageService from "./utils/storageService";
-import {
-    setShowToast
-} from "./redux/common/actions";
 
 let firebaseConfig = {
     apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
@@ -92,37 +89,6 @@ export function requestPermission() {
         });
 }
 
-export const onMessageListner = () => {
-    const messaging = firebase.messaging();
-
-    messaging.onMessage((payload) => {
-        console.log('firebase notification received event: ', payload);
-        const title = payload.notification.title;
-        const options = {
-            body: payload.notification.body,
-            icon: '/firebase-logo.png',
-            data: {
-                time: new Date(Date.now()).toString,
-                action_click: payload.data.action_click
-            }
-        };
-        // browser default notification
-        var myNotifications = new Notification(title, options);
-        // custom notification
-        // setShowToast(true, title);
-    })
-}
-
-window.self.addEventListener("notificationclick", (event) => {
-    console.log(event);
-    var action_click = event.notification.data.action_click
-    event.notification.close();
-    event.waitUntil(
-        window.open(action_click)
-        // clients.openWindow(action_click)
-    )
-})
-
 export function deleteToken() {
     const messaging = firebase.messaging();
 
@@ -136,6 +102,7 @@ export function deleteToken() {
 
 export {
     auth,
+    messaging,
     db,
     firebaseConfig,
     firebase

@@ -14,8 +14,8 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 import { useClearCache } from "react-clear-cache";
 
-import { requestPermission, onMessageListner } from "./firebase.js";
-
+import { requestPermission } from "./firebase.js";
+import CustomNotification from "./common/customNotification";
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -39,7 +39,7 @@ const App = () => {
 
   useEffect(() => {
     requestPermission();
-    onMessageListner();
+    // onMessageListner();
 
     AOS.init({
       duration: 2000,
@@ -61,6 +61,7 @@ const App = () => {
       <Routes />
       <Loader />
       <Toast />
+      <CustomNotification />
     </Provider>
   );
 };
