@@ -140,7 +140,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
 
                 if (start_selection && end_selection && !end) {
-                    if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                    if (moment(start_selection, 'MM-DD-YYYY').isSameOrAfter(moment(start, 'MM-DD-YYYY')) && moment(end_selection, 'MM-DD-YYYY').isSameOrBefore(moment(start, 'MM-DD-YYYY'))) {
                         item_find = false;
                     } else {
                         item_find = true
