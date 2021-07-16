@@ -108,14 +108,12 @@ class TradieEditProfile extends Component<Props, State> {
                                             <span className="menu_txt">Support Chat</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('privacy-policy') }}> */}
+                                    <li onClick={() => { this.setSelected('privacy-policy') }}>
                                         <a className={`icon tnc ${activeMenuType === 'privacy-policy' ? 'active' : ''}`}>
                                             <span className="menu_txt">Privacy Policy</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('terms-of-use') }}> */}
+                                    <li onClick={() => { this.setSelected('terms-of-use') }}>
                                         <a className={`icon tnc ${activeMenuType === 'terms-of-use' ? 'active' : ''}`}>
                                             <span className="menu_txt">Terms Of Use</span>
                                         </a>

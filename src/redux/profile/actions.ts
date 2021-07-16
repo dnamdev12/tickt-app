@@ -143,3 +143,25 @@ export const getSavedJobList = (page: number) => ({
   type: actionTypes.GET_SAVED_JOBS,
   page,
 });
+
+export const getPrivacyPolicy = async () => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.privacyPolicy}?type=web`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false, data: '' };
+}
+
+export const getTnc = async () => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.tnc}?type=web`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false, data: '' };
+}
