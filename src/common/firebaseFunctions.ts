@@ -1,4 +1,4 @@
-import { auth, db, firebase } from '../firebase';
+import { auth, db, firebase } from '../firebase/firebase';
 import { setShowToast } from '../redux/common/actions';
 import moment from 'moment';
 

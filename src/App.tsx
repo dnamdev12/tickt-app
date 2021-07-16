@@ -7,15 +7,14 @@ import rootReducer from "./redux/rootReducer";
 import rootSaga from "./redux/rootSaga";
 import Loader from "./common/loader";
 import Toast from "./common/toast";
+import CustomNotification from "./common/customNotification";
 
 import { useEffect } from "react";
+import { useClearCache } from "react-clear-cache";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-import { useClearCache } from "react-clear-cache";
 
-import { requestPermission } from "./firebase.js";
-import CustomNotification from "./common/customNotification";
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -38,8 +37,6 @@ const App = () => {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
   useEffect(() => {
-    requestPermission();
-    // onMessageListner();
 
     AOS.init({
       duration: 2000,

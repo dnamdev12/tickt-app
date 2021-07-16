@@ -130,6 +130,7 @@ const Urls = {
     getAllPostedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getAllJobs`,
     payment: `${versions.v1}${ServiceEnum.payment}`,
     notification: `${versions.v1}${ServiceEnum.home}notification`,
+    addFCMNotifToken: `${versions.v1}${ServiceEnum.auth}addDeviceToken`,
 }
 
 export const urlFor = (service: String): string => {

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import notFound from '../../assets/images/not-found.png';
 // import { Link } from 'react-router-dom';
@@ -14,13 +14,11 @@ import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
 import moment from 'moment';
 
-import { auth, db } from '../../firebase';
+import { auth, db } from '../../firebase/firebase';
 import { setShowToast } from '../../redux/common/actions';
 
 const Chat = () => {
     const [toggle, setToggle] = useState(false);
-
-
 
     const signup = async ({ email, password, id, fullName }: any) => {
         try {
@@ -31,17 +29,15 @@ const Chat = () => {
                     email: 'email',
                     refId: id,
                     createdAt: moment().toDate(),
-                    roleId: 2
+                    // roleId: 2
                 });
+                console.log("firebase authentication success")
             }
         } catch (err) {
             setShowToast(true, err.message);
             console.log({ err });
         }
     };
-
-    
-
 
     return (
         <div className="app_wrapper">
@@ -56,17 +52,17 @@ const Chat = () => {
                         </button>
                         <div className="stick">
                             <span className="title">Chat</span>
-                            {/* <span className="title">Login</span>
+                            <span className="title">Login</span>
                             <span
                                 onClick={() => {
                                     signup({
-                                        email: 'john-test@gmail.com',
-                                        password: 'John@123',
-                                        id: '608917d4905fe43acf9f3209',
-                                        fullName: 'John'
+                                        email: 'tradie-test@gmail.co',
+                                        password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@',
+                                        id: 'R^4-3Wx?VTRufwjkcbejkldemwkgcyiweugcjhs',
+                                        fullName: 'Test Tradie'
                                     })
                                 }}
-                                className="title">Sign up</span> */}
+                                className="title">Sign up</span>
                             <div className="search_bar">
                                 <input type="text" placeholder="Search" />
                                 <span className="detect_icon_ltr">
@@ -112,14 +108,14 @@ const Chat = () => {
                                     <figure className="u_img">
                                         <img src={dummy} alt="user-img" />
                                     </figure>
-                                    {/* <span className="name">John Oldman</span>
+                                    <span className="name">John Oldman</span>
                                     <span
                                         onClick={() => {
                                             setToggle(true);
                                         }}
                                         className="view_detail">View Job Details
                                         <img src={viewMore} alt="view-more" />
-                                    </span> */}
+                                    </span>
                                 </div>
                                 <div className="message_wrapr">
                                     <div className="date_time">

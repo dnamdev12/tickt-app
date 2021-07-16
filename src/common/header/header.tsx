@@ -19,7 +19,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
-import { messaging } from '../../firebase';
+import { messaging } from '../../firebase/firebase';
 
 const DISABLE_HEADER = [
     '/signup',
@@ -33,7 +33,7 @@ const DISABLE_HEADER = [
 const Header = (props: any) => {
     let type = storageService.getItem('userType');
 
-    const [userType, setUserType] = useState(null)
+    const [userType, setUserType] = useState(null);
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElNotif, setAnchorElNotif] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);

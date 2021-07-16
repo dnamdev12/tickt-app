@@ -116,7 +116,6 @@ export const socialSignupLogin = async (data: any) => {
 
 export const getLinkedinProfile = async (data: any) => {
   setLoading(true);
-  //const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data}`);
   const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data.code}&redirect_uri=${data.redirect_uri}`);
   setLoading(false);
   if (response.status_code === 200) {
@@ -139,5 +138,13 @@ export const onFileUpload = async (data: any) => {
     return { success: true, imgUrl: response.result.url[0] };
   }
   setShowToast(true, response.message);
+  return { success: false };
+};
+
+export const addFCMNotifToken = async (data: object) => {
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.addFCMNotifToken, data);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
   return { success: false };
 };
