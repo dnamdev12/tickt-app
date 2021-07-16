@@ -6,6 +6,8 @@ import {
     getTradieBasicDetails,
     cleanTradieBasicDetails,
     cleanTradieProfileViewData
+    getSettings,
+    updateSettings,
 } from './../../redux/profile/actions';
 
 import { callTradeList } from '../../redux/auth/actions';
@@ -20,7 +22,8 @@ const mapStateToProps = (state: any) => {
         tradieBasicDetailsData: state.profile.tradieBasicDetailsData,
         tradeListData: state.auth.tradeListData,
         isLoading: state.common.isLoading,
-        isSkeletonLoading: state.common.isSkeletonLoading
+        isSkeletonLoading: state.common.isSkeletonLoading,
+        settings: state.profile.settings,
     }
 }
 
@@ -32,6 +35,8 @@ const mapDispatchToProps = (dispatch: any) => {
         callTradeList,
         callTradieProfileData,
         cleanTradieProfileViewData,
+        getSettings,
+        updateSettings,
     }, dispatch);
 }
 

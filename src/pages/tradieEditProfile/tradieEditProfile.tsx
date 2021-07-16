@@ -10,10 +10,26 @@ import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import storageService from '../../utils/storageService';
 
+interface Settings {
+  messages: {
+    email: boolean,
+    pushNotification: boolean,
+    smsMessages: boolean,
+  },
+  reminders: {
+    email: boolean,
+    pushNotification: boolean,
+    smsMessages: boolean,
+  },
+}
+
 interface Props {
     tradieProfileViewData: any,
     getTradieProfileView: () => void,
     getBankDetails: () => void,
+    getSettings: () => void;
+    updateSettings: (settings: any, newSettings: any) => void;
+    settings: Settings,
 }
 
 interface State {
@@ -96,8 +112,7 @@ class TradieEditProfile extends Component<Props, State> {
                                             </a>
                                         </li>
                                     )}
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('settings') }}> */}
+                                    <li onClick={() => { this.setSelected('settings') }}>
                                         <a className={`icon settings ${activeMenuType === 'settings' ? 'active' : ''}`}>
                                             <span className="menu_txt">Settings</span>
                                         </a>

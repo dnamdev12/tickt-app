@@ -11,6 +11,7 @@ const initialState = {
   tradieInfo: [],
   builderProfile: {},
   savedJobs: [],
+  settings: { messages: {}, reminders: {} },
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -80,6 +81,11 @@ const reducer = (state = initialState, action: any) => {
         savedJobs: action.payload,
       };
 
+    case actionTypes.SET_SETTINGS:
+      return {
+        ...state,
+        settings: action.payload,
+      };
 
     default:
       return state;

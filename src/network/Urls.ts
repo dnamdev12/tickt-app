@@ -131,6 +131,10 @@ const Urls = {
     payment: `${versions.v1}${ServiceEnum.payment}`,
     notification: `${versions.v1}${ServiceEnum.home}notification`,
     tradieSavedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getSavedJobs`,
+    tradieSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getSettingsData`,
+    builderSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getSettingsData`,
+    tradieUpdateSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}settings`,
+    builderUpdateSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}settings`,
     privacyPolicy: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}privacyPolicy`,
     tnc: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}tnc`,
 }

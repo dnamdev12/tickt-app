@@ -114,6 +114,16 @@ export const removeBankDetails = () => ({
   type: actionTypes.REMOVE_BANK_DETAILS_START,
 });
 
+export const getSettings = () => ({
+  type: actionTypes.GET_SETTINGS,
+});
+
+export const updateSettings = (settings: any, newSettings: any) => ({
+  type: actionTypes.UPDATE_SETTINGS,
+  settings,
+  newSettings,
+});
+
 export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data });
 export const getProfileBuilder = () => ({ type: actionTypes.GET_PROFILE_BUILDER });
 

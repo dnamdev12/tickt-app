@@ -182,6 +182,32 @@ function* getSavedJobList({ page }: any) {
   }
 }
 
+function* getSettings() {
+  const userType = storageService.getItem('userType');
+
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(userType === 1 ? Urls.tradieSettings : Urls.builderSettings);
+  setLoading(false);
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_SETTINGS, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.SET_SETTINGS, payload: {} });
+  }
+}
+
+function* updateSettings({ settings, newSettings }: any) {
+  const userType = storageService.getItem('userType');
+
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.putToJson(userType === 1 ? Urls.tradieUpdateSettings : Urls.builderUpdateSettings, settings);
+  setLoading(false);
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_SETTINGS, payload: newSettings });
+  } else {
+    yield put({ type: actionTypes.SET_SETTINGS, payload: {} });
+  }
+}
+
 function* authWatcher() {
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE_DATA, callTradieProfileData);
   yield takeLatest(actionTypes.ADD_BANK_DETAILS_START, addBankDetails);
@@ -195,6 +221,9 @@ function* authWatcher() {
   yield takeLatest(actionTypes.GET_TRADIE_BASIC_DETAILS, getTradieBasicDetails);
   yield takeLatest(actionTypes.CLEAN_TRADIE_BASIC_DETAILS, cleanTradieBasicDetails);
   yield takeLatest(actionTypes.CLEAN_TRADIE_PROFILE_VIEW_DATA, cleanTradieProfileViewData);
+  yield takeLatest(actionTypes.GET_SAVED_JOBS, getSavedJobList);
+  yield takeLatest(actionTypes.GET_SETTINGS, getSettings);
+  yield takeLatest(actionTypes.UPDATE_SETTINGS, updateSettings);
 }
 
 export default authWatcher;
