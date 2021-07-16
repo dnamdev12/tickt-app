@@ -9,7 +9,9 @@ const initialState = {
   bankDetails: {},
   error: '',
   tradieInfo: [],
-  builderProfile: {}
+  builderProfile: {},
+  savedJobs: [],
+  settings: { messages: {}, reminders: {} },
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -73,6 +75,17 @@ const reducer = (state = initialState, action: any) => {
         userType: action.payload.userType
       }
 
+    case actionTypes.SET_SAVED_JOBS:
+      return {
+        ...state,
+        savedJobs: action.payload,
+      };
+
+    case actionTypes.SET_SETTINGS:
+      return {
+        ...state,
+        settings: action.payload,
+      };
 
     default:
       return state;
