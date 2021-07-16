@@ -10,6 +10,13 @@ import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import storageService from '../../utils/storageService';
 
+interface BankDetails {
+  userId: string;
+  account_name: string;
+  account_number: string;
+  bsb_number: string;
+}
+
 interface Settings {
   messages: {
     email: boolean,
@@ -27,6 +34,9 @@ interface Props {
     tradieProfileViewData: any,
     getTradieProfileView: () => void,
     getBankDetails: () => void,
+    addBankDetails: (data: any) => void,
+    updateBankDetails: (data: any) => void,
+    bankDetails: BankDetails,
     getSettings: () => void;
     updateSettings: (settings: any, newSettings: any) => void;
     settings: Settings,
@@ -98,8 +108,7 @@ class TradieEditProfile extends Component<Props, State> {
                                             <span className="menu_txt">Personal Information</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('banking-details') }}> */}
+                                    <li onClick={() => { this.setSelected('banking-details') }}>
                                         <a className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
                                             <span className="menu_txt">Banking Details</span>
                                         </a>

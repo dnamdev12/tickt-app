@@ -134,6 +134,10 @@ function* removeBankDetails() {
 
 function* getBankDetails() {
   setLoading(true);
+  yield put({
+    type: actionTypes.GET_BANK_DETAILS_END,
+    payload: {},
+  });
   const response: FetchResponse = yield NetworkOps.get(Urls.getBankDetails);
   setLoading(false);
 
