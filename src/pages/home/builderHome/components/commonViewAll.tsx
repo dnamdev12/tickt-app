@@ -27,7 +27,7 @@ const SavedJobs = (props: any) => {
             state:props?.location?.state
         })
         setLoad(false);
-        if (props?.location?.state?.title === "Saved tradespeople") {
+        if (props?.location?.state?.title === "Saved tradespeople" || props.location.pathname === '/saved-tradespeople') {
             preFetch();
         } else {
             setStateData(props?.location?.state?.data);
@@ -46,13 +46,13 @@ const SavedJobs = (props: any) => {
                     <div className="relate">
                         <button className="back" onClick={backButtonClicked}></button>
                         <span className="title">
-                            {props?.location?.state?.title}
+                            {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
                         </span>
                     </div>
                     {!props?.location?.state?.popular ? (
 
                         <div className="flex_row tradies_row">
-                            {stateData.length > 0 ?
+                            {stateData?.length > 0 ?
                                 (stateData?.map((item: any, index: any) => (
                                     <TradieBox
                                         item={item}

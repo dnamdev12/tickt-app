@@ -10,10 +10,36 @@ import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import storageService from '../../utils/storageService';
 
+interface BankDetails {
+  userId: string;
+  account_name: string;
+  account_number: string;
+  bsb_number: string;
+}
+
+interface Settings {
+  messages: {
+    email: boolean,
+    pushNotification: boolean,
+    smsMessages: boolean,
+  },
+  reminders: {
+    email: boolean,
+    pushNotification: boolean,
+    smsMessages: boolean,
+  },
+}
+
 interface Props {
     tradieProfileViewData: any,
     getTradieProfileView: () => void,
     getBankDetails: () => void,
+    addBankDetails: (data: any) => void,
+    updateBankDetails: (data: any) => void,
+    bankDetails: BankDetails,
+    getSettings: () => void;
+    updateSettings: (settings: any, newSettings: any) => void;
+    settings: Settings,
 }
 
 interface State {
@@ -82,8 +108,7 @@ class TradieEditProfile extends Component<Props, State> {
                                             <span className="menu_txt">Personal Information</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('banking-details') }}> */}
+                                    <li onClick={() => { this.setSelected('banking-details') }}>
                                         <a className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
                                             <span className="menu_txt">Banking Details</span>
                                         </a>
@@ -96,8 +121,7 @@ class TradieEditProfile extends Component<Props, State> {
                                             </a>
                                         </li>
                                     )}
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('settings') }}> */}
+                                    <li onClick={() => { this.setSelected('settings') }}>
                                         <a className={`icon settings ${activeMenuType === 'settings' ? 'active' : ''}`}>
                                             <span className="menu_txt">Settings</span>
                                         </a>
@@ -108,14 +132,12 @@ class TradieEditProfile extends Component<Props, State> {
                                             <span className="menu_txt">Support Chat</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('privacy-policy') }}> */}
+                                    <li onClick={() => { this.setSelected('privacy-policy') }}>
                                         <a className={`icon tnc ${activeMenuType === 'privacy-policy' ? 'active' : ''}`}>
                                             <span className="menu_txt">Privacy Policy</span>
                                         </a>
                                     </li>
-                                    <li>
-                                        {/* <li onClick={() => { this.setSelected('terms-of-use') }}> */}
+                                    <li onClick={() => { this.setSelected('terms-of-use') }}>
                                         <a className={`icon tnc ${activeMenuType === 'terms-of-use' ? 'active' : ''}`}>
                                             <span className="menu_txt">Terms Of Use</span>
                                         </a>
