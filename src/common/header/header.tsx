@@ -271,25 +271,31 @@ const Header = (props: any) => {
                                                 {'My Profile'}
                                             </span>
                                         </MenuItem>
-                                        {/* <MenuItem onClick={handleClose}>
-                                            <span className="setting_icon">
-                                            <img src={revenue} alt="revenue" />
-                                                {'My revenue'}
-                                            </span>
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
-                                            <span className="setting_icon">
-                                            <img src={savedJobs} alt="savedJobs" />
-                                                {'Saved jobs'}
-                                            </span>
-                                        </MenuItem>
-                                        <MenuItem onClick={handleClose}>
+                                        {[1, 2].includes(props.userType) && (
+                                          <MenuItem onClick={() => { handleClose(); history.push(props.userType === 1 ? '/my-revenue' :'/transaction-history'); }}>
+                                              <span className="setting_icon">
+                                              <img src={revenue} alt="revenue" />
+                                                  {props.userType === 1 ? 'My revenue' : 'Transaction history'}
+                                              </span>
+                                          </MenuItem>
+                                        )}
+                                        {[1, 2].includes(props.userType) && (
+                                          <MenuItem onClick={() => { handleClose(); history.push(props.userType === 1 ? '/saved-jobs' : '/saved-tradespeople') }}>
+                                              <span className="setting_icon">
+                                              <img src={savedJobs} alt="savedJobs" />
+                                                  {`Saved ${props.userType === 1 ? 'jobs' : 'tradespeople'}`}
+                                              </span>
+                                          </MenuItem>
+                                        )}
+                                        {[1, 2].includes(props.userType) && (
+                                          <MenuItem onClick={() => { handleClose(); }}>
                                             <span className="setting_icon">
                                             <img src={guide} alt="guide" />
                                                 {'App Guide'}
                                             </span>
-                                        </MenuItem> */}
-                                        <MenuItem onClick={() => { handleClose('profile'); logoutHandler(); }}>
+                                          </MenuItem>
+                                        )}
+                                        <MenuItem onClick={() => { handleClose(); logoutHandler(); }}>
                                             <span className="setting_icon logout">Logout</span>
                                         </MenuItem>
                                     </Menu>

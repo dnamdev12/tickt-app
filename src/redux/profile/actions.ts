@@ -138,3 +138,8 @@ export const getAllPostedJob = async (page: any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+export const getSavedJobList = (page: number) => ({
+  type: actionTypes.GET_SAVED_JOBS,
+  page,
+});

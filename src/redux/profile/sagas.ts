@@ -171,6 +171,17 @@ function* getProfileBuilder() {
   }
 }
 
+function* getSavedJobList({ page }: any) {
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(`${Urls.tradieSavedJobs}?page=${page}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_SAVED_JOBS, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.SET_SAVED_JOBS, payload: [] });
+  }
+}
+
 function* authWatcher() {
   yield takeLatest(actionTypes.GET_TRADIE_PROFILE_DATA, callTradieProfileData);
   yield takeLatest(actionTypes.ADD_BANK_DETAILS_START, addBankDetails);
