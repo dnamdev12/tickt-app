@@ -19,10 +19,10 @@ export class PrivacyPolicy extends Component<Props, State> {
     }
 
     componentDidMount = async () => {
-      const { data } = await getPrivacyPolicy();
+      const { data: privacyPolicy_url } = await getPrivacyPolicy();
       this.setState({
-        url: data,
-      })
+        url: privacyPolicy_url,
+      });
     }
 
     render() {
@@ -31,7 +31,7 @@ export class PrivacyPolicy extends Component<Props, State> {
         return (
             <div className="h-75vh">
                 <span className="sub_title"> Privacy Policy</span>
-                <iframe src="https://ticktdevapi.appskeeper.in/privacyPolicy" title="Privacy Policy" width="100%" height="100%" />
+                {this.state.url && <iframe src={this.state.url} title="Privacy Policy" width="100%" height="100%" />}
             </div>
         )
     }
