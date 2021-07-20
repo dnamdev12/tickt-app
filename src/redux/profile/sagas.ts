@@ -79,6 +79,7 @@ function* addBankDetails({ data }: any) {
   setLoading(false);
 
   if (response.status_code === 200) {
+    setShowToast(true, response.message);
     yield put({
       type: actionTypes.ADD_BANK_DETAILS_END,
       payload: response.result
@@ -100,6 +101,7 @@ function* updateBankDetails({ data }: any) {
   setLoading(false);
 
   if (response.status_code === 200) {
+    setShowToast(true, response.message);
     yield put({
       type: actionTypes.UPDATE_BANK_DETAILS_END,
       payload: response.result
@@ -120,6 +122,7 @@ function* removeBankDetails() {
   setLoading(false);
 
   if (response.status_code === 200) {
+    setShowToast(true, response.message);
     yield put({
       type: actionTypes.REMOVE_BANK_DETAILS_END,
       payload: { success: true }
@@ -206,6 +209,7 @@ function* updateSettings({ settings, newSettings }: any) {
   const response: FetchResponse = yield NetworkOps.putToJson(userType === 1 ? Urls.tradieUpdateSettings : Urls.builderUpdateSettings, settings);
   setLoading(false);
   if (response.status_code === 200) {
+    setShowToast(true, response.message);
     yield put({ type: actionTypes.SET_SETTINGS, payload: newSettings });
   } else {
     yield put({ type: actionTypes.SET_SETTINGS, payload: {} });

@@ -19,9 +19,9 @@ export class TermsOfUse extends Component<Props, State> {
     }
 
     componentDidMount = async () => {
-      const { data } = await getTnc();
+      const { data: { privacyPolicy_url } } = await getTnc();
       this.setState({
-        url: data,
+        url: privacyPolicy_url,
       })
     }
 
@@ -31,7 +31,7 @@ export class TermsOfUse extends Component<Props, State> {
         return (
             <div className="h-75vh">
                 <span className="sub_title">Terms of use</span>
-                <iframe src="https://ticktdevapi.appskeeper.in/tncWeb" title="Privacy Policy" width="100%" height="100%" />
+                {this.state.url && <iframe src={this.state.url} title="Privacy Policy" width="100%" height="100%" />}
             </div>
         )
     }

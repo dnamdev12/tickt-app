@@ -70,6 +70,14 @@ export const callLogin = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.login, data);
   setLoading(false);
   if (response.status_code === 200) {
+    const firstLogin = storageService.getItem('firstLogin');
+
+    if (!firstLogin) {
+      storageService.setItem('firstLogin', 'true');
+    } else if (firstLogin === 'true') {
+      storageService.setItem('firstLogin', 'false');
+    }
+
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
     return { success: true };
