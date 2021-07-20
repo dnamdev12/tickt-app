@@ -19,7 +19,7 @@ export class TermsOfUse extends Component<Props, State> {
     }
 
     componentDidMount = async () => {
-      const { data: privacyPolicy_url } = await getTnc();
+      const { data: { privacyPolicy_url } } = await getTnc();
       this.setState({
         url: privacyPolicy_url,
       })

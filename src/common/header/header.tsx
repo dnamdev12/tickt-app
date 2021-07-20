@@ -265,11 +265,11 @@ const Header = (props: any) => {
           content: 'Your chats for job and tradespeople are here',
         },
         {
-          target: '.tour-profile a',
+          target: '.tour-profile',
           content: 'Manage your profile and settings',
         },
         {
-          target: '.tour-notifications a',
+          target: '.tour-notifications',
           content: 'Check notifications and stay on the front foot',
         },
       ]

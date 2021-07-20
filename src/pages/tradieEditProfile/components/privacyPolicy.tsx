@@ -19,7 +19,7 @@ export class PrivacyPolicy extends Component<Props, State> {
     }
 
     componentDidMount = async () => {
-      const { data: privacyPolicy_url } = await getPrivacyPolicy();
+      const { data: { privacyPolicy_url } } = await getPrivacyPolicy();
       this.setState({
         url: privacyPolicy_url,
       });

@@ -155,8 +155,10 @@ export const getSavedJobList = (page: number) => ({
 });
 
 export const getPrivacyPolicy = async () => {
+  const userType = storageService.getItem('userType');
+
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.get(`${Urls.privacyPolicy}?type=web`);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie/' : 'builder/'}privacyPolicy?type=web`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
@@ -166,8 +168,10 @@ export const getPrivacyPolicy = async () => {
 }
 
 export const getTnc = async () => {
+  const userType = storageService.getItem('userType');
+
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.get(`${Urls.tnc}?type=web`);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie/' : 'builder/'}tnc?type=web`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
