@@ -179,7 +179,7 @@ export default function PastJobs(props: any): ReactElement {
                                             className="fill_grey_btn full_btn">
                                             <React.Fragment>
                                                 <img src={rateStar} alt="rating-star" />
-                                                {'Rate this job'}
+                                                {'Rate this tradie'}
                                             </React.Fragment>
                                         </button>
                                         )

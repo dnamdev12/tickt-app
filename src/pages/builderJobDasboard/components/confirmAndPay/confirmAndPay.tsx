@@ -169,9 +169,15 @@ const ConfirmAndPay = (props: any) => {
                     ) : null}
                 </div>
                 <div className="form_field">
-                    <span className="sub_title">
-                        {'Confirm and pay'}
-                    </span>
+                    {!props.hideExtra ? (
+                        <span className="sub_title">
+                            {'Confirm and pay'}
+                        </span>
+                    ) : (
+                        <span className="sub_title">
+                            {'Payment Details'}
+                        </span>
+                    )}
                 </div>
                 <div className="mb130">
                     {paymentDetail?.length ?
@@ -215,25 +221,33 @@ const ConfirmAndPay = (props: any) => {
                         {paymentDetail?.length ? 'Add another card' : 'Add card'}
                     </button>
                 </div>
+                {!props.hideExtra ? (
+                    <React.Fragment>
+                        <div className="form_field">
+                            <span className="payment_note">
+                                Tickt does not store your payment information.
+                            </span>
+                            <p className="commn_para">
+                                Tickt does not handle payment for jobs, we only facilitate
+                                communication between tradies and builders. If you have problems
+                                receiving your payment, please contact your builder.
+                            </p>
+                        </div>
 
-                <div className="form_field">
-                    <span className="payment_note">
-                        Tickt does not store your payment information.
-                    </span>
-                    <p className="commn_para">
-                        Tickt does not handle payment for jobs, we only facilitate
-                        communication between tradies and builders. If you have problems
-                        receiving your payment, please contact your builder.
-                    </p>
-                </div>
-                <button
-                    onClick={() => {
-                        // this will submit the accept request.
-                        props.onSubmitAccept();
-                    }}
-                    className={`fill_btn full_btn btn-effect ${!paymentDetail?.length ? 'disable_btn' : ''}`}>
-                    {'Continue'}
-                </button>
+                        <button
+                            onClick={() => {
+                                // this will submit the accept request.
+                                props.onSubmitAccept({
+                                    total: props.total,
+                                    cardId: paymentDetail[selected]?.cardId
+                                });
+                            }}
+                            className={`fill_btn full_btn btn-effect ${!paymentDetail?.length ? 'disable_btn' : ''}`}>
+                            {'Continue'}
+                        </button>
+                    </React.Fragment>
+                ) : null}
+
             </div>
         </div>
     )

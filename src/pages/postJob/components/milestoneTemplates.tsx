@@ -70,12 +70,13 @@ const MileStoneTemplates = (props: Proptypes) => {
             // return
             
             let filter_milestones = data?.milestones?.map((item: any) => ({
-                from_date: moment(item?.fromDate).format('MM-DD-YYYY'),
-                to_date: item?.toDate?.length ? moment(item?.toDate).format('MM-DD-YYYY') : '',
+                from_date: moment(item?.fromDate, 'MM-DD-YYYY').format('MM-DD-YYYY'),
+                to_date: moment(item?.toDate, 'MM-DD-YYYY').isValid() ? moment(item?.toDate, 'MM-DD-YYYY').format('MM-DD-YYYY') : '',
                 milestone_name: item?.milestoneName,
                 recommended_hours: item?.recommendedHours,
                 isPhotoevidence: item?.isPhotoevidence || false,
             }))
+           
             handleCombineMileStones(filter_milestones);
             handleStepForward(6);
         }
@@ -116,12 +117,12 @@ const MileStoneTemplates = (props: Proptypes) => {
                             </div>
 
                             {!isLoading && !list?.length ? (
-                                    <div className="no_record">
-                                        <figure className="no_img">
-                                            <img src={noData} alt="data not found" />
-                                        </figure>
-                                        <span>{'No Data Found'}</span>
-                                    </div>
+                                <div className="no_record">
+                                    <figure className="no_img">
+                                        <img src={noData} alt="data not found" />
+                                    </figure>
+                                    <span>{'No Data Found'}</span>
+                                </div>
                             ) : null}
                         </div>
                     </div>

@@ -217,11 +217,18 @@ const MarkMilestones = (props: any) => {
                                 {/* {item_status && ( )} */}
                                 <li
                                     onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
-                                    className="icon edit_line">Edit Milestone</li>
+                                    className="icon edit_line">
+                                    {'Edit Milestone'}
+                                </li>
 
-                                <li
-                                    onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
-                                    className="icon lodge">Lodge dispute</li>
+                                {!item_details?.dispute && (
+                                    <li
+                                        onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
+                                        className="icon lodge">
+                                        {'Lodge dispute'}
+                                    </li>
+                                )}
+
                                 <li
                                     onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
                                     className="icon delete">Cancel job</li>

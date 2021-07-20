@@ -174,9 +174,9 @@ const PostJob = (props: Proptypes) => {
                         if (tsw && tew) {
                             let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
     
-                            if (checkIfSame) {
-                                checkIsValid = true;
-                            }
+                            // if (checkIfSame) {
+                            //     checkIsValid = true;
+                            // }
     
                             // if (!checkIfSame) {
                             //     if (
@@ -196,9 +196,9 @@ const PostJob = (props: Proptypes) => {
                         }
     
                         if (!tew) {
-                            if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
-                                checkIsValid = false;
-                            }
+                            // if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
+                            //     checkIsValid = false;
+                            // }
                         }
                     }
     

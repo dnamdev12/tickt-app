@@ -732,3 +732,15 @@ export const fetchVouchesJobs = async (data:any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+
+export const updateTemplate = async (data:any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}editTemplate`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
