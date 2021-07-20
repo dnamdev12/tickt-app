@@ -36,6 +36,7 @@ const getRegisterToken = () => {
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
+                sessionStorage.setItem("FCM token", currentToken);
                 resolve({success: true, deviceToken: currentToken});
             } else {
                 console.log('No registration token available.');
@@ -62,6 +63,7 @@ export function requestPermission() {
     return new Promise((resolve, reject) => {
         Notification.requestPermission().then((permission) => {
             if (permission === 'granted' && isTokenSentToServer()) {
+                getRegisterToken();
                 console.log('Token Already sent');
                 resolve({success: false});
             } else if (permission === 'granted' && !isTokenSentToServer()) {
@@ -125,11 +127,11 @@ const firebaseLogInWithEmailPassword = async ({ email, password }) => {
 }
 
 export {
+    db,
     auth,
     messaging,
-    db,
-    firebaseConfig,
     firebase,
+    firebaseConfig,
     firebaseSignUpWithEmailPassword,
     firebaseLogInWithEmailPassword
 }

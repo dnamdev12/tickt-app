@@ -9,6 +9,7 @@ const NOTIFICATION_TIMEOUT = 5000;
 
 
 const CustomNotification = (props: any) => {
+    const notification = props.notificationData?.notification;
 
     // const title: string = payload.notification.title;
     // const options: any = {
@@ -41,8 +42,8 @@ const CustomNotification = (props: any) => {
                         <img src={dummy} alt="img" />
                     </figure>
                     <div className="info">
-                        <span className="who line-1">John Oldman</span>
-                        <span className="line-1">Work was approved</span>
+                        <span className="who line-1">{notification.title}</span>
+                        <span className="line-1">{notification.body}</span>
                     </div>
                     <span className="time">St 12:30 AM</span>
                 </div>

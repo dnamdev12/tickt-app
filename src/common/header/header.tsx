@@ -47,7 +47,6 @@ const Header = (props: any) => {
     const [latestNotifData, setLatestNotifData] = useState<any>('');
     const [notificationData, setNotificationData] = useState<any>('');
     const [notificationPgNo, setNotificationPgNo] = useState<number>(1);
-    const [notificationCount, setNotificationCount] = useState<number | null>(null);
     console.log('latestNotifData: ', latestNotifData);
     const [startTour, setStartTour] = useState(false);
 
@@ -79,14 +78,13 @@ const Header = (props: any) => {
 
         const firstLogin = storageService.getItem('firstLogin');
         if (firstLogin === 'true') {
-          setTourDialog(true);
+            setTourDialog(true);
         }
     }, []);
 
     useEffect(() => {
         if (props.notificationList) {
-            setNotificationData(props.notificationList?.list);
-            setNotificationCount(props.notificationList?.count);
+            setNotificationData(props.notificationList);
         }
     }, [props.notificationList]);
 
@@ -137,18 +135,18 @@ const Header = (props: any) => {
     }, [pathname, storageService.getItem('userType')])
 
     useEffect(() => {
-      if (startTour) {
-        document.body.classList.add('no-scroll');
-      } else {
-        document.body.classList.remove('no-scroll');
-      }
+        if (startTour) {
+            document.body.classList.add('no-scroll');
+        } else {
+            document.body.classList.remove('no-scroll');
+        }
     }, [startTour]);
 
     const handleFirstLogin = () => {
-      const firstLogin = storageService.getItem('firstLogin');
-      if (firstLogin === 'true') {
-        storageService.setItem('firstLogin', 'false');
-      }
+        const firstLogin = storageService.getItem('firstLogin');
+        if (firstLogin === 'true') {
+            storageService.setItem('firstLogin', 'false');
+        }
     }
 
     const handleClick = (event: any, type: string) => {
@@ -204,98 +202,98 @@ const Header = (props: any) => {
         if (type === 1) {
             return props?.tradieProfileData[name];
         }
-      }
+    }
 
-      const handleCallback = (state: any) => {
+    const handleCallback = (state: any) => {
         const { action, step: { target } } = state;
         const width = window.innerWidth
-        || document.documentElement.clientWidth
-        || document.body.clientWidth;
+            || document.documentElement.clientWidth
+            || document.body.clientWidth;
 
         if (action === 'reset') {
-          setStartTour(false);
+            setStartTour(false);
         } else if (action === 'start' && width <= 650) {
-          setToggleMenu(true);
+            setToggleMenu(true);
         }
 
         if (target === '.tour-profile' && toggleMenu) {
-          setToggleMenu(false);
+            setToggleMenu(false);
         }
-      }
+    }
 
-      const tradieTour = [
+    const tradieTour = [
         {
-          target: '.tour-discover a',
-          content: `Hi ${renderByType({ name: 'userName' })}, here is your go-to for finding new jobs.`,
-          disableBeacon: true
+            target: '.tour-discover a',
+            content: `Hi ${renderByType({ name: 'userName' })}, here is your go-to for finding new jobs.`,
+            disableBeacon: true
         },
         {
-          target: '.tour-jobs a',
-          content: 'Here you can find all your active jobs and keep on top of milestones!',
+            target: '.tour-jobs a',
+            content: 'Here you can find all your active jobs and keep on top of milestones!',
         },
         {
-          target: '.tour-chat a',
-          content: 'Chat with builders about job requirements',
+            target: '.tour-chat a',
+            content: 'Chat with builders about job requirements',
         },
         {
-          target: '.tour-profile',
-          content: 'Manage your profile and settings',
+            target: '.tour-profile',
+            content: 'Manage your profile and settings',
         },
         {
-          target: '.tour-notifications',
-          content: 'Check notifications and stay on the front foot',
+            target: '.tour-notifications',
+            content: 'Check notifications and stay on the front foot',
         },
-      ];
+    ];
 
-      const builderTour = [
+    const builderTour = [
         {
-          target: '.tour-discover a',
-          content: `Hi ${renderByType({ name: 'userName' })}, here is your go-to for finding tradespeople.`,
-          disableBeacon: true
+            target: '.tour-discover a',
+            content: `Hi ${renderByType({ name: 'userName' })}, here is your go-to for finding tradespeople.`,
+            disableBeacon: true
         },
         {
-          target: '.tour-jobs a',
-          content: 'Here you can find all your active jobs and keep on top of milestones!',
+            target: '.tour-jobs a',
+            content: 'Here you can find all your active jobs and keep on top of milestones!',
         },
         {
-          target: '.tour-post a',
-          content: 'Here you can post a new job',
+            target: '.tour-post a',
+            content: 'Here you can post a new job',
         },
         {
-          target: '.tour-chat a',
-          content: 'Your chats for job and tradespeople are here',
+            target: '.tour-chat a',
+            content: 'Your chats for job and tradespeople are here',
         },
         {
-          target: '.tour-profile',
-          content: 'Manage your profile and settings',
+            target: '.tour-profile',
+            content: 'Manage your profile and settings',
         },
         {
-          target: '.tour-notifications',
-          content: 'Check notifications and stay on the front foot',
+            target: '.tour-notifications',
+            content: 'Check notifications and stay on the front foot',
         },
-      ]
-      
-      return (
+    ]
+
+    return (
         <>
             <Joyride
-              run={startTour}
-              showProgress
-              continuous
-              showSkipButton
-              scrollToFirstStep
-              spotlightPadding={0}
-              disableOverlayClose
-              disableCloseOnEsc
-              steps={userType === 1 ? tradieTour : builderTour}
-              styles={{
-                options: {
-                  zIndex: 2000,
-                },
-              }}
-              floaterProps={{
-                hideArrow: true,
-              }}
-              callback={handleCallback}
+                run={startTour}
+                showProgress
+                continuous
+                showSkipButton
+                scrollToFirstStep
+                spotlightPadding={0}
+                disableOverlayClose
+                disableCloseOnEsc
+                steps={userType === 1 ? tradieTour : builderTour}
+                styles={{
+                    options: {
+                        zIndex: 2000,
+                    },
+                }}
+                floaterProps={{
+                    hideArrow: true,
+                }}
+                callback={handleCallback}
             />
             <Dialog
                 open={tourDialog}
@@ -309,7 +307,7 @@ const Header = (props: any) => {
                     <Button onClick={() => { setStartTour(true); setTourDialog(false); handleFirstLogin(); }} color="primary" autoFocus>
                         {'Yes'}
                     </Button>
-                    <Button onClick={() => { setTourDialog(false); handleFirstLogin(); } } color="primary">
+                    <Button onClick={() => { setTourDialog(false); handleFirstLogin(); }} color="primary">
                         {'No'}
                     </Button>
                 </DialogActions>
@@ -373,7 +371,7 @@ const Header = (props: any) => {
                                 {storageService.getItem("jwtToken") &&
                                     <div className="notification_bell" onClick={(event) => handleClick(event, 'notification')}>
                                         <figure className="bell tour-notifications">
-                                            <span className="badge">4 </span>
+                                            <span className="badge">{notificationData.unreadCount}</span>
                                             <img src={bell} alt="notify" />
                                         </figure>
                                     </div>}
@@ -421,12 +419,12 @@ const Header = (props: any) => {
                                             </MenuItem>
                                         )}
                                         {[1, 2].includes(props.userType) && (
-                                          <MenuItem onClick={() => { handleClose('profile'); setStartTour(true); }}>
-                                            <span className="setting_icon">
-                                            <img src={guide} alt="guide" />
-                                                {'App Guide'}
-                                            </span>
-                                          </MenuItem>
+                                            <MenuItem onClick={() => { handleClose('profile'); setStartTour(true); }}>
+                                                <span className="setting_icon">
+                                                    <img src={guide} alt="guide" />
+                                                    {'App Guide'}
+                                                </span>
+                                            </MenuItem>
                                         )}
                                         <MenuItem onClick={() => { handleClose('profile'); logoutHandler(); }}>
                                             <span className="setting_icon logout">Logout</span>
@@ -449,35 +447,25 @@ const Header = (props: any) => {
                                         <span className="sub_title">Notifications</span>
                                         <a href="javascript:void(0)" className="link mark_all">Mark all as read</a>
 
-                                        <MenuItem className="unread">
-                                            <div className="notif">
-                                                <figure className="not_img">
-                                                    <img src={dummy} alt="img" />
-                                                    <span className="dot"></span>
-                                                </figure>
-                                                <div className="info">
-                                                    <span className="who line-1">Wire up circuit box</span>
-                                                    <span className="line-1">1 new message from builder</span>
-                                                    <span className="see">See the message</span>
-                                                </div>
-                                                <span className="time">St 12:30 AM</span>
-                                            </div>
-                                        </MenuItem>
-                                        <MenuItem className="unread">
-                                            <div className="notif">
-                                                <figure className="not_img">
-                                                    <img src={dummy} alt="img" />
-                                                    <span className="dot"></span>
-                                                </figure>
-                                                <div className="info">
-                                                    <span className="who">John Oldman</span>
-                                                    <span>Work was approved </span>
-                                                    <span className="see">See a rating</span>
-                                                </div>
-                                                <span className="time">St 12:30 AM</span>
-                                            </div>
-                                        </MenuItem>
-                                        <MenuItem>
+                                        {notificationData.list?.length > 0 &&
+                                            notificationData.list.map((item: any) =>
+                                                <MenuItem className={`${item.read ? '' : 'unread'}`}>
+                                                    <div className="notif">
+                                                        <figure className="not_img">
+                                                            <img src={item?.image || dummy} alt="img" />
+                                                            {/* <span className="dot"></span> */}
+                                                            <span className={`${item.read ? '' : 'dot'}`}></span>
+                                                        </figure>
+                                                        <div className="info">
+                                                            <span className="who line-1">{item.title}</span>
+                                                            <span className="line-1">{item.notificationText}</span>
+                                                            {/* <span className="see">See the message</span> */}
+                                                        </div>
+                                                        <span className="time">St 12:30 AM</span>
+                                                    </div>
+                                                </MenuItem>
+                                            )}
+                                        {/* <MenuItem>
                                             <div className="notif">
                                                 <figure className="not_img">
                                                     <img src={dummy} alt="img" />
@@ -489,20 +477,7 @@ const Header = (props: any) => {
                                                 </div>
                                                 <span className="time">St 12:30 AM</span>
                                             </div>
-                                        </MenuItem>
-                                        <MenuItem>
-                                            <div className="notif">
-                                                <figure className="not_img">
-                                                    <img src={dummy} alt="img" />
-                                                </figure>
-                                                <div className="info">
-                                                    <span className="who">John Oldman</span>
-                                                    <span>reviewed you!</span>
-                                                    <span>Read review</span>
-                                                </div>
-                                                <span className="time">St 12:30 AM</span>
-                                            </div>
-                                        </MenuItem>
+                                        </MenuItem> */}
                                     </Menu>
                                     {/* Notification close */}
 
