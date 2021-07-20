@@ -5150,6 +5150,7 @@ div#light-box div {
     }
   }
   .details{
+    cursor: pointer;
     width: 78%;
     @media(max-width: 768px){
       width: 66%;
