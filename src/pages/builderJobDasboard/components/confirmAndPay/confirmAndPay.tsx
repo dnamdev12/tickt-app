@@ -89,11 +89,13 @@ const ConfirmAndPay = (props: any) => {
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button
-                        onClick={() => {
-                            props.backToScreen()
-                        }}
-                        className="back"></button>
+                    {!props.hideExtra ? (
+                        <button
+                            onClick={() => {
+                                props.backToScreen()
+                            }}
+                            className="back"></button>
+                    ) : null}
                     <span className="xs_sub_title">
                         {props?.jobName}
                     </span>
