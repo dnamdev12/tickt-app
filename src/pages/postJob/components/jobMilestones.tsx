@@ -96,9 +96,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
             urlParams = new URLSearchParams(location.search);
         }
 
-        console.log({
-            start_selection
-        })
         if (moment(data?.to_date, 'YYYY-MM-DD').isValid()) {
             if (!moment(data?.to_date, 'YYYY-MM-DD').isSame(moment(data?.from_date, 'YYYY-MM-DD'))) {
                 end_selection = moment(data?.to_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
@@ -152,27 +149,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                         }
                     }
                 }
-
-                if (item_find) {
-                    if (not_lie_between) {
-                        setShowToast(true, 'Milestones dates should be lie between the job details');
-                    } else {
-                        if (start_selection && end_selection && !end) {
-                            if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
-                                item_find = false;
-                            } else {
-                                item_find = true
-                            }
-                        }
-                    }
-                }
-                console.log({
-                    start,
-                    end,
-                    start_selection,
-                    end_selection,
-                    item_date
-                })
             });
         }
 
