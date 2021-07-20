@@ -482,9 +482,9 @@ export const InviteForJob = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}inviteForJob?tradieId=${data.tradieId}&jobId=${data.jobId}`, {});
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message)
   return { success: false };
 }
 
