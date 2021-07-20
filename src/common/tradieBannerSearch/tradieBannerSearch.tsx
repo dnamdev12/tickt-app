@@ -350,7 +350,14 @@ const TradieBannerSearch = (props: PropsType) => {
                     const { country } = filterFromAddress(results);
                     if (["australia", "au"].includes(country)) {
                         setInputFocus2(false);
-                        setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: results[0].formatted_address, isMapLocationSelected: true, locationDenied: false }));
+                        if (results && Array.isArray(results) && results[0]) {
+                            setStateData((prevData: any) => ({
+                                ...prevData,
+                                selectedMapLocation: results[0].formatted_address,
+                                isMapLocationSelected: true,
+                                locationDenied: false
+                            }));
+                        }
                     } else {
                         setInputFocus2(false);
                         setShowToast(true, "Uh oh! we don't provide service currently in your location.");

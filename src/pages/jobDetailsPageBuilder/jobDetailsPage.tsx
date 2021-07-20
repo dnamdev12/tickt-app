@@ -885,10 +885,9 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <span
                                                     className="name"
                                                     onClick={() => {
-                                                        setShowToast(true, 'Under development');
-                                                        // if (jobDetailsData?.postedBy?.builderName) {
-                                                        //     props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
-                                                        // }
+                                                        if (jobDetailsData?.postedBy?.builderName) {
+                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                                                        }
                                                     }}>
                                                     {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
                                                 </span>

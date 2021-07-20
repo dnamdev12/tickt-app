@@ -91,6 +91,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         console.log({ data })
         let start_selection: any = moment(data?.from_date, 'YYYY-MM-DD').format('MM-DD-YYYY');
         let end_selection: any = null;
+        let urlParams: any = null;
+        if (location.search) {
+            urlParams = new URLSearchParams(location.search);
+        }
 
         console.log({
             start_selection
@@ -133,17 +137,33 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                     }
                 }
 
-                if (start && !end) {
-                    if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
-                        item_find = true; // true;
+                if (urlParams && urlParams?.get('jobId')) {
+                    if (start_selection && end_selection && !end) {
+                        if (moment(start, 'MM-DD-YYYY').isBefore(moment(start_selection, 'MM-DD-YYYY')) && moment(end_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
+                            item_find = true;
+                        }
+                    }
+                } else {
+                    if (start_selection && end_selection && !end) {
+                        if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                            item_find = false;
+                        } else {
+                            item_find = true
+                        }
                     }
                 }
 
-                if (start_selection && end_selection && !end) {
-                    if (moment(start_selection, 'MM-DD-YYYY').isSameOrAfter(moment(start, 'MM-DD-YYYY')) && moment(end_selection, 'MM-DD-YYYY').isSameOrBefore(moment(start, 'MM-DD-YYYY'))) {
-                        item_find = false;
+                if (item_find) {
+                    if (not_lie_between) {
+                        setShowToast(true, 'Milestones dates should be lie between the job details');
                     } else {
-                        item_find = true
+                        if (start_selection && end_selection && !end) {
+                            if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                                item_find = false;
+                            } else {
+                                item_find = true
+                            }
+                        }
                     }
                 }
                 console.log({
@@ -412,7 +432,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                 } else {
                                                     let item = milestones[milestones?.length - 1];
                                                     if (Object.keys(item).length) {
-                                                        if (!item?.milestone_name?.length && !item?.recommended_hours?.length && !item?.date_from?.length) {
+                                                        if (
+                                                            !item?.milestone_name?.length &&
+                                                            !item?.recommended_hours?.length &&
+                                                            !item?.date_from?.length) {
                                                             console.log('Already have!')
                                                         } else {
                                                             newMileStoneScreen(milestones?.length);

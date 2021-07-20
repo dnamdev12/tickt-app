@@ -44,6 +44,9 @@ import PostJobSuccess from '../pages/postJob/sucess';
 import CommonViewAll from '../pages/home/builderHome/components/commonViewAll';
 
 import ChatComponent from '../pages/chat';
+import SupportChat from '../pages/tradieEditProfile/components/supportChat'
+
+import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
 
 const routes = [
     {
@@ -89,6 +92,11 @@ const routes = [
         name: 'savedjobs',
         path: '/saved-jobs',
         component: SavedJobs,
+    },
+    {
+        name: 'template-suceess',
+        path: '/template-sucess',
+        component: TemplateSavedSuccess
     },
     {
         name: 'view-all',
@@ -280,6 +288,11 @@ const routes = [
         name: 'chat',
         path: '/chat',
         component: ChatComponent
+    },
+    {
+        name: 'support-chat',
+        path: '/support-chat',
+        component: SupportChat
     },
     {
         name: 'search-builder-result',

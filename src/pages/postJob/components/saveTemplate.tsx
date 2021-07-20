@@ -76,7 +76,9 @@ const SaveTemplate = ({ data, milestones, stepCompleted, handleCombineMileStones
                                     <button onClick={() => { handleStepForward(6) }} className="back"></button>
                                     <span className="title">Save as template</span>
                                 </div>
-                                <p className="commn_para">Add template name. It will be stored in your profile</p>
+                                <p className="commn_para">
+                                    {'Add template name. It will be stored in your profile'}
+                                </p>
                             </div>
                         </div>
                     </div>

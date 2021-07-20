@@ -80,7 +80,7 @@ export const callLogin = async (data: any) => {
 
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    return { success: true };
+    return { success: true, data: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };

@@ -482,9 +482,9 @@ export const InviteForJob = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}inviteForJob?tradieId=${data.tradieId}&jobId=${data.jobId}`, {});
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message)
   return { success: false };
 }
 
@@ -725,6 +725,18 @@ export const lastUsedCard = async () => {
 export const fetchVouchesJobs = async (data:any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.job}builder/vouchesJob?page=${data.page}&tradieId=${data.tradieId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+
+export const updateTemplate = async (data:any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}editTemplate`, data);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };

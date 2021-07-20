@@ -9,6 +9,8 @@ import TermsOfUseComponent from './components/termsOfUse';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import storageService from '../../utils/storageService';
+import CardDetails from './components/cardDetails';
+import MilestoneTemplates from './components/milestones/milestoneTemplates';
 
 interface BankDetails {
   userId: string;
@@ -32,6 +34,7 @@ interface Settings {
 
 interface Props {
     tradieProfileViewData: any,
+    history: any,
     getTradieProfileView: () => void,
     getBankDetails: () => void,
     addBankDetails: (data: any) => void,
@@ -64,8 +67,8 @@ class TradieEditProfile extends Component<Props, State> {
 
     setSelected = (menuType: string) => {
         const { getTradieProfileView } = this.props;
-
-        if (this.state.activeMenuType !== menuType && ['personal-information', 'banking-details', 'milestone-templates', 'settings', 'support-chat', 'privacy-policy', 'terms-of-use'].includes(menuType)) {
+        const dataItems = ['personal-information', 'banking-details', 'milestone-templates', 'settings', 'support-chat', 'privacy-policy', 'terms-of-use'];
+        if (this.state.activeMenuType !== menuType && dataItems.includes(menuType)) {
             this.setState({ activeMenuType: menuType }, () => {
                 if (menuType === 'personal-information') { getTradieProfileView(); }
             });
@@ -80,7 +83,7 @@ class TradieEditProfile extends Component<Props, State> {
             activeMenuType,
             isToggleSidebar,
         } = this.state;
-
+        const USER_TYPE = storageService.getItem('userType');
         return (
             <div className="app_wrapper">
                 <div className="custom_container">
@@ -104,43 +107,51 @@ class TradieEditProfile extends Component<Props, State> {
                                             this.setSelected('personal-information');
                                         }}
                                     >
-                                        <a className={`icon applicants ${activeMenuType === 'personal-information' ? 'active' : ''}`}>
+                                        <span className={`icon applicants ${activeMenuType === 'personal-information' ? 'active' : ''}`}>
                                             <span className="menu_txt">Personal Information</span>
-                                        </a>
+                                        </span>
                                     </li>
-                                    <li onClick={() => { this.setSelected('banking-details') }}>
-                                        <a className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
-                                            <span className="menu_txt">Banking Details</span>
-                                        </a>
-                                    </li>
-                                    {storageService.getItem('userType') === 2 && (
-                                        <li>
-                                            {/* <li onClick={() => { this.setSelected('milestone-templates') }}> */}
-                                            <a className={`icon template ${activeMenuType === 'milestone-templates' ? 'active' : ''}`}>
+                                    {USER_TYPE === 2 ? (
+                                        <li onClick={() => { this.setSelected('banking-details') }}>
+                                            <span className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
+                                                <span className="menu_txt"> Payment Details</span>
+                                            </span>
+                                        </li>
+                                    ) : (
+                                        <li onClick={() => { this.setSelected('banking-details') }}>
+                                            <span className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
+                                                <span className="menu_txt">Banking Details</span>
+                                            </span>
+                                        </li>
+                                    )}
+
+                                    {USER_TYPE === 2 && (
+                                        <li onClick={() => { this.setSelected('milestone-templates') }}>
+                                            <span className={`icon template ${activeMenuType === 'milestone-templates' ? 'active' : ''}`}>
                                                 <span className="menu_txt">Milestone Templates</span>
-                                            </a>
+                                            </span>
                                         </li>
                                     )}
                                     <li onClick={() => { this.setSelected('settings') }}>
-                                        <a className={`icon settings ${activeMenuType === 'settings' ? 'active' : ''}`}>
+                                        <span className={`icon settings ${activeMenuType === 'settings' ? 'active' : ''}`}>
                                             <span className="menu_txt">Settings</span>
-                                        </a>
+                                        </span>
                                     </li>
                                     <li>
                                         {/* <li onClick={() => { this.setSelected('support-chat') }}> */}
-                                        <a className={`icon chat ${activeMenuType === 'support-chat' ? 'active' : ''}`}>
+                                        {/* <a className={`icon chat ${activeMenuType === 'support-chat' ? 'active' : ''}`}>
                                             <span className="menu_txt">Support Chat</span>
-                                        </a>
+                                        </a> */}
                                     </li>
                                     <li onClick={() => { this.setSelected('privacy-policy') }}>
-                                        <a className={`icon tnc ${activeMenuType === 'privacy-policy' ? 'active' : ''}`}>
+                                        <span className={`icon tnc ${activeMenuType === 'privacy-policy' ? 'active' : ''}`}>
                                             <span className="menu_txt">Privacy Policy</span>
-                                        </a>
+                                        </span>
                                     </li>
                                     <li onClick={() => { this.setSelected('terms-of-use') }}>
-                                        <a className={`icon tnc ${activeMenuType === 'terms-of-use' ? 'active' : ''}`}>
+                                        <span className={`icon tnc ${activeMenuType === 'terms-of-use' ? 'active' : ''}`}>
                                             <span className="menu_txt">Terms Of Use</span>
-                                        </a>
+                                        </span>
                                     </li>
                                 </ul>
                             </div>
@@ -151,10 +162,22 @@ class TradieEditProfile extends Component<Props, State> {
                                 <PersonalInformationComponent
                                     {...props}
                                 />)}
-                            {activeMenuType === 'banking-details' && (
-                                <BankingDetailsComponent
+                            {activeMenuType === 'banking-details' && USER_TYPE === 1 ?
+                                (<BankingDetailsComponent
                                     {...props}
-                                />)}
+                                />) : null}
+
+                            {activeMenuType === 'banking-details' && USER_TYPE === 2 ?
+                                (<CardDetails
+                                    {...props}
+                                />) : null}
+
+                            {activeMenuType === "milestone-templates" && USER_TYPE === 2 ? (
+                                <MilestoneTemplates
+                                    {...props}
+                                />
+                            ) : null}
+
                             {activeMenuType === 'settings' && (
                                 <SettingsComponent
                                     {...props}

@@ -47,9 +47,11 @@ const Header = (props: any) => {
     const [latestNotifData, setLatestNotifData] = useState<any>('');
     const [notificationData, setNotificationData] = useState<any>('');
     const [notificationPgNo, setNotificationPgNo] = useState<number>(1);
-    console.log('latestNotifData: ', latestNotifData);
+    const [notificationCount, setNotificationCount] = useState<number | null>(null);
+    const [isHide, setIsHide] = useState(false);
     const [startTour, setStartTour] = useState(false);
 
+    let window_: any = window;
     const dispatch = useDispatch();
 
     let { pathname } = useLocation();
@@ -82,6 +84,46 @@ const Header = (props: any) => {
         }
     }, []);
 
+
+    const setHidden = () => {
+        let data: any = {}
+        if (props?.builderProfile && Object.keys(props?.builderProfile).length) {
+            data = {
+                email: props?.builderProfile?.email || localStorage.getItem('email'),
+                userId: props?.builderProfile?.userId,
+                name: props?.builderProfile?.userName
+            }
+        }
+
+        if (props?.tradieProfileData && Object.keys(props?.tradieProfileData).length) {
+            data = {
+                email: props?.tradieProfileData?.email || localStorage.getItem('email'),
+                userId: props?.tradieProfileData?.userId,
+                name: props?.tradieProfileData?.userName
+            }
+        }
+
+
+        if (!Object.values(data).includes([''])) {
+            console.log({ data }, 'data')
+            // window_.Intercom('shutdown');
+            window_.intercomSettings = {
+                app_id: "tvbm4bhr",
+                name: data.name,
+                email: data.email,
+                user_id: data.userId
+            };
+
+            if (window_?.Intercom) {
+                window_?.Intercom('update', {
+                    "hide_default_launcher": false
+                });
+            }
+            // window_.Intercom('boot');
+            // window_.Intercom('show');
+        }
+    }
+
     useEffect(() => {
         if (props.notificationList) {
             setNotificationData(props.notificationList);
@@ -89,8 +131,16 @@ const Header = (props: any) => {
     }, [props.notificationList]);
 
     useEffect(() => {
+        console.log({
+            pathname
+        })
+        if (pathname === '/login') {
+            window_.Intercom('hide');
+        }
+
         if (pathname === '/') {
             setActiveLink('discover');
+            setHidden();
         }
 
         if ([
@@ -104,14 +154,17 @@ const Header = (props: any) => {
             '/review-builder'
         ].includes(pathname)) {
             setActiveLink('jobs');
+            setHidden();
         }
 
         if (pathname === '/post-new-job') {
             setActiveLink('post');
+            setHidden();
         }
 
         if (pathname === '/chat') {
-            setActiveLink('chat');
+            setActiveLink('chat')
+            setHidden();
         }
 
     }, [pathname]);

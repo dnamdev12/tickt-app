@@ -28,16 +28,17 @@ const MilestoneApprove = (props: any) => {
 
         let item: any = milestones[index];
 
-        const onSubmitAccept = async () => {
-            let data = {
+        const onSubmitAccept = async (data: any) => {
+            let total = data?.total;
+            let data_ = {
                 "status": 1,
                 "jobId": jobId,
                 "milestoneId": item?.milestoneId,
-                // "reason": "Not approved",
-                // "url":[]
+                "paymentMethodId": data?.cardId,
+                "amount": total.replace("$", "")
             }
-
-            let response: any = await milestoneAcceptOrDecline(data);
+            
+            let response: any = await milestoneAcceptOrDecline(data_);
             if (response?.success) {
                 resetStateLocal();
                 props.history.push('/need-approval-success');

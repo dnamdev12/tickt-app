@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // @ts-ignore
 import { Link } from "react-router-dom";
 import { callLogin } from '../../redux/auth/actions';
@@ -25,10 +25,20 @@ const LoginPage = (props: Propstype) => {
         password: ''
     })
     const [showPassword, setShowPassword] = useState(false)
+    let window_: any = window;
+    window_.Intercom('shutdown');
+
 
     const backButtonHandler = () => {
         props?.history?.push('/signup')
     }
+
+    useEffect(() => {
+        if (window_?.Intercom) {
+            window_.Intercom('hide');
+            localStorage.clear();
+        }
+    }, [])
 
     const changeHandler = (e: any) => {
         setLoginData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
@@ -113,7 +123,10 @@ const LoginPage = (props: Propstype) => {
                     // props.setShowModal(!props.showModal);
                     return;
                 }
-                props?.history?.push('/')
+                if (res?.data) {
+                    localStorage.setItem('email', res.data.email);
+                }
+                props?.history?.push('/');
             }
         }
     }

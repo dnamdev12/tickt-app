@@ -15,6 +15,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { setShowToast } from '../../../redux/common/actions';
 
 import { renderTime, renderTimeWithFormat } from '../../../utils/common';
+import { useHistory } from "react-router-dom";
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
@@ -78,6 +79,7 @@ const JobDetails = ({
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
 
+    const history = useHistory();
 
 
     const findSelectedCategory = () => {
@@ -478,8 +480,12 @@ const JobDetails = ({
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
-                                    <div className="tradie_card posted_by view_more ">
-                                        <a href="javascript:void(0)" className="chat circle"></a>
+                                    <div
+                                        onClick={() => {
+                                            history.push(`/builder-info?builderId=${builderProfile?.userId}`);
+                                        }}
+                                        className="tradie_card posted_by view_more ">
+                                        <span className="chat circle"></span>
                                         <div className="user_wrap">
                                             <figure className="u_img">
                                                 <img src={builderProfile?.userImage || dummy} alt="traide-img" />
