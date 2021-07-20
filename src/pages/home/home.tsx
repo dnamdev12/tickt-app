@@ -5,7 +5,7 @@ import TradieHome from './tradieHome/index';
 import BuilderHome from './builderHome/index';
 import storageService from '../../utils//storageService';
 import { addFCMNotifToken } from '../../redux/auth/actions';
-import { requestPermission } from "../../firebase/firebase";
+import { requestPermission } from "../../services/firebase";
 
 
 const Home = () => {

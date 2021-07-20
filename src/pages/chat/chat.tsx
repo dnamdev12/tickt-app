@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import notFound from '../../assets/images/not-found.png';
 // import { Link } from 'react-router-dom';
@@ -13,31 +13,157 @@ import close from '../../assets/images/ic-cancel-blue.png';
 import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
 import moment from 'moment';
+import { format, formatRelative, lightFormat } from 'date-fns';
 
-import { auth, db } from '../../firebase/firebase';
+import { auth, db, firebase } from '../../services/firebase';
 import { setShowToast } from '../../redux/common/actions';
 
 const Chat = () => {
     const [toggle, setToggle] = useState(false);
+    const [initializing, setInitializing] = useState(true);
+    const [user, setUser] = useState<any>(() => auth.currentUser);
+    const [chats, setChats] = useState([]);
+    const [newChat, setNewChat] = useState('');
+    const [chatDocumentId, setChatDocumentId] = useState<string>('60f575ba18562930191ff6fa-60f56f6395672856a5aebdd33');
+    const [isChatAlreadyExist, setIsChatAlreadyExist] = useState<boolean>(false);
+    const [tradieCloudInfo, setTradieCloudInfo] = useState<any>('');
+    const [builderCloudInfo, setBuilderCloudInfo] = useState<any>('');
 
-    const signup = async ({ email, password, id, fullName }: any) => {
-        try {
-            let ref: any = await auth.createUserWithEmailAndPassword(email, password);
-            if (ref) {
-                await ref.user.updateProfile({ displayName: fullName, });
-                await db.collection("users").doc(id).set({
-                    email: 'email',
-                    refId: id,
-                    createdAt: moment().toDate(),
-                    // roleId: 2
-                });
-                console.log("firebase authentication success")
+    // const { uid, displayName, photoURL, text } = user;
+
+    const chatsRef = db.collection('chats');
+    const usersRef = db.collection('users');
+    const query = chatsRef.doc(chatDocumentId).collection('messages').orderBy('createdAt').limit(25);
+
+
+    const setTradieInfo = () => {
+        usersRef.doc('60f575ba18562930191ff6fa').get().then(doc => {
+            if (doc.exists) {
+                const data: any = doc.data();
+                setTradieCloudInfo(data);
+            } else {
+                setTradieCloudInfo('');
             }
-        } catch (err) {
-            setShowToast(true, err.message);
-            console.log({ err });
-        }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    }
+
+    const setBuilderInfo = () => {
+        usersRef.doc('60f56f6395672856a5aebdd3').get().then(doc => {
+            if (doc.exists) {
+                const data: any = doc.data();
+                setBuilderCloudInfo(data);
+            } else {
+                setBuilderCloudInfo('');
+            }
+        }).catch((error) => {
+            console.log("Error getting document:", error);
+        });
+    }
+
+    useEffect(() => {
+        setTradieInfo();
+        setBuilderInfo();
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                setUser(user);
+                chatsRef.doc(chatDocumentId).get().then(doc => {
+                    if (doc.exists) {
+                        setIsChatAlreadyExist(true);
+                    }
+                }).catch((error) => {
+                    console.log("Error getting document:", error);
+                });
+            } else {
+                setUser(false);
+            }
+            if (initializing) {
+                setInitializing(false);
+            }
+        });
+
+        return unsubscribe;
+    }, [initializing]);
+
+    useEffect(() => {
+        const unsubscribe = query.onSnapshot(querySnapshot => {
+            const data: any = querySnapshot.docs.map(doc => ({
+                ...doc.data(),
+                id: doc.id,
+            }));
+            setChats(data);
+        });
+
+        return unsubscribe;
+
+        // this.setState({ readError: null });
+        // try {
+        //     chatsRef.on("value", (snapshot: any) => {
+        //         let chats: any = [];
+        //         snapshot.forEach((snap: any) => {
+        //             chats.push(snap.val());
+        //         });
+        //         this.setState({ chats });
+        //     });
+        // } catch (error) {
+        // }
+    }, []);
+
+    const handleOnChange = (e: any) => {
+        setNewChat(e.target.value);
     };
+
+    const formatDateTime = (seconds: any, type: string) => {
+        const date = new Date(seconds);
+        let formattedDate = '';
+        if (type === 'day') {
+            formattedDate = format(date, 'd MMM yyyy');
+        } else if (type === 'time') {
+            formattedDate = lightFormat(date, 'HH:mm');
+        }
+        return formattedDate;
+    };
+
+    console.log(tradieCloudInfo, 'tradieCloudInfo', chats, "chats");
+
+    // builderId: '60f56f6395672856a5aebdd3'
+    // tradieId: '60f575ba18562930191ff6fa'
+
+    const handleSubmit = async (event: any) => {
+        event.preventDefault();
+        try {
+            if (isChatAlreadyExist) {
+                await chatsRef.doc(chatDocumentId).collection('messages').add({
+                    text: newChat,
+                    createdAt: moment().toDate(),
+                    uid: user?.uid,
+                    // photoURL
+                });
+                setNewChat('');
+            } else {
+                await chatsRef.doc(chatDocumentId).set({
+                    jobId: '60f578c318562930191ff6fc',
+                    jobName: 'Jul 19 chat job',
+                    createdAt: moment().toDate(),
+                });
+                await chatsRef.doc(chatDocumentId).collection('messages').add({
+                    text: newChat,
+                    createdAt: moment().toDate(),
+                    uid: user?.uid
+                });
+                setIsChatAlreadyExist(true);
+                setNewChat('');
+                await usersRef.doc('60f575ba18562930191ff6fa').update({
+                    ongoingChatIds: [...tradieCloudInfo.ongoingChatIds, chatDocumentId]
+                });
+                await usersRef.doc('60f56f6395672856a5aebdd3').update({
+                    ongoingChatIds: [...builderCloudInfo.ongoingChatIds, chatDocumentId]
+                });
+            }
+        } catch (error) {
+        }
+    }
 
     return (
         <div className="app_wrapper">
@@ -52,17 +178,6 @@ const Chat = () => {
                         </button>
                         <div className="stick">
                             <span className="title">Chat</span>
-                            <span className="title">Login</span>
-                            <span
-                                onClick={() => {
-                                    signup({
-                                        email: 'tradie-test@gmail.co',
-                                        password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@',
-                                        id: 'R^4-3Wx?VTRufwjkcbejkldemwkgcyiweugcjhs',
-                                        fullName: 'Test Tradie'
-                                    })
-                                }}
-                                className="title">Sign up</span>
                             <div className="search_bar">
                                 <input type="text" placeholder="Search" />
                                 <span className="detect_icon_ltr">
@@ -70,7 +185,7 @@ const Chat = () => {
                                 </span>
                             </div>
                             <ul className="chat_list">
-                                {/* <li>
+                                <li>
                                     <a href="javascript:void(0)" className="chat active">
                                         <figure className="u_img">
                                             <img src={dummy} alt="img" />
@@ -84,7 +199,7 @@ const Chat = () => {
                                         </div>
                                     </a>
                                 </li>
-                                <li>
+                                {/* <li>
                                     <a href="javascript:void(0)" className="chat">
                                         <figure className="u_img">
                                             <img src={dummy} alt="img" />
@@ -118,40 +233,43 @@ const Chat = () => {
                                     </span>
                                 </div>
                                 <div className="message_wrapr">
-                                    <div className="date_time">
-                                        <span>Today</span>
-                                        <span>09.08.2020</span>
-                                    </div>
-                                    <div className="message">
-                                        <figure className="media">
-                                            <img src={notFound} alt="media" />
-                                            <span className="time">10:32</span>
-                                        </figure>
-                                    </div>
-                                    <div className="message">
-                                        <p className="mark">Completed  job milestone. Switches for lighting are all along the top row, appliances in the bottom row
-                                            <span className="time">10:32</span>
-                                        </p>
-                                    </div>
-                                    <div className="message">
-                                        <p>Circuit board wiring milestone completed
-                                            <span className="time">10:32</span>
-                                        </p>
-                                    </div>
-                                    <div className="message recive_msg">
-                                        <p>Great Thanks !
-                                            <span className="time">10:32</span>
-                                        </p>
-                                    </div>
+                                    {chats.length > 0 && chats.map((msg: any) => {
+                                        console.log(msg.uid, "zz", user.uid,"xx", msg)
+                                        const messageClass = msg.uid === user.uid ? 'message' : 'message recive_msg';
+                                        return (
+                                            <React.Fragment>
+                                                <div className="date_time">
+                                                    <span>Today</span>
+                                                    {/* <span>09.08.2020</span> */}
+                                                </div>
+                                                {/* <div className="message">
+                                                    <figure className="media">
+                                                        <img src={notFound} alt="media" />
+                                                        <span className="time">10:32</span>
+                                                    </figure>
+                                                </div> */}
+                                                <div className={`${messageClass}`}>
+                                                    <p className="mark">{msg.text}
+                                                        <span className="time">{formatDateTime(msg?.createdAt?.seconds * 1000, "time")}</span>
+                                                    </p>
+                                                </div>
+                                                {/* <div className="message recive_msg">
+                                                        <p>Great Thanks !
+                                                            <span className="time">10:32</span>
+                                                        </p>
+                                                    </div> */}
+                                            </React.Fragment>
+                                        )
+                                    })}
                                 </div>
                                 <div className="send_msg">
                                     <div className="text_field">
                                         <span className="detect_icon_ltr">
                                             <img src={sendMedia} alt="media" />
                                         </span>
-                                        <textarea placeholder="Message.."></textarea>
+                                        <textarea placeholder="Message.." value={newChat} onChange={handleOnChange} />
                                         <span className="detect_icon">
-                                            <img src={sendBtn} alt="send" />
+                                            <img src={sendBtn} alt="send" onClick={handleSubmit} />
                                         </span>
                                     </div>
                                 </div>
@@ -188,7 +306,7 @@ const Chat = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 

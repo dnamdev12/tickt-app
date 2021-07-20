@@ -8,8 +8,7 @@ import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
-import ForgetPassword from '../forgetPassword/forgetPassword';
-
+import { firebaseLogInWithEmailPassword } from '../../services/firebase';
 interface Propstype {
     history: any,
     showModal?: boolean,
@@ -108,6 +107,7 @@ const LoginPage = (props: Propstype) => {
         if (validateForm()) {
             const res: any = await callLogin(newData)
             if (res.success) {
+                firebaseLogInWithEmailPassword({ email: newData.email, password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@' });
                 if (props.showModal) {
                     window.location.reload();
                     // props.setShowModal(!props.showModal);

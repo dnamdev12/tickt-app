@@ -25,6 +25,8 @@ if (!firebase.apps.length) {
 const auth = firebase.auth();
 const messaging = firebase.messaging();
 var db = firebase.firestore();
+const usersRef = db.collection('users');
+// var db = firebase.database();
 
 
 const getRegisterToken = () => {
@@ -85,40 +87,42 @@ export function deleteToken() {
     });
 }
 
-const firebaseSignUpWithEmailPassword = async ({ email, password, id, role, fullName }) => {
+const firebaseSignUpWithEmailPassword = async ({ email, password, id, fullName, user_type }) => {
     try {
-        let ref = await auth().createUserWithEmailAndPassword(email, password);
+        let ref = await auth.createUserWithEmailAndPassword(email, password);
         if (ref) {
-            await ref.user.updateProfile({ displayName: fullName, });
-            await db.collection("users").doc(id).set({
+            await ref.user.updateProfile({
+                displayName: fullName,
+                // photoURL: '',
+                // roleId: user_type,
+             });
+                
+            await usersRef.doc(id).set({
+                fullName: fullName,
                 email: email,
-                refId: id,
+                // uid: ref.user["$"]["W"],
+                uid: id,
+                photoURL: '',
                 createdAt: moment().toDate(),
-                roleId: role
+                roleId: user_type,
             });
+            console.log("firebase authentication success")
         }
     } catch (err) {
-        // setShowToast(true, err.message);
-        console.log({ err });
+        console.log("firebase authentication failure: ", { err });
     }
 };
 
 const firebaseLogInWithEmailPassword = async ({ email, password }) => {
     try {
-        let response = await auth().signInWithEmailAndPassword(email, password);
+        let response = await auth.signInWithEmailAndPassword(email, password);
         if (response) {
-            return { success: true, data: response.user }
+            console.log('firebase auth login success: ');
         }
     } catch (err) {
-        return { success: false, message: err.message }
+        console.log('firebase auth login failure: ');
     }
 }
-
-// firebase.auth().signOut().then(() => {
-//     // Sign-out successful.
-//   }).catch((error) => {
-//     // An error happened.
-//   });
 
 export {
     auth,

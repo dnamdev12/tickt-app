@@ -19,7 +19,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
-import { messaging } from '../../firebase/firebase';
+import { auth, messaging } from '../../services/firebase';
 
 const DISABLE_HEADER = [
     '/signup',
@@ -66,13 +66,13 @@ const Header = (props: any) => {
             setLatestNotifData(payload);
         })
     }
-    
+
     useEffect(() => {
         props.getNotificationList(notificationPgNo);
         onMessageListner();
         setActiveLink('discover');
     }, []);
-    
+
     useEffect(() => {
         if (props.notificationList) {
             setNotificationData(props.notificationList?.list);
@@ -142,9 +142,10 @@ const Header = (props: any) => {
         }
     };
 
-    const logoutHandler = () => {
+    const logoutHandler = async () => {
         dispatch({ type: 'USER_LOGGED_OUT' });
         storageService.clearAll();
+        await auth.signOut();
         history.push('/login');
     }
 
@@ -272,28 +273,28 @@ const Header = (props: any) => {
                                             </span>
                                         </MenuItem>
                                         {[1, 2].includes(props.userType) && (
-                                          <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/my-revenue' :'/transaction-history'); }}>
-                                              <span className="setting_icon">
-                                              <img src={revenue} alt="revenue" />
-                                                  {props.userType === 1 ? 'My revenue' : 'Transaction history'}
-                                              </span>
-                                          </MenuItem>
+                                            <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/my-revenue' : '/transaction-history'); }}>
+                                                <span className="setting_icon">
+                                                    <img src={revenue} alt="revenue" />
+                                                    {props.userType === 1 ? 'My revenue' : 'Transaction history'}
+                                                </span>
+                                            </MenuItem>
                                         )}
                                         {[1, 2].includes(props.userType) && (
-                                          <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/saved-jobs' : '/saved-tradespeople') }}>
-                                              <span className="setting_icon">
-                                              <img src={savedJobs} alt="savedJobs" />
-                                                  {`Saved ${props.userType === 1 ? 'jobs' : 'tradespeople'}`}
-                                              </span>
-                                          </MenuItem>
+                                            <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/saved-jobs' : '/saved-tradespeople') }}>
+                                                <span className="setting_icon">
+                                                    <img src={savedJobs} alt="savedJobs" />
+                                                    {`Saved ${props.userType === 1 ? 'jobs' : 'tradespeople'}`}
+                                                </span>
+                                            </MenuItem>
                                         )}
                                         {[1, 2].includes(props.userType) && (
-                                          <MenuItem onClick={() => { handleClose('profile'); }}>
-                                            <span className="setting_icon">
-                                            <img src={guide} alt="guide" />
-                                                {'App Guide'}
-                                            </span>
-                                          </MenuItem>
+                                            <MenuItem onClick={() => { handleClose('profile'); }}>
+                                                <span className="setting_icon">
+                                                    <img src={guide} alt="guide" />
+                                                    {'App Guide'}
+                                                </span>
+                                            </MenuItem>
                                         )}
                                         <MenuItem onClick={() => { handleClose('profile'); logoutHandler(); }}>
                                             <span className="setting_icon logout">Logout</span>

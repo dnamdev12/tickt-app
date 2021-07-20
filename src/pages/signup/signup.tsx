@@ -12,6 +12,7 @@ import AddQualification from './components/addQualification';
 import AddABN from './components/addABN';
 import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
 import AuthParent from '../../common/auth/authParent';
+import { firebaseSignUpWithEmailPassword } from '../../services/firebase';
 
 interface Propstype {
     history?: any,
@@ -59,7 +60,7 @@ const Signup = (props: Propstype) => {
         // companyName: '',
         // position: '',
         // abn: '',
-    })
+    });
 
     useEffect(() => {
         // props.callTradeList();
@@ -146,7 +147,7 @@ const Signup = (props: Propstype) => {
     }
 
     const onSubmitSignup = async (lastStepFields: any) => {
-        var res;
+        var res: any;
         const newData = { ...signupData, ...lastStepFields };
         const data = {
             ...newData,
@@ -170,6 +171,13 @@ const Signup = (props: Propstype) => {
             res = await postSignup(data);
         }
         if (res.success) {
+            firebaseSignUpWithEmailPassword({
+                email: res.result?.email,
+                password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@',
+                id: res.result?._id,
+                fullName: res.result?.firstName,
+                user_type: res.result?.user_type
+            });
             if (signupData.user_type === 2) {
                 setSteps(8);
             } else {

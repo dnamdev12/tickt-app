@@ -14,7 +14,7 @@ export const postSignup = async (data: any) => {
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    return { success: true };
+    return { success: true, result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -108,7 +108,7 @@ export const socialSignupLogin = async (data: any) => {
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    return { success: true, successToken: response.result.token };
+    return { success: true, successToken: response.result.token , result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
