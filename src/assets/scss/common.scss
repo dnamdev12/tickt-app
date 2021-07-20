@@ -5557,6 +5557,36 @@ div#light-box div {
 }
 //----------Chat close-------------//
 
+//----------Tour Guid start-------//
+
 .h-75vh {
   height: 75vh;
 }
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.react-joyride__overlay {
+  background-color: rgba(0, 0, 0, 0.8) !important;
+}
+
+.react-joyride__tooltip {
+  color: white !important;
+  background-color: transparent !important;
+
+  button {
+    color: white !important;
+    background-color: transparent !important;
+  }
+
+  [data-action='close'] {
+    display: none;
+  }
+}
+
+.tour-dialog .MuiDialog-paper {
+  padding: 40px 100px;
+}
+
+//----------Tour Guid close-------//

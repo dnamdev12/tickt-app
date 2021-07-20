@@ -1,11 +1,15 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import { useState, useEffect } from 'react';
-import { useLocation, withRouter } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useLocation, withRouter, useHistory } from "react-router-dom";
+import Joyride from 'react-joyride';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import storageService from '../../utils/storageService';
 import AuthModal from '../auth/authModal';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
@@ -15,7 +19,6 @@ import profile from '../../assets/images/ic-profile.png';
 import revenue from '../../assets/images/ic-revenue.png';
 import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
-
 
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
@@ -33,7 +36,8 @@ const DISABLE_HEADER = [
 const Header = (props: any) => {
     let type = storageService.getItem('userType');
 
-    const [userType, setUserType] = useState(null);
+    const [tourDialog, setTourDialog] = useState(false);
+    const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElNotif, setAnchorElNotif] = useState(null);
     const [showModal, setShowModal] = useState<boolean>(false);
@@ -45,6 +49,7 @@ const Header = (props: any) => {
     const [notificationPgNo, setNotificationPgNo] = useState<number>(1);
     const [notificationCount, setNotificationCount] = useState<number | null>(null);
     console.log('latestNotifData: ', latestNotifData);
+    const [startTour, setStartTour] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -71,6 +76,11 @@ const Header = (props: any) => {
         props.getNotificationList(notificationPgNo);
         onMessageListner();
         setActiveLink('discover');
+
+        const firstLogin = storageService.getItem('firstLogin');
+        if (firstLogin === 'true') {
+          setTourDialog(true);
+        }
     }, []);
     
     useEffect(() => {
@@ -126,6 +136,21 @@ const Header = (props: any) => {
         setUserType(storageService.getItem('userType'))
     }, [pathname, storageService.getItem('userType')])
 
+    useEffect(() => {
+      if (startTour) {
+        document.body.classList.add('no-scroll');
+      } else {
+        document.body.classList.remove('no-scroll');
+      }
+    }, [startTour]);
+
+    const handleFirstLogin = () => {
+      const firstLogin = storageService.getItem('firstLogin');
+      if (firstLogin === 'true') {
+        storageService.setItem('firstLogin', 'false');
+      }
+    }
+
     const handleClick = (event: any, type: string) => {
         if (type === 'notification') {
             setAnchorElNotif(event.currentTarget);
@@ -178,10 +203,116 @@ const Header = (props: any) => {
         if (type === 1) {
             return props?.tradieProfileData[name];
         }
-    }
+      }
 
-    return (
+      const handleCallback = (state: any) => {
+        const { action, step: { target } } = state;
+        const width = window.innerWidth
+        || document.documentElement.clientWidth
+        || document.body.clientWidth;
+
+        if (action === 'reset') {
+          setStartTour(false);
+        } else if (action === 'start' && width <= 650) {
+          setToggleMenu(true);
+        }
+
+        if (target === '.tour-profile' && toggleMenu) {
+          setToggleMenu(false);
+        }
+      }
+
+      const tradieTour = [
+        {
+          target: '.tour-discover a',
+          content: `Hi ${renderByType({ name: 'userName' })}, here is your go-to for finding new jobs.`,
+          disableBeacon: true
+        },
+        {
+          target: '.tour-jobs a',
+          content: 'Here you can find all your active jobs and keep on top of milestones!',
+        },
+        {
+          target: '.tour-chat a',
+          content: 'Chat with builders about job requirements',
+        },
+        {
+          target: '.tour-profile',
+          content: 'Manage your profile and settings',
+        },
+        {
+          target: '.tour-notifications',
+          content: 'Check notifications and stay on the front foot',
+        },
+      ];
+
+      const builderTour = [
+        {
+          target: '.tour-discover a',
+          content: `Hi ${renderByType({ name: 'userName' })}, here is your go-to for finding tradespeople.`,
+          disableBeacon: true
+        },
+        {
+          target: '.tour-jobs a',
+          content: 'Here you can find all your active jobs and keep on top of milestones!',
+        },
+        {
+          target: '.tour-post a',
+          content: 'Here you can post a new job',
+        },
+        {
+          target: '.tour-chat a',
+          content: 'Your chats for job and tradespeople are here',
+        },
+        {
+          target: '.tour-profile',
+          content: 'Manage your profile and settings',
+        },
+        {
+          target: '.tour-notifications',
+          content: 'Check notifications and stay on the front foot',
+        },
+      ]
+      
+      return (
         <>
+            <Joyride
+              run={startTour}
+              showProgress
+              continuous
+              showSkipButton
+              scrollToFirstStep
+              spotlightPadding={0}
+              disableOverlayClose
+              disableCloseOnEsc
+              steps={userType === 1 ? tradieTour : builderTour}
+              styles={{
+                options: {
+                  zIndex: 2000,
+                },
+              }}
+              floaterProps={{
+                hideArrow: true,
+              }}
+              callback={handleCallback}
+            />
+            <Dialog
+                open={tourDialog}
+                onClose={handleClose}
+                className="tour-dialog"
+            >
+                <DialogTitle id="alert-dialog-title">
+                    {"First time?"}
+                </DialogTitle>
+                <DialogActions>
+                    <Button onClick={() => { setStartTour(true); setTourDialog(false); handleFirstLogin(); }} color="primary" autoFocus>
+                        {'Yes'}
+                    </Button>
+                    <Button onClick={() => { setTourDialog(false); handleFirstLogin(); } } color="primary">
+                        {'No'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
             {showHeader && <header id="header">
                 <div className="custom_container">
                     <div className="flex_headrow">
@@ -202,28 +333,29 @@ const Header = (props: any) => {
                             </figure>
                         </div>
                         <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
-                            <li>
+                            <li className="tour-discover">
                                 <a
                                     onClick={() => {
                                         setActiveLink('discover');
                                         history.push('/');
+                                        setStartTour(true);
                                     }}
                                     className={activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
                                 </a>
                             </li>
-                            <li>
+                            <li className="tour-jobs">
                                 <a className={activeLink === 'jobs' ? 'active' : ''} onClick={jobClick}>
                                     {'Jobs'}
                                 </a>
                             </li>
                             {userType === 2 &&
-                                <li>
+                                <li className="tour-post">
                                     <a className={activeLink === 'post' ? 'active' : ''} onClick={postClicked}>
                                         {'Post'}
                                     </a>
                                 </li>}
-                            <li>
+                            <li className="tour-chat">
                                 <a className={activeLink === 'chat' ? 'active' : ''} onClick={chatClicked}>
                                     {'Chat'}
                                 </a>
@@ -234,19 +366,19 @@ const Header = (props: any) => {
                                 <img
                                     src={menu}
                                     alt="menu"
-                                    onClick={() => { setToggleMenu(!toggleMenu) }} />
+                                    onClick={() => { setToggleMenu(!toggleMenu); }} />
                             </li>
                             <div className="profile_notification">
                                 {storageService.getItem("jwtToken") &&
                                     <div className="notification_bell" onClick={(event) => handleClick(event, 'notification')}>
-                                        <figure className="bell">
+                                        <figure className="bell tour-notifications">
                                             <span className="badge">4 </span>
                                             <img src={bell} alt="notify" />
                                         </figure>
                                     </div>}
                                 <div className="user_profile">
                                     {storageService.getItem("jwtToken") &&
-                                        <figure aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => handleClick(event, 'profile')}>
+                                        <figure className="tour-profile" aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => handleClick(event, 'profile')}>
                                             <img src={renderByType({ name: 'userImage' }) || dummy} alt="profile-img" />
                                         </figure>}
 
@@ -288,7 +420,7 @@ const Header = (props: any) => {
                                           </MenuItem>
                                         )}
                                         {[1, 2].includes(props.userType) && (
-                                          <MenuItem onClick={() => { handleClose('profile'); }}>
+                                          <MenuItem onClick={() => { handleClose('profile'); setStartTour(true); }}>
                                             <span className="setting_icon">
                                             <img src={guide} alt="guide" />
                                                 {'App Guide'}
