@@ -50,7 +50,7 @@ const PostJob = (props: Proptypes) => {
         builderProfile,
         editMilestoneId } = props;
     const [categoriesData, setCategoriesData] = useState([]);
-    const [step, setStep] = useState(5);
+    const [step, setStep] = useState(1);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
     const [data, setData] = useState({});
     const [editMileStone, setEditMileStone] = useState(0 as number);

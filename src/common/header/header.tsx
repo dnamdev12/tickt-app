@@ -390,7 +390,7 @@ const Header = (props: any) => {
                                     onClick={() => {
                                         setActiveLink('discover');
                                         history.push('/');
-                                        setStartTour(true);
+                                        // setStartTour(true);
                                     }}
                                     className={activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
