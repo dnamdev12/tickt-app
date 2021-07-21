@@ -14,7 +14,8 @@ type PropsType = RouteComponentProps & {
     hideAos?: boolean,
     jobId?: any,
     specializationId?: any,
-    hideInvite?: boolean
+    hideInvite?: boolean,
+    showStatus?: boolean,
 }
 
 const randomRating = Math.floor(Math.random() * 5) + 1;
@@ -54,7 +55,7 @@ class TradieBox extends Component<PropsType, State> {
     }
 
     render() {
-        const { item, index, hideAos } = this.props;
+        const { item, index, hideAos, showStatus } = this.props;
         let this_state: any = this.state;
         let isItemSpec = this_state.isItemSpec;
         return (
@@ -82,6 +83,7 @@ class TradieBox extends Component<PropsType, State> {
                             {/* <span className="rating">{item?.ratings || randomRating} , {item?.reviews || randomReview} reviews </span> */}
                         </div>
                     </div>
+                    {showStatus && item?.status && <div className="job_status">{item?.status}</div>}
                     <div className="tags_wrap">
                         <ul>
                             {item?.tradeData?.length ?
