@@ -342,7 +342,7 @@ const TradieBannerSearch = (props: PropsType) => {
             var latlng = new google.maps.LatLng(lat, long);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, function (results, status) {
-                console.log(results, "results", results[0].formatted_address)
+                
                 if (status !== google.maps.GeocoderStatus.OK) {
                     alert(status);
                 }
