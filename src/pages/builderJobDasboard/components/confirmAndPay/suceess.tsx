@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import templateImage from '../../../../assets/images/job-complete-bg.png';
-import { withRouter } from 'react-router-dom';
-import { setLoading, setShowToast } from '../../../../redux/common/actions';
+import { useHistory, withRouter } from 'react-router-dom';
+import { setLoading } from '../../../../redux/common/actions';
 
 
 const Success = (props: any) => {
-
+    const history = useHistory();
     const [isLoad, setImageLoad] = useState(true);
 
     useEffect(() => { setLoading(true) }, [])
@@ -49,7 +49,7 @@ const Success = (props: any) => {
                                 <div className="btn_wrapr">
                                     <button
                                         onClick={() => {
-                                            setShowToast(true, 'Under development');
+                                            history.push('/payment-history');
                                         }}
                                         style={{ backgroundColor: '#fff' }}
                                         className="fill_btn btn-effect">

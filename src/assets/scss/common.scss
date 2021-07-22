@@ -3248,6 +3248,10 @@ body {
 			}
 		}
 	}
+  .job_status {
+    color: var(--blue-two);
+    padding: 0px 10px 10px;
+  }
 	.tags_wrap {
 		ul {
 			margin: 0;
@@ -5150,6 +5154,7 @@ div#light-box div {
     }
   }
   .details{
+    cursor: pointer;
     width: 78%;
     @media(max-width: 768px){
       width: 66%;
@@ -5590,3 +5595,7 @@ div#light-box div {
 }
 
 //----------Tour Guid close-------//
+
+.visibility-hidden {
+  visibility: hidden;
+}
