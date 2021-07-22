@@ -31,7 +31,8 @@ export class PrivacyPolicy extends Component<Props, State> {
         return (
             <div className="h-75vh">
                 <span className="sub_title"> Privacy Policy</span>
-                {this.state.url && <iframe src={this.state.url} title="Privacy Policy" width="100%" height="100%" />}
+                {this.state.url && <iframe src={this.state.url} title="Privacy Policy" width="100%" height="100%" scrolling="no"
+                style={{overflow: 'hidden'}} />}
             </div>
         )
     }

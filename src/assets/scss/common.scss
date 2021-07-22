@@ -5118,6 +5118,17 @@ div#light-box div {
     }
   }
 }
+
+.payment_check{
+  max-width: 670px;
+  .f_spacebw{
+    align-items: flex-end;
+  }
+  .xs_sub_title, .info{
+    margin-bottom: 0 !important;
+  }
+}
+
 .last_jobs{
   margin: 32px 0 15px;
   .center_flex {
@@ -5159,7 +5170,7 @@ div#light-box div {
     @media(max-width: 768px){
       width: 66%;
     }
-    .inner_title{
+    .inner_title, .xs_head{
       margin: 0;
     }
   }

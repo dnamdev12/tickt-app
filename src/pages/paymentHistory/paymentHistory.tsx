@@ -41,7 +41,7 @@ const PaymentHistory = ({
   }, [search, searchQuery, getPaymentHistory, getPaymentDetails]);
 
   const userType = storageService.getItem('userType');
-  const { totalEarnings = 0, totalJobs = 0, revenue = {} } = paymentHistory || { };
+  const { totalEarnings = 0, totalJobs = 0, revenue = {} } = paymentHistory || {};
   const { revenueList = [] } = revenue;
   const { status, tradieName, tradieImage, builderName, builderImage, jobName, from_date, to_date, totalEarning, milestones = [] }: any = paymentDetails || {};
 
@@ -80,7 +80,7 @@ const PaymentHistory = ({
                   </li>
                 </ul>
                 <div>
-                  <ul className="milestones_check">
+                  <ul className="milestones_check payment_check">
                     {milestones.map(({ _id, milestone_name, milestoneEarning, isPhotoevidence, from_date, to_date, status }: any) => (
                       <li
                         key={_id}
@@ -89,16 +89,18 @@ const PaymentHistory = ({
                         <div className="circle_stepper">
                           <span></span>
                         </div>
-                        <div className="info">
-                          <label>{milestone_name}</label>
-                          {isPhotoevidence && (
-                            <span>Photo evidence required</span>
-                          )}
-                          <span>
-                            {renderTime(from_date, to_date)}
-                          </span>
+                        <div className="f_spacebw">
+                          <div className="info">
+                            <label>{milestone_name}</label>
+                            {isPhotoevidence && (
+                              <span>Photo evidence required</span>
+                            )}
+                            <span>
+                              {renderTime(from_date, to_date)}
+                            </span>
+                          </div>
+                          <span className="xs_sub_title">{milestoneEarning}</span>
                         </div>
-                        <div className="text-right">{milestoneEarning}</div>
                       </li>
                     ))}
                   </ul>
@@ -187,10 +189,10 @@ const PaymentHistory = ({
                       <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="job-img" />
                     </figure>
                     <div className="details" onClick={() => { history.push(`/payment-history?jobId=${jobId}`); }}>
-                      <span className="inner_title line-3">
+                      <span className="inner_title line-2">
                         {tradeName}
                       </span>
-                      <span className="inner_title line-3">
+                      <span className="xs_head line-1">
                         {jobName}
                       </span>
                     </div>
