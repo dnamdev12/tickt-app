@@ -35,6 +35,7 @@ const LoginPage = (props: Propstype) => {
 
     useEffect(() => {
         if (window_?.Intercom) {
+            window_.Intercom('shutdown');
             window_.Intercom('hide');
             localStorage.clear();
         }

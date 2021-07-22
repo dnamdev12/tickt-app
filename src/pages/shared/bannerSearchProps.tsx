@@ -679,7 +679,13 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
-                                    searchOptions={{ componentRestrictions: { country: "au" }, types: ["address"] }}
+                                    searchOptions={{
+                                         componentRestrictions: { 
+                                             country: "au"
+                                             }, 
+                                            //  types: ["address"]
+                                             types: ["(cities)"]
+                                         }}
                                     shouldFetchSuggestions={addressText?.length > 2}
                                     onChange={(item: any) => {
                                         setAddressText(item);

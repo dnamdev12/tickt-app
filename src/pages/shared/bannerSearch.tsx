@@ -180,7 +180,7 @@ const BannerSearch = (props: PropsType) => {
                 let long = item.location.coordinates[0];
                 let response = await Geocode.fromLatLng(lat, long);
                 console.log({
-                    results:response?.results
+                    results: response?.results
                 })
                 let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
                 let cityText: any = null;
@@ -618,7 +618,13 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
-                                    searchOptions={{ componentRestrictions: { country: "au" }, types: ["address"] }}
+                                    searchOptions={{
+                                        componentRestrictions: {
+                                            country: "au"
+                                        },
+                                        // types: ["address"]
+                                        types: ['(cities)']
+                                    }}
                                     onChange={(item: any) => {
                                         setAddressText(item)
                                         if (!addressText.length) {

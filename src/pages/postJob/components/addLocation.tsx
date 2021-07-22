@@ -43,6 +43,7 @@ const searchOptions = {
   // location: new google.maps.LatLng(-23, 132),
   // radius: meter, // meters to km
   // types: ['address']
+  types: ["(cities)"]
 }
 
 const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
@@ -115,8 +116,8 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
       let latitude = (position[1])?.toString();
       try {
         let response: any = await Geocode.fromLatLng(latitude, longitude);
+        console.log({response});
         const { city, state, country } = filterFromAddress(response);
-
         if (response && ["australia", "au"].includes(country)) {
           const address = response.results[0].formatted_address;
           let coordinates_values = [latitude, longitude];

@@ -4,6 +4,12 @@ import * as actionTypes from './constants';
 import { setShowToast, setLoading } from './../common/actions';
 import storageService from '../../utils/storageService';
 
+import {
+  callTradieProfileData as getProfileTradie,
+  getProfileBuilder
+} from '../profile/actions';
+import { store } from '../../App';
+
 export const callTradeList = () => ({ type: actionTypes.CALL_TRADE_LIST })
 
 export const postSignup = async (data: any) => {
@@ -71,15 +77,29 @@ export const callLogin = async (data: any) => {
   setLoading(false);
   if (response.status_code === 200) {
     const firstLogin = storageService.getItem('firstLogin');
-
+    console.log({
+      response
+    });
     if (!firstLogin) {
       storageService.setItem('firstLogin', 'true');
     } else if (firstLogin === 'true') {
       storageService.setItem('firstLogin', 'false');
     }
+    console.log({
+      user_type: response.result.user_type
+    })
 
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
+    storageService.setItem("email", response.result.email);
+
+    if (response.result.user_type === 1) {
+      store.dispatch(getProfileTradie());
+    }
+
+    if (response.result.user_type === 2) {
+      store.dispatch(getProfileBuilder());
+    }
     return { success: true, data: response.result };
   }
   setShowToast(true, response.message);
@@ -116,7 +136,7 @@ export const socialSignupLogin = async (data: any) => {
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    return { success: true, successToken: response.result.token , result: response.result };
+    return { success: true, successToken: response.result.token, result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };

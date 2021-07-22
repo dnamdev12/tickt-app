@@ -34,6 +34,10 @@ const DISABLE_HEADER = [
 ];
 
 const Header = (props: any) => {
+    let window_: any = window;
+    const dispatch = useDispatch();
+    let { pathname } = useLocation();
+    let history = useHistory();
     let type = storageService.getItem('userType');
 
     const [tourDialog, setTourDialog] = useState(false);
@@ -48,14 +52,16 @@ const Header = (props: any) => {
     const [notificationData, setNotificationData] = useState<any>('');
     const [notificationPgNo, setNotificationPgNo] = useState<number>(1);
     const [notificationCount, setNotificationCount] = useState<number | null>(null);
-    const [isHide, setIsHide] = useState(false);
+    const [isIntercom, setIntercom] = useState(false);
     const [startTour, setStartTour] = useState(false);
+    const [isFalse, setIsFalse] = useState(false);
+    const forceUpdate = useForceUpdate();
 
-    let window_: any = window;
-    const dispatch = useDispatch();
 
-    let { pathname } = useLocation();
-    let history = useHistory();
+    function useForceUpdate() {
+        const [value, setValue] = useState(0); // integer state
+        return () => setValue(value => value + Math.random()); // update the state to force render
+    }
 
     const onMessageListner = () => {
         messaging.onMessage((payload: any) => {
@@ -80,16 +86,52 @@ const Header = (props: any) => {
 
         const firstLogin = storageService.getItem('firstLogin');
         if (firstLogin === 'true') {
-            setTourDialog(true);
+            // setTourDialog(true);
         }
+        setUserType(storageService.getItem('userType'))
+        callOnPathChange();
     }, []);
 
 
+    const callOnPathChange = () => {
+        console.log('Inside --- callOnPathChange user_id')
+        if (type) {
+            if (type === 1) {
+                props.callTradieProfileData();
+                setIsFalse(true)
+            }
+            if (type === 2) {
+                props.getProfileBuilder();
+                setIsFalse(true)
+            }
+        }
+
+        if (DISABLE_HEADER.includes(pathname)) {
+            setShowHeader(false)
+        } else {
+            setShowHeader(true)
+        }
+        setUserType(storageService.getItem('userType'))
+    }
+
+    useEffect(() => {
+        if (props?.builderProfile && Object.keys(props?.builderProfile).length && !isIntercom) {
+            setIntercom(true)
+            setHidden();
+        }
+        if (props?.tradieProfileData && Object.keys(props?.tradieProfileData).length && !isIntercom) {
+            setIntercom(true)
+            setHidden();
+        }
+    }, [props])
+
+
     const setHidden = () => {
-        let data: any = {}
+        let data: any = {};
+
         if (props?.builderProfile && Object.keys(props?.builderProfile).length) {
             data = {
-                email: props?.builderProfile?.email || localStorage.getItem('email'),
+                email: props?.builderProfile?.email || storageService.getItem('email'),
                 userId: props?.builderProfile?.userId,
                 name: props?.builderProfile?.userName
             }
@@ -97,30 +139,26 @@ const Header = (props: any) => {
 
         if (props?.tradieProfileData && Object.keys(props?.tradieProfileData).length) {
             data = {
-                email: props?.tradieProfileData?.email || localStorage.getItem('email'),
+                email: props?.tradieProfileData?.email || storageService.getItem('email'),
                 userId: props?.tradieProfileData?.userId,
                 name: props?.tradieProfileData?.userName
             }
         }
-
-
+        console.log({ data }, 'user_id')
         if (!Object.values(data).includes([''])) {
-            console.log({ data }, 'data')
-            // window_.Intercom('shutdown');
-            window_.intercomSettings = {
-                app_id: "tvbm4bhr",
-                name: data.name,
-                email: data.email,
-                user_id: data.userId
-            };
-
-            if (window_?.Intercom) {
-                window_?.Intercom('update', {
-                    "hide_default_launcher": false
+            if (window_.Intercom) {
+                window_.Intercom('shutdown');
+                window_.Intercom('boot', {
+                    name: data.name,
+                    email: data.email,
+                    user_id: data.userId
                 });
             }
-            // window_.Intercom('boot');
-            // window_.Intercom('show');
+        } else {
+            forceUpdate();
+            setIsFalse(true);
+            callOnPathChange();
+            console.log({ type }, 'user_id')
         }
     }
 
@@ -131,9 +169,7 @@ const Header = (props: any) => {
     }, [props.notificationList]);
 
     useEffect(() => {
-        console.log({
-            pathname
-        })
+
         if (pathname === '/login') {
             window_.Intercom('hide');
         }
@@ -167,25 +203,15 @@ const Header = (props: any) => {
             setHidden();
         }
 
+        if (['/builder-info', '/saved-tradespeople', '/search-tradie-results'].includes(pathname)) {
+            setHidden();
+        }
+
     }, [pathname]);
 
     useEffect(() => {
-        if (type) {
-            if (type === 1) {
-                props.callTradieProfileData();
-            }
-            if (type === 2) {
-                props.getProfileBuilder();
-            }
-        }
-
-        if (DISABLE_HEADER.includes(pathname)) {
-            setShowHeader(false)
-        } else {
-            setShowHeader(true)
-        }
-        setUserType(storageService.getItem('userType'))
-    }, [pathname, storageService.getItem('userType')])
+        callOnPathChange();
+    }, [pathname, userType, isFalse])
 
     useEffect(() => {
         if (startTour) {
@@ -365,160 +391,161 @@ const Header = (props: any) => {
                     </Button>
                 </DialogActions>
             </Dialog>
-            {showHeader && <header id="header">
-                <div className="custom_container">
-                    <div className="flex_headrow">
-                        <div className="brand_wrap">
-                            <figure>
-                                <img
-                                    onClick={() => {
-                                        if (pathname === '/') {
-                                            window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
-                                            return;
-                                        }
-                                        setActiveLink('discover');
-                                        setToggleMenu(false);
-                                        props.history.push('/');
-                                    }}
-                                    src={colorLogo}
-                                    alt="logo" />
-                            </figure>
-                        </div>
-                        <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
-                            <li className="tour-discover">
-                                <a
-                                    onClick={() => {
-                                        setActiveLink('discover');
-                                        history.push('/');
-                                        // setStartTour(true);
-                                    }}
-                                    className={activeLink === 'discover' ? 'active' : ''}>
-                                    {'Discover'}
-                                </a>
-                            </li>
-                            <li className="tour-jobs">
-                                <a className={activeLink === 'jobs' ? 'active' : ''} onClick={jobClick}>
-                                    {'Jobs'}
-                                </a>
-                            </li>
-                            {userType === 2 &&
-                                <li className="tour-post">
-                                    <a className={activeLink === 'post' ? 'active' : ''} onClick={postClicked}>
-                                        {'Post'}
+            {showHeader &&
+                <header id="header">
+                    <div className="custom_container">
+                        <div className="flex_headrow">
+                            <div className="brand_wrap">
+                                <figure>
+                                    <img
+                                        onClick={() => {
+                                            if (pathname === '/') {
+                                                window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
+                                                return;
+                                            }
+                                            setActiveLink('discover');
+                                            setToggleMenu(false);
+                                            props.history.push('/');
+                                        }}
+                                        src={colorLogo}
+                                        alt="logo" />
+                                </figure>
+                            </div>
+                            <ul className={`center_nav ${toggleMenu ? 'active' : ''}`}>
+                                <li className="tour-discover">
+                                    <a
+                                        onClick={() => {
+                                            setActiveLink('discover');
+                                            history.push('/');
+                                            // setStartTour(true);
+                                        }}
+                                        className={activeLink === 'discover' ? 'active' : ''}>
+                                        {'Discover'}
                                     </a>
-                                </li>}
-                            <li className="tour-chat">
-                                <a className={activeLink === 'chat' ? 'active' : ''} onClick={chatClicked}>
-                                    {'Chat'}
-                                </a>
-                            </li>
-                        </ul>
-                        <ul className="side_nav">
-                            <li className="mob_nav">
-                                <img
-                                    src={menu}
-                                    alt="menu"
-                                    onClick={() => { setToggleMenu(!toggleMenu); }} />
-                            </li>
-                            <div className="profile_notification">
-                                {storageService.getItem("jwtToken") &&
-                                    <div className="notification_bell" onClick={(event) => handleClick(event, 'notification')}>
-                                        <figure className="bell tour-notifications">
-                                            <span className="badge">{notificationData.unreadCount}</span>
-                                            <img src={bell} alt="notify" />
-                                        </figure>
-                                    </div>}
-                                <div className="user_profile">
+                                </li>
+                                <li className="tour-jobs">
+                                    <a className={activeLink === 'jobs' ? 'active' : ''} onClick={jobClick}>
+                                        {'Jobs'}
+                                    </a>
+                                </li>
+                                {userType === 2 &&
+                                    <li className="tour-post">
+                                        <a className={activeLink === 'post' ? 'active' : ''} onClick={postClicked}>
+                                            {'Post'}
+                                        </a>
+                                    </li>}
+                                <li className="tour-chat">
+                                    <a className={activeLink === 'chat' ? 'active' : ''} onClick={chatClicked}>
+                                        {'Chat'}
+                                    </a>
+                                </li>
+                            </ul>
+                            <ul className="side_nav">
+                                <li className="mob_nav">
+                                    <img
+                                        src={menu}
+                                        alt="menu"
+                                        onClick={() => { setToggleMenu(!toggleMenu); }} />
+                                </li>
+                                <div className="profile_notification">
                                     {storageService.getItem("jwtToken") &&
-                                        <figure className="tour-profile" aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => handleClick(event, 'profile')}>
-                                            <img src={renderByType({ name: 'userImage' }) || dummy} alt="profile-img" />
-                                        </figure>}
+                                        <div className="notification_bell" onClick={(event) => handleClick(event, 'notification')}>
+                                            <figure className="bell tour-notifications">
+                                                <span className="badge">{notificationData.unreadCount}</span>
+                                                <img src={bell} alt="notify" />
+                                            </figure>
+                                        </div>}
+                                    <div className="user_profile">
+                                        {storageService.getItem("jwtToken") &&
+                                            <figure className="tour-profile" aria-controls="simple-menu" aria-haspopup="true" onClick={(event) => handleClick(event, 'profile')}>
+                                                <img src={renderByType({ name: 'userImage' }) || dummy} alt="profile-img" />
+                                            </figure>}
 
 
-                                    <Menu className="sub_menu"
-                                        id="simple-menu"
-                                        anchorEl={anchorEl}
-                                        keepMounted
-                                        open={Boolean(anchorEl)}
-                                        onClose={() => handleClose('profile')}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                    >
-                                        <span className="sub_title">
-                                            {renderByType({ name: 'userName' })}
-                                        </span>
-                                        <MenuItem onClick={() => { handleClose('pofile'); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
-                                            <span className="setting_icon">
-                                                <img src={profile} alt="profile" />
-                                                {'My Profile'}
+                                        <Menu className="sub_menu"
+                                            id="simple-menu"
+                                            anchorEl={anchorEl}
+                                            keepMounted
+                                            open={Boolean(anchorEl)}
+                                            onClose={() => handleClose('profile')}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                        >
+                                            <span className="sub_title">
+                                                {renderByType({ name: 'userName' })}
                                             </span>
-                                        </MenuItem>
-                                        {[1, 2].includes(props.userType) && (
-                                            <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/my-revenue' : '/transaction-history'); }}>
+                                            <MenuItem onClick={() => { handleClose('pofile'); history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
                                                 <span className="setting_icon">
-                                                    <img src={revenue} alt="revenue" />
-                                                    {props.userType === 1 ? 'My revenue' : 'Transaction history'}
+                                                    <img src={profile} alt="profile" />
+                                                    {'My Profile'}
                                                 </span>
                                             </MenuItem>
-                                        )}
-                                        {[1, 2].includes(props.userType) && (
-                                            <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/saved-jobs' : '/saved-tradespeople') }}>
-                                                <span className="setting_icon">
-                                                    <img src={savedJobs} alt="savedJobs" />
-                                                    {`Saved ${props.userType === 1 ? 'jobs' : 'tradespeople'}`}
-                                                </span>
-                                            </MenuItem>
-                                        )}
-                                        {[1, 2].includes(props.userType) && (
-                                            <MenuItem onClick={() => { handleClose('profile'); setStartTour(true); }}>
-                                                <span className="setting_icon">
-                                                    <img src={guide} alt="guide" />
-                                                    {'App Guide'}
-                                                </span>
-                                            </MenuItem>
-                                        )}
-                                        <MenuItem onClick={() => { handleClose('profile'); logoutHandler(); }}>
-                                            <span className="setting_icon logout">Logout</span>
-                                        </MenuItem>
-                                    </Menu>
-
-
-                                    {/* Notification */}
-                                    <Menu className="sub_menu notifications"
-                                        id="simple-menu"
-                                        anchorEl={anchorElNotif}
-                                        keepMounted
-                                        open={Boolean(anchorElNotif)}
-                                        onClose={() => handleClose('notification')}
-                                        transformOrigin={{
-                                            vertical: 'top',
-                                            horizontal: 'right',
-                                        }}
-                                    >
-                                        <span className="sub_title">Notifications</span>
-                                        <a href="javascript:void(0)" className="link mark_all">Mark all as read</a>
-
-                                        {notificationData.list?.length > 0 &&
-                                            notificationData.list.map((item: any) =>
-                                                <MenuItem className={`${item.read ? '' : 'unread'}`}>
-                                                    <div className="notif">
-                                                        <figure className="not_img">
-                                                            <img src={item?.image || dummy} alt="img" />
-                                                            {/* <span className="dot"></span> */}
-                                                            <span className={`${item.read ? '' : 'dot'}`}></span>
-                                                        </figure>
-                                                        <div className="info">
-                                                            <span className="who line-1">{item.title}</span>
-                                                            <span className="line-1">{item.notificationText}</span>
-                                                            {/* <span className="see">See the message</span> */}
-                                                        </div>
-                                                        <span className="time">St 12:30 AM</span>
-                                                    </div>
+                                            {[1, 2].includes(props.userType) && (
+                                                <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/my-revenue' : '/transaction-history'); }}>
+                                                    <span className="setting_icon">
+                                                        <img src={revenue} alt="revenue" />
+                                                        {props.userType === 1 ? 'My revenue' : 'Transaction history'}
+                                                    </span>
                                                 </MenuItem>
                                             )}
-                                        {/* <MenuItem>
+                                            {[1, 2].includes(props.userType) && (
+                                                <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/saved-jobs' : '/saved-tradespeople') }}>
+                                                    <span className="setting_icon">
+                                                        <img src={savedJobs} alt="savedJobs" />
+                                                        {`Saved ${props.userType === 1 ? 'jobs' : 'tradespeople'}`}
+                                                    </span>
+                                                </MenuItem>
+                                            )}
+                                            {[1, 2].includes(props.userType) && (
+                                                <MenuItem onClick={() => { handleClose('profile'); setStartTour(true); }}>
+                                                    <span className="setting_icon">
+                                                        <img src={guide} alt="guide" />
+                                                        {'App Guide'}
+                                                    </span>
+                                                </MenuItem>
+                                            )}
+                                            <MenuItem onClick={() => { handleClose('profile'); logoutHandler(); }}>
+                                                <span className="setting_icon logout">Logout</span>
+                                            </MenuItem>
+                                        </Menu>
+
+
+                                        {/* Notification */}
+                                        <Menu className="sub_menu notifications"
+                                            id="simple-menu"
+                                            anchorEl={anchorElNotif}
+                                            keepMounted
+                                            open={Boolean(anchorElNotif)}
+                                            onClose={() => handleClose('notification')}
+                                            transformOrigin={{
+                                                vertical: 'top',
+                                                horizontal: 'right',
+                                            }}
+                                        >
+                                            <span className="sub_title">Notifications</span>
+                                            <a href="javascript:void(0)" className="link mark_all">Mark all as read</a>
+
+                                            {notificationData.list?.length > 0 &&
+                                                notificationData.list.map((item: any) =>
+                                                    <MenuItem className={`${item.read ? '' : 'unread'}`}>
+                                                        <div className="notif">
+                                                            <figure className="not_img">
+                                                                <img src={item?.image || dummy} alt="img" />
+                                                                {/* <span className="dot"></span> */}
+                                                                <span className={`${item.read ? '' : 'dot'}`}></span>
+                                                            </figure>
+                                                            <div className="info">
+                                                                <span className="who line-1">{item.title}</span>
+                                                                <span className="line-1">{item.notificationText}</span>
+                                                                {/* <span className="see">See the message</span> */}
+                                                            </div>
+                                                            <span className="time">St 12:30 AM</span>
+                                                        </div>
+                                                    </MenuItem>
+                                                )}
+                                            {/* <MenuItem>
                                             <div className="notif">
                                                 <figure className="not_img">
                                                     <img src={dummy} alt="img" />
@@ -531,28 +558,28 @@ const Header = (props: any) => {
                                                 <span className="time">St 12:30 AM</span>
                                             </div>
                                         </MenuItem> */}
-                                    </Menu>
-                                    {/* Notification close */}
+                                        </Menu>
+                                        {/* Notification close */}
 
+                                    </div>
                                 </div>
-                            </div>
-                            {!storageService.getItem("jwtToken") &&
-                                <li>
-                                    <a className="active" onClick={() => setShowModal(!showModal)}>
-                                        {'Log in'}
-                                    </a>
-                                </li>}
-                            <AuthModal
-                                showModal={showModal}
-                                setShowModal={setShowModal}
-                                history={props.history}
-                                firstTimePopup>
-                                {props.children}
-                            </AuthModal>
-                        </ul>
+                                {!storageService.getItem("jwtToken") &&
+                                    <li>
+                                        <a className="active" onClick={() => setShowModal(!showModal)}>
+                                            {'Log in'}
+                                        </a>
+                                    </li>}
+                                <AuthModal
+                                    showModal={showModal}
+                                    setShowModal={setShowModal}
+                                    history={props.history}
+                                    firstTimePopup>
+                                    {props.children}
+                                </AuthModal>
+                            </ul>
+                        </div>
                     </div>
-                </div>
-            </header>}
+                </header>}
         </>
     )
 }

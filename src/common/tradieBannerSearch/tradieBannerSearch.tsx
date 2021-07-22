@@ -570,7 +570,8 @@ const TradieBannerSearch = (props: PropsType) => {
                                 highlightFirstSuggestion={true}
                                 searchOptions={{
                                     componentRestrictions: { country: "au" },
-                                    types: ["address"]
+                                    // types: ["address"]
+                                    types: ["(cities)"]
                                 }}
                             // debounce={400}
                             >
