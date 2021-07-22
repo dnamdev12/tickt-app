@@ -45,6 +45,7 @@ import CommonViewAll from '../pages/home/builderHome/components/commonViewAll';
 
 import ChatComponent from '../pages/chat';
 import SupportChat from '../pages/tradieEditProfile/components/supportChat'
+import PaymentHistory from '../pages/paymentHistory';
 
 import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
 
@@ -303,6 +304,13 @@ const routes = [
         name: 'search-tradie-results',
         path: '/search-tradie-results',
         component: SearchResultTradie,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'payment-history',
+        path: '/payment-history',
+        component: PaymentHistory,
         authRoute: false,
         privateRoute: true,
     },

@@ -1,0 +1,220 @@
+import { useEffect, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
+import storageService from '../../utils/storageService';
+import dummy from '../../assets/images/u_placeholder.jpg';
+import searchIcon from '../../assets/images/main-search.png';
+import more from '../../assets/images/icon-direction-right.png';
+import moment from 'moment';
+import { renderTime } from '../../utils/common';
+
+interface Props {
+  isLoading: boolean,
+  paymentHistory: any;
+  paymentDetails: Array<any>;
+  getPaymentHistory: (page: number, search: string) => void;
+  getPaymentDetails: (jobId: string) => void;
+}
+
+const PaymentHistory = ({
+  isLoading,
+  paymentHistory,
+  paymentDetails,
+  getPaymentHistory,
+  getPaymentDetails,
+}: Props) => {
+  const history = useHistory();
+  const { search } = useLocation();
+
+  const [jobId, setJobId] = useState<string | null>('');
+  const [searchQuery, setSearchQuery] = useState('');
+
+  useEffect(() => {
+    const urlParams = new URLSearchParams(search);
+    const jobId = urlParams.get('jobId');
+    setJobId(jobId);
+
+    if (!jobId) {
+      getPaymentHistory(1, searchQuery);
+    } else {
+      getPaymentDetails(jobId);
+    }
+  }, [search, searchQuery, getPaymentHistory, getPaymentDetails]);
+
+  const userType = storageService.getItem('userType');
+  const { totalEarnings = 0, totalJobs = 0, revenue = {} } = paymentHistory || { };
+  const { revenueList = [] } = revenue;
+  const { status, tradieName, tradieImage, builderName, builderImage, jobName, from_date, to_date, totalEarning, milestones = [] }: any = paymentDetails || {};
+
+  if (isLoading) {
+    return null;
+  }
+
+  return jobId ? (
+    <div className="app_wrapper">
+      <div className="section_wrapper">
+        <div className="custom_container">
+          <div className="revenue_detail">
+            <div className="flex_row">
+              <div className="flex_col_sm_8">
+                <button className="back" onClick={() => history.goBack()}></button>
+                <ul className="total_count_card">
+                  <li>
+                    <div className="flex_row center_flex">
+                      <div className="flex_col_sm_7">
+                        <div className="img_txt_wrap">
+                          <figure className="job_img">
+                            <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="job-img" />
+                          </figure>
+                          <div className="details">
+                            <span className="inner_title">
+                              {jobName}
+                            </span>
+                            <span className="show_label">{status === 'Active' ? <label>{status}</label> : renderTime(from_date, to_date, 'MM-DD-YYYY')}</span>
+                          </div>
+                        </div>
+                      </div>
+                      <div className="flex_col_sm_5 text-right">
+                        <span className="sub_title">{totalEarning}</span>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <div>
+                  <ul className="milestones_check">
+                    {milestones.map(({ _id, milestone_name, milestoneEarning, isPhotoevidence, from_date, to_date, status }: any) => (
+                      <li
+                        key={_id}
+                        className={status !== 'Pending' ? 'check' : 'disabled'}
+                      >
+                        <div className="circle_stepper">
+                          <span></span>
+                        </div>
+                        <div className="info">
+                          <label>{milestone_name}</label>
+                          {isPhotoevidence && (
+                            <span>Photo evidence required</span>
+                          )}
+                          <span>
+                            {renderTime(from_date, to_date)}
+                          </span>
+                        </div>
+                        <div className="text-right">{milestoneEarning}</div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+              <div className="flex_col_sm_4 col_ruler">
+                <span className="sub_title">{userType === 1 ? 'Posted by' : 'Tradie'}</span>
+                <div className="tradie_card posted_by view_more ">
+                  <a href="javascript:void(0)" className="chat circle"></a>
+                  <div className="user_wrap">
+                    <figure className="u_img">
+                      <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="img" />
+                    </figure>
+                    <div className="details">
+                      <span className="name">{userType === 1 ? builderName : tradieName}</span>
+                      <span className="rating">4.9, 36 reviews</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="relate">
+                  <span className="sub_title">Job details</span>
+                  <span className="edit_icon" title="More" onClick={() => history.push(`/job-details-page?jobId=${jobId}`)}>
+                    <img src={more} alt="more" />
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  ) : (
+    <div className="app_wrapper">
+      <div className="section_wrapper">
+        <div className="custom_container">
+          <div className="relate">
+            <button className="back" onClick={() => history.goBack()}></button>
+            <span className="title">{userType === 1 ? 'My revenue' : 'Transaction history'}</span>
+          </div>
+          <ul className="total_count_card">
+            <li className="revenue">
+              <span className="show_label">{userType === 1 ? 'Total earnings' : 'Total payment sent'}</span>
+              <span className="title">${totalEarnings}</span>
+            </li>
+            <li className="job">
+              <span className="show_label">Total Jobs</span>
+              <span className="title">{totalJobs}</span>
+            </li>
+          </ul>
+          <div className="flex_row center_flex">
+            <div className="flex_col_sm_2">
+              <span className="xs_sub_title mb0">Last jobs</span>
+            </div>
+            <div className="flex_col_sm_4">
+              <div className="search_bar">
+                <input type="text" placeholder="Search" />
+                <span className="detect_icon_ltr">
+                  <img src={searchIcon} alt="search" />
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="last_jobs">
+            <div className="flex_row">
+              <div className="flex_col_sm_3">
+                <span className="form_label">Job</span>
+              </div>
+              <div className="flex_col_sm_2">
+                <span className="form_label">Status</span>
+              </div>
+              <div className="flex_col_sm_3">
+                <span className="form_label">Hired {userType === 1 ? 'by' : 'tradie'}</span>
+              </div>
+              <div className="flex_col_sm_2">
+                <span className="form_label">Date</span>
+              </div>
+              <div className="flex_col_sm_2">
+                <span className="form_label">Price</span>
+              </div>
+            </div>
+            {revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, earning }: any) => (
+              <div className="flex_row center_flex" key={_id}>
+                <div className="flex_col_sm_3">
+                  <div className="img_txt_wrap">
+                    <figure className="job_img">
+                      <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="job-img" />
+                    </figure>
+                    <div className="details" onClick={() => { history.push(`/payment-history?jobId=${jobId}`); }}>
+                      <span className="inner_title line-3">
+                        {tradeName}
+                      </span>
+                      <span className="inner_title line-3">
+                        {jobName}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex_col_sm_2">
+                  <span className="inner_title line-3">{status}</span>
+                </div>
+                <div className="flex_col_sm_3">
+                  <span className="inner_title line-3">{userType === 1 ? builderName : tradieName}</span>
+                </div>
+                <div className="flex_col_sm_2">
+                  <span className="inner_title">{moment(from_date).format('DD.MM.YYYY')}</span>
+                </div>
+                <div className="flex_col_sm_2">
+                  <span className="inner_title">{earning}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default PaymentHistory;

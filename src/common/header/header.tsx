@@ -390,7 +390,6 @@ const Header = (props: any) => {
                                     onClick={() => {
                                         setActiveLink('discover');
                                         history.push('/');
-                                        setStartTour(true);
                                     }}
                                     className={activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
@@ -456,12 +455,12 @@ const Header = (props: any) => {
                                             </span>
                                         </MenuItem>
                                         {[1, 2].includes(props.userType) && (
-                                            <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/my-revenue' : '/transaction-history'); }}>
-                                                <span className="setting_icon">
-                                                    <img src={revenue} alt="revenue" />
-                                                    {props.userType === 1 ? 'My revenue' : 'Transaction history'}
-                                                </span>
-                                            </MenuItem>
+                                          <MenuItem onClick={() => { handleClose('profile'); history.push('/payment-history'); }}>
+                                              <span className="setting_icon">
+                                              <img src={revenue} alt="revenue" />
+                                                  {props.userType === 1 ? 'My revenue' : 'Transaction history'}
+                                              </span>
+                                          </MenuItem>
                                         )}
                                         {[1, 2].includes(props.userType) && (
                                             <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/saved-jobs' : '/saved-tradespeople') }}>
