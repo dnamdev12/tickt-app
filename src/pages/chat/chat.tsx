@@ -41,7 +41,7 @@ const Chat = (props: PropTypes) => {
     const [builderCloudInfo, setBuilderCloudInfo] = useState<any>('');
     const [oneToOneChatList, setOneToOneChatList] = useState<any>(null);
 
-    const { tradieId, builderId, jobName, jobId } = props.history?.location?.state;
+    // const { tradieId, builderId, jobName, jobId } = props.history?.location?.state;
 
     // const { uid, displayName, photoURL, text } = user;
 
@@ -102,17 +102,17 @@ const Chat = (props: PropTypes) => {
     useEffect(() => {
         if (sessionStorage.getItem('userType') === 1 && props.tradieProfileData?.userId) {
             setUserId(props.tradieProfileData?.userId);
-            setChatDocumentId(props.tradieProfileData?.userId + '-' + builderId + '-' + jobId);
+            // setChatDocumentId(props.tradieProfileData?.userId + '-' + builderId + '-' + jobId);
         } else if (sessionStorage.getItem('userType') === 2 && props.builderProfile?.userId) {
             setUserId(props.builderProfile?.userId);
-            setChatDocumentId(props.builderProfile?.userId + '-' + tradieId + '-' + jobId);
+            // setChatDocumentId(props.builderProfile?.userId + '-' + tradieId + '-' + jobId);
         }
 
         let unsubscribe;
         if (userId) {
             unsubscribe = usersRef.doc(userId).onSnapshot(doc => {
                 const data: any = doc.data();
-                setOneToOneChatList(data.ongoingChatIds);
+                // setOneToOneChatList(data.ongoingChatIds);
             });
         }
 
@@ -176,8 +176,8 @@ const Chat = (props: PropTypes) => {
                 setNewChat('');
             } else {
                 await chatsRef.doc(chatDocumentId).set({
-                    jobId: jobId,
-                    jobName: jobName,
+                    // jobId: jobId,
+                    // jobName: jobName,
                     createdAt: moment().toDate(),
                 });
                 await chatsRef.doc(chatDocumentId).collection('messages').add({
