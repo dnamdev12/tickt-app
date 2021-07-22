@@ -17,24 +17,37 @@ import { format, formatRelative, lightFormat } from 'date-fns';
 
 import { auth, db, firebase } from '../../services/firebase';
 import { setShowToast } from '../../redux/common/actions';
+import sessionStorage from '../../utils/storageService';
 
-const Chat = () => {
+interface PropTypes {
+    builderProfile: any,
+    tradieProfileData: any,
+    isLoading: boolean,
+    history: any,
+}
+
+const Chat = (props: PropTypes) => {
     const [toggle, setToggle] = useState(false);
     const [initializing, setInitializing] = useState(true);
+    // firebase authenticated user details
     const [user, setUser] = useState<any>(() => auth.currentUser);
+    // tickt logged in user id
+    const [userId, setUserId] = useState<string>('');
     const [chats, setChats] = useState([]);
     const [newChat, setNewChat] = useState('');
     const [chatDocumentId, setChatDocumentId] = useState<string>('60f575ba18562930191ff6fa-60f56f6395672856a5aebdd33');
     const [isChatAlreadyExist, setIsChatAlreadyExist] = useState<boolean>(false);
     const [tradieCloudInfo, setTradieCloudInfo] = useState<any>('');
     const [builderCloudInfo, setBuilderCloudInfo] = useState<any>('');
+    const [oneToOneChatList, setOneToOneChatList] = useState<any>(null);
+
+    const { tradieId, builderId, jobName, jobId } = props.history?.location?.state;
 
     // const { uid, displayName, photoURL, text } = user;
 
     const chatsRef = db.collection('chats');
     const usersRef = db.collection('users');
     const query = chatsRef.doc(chatDocumentId).collection('messages').orderBy('createdAt').limit(25);
-
 
     const setTradieInfo = () => {
         usersRef.doc('60f575ba18562930191ff6fa').get().then(doc => {
@@ -65,7 +78,7 @@ const Chat = () => {
     useEffect(() => {
         setTradieInfo();
         setBuilderInfo();
-        const unsubscribe = auth.onAuthStateChanged(user => {
+        let unsubscribe = auth.onAuthStateChanged(user => {
             if (user) {
                 setUser(user);
                 chatsRef.doc(chatDocumentId).get().then(doc => {
@@ -85,6 +98,26 @@ const Chat = () => {
 
         return unsubscribe;
     }, [initializing]);
+
+    useEffect(() => {
+        if (sessionStorage.getItem('userType') === 1 && props.tradieProfileData?.userId) {
+            setUserId(props.tradieProfileData?.userId);
+            setChatDocumentId(props.tradieProfileData?.userId + '-' + builderId + '-' + jobId);
+        } else if (sessionStorage.getItem('userType') === 2 && props.builderProfile?.userId) {
+            setUserId(props.builderProfile?.userId);
+            setChatDocumentId(props.builderProfile?.userId + '-' + tradieId + '-' + jobId);
+        }
+
+        let unsubscribe;
+        if (userId) {
+            unsubscribe = usersRef.doc(userId).onSnapshot(doc => {
+                const data: any = doc.data();
+                setOneToOneChatList(data.ongoingChatIds);
+            });
+        }
+
+        return unsubscribe;
+    }, [userId, props.tradieProfileData, props.builderProfile]);
 
     useEffect(() => {
         const unsubscribe = query.onSnapshot(querySnapshot => {
@@ -125,7 +158,7 @@ const Chat = () => {
         return formattedDate;
     };
 
-    console.log(tradieCloudInfo, 'tradieCloudInfo', chats, "chats");
+    console.log(tradieCloudInfo, 'tradieCloudInfo', chats, "chats", props.history, "history");
 
     // builderId: '60f56f6395672856a5aebdd3'
     // tradieId: '60f575ba18562930191ff6fa'
@@ -143,8 +176,8 @@ const Chat = () => {
                 setNewChat('');
             } else {
                 await chatsRef.doc(chatDocumentId).set({
-                    jobId: '60f578c318562930191ff6fc',
-                    jobName: 'Jul 19 chat job',
+                    jobId: jobId,
+                    jobName: jobName,
                     createdAt: moment().toDate(),
                 });
                 await chatsRef.doc(chatDocumentId).collection('messages').add({
@@ -155,10 +188,10 @@ const Chat = () => {
                 setIsChatAlreadyExist(true);
                 setNewChat('');
                 await usersRef.doc('60f575ba18562930191ff6fa').update({
-                    ongoingChatIds: [...tradieCloudInfo.ongoingChatIds, chatDocumentId]
+                    // oneToOneChatIds: [...tradieCloudInfo.ongoingChatIds, chatDocumentId]
                 });
                 await usersRef.doc('60f56f6395672856a5aebdd3').update({
-                    ongoingChatIds: [...builderCloudInfo.ongoingChatIds, chatDocumentId]
+                    // oneToOneChatIds: [...builderCloudInfo.ongoingChatIds, chatDocumentId]
                 });
             }
         } catch (error) {
@@ -234,7 +267,7 @@ const Chat = () => {
                                 </div>
                                 <div className="message_wrapr">
                                     {chats.length > 0 && chats.map((msg: any) => {
-                                        console.log(msg.uid, "zz", user.uid,"xx", msg)
+                                        console.log(msg.uid, "zz", user.uid, "xx", msg)
                                         const messageClass = msg.uid === user.uid ? 'message' : 'message recive_msg';
                                         return (
                                             <React.Fragment>
