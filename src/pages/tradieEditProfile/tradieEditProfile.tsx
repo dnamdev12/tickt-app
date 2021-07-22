@@ -11,25 +11,26 @@ import close from '../../assets/images/ic-cancel-blue.png';
 import storageService from '../../utils/storageService';
 import CardDetails from './components/cardDetails';
 import MilestoneTemplates from './components/milestones/milestoneTemplates';
-
+import { getTnc } from '../../redux/profile/actions';
+import { getPrivacyPolicy } from '../../redux/profile/actions';
 interface BankDetails {
-  userId: string;
-  account_name: string;
-  account_number: string;
-  bsb_number: string;
+    userId: string;
+    account_name: string;
+    account_number: string;
+    bsb_number: string;
 }
 
 interface Settings {
-  messages: {
-    email: boolean,
-    pushNotification: boolean,
-    smsMessages: boolean,
-  },
-  reminders: {
-    email: boolean,
-    pushNotification: boolean,
-    smsMessages: boolean,
-  },
+    messages: {
+        email: boolean,
+        pushNotification: boolean,
+        smsMessages: boolean,
+    },
+    reminders: {
+        email: boolean,
+        pushNotification: boolean,
+        smsMessages: boolean,
+    },
 }
 
 interface Props {
@@ -48,6 +49,8 @@ interface Props {
 interface State {
     activeMenuType: string,
     isToggleSidebar: boolean,
+    privacyPolicy_url: string,
+    tnc: string,
 }
 
 class TradieEditProfile extends Component<Props, State> {
@@ -56,11 +59,27 @@ class TradieEditProfile extends Component<Props, State> {
         this.state = {
             activeMenuType: 'personal-information',
             isToggleSidebar: false,
+            privacyPolicy_url: '',
+            tnc: '',
         }
     }
 
-    componentDidMount() {
+    componentDidMount = async () => {
         // this.props.getTradieProfileView();
+        await this.prefetchItems();
+    }
+
+    prefetchItems = async () => {
+        let result: any = await getTnc();
+        let result_: any = await getPrivacyPolicy();
+        console.log({
+            result,
+            result_
+        },'---url')
+        this.setState({
+            privacyPolicy_url: result_?.data?.privacyPolicy_url,
+            tnc: result?.data?.privacyPolicy_url
+        })
     }
 
     toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
@@ -189,10 +208,12 @@ class TradieEditProfile extends Component<Props, State> {
                             {activeMenuType === 'privacy-policy' && (
                                 <PrivacyPolicyComponent
                                     {...props}
+                                    privacyPolicy_url={this.state.privacyPolicy_url}
                                 />)}
                             {activeMenuType === 'terms-of-use' && (
                                 <TermsOfUseComponent
                                     {...props}
+                                    privacyPolicy_url={this.state.tnc}
                                 />)}
                         </div>
 

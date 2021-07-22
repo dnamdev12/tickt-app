@@ -316,11 +316,6 @@ const JobMilestones = (props: any) => {
                                                 </Draggable>
                                             ))}
                                         {provided.placeholder}
-                                        {localMilestones?.length === 0 && (
-                                            <figure className="placeholder_img">
-                                                <img src={milestonesPlaceholder} alt="milestones-placeholder" />
-                                            </figure>
-                                        )}
                                     </ul>
                                 )}
                             </Droppable>

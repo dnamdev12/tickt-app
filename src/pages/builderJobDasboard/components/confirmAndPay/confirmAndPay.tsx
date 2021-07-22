@@ -32,7 +32,7 @@ const ConfirmAndPay = (props: any) => {
         let data: any = result.data;
         if (data?.length) {
             let filterItems: any = data.map((item: any) => {
-                let exp_date = (item?.exp_month).toLocaleString('en-US', {minimumIntegerDigits: 2, useGrouping:false})
+                let exp_date = (item?.exp_month).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
                 return {
                     cardId: item?.cardId,
                     number: `${item?.last4}`,
@@ -56,7 +56,7 @@ const ConfirmAndPay = (props: any) => {
     }, [])
 
     useEffect(() => {
-        if(toggle == false){
+        if (toggle == false) {
             fetchMyAPI();
         }
     }, [toggle]);
@@ -80,6 +80,7 @@ const ConfirmAndPay = (props: any) => {
                 editItem={editItem}
                 backToScreen={backToScreen}
                 setDetials={setDetials}
+                hideExtra={props.hideExtra}
                 onSubmitAccept={props.onSubmitAccept}
             />
         )
@@ -248,7 +249,20 @@ const ConfirmAndPay = (props: any) => {
                             {'Continue'}
                         </button>
                     </React.Fragment>
-                ) : null}
+                ) : (
+                    <React.Fragment>
+                        <div className="form_field">
+                            <span className="payment_note">
+                                Tickt does not store your payment information.
+                            </span>
+                            <p className="commn_para">
+                                Tickt does not handle payment for jobs, we only facilitate
+                                communication between tradies and builders. If you have problems
+                                receiving your payment, please contact your builder.
+                            </p>
+                        </div>
+                    </React.Fragment>
+                )}
 
             </div>
         </div>

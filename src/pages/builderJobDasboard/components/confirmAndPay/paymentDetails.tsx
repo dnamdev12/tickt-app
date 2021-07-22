@@ -33,7 +33,7 @@ const PaymentDetails = (props: any) => {
     }, [editItem])
 
     useEffect(() => {
-        console.log({isChange})
+        console.log({ isChange })
         if (Array.isArray(force)) {
             forceUpdate({})
         } else {
@@ -213,6 +213,7 @@ const PaymentDetails = (props: any) => {
                                     setStateData((prev: any) => ({ ...prev, number: e.target.value }));
                                     setErrorsOnChange({ name: 'number', value: e.target.value });
                                 }}
+                                style={{ border: '1px solid #dfe5ef', padding: '14px 18px', backgroundColor: '#dfe5ef70' }}
                                 maxLength={10}
                                 readOnly={true}
                             />
@@ -315,6 +316,7 @@ const PaymentDetails = (props: any) => {
                                             setErrorsOnChange({ name: 'cvv', value: e.target.value });
                                         }}
                                         maxLength={3}
+                                        style={{ border: '1px solid #dfe5ef', padding: '14px 18px', backgroundColor: '#dfe5ef70' }}
                                         readOnly={true}
                                     />
                                     :
@@ -336,24 +338,17 @@ const PaymentDetails = (props: any) => {
                         </div>
                     </div>
                 </div>
-                {/* {console.log({
-                    isTrue,
-                    isError,
-                    isErrors,
-                    stateData,
-                    errors
-                })}  */}
                 {stateData?.fetched ? (
                     <button
                         onClick={() => { handleContinue() }}
                         className={`fill_btn full_btn btn-effect ${!isTrue && !isError && !isErrors && isChange ? '' : 'disable_btn'}`}>
-                        {'Continue'}
+                        {!props?.hideExtra ? 'Continue' : 'Update Card'}
                     </button>
                 ) : (
                     <button
                         onClick={() => { handleContinue() }}
                         className={`fill_btn full_btn btn-effect ${!isTrue && !isError && !isErrors ? '' : 'disable_btn'}`}>
-                        {'Continue'}
+                        {!props?.hideExtra ? 'Continue' : 'Save Card'}
                     </button>
                 )}
             </div>

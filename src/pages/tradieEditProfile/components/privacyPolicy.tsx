@@ -1,6 +1,6 @@
 import { Component } from 'react'
-import { getPrivacyPolicy } from '../../../redux/profile/actions';
-
+// import { getPrivacyPolicy } from '../../../redux/profile/actions';
+import { setLoading } from '../../../redux/common/actions'
 interface Props {
 }
 
@@ -18,20 +18,25 @@ export class PrivacyPolicy extends Component<Props, State> {
         }
     }
 
-    componentDidMount = async () => {
-      const { data: { privacyPolicy_url } } = await getPrivacyPolicy();
-      this.setState({
-        url: privacyPolicy_url,
-      });
-    }
+    // componentDidMount = async () => {
+    //   const { data: { privacyPolicy_url } } = await getPrivacyPolicy();
+    //   this.setState({
+    //     url: privacyPolicy_url,
+    //   });
+    // }
 
     render() {
         let props: any = this.props;
-        console.log(this.state, "state--------------", props, "props------------");
+        let url: any = props?.privacyPolicy_url;
+        console.log({ url, props }, '---url')
+
+        if (!url) {
+            setLoading(true);
+        }
         return (
             <div className="h-75vh">
-                <span className="sub_title"> Privacy Policy</span>
-                {this.state.url && <iframe src={this.state.url} title="Privacy Policy" width="100%" height="100%" />}
+                {/* <span className="sub_title"> Privacy Policy</span> */}
+                {url && <iframe src={url} title="Privacy Policy" width="100%" height="100%" />}
             </div>
         )
     }

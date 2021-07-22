@@ -131,11 +131,12 @@ const Header = (props: any) => {
         if (data) {
             if (!Object.values(data).includes([''])) {
                 if (window_.Intercom) {
-                    window_.Intercom('shutdown');
-                    window_.Intercom('boot', {
+                    // window_.Intercom('shutdown');
+                    window_.Intercom('update', {
+                        app_id: 'tvbm4bhr',
                         name: data.userName,
                         email: data.email,
-                        user_id: data._id
+                        user_id: data._id,
                     });
                 }
             } else {
@@ -462,14 +463,14 @@ const Header = (props: any) => {
                                         </span>
 
 
-                                        {[1, 2].includes(props.userType) && (
-                                            <MenuItem onClick={() => { handleClose('profile'); history.push(props.userType === 1 ? '/saved-jobs' : '/saved-tradespeople') }}>
-                                                <span className="setting_icon">
-                                                    <img src={profile} alt="profile" />
-                                                    {'My Profile'}
-                                                </span>
-                                            </MenuItem>
-                                        )}
+                                        <MenuItem onClick={() => { 
+                                            handleClose('pofile'); 
+                                            history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
+                                            <span className="setting_icon">
+                                                <img src={profile} alt="profile" />
+                                                {'My Profile'}
+                                            </span>
+                                        </MenuItem>
                                         {[1, 2].includes(props.userType) && (
                                             <MenuItem onClick={() => { handleClose('profile'); history.push('/payment-history'); }}>
                                                 <span className="setting_icon">
