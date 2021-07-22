@@ -58,6 +58,9 @@ class OpenJobs extends Component<Props, State> {
         if (jobId?.length && status?.length) {
             let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType}`)
             this.props.history.push(`/job-detail?${urlEncode}`);
+        } else {
+            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${'open'}&activeType=${props?.activeType}`)
+            this.props.history.push(`/job-detail?${urlEncode}`);
         }
     }
 

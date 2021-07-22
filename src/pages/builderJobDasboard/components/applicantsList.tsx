@@ -134,6 +134,7 @@ const ApplicantsList = (props: Props) => {
                             specializationId={specializationId}
                             jobId={jobid}
                             hideInvite={false}
+                            showStatus
                         />
                     ))
                     :

@@ -78,8 +78,8 @@ function* addBankDetails({ data }: any) {
   );
   setLoading(false);
 
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
-    setShowToast(true, response.message);
     yield put({
       type: actionTypes.ADD_BANK_DETAILS_END,
       payload: response.result
@@ -100,8 +100,8 @@ function* updateBankDetails({ data }: any) {
   );
   setLoading(false);
 
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
-    setShowToast(true, response.message);
     yield put({
       type: actionTypes.UPDATE_BANK_DETAILS_END,
       payload: response.result
@@ -121,8 +121,8 @@ function* removeBankDetails() {
   );
   setLoading(false);
 
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
-    setShowToast(true, response.message);
     yield put({
       type: actionTypes.REMOVE_BANK_DETAILS_END,
       payload: { success: true }
@@ -208,11 +208,41 @@ function* updateSettings({ settings, newSettings }: any) {
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.putToJson(userType === 1 ? Urls.tradieUpdateSettings : Urls.builderUpdateSettings, settings);
   setLoading(false);
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
-    setShowToast(true, response.message);
     yield put({ type: actionTypes.SET_SETTINGS, payload: newSettings });
   } else {
     yield put({ type: actionTypes.SET_SETTINGS, payload: {} });
+  }
+}
+
+function* getPaymentHistory({ page, search }: any) {
+  const userType = storageService.getItem('userType');
+
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie' : 'builder'}/myRevenue?page=${page}${search ? `&search=${search}` : ''}`);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_PAYMENT_HISTORY, payload: response.result?.[0] || {} });
+  } else {
+    setShowToast(true, response.message);
+    yield put({ type: actionTypes.SET_PAYMENT_HISTORY, payload: {} });
+  }
+}
+
+function* getPaymentDetails({ jobId }: any) {
+  const userType = storageService.getItem('userType');
+
+  setLoading(true);
+  const response: FetchResponse = yield NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie' : 'builder'}/revenueDetail?jobId=${jobId}`);
+  setLoading(false);
+
+  if (response.status_code === 200) {
+    yield put({ type: actionTypes.SET_PAYMENT_DETAILS, payload: response.result });
+  } else {
+    setShowToast(true, response.message);
+    yield put({ type: actionTypes.SET_PAYMENT_DETAILS, payload: {} });
   }
 }
 
@@ -232,6 +262,8 @@ function* authWatcher() {
   yield takeLatest(actionTypes.GET_SAVED_JOBS, getSavedJobList);
   yield takeLatest(actionTypes.GET_SETTINGS, getSettings);
   yield takeLatest(actionTypes.UPDATE_SETTINGS, updateSettings);
+  yield takeLatest(actionTypes.GET_PAYMENT_HISTORY, getPaymentHistory);
+  yield takeLatest(actionTypes.GET_PAYMENT_DETAILS, getPaymentDetails);
 }
 
 export default authWatcher;

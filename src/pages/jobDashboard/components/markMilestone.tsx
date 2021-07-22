@@ -79,7 +79,7 @@ const MarkMilestone = ({
   markMilestoneComplete,
   bankDetails,
 }: Proptypes) => {
-  const history = useHistory();
+  const history: any = useHistory();
   let params: any = new URLSearchParams(history.location?.search);
   params = {
     jobId: params.get('jobId'),
@@ -456,7 +456,19 @@ const MarkMilestone = ({
             <div className="flex_col_sm_6 col_ruler">
               <span className="sub_title">Posted by</span>
               <div className="tradie_card posted_by view_more ">
-                <a href="javascript:void(0)" className="chat circle"></a>
+                <a href="javascript:void(0)" className="chat circle"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.push({
+                      pathname: `/chat`,
+                      state: {
+                        builderId: builderId,
+                        jobId: jobId,
+                        jobName: jobName
+                      }
+                    })
+                  }
+                  } />
                 <div className="user_wrap" onClick={() => history.push(`/builder-info?builderId=${builderId}`)}>
                   <figure className="u_img">
                     <img src={builderImage || dummy} alt="traide-img" />

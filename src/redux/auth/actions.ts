@@ -77,21 +77,20 @@ export const callLogin = async (data: any) => {
   setLoading(false);
   if (response.status_code === 200) {
     const firstLogin = storageService.getItem('firstLogin');
-    console.log({
-      response
-    });
+
     if (!firstLogin) {
       storageService.setItem('firstLogin', 'true');
     } else if (firstLogin === 'true') {
       storageService.setItem('firstLogin', 'false');
     }
-    console.log({
-      user_type: response.result.user_type
-    })
 
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    storageService.setItem("email", response.result.email);
+    storageService.setItem("userInfo", {
+      "email": response.result.email,
+      "userName": response.result.userName,
+      "_id": response.result._id,
+    });
 
     if (response.result.user_type === 1) {
       store.dispatch(getProfileTradie());
