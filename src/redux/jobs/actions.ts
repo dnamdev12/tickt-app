@@ -744,3 +744,29 @@ export const updateTemplate = async (data:any) => {
   setShowToast(true, response.message);
   return { success: false };
 }
+
+// builder can update reviews on tradie profile
+export const updateReviewTradie = async (data:any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}builder/updateReviewTradie`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+
+// builder can delete review on tradie profile
+export const deleteReviewTradie = async (data:any) => {
+  setLoading(true)
+  const response: FetchResponse = await NetworkOps.delete(`${Urls.job}builder/removeReviewTradie?reviewId=${data?.reviewId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+

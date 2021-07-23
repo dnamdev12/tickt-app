@@ -113,7 +113,7 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
-                                            {`${homeSearchJobData?.length} results`}
+                                            {`${homeSearchJobData?.length} result(s)`}
                                         </span>
                                     </span>
                                     <SearchFilters

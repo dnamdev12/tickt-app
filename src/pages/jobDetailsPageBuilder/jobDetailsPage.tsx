@@ -763,7 +763,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     )
                                                 })}
                                                 {jobDetailsData?.questionsCount > questionList.length && <div className="text-center">
-                                                    <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>Load more</button>
+                                                    <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>View more</button>
                                                 </div>}
                                             </div>
                                         </div>
