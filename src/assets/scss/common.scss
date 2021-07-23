@@ -5576,6 +5576,9 @@ div#light-box div {
 }
 //----------Chat close-------------//
 
+
+//----------Tour Guide close-------------//
+
 .h-75vh {
   height: 75vh;
 }
@@ -5583,6 +5586,31 @@ div#light-box div {
 .no-scroll {
   overflow: hidden;
 }
+
+.tour-tooltip {
+  width: 380px;
+
+  &-content {
+    text-align: center;
+    padding: 10px;
+    color: var(--white);
+    height: 90px;
+  }
+
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      font-size: 16px;
+      padding: 10px;
+      color: var(--yellow);
+      background-color: transparent;
+    }
+  }
+}
+
+//----------Chat close-------------//
 
 .visibility-hidden {
   visibility: hidden;
