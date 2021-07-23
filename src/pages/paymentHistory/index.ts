@@ -7,10 +7,11 @@ import {
 } from '../../redux/profile/actions';
 
 const mapStateToProps = (state: any) => {
-    const { profile: { paymentHistory, paymentDetails }, common: { isLoading } } = state;
+    const { profile: { paymentHistory, paymentDetails, searching }, common: { isLoading } } = state;
 
     return {
       isLoading,
+      searching,
       paymentHistory,
       paymentDetails,
     };

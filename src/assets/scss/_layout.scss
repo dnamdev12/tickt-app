@@ -163,18 +163,19 @@ header {
         transition-duration: 0.5s;
         transition-timing-function: ease-out;
         .badge {
-          width: 20px;
-          height: 20px;
+          width: 22px;
+          height: 22px;
           display: flex;
           justify-content: center;
           align-items: center;
           border-radius: 20px;
           background-color: var(--yellow);
           position: absolute;
-          left: -8px;
+          left: -11px;
           top: 0px;
           color: var(--blue);
-          font-family: 'Neue Haas Grotesk Text Pro Bold';
+          font-family: 'Neue Haas Grotesk Text Pro Medium';
+          font-size: 10px;
         }
       }
   

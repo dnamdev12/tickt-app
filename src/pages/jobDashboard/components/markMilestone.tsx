@@ -174,7 +174,7 @@ const MarkMilestone = ({
       case 'account_number':
         return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 6 ? 'Minimum 6 digits are required' : '';
       case 'bsb_number':
-        return value.length !== 6 ? 'BSB number should be of 6 digits' : '';
+        return !/^\d{3}-\d{3}$/.test(value) ? 'Please enter valid BSB Number like XYZ-ZZZ' : '';
     }
 
     return '';
@@ -692,13 +692,12 @@ const MarkMilestone = ({
                 <label className="form_label">BSB Number</label>
                 <div className="text_field">
                   <input
-                    type="number"
+                    type="text"
                     placeholder="Enter BSB number"
                     name="bsb_number"
                     value={data.bsb_number}
                     onChange={handleChange}
-                    maxLength={6}
-                    max={999999}
+                    maxLength={7}
                     readOnly={readOnly}
                   />
                 </div>

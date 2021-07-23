@@ -36,7 +36,6 @@ const DISABLE_HEADER = [
 const Header = (props: any) => {
     let type = storageService.getItem('userType');
 
-    const [tourDialog, setTourDialog] = useState(false);
     const [userType, setUserType] = useState(null)
     const [anchorEl, setAnchorEl] = useState(null);
     const [anchorElNotif, setAnchorElNotif] = useState(null);
@@ -80,7 +79,7 @@ const Header = (props: any) => {
 
         const firstLogin = storageService.getItem('firstLogin');
         if (firstLogin === 'true') {
-            setTourDialog(true);
+            setStartTour(true);
         }
     }, []);
 
@@ -135,7 +134,7 @@ const Header = (props: any) => {
             pathname
         })
         if (pathname === '/login') {
-            window_.Intercom('hide');
+            // window_.Intercom('hide');
         }
 
         if (pathname === '/') {
@@ -348,23 +347,6 @@ const Header = (props: any) => {
                 }}
                 callback={handleCallback}
             />
-            <Dialog
-                open={tourDialog}
-                onClose={handleClose}
-                className="tour-dialog"
-            >
-                <DialogTitle id="alert-dialog-title">
-                    {"First time?"}
-                </DialogTitle>
-                <DialogActions>
-                    <Button onClick={() => { setStartTour(true); setTourDialog(false); handleFirstLogin(); }} color="primary" autoFocus>
-                        {'Yes'}
-                    </Button>
-                    <Button onClick={() => { setTourDialog(false); handleFirstLogin(); }} color="primary">
-                        {'No'}
-                    </Button>
-                </DialogActions>
-            </Dialog>
             {showHeader && <header id="header">
                 <div className="custom_container">
                     <div className="flex_headrow">

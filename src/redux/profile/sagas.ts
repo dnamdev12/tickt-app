@@ -216,12 +216,20 @@ function* updateSettings({ settings, newSettings }: any) {
   }
 }
 
-function* getPaymentHistory({ page, search }: any) {
+function* getPaymentHistory({ page, search, init }: any) {
   const userType = storageService.getItem('userType');
 
-  setLoading(true);
+  if (init) {
+    setLoading(true);
+  } else {
+    yield put({ type: actionTypes.SET_SEARCHING, payload: true });
+  }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie' : 'builder'}/myRevenue?page=${page}${search ? `&search=${search}` : ''}`);
-  setLoading(false);
+  if (init) {
+    setLoading(false);
+  } else {
+    yield put({ type: actionTypes.SET_SEARCHING, payload: false });
+  }
 
   if (response.status_code === 200) {
     yield put({ type: actionTypes.SET_PAYMENT_HISTORY, payload: response.result?.[0] || {} });

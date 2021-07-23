@@ -12,6 +12,7 @@ const initialState = {
   builderProfile: {},
   savedJobs: [],
   settings: { messages: {}, reminders: {} },
+  searching: false,
   paymentHistory: {},
   paymentDetails: {},
 };
@@ -87,6 +88,12 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         settings: action.payload,
+      };
+
+    case actionTypes.SET_SEARCHING:
+      return {
+        ...state,
+        searching: action.payload,
       };
 
     case actionTypes.SET_PAYMENT_HISTORY:
