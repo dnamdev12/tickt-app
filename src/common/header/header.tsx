@@ -352,7 +352,28 @@ const Header = (props: any) => {
                 styles={{
                     options: {
                         zIndex: 2000,
+                        textColor: 'white',
+                        backgroundColor: 'transparent',
+                        primaryColor: 'transparent',
                     },
+                    buttonClose: {
+                      display: 'none',
+                    },
+                    buttonBack: {
+                      color: 'var(--yellow)',
+                    },
+                    buttonNext: {
+                      color: 'var(--yellow)',
+                    },
+                    buttonSkip: {
+                      color: 'var(--yellow)',
+                    },
+                    tooltipContent: {
+                      height: '82px',
+                    },
+                    overlay: {
+                      background: 'linear-gradient(180deg, rgba(22, 29, 74, 0.80) 20%, rgba(22, 29, 74, 0.5) 30%)',
+                    }
                 }}
                 floaterProps={{
                     hideArrow: true,
