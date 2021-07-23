@@ -5118,6 +5118,17 @@ div#light-box div {
     }
   }
 }
+
+.payment_check{
+  max-width: 670px;
+  .f_spacebw{
+    align-items: flex-end;
+  }
+  .xs_sub_title, .info{
+    margin-bottom: 0 !important;
+  }
+}
+
 .last_jobs{
   margin: 32px 0 15px;
   .center_flex {
@@ -5159,7 +5170,7 @@ div#light-box div {
     @media(max-width: 768px){
       width: 66%;
     }
-    .inner_title{
+    .inner_title, .xs_head{
       margin: 0;
     }
   }
@@ -5181,6 +5192,9 @@ div#light-box div {
     @media(max-width: 650px){
       padding: 8px 10px 8px 35px;
     }
+  }
+  .detect_icon_ltr{
+    cursor: pointer;
   }
   &.active{
     input{
@@ -5573,7 +5587,8 @@ div#light-box div {
 }
 
 .react-joyride__overlay {
-  background-color: rgba(0, 0, 0, 0.8) !important;
+  background: linear-gradient(176.31deg, rgba(22, 29, 74, 0.2) 2.34%, rgba(22, 29, 74, 0.75) 75.28%) !important;
+  transform: matrix(1, 0, 0, -1, 0, 0);
 }
 
 .react-joyride__tooltip {
@@ -5581,7 +5596,7 @@ div#light-box div {
   background-color: transparent !important;
 
   button {
-    color: white !important;
+    color: var(--yellow) !important;
     background-color: transparent !important;
   }
 

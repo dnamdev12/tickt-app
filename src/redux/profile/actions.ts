@@ -127,7 +127,7 @@ export const updateSettings = (settings: any, newSettings: any) => ({
 export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data });
 export const getProfileBuilder = () => ({ type: actionTypes.GET_PROFILE_BUILDER });
 
-export const getPaymentHistory = (page: number, search: string) => ({ type: actionTypes.GET_PAYMENT_HISTORY, page, search });
+export const getPaymentHistory = (page: number, search: string, init: boolean) => ({ type: actionTypes.GET_PAYMENT_HISTORY, page, search, init });
 export const getPaymentDetails = (jobId: string) => ({ type: actionTypes.GET_PAYMENT_DETAILS, jobId });
 
 export const tradieUpdatePassword = async (data: any) => {
