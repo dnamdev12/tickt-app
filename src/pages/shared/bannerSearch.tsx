@@ -721,8 +721,11 @@ const BannerSearch = (props: PropsType) => {
                                                             })}
                                                         </div>
                                                     </div>
-                                                </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
-                                                    <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                </div> : inputFocus2 && !suggestions?.length && !Object.keys(selectedAddress).length ? (
+                                                    <div
+                                                        style={{ minHeight: '50px' }}
+                                                        className="custom_autosuggestion location"
+                                                        id="autocomplete-dropdown-container">
                                                         <div className="flex_row recent_search auto_loc">
                                                             <div className="flex_col_sm_4">
                                                                 <div className="loc_suggestions">
@@ -839,7 +842,7 @@ const BannerSearch = (props: PropsType) => {
                     </div>
                 </ul>
             </form>
-        </div>
+        </div >
     )
 }
 
@@ -865,3 +868,10 @@ const mapDispatchToProps = (dispatch: any) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BannerSearch);
+
+/**
+
+    No-result found conditions
+    </div> : !loading || addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
+
+ **/
