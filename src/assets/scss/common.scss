@@ -5576,7 +5576,8 @@ div#light-box div {
 }
 //----------Chat close-------------//
 
-//----------Tour Guid start-------//
+
+//----------Tour Guide close-------------//
 
 .h-75vh {
   height: 75vh;
@@ -5586,30 +5587,30 @@ div#light-box div {
   overflow: hidden;
 }
 
-.react-joyride__overlay {
-  background: linear-gradient(176.31deg, rgba(22, 29, 74, 0.2) 2.34%, rgba(22, 29, 74, 0.75) 75.28%) !important;
-  transform: matrix(1, 0, 0, -1, 0, 0);
-}
+.tour-tooltip {
+  width: 380px;
 
-.react-joyride__tooltip {
-  color: white !important;
-  background-color: transparent !important;
-
-  button {
-    color: var(--yellow) !important;
-    background-color: transparent !important;
+  &-content {
+    text-align: center;
+    padding: 10px;
+    color: var(--white);
+    height: 90px;
   }
 
-  [data-action='close'] {
-    display: none;
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+
+    button {
+      font-size: 16px;
+      padding: 10px;
+      color: var(--yellow);
+      background-color: transparent;
+    }
   }
 }
 
-.tour-dialog .MuiDialog-paper {
-  padding: 40px 100px;
-}
-
-//----------Tour Guid close-------//
+//----------Chat close-------------//
 
 .visibility-hidden {
   visibility: hidden;

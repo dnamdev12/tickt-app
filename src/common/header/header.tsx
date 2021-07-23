@@ -55,6 +55,7 @@ const Header = (props: any) => {
     const [startTour, setStartTour] = useState(false);
     const [isFalse, setIsFalse] = useState(false);
     const forceUpdate = useForceUpdate();
+    const [activeTarget, setActiveTarget] = useState('');
 
 
     function useForceUpdate() {
@@ -274,6 +275,8 @@ const Header = (props: any) => {
             || document.documentElement.clientWidth
             || document.body.clientWidth;
 
+        setActiveTarget(target);
+
         if (action === 'reset') {
             setStartTour(false);
         } else if (action === 'start' && width <= 650) {
@@ -353,10 +356,41 @@ const Header = (props: any) => {
                     options: {
                         zIndex: 2000,
                     },
+                    overlay: {
+                      background: 'linear-gradient(180deg, rgba(22, 29, 74, 0.80) 20%, rgba(22, 29, 74, 0.5) 30%)',
+                    }
                 }}
                 floaterProps={{
                     hideArrow: true,
                 }}
+                tooltipComponent={({
+                    continuous,
+                    index,
+                    step,
+                    backProps,
+                    skipProps,
+                    primaryProps,
+                    tooltipProps,
+                    isLastStep,
+                    size,
+                }) => (
+                    <div className="tour-tooltip" {...tooltipProps}>
+                        <div className="tour-tooltip-content">{step.content}</div>
+                        <div className="tour-tooltip-footer">
+                            <button {...skipProps}>Skip</button>
+                            <div>
+                                {index > 0 && (
+                                    <button {...backProps}>Back</button>
+                                )}
+                                {continuous && (
+                                    <button {...primaryProps} title={isLastStep ? 'Done' : 'Next'}>
+                                        {isLastStep ? 'Done' : 'Next'} {step.showProgress && `(${index + 1}/${size})`}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
                 callback={handleCallback}
             />
             {showHeader && <header id="header">
@@ -385,24 +419,24 @@ const Header = (props: any) => {
                                         setActiveLink('discover');
                                         history.push('/');
                                     }}
-                                    className={activeLink === 'discover' ? 'active' : ''}>
+                                    className={startTour ? activeTarget === '.tour-discover a' ? 'active' : '' : activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
                                 </a>
                             </li>
                             <li className="tour-jobs">
-                                <a className={activeLink === 'jobs' ? 'active' : ''} onClick={jobClick}>
+                                <a className={startTour ? activeTarget === '.tour-jobs a' ? 'active' : '' : activeLink === 'jobs' ? 'active' : ''} onClick={jobClick}>
                                     {'Jobs'}
                                 </a>
                             </li>
 
                             {userType === 2 &&
                                 <li className="tour-post">
-                                    <a className={activeLink === 'post' ? 'active' : ''} onClick={postClicked}>
+                                    <a className={startTour ? activeTarget === '.tour-post a' ? 'active' : '' : activeLink === 'post' ? 'active' : ''} onClick={postClicked}>
                                         {'Post'}
                                     </a>
                                 </li>}
                             <li className="tour-chat">
-                                <a className={activeLink === 'chat' ? 'active' : ''} onClick={chatClicked}>
+                                <a className={startTour ? activeTarget === '.tour-chat a' ? 'active' : '' : activeLink === 'chat' ? 'active' : ''} onClick={chatClicked}>
                                     {'Chat'}
                                 </a>
                             </li>
