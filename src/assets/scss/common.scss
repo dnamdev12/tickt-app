@@ -5193,6 +5193,9 @@ div#light-box div {
       padding: 8px 10px 8px 35px;
     }
   }
+  .detect_icon_ltr{
+    cursor: pointer;
+  }
   &.active{
     input{
       background-color: #f7f8fa;
@@ -5584,7 +5587,8 @@ div#light-box div {
 }
 
 .react-joyride__overlay {
-  background-color: rgba(0, 0, 0, 0.8) !important;
+  background: linear-gradient(176.31deg, rgba(22, 29, 74, 0.2) 2.34%, rgba(22, 29, 74, 0.75) 75.28%) !important;
+  transform: matrix(1, 0, 0, -1, 0, 0);
 }
 
 .react-joyride__tooltip {
@@ -5592,7 +5596,7 @@ div#light-box div {
   background-color: transparent !important;
 
   button {
-    color: white !important;
+    color: var(--yellow) !important;
     background-color: transparent !important;
   }
 

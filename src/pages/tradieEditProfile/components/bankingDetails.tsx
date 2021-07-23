@@ -51,7 +51,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
         case 'account_number':
           return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 6 ? 'Minimum 6 digits are required' : '';
         case 'bsb_number':
-          return value.length !== 6 ? 'BSB number should be of 6 digits' : '';
+          return !/^\d{3}-\d{3}$/.test(value) ? 'Please enter valid BSB Number like XYZ-ZZZ' : '';
       }
 
       return '';
@@ -106,6 +106,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
     };
 
     const userType = storageService.getItem('userType');
+    const updated = data.account_name !== bankDetails.account_name || data.account_number !== bankDetails.account_number || data.bsb_number !== bankDetails.bsb_number;
 
     return (
         <div className="flex_row">
@@ -145,18 +146,17 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
                     <label className="form_label">BSB Number</label>
                     <div className="text_field">
                         <input
-                          type="number"
+                          type="text"
                           placeholder="Enter BSB Number"
                           name="bsb_number"
                           value={data.bsb_number}
                           onChange={handleChange}
-                          maxLength={6}
-                          max={999999}
+                          maxLength={7}
                         />
                     </div>
                     <span className="error_msg">{errors.bsb_number}</span>
                 </div>
-                <button className="fill_btn full_btn btn-effect" onClick={handleSave}>Save changes</button>
+                <button className={`fill_btn full_btn btn-effect${!updated ? ' disabled' : ''}`} onClick={handleSave}>Save changes</button>
             </div>
         </div>
     );
