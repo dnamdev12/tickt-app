@@ -33,7 +33,7 @@ const ReviewInfoBox = (props: any) => {
                     </div>
                 </div>
                 <p className="commn_para ---" title="">
-                    {!(item.review)?.length ? item.review :
+                    {(item.review)?.length ? item.review :
                         <i style={{color:'#929292'}}>
                             {'No Comments'}
                         </i>

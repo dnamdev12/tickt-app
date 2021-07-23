@@ -1004,6 +1004,7 @@ class TradieInfo extends Component<Props, State> {
                                                                 classNames="review-stars"
                                                                 value={reviewData?.rating}
                                                                 count={5}
+                                                                edit={false}
                                                                 size={30}
                                                                 activeColor="#ffd700"
                                                             />
