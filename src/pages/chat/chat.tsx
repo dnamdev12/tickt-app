@@ -13,7 +13,7 @@ import sendBtn from '../../assets/images/ic-send.png';
 import loader from "../../assets/images/page-loader.gif";
 
 import { auth, db } from '../../services/firebase';
-import { setShowToast } from '../../redux/common/actions';
+import { setShowToast, setLoading } from '../../redux/common/actions';
 import { inboxFormatDateTime } from '../../utils/common';
 import { format, formatRelative, lightFormat } from 'date-fns';
 import {
@@ -53,16 +53,20 @@ const Chat = (props: PropTypes) => {
     useEffect(() => {
         console.log("Calling Did Mount");
         console.log("roomId:: from didmout", selectedRoomID);
+        (async () => {
+            setLoading(true);
+            if (tradieId && builderId && jobName && jobId) {
+                await setInitialItems();
+            }
+            await getFirebaseInboxData(onUpdateofInbox);
+            setLoading(false);
+        })();
 
-        if (tradieId && builderId && jobName && jobId) {
-            setInitialItems();
-        }
-
-        getFirebaseInboxData(onUpdateofInbox);
 
         return () => {
             // debugger;
             stopListeningOfRoom(selectedRoomID);
+            selectedRoomID = '';
         }
     }, []);
 
@@ -73,11 +77,11 @@ const Chat = (props: PropTypes) => {
             return;
         } else {
             //create room
-            createRoom(jobId, tradieId, builderId, jobName);
+            await createRoom(jobId, tradieId, builderId, jobName);
         }
     }
 
-    const onUpdateofInbox = (res: any) => {
+    const onUpdateofInbox = async (res: any) => {
         console.log("resources::", res);
         console.log("roomId::", selectedRoomID);
         if (res.length === 0) {
@@ -108,8 +112,6 @@ const Chat = (props: PropTypes) => {
     }
 
     // useEffect(() => {
-    // setTradieInfo();
-    // setBuilderInfo();
     // let unsubscribe = auth.onAuthStateChanged(user => {
     //     if (user) {
     //         setUser(user);
@@ -137,41 +139,6 @@ const Chat = (props: PropTypes) => {
     }, [roomId]);
 
     console.log(props.history, "history", roomId, "roomId", roomData, "roomData", selectedRoomID, "selectedRoomID");
-
-    // const handleSubmit = async (event: any) => {
-    //     event.preventDefault();
-    //     try {
-    //         if (isChatAlreadyExist) {
-    //             await chatsRef.doc(chatDocumentId).collection('messages').add({
-    //                 text: newChat,
-    //                 createdAt: moment().toDate(),
-    //                 uid: user?.uid,
-    //                 // photoURL
-    //             });
-    //             setNewChat('');
-    //         } else {
-    //             await chatsRef.doc(chatDocumentId).set({
-    //                 // jobId: jobId,
-    //                 // jobName: jobName,
-    //                 createdAt: moment().toDate(),
-    //             });
-    //             await chatsRef.doc(chatDocumentId).collection('messages').add({
-    //                 text: newChat,
-    //                 createdAt: moment().toDate(),
-    //                 uid: user?.uid
-    //             });
-    //             setIsChatAlreadyExist(true);
-    //             setNewChat('');
-    //             await usersRef.doc('60f575ba18562930191ff6fa').update({
-    //                 // oneToOneChatIds: [...tradieCloudInfo.ongoingChatIds, chatDocumentId]
-    //             });
-    //             await usersRef.doc('60f56f6395672856a5aebdd3').update({
-    //                 // oneToOneChatIds: [...builderCloudInfo.ongoingChatIds, chatDocumentId]
-    //             });
-    //         }
-    //     } catch (error) {
-    //     }
-    // }
 
     const getRoomDetails = async (item: any) => {
         console.log("Get Selected Item", item.itemId);
@@ -221,8 +188,8 @@ const Chat = (props: PropTypes) => {
                                                     <span className="inner_title line-1">{item.oppUserInfo?.name}</span>
                                                     <span className="inner_title job line-1">{item.jobName}</span>
                                                     <p className="commn_para line-1">{item.lastMsg?.messageText}</p>
-                                                    <span className="date_time">{inboxFormatDateTime(item.lastMsg?.messageTimestamp, 'inboxTime')}</span>
-                                                    {(selectedRoomID === item.roomId && item.unreadMessages == 0) ? null : <span className="count">{item.unreadMessages}</span>}
+                                                    {item.lastMsg?.messageTimestamp && <span className="date_time">{inboxFormatDateTime(item.lastMsg?.messageTimestamp, 'inboxTime')}</span>}
+                                                    {(selectedRoomID === item.roomId) ? null : item.unreadMessages === 0 ? null : <span className="count">{item.unreadMessages}</span>}
                                                 </div>
                                             </a>
                                         </li>
@@ -239,7 +206,7 @@ const Chat = (props: PropTypes) => {
                             </ul>
                         </div>
                     </div>
-                    <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} />
+                    <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history}/>
                 </div>
             </div>
         </div >

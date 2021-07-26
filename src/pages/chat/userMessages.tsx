@@ -11,7 +11,7 @@ import sendBtn from '../../assets/images/ic-send.png';
 import loader from "../../assets/images/page-loader.gif";
 
 import moment from 'moment';
-import { formatDateTime } from '../../utils/common';
+import { formatDateTime, renderTime } from '../../utils/common';
 import {
     getMessagesOfRoom,
     sendTextMessage,
@@ -71,12 +71,12 @@ const UserMessages = (props: any) => {
         setMessageText('');
     }
 
-    const handleKeyDown = (event: any) => {
-        if (event.key === 'Enter') {
-            console.log('do validate')
-            sendMessage()
-        }
-    }
+    // const handleKeyDown = (event: any) => {
+    //     if (event.key === 'Enter') {
+    //         console.log('do validate')
+    //         sendMessage()
+    //     }
+    // }
 
     const sendImageMessage = async (url: any) => {
         //setIsLoading(true);
@@ -99,6 +99,7 @@ const UserMessages = (props: any) => {
                 fromDate: res.data?.fromDate || '',
                 toDate: res.data?.toDate || '',
                 duration: res.data?.duration || '',
+                status: res.data?.status || '',
             }
             setCurrentJobDetails(jobInfo);
             setJobDetailLoader(false);
@@ -176,6 +177,8 @@ const UserMessages = (props: any) => {
                 </div>
             )
     }
+    const renderVideoMsg = (msg: any) => {
+    }
 
     const displayMessages = (msg: any) => {
         switch (msg.messageType) {
@@ -183,8 +186,12 @@ const UserMessages = (props: any) => {
                 return renderTextMsg(msg);
             case "image":
                 return renderImageMsg(msg);
+            case "video":
+                return renderVideoMsg(msg);
         }
     }
+
+    console.log(props.roomData, "props.roomData")
 
     return (props.isNoRecords ? (
         <div className="detail_col">
@@ -222,7 +229,9 @@ const UserMessages = (props: any) => {
                         <span className="detect_icon_ltr">
                             <img src={sendMedia} alt="media" />
                         </span>
-                        <textarea placeholder="Message.." onKeyDown={handleKeyDown} value={messageText} onChange={(e) => setMessageText(e.target.value)} />
+                        <textarea placeholder="Message.."
+                            // onKeyDown={handleKeyDown}
+                            value={messageText} onChange={(e) => setMessageText(e.target.value)} />
                         <span className="detect_icon">
                             <img src={sendBtn} alt="send" onClick={sendMessage} />
                         </span>
@@ -241,7 +250,7 @@ const UserMessages = (props: any) => {
             ) : toggle ? (
                 <div className="view_detail_col">
                     <div className="f_spacebw relative">
-                        <span className="title line-2 pr-20">Wire up circuit box</span>
+                        <span className="title line-2 pr-20">{currentJobDetails?.jobName}</span>
                         <span
                             onClick={() => {
                                 setToggle((prev) => !prev)
@@ -253,23 +262,24 @@ const UserMessages = (props: any) => {
 
                     <div className="job_info">
                         <ul>
-                            <li className="icon clock">32 minutes ago</li>
-                            <li className="icon dollar">$250 p/h</li>
-                            <li className="icon location line-1">Melbourne CBD</li>
-                            <li className="icon calendar">5 days</li>
+                            <li className="icon clock">{renderTime(currentJobDetails?.fromDate, currentJobDetails?.toDate)}</li>
+                            <li className="icon dollar">{currentJobDetails?.amount}</li>
+                            <li className="icon location line-1">{currentJobDetails?.locationName}</li>
+                            <li className="icon calendar">{currentJobDetails?.duration}</li>
                         </ul>
                     </div>
 
                     <p className="commn_para">
-                        Sparky wanted for a quick job to hook up two new floors of an apartment building. Sparky wanted for a quick job to hook up two new floors of an apartment building. Sparky wanted for a quick job to hook up two new floors of an apartment building. Sparky wanted for a quick job to hook up two new floors of an apartment building.
+                        {currentJobDetails?.jobDescription}
                     </p>
 
                     <button className="fill_btn full_btn btn-effect"
                         onClick={() => {
                             if (storageService.getItem('userType') === 1) {
-                                props.history.push(`/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs&isActive=on`)
+                                props.history.push(`/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs&isActive=on`);
                             } else {
-
+                                let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
+                                props.history.push(`/job-detail?${urlEncode}`);
                             }
                         }}>View Job details</button>
                 </div>

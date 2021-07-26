@@ -247,6 +247,7 @@ export const getFirebaseInboxData = async (listner) => {
             indexlist.push(snap.val());
         });
         let items = [];
+        let users = [];
         for (let i = 0; i < indexlist.length; i++) {
             // let itemIndex = items.findIndex((item) => item.jobId === indexlist[i].jobId);
             // if (itemIndex == -1) {
@@ -271,13 +272,19 @@ export const getFirebaseInboxData = async (listner) => {
             } else {
                 oppUserId = indexlist[i].roomId.split('_')[1];
             }
-            let oppUserInfo = await db.ref(`${FIREBASE_COLLECTION.USERS}/${oppUserId}`).once('value');
-            if (oppUserInfo.exists()) {
-                    indexlist[i].oppUserInfo = oppUserInfo.val();
+            let userIndex = users.findIndex((item) => item.userId === oppUserId);
+            if (userIndex == -1) {
+                let oppUserInfo = await db.ref(`${FIREBASE_COLLECTION.USERS}/${oppUserId}`).once('value');
+                if (oppUserInfo.exists()) {
+                        indexlist[i].oppUserInfo = oppUserInfo.val();
+                        users.push(oppUserInfo.val());
+                }
+            } else {
+                indexlist[i].oppUserInfo = users[userIndex];
             }
         }
         setPendingCounter(indexlist);
-        listner(indexlist);
+        await listner(indexlist);
     });
 }
 
