@@ -161,7 +161,7 @@ const PostJob = (props: Proptypes) => {
         if (!skip && milestone_clone?.length) {
 
             let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
-
+            let count_times: any = {};
             if (filter_milestone?.length) {
                 filter_milestone.forEach((mile: any) => {
                     let msw = moment(mile.from_date, default_format).isValid();
@@ -175,6 +175,14 @@ const PostJob = (props: Proptypes) => {
 
                     let time_start = time.from_date;
                     let time_end = time.to_date;
+
+                    if (!count_times[mile_start]) {
+                        count_times[mile_start] = 1;
+                    }
+
+                    if (!count_times[mile_end]) {
+                        count_times[mile_end] = 1;
+                    }
 
                     if (msw && mew) {
                         if (tsw && tew) {
@@ -207,7 +215,7 @@ const PostJob = (props: Proptypes) => {
                             // }
                         }
                     }
-
+                    console.log({count_times},'--- count_times')
                     // here conditions
                 })
             }

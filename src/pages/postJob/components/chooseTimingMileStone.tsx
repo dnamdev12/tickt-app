@@ -55,86 +55,140 @@ const ChooseTimingMileStone = ({
     const [localChanges, setLocalChanges] = useState(false);
 
     const onMountCallable = () => {
+
         let filteredItems = milestones.filter((item: any) => {
+            let to_date = item?.to_date;
+            let from_date = item?.from_date;
+
             if (Object.keys(item).length && item?.from_date) {
                 return item;
             }
-        })
-        let count_from_to = 0;
-        let count_from = 0;
+
+            let ifMatch = milestones.find((item_: any) => {
+                if (item_.to_date === to_date && from_date === item_.from_date) {
+                    return item_;
+                }
+            })
+
+            if (ifMatch) {
+                ifMatch['match'] = true;
+            } else {
+                ifMatch['match'] = false;
+            }
+            return ifMatch
+
+        });
+
+
+        let count_times: any = {};
         if (filteredItems?.length) {
             filteredItems.forEach((item: any, index: any) => {
                 let to_date = item?.to_date;
                 let from_date = item?.from_date;
 
-                if (!to_date && from_date) {
-                    count_from++;
-                    let leftSpace = '5px';
+                if (!count_times[from_date]) {
+                    count_times[from_date] = 0;
+                } else {
+                    if(count_times[to_date]){
+                        count_times[to_date]++
+                    }
+                }
 
-                    if (count_from == 2) {
-                        leftSpace = '20px';
+                if (!count_times[to_date]) {
+                    count_times[to_date] = 0;
+                } else {
+                    if(count_times[to_date]){
+                        count_times[to_date]++
+                    }
+                }
+
+         
+                let leftSpace = '0px';
+
+                if (!to_date && from_date) {
+                    count_times[from_date]++;
+
+                    if (count_times[from_date] == 1) {
+                        leftSpace = '5px';
                     }
 
-                    if (count_from == 3) {
+                    if (count_times[from_date] == 2) {
+                        leftSpace = '15px';
+                    }
+
+                    if (count_times[from_date] == 3) {
+                        leftSpace = '25px';
+                    }
+
+                    if (count_times[from_date] == 4) {
                         leftSpace = '35px';
                     }
 
-                    if (count_from == 4) {
-                        leftSpace = '50px';
-                    }
-
-                    let from_element: any = document.getElementsByClassName(`color_${count_from}_${from_date}`)[1];
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
                     if (from_element) {
                         from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace};`);
                     }
                 }
 
                 if (to_date && from_date) {
-                    count_from_to++;
-                    let leftSpace = '5px';
+                    count_times[from_date]++;
+                    count_times[to_date]++;
 
-                    if (count_from_to == 2) {
-                        leftSpace = '20px';
+
+                    if (count_times[from_date] == 1) {
+                        leftSpace = '5px';
                     }
 
-                    if (count_from_to == 3) {
+                    if (count_times[to_date] == 1) {
+                        leftSpace = '5px';
+                    }
+
+                    if (count_times[from_date] == 2) {
+                        leftSpace = '15px';
+                    }
+
+                    if (count_times[to_date] == 2) {
+                        leftSpace = '15px';
+                    }
+
+                    if (count_times[from_date] == 3) {
+                        leftSpace = '25px';
+                    }
+
+                    if (count_times[to_date] == 3) {
+                        leftSpace = '25px';
+                    }
+
+                    if (count_times[from_date] == 4) {
                         leftSpace = '35px';
                     }
 
-                    if (count_from_to == 4) {
-                        leftSpace = '50px';
+                    if (count_times[to_date] == 4) {
+                        leftSpace = '35px';
                     }
 
-                    let from_element: any = document.getElementsByClassName(`color_${count_from_to}_${from_date}`);
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
                         let element_from = from_element[0];
                         if (from_element?.length > 1) {
                             element_from = from_element[1];
                         }
 
-                        if(element_from){
-                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace};`);
+                        if (element_from) {
+                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace}; from:${from_date}`);
                         }
                     }
 
-                    let to_element: any = document.getElementsByClassName(`color_${count_from_to}_${to_date}`);
+                    let to_element: any = document.getElementsByClassName(`color_${count_times[to_date]}_${to_date}`);
                     if (to_element) {
                         let element_to = to_element[0];
                         if (to_element?.length > 1) {
                             element_to = to_element[1];
                         }
-                        if(element_to){
-                            element_to.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace};`);
+                        if (element_to) {
+                            element_to.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace}; to:${to_date}`);
                         }
                     }
-
-                    console.log({
-                        from_element,
-                        to_element,
-                        count_from_to,
-                        from_date,
-                        to_date
-                    })
                 }
             })
         }
