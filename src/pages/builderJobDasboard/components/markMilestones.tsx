@@ -21,6 +21,7 @@ import EditMilestones from './editMilestones/index';
 import CancelJobs from './cancelJobs/cancelJob'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import { CancelJob } from '../../../redux/jobs/actions';
+import storageService from '../../../utils/storageService';
 
 import SeeDetailsComponents from './seeDetails';
 
@@ -336,7 +337,18 @@ const MarkMilestones = (props: any) => {
                     }}
                     className="tradie_card posted_by view_more ">
                     <span
-                        onClick={(e) => { e.stopPropagation() }}
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            props.history.push({
+                                pathname: `/chat`,
+                                state: {
+                                    tradieId: item_details?.tradieId,
+                                    builderId: storageService.getItem('userInfo')?._id,
+                                    jobId: item_details?.jobId,
+                                    jobName: item_details?.jobName
+                                }
+                            })
+                        }}
                         className="chat circle"></span>
                     <div className="user_wrap">
                         <figure className="u_img">
