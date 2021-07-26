@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { format, formatRelative, lightFormat } from 'date-fns';
 
 export const validateABN = (abn: number) => {
     const ABN = abn.toString()
@@ -159,4 +160,39 @@ export const updateQueryStringParameter = ({ uri, key, value }: any) => {
     else {
         return uri + separator + key + "=" + value;
     }
+}
+
+export const formatDateTime = (seconds: any, type: string) => {
+    const date = new Date(seconds);
+    let formattedDate: any = '';
+    if (type === 'day') {
+        // formattedDate = format(date, 'd MMM yyyy');
+        formattedDate = moment(date).format('DD MM YYYY');
+    } else if (type === 'time') {
+        // formattedDate = lightFormat(date, 'HH:mm');
+        formattedDate = moment(date).format('HH:mm');
+    } else if ('date') {
+        // formattedDate = lightFormat(date, 'M/d/yyyy');
+        formattedDate = moment(date).format('M/D/YYYY');
+    }
+    return formattedDate;
+};
+
+export const inboxFormatDateTime = (seconds: any, type: string) => {
+    let formattedDate: any = '';
+    const date = new Date(seconds);
+    let date2 = new Date(seconds);
+
+    if (type === 'inboxTime') {
+        let currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        date2.setHours(0, 0, 0, 0);
+        // console.log(currentDate, "currentDate", date, "date", date2, "date2");
+        if (JSON.stringify(currentDate) == JSON.stringify(date2)) {
+            formattedDate = moment(date).format('HH:mm');
+        } else {
+            formattedDate = moment(date).format('M/D/YY');
+        }
+    }
+    return formattedDate;
 }
