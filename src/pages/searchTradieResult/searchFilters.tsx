@@ -297,7 +297,6 @@ const SearchFilter = (props: any) => {
             data,
             sort
         },'item_coord')
-        return
 
         props.postHomeSearchData(data)
         props.getTitleInfo({
