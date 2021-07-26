@@ -160,3 +160,14 @@ export const updateQueryStringParameter = ({ uri, key, value }: any) => {
         return uri + separator + key + "=" + value;
     }
 }
+
+export const randomColors = () => {
+    var colors:any = [];
+    while (colors.length < 500) {
+        do {
+            var color = Math.floor((Math.random() * 1000000) + 1);
+        } while (colors.indexOf(color) >= 0);
+        colors.push("#" + ("000000" + color.toString(16)).slice(-6));
+    }
+    return colors;
+}
