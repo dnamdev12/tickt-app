@@ -34,6 +34,7 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 import Skeleton from 'react-loading-skeleton';
+import storageService from '../../utils/storageService';
 interface PropsType {
     history: any,
     location: any,
@@ -411,7 +412,7 @@ const JobDetailsPage = (props: PropsType) => {
             props.history.replace(`job-details-page?jobId=${jobDetailsData?.jobId}&redirect_from=jobs`);
 
             if (type === 1) {
-              props.history.push('/active-jobs');
+                props.history.push('/active-jobs');
             }
         }
     }
@@ -545,7 +546,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             {'Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. '}
                                         </p>
                                     </div>}
-                                    {jobDetailsData?.jobStatus !== 'cancelled' &&!jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
+                                    {jobDetailsData?.jobStatus !== 'cancelled' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
                                             {jobDetailsData?.reasonForChangeRequest}
@@ -922,7 +923,21 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
                                     {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
-                                        <a href="javascript:void(0)" className="chat circle"></a>
+                                        {isTradieWorking && <a href="javascript:void(0)" className="chat circle"
+                                            onClick={(e) => {
+                                                e.preventDefault();
+                                                props.history.push({
+                                                    pathname: `/chat`,
+                                                    state: {
+                                                        tradieId: storageService.getItem('userInfo')?._id,
+                                                        builderId: jobDetailsData?.postedBy?.builderId,
+                                                        jobId: jobDetailsData?.jobId,
+                                                        jobName: jobDetailsData?.jobName
+                                                    }
+                                                })
+                                            }
+                                            }
+                                        />}
                                         <div className="user_wrap"
                                             onClick={() => {
                                                 if (jobDetailsData?.postedBy?.builderName) {

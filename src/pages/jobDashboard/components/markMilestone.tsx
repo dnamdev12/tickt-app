@@ -16,6 +16,8 @@ import check from '../../../assets/images/checked-2.png';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
 
+import storageService from '../../../utils/storageService';
+
 
 const declinedImages = {
   desktop: {
@@ -462,6 +464,7 @@ const MarkMilestone = ({
                     history.push({
                       pathname: `/chat`,
                       state: {
+                        tradieId: storageService.getItem('userInfo')?._id,
                         builderId: builderId,
                         jobId: jobId,
                         jobName: jobName
