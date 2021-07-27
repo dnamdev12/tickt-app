@@ -82,7 +82,10 @@ const Chat = (props: PropTypes) => {
         console.log("roomId::", selectedRoomID);
         if (res.length === 0) {
             setIsNoRecords(true);
-            // setIsLoading(false);
+            if (isInitialLoader) { 
+                setIsInitialLoader(false); 
+                setLoading(false);
+            }
             return;
         }
         setIsNoRecords(false);
@@ -238,7 +241,7 @@ const Chat = (props: PropTypes) => {
                             </ul>
                         </div>
                     </div>
-                    {props.isLoading ? null : <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history} isLoading={props.isLoading}/>}
+                    {props.isLoading ? null : <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history} isLoading={props.isLoading} />}
                 </div>
             </div>
         </div >

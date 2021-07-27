@@ -37,7 +37,10 @@ const UserMessages = (props: any) => {
     const [isDocUploading, setIsDocUploading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (props.roomId !== '') { getMessagesOfRoom(props.roomId, onReceiveOfNewMsg); }
+        if (props.roomId !== '') {
+            lastDate = '';
+            getMessagesOfRoom(props.roomId, onReceiveOfNewMsg);
+        }
         setCurrentJobDetails(null);
         setToggle(false);
     }, [props.roomId, props.roomData]);
@@ -257,7 +260,8 @@ const UserMessages = (props: any) => {
     return (props.isNoRecords ? (
         <div className="detail_col">
             <div className="flex_row">
-                <div>No Record Found</div>
+                {/* <div>No Record Found</div> */}
+                <div></div>
             </div>
         </div>
     ) : (<div className="detail_col">
