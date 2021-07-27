@@ -29,7 +29,7 @@ const usersRef = db.ref('users');
 const CHAT_TYPE = 'single';
 const FIREBASE_COLLECTION = {
     ROOM_INFO: "room_info",
-    JOBS: "items",
+    JOBS: "jobs",
     INBOX: "inbox",
     MESSAGES: "messages",
     LAST_MESSAGES: "lastMessage",
@@ -111,7 +111,7 @@ export const firebaseSignUpWithEmailPassword = async ({ email, password, id, ful
 
             await db.ref(`${FIREBASE_COLLECTION.USERS}/${id}`).set({
                 email: email,
-                image: 'https://appinventiv-development.s3.amazonaws.com/ezgif.com-gif-maker.png',
+                image: '',
                 name: fullName,
                 // uid: ref.user["$"]["W"],
                 userId: id,
@@ -125,11 +125,19 @@ export const firebaseSignUpWithEmailPassword = async ({ email, password, id, ful
     }
 };
 
-export const firebaseLogInWithEmailPassword = async ({ email, password }) => {
+export const firebaseLogInWithEmailPassword = async (authData, loginRes) => {
     try {
-        let response = await auth.signInWithEmailAndPassword(email, password);
+        let response = await auth.signInWithEmailAndPassword(authData.email, authData.password);
         if (response) {
             console.log('firebase auth login success: ');
+            await db.ref(`${FIREBASE_COLLECTION.USERS}/${loginRes?._id}`).set({
+                email: loginRes?.email,
+                image: '',
+                name: loginRes?.userName,
+                userId: loginRes?._id,
+                onlineStatus: true,
+                userType: loginRes?.user_type,
+            });
         }
     } catch (err) {
         console.log('firebase auth login failure: ');
@@ -264,10 +272,10 @@ export const getFirebaseInboxData = async (listner) => {
             // }
             let lastMsg = await db.ref(`${FIREBASE_COLLECTION.LAST_MESSAGES}/${indexlist[i].roomId}/chatLastMessage`).once('value');
             if (lastMsg.exists()) {
-                    indexlist[i].lastMsg = lastMsg.val();
+                indexlist[i].lastMsg = lastMsg.val();
             }
-            let oppUserId = '' ;
-            if(storageService.getItem('userType') === 1){
+            let oppUserId = '';
+            if (storageService.getItem('userType') === 1) {
                 oppUserId = indexlist[i].roomId.split('_')[2];
             } else {
                 oppUserId = indexlist[i].roomId.split('_')[1];
@@ -276,8 +284,8 @@ export const getFirebaseInboxData = async (listner) => {
             if (userIndex == -1) {
                 let oppUserInfo = await db.ref(`${FIREBASE_COLLECTION.USERS}/${oppUserId}`).once('value');
                 if (oppUserInfo.exists()) {
-                        indexlist[i].oppUserInfo = oppUserInfo.val();
-                        users.push(oppUserInfo.val());
+                    indexlist[i].oppUserInfo = oppUserInfo.val();
+                    users.push(oppUserInfo.val());
                 }
             } else {
                 indexlist[i].oppUserInfo = users[userIndex];
@@ -389,7 +397,7 @@ export const sendTextMessage = async (roomId, message) => {
     await db.ref(`${FIREBASE_COLLECTION.INBOX}/${receiverId}/${inboxId}`).child('unreadMessages').set(firebase.database.ServerValue.increment(1));
 }
 
-export const sendImageMessage = async (roomId, url) => {
+export const sendImageVideoMessage = async (roomId, url, type) => {
     let senderId = getLoggedInuserId();
     let roomids = roomId.split("_");
     let jobId = "";
@@ -419,7 +427,7 @@ export const sendImageMessage = async (roomId, url) => {
         "messageStatus": "send",
         "messageText": "",
         "messageTimestamp": firebase.database.ServerValue.TIMESTAMP,
-        "messageType": "image",
+        "messageType": type === "image" ? "image" : "video",
         "progress": 0,
         "receiverId": receiverId,
         "senderId": senderId,

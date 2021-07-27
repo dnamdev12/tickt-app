@@ -8,17 +8,21 @@ import viewMore from '../../assets/images/icon-direction-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
-import loader from "../../assets/images/page-loader.gif";
+import pageLoader from "../../assets/images/page-loader.gif";
+import loader from '../../assets/images/loader.gif';
 
 import moment from 'moment';
 import { formatDateTime, renderTime } from '../../utils/common';
+import { setShowToast, setLoading } from '../../redux/common/actions';
+import { onFileUpload } from '../../redux/auth/actions';
 import {
     getMessagesOfRoom,
     sendTextMessage,
-    sendImageMessage,
+    sendImageVideoMessage,
 } from '../../services/firebase';
 
 let lastDate = '';
+const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
 
 const UserMessages = (props: any) => {
     const divRref = useRef<HTMLDivElement>(null);
@@ -30,14 +34,12 @@ const UserMessages = (props: any) => {
     const [newChat, setNewChat] = useState<any>('');
     const [messageText, setMessageText] = useState<any>('');
     const [messages, setMessages] = useState<Array<any>>([]);
-
+    const [isDocUploading, setIsDocUploading] = useState<boolean>(false);
 
     useEffect(() => {
-        if (props.roomId !== '')
-            getMessagesOfRoom(props.roomId, onReceiveOfNewMsg)
-        return () => {
-
-        }
+        if (props.roomId !== '') { getMessagesOfRoom(props.roomId, onReceiveOfNewMsg); }
+        setCurrentJobDetails(null);
+        setToggle(false);
     }, [props.roomId, props.roomData]);
 
     useEffect(() => {
@@ -66,23 +68,25 @@ const UserMessages = (props: any) => {
 
     const sendMessage = async () => {
         //setIsLoading(true);
-        if (messageText || messageText.trim() !== "")
-            await sendTextMessage(props.roomId, messageText);
-        setMessageText('');
+        if (messageText || messageText.trim() !== "") {
+            sendTextMessage(props.roomId, messageText);
+            setMessageText('');
+            // await sendTextMessage(props.roomId, messageText); 
+        }
     }
 
-    // const handleKeyDown = (event: any) => {
-    //     if (event.key === 'Enter') {
-    //         console.log('do validate')
-    //         sendMessage()
-    //     }
-    // }
+    const handleKeyDown = (event: any) => {
+        if (event.key === 'Enter') {
+            console.log('do validate');
+            sendMessage();
+        }
+    }
 
-    const sendImageMessage = async (url: any) => {
+    const sendImageVideoMsg = async (url: string, msgType: string) => {
         //setIsLoading(true);
         if (url && url !== '')
-            // await sendImageMessage(props.roomId, url);
-            setMessageText('');
+            await sendImageVideoMessage(props.roomId, url, msgType);
+        setMessageText('');
     }
 
 
@@ -133,7 +137,7 @@ const UserMessages = (props: any) => {
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
-                        <p className="mark">{msg.messageText}
+                        <p className={`${msg.senderId === userId ? 'mark' : ''}`}>{msg.messageText}
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </p>
                     </div>
@@ -142,7 +146,7 @@ const UserMessages = (props: any) => {
         } else
             return (
                 <div className={`${messageClass}`}>
-                    <p className="mark">{msg.messageText}
+                    <p className={`${msg.senderId === userId ? 'mark' : ''}`}>{msg.messageText}
                         <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                     </p>
                 </div>
@@ -161,7 +165,7 @@ const UserMessages = (props: any) => {
                     </div>
                     <div className={`${messageClass}`}>
                         <figure className="media">
-                            <img src={notFound} alt="media" />
+                            <img src={msg.mediaUrl || notFound} alt="media" />
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </figure>
                     </div>
@@ -171,13 +175,40 @@ const UserMessages = (props: any) => {
             return (
                 <div className={`${messageClass}`}>
                     <figure className="media">
-                        <img src={notFound} alt="media" />
+                        <img src={msg.mediaUrl || notFound} alt="media" />
                         <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                     </figure>
                 </div>
             )
     }
+
     const renderVideoMsg = (msg: any) => {
+        let curDate = formatDateTime(msg.messageTimestamp, 'day');
+        const messageClass = msg.senderId === userId ? 'message' : 'message recive_msg';
+        if (lastDate === '' || lastDate !== curDate) {
+            lastDate = curDate;
+            return (
+                <>
+                    <div className="date_time">
+                        <span>{curDate}</span>
+                    </div>
+                    <div className={`${messageClass}`}>
+                        <figure className="media">
+                            <video src={msg.mediaUrl || notFound} />
+                            <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
+                        </figure>
+                    </div>
+                </>
+            )
+        } else
+            return (
+                <div className={`${messageClass}`}>
+                    <figure className="media">
+                        <video src={msg.mediaUrl || notFound} />
+                        <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
+                    </figure>
+                </div>
+            )
     }
 
     const displayMessages = (msg: any) => {
@@ -188,6 +219,37 @@ const UserMessages = (props: any) => {
                 return renderImageMsg(msg);
             case "video":
                 return renderVideoMsg(msg);
+        }
+    }
+
+    const handleUpload = async (e: any) => {
+        const formData = new FormData();
+        const newFile = e.target.files[0];
+        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
+        console.log('fileType: ', fileType);
+
+        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
+
+        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+            setShowToast(true, "The file must be in proper format or size.")
+            return;
+        }
+        // debugger;
+
+        formData.append('file', newFile);
+        setIsDocUploading(true);
+        let check_type: any = ["jpeg", "jpg", "png"].includes(fileType) ? 1 : ["mp4", "wmv", "avi"].includes(fileType) ? 2 : null;
+        const res = await onFileUpload(formData);
+        if (res.success && res.imgUrl) {
+            if (check_type === 1) {
+                sendImageVideoMsg(res.imgUrl, "image");
+            } else if (check_type === 2) {
+                sendImageVideoMsg(res.imgUrl, "video");
+            } else {
+                setShowToast(true, "There is some technical issue");
+            }
+            setIsDocUploading(false);
+            // setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
         }
     }
 
@@ -206,10 +268,18 @@ const UserMessages = (props: any) => {
                     <figure className="u_img">
                         <img src={props.roomData?.oppUserInfo?.image || dummy} alt="user-img" />
                     </figure>
-                    <span className="name">{props.roomData?.oppUserInfo?.name}</span>
+                    <span className="name"
+                        onClick={() => {
+                            if (storageService.getItem('userType') === 2) {
+                                props.history.push(`/tradie-info?tradeId=${props.roomData?.oppUserInfo?.userId}&type=1`)
+                            } else {
+                                props.history.push(`/builder-info?builderId=${props.roomData?.oppUserInfo?.userId}&type=2`)
+                            }
+                        }}>{props.roomData?.oppUserInfo?.name}</span>
                     {!toggle && <span
                         onClick={() => {
                             setToggle(true);
+                            if (currentJobDetails) return;
                             fetchJobDetail(props.roomData?.jobId);
                         }}
                         className="view_detail">View Job Details
@@ -226,11 +296,24 @@ const UserMessages = (props: any) => {
 
                 <div className="send_msg">
                     <div className="text_field">
-                        <span className="detect_icon_ltr">
+                        {/* <span className="detect_icon_ltr">
                             <img src={sendMedia} alt="media" />
-                        </span>
+                        </span> */}
+                        <label className="upload_item" htmlFor="upload_item">
+                            <span className="detect_icon_ltr">
+                                <img src={sendMedia} alt="media" />
+                            </span>
+                        </label>
+                        <input
+                            id="upload_item"
+                            className="hide"
+                            type="file"
+                            accept="image/png,image/jpg,image/jpeg, video/mp4, video/wmv, video/avi"
+                            onChange={handleUpload}
+                            disabled={isDocUploading}
+                        />
                         <textarea placeholder="Message.."
-                            // onKeyDown={handleKeyDown}
+                            onKeyDown={handleKeyDown}
                             value={messageText} onChange={(e) => setMessageText(e.target.value)} />
                         <span className="detect_icon">
                             <img src={sendBtn} alt="send" onClick={sendMessage} />
@@ -241,9 +324,9 @@ const UserMessages = (props: any) => {
 
             {(toggle && jobDetailLoader) ? (
                 <div className="view_detail_col">
-                    <div className="page_loader">
+                    <div className="no_record">
                         <figure>
-                            <img src={loader} alt="loader" />
+                            <img src={loader} alt="loader" width="130px" />
                         </figure>
                     </div>
                 </div>
