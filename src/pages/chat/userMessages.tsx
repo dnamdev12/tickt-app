@@ -234,7 +234,6 @@ const UserMessages = (props: any) => {
             setShowToast(true, "The file must be in proper format or size.")
             return;
         }
-        // debugger;
 
         formData.append('file', newFile);
         setIsDocUploading(true);

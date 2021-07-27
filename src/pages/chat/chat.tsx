@@ -61,7 +61,7 @@ const Chat = (props: PropTypes) => {
         })();
 
         return () => {
-            debugger;
+            // debugger;
             stopListeningOfRoom(selectedRoomID);
             selectedRoomID = '';
         }
