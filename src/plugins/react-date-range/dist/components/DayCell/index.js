@@ -226,13 +226,7 @@ var DayCell =
       };
       return _this;
     }
-
-    console.log({
-      format: _dateFns.format,
-      day: this.props,
-      dayDisplayFormat: this.props?.dayDisplayFormat
-    })
-
+    
     _createClass(DayCell, [{
       key: "render",
       value: function render() {
@@ -272,9 +266,6 @@ var DayCell =
         ));
       }
     }]);
-
-
-
     return DayCell;
   }(_react.Component);
 
