@@ -144,7 +144,7 @@ export default function PastJobs(props: any): ReactElement {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{renderTime(fromDate, toDate)}</li>
+                                        <li className="icon calendar">{renderTime(fromDate, toDate)}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
                                         <li className="job_status">{status}</li>

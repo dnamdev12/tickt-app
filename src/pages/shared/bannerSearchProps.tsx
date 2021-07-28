@@ -436,6 +436,7 @@ const BannerSearch = (props: PropsType) => {
         let selected_item: any = props?.selectedItem;
         let props_trade: any = selected_item?.selectedTrade;
         let local_info: any = props?.localInfo;
+        let prev_address: any = props?.location?.state?.address;
 
         let tradeId: any = null;
         let specializationId: any = null;
@@ -470,6 +471,13 @@ const BannerSearch = (props: PropsType) => {
                         parseFloat(selected_address?.lng),
                         parseFloat(selected_address?.lat)
                     ]
+                }
+                if (prev_address == addressText) {
+                    data['address'] = prev_address
+                } else {
+                    if(addressText?.length){
+                        data['address'] = addressText
+                    }
                 }
             } else {
                 delete data.location;

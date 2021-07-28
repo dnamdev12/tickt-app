@@ -241,21 +241,22 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ed
             <span className="xs_sub_title">Job Types</span>
           </div>
           <ul className="job_categories">
-            {jobTypes.map(({ _id, name, image }: { _id: string, name: string, image: string }) => (
-              <li
-                key={_id}
-                className={`draw${job_type.includes(_id) ? ' active' : ''}`}
-                onClick={() => handleChange(_id, 'job_type')}
-              >
-                <figure className="type_icon">
-                  <img
-                    src={image}
-                    alt="icon"
-                  />
-                </figure>
-                <span className="name">{name}</span>
-              </li>
-            ))}
+            {jobTypes && Array.isArray(jobTypes) ?
+              jobTypes.map(({ _id, name, image }: { _id: string, name: string, image: string }) => (
+                <li
+                  key={_id}
+                  className={`draw${job_type.includes(_id) ? ' active' : ''}`}
+                  onClick={() => handleChange(_id, 'job_type')}
+                >
+                  <figure className="type_icon">
+                    <img
+                      src={image}
+                      alt="icon"
+                    />
+                  </figure>
+                  <span className="name">{name}</span>
+                </li>
+              )) : null}
           </ul>
           <span className="error_msg">{errors.job_type}</span>
           <div className="form_field">

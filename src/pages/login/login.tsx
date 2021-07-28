@@ -116,9 +116,13 @@ const LoginPage = (props: Propstype) => {
         e.preventDefault();
         const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
         if (validateForm()) {
-            const res: any = await callLogin(newData)
+            const res: any = await callLogin(newData);
             if (res.success) {
-                firebaseLogInWithEmailPassword({ email: newData.email, password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@' });
+                const authData = {
+                    email: newData.email,
+                    password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
+                }
+                firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {
                     window.location.reload();
                     // props.setShowModal(!props.showModal);

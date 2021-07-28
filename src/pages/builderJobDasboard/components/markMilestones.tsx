@@ -129,10 +129,10 @@ const MarkMilestones = (props: any) => {
         }
     }
 
-    const redirectToInfo = ({ jobId, status }: any) => {
+    const redirectToInfo = ({ jobId, status, tradieId }: any) => {
         console.log({ jobId });
         let props_: any = props;
-        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true&activeType=active`)
+        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active`)
         props_.history.push(`/job-detail?${urlEncode}`);
     }
 
@@ -349,7 +349,7 @@ const MarkMilestones = (props: any) => {
                                 }
                             })
                         }}
-                        className="chat circle"></span>
+                        className="chat circle" />
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
@@ -368,8 +368,8 @@ const MarkMilestones = (props: any) => {
                         className="edit_icon"
                         title="More"
                         onClick={() => {
-                            let { jobId, tradeId, specializationId, status } = selectedItem;
-                            redirectToInfo({ jobId, status })
+                            let { jobId, tradeId, specializationId, tradieId, status } = selectedItem;
+                            redirectToInfo({ jobId, status, tradieId })
                         }}>
                         <img src={more} alt="more" />
                     </span>

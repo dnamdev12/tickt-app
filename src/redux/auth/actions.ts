@@ -26,14 +26,16 @@ export const postSignup = async (data: any) => {
   return { success: false };
 };
 
-export const checkEmailId = async (email: string) => {
+export const checkEmailId = async (email: string, hideToast?:boolean) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkEmailId + `?email=${email}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, isProfileCompleted: response.result.isProfileCompleted, message: response.message };
   }
-  setShowToast(true, response.message);
+  if(!hideToast){
+    setShowToast(true, response.message);
+  }
   return { success: false };
 };
 

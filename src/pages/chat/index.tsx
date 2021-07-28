@@ -4,11 +4,8 @@ import Chat from './chat';
 
 const mapStateToProps = (state: any) => {
     return {
-        builderProfile: state.profile.builderProfile,
-        tradieProfileData: state.profile.tradieProfileData,
         isLoading: state.common.isLoading,
         isSkeletonLoading: state.common.isSkeletonLoading,
-        userType: state.profile.userType,
     }
 }
 

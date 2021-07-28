@@ -68,15 +68,16 @@ const AddVoucherComponent = (props: any) => {
     }, [toggle])
 
     const prefetch = async () => {
-        let res_jobs: any = await fetchVouchesJobs({ page: 1, tradieId: props.id });
-
-        if (res_jobs?.success) {
-            let list_data: any = res_jobs.data;
-            if (list_data?.length) {
-                let item = list_data[0];
-                setReactSelect({ label: item.jobName, value: item?.jobId })
+        if (props?.id) {
+            let res_jobs: any = await fetchVouchesJobs({ page: 1, tradieId: props.id });
+            if (res_jobs?.success) {
+                let list_data: any = res_jobs.data;
+                if (list_data?.length) {
+                    let item = list_data[0];
+                    setReactSelect({ label: item.jobName, value: item?.jobId })
+                }
+                setJobsList(list_data)
             }
-            setJobsList(list_data)
         }
     }
 

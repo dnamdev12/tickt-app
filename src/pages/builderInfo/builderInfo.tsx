@@ -666,7 +666,7 @@ const BuilderInfo = (props: PropsType) => {
                                 )
                             })}
                             {profileData?.reviewsCount > reviewList.length && <div className="text-center">
-                                <button className="fill_grey_btn load_more" onClick={loadMoreReviewHandler}>Load more</button>
+                                <button className="fill_grey_btn load_more" onClick={loadMoreReviewHandler}>View more</button>
                             </div>}
                         </div>
                     </div>

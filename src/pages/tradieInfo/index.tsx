@@ -15,6 +15,8 @@ import {
     getTradeProfile,
     HomeTradieProfile,
     CancelInviteForJob,
+    updateReviewTradie,
+    deleteReviewTradie
 } from '../../redux/jobs/actions';
 import {
     getTradieProfile,
@@ -44,6 +46,16 @@ import AddVoucherComponent from './addVoucher';
 import vouch from '../../assets/images/ic-template.png';
 import _ from 'lodash';
 
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Button from '@material-ui/core/Button';
+
+//@ts-ignore
+import ReactStars from "react-rating-stars-component";
+
 const USER_TYPE = storageService.getItem('userType');
 interface Props {
     tradieInfo: any,
@@ -71,6 +83,7 @@ interface State {
             jobDescription: any
         },
     },
+    delete: any,
     reviewsData: {
         reviewReplyClicked: boolean,
         showAllReviewsClicked: boolean,
@@ -100,6 +113,10 @@ class TradieInfo extends Component<Props, State> {
         tradieInfo: null,
         tradieReviews: null,
         profileData: {},
+        delete: {
+            isToggle: false,
+            deleteId: ''
+        },
         portfolioData: {
             portfolioImageClicked: false,
             portfolioDetails: {
@@ -141,6 +158,10 @@ class TradieInfo extends Component<Props, State> {
                     portfolioId: '',
                     jobDescription: ''
                 },
+            },
+            delete: {
+                isToggle: false,
+                deleteId: ''
             },
             reviewsData: {
                 reviewReplyClicked: false,
@@ -287,19 +308,57 @@ class TradieInfo extends Component<Props, State> {
             // const newData: any = [...reviewsData.replyShownHideList];
             // newData.push(replyId);
             // this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
+        } else if (type === 'editBuilderReview') {
+            this.setState((prevData: any) => ({
+
+                reviewsData: {
+                    ...prevData.reviewsData,
+                    showAllReviewsClicked: false,
+                    editBuilderReview: true,
+                    reviewData: reply,
+                    reviewsClickedType: '',
+                    reviewId: reviewId,
+                }
+            }));
+        } else if (type === "cancelBuilderReview") {
+            this.setState((prevData: any) => ({
+                reviewsData: {
+                    ...prevData.reviewsData,
+                    showAllReviewsClicked: false,
+                    editBuilderReview: false,
+                    reviewData: '',
+                    reviewsClickedType: '',
+                    reviewId: '',
+                }
+            }));
         }
     }
 
-    handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>, type: string) => {
+    handleChange = (e: React.ChangeEvent<HTMLTextAreaElement>, type: string, subtype?: string) => {
         if (e.target.value.trim().length <= 250) {
-            this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, [type]: e.target.value } }))
+            if (subtype) {
+                this.setState((prevData: any) => {
+                    console.log({ prevData })
+                    return {
+                        reviewsData: {
+                            ...prevData.reviewsData,
+                            reviewData: {
+                                ...prevData?.reviewsData?.reviewData,
+                                [subtype]: e.target.value
+                            }
+                        }
+                    }
+                })
+            } else {
+                this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, [type]: e.target.value } }))
+            }
         }
     }
 
     submitReviewHandler = async (type: any) => {
         let reviewsData: any = this.state.reviewsData;
         let profileData: any = this.state.profileData;
-        if (['reviewReply', 'updateReviewReply', 'removeReviewReply'].includes(type)) {
+        if (['reviewReply', 'updateReviewReply', 'removeReviewReply', 'updateBuilderReview'].includes(type)) {
             var response;
 
             if (type === 'reviewReply') {
@@ -326,6 +385,13 @@ class TradieInfo extends Component<Props, State> {
                 response = await removeReviewReply(data);
             }
 
+            if (type === "updateBuilderReview") {
+                const { reviewData: { review, reviewId, rating } } = reviewsData;
+                response = await updateReviewTradie({
+                    review, reviewId, rating
+                })
+            }
+
             if (response?.success) {
                 this.setItems();
             }
@@ -335,6 +401,7 @@ class TradieInfo extends Component<Props, State> {
                     ...prevData.reviewsData,
                     submitReviewsClicked: false,
                     reviewReplyClicked: false,
+                    editBuilderReview: false,
                     showAllReviewsClicked: true,
                     confirmationClicked: false,
                     reviewsClickedType: '',
@@ -590,10 +657,10 @@ class TradieInfo extends Component<Props, State> {
                                                                         this.savedTradie({ tradieInfo })
                                                                     }}
                                                                     className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}>
-                                                                    </span>
-                                                                 <button
+                                                                </span>
+                                                                <button
                                                                     onClick={() => {
-                                                                        console.log({ tradieInfo },'tradieInfo --><--')
+                                                                        console.log({ tradieInfo }, 'tradieInfo --><--')
                                                                         props.history.push({
                                                                             pathname: '/choose-the-job',
                                                                             state: {
@@ -604,7 +671,7 @@ class TradieInfo extends Component<Props, State> {
                                                                     }}
                                                                     className="fill_btn full_btn btn-effect">
                                                                     {'Invite for job'}
-                                                                </button> 
+                                                                </button>
                                                             </div>
                                                         )}
                                                     </div>
@@ -928,12 +995,54 @@ class TradieInfo extends Component<Props, State> {
                                                     <figure className="user_img">
                                                         <img src={reviewData?.userImage || dummy} alt="user-img" />
                                                     </figure>
+
                                                     <div className="details">
                                                         <span className="user_name">{reviewData?.userName}</span>
                                                         <span className="date">{reviewData?.date}</span>
+                                                        <span className="item-star">
+                                                            <ReactStars
+                                                                classNames="review-stars"
+                                                                value={reviewData?.rating}
+                                                                count={5}
+                                                                edit={false}
+                                                                size={30}
+                                                                activeColor="#ffd700"
+                                                            />
+                                                        </span>
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.review}</p>
+                                           
+                                                {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                    <span
+                                                        onClick={() => {
+                                                            reviewHandler(
+                                                                'editBuilderReview',
+                                                                reviewData?.reviewId,
+                                                                '',
+                                                                reviewData
+                                                            );
+                                                        }}
+                                                        className="action link">
+                                                        {'Edit '}
+                                                    </span>
+                                                ) : null}
+                                                {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                    <span
+                                                        onClick={() => {
+                                                            this.setState({
+                                                                delete: {
+                                                                    isToggle: true,
+                                                                    deleteId: reviewData?.reviewId
+                                                                }
+                                                            })
+                                                        }}
+                                                        className="action link">
+                                                        {'Delete '}
+                                                    </span>
+                                                ) : null}
+                                                <br />
+                                                <br />
                                                 {Object.keys(reviewsData.replyShownHideList).length &&
                                                     reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                     <span
@@ -1104,6 +1213,120 @@ class TradieInfo extends Component<Props, State> {
                         </>
                     </Modal>
                 }
+
+
+                {reviewsData.editBuilderReview &&
+                    <Modal
+                        className="ques_ans_modal"
+                        open={reviewsData.editBuilderReview}
+                        onClose={() => { modalCloseHandler('editBuilderReview') }}
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                    >
+                        <>
+                            <div className="custom_wh ask_ques">
+                                <div className="heading">
+                                    <span className="sub_title">{'Edit Review'}</span>
+                                    <button className="close_btn" onClick={() => { modalCloseHandler('editBuilderReview') }}>
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                <div className="form_field">
+                                    <label className="form_label">Your Review</label>
+                                    <ReactStars
+                                        value={reviewsData?.reviewData?.rating}
+                                        count={5}
+                                        isHalf={true}
+                                        onChange={(newRating: any) => {
+                                            this.setState((prevData: any) => {
+                                                console.log({ prevData })
+                                                return {
+                                                    reviewsData: {
+                                                        ...prevData.reviewsData,
+                                                        reviewData: {
+                                                            ...prevData?.reviewsData?.reviewData,
+                                                            rating: newRating
+                                                        }
+                                                    }
+                                                }
+                                            })
+                                        }}
+                                        size={40}
+                                        activeColor="#ffd700"
+                                    />
+                                    <div className="text_field">
+                                        <textarea
+                                            placeholder="Text"
+                                            value={reviewsData?.reviewData?.review}
+                                            onChange={(e) => {
+                                                handleChange(e, 'reviewData', 'review')
+                                            }}>
+                                        </textarea>
+                                        <span className="char_count">{`${reviewsData?.reviewData?.review?.length || '0'}/250`}</span>
+                                    </div>
+                                </div>
+                                <div className="bottom_btn custom_btn">
+                                    <button
+                                        className="fill_btn full_btn btn-effect"
+                                        onClick={() => { submitReviewHandler('updateBuilderReview') }}>
+                                        {'Save'}
+                                    </button>
+                                    <button
+                                        className="fill_grey_btn btn-effect"
+                                        onClick={() => { reviewHandler('cancelBuilderReview') }}>
+                                        {'Cancel'}
+                                    </button>
+                                </div>
+                            </div>
+                        </>
+                    </Modal>
+                }
+
+
+                <Dialog
+                    open={this.state?.delete?.isToggle}
+                    // onClose={handleClose}
+                    aria-labelledby="alert-dialog-title"
+                    aria-describedby="alert-dialog-description"
+                >
+                    <DialogTitle id="alert-dialog-title">
+                        {'Do you want to delete this review ?'}
+                    </DialogTitle>
+                    <DialogActions>
+                        <Button
+                            onClick={async () => {
+                                let response = await deleteReviewTradie({
+                                    reviewId: this.state?.delete?.deleteId
+                                });
+                                if (response?.success) {
+                                    this.setState({
+                                        delete: {
+                                            isToggle: false,
+                                            deleteId: ''
+                                        }
+                                    }, () => {
+                                        this.setItems();
+                                    })
+                                }
+                            }}
+                            color="primary">
+                            {'Yes'}
+                        </Button>
+                        <Button
+                            onClick={() => {
+                                this.setState({
+                                    delete: {
+                                        isToggle: false,
+                                        deleteId: ''
+                                    }
+                                })
+                            }}
+                            color="primary" autoFocus>
+                            {'No'}
+                        </Button>
+                    </DialogActions>
+                </Dialog>
+
             </div >
         )
     }

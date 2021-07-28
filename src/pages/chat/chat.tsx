@@ -8,19 +8,15 @@ import chatSearch from '../../assets/images/search-chat.png';
 import viewMore from '../../assets/images/icon-direction-blue.png';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
-import sendMedia from '../../assets/images/ic-media.png';
-import sendBtn from '../../assets/images/ic-send.png';
-import loader from "../../assets/images/page-loader.gif";
 
 import { auth, db } from '../../services/firebase';
 import { setShowToast, setLoading } from '../../redux/common/actions';
-import { inboxFormatDateTime } from '../../utils/common';
+import { formatDateTime } from '../../utils/common';
 import { format, formatRelative, lightFormat } from 'date-fns';
 import {
     firebaseSignUpWithEmailPassword,
     createRoom,
     checkRoomExist,
-    createJob,
     getFirebaseInboxData,
     stopListeningOfRoom,
     resetUnreadCounter,
@@ -38,17 +34,19 @@ interface PropTypes {
 let selectedRoomID = '';
 
 const Chat = (props: PropTypes) => {
-    const [initializing, setInitializing] = useState<boolean>(true);
+    // const [initializing, setInitializing] = useState<boolean>(true);
     // firebase authenticated user details
-    const [user, setUser] = useState<any>(() => auth.currentUser);
+    // const [user, setUser] = useState<any>(() => auth.currentUser);
     const [inBoxData, setInBoxData] = useState<any>([]);
+    const [filterInBoxData, setFilterInBoxData] = useState<any>([]);
     const [isNoRecords, setIsNoRecords] = useState<boolean>(false);
     const [roomData, setRoomData] = useState<any>({});
     const [roomId, setRoomId] = useState<string>('');
+    const [searchQuery, setSearchQuery] = useState('');
+    const [searchActive, setSearchActive] = useState(false);
+    const [isInitialLoader, setIsInitialLoader] = useState(true);
 
     const { tradieId, builderId, jobName, jobId } = props.history?.location?.state ? props.history?.location?.state : { tradieId: '', builderId: '', jobName: '', jobId: '' };
-
-    // const { uid, displayName, photoURL, text } = user;
 
     useEffect(() => {
         console.log("Calling Did Mount");
@@ -59,9 +57,8 @@ const Chat = (props: PropTypes) => {
                 await setInitialItems();
             }
             await getFirebaseInboxData(onUpdateofInbox);
-            setLoading(false);
+            // debugger;
         })();
-
 
         return () => {
             // debugger;
@@ -72,11 +69,10 @@ const Chat = (props: PropTypes) => {
 
     const setInitialItems = async () => {
         const roomID: string = `${jobId}_${tradieId}_${builderId}`;
-        selectedRoomID = roomId;
+        selectedRoomID = roomID;
         if (await checkRoomExist(roomID)) {
             return;
         } else {
-            //create room
             await createRoom(jobId, tradieId, builderId, jobName);
         }
     }
@@ -86,18 +82,24 @@ const Chat = (props: PropTypes) => {
         console.log("roomId::", selectedRoomID);
         if (res.length === 0) {
             setIsNoRecords(true);
-            // setIsLoading(false);
+            if (isInitialLoader) {
+                setIsInitialLoader(false);
+                setLoading(false);
+            }
             return;
         }
         setIsNoRecords(false);
 
         setInBoxData(res);
-        // setForceupdate(!forceUpdate)
         if (res.length > 0 && selectedRoomID === '') {
             selectedRoomID = res[0].roomId;
             setRoomId(res[0].roomId);
+            if (res[0] && res[0]?.unreadMessages > 0) {
+                res[0].unreadMessages = 0;
+                resetUnreadCounter(res[0].roomId);
+            }
             setRoomData(res[0]);
-            // setRoomData(res[0].item);
+            return;
             // fetchJobDetail(res[0].item?.jobId);
         }
 
@@ -108,6 +110,7 @@ const Chat = (props: PropTypes) => {
                 itemObj.unreadMessages = 0;
                 resetUnreadCounter(itemObj.roomId);
             }
+            setRoomData(itemObj);
         }
     }
 
@@ -150,6 +153,18 @@ const Chat = (props: PropTypes) => {
         resetUnreadCounter(item.roomId);
     }
 
+    useEffect(() => {
+        if (searchQuery) {
+            let filteredVal = inBoxData.filter((item: any) => item.oppUserInfo?.name?.toLowerCase()?.includes(searchQuery.toLowerCase()));
+            console.log('filteredVal: ', filteredVal, "searchQuery", searchQuery);
+            setFilterInBoxData(filteredVal);
+        }
+        if (inBoxData.length && isInitialLoader) {
+            setLoading(false);
+            setIsInitialLoader(false);
+        }
+    }, [searchQuery, inBoxData]);
+
     return (
         <div className="app_wrapper">
             <div className="custom_container">
@@ -170,14 +185,22 @@ const Chat = (props: PropTypes) => {
                                 fullName: "Test Tradie",
                                 user_type: 1
                             })  }>Signup</span> */}
-                            <div className="search_bar">
-                                <input type="text" placeholder="Search" />
+                            <div className={`search_bar ${searchActive ? 'active' : ''}`} onClick={() => { setSearchActive(true) }}>
+                                <input type="text" placeholder="Search" value={searchQuery} onChange={(e: any) => setSearchQuery(e.target.value.trimLeft())} />
                                 <span className="detect_icon_ltr">
                                     <img src={chatSearch} alt="search" />
                                 </span>
                             </div>
                             <ul className="chat_list">
-                                {inBoxData.length > 0 ? inBoxData.map((item: any) => {
+                                {searchQuery ? filterInBoxData.length === 0 ? (
+                                    <li>
+                                        <a href="javascript:void(0)" className="chat">
+                                            <div className="detail">
+                                                <span className="inner_title line-1">No Record Found</span>
+                                            </div>
+                                        </a>
+                                    </li>
+                                ) : filterInBoxData.map((item: any) => {
                                     return (
                                         <li onClick={() => { getRoomDetails(item) }}>
                                             <a href="javascript:void(0)" className={`chat ${selectedRoomID === item.roomId ? 'active' : ''}`}>
@@ -188,13 +211,30 @@ const Chat = (props: PropTypes) => {
                                                     <span className="inner_title line-1">{item.oppUserInfo?.name}</span>
                                                     <span className="inner_title job line-1">{item.jobName}</span>
                                                     <p className="commn_para line-1">{item.lastMsg?.messageText}</p>
-                                                    {item.lastMsg?.messageTimestamp && <span className="date_time">{inboxFormatDateTime(item.lastMsg?.messageTimestamp, 'inboxTime')}</span>}
+                                                    {item.lastMsg?.messageTimestamp && <span className="date_time">{formatDateTime(item.lastMsg?.messageTimestamp, 'inboxTime')}</span>}
                                                     {(selectedRoomID === item.roomId) ? null : item.unreadMessages === 0 ? null : <span className="count">{item.unreadMessages}</span>}
                                                 </div>
                                             </a>
                                         </li>
                                     )
-                                }) : (
+                                }) : inBoxData.length > 0 ? inBoxData.map((item: any) => {
+                                    return (
+                                        <li onClick={() => { getRoomDetails(item) }}>
+                                            <a href="javascript:void(0)" className={`chat ${selectedRoomID === item.roomId ? 'active' : ''}`}>
+                                                <figure className="u_img">
+                                                    <img src={item.oppUserInfo?.image || dummy} alt="img" />
+                                                </figure>
+                                                <div className="detail">
+                                                    <span className="inner_title line-1">{item.oppUserInfo?.name}</span>
+                                                    <span className="inner_title job line-1">{item.jobName}</span>
+                                                    <p className="commn_para line-1">{item.lastMsg?.messageText}</p>
+                                                    {item.lastMsg?.messageTimestamp && <span className="date_time">{formatDateTime(item.lastMsg?.messageTimestamp, 'inboxTime')}</span>}
+                                                    {(selectedRoomID === item.roomId) ? null : item.unreadMessages === 0 ? null : <span className="count">{item.unreadMessages}</span>}
+                                                </div>
+                                            </a>
+                                        </li>
+                                    )
+                                }) : props.isLoading ? null : (
                                     <li>
                                         <a href="javascript:void(0)" className="chat">
                                             <div className="detail">
@@ -206,7 +246,7 @@ const Chat = (props: PropTypes) => {
                             </ul>
                         </div>
                     </div>
-                    <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history}/>
+                    {isInitialLoader ? null : <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history} isLoading={props.isLoading} />}
                 </div>
             </div>
         </div >
