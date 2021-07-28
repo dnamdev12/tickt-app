@@ -357,7 +357,8 @@ const Header = (props: any) => {
                         zIndex: 2000,
                     },
                     overlay: {
-                      background: 'linear-gradient(180deg, rgba(22, 29, 74, 0.80) 20%, rgba(22, 29, 74, 0.5) 30%)',
+                        // background: 'linear-gradient(180deg, rgba(22, 29, 74, 0.80) 20%, rgba(22, 29, 74, 0.5) 30%)',
+                        background: '#00000099',
                     }
                 }}
                 floaterProps={{
@@ -377,13 +378,13 @@ const Header = (props: any) => {
                     <div className="tour-tooltip" {...tooltipProps}>
                         <div className="tour-tooltip-content">{step.content}</div>
                         <div className="tour-tooltip-footer">
-                            <button {...skipProps}>Skip</button>
+                            <button className="fill_btn skip_btn" {...skipProps}>Skip</button>
                             <div>
                                 {index > 0 && (
-                                    <button {...backProps}>Back</button>
+                                    <button className="fill_grey_btn" {...backProps}>Back</button>
                                 )}
                                 {continuous && (
-                                    <button {...primaryProps} title={isLastStep ? 'Done' : 'Next'}>
+                                    <button className="fill_btn m-l-20" {...primaryProps} title={isLastStep ? 'Done' : 'Next'}>
                                         {isLastStep ? 'Done' : 'Next'} {step.showProgress && `(${index + 1}/${size})`}
                                     </button>
                                 )}
@@ -479,9 +480,10 @@ const Header = (props: any) => {
                                         </span>
 
 
-                                        <MenuItem onClick={() => { 
-                                            handleClose('pofile'); 
-                                            history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`); }}>
+                                        <MenuItem onClick={() => {
+                                            handleClose('pofile');
+                                            history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`);
+                                        }}>
                                             <span className="setting_icon">
                                                 <img src={profile} alt="profile" />
                                                 {'My Profile'}
@@ -529,8 +531,10 @@ const Header = (props: any) => {
                                             horizontal: 'right',
                                         }}
                                     >
-                                        <span className="sub_title">Notifications</span>
-                                        <a href="javascript:void(0)" className="link mark_all">Mark all as read</a>
+                                        <div>
+                                            <span className="sub_title">Notifications</span>
+                                            <a href="javascript:void(0)" className="link mark_all">Mark all as read</a>
+                                        </div>
 
                                         {notificationData.list?.length > 0 &&
                                             notificationData.list.map((item: any) =>
@@ -551,6 +555,9 @@ const Header = (props: any) => {
                                                     </div>
                                                 </MenuItem>
                                             )}
+                                        <div className="more_notif">
+                                            <a className="link">View more</a>
+                                        </div>
                                     </Menu>
                                     {/* Notification close */}
 

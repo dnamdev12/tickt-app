@@ -558,6 +558,13 @@ a.fill_grey_btn {
   margin-left: 30px;
 }
 
+.m-l-20{
+  margin-left: 20px;
+  @media(max-width: 650px){
+    margin-left: 10px;
+  }
+}
+
 .m-t-vh{
   margin-top: 20vh;
   @media (max-width: 1366px) {

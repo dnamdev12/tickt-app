@@ -48,8 +48,8 @@ const PaymentHistory = ({
 
   const searchPayementHistory = useCallback(debounce((searchQuery) => getPaymentHistory(1, searchQuery, false), 1000), []);
 
-  const handleSearch = ({ target: { value }}: any) => {
-    setSearchQuery(value); 
+  const handleSearch = ({ target: { value } }: any) => {
+    setSearchQuery(value);
     searchPayementHistory(value);
   };
 
@@ -177,7 +177,60 @@ const PaymentHistory = ({
             </div>
           </div>
           <div className="last_jobs">
-            <div className="flex_row">
+
+
+            <div className="table_wrap">
+              <table cellPadding="0" cellSpacing="0">
+                <thead>
+                  <tr>
+                    <th><span className="form_label">Job</span></th>
+                    <th><span className="form_label">Status</span></th>
+                    <th> <span className="form_label">Hired {userType === 1 ? 'by' : 'tradie'}</span></th>
+                    <th><span className="form_label">Date</span></th>
+                    <th> <span className="form_label">Price</span></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {searching ? (
+                    <div className="no_record">
+                      <img src={loader} alt="loader" width="130px" />
+                    </div>
+                  ) : !revenueList?.length ? (
+                    <div className="no_record">
+                      <figure className="no_img">
+                        <img src={noData} alt="data not found" />
+                      </figure>
+                      <span>No Data Found</span>
+                    </div>
+                  ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, earning }: any) => (
+                    <tr key={_id}>
+                      <td>
+                        <div className="img_txt_wrap">
+                          <figure className="job_img">
+                            <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="job-img" />
+                          </figure>
+                          <div className="details" onClick={() => { history.push(`/payment-history?jobId=${jobId}`); }}>
+                            <span className="inner_title line-2">
+                              {tradeName}
+                            </span>
+                            <span className="xs_head line-1">
+                              {jobName}
+                            </span>
+                          </div>
+                        </div>
+                      </td>
+                      <td><span className="inner_title line-3">{status}</span></td>
+                      <td><span className="inner_title line-3">{userType === 1 ? builderName : tradieName}</span></td>
+                      <td><span className="inner_title">{moment(from_date).format('DD.MM.YYYY')}</span></td>
+                      <td><span className="inner_title">{earning}</span></td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+
+            {/* <div className="flex_row">
               <div className="flex_col_sm_3">
                 <span className="form_label">Job</span>
               </div>
@@ -193,49 +246,8 @@ const PaymentHistory = ({
               <div className="flex_col_sm_2">
                 <span className="form_label">Price</span>
               </div>
-            </div>
-            {searching ? (
-              <div className="no_record">
-                <img src={loader} alt="loader" width="130px" />
-              </div>
-            ) : !revenueList?.length ? (
-              <div className="no_record">
-                  <figure className="no_img">
-                      <img src={noData} alt="data not found" />
-                  </figure>
-                  <span>No Data Found</span>
-              </div>
-            ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, earning }: any) => (
-              <div className="flex_row center_flex" key={_id}>
-                <div className="flex_col_sm_3">
-                  <div className="img_txt_wrap">
-                    <figure className="job_img">
-                      <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="job-img" />
-                    </figure>
-                    <div className="details" onClick={() => { history.push(`/payment-history?jobId=${jobId}`); }}>
-                      <span className="inner_title line-2">
-                        {tradeName}
-                      </span>
-                      <span className="xs_head line-1">
-                        {jobName}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex_col_sm_2">
-                  <span className="inner_title line-3">{status}</span>
-                </div>
-                <div className="flex_col_sm_3">
-                  <span className="inner_title line-3">{userType === 1 ? builderName : tradieName}</span>
-                </div>
-                <div className="flex_col_sm_2">
-                  <span className="inner_title">{moment(from_date).format('DD.MM.YYYY')}</span>
-                </div>
-                <div className="flex_col_sm_2">
-                  <span className="inner_title">{earning}</span>
-                </div>
-              </div>
-            ))}
+            </div> */}
+
           </div>
         </div>
       </div>
