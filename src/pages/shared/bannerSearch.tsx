@@ -388,9 +388,14 @@ const BannerSearch = (props: PropsType) => {
                         parseFloat(selected_address?.lat)
                     ]
                 }
+                if (addressText) {
+                    data['address'] = addressText;
+                }
             } else {
                 delete data.location;
             }
+
+
 
             if (moment(calenderRange1?.startDate).isValid()) {
                 data['from_date'] = moment(calenderRange1?.startDate).format('YYYY-MM-DD')
@@ -425,7 +430,6 @@ const BannerSearch = (props: PropsType) => {
                     }
                 }
             }
-
 
             if (!localChanges) {
                 props.postHomeSearchData(data);
