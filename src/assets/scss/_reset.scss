@@ -739,3 +739,34 @@ span.item-star {
 .cursor-pointer {
     cursor: pointer;
 }
+
+.table_wrap{
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+table{
+    width: 100%;
+    @media(max-width: 650px){
+        width: 800px;
+    }
+    th, td{
+        width: 20%;
+        text-align: left;
+        padding: 10px;
+        @media(max-width: 650px){
+            border: 1px solid #161d4a;
+            text-align: center;
+        }
+    }
+    tr{
+        &:nth-child(even){
+            background-color: #fafafa;
+        }
+    }
+    th{
+        background-color: #eeeeee;
+        height: 45px;
+        vertical-align: bottom;
+    }
+}

@@ -641,8 +641,7 @@ body {
     box-shadow: 0 20px 24px 0 rgba(132, 132, 132, 0.2);
     @media (max-width: 650px) {
       padding: 0 10px 0 20px;
-      width: 180px;
-      margin: 45px 0 0 82px;
+      width: 230px;
     }
     .sub_title {
       font-size: 20px;
@@ -710,6 +709,7 @@ body {
       background-color: #f6f7f9;
       padding-bottom: 10px;
       margin: 0 -32px 0px;
+      cursor: default;
       &:last-child{
         padding-bottom: 0;
       }
@@ -728,6 +728,11 @@ body {
     }
   }
   
+}
+
+.more_notif{
+  text-align: center;
+  padding: 10px 0;
 }
 
 .notif{
@@ -5077,6 +5082,15 @@ div#light-box div {
 
 
 //----------Revenue-----------//
+.flex_row.center_flex{
+  .flex_col_sm_2,  .flex_col_sm_4{
+    @media(max-width: 650px){
+      width: 50%;
+      margin-bottom: 10px;
+    }
+  }
+}
+
 .total_count_card{
   display: flex;
   flex-wrap: wrap;
@@ -5092,8 +5106,15 @@ div#light-box div {
     justify-content: center;
     align-items: center;
     flex-flow: column;
+    @media(max-width: 650px){
+      min-height: 110px;
+      padding: 10px 15px;
+    }
     &:not(:last-child){
       margin: 0 32px 0 0;
+      @media(max-width: 650px){
+        margin: 0 20px 0 0;
+      }
     }
     &:hover{
 	    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
@@ -5108,6 +5129,9 @@ div#light-box div {
       max-width: 488px;
       @media(max-width: 768px){
         max-width: 47%;
+      }
+      @media(max-width: 650px){
+        max-width: 45%;
       }
     }
     &.job{
@@ -5136,9 +5160,6 @@ div#light-box div {
       margin-bottom: 24px;
     }
   }
-  .form_label{
-    margin-bottom: 16px;
-  }
   .inner_title{
     margin: 0;
   }
@@ -5166,7 +5187,7 @@ div#light-box div {
   }
   .details{
     cursor: pointer;
-    width: 78%;
+    width: 70%;
     @media(max-width: 768px){
       width: 66%;
     }
@@ -5180,7 +5201,7 @@ div#light-box div {
 .search_bar{
   position: relative;
   overflow: hidden;
-  transition: width 0.6s ease;
+  transition: all 0.5s ease;
   input{
     border-color: transparent !important;
     position: relative;
@@ -5577,7 +5598,7 @@ div#light-box div {
 //----------Chat close-------------//
 
 
-//----------Tour Guide close-------------//
+//----------Tour Guide-------------//
 
 .h-75vh {
   height: 75vh;
@@ -5588,29 +5609,43 @@ div#light-box div {
 }
 
 .tour-tooltip {
-  width: 380px;
-
-  &-content {
-    text-align: center;
-    padding: 10px;
-    color: var(--white);
-    height: 90px;
+  width: 420px;
+  margin: 10px auto auto;
+  @media(max-width: 650px){
+    width: 85%;
   }
-
+  &-content {
+    color: var(--white);
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    margin-bottom: 25px;
+    font-size: 17px;
+    line-height: 1.33;
+    text-shadow: 0 0 20px #00000066;
+    text-align: center;
+  }
   &-footer {
     display: flex;
     justify-content: space-between;
-
+    align-items: center;
+    @media(max-width: 650px){
+      flex-wrap: wrap-reverse;
+      justify-content: center;
+    }
     button {
-      font-size: 16px;
-      padding: 10px;
-      color: var(--yellow);
-      background-color: transparent;
+      padding: 10px 15px;
+      &.skip_btn{
+        background-color: transparent;
+        border: 1px solid #dfe5ef;
+        color: #dfe5ef;
+        @media(max-width: 650px){
+          margin: 10px;
+        }
+      }
     }
   }
 }
 
-//----------Chat close-------------//
+//----------Tour Guide close-------------//
 
 .visibility-hidden {
   visibility: hidden;
