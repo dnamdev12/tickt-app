@@ -25,7 +25,7 @@ var qaStgFirebaseConfig = {
     measurementId: "G-KT3LTB6JMT"
   };
 
-firebase.initializeApp(devFirebaseConfig);
+firebase.initializeApp(qaStgFirebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
