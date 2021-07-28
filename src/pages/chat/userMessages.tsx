@@ -39,7 +39,7 @@ const UserMessages = (props: any) => {
 
     const [itemsMedia, setItemsMedia] = useState([]);
     const [toggler, setToggler] = useState(false);
-    const [selectedSlide, setSelectSlide] = useState<any>(1);
+    const [selectedSlide, setSelectSlide] = useState<any>(0);
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
 
@@ -60,7 +60,7 @@ const UserMessages = (props: any) => {
     });
 
     const scrollToBottom = () => {
-        if (null !== divRref.current) {
+        if (null !== divRref?.current) {
             console.log("divRref.current", divRref.current)
             const scroll =
                 divRref.current.scrollHeight -
@@ -323,7 +323,11 @@ const UserMessages = (props: any) => {
     console.log(props.roomData, "props.roomData");
 
     const { sources, types } = renderMediaItems(itemsMedia);
-
+    console.log({
+        sources, types,
+        selectedSlide,
+        toggler
+    })
     return (props.isNoRecords ? (
         <div className="detail_col">
             <div className="flex_row">
@@ -338,8 +342,11 @@ const UserMessages = (props: any) => {
                 slide={selectedSlide}
                 sources={sources}
                 types={types}
+                key={sources?.length}
                 // disableLocalStorage={true}
-                // onClose={}
+                onClose={() => {
+                    setSelectSlide(0)
+                }}
             />
             <div className="detail_col">
                 <div className="flex_row">
