@@ -29,7 +29,7 @@ var qaStgFirebaseConfig = {
 };
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(qaStgFirebaseConfig);
+    firebase.initializeApp(devFirebaseConfig);
 }
 export const auth = firebase.auth();
 export const messaging = firebase.messaging();
@@ -143,7 +143,7 @@ export const firebaseLogInWithEmailPassword = async (authData, loginRes) => {
             console.log('firebase auth login success: ');
             await db.ref(`${FIREBASE_COLLECTION.USERS}/${loginRes?._id}`).set({
                 email: loginRes?.email,
-                image: '',
+                image: loginRes?.user_image,
                 name: loginRes?.userName,
                 userId: loginRes?._id,
                 onlineStatus: true,
@@ -217,8 +217,9 @@ export const createRoom = async (jobId, tradieId, builderId, jobName) => {
     roomInfoObj.chatRoomMembers = chatRoomMembers;
     roomInfoObj.chatLastUpdates = chatLastUpdates;
 
-    console.log(roomInfoObj);
+    console.log(roomInfoObj, 'roomINfoObj', `${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`, "TESTTTTTTTTTTTTTTT");
     await db.ref(`${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`).set(roomInfoObj);
+    // debugger;
     // await createItem(itemInfo);
     //loggedin user inbox
     await createInbox(tradieId, roomID, jobId, builderId, jobName);

@@ -69,7 +69,7 @@ const Chat = (props: PropTypes) => {
 
     const setInitialItems = async () => {
         const roomID: string = `${jobId}_${tradieId}_${builderId}`;
-        selectedRoomID = roomId;
+        selectedRoomID = roomID;
         if (await checkRoomExist(roomID)) {
             return;
         } else {
@@ -82,8 +82,8 @@ const Chat = (props: PropTypes) => {
         console.log("roomId::", selectedRoomID);
         if (res.length === 0) {
             setIsNoRecords(true);
-            if (isInitialLoader) { 
-                setIsInitialLoader(false); 
+            if (isInitialLoader) {
+                setIsInitialLoader(false);
                 setLoading(false);
             }
             return;
@@ -94,8 +94,12 @@ const Chat = (props: PropTypes) => {
         if (res.length > 0 && selectedRoomID === '') {
             selectedRoomID = res[0].roomId;
             setRoomId(res[0].roomId);
+            if (res[0] && res[0]?.unreadMessages > 0) {
+                res[0].unreadMessages = 0;
+                resetUnreadCounter(res[0].roomId);
+            }
             setRoomData(res[0]);
-            // setRoomData(res[0].item);
+            return;
             // fetchJobDetail(res[0].item?.jobId);
         }
 
@@ -106,6 +110,7 @@ const Chat = (props: PropTypes) => {
                 itemObj.unreadMessages = 0;
                 resetUnreadCounter(itemObj.roomId);
             }
+            setRoomData(itemObj);
         }
     }
 
@@ -241,7 +246,7 @@ const Chat = (props: PropTypes) => {
                             </ul>
                         </div>
                     </div>
-                    {props.isLoading ? null : <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history} isLoading={props.isLoading} />}
+                    {isInitialLoader ? null : <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history} isLoading={props.isLoading} />}
                 </div>
             </div>
         </div >
