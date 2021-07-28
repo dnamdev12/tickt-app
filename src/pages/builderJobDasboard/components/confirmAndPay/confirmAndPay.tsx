@@ -30,8 +30,9 @@ const ConfirmAndPay = (props: any) => {
     const fetchMyAPI = useCallback(async () => {
         let result: any = await getCardList();
         let data: any = result.data;
+        let filterItems: any = []
         if (data?.length) {
-            let filterItems: any = data.map((item: any) => {
+            filterItems = data.map((item: any) => {
                 let exp_date = (item?.exp_month).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
                 return {
                     cardId: item?.cardId,
@@ -43,11 +44,8 @@ const ConfirmAndPay = (props: any) => {
                     fetched: true
                 }
             });
-
-            if (filterItems?.length) {
-                setPaymentDetail(filterItems)
-            }
         }
+        setPaymentDetail(filterItems)
     }, [])
 
 
@@ -97,7 +95,7 @@ const ConfirmAndPay = (props: any) => {
                             }}
                             className="back"></button>
                     ) : null}
-                    <span className="xs_sub_title">
+                    <span className={!props.hideExtra ? `xs_sub_title` : 'xs_sub_title mb-0'}>
                         {props?.jobName}
                     </span>
 
@@ -160,12 +158,12 @@ const ConfirmAndPay = (props: any) => {
                                                 console.log(err);
                                             }
                                         }}
-                                        className="icon lodge">Edit</li>
+                                        className="icon lodge">{'Edit'}</li>
                                     <li
                                         onClick={() => {
-                                            setDeleteToggle((prev: any) => !prev)
+                                            setDeleteToggle((prev: any) => !prev);
                                         }}
-                                        className="icon delete">Delete</li>
+                                        className="icon delete">{'Delete'}</li>
                                 </ul>
                             </div>
                         </span>

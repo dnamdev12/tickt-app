@@ -159,10 +159,10 @@ const PostJob = (props: Proptypes) => {
         let checkIsValid: any = true;
 
         if (!skip && milestone_clone?.length) {
-
             let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
             let count_times: any = {};
-            if (filter_milestone?.length) {
+            if (filter_milestone?.length)
+
                 filter_milestone.forEach((mile: any) => {
                     let msw = moment(mile.from_date, default_format).isValid();
                     let mew = moment(mile.to_date, default_format).isValid();
@@ -176,20 +176,45 @@ const PostJob = (props: Proptypes) => {
                     let time_start = time.from_date;
                     let time_end = time.to_date;
 
-                    if (!count_times[mile_start]) {
-                        count_times[mile_start] = 1;
+
+                    if (count_times[mile_start] == undefined) {
+                        count_times[mile_start] = 1
+                    } else {
+                        count_times[mile_start] = count_times[mile_start] + 1;
                     }
 
-                    if (!count_times[mile_end]) {
-                        count_times[mile_end] = 1;
+
+                    if (count_times[mile_end] == undefined) {
+                        count_times[mile_end] = 1
+                    } else {
+                        count_times[mile_end] = count_times[mile_end] + 1;
                     }
+                
+                    if (count_times[mile_start] === 4) {
+                        console.log('Inside ---',{
+                            ms:mile_start == time_start
+                        })
+                        if (mile_start == time_start || mile_start == time_end) {
+                            console.log('Inside - 1 ---')
+                            setShowToast(true, 'Selected start data is fully engage');
+                            return 
+                        }
+                    }
+
+                    if (count_times[mile_end] === 4) {
+                        if (mile_end == time_start || mile_end == time_end) {
+                            setShowToast(true, 'Selected end data is fully engage');
+                            return 
+                        }
+                    }
+
 
                     if (msw && mew) {
                         if (tsw && tew) {
-                            let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
+                            // let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
 
                             // if (checkIfSame) {
-                            //     checkIsValid = true;
+                            //     checkIsValid = false;
                             // }
 
                             // if (!checkIfSame) {
@@ -209,17 +234,15 @@ const PostJob = (props: Proptypes) => {
                             // }
                         }
 
-                        if (!tew) {
-                            // if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
-                            //     checkIsValid = false;
-                            // }
-                        }
+                        //     if (!tew) {
+                        //         // if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
+                        //         //     checkIsValid = false;
+                        //         // }
                     }
-                    console.log({count_times},'--- count_times')
                     // here conditions
                 })
-            }
         }
+
 
         if (!checkIsValid) {
             setShowToast(true, 'Please add unique date.');
@@ -231,6 +254,7 @@ const PostJob = (props: Proptypes) => {
         setMileStones(milestone_clone);
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
+
     const handleCombineMileStones = (item: any) => {
         let milestone_clone: any = milestones;
         let data_clone: any = data;

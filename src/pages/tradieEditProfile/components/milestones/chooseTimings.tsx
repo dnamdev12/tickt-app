@@ -4,12 +4,22 @@ import React, { useState, useEffect } from 'react';
 // import bell from '../../../assets/images/ic-notification.png';
 // import dummy from '../../../assets/images/u_placeholder.jpg';
 // @ts-ignore
-import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+// import { DateRangePicker } from 'react-date-range';
+// import 'react-date-range/dist/styles.css'; // main style file
+// import 'react-date-range/dist/theme/default.css'; // theme css file
+
+
+// @ts-ignore
+import { DateRangePicker } from '../../../../plugins/react-date-range/dist/index';
+import '../../../../plugins/react-date-range/dist/styles.css';
+import '../../../../plugins/react-date-range/dist/theme/default.css';
+
+import { randomColors as getRandomColors } from '../../../../utils/common'
 import moment from 'moment';
+import { setShowToast } from '../../../../redux/common/actions';
 
 interface Proptypes {
+    items: any;
     // data: any;
     // stepCompleted: Boolean;
     // milestones: any,
@@ -28,6 +38,7 @@ const default_format = 'YYYY-MM-DD';
 
 const ChooseTimings = ({
     toggleCalenderTime,
+    items
     // data,
     // stepCompleted,
     // handleStepForward,
@@ -53,6 +64,104 @@ const ChooseTimings = ({
         handleCheck(item.selection);
     };
 
+
+    const onMountCallable = () => {
+        let count_times: any = {};
+        let randomColors = getRandomColors();
+        let milestones = items;
+      
+        let filteredItems = milestones.filter((item: any) => {
+            let to_date = item?.to_date;
+            let from_date = item?.from_date;
+
+            if (from_date) {
+                count_times[from_date] = 0;
+            }
+
+            if (to_date) {
+                count_times[to_date] = 0;
+            }
+
+            if (Object.keys(item).length && item?.from_date) {
+                return item;
+            }
+
+            let ifMatch = milestones.find((item_: any) => {
+                if (item_.to_date === to_date && from_date === item_.from_date) {
+                    return item_;
+                }
+            })
+
+            return ifMatch
+        });
+
+
+        if (filteredItems?.length) {
+            filteredItems.forEach((item: any, index: any) => {
+                let to_date = item?.to_date;
+                let from_date = item?.from_date;
+
+                let leftSpace: any = '0px';
+
+                if (!to_date && from_date) {
+                    if (count_times[from_date] > -1) {
+                        count_times[from_date]++;
+                    }
+
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    if (from_element) {
+                        from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                    }
+                }
+
+                if (to_date && from_date) {
+                    if (count_times[from_date] > -1) {
+                        count_times[from_date]++;
+                    }
+
+                    if (count_times[to_date] > -1) {
+                        count_times[to_date]++;
+                    }
+
+                    let colorbyIndex = randomColors[index];
+
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
+                    if (from_element) {
+                        let element_from = from_element[0];
+                        if (from_element?.length > 1) {
+                            element_from = from_element[1];
+                        }
+
+                        if (element_from) {
+                            element_from.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                        }
+                    }
+
+                    let to_element: any = document.getElementsByClassName(`color_${count_times[to_date]}_${to_date}`);
+                    console.log({to_element})
+                    if (to_element) {
+                        let element_to = to_element[0];
+                        if (to_element?.length > 1) {
+                            element_to = to_element[1];
+                        }
+                        if (element_to) {
+                            element_to.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[to_date] == 1 ? '10px' : count_times[to_date] == 2 ? '20px' : count_times[to_date] == 3 ? '30px' : '40px'};`);
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        onMountCallable();
+    }, [])
+
+
+    useEffect(() => {
+        onMountCallable();
+    },[range]);
+
     const handleCheck = (item: any) => {
         let from_date = moment(item.startDate).format(default_format);
         let to_date = moment(item.endDate).format(default_format);
@@ -62,6 +171,65 @@ const ChooseTimings = ({
         } else {
             setError('');
         }
+    }
+
+
+    
+    const checkBeforeExist = (time: any, milestones_?:any) => {
+        let count_times: any = {};
+        let catch_boolean: boolean = true;
+        let milestoneItems:any = items;
+
+        milestoneItems.forEach((mile: any) => {
+
+            let mile_start = mile.from_date;
+            let mile_end = mile.to_date;
+
+            let time_start = time.from_date;
+            let time_end = time.to_date;
+
+
+            if (count_times[mile_start] == undefined) {
+                count_times[mile_start] = 1
+            } else {
+                count_times[mile_start] = count_times[mile_start] + 1;
+            }
+
+
+            if (count_times[mile_end] == undefined) {
+                count_times[mile_end] = 1
+            } else {
+                count_times[mile_end] = count_times[mile_end] + 1;
+            }
+
+            if (count_times[mile_start] === 4) {
+                if (mile_start == time_start || mile_start == time_end) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            } else {
+                if (count_times[time_start] === 4) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            }
+
+            if (count_times[mile_end] === 4) {
+                if (mile_end == time_start || mile_end == time_end) {
+                    setShowToast(true, 'Selected end data is fully engage');
+                    catch_boolean = false;
+                }
+            } else {
+                if (count_times[time_end] === 4) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            }
+
+
+        });
+
+        return catch_boolean;
     }
 
     const handleContinue = () => {
@@ -83,7 +251,11 @@ const ChooseTimings = ({
         //     addTimeToMileStone(timings, editMileStone);
         //     handleStepForward(15);
         // }
-        toggleCalenderTime(range);
+
+        let isChecked = checkBeforeExist(timings);
+        if(isChecked){
+            toggleCalenderTime(range);
+        }
     }
 
     const checkDisable = () => {
@@ -110,7 +282,11 @@ const ChooseTimings = ({
                                 style={{ zIndex: 999 }}
                                 className="back">
                             </button>
-                            <span className="title">
+                            <span 
+                            onClick={() => {
+                                onMountCallable();
+                            }}
+                            className="title">
                                 {'Timing'}
                             </span>
                         </div>

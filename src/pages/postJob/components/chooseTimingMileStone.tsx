@@ -15,7 +15,7 @@ import { DateRangePicker } from '../../../plugins/react-date-range/dist/index';
 import '../../../plugins/react-date-range/dist/styles.css';
 import '../../../plugins/react-date-range/dist/theme/default.css';
 import moment from 'moment';
-
+import { setShowToast } from '../../../redux/common/actions';
 
 interface Proptypes {
     data: any;
@@ -55,10 +55,18 @@ const ChooseTimingMileStone = ({
     const [localChanges, setLocalChanges] = useState(false);
 
     const onMountCallable = () => {
-
+        let count_times: any = {};
         let filteredItems = milestones.filter((item: any) => {
             let to_date = item?.to_date;
             let from_date = item?.from_date;
+
+            if (from_date) {
+                count_times[from_date] = 0;
+            }
+
+            if (to_date) {
+                count_times[to_date] = 0;
+            }
 
             if (Object.keys(item).length && item?.from_date) {
                 return item;
@@ -70,102 +78,38 @@ const ChooseTimingMileStone = ({
                 }
             })
 
-            if (ifMatch) {
-                ifMatch['match'] = true;
-            } else {
-                ifMatch['match'] = false;
-            }
             return ifMatch
-
         });
 
 
-        let count_times: any = {};
         if (filteredItems?.length) {
             filteredItems.forEach((item: any, index: any) => {
                 let to_date = item?.to_date;
                 let from_date = item?.from_date;
 
-                if (!count_times[from_date]) {
-                    count_times[from_date] = 0;
-                } else {
-                    if(count_times[to_date]){
-                        count_times[to_date]++
-                    }
-                }
-
-                if (!count_times[to_date]) {
-                    count_times[to_date] = 0;
-                } else {
-                    if(count_times[to_date]){
-                        count_times[to_date]++
-                    }
-                }
-
-         
-                let leftSpace = '0px';
+                let leftSpace: any = '0px';
 
                 if (!to_date && from_date) {
-                    count_times[from_date]++;
-
-                    if (count_times[from_date] == 1) {
-                        leftSpace = '5px';
-                    }
-
-                    if (count_times[from_date] == 2) {
-                        leftSpace = '15px';
-                    }
-
-                    if (count_times[from_date] == 3) {
-                        leftSpace = '25px';
-                    }
-
-                    if (count_times[from_date] == 4) {
-                        leftSpace = '35px';
+                    if (count_times[from_date] > -1) {
+                        count_times[from_date]++;
                     }
 
                     let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
                     if (from_element) {
-                        from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace};`);
+                        from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
                     }
                 }
 
                 if (to_date && from_date) {
-                    count_times[from_date]++;
-                    count_times[to_date]++;
-
-
-                    if (count_times[from_date] == 1) {
-                        leftSpace = '5px';
+                    if (count_times[from_date] > -1) {
+                        count_times[from_date]++;
                     }
 
-                    if (count_times[to_date] == 1) {
-                        leftSpace = '5px';
+                    if (count_times[to_date] > -1) {
+                        count_times[to_date]++;
                     }
 
-                    if (count_times[from_date] == 2) {
-                        leftSpace = '15px';
-                    }
-
-                    if (count_times[to_date] == 2) {
-                        leftSpace = '15px';
-                    }
-
-                    if (count_times[from_date] == 3) {
-                        leftSpace = '25px';
-                    }
-
-                    if (count_times[to_date] == 3) {
-                        leftSpace = '25px';
-                    }
-
-                    if (count_times[from_date] == 4) {
-                        leftSpace = '35px';
-                    }
-
-                    if (count_times[to_date] == 4) {
-                        leftSpace = '35px';
-                    }
+                    let colorbyIndex = randomColors[index];
 
                     let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
@@ -175,7 +119,7 @@ const ChooseTimingMileStone = ({
                         }
 
                         if (element_from) {
-                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace}; from:${from_date}`);
+                            element_from.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'}; from:${from_date}`);
                         }
                     }
 
@@ -186,25 +130,23 @@ const ChooseTimingMileStone = ({
                             element_to = to_element[1];
                         }
                         if (element_to) {
-                            element_to.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${leftSpace}; to:${to_date}`);
+                            element_to.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[to_date] == 1 ? '10px' : count_times[to_date] == 2 ? '20px' : count_times[to_date] == 3 ? '30px' : '40px'}; to:${to_date}`);
                         }
                     }
                 }
             })
         }
-        console.log({
-            randomColors,
-            filteredItems
-        })
     }
 
     useEffect(() => {
         onMountCallable()
     }, [])
 
+
     const handleChange = (item: any) => {
         setRange(item.selection);
         handleCheck(item.selection);
+        onMountCallable()
     };
 
     const handleCheck = (item: any) => {
@@ -218,6 +160,67 @@ const ChooseTimingMileStone = ({
         }
     }
 
+    const checkBeforeExist = (time: any, milestones_?:any) => {
+        let count_times: any = {};
+        let catch_boolean: boolean = true;
+        let milestoneItems:any = milestones;
+        
+        if(milestones_){
+            milestoneItems = milestones_;
+        }
+
+        milestoneItems.forEach((mile: any) => {
+
+            let mile_start = mile.from_date;
+            let mile_end = mile.to_date;
+
+            let time_start = time.from_date;
+            let time_end = time.to_date;
+
+
+            if (count_times[mile_start] == undefined) {
+                count_times[mile_start] = 1
+            } else {
+                count_times[mile_start] = count_times[mile_start] + 1;
+            }
+
+
+            if (count_times[mile_end] == undefined) {
+                count_times[mile_end] = 1
+            } else {
+                count_times[mile_end] = count_times[mile_end] + 1;
+            }
+
+            if (count_times[mile_start] === 4) {
+                if (mile_start == time_start || mile_start == time_end) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            } else {
+                if (count_times[time_start] === 4) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            }
+
+            if (count_times[mile_end] === 4) {
+                if (mile_end == time_start || mile_end == time_end) {
+                    setShowToast(true, 'Selected end data is fully engage');
+                    catch_boolean = false;
+                }
+            } else {
+                if (count_times[time_end] === 4) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            }
+
+
+        });
+
+        return catch_boolean;
+    }
+
     const handleContinue = () => {
         let moment_start = moment(range.startDate).format('MM-DD-YYYY')
         let moment_end = moment(range.endDate).format('MM-DD-YYYY')
@@ -229,19 +232,22 @@ const ChooseTimingMileStone = ({
         let item_index = null;
         item_index = milestones.length ? milestones.length - 1 : 0;
 
-        if (editMileStone == null) {
-            addTimeToMileStone(timings, item_index);
-            handleStepBack();
-        } else {
-            updateMileStoneTimings(timings);
-            addTimeToMileStone(timings, editMileStone);
-            handleStepForward(15);
+        let isChecked = checkBeforeExist(timings);
+
+        if (isChecked) {
+            if (editMileStone == null) {
+                addTimeToMileStone(timings, item_index);
+                handleStepBack();
+            } else {
+                updateMileStoneTimings(timings);
+                addTimeToMileStone(timings, editMileStone);
+                handleStepForward(15);
+            }
         }
         // handleStepComplete(formattedDates);
     }
 
     const checkDisable = () => {
-        // let from_date = moment(range.startDate).format(default_format);
         if (range?.startDate && range?.startDate !== 'Invalid date') {
             return false;
         }

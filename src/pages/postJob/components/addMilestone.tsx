@@ -77,10 +77,12 @@ export default class AddMilestone extends Component<Props, State> {
 
         let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = this.state;
         if (nextProps.milestones.length) {
-
+            console.log({
+                mile:nextProps.milestones
+            })
             let milestones_items = nextProps.milestones;
             let item = milestones_items[milestones_items.length - 1];
-
+            console.log({item},'---')
             if ('milestone_name' in item) {
                 this.setLocalValueByCompare(item?.milestone_name, milestone_name, 'milestone_name');
             } else {
@@ -187,15 +189,6 @@ export default class AddMilestone extends Component<Props, State> {
         } else {
             return `${label[name]} is required.`
         }
-
-        // if (value?.length) {
-        //     if (value.match(pattern) !== null) {
-        //         return '';
-        //     } else {
-        //         return 'Please enter a valid pattern like : 04:03'
-        //     }
-        // }
-        // return `${label[name]} is required.`
     }
 
     isInvalid = (name: string, value: string) => {
@@ -208,7 +201,6 @@ export default class AddMilestone extends Component<Props, State> {
                 return this.checkHoursVal(value, label, name);
         }
     }
-
 
     checkErrors = (isTrue?: boolean) => {
         const { milestones } = this.props;
@@ -224,7 +216,6 @@ export default class AddMilestone extends Component<Props, State> {
             if (milestone_name?.length) {
                 errorItems['milestone_name'] = error_1;
             }
-
 
             if (recommended_hours?.length && error_3?.length) {
                 errorItems['recommended_hours'] = error_3;

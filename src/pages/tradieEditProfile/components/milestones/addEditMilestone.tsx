@@ -384,6 +384,7 @@ class AddEditMilestone extends Component<Props, State> {
             return (
                 <ChooseTimings
                     toggleCalenderTime={this.toggleCalenderTime}
+                    items={props_items}
                 />
             )
         }

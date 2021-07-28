@@ -73,7 +73,7 @@ const PastJobs = (props: Proptypes) => {
                 </div>
                 <div className="job_info">
                   <ul>
-                    <li className="icon clock">
+                    <li className="icon calendar">
                       {renderTime(item.fromDate, item.toDate)}
                     </li>
                     <li className="icon dollar">{item.amount}</li>
