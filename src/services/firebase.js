@@ -7,7 +7,7 @@ import 'firebase/firestore';
 import moment from 'moment';
 import storageService from "../utils/storageService";
 
-let firebaseConfig = {
+let devFirebaseConfig = {
     apiKey: "AIzaSyDq9WSnxFSvLIkzb5ucqQdDdh6zFUicGUE",
     authDomain: "tickt-test.firebaseapp.com",
     databaseURL: "https://tickt-test-default-rtdb.firebaseio.com",
@@ -17,8 +17,19 @@ let firebaseConfig = {
     appId: "1:268252142860:web:b62a9d4bd768f127237d29"
 };
 
+var qaStgFirebaseConfig = {
+    apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
+    authDomain: "tickt-app.firebaseapp.com",
+    databaseURL: "https://tickt-app-default-rtdb.firebaseio.com",
+    projectId: "tickt-app",
+    storageBucket: "tickt-app.appspot.com",
+    messagingSenderId: "795502342919",
+    appId: "1:795502342919:web:37a2294b55f69051d30ba2",
+    measurementId: "G-KT3LTB6JMT"
+};
+
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(devFirebaseConfig);
 }
 export const auth = firebase.auth();
 export const messaging = firebase.messaging();
@@ -29,7 +40,7 @@ const usersRef = db.ref('users');
 const CHAT_TYPE = 'single';
 const FIREBASE_COLLECTION = {
     ROOM_INFO: "room_info",
-    JOBS: "items",
+    JOBS: "jobs",
     INBOX: "inbox",
     MESSAGES: "messages",
     LAST_MESSAGES: "lastMessage",
@@ -111,7 +122,7 @@ export const firebaseSignUpWithEmailPassword = async ({ email, password, id, ful
 
             await db.ref(`${FIREBASE_COLLECTION.USERS}/${id}`).set({
                 email: email,
-                image: 'https://appinventiv-development.s3.amazonaws.com/ezgif.com-gif-maker.png',
+                image: '',
                 name: fullName,
                 // uid: ref.user["$"]["W"],
                 userId: id,
@@ -125,11 +136,19 @@ export const firebaseSignUpWithEmailPassword = async ({ email, password, id, ful
     }
 };
 
-export const firebaseLogInWithEmailPassword = async ({ email, password }) => {
+export const firebaseLogInWithEmailPassword = async (authData, loginRes) => {
     try {
-        let response = await auth.signInWithEmailAndPassword(email, password);
+        let response = await auth.signInWithEmailAndPassword(authData.email, authData.password);
         if (response) {
             console.log('firebase auth login success: ');
+            await db.ref(`${FIREBASE_COLLECTION.USERS}/${loginRes?._id}`).set({
+                email: loginRes?.email,
+                image: loginRes?.user_image,
+                name: loginRes?.userName,
+                userId: loginRes?._id,
+                onlineStatus: true,
+                userType: loginRes?.user_type,
+            });
         }
     } catch (err) {
         console.log('firebase auth login failure: ');
@@ -198,8 +217,9 @@ export const createRoom = async (jobId, tradieId, builderId, jobName) => {
     roomInfoObj.chatRoomMembers = chatRoomMembers;
     roomInfoObj.chatLastUpdates = chatLastUpdates;
 
-    console.log(roomInfoObj);
+    console.log(roomInfoObj, 'roomINfoObj', `${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`, "TESTTTTTTTTTTTTTTT");
     await db.ref(`${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`).set(roomInfoObj);
+    // debugger;
     // await createItem(itemInfo);
     //loggedin user inbox
     await createInbox(tradieId, roomID, jobId, builderId, jobName);
@@ -264,10 +284,10 @@ export const getFirebaseInboxData = async (listner) => {
             // }
             let lastMsg = await db.ref(`${FIREBASE_COLLECTION.LAST_MESSAGES}/${indexlist[i].roomId}/chatLastMessage`).once('value');
             if (lastMsg.exists()) {
-                    indexlist[i].lastMsg = lastMsg.val();
+                indexlist[i].lastMsg = lastMsg.val();
             }
-            let oppUserId = '' ;
-            if(storageService.getItem('userType') === 1){
+            let oppUserId = '';
+            if (storageService.getItem('userType') === 1) {
                 oppUserId = indexlist[i].roomId.split('_')[2];
             } else {
                 oppUserId = indexlist[i].roomId.split('_')[1];
@@ -276,8 +296,8 @@ export const getFirebaseInboxData = async (listner) => {
             if (userIndex == -1) {
                 let oppUserInfo = await db.ref(`${FIREBASE_COLLECTION.USERS}/${oppUserId}`).once('value');
                 if (oppUserInfo.exists()) {
-                        indexlist[i].oppUserInfo = oppUserInfo.val();
-                        users.push(oppUserInfo.val());
+                    indexlist[i].oppUserInfo = oppUserInfo.val();
+                    users.push(oppUserInfo.val());
                 }
             } else {
                 indexlist[i].oppUserInfo = users[userIndex];
@@ -389,7 +409,7 @@ export const sendTextMessage = async (roomId, message) => {
     await db.ref(`${FIREBASE_COLLECTION.INBOX}/${receiverId}/${inboxId}`).child('unreadMessages').set(firebase.database.ServerValue.increment(1));
 }
 
-export const sendImageMessage = async (roomId, url) => {
+export const sendImageVideoMessage = async (roomId, url, type) => {
     let senderId = getLoggedInuserId();
     let roomids = roomId.split("_");
     let jobId = "";
@@ -419,7 +439,7 @@ export const sendImageMessage = async (roomId, url) => {
         "messageStatus": "send",
         "messageText": "",
         "messageTimestamp": firebase.database.ServerValue.TIMESTAMP,
-        "messageType": "image",
+        "messageType": type === "image" ? "image" : "video",
         "progress": 0,
         "receiverId": receiverId,
         "senderId": senderId,
