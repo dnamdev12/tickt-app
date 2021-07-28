@@ -5,6 +5,9 @@ import { setShowNotification } from '../redux/common/actions';
 import dummy from '../assets/images/u_placeholder.jpg';
 import close from '../assets/images/icon-close-1.png';
 
+import { onNotificationClick } from '../utils/common';
+
+
 const NOTIFICATION_TIMEOUT = 5000;
 
 
@@ -35,7 +38,8 @@ const CustomNotification = (props: any) => {
             </span>
             <div className="wrapppr" onClick={() => {
                 setShowNotification(false);
-                window.open('http://localhost:3000/active-jobs', '_self');
+                // window.open('http://localhost:3000/active-jobs', '_self');
+                window.open(onNotificationClick(notification), '_self');
             }}>
                 <div className="notif">
                     <figure className="not_img">
