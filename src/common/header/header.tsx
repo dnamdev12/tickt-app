@@ -542,7 +542,8 @@ const Header = (props: any) => {
                                                             <span className={`${item.read ? '' : 'dot'}`}></span>
                                                         </figure>
                                                         <div className="info">
-                                                            <span className="who line-1">{item.title}</span>
+                                                            {/* <span className="who line-1">{item.title}</span> */}
+                                                            <span className="who">{item.title}</span>
                                                             <span className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}
                                                         </div>
@@ -550,19 +551,6 @@ const Header = (props: any) => {
                                                     </div>
                                                 </MenuItem>
                                             )}
-                                        {/* <MenuItem>
-                                            <div className="notif">
-                                                <figure className="not_img">
-                                                    <img src={dummy} alt="img" />
-                                                </figure>
-                                                <div className="info">
-                                                    <span className="who">John Oldman</span>
-                                                    <span>reviewed you!</span>
-                                                    <span>Read review</span>
-                                                </div>
-                                                <span className="time">St 12:30 AM</span>
-                                            </div>
-                                        </MenuItem> */}
                                     </Menu>
                                     {/* Notification close */}
 
