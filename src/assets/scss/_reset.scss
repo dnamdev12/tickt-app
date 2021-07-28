@@ -310,6 +310,16 @@ body.loader_show .full_loader {
 
 html {scrollbar-color: var(--blue) #f7f8fa;}
 
+body {
+    scrollbar-3dlight-color: #000000;
+    scrollbar-arrow-color: #ffffff;
+    scrollbar-darkshadow-color: #000000;
+    scrollbar-face-color: #000000;
+    scrollbar-highlight-color: #ffffff;
+    scrollbar-shadow-color: #ffffff;
+    scrollbar-track-color: #000000;
+  }
+
 //-------------- Scroll Bar ------------------// 
 
 
@@ -671,4 +681,92 @@ html {scrollbar-color: var(--blue) #f7f8fa;}
 .disable_milstone {
     opacity: 0.6;
     pointer-events: none;
+}
+
+.w-full {
+    margin-left: -35px !important;
+  }
+  
+span.item-star {
+    position: absolute;
+    right: 5%;
+}
+
+.red_08-01-2021.active {   
+    padding: 5px;
+    background: red;
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    border-radius: 5px;
+}
+
+.green_08-01-2021.active {   
+    padding: 5px;
+    background: green;
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    border-radius: 5px;
+}
+
+.blue_08-01-2021.active {   
+    padding: 5px;
+    background: blue;
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    border-radius: 5px;
+}
+
+.yellow_08-01-2021.active {   
+    padding: 5px;
+    background: yellow;
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    border-radius: 5px;
+}
+
+.rdrDayPassive {
+    opacity: 0 !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}
+
+.table_wrap{
+    overflow-x: auto;
+    white-space: nowrap;
+}
+
+table{
+    width: 100%;
+    @media(max-width: 650px){
+        width: 800px;
+    }
+    th, td{
+        width: 20%;
+        text-align: left;
+        padding: 10px;
+        @media(max-width: 650px){
+            border: 1px solid #161d4a;
+            text-align: center;
+        }
+    }
+    tr{
+        &:nth-child(even){
+            background-color: #fafafa;
+        }
+    }
+    th{
+        background-color: #eeeeee;
+        height: 45px;
+        vertical-align: bottom;
+    }
 }

@@ -6,6 +6,8 @@ const initialState = {
     showToast: false,
     toastType: undefined,
     toastMessage: undefined,
+    showNotification: false,
+    notificationData: null,
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -26,6 +28,12 @@ const reducer = (state = initialState, action: any) => {
                 showToast: action.showToast,
                 toastType: action.toastType,
                 toastMessage: action.toastMessage,
+            }
+        case actionTypes.SHOW_HIDE_NOTIFICATION:
+            return {
+                ...state,
+                showNotification: action.showNotification,
+                notificationData: action.data,
             }
         default: return state
     }

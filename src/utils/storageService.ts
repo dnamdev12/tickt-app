@@ -32,7 +32,13 @@ function removeItem(key: string) {
 
 function clearAll() {
     try {
-        return localStorage.clear();
+        // to prevent this value from getting cleared on logout
+        const firstLogin = localStorage.getItem('firstLogin');
+        localStorage.clear();
+
+        if (firstLogin) {
+          localStorage.setItem('firstLogin', firstLogin);
+        }
     }
     catch (err) {
         console.log(err)

@@ -1,4 +1,9 @@
+import React, { useEffect } from 'react';
 import storageService from '../../../utils/storageService';
+//@ts-ignore
+import Intercom from 'intercom-client';
+
+
 interface Propstype {
     updateSteps: (num: number, data: any) => void,
     step: number,
@@ -9,6 +14,19 @@ interface Propstype {
 }
 
 const InitialSignupPage = (props: Propstype) => {
+    let window_:any = window;
+
+    useEffect(() => {
+        // prefetch();
+    }, [])
+
+    useEffect(() => {
+        if (window_?.Intercom) {
+            window_?.Intercom('update', {
+                "hide_default_launcher": true
+            });
+        }
+    }, [window_])
 
     const nextPageHandler = (userType: string) => {
         var user_type = 1

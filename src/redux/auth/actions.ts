@@ -4,6 +4,12 @@ import * as actionTypes from './constants';
 import { setShowToast, setLoading } from './../common/actions';
 import storageService from '../../utils/storageService';
 
+import {
+  callTradieProfileData as getProfileTradie,
+  getProfileBuilder
+} from '../profile/actions';
+import { store } from '../../App';
+
 export const callTradeList = () => ({ type: actionTypes.CALL_TRADE_LIST })
 
 export const postSignup = async (data: any) => {
@@ -14,20 +20,22 @@ export const postSignup = async (data: any) => {
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    return { success: true };
+    return { success: true, result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
 };
 
-export const checkEmailId = async (email: string) => {
+export const checkEmailId = async (email: string, hideToast?:boolean) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkEmailId + `?email=${email}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, isProfileCompleted: response.result.isProfileCompleted, message: response.message };
   }
-  setShowToast(true, response.message);
+  if(!hideToast){
+    setShowToast(true, response.message);
+  }
   return { success: false };
 };
 
@@ -70,9 +78,30 @@ export const callLogin = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.login, data);
   setLoading(false);
   if (response.status_code === 200) {
+    const firstLogin = storageService.getItem('firstLogin');
+
+    if (!firstLogin) {
+      storageService.setItem('firstLogin', 'true');
+    } else if (firstLogin === 'true') {
+      storageService.setItem('firstLogin', 'false');
+    }
+
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    return { success: true };
+    storageService.setItem("userInfo", {
+      "email": response.result.email,
+      "userName": response.result.userName,
+      "_id": response.result._id,
+    });
+
+    if (response.result.user_type === 1) {
+      store.dispatch(getProfileTradie());
+    }
+
+    if (response.result.user_type === 2) {
+      store.dispatch(getProfileBuilder());
+    }
+    return { success: true, data: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -108,7 +137,7 @@ export const socialSignupLogin = async (data: any) => {
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
-    return { success: true, successToken: response.result.token };
+    return { success: true, successToken: response.result.token, result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -116,7 +145,6 @@ export const socialSignupLogin = async (data: any) => {
 
 export const getLinkedinProfile = async (data: any) => {
   setLoading(true);
-  //const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data}`);
   const response: FetchResponse = await NetworkOps.get(Urls.linkedInAuth + `?code=${data.code}&redirect_uri=${data.redirect_uri}`);
   setLoading(false);
   if (response.status_code === 200) {
@@ -139,5 +167,13 @@ export const onFileUpload = async (data: any) => {
     return { success: true, imgUrl: response.result.url[0] };
   }
   setShowToast(true, response.message);
+  return { success: false };
+};
+
+export const addFCMNotifToken = async (data: object) => {
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.addFCMNotifToken, data);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
   return { success: false };
 };

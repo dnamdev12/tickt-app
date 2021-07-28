@@ -21,6 +21,8 @@ import { useHistory } from 'react-router-dom';
 
 import templateImage from '../../assets/images/job-posted-bg.jpg';
 
+import { randomColors as getRandomColors } from '../../utils/common'
+
 interface Proptypes {
     callTradeList: () => void;
     tradeListData: Array<any>;
@@ -49,6 +51,8 @@ const PostJob = (props: Proptypes) => {
         editDetailPage,
         builderProfile,
         editMilestoneId } = props;
+
+    const [randomColors, setRandomColors] = useState();
     const [categoriesData, setCategoriesData] = useState([]);
     const [step, setStep] = useState(1);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
@@ -61,6 +65,8 @@ const PostJob = (props: Proptypes) => {
     const getCategories = useCallback(async () => {
         const { categories: categoriesData } = await callCategories();
         setCategoriesData(categoriesData);
+        let colors = getRandomColors();
+        setRandomColors(colors);
     }, []);
 
     useEffect(() => {
@@ -69,34 +75,34 @@ const PostJob = (props: Proptypes) => {
     }, [getCategories, callTradeList, milestones]);
 
     const getJobDetails = useCallback(async (jobId: string) => {
-      let res = await republishJob(jobId);
-      if (res.success) {
-          setData({
-            ...res.data,
-            specialization: res.data.specialization.map(({ specializationId }: { specializationId: string }) => specializationId),
-            categories: res.data.categories.map(({ categoryId }: { categoryId: string }) => categoryId),
-            job_type: res.data.job_type.map(({ jobTypeId }: { jobTypeId: string }) => jobTypeId),
-            amount: `${res.data.amount}`,
-          });
-          setMileStones(res.data.milestones.map(({ milestone_name, isPhotoevidence, recommended_hours, from_date, to_date }: { milestone_name: string, isPhotoevidence: boolean, recommended_hours: string, from_date: string, to_date: string }) => ({
-            milestone_name,
-            isPhotoevidence,
-            recommended_hours,
-            from_date: moment(new Date(from_date)).format('MM-DD-YYYY'),
-            to_date: moment(new Date(to_date)).format('MM-DD-YYYY'),
-          })));
-          setStepsCompleted([1, 2, 3, 4, 5, 6, 7 , 8, 9, 10, 11, 12, 13, 14, 15]);
-      }
+        let res = await republishJob(jobId);
+        if (res.success) {
+            setData({
+                ...res.data,
+                specialization: res.data.specialization.map(({ specializationId }: { specializationId: string }) => specializationId),
+                categories: res.data.categories.map(({ categoryId }: { categoryId: string }) => categoryId),
+                job_type: res.data.job_type.map(({ jobTypeId }: { jobTypeId: string }) => jobTypeId),
+                amount: `${res.data.amount}`,
+            });
+            setMileStones(res.data.milestones.map(({ milestone_name, isPhotoevidence, recommended_hours, from_date, to_date }: { milestone_name: string, isPhotoevidence: boolean, recommended_hours: string, from_date: string, to_date: string }) => ({
+                milestone_name,
+                isPhotoevidence,
+                recommended_hours,
+                from_date: moment(new Date(from_date)).format('MM-DD-YYYY'),
+                to_date: moment(new Date(to_date)).format('MM-DD-YYYY'),
+            })));
+            setStepsCompleted([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]);
+        }
     }, []);
 
     useEffect(() => {
-      const params = new URLSearchParams(history.location?.search);
-      const jobId = params.get('jobId') || '';
+        const params = new URLSearchParams(history.location?.search);
+        const jobId = params.get('jobId') || '';
 
-      if (jobId) {
-        setJobId(jobId);
-        getJobDetails(jobId);
-      }
+        if (jobId) {
+            setJobId(jobId);
+            getJobDetails(jobId);
+        }
     }, [getJobDetails, history.location]);
 
     const clearParentStates = () => {
@@ -151,33 +157,66 @@ const PostJob = (props: Proptypes) => {
         const default_format = 'MM-DD-YYYY';
         let milestone_clone: any = milestones;
         let checkIsValid: any = true;
-    
+
         if (!skip && milestone_clone?.length) {
-    
             let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
-    
-            if (filter_milestone?.length) {
+            let count_times: any = {};
+            if (filter_milestone?.length)
+
                 filter_milestone.forEach((mile: any) => {
                     let msw = moment(mile.from_date, default_format).isValid();
                     let mew = moment(mile.to_date, default_format).isValid();
-    
+
                     let tsw = moment(time.from_date, default_format).isValid();
                     let tew = moment(time.to_date, default_format).isValid();
-    
+
                     let mile_start = mile.from_date;
                     let mile_end = mile.to_date;
-    
+
                     let time_start = time.from_date;
                     let time_end = time.to_date;
-    
+
+
+                    if (count_times[mile_start] == undefined) {
+                        count_times[mile_start] = 1
+                    } else {
+                        count_times[mile_start] = count_times[mile_start] + 1;
+                    }
+
+
+                    if (count_times[mile_end] == undefined) {
+                        count_times[mile_end] = 1
+                    } else {
+                        count_times[mile_end] = count_times[mile_end] + 1;
+                    }
+                
+                    if (count_times[mile_start] === 4) {
+                        console.log('Inside ---',{
+                            ms:mile_start == time_start
+                        })
+                        if (mile_start == time_start || mile_start == time_end) {
+                            console.log('Inside - 1 ---')
+                            setShowToast(true, 'Selected start data is fully engage');
+                            return 
+                        }
+                    }
+
+                    if (count_times[mile_end] === 4) {
+                        if (mile_end == time_start || mile_end == time_end) {
+                            setShowToast(true, 'Selected end data is fully engage');
+                            return 
+                        }
+                    }
+
+
                     if (msw && mew) {
                         if (tsw && tew) {
-                            let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
-    
-                            if (checkIfSame) {
-                                checkIsValid = true;
-                            }
-    
+                            // let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
+
+                            // if (checkIfSame) {
+                            //     checkIsValid = false;
+                            // }
+
                             // if (!checkIfSame) {
                             //     if (
                             //         moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
@@ -185,7 +224,7 @@ const PostJob = (props: Proptypes) => {
                             //     ) {
                             //         checkIsValid = false;
                             //     }
-    
+
                             //     if (
                             //         moment(time_end, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
                             //         moment(time_end, default_format).isSameOrBefore(moment(mile_end, default_format))
@@ -194,29 +233,28 @@ const PostJob = (props: Proptypes) => {
                             //     }
                             // }
                         }
-    
-                        if (!tew) {
-                            if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
-                                checkIsValid = false;
-                            }
-                        }
+
+                        //     if (!tew) {
+                        //         // if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
+                        //         //     checkIsValid = false;
+                        //         // }
                     }
-    
                     // here conditions
                 })
-            }
         }
-    
+
+
         if (!checkIsValid) {
             setShowToast(true, 'Please add unique date.');
             return;
         }
-    
+
         milestone_clone[index]['from_date'] = time.from_date;
         milestone_clone[index]['to_date'] = time.to_date;
         setMileStones(milestone_clone);
         Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
+
     const handleCombineMileStones = (item: any) => {
         let milestone_clone: any = milestones;
         let data_clone: any = data;
@@ -250,7 +288,7 @@ const PostJob = (props: Proptypes) => {
             setStep(step);
         }
     };
-    console.log({data});
+    console.log({ data });
     let page;
     switch (step) {
         case 1:
@@ -351,6 +389,7 @@ const PostJob = (props: Proptypes) => {
             page = (
                 <ChooseTimingMileStone
                     data={data}
+                    randomColors={randomColors}
                     addTimeToMileStone={addTimeToMileStone}
                     editMileStone={editMilestoneId}
                     editMilestoneTiming={editMilestoneTiming}

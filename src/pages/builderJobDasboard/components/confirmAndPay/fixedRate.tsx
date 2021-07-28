@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import ConfirmPay from './confirmAndPay';
+import { lastUsedCard } from '../../../../redux/jobs/actions';
 
 const FixedRate = (props: any) => {
     console.log({ props });
@@ -7,13 +8,25 @@ const FixedRate = (props: any) => {
     const milestones: any = props?.data?.itemDetails?.milestones;
     const selectedItems: any = milestones[indexMile];
     const [toggle, setToggle] = useState(false);
+    const [lastCard, setLastCard] = useState<any>({});
 
     const backToScreen = () => {
         setToggle(false);
     }
 
-    useEffect(() => {
 
+    const fetchLastCard = async () => {
+        let response = await lastUsedCard();
+        if (response?.success) {
+            setLastCard(response.data);
+        }
+    }
+
+    useEffect(() => {
+        fetchLastCard();
+    }, [])
+
+    useEffect(() => {
     }, [toggle])
 
     if (toggle) {
@@ -21,6 +34,7 @@ const FixedRate = (props: any) => {
             <ConfirmPay
                 jobName={props?.jobName}
                 backToScreen={backToScreen}
+                total={selectedItems?.total}
                 onSubmitAccept={props.onSubmitAccept}
             />
         )
@@ -99,15 +113,20 @@ const FixedRate = (props: any) => {
                     })}
 
                 </div>
-                <div
-                    onClick={() => {
-                        setToggle(true);
-                    }}
-                    style={{ cursor: 'pointer' }}
-                    className="bank_detail view_more">
-                    <span className="xs_head">Credit card </span>
-                    <span className="show_label">xxxx 8431</span>
-                </div>
+                {!lastCard?.last4 ? (
+                    <React.Fragment>
+                        {''}
+                    </React.Fragment>
+                ) : (
+                    <div
+                        onClick={() => { setToggle(true); }}
+                        style={{ cursor: 'pointer' }}
+                        className="bank_detail view_more">
+                        <span className="xs_head">{`${lastCard?.funding} Card`}</span>
+                        <span className="show_label">{`xxxx ${lastCard?.last4}`}</span>
+
+                    </div>
+                )}
                 <button
                     onClick={() => {
                         console.log('Here!!!')

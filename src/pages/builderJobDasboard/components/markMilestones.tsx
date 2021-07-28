@@ -21,6 +21,7 @@ import EditMilestones from './editMilestones/index';
 import CancelJobs from './cancelJobs/cancelJob'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import { CancelJob } from '../../../redux/jobs/actions';
+import storageService from '../../../utils/storageService';
 
 import SeeDetailsComponents from './seeDetails';
 
@@ -74,13 +75,13 @@ const MarkMilestones = (props: any) => {
     }
 
     useEffect(() => {
-        console.log({ props },'-----??')
+        console.log({ props }, '-----??')
         preFetch();
     }, []);
 
     useEffect(() => {
         console.log({ expandItem })
-        if(Object.keys(expandItem).length === 0){
+        if (Object.keys(expandItem).length === 0) {
             preFetch();
         }
     }, [expandItem]);
@@ -128,10 +129,10 @@ const MarkMilestones = (props: any) => {
         }
     }
 
-    const redirectToInfo = ({ jobId, status }: any) => {
+    const redirectToInfo = ({ jobId, status, tradieId }: any) => {
         console.log({ jobId });
         let props_: any = props;
-        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true&activeType=active`)
+        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active`)
         props_.history.push(`/job-detail?${urlEncode}`);
     }
 
@@ -217,11 +218,16 @@ const MarkMilestones = (props: any) => {
                                 {/* {item_status && ( )} */}
                                 <li
                                     onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
-                                    className="icon edit_line">Edit Milestone</li>
+                                    className="icon edit_line">
+                                    {'Edit Milestone'}
+                                </li>
 
                                 <li
                                     onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
-                                    className="icon lodge">Lodge dispute</li>
+                                    className="icon lodge">
+                                    {'Lodge dispute'}
+                                </li>
+
                                 <li
                                     onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
                                     className="icon delete">Cancel job</li>
@@ -258,14 +264,15 @@ const MarkMilestones = (props: any) => {
                         return (
                             <li
                                 key={milestoneId}
-                                onClick={() => {
-                                    setExpandItem((prev: any) => ({
-                                        ...prev,
-                                        [milestoneId]: prev[milestoneId] === undefined ? true : !prev[milestoneId]
-                                    }));
-                                }}
                                 className={classChecks(isActive, isPrevDone)}>
-                                <div className="circle_stepper">
+                                <div
+                                    onClick={() => {
+                                        setExpandItem((prev: any) => ({
+                                            ...prev,
+                                            [milestoneId]: prev[milestoneId] === undefined ? true : !prev[milestoneId]
+                                        }));
+                                    }}
+                                    className="circle_stepper">
                                     <span></span>
                                 </div>
                                 <div className="info">
@@ -294,23 +301,25 @@ const MarkMilestones = (props: any) => {
                                         </button>
                                     ) : null}
 
-                                    {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
-                                        <button
-                                            className="fill_btn full_btn btn-effect"
-                                            onClick={() => {
 
-                                                setMilestoneIndex({
-                                                    index,
-                                                    milestoneId,
-                                                    type: 'approve',
-                                                    jobId: item_details?.jobId
-                                                });
-                                            }}>
-                                            {'Check and Approve'}
-                                        </button>
-                                    ) : null}
 
                                 </div>
+
+                                {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
+                                    <button
+                                        className="fill_btn full_btn btn-effect"
+                                        onClick={() => {
+
+                                            setMilestoneIndex({
+                                                index,
+                                                milestoneId,
+                                                type: 'approve',
+                                                jobId: item_details?.jobId
+                                            });
+                                        }}>
+                                        {'Check and Approve'}
+                                    </button>
+                                ) : null}
 
                             </li>
                         );
@@ -328,8 +337,19 @@ const MarkMilestones = (props: any) => {
                     }}
                     className="tradie_card posted_by view_more ">
                     <span
-                        onClick={(e) => { e.stopPropagation() }}
-                        className="chat circle"></span>
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            props.history.push({
+                                pathname: `/chat`,
+                                state: {
+                                    tradieId: item_details?.tradieId,
+                                    builderId: storageService.getItem('userInfo')?._id,
+                                    jobId: item_details?.jobId,
+                                    jobName: item_details?.jobName
+                                }
+                            })
+                        }}
+                        className="chat circle" />
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
@@ -348,8 +368,8 @@ const MarkMilestones = (props: any) => {
                         className="edit_icon"
                         title="More"
                         onClick={() => {
-                            let { jobId, tradeId, specializationId, status } = selectedItem;
-                            redirectToInfo({ jobId, status })
+                            let { jobId, tradeId, specializationId, tradieId, status } = selectedItem;
+                            redirectToInfo({ jobId, status, tradieId })
                         }}>
                         <img src={more} alt="more" />
                     </span>

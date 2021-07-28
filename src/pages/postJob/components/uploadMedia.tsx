@@ -13,6 +13,12 @@ import { setShowToast } from '../../../redux/common/actions';
 import FsLightbox from 'fslightbox-react';
 import Skeleton from 'react-loading-skeleton';
 
+// import Loader from "react-loader-spinner";
+// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+
+import { AsyncImage } from '../../../utils/common';
+
+
 interface Proptypes {
     jobName?: string;
     title?: string;
@@ -43,12 +49,68 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [selectedSlide, setSelectSlide] = useState(1);
     const [isLoadImage, setLoadImage] = useState({});
 
+    const [renderAsyncLoad, setAsyncLoad] = useState<any>(null);
+
     useEffect(() => {
         if (stepCompleted) {
             setFilesUrl(data?.urls);
             setSubmitClicked(true);
         }
     }, [stepCompleted, data]);
+
+    useEffect(() => {
+        // filesUrl
+    }, []);
+
+    const randomDelay = (item: any, index: any) => new Promise(resolve => {
+
+        let split_item_format = item.split('.');
+        let get_split_fromat = split_item_format[split_item_format.length - 1];
+
+        let split_item_name = item.split('/');
+        let get_split_name = split_item_name[split_item_name.length - 1];
+        let image_render: any = null;
+        let loadByIndex = { [index]: true };
+
+        if (get_split_fromat) {
+            if (imageFormats.includes(get_split_fromat)) {
+                image_render = (
+                    <img
+                        id={`media_${index}`}
+                        onClick={() => { setItemToggle(index) }}
+                        title={get_split_name}
+                        src={item}
+                        onLoad={() => {
+                            loadByIndex[index] = false;
+                            console.log('image_render', '--->', { loadByIndex })
+                        }}
+                        alt="media"
+                    />)
+            }
+        }
+
+        if(!loadByIndex[index]){
+            console.log('Hered!!!')
+            resolve(image_render);
+        }
+    });
+
+
+    const calc = async (item:any, index:any) => {
+        let result = await randomDelay(item, index);
+        console.log({result});
+        return result;
+    };
+
+    const asyncFunc = async () => {
+        const p = filesUrl.map((item:any, index:any) => calc(item.link, index));
+        const results = await Promise.all(p);
+        setAsyncLoad(results);
+    };
+
+    useEffect(() => {
+        asyncFunc();
+    }, [filesUrl])
 
     const checkErrors = () => {
         if (!filesUrl?.length) {
@@ -144,27 +206,62 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         let split_item_name = item.split('/');
         let get_split_name = split_item_name[split_item_name.length - 1];
         let image_render: any = null;
+        let loadByIndex = { [index]: true };
 
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
-                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={item} alt="media" />
+                image_render = (
+                    <img
+                        id={`media_${index}`}
+                        onClick={() => { setItemToggle(index) }}
+                        title={get_split_name}
+                        src={item}
+                        onLoad={() => {
+                            loadByIndex[index] = false;
+                            console.log('image_render', '--->', { loadByIndex })
+                        }}
+                        alt="media"
+                    />)
             }
 
             if (videoFormats.includes(get_split_fromat)) {
-                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={videoThumbnail} alt="media" style={{ padding: '17px' }} />
+                image_render = (
+                    <img
+                        id={`media_${index}`}
+                        onClick={() => { setItemToggle(index) }}
+                        title={get_split_name}
+                        src={videoThumbnail}
+                        alt="media"
+                        onLoad={() => {
+                            loadByIndex[index] = false;
+                        }}
+                        style={{ padding: '17px' }}
+                    />);
             }
 
             if (docformats.includes(get_split_fromat)) {
-                image_render = <img title={get_split_name} src={docThumbnail} alt="media" />
+                image_render = (
+                    <img
+                        id={`media_${index}`}
+                        title={get_split_name}
+                        src={docThumbnail}
+                        onLoad={() => {
+                            loadByIndex[index] = false;
+                        }}
+                        alt="media"
+                    />)
             }
-
-            return (
+            console.log({ image_render, index: loadByIndex[index] })
+            return !loadByIndex[index] && (
                 <figure className="img_video">
                     <React.Fragment>
                         {image_render}
-                        <img
+                        <AsyncImage
                             onClick={() => { removeFromItem(index) }}
-                            src={remove} alt="remove" className="remove" />
+                            src={remove}
+                            alt="remove"
+                            className="remove"
+                        />
                     </React.Fragment>
                     {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
                 </figure>
@@ -241,9 +338,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     <div className="flex_row">
                         <div className="flex_col_sm_12">
                             <div className="upload_img_video">
-                                {filesUrl?.length ?
+                                {renderAsyncLoad ? renderAsyncLoad : null}
+                                {/* {filesUrl?.length ?
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
-                                    : null}
+                                    : null} */}
 
                                 {filesUrl?.length < 6 ? (
                                     <React.Fragment>

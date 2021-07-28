@@ -134,7 +134,6 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         builderNewApplicants: action.payload,
         tradieRequestStatus: false,
-        builderNewApplicantsList: null
       };
 
     case actionTypes.SET_BUILDER_NEW_APPLICANTS_LIST:

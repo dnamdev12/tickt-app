@@ -1,4 +1,4 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import rateStar from '../../../assets/images/ic-star-fill.png';
@@ -35,6 +35,8 @@ export default function PastJobs(props: any): ReactElement {
     const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
     const [enableRateJob, setRateJob] = useState({ data: {}, isTrue: false }); // toggle-rate-job
+    const [currentPage, setCurrentPage] = useState(1);
+    let [isEnable, setEnable] = useState<any>(false);
 
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
@@ -49,6 +51,31 @@ export default function PastJobs(props: any): ReactElement {
             isTrue: !prev.isTrue
         }));
     }
+
+    useEffect(() => {
+        let window_: any = window;
+        let document_: any = document;
+        function handleScroll() {
+            var c = [
+                document_.scrollingElement.scrollHeight,
+                document_.body.scrollHeight,
+                document_.body.offsetHeight].sort((a, b) => { return b - a }) // select longest candidate for scrollable length
+            let calculatedItems = (window_.innerHeight + window_.scrollY + 4 >= c[0]);
+
+            if (calculatedItems && !isEnable) {
+                // setEnable((prev: any) => !isEnable);
+                // console.log({
+                //     isEnable,
+                //     calculatedItems
+                // });
+                // setCurrentPage(currentPage + 1);
+                // props.getPastJobsBuilder(currentPage + 1);
+            }
+            return calculatedItems; // compare with scroll position + some give
+        }
+
+        window_.addEventListener('scroll', handleScroll, { passive: true });
+    }, [])
 
     if (enableRateJob?.isTrue) {
         return (
@@ -117,7 +144,7 @@ export default function PastJobs(props: any): ReactElement {
                                 </div>
                                 <div className="job_info">
                                     <ul>
-                                        <li className="icon clock">{renderTime(fromDate, toDate)}</li>
+                                        <li className="icon calendar">{renderTime(fromDate, toDate)}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
                                         <li className="job_status">{status}</li>
@@ -179,12 +206,14 @@ export default function PastJobs(props: any): ReactElement {
                                             className="fill_grey_btn full_btn">
                                             <React.Fragment>
                                                 <img src={rateStar} alt="rating-star" />
-                                                {'Rate this job'}
+                                                {'Rate this tradie'}
                                             </React.Fragment>
                                         </button>
                                         )
                                         : status === "EXPIRED" && (
-                                            <button className="fill_grey_btn full_btn" onClick={() => redirectToInfo({ jobId, status }) }>
+                                            <button
+                                                className="fill_grey_btn full_btn"
+                                                onClick={() => redirectToInfo({ jobId, status })}>
                                                 {"Publish again"}
                                             </button>
                                         )}

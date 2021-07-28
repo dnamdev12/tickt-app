@@ -342,7 +342,7 @@ const TradieBannerSearch = (props: PropsType) => {
             var latlng = new google.maps.LatLng(lat, long);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, function (results, status) {
-                console.log(results, "results", results[0].formatted_address)
+                
                 if (status !== google.maps.GeocoderStatus.OK) {
                     alert(status);
                 }
@@ -350,7 +350,14 @@ const TradieBannerSearch = (props: PropsType) => {
                     const { country } = filterFromAddress(results);
                     if (["australia", "au"].includes(country)) {
                         setInputFocus2(false);
-                        setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: results[0].formatted_address, isMapLocationSelected: true, locationDenied: false }));
+                        if (results && Array.isArray(results) && results[0]) {
+                            setStateData((prevData: any) => ({
+                                ...prevData,
+                                selectedMapLocation: results[0].formatted_address,
+                                isMapLocationSelected: true,
+                                locationDenied: false
+                            }));
+                        }
                     } else {
                         setInputFocus2(false);
                         setShowToast(true, "Uh oh! we don't provide service currently in your location.");
@@ -563,7 +570,8 @@ const TradieBannerSearch = (props: PropsType) => {
                                 highlightFirstSuggestion={true}
                                 searchOptions={{
                                     componentRestrictions: { country: "au" },
-                                    types: ["address"]
+                                    // types: ["address"]
+                                    types: ["(cities)"]
                                 }}
                             // debounce={400}
                             >

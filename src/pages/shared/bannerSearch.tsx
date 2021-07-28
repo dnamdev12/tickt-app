@@ -180,7 +180,7 @@ const BannerSearch = (props: PropsType) => {
                 let long = item.location.coordinates[0];
                 let response = await Geocode.fromLatLng(lat, long);
                 console.log({
-                    results:response?.results
+                    results: response?.results
                 })
                 let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
                 let cityText: any = null;
@@ -388,9 +388,14 @@ const BannerSearch = (props: PropsType) => {
                         parseFloat(selected_address?.lat)
                     ]
                 }
+                if (addressText) {
+                    data['address'] = addressText;
+                }
             } else {
                 delete data.location;
             }
+
+
 
             if (moment(calenderRange1?.startDate).isValid()) {
                 data['from_date'] = moment(calenderRange1?.startDate).format('YYYY-MM-DD')
@@ -425,7 +430,6 @@ const BannerSearch = (props: PropsType) => {
                     }
                 }
             }
-
 
             if (!localChanges) {
                 props.postHomeSearchData(data);
@@ -618,7 +622,13 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
-                                    searchOptions={{ componentRestrictions: { country: "au" }, types: ["address"] }}
+                                    searchOptions={{
+                                        componentRestrictions: {
+                                            country: "au"
+                                        },
+                                        // types: ["address"]
+                                        types: ['(cities)']
+                                    }}
                                     onChange={(item: any) => {
                                         setAddressText(item)
                                         if (!addressText.length) {
@@ -715,8 +725,11 @@ const BannerSearch = (props: PropsType) => {
                                                             })}
                                                         </div>
                                                     </div>
-                                                </div> : !loading && addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
-                                                    <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                </div> : inputFocus2 && !suggestions?.length && !Object.keys(selectedAddress).length ? (
+                                                    <div
+                                                        style={{ minHeight: '50px' }}
+                                                        className="custom_autosuggestion location"
+                                                        id="autocomplete-dropdown-container">
                                                         <div className="flex_row recent_search auto_loc">
                                                             <div className="flex_col_sm_4">
                                                                 <div className="loc_suggestions">
@@ -833,7 +846,7 @@ const BannerSearch = (props: PropsType) => {
                     </div>
                 </ul>
             </form>
-        </div>
+        </div >
     )
 }
 
@@ -859,3 +872,10 @@ const mapDispatchToProps = (dispatch: any) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BannerSearch);
+
+/**
+
+    No-result found conditions
+    </div> : !loading || addressText?.length > 2 && !suggestions?.length && !enableCurrentLocation && !Object.keys(selectedAddress).length ? (
+
+ **/

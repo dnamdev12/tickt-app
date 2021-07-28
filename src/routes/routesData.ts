@@ -44,6 +44,10 @@ import PostJobSuccess from '../pages/postJob/sucess';
 import CommonViewAll from '../pages/home/builderHome/components/commonViewAll';
 
 import ChatComponent from '../pages/chat';
+import SupportChat from '../pages/tradieEditProfile/components/supportChat'
+import PaymentHistory from '../pages/paymentHistory';
+
+import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
 
 const routes = [
     {
@@ -89,6 +93,11 @@ const routes = [
         name: 'savedjobs',
         path: '/saved-jobs',
         component: SavedJobs,
+    },
+    {
+        name: 'template-suceess',
+        path: '/template-sucess',
+        component: TemplateSavedSuccess
     },
     {
         name: 'view-all',
@@ -282,6 +291,11 @@ const routes = [
         component: ChatComponent
     },
     {
+        name: 'support-chat',
+        path: '/support-chat',
+        component: SupportChat
+    },
+    {
         name: 'search-builder-result',
         path: '/search-builder-result',
         component: TradieListData
@@ -290,6 +304,13 @@ const routes = [
         name: 'search-tradie-results',
         path: '/search-tradie-results',
         component: SearchResultTradie,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'payment-history',
+        path: '/payment-history',
+        component: PaymentHistory,
         authRoute: false,
         privateRoute: true,
     },

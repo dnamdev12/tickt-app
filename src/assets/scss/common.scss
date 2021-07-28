@@ -641,8 +641,7 @@ body {
     box-shadow: 0 20px 24px 0 rgba(132, 132, 132, 0.2);
     @media (max-width: 650px) {
       padding: 0 10px 0 20px;
-      width: 180px;
-      margin: 45px 0 0 82px;
+      width: 230px;
     }
     .sub_title {
       font-size: 20px;
@@ -710,6 +709,7 @@ body {
       background-color: #f6f7f9;
       padding-bottom: 10px;
       margin: 0 -32px 0px;
+      cursor: default;
       &:last-child{
         padding-bottom: 0;
       }
@@ -724,56 +724,63 @@ body {
       }
     }
     .notif{
-      position: relative;
       width: 92%;
-      span{
-        font-size: 14px;
-        line-height: 1.43;
-        color: var(--greyish-brown);
-        margin: 2px 0;
-        display: block !important;
-      }
-      .time{
-        @include position(absolute, 0, 0, auto, auto);
-        color: var(--dark-grey);
-      }
-      .not_img{
-        width: 64px;
-        height: 64px;
-        margin-right: 10px;
-        border-radius: 50%;
-        display: inline-block;
-        vertical-align: top;
-        position: relative;
-        img{
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          border-radius: 50%;
-        }
-        .dot{
-          width: 12px;
-          height: 12px;
-          background-color: var(--yellow);
-          border-radius: 50%;
-          @include position(absolute, 3px, auto, auto, 0px);
-        }
-      }
-      .see{
-        color: #123f95;
-        font-family: 'Neue Haas Grotesk Text Pro Bold';
-        padding: 2px 8px;
-        border-radius: 6px;
-        background-color: var(--grey);
-        display: inline-block !important;
-      }
-      .info{
-        width: 55%;
-        display: inline-block;
-      }
-      
-      
     }
+  }
+  
+}
+
+.more_notif{
+  text-align: center;
+  padding: 10px 0;
+}
+
+.notif{
+  position: relative;
+  span{
+    font-size: 14px;
+    line-height: 1.43;
+    color: var(--greyish-brown);
+    margin: 2px 0;
+    display: block;
+  }
+  .time{
+    @include position(absolute, 0, 0, auto, auto);
+    color: var(--dark-grey);
+  }
+  .not_img{
+    width: 64px;
+    height: 64px;
+    margin-right: 10px;
+    border-radius: 50%;
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+    img{
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+    .dot{
+      width: 12px;
+      height: 12px;
+      background-color: var(--yellow);
+      border-radius: 50%;
+      @include position(absolute, 3px, auto, auto, 0px);
+    }
+  }
+  .see{
+    color: #123f95;
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    padding: 2px 8px;
+    border-radius: 6px;
+    background-color: var(--grey);
+    display: inline-block !important;
+  }
+  .info{
+    width: 55%;
+    display: inline-block;
   }
 }
 
@@ -2616,7 +2623,7 @@ body {
   }
   .cross-icon {
     display: inline-block;
-    @include position(absolute, 5px, 5px, auto, auto);
+    @include position(absolute, -5px, -5px, auto, auto);
     cursor: pointer;
     width: 18px;
     height: 18px;
@@ -2629,6 +2636,21 @@ body {
     padding: 8px 20px;
     font-size: 12px;
     color: var(--white);
+  }
+  .notif {
+    .not_img {
+      width: 45px;
+      height: 45px;
+    }
+    span{
+      font-size: 12px;
+      &.time{
+        font-size: 11px;
+      }
+      &.who{
+        font-family: 'Neue Haas Grotesk Text Pro Bold';
+      }
+    }
   }
 }
 
@@ -3231,6 +3253,10 @@ body {
 			}
 		}
 	}
+  .job_status {
+    color: var(--blue-two);
+    padding: 0px 10px 10px;
+  }
 	.tags_wrap {
 		ul {
 			margin: 0;
@@ -5056,6 +5082,15 @@ div#light-box div {
 
 
 //----------Revenue-----------//
+.flex_row.center_flex{
+  .flex_col_sm_2,  .flex_col_sm_4{
+    @media(max-width: 650px){
+      width: 50%;
+      margin-bottom: 10px;
+    }
+  }
+}
+
 .total_count_card{
   display: flex;
   flex-wrap: wrap;
@@ -5071,8 +5106,15 @@ div#light-box div {
     justify-content: center;
     align-items: center;
     flex-flow: column;
+    @media(max-width: 650px){
+      min-height: 110px;
+      padding: 10px 15px;
+    }
     &:not(:last-child){
       margin: 0 32px 0 0;
+      @media(max-width: 650px){
+        margin: 0 20px 0 0;
+      }
     }
     &:hover{
 	    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
@@ -5088,6 +5130,9 @@ div#light-box div {
       @media(max-width: 768px){
         max-width: 47%;
       }
+      @media(max-width: 650px){
+        max-width: 45%;
+      }
     }
     &.job{
       max-width: 384px;
@@ -5097,15 +5142,23 @@ div#light-box div {
     }
   }
 }
+
+.payment_check{
+  max-width: 670px;
+  .f_spacebw{
+    align-items: flex-end;
+  }
+  .xs_sub_title, .info{
+    margin-bottom: 0 !important;
+  }
+}
+
 .last_jobs{
   margin: 32px 0 15px;
   .center_flex {
     &:not(:last-child){
       margin-bottom: 24px;
     }
-  }
-  .form_label{
-    margin-bottom: 16px;
   }
   .inner_title{
     margin: 0;
@@ -5133,11 +5186,12 @@ div#light-box div {
     }
   }
   .details{
-    width: 78%;
+    cursor: pointer;
+    width: 70%;
     @media(max-width: 768px){
       width: 66%;
     }
-    .inner_title{
+    .inner_title, .xs_head{
       margin: 0;
     }
   }
@@ -5147,7 +5201,7 @@ div#light-box div {
 .search_bar{
   position: relative;
   overflow: hidden;
-  transition: width 0.6s ease;
+  transition: all 0.5s ease;
   input{
     border-color: transparent !important;
     position: relative;
@@ -5159,6 +5213,9 @@ div#light-box div {
     @media(max-width: 650px){
       padding: 8px 10px 8px 35px;
     }
+  }
+  .detect_icon_ltr{
+    cursor: pointer;
   }
   &.active{
     input{
@@ -5398,7 +5455,7 @@ div#light-box div {
           &.recive_msg {
             text-align: left;
             p{
-              background-color: #f7f8fa;
+              background-color: #dfe5ef;
               .time{
                 right: -38px;
                 left: auto;
@@ -5539,3 +5596,57 @@ div#light-box div {
   }
 }
 //----------Chat close-------------//
+
+
+//----------Tour Guide-------------//
+
+.h-75vh {
+  height: 75vh;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.tour-tooltip {
+  width: 420px;
+  margin: 10px auto auto;
+  @media(max-width: 650px){
+    width: 85%;
+  }
+  &-content {
+    color: var(--white);
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    margin-bottom: 25px;
+    font-size: 17px;
+    line-height: 1.33;
+    text-shadow: 0 0 20px #00000066;
+    text-align: center;
+  }
+  &-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    @media(max-width: 650px){
+      flex-wrap: wrap-reverse;
+      justify-content: center;
+    }
+    button {
+      padding: 10px 15px;
+      &.skip_btn{
+        background-color: transparent;
+        border: 1px solid #dfe5ef;
+        color: #dfe5ef;
+        @media(max-width: 650px){
+          margin: 10px;
+        }
+      }
+    }
+  }
+}
+
+//----------Tour Guide close-------------//
+
+.visibility-hidden {
+  visibility: hidden;
+}

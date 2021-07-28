@@ -302,6 +302,7 @@ class JobDashboard extends Component<Props, State> {
                                     jobType={jobtype}
                                     activeType={activeType}
                                     history={props.history}
+                                    getPastJobsBuilder={props?.getPastJobsBuilder}
                                 />)}
                             {jobtype === 'active' && (
                                 <ActiveJobsComponent

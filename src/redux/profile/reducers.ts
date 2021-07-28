@@ -9,7 +9,12 @@ const initialState = {
   bankDetails: {},
   error: '',
   tradieInfo: [],
-  builderProfile: {}
+  builderProfile: {},
+  savedJobs: [],
+  settings: { messages: {}, reminders: {} },
+  searching: false,
+  paymentHistory: {},
+  paymentDetails: {},
 };
 
 const reducer = (state = initialState, action: any) => {
@@ -73,6 +78,35 @@ const reducer = (state = initialState, action: any) => {
         userType: action.payload.userType
       }
 
+    case actionTypes.SET_SAVED_JOBS:
+      return {
+        ...state,
+        savedJobs: action.payload,
+      };
+
+    case actionTypes.SET_SETTINGS:
+      return {
+        ...state,
+        settings: action.payload,
+      };
+
+    case actionTypes.SET_SEARCHING:
+      return {
+        ...state,
+        searching: action.payload,
+      };
+
+    case actionTypes.SET_PAYMENT_HISTORY:
+      return {
+        ...state,
+        paymentHistory: action.payload,
+      };
+
+    case actionTypes.SET_PAYMENT_DETAILS:
+      return {
+        ...state,
+        paymentDetails: action.payload,
+      };
 
     default:
       return state;

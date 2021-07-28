@@ -150,7 +150,7 @@ const BannerSearch = (props: PropsType) => {
             if (state.calender && Object.keys(state.calender).length) {
                 setCalenderRange1(state.calender);
             }
-          
+
             if (state?.location && state?.location?.coordinates?.length) {
                 let coordinates = state.location.coordinates;
                 let valueItem = {
@@ -201,7 +201,7 @@ const BannerSearch = (props: PropsType) => {
             }
         }
         if ((!addressText || !addressText?.length) && inputFocus2) {
-            setSelectedAddress({}); 
+            setSelectedAddress({});
             setSelectedTrade({});
         }
     }, [addressText])
@@ -436,6 +436,7 @@ const BannerSearch = (props: PropsType) => {
         let selected_item: any = props?.selectedItem;
         let props_trade: any = selected_item?.selectedTrade;
         let local_info: any = props?.localInfo;
+        let prev_address: any = props?.location?.state?.address;
 
         let tradeId: any = null;
         let specializationId: any = null;
@@ -470,6 +471,13 @@ const BannerSearch = (props: PropsType) => {
                         parseFloat(selected_address?.lng),
                         parseFloat(selected_address?.lat)
                     ]
+                }
+                if (prev_address == addressText) {
+                    data['address'] = prev_address
+                } else {
+                    if(addressText?.length){
+                        data['address'] = addressText
+                    }
                 }
             } else {
                 delete data.location;
@@ -548,7 +556,7 @@ const BannerSearch = (props: PropsType) => {
             if (response && ["australia", "au"].includes(country)) {
                 if (response?.results && Array.isArray(response.results) && response?.results?.length) {
                     const address = response.results[0].formatted_address;
-                    setSelectedAddress({ lat, lng }); 
+                    setSelectedAddress({ lat, lng });
                     setAddressText(address);
                     setInputFocus2(true);
                     setInputFocus1(false);
@@ -679,7 +687,13 @@ const BannerSearch = (props: PropsType) => {
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
-                                    searchOptions={{ componentRestrictions: { country: "au" }, types: ["address"] }}
+                                    searchOptions={{
+                                        componentRestrictions: {
+                                            country: "au"
+                                        },
+                                        //  types: ["address"]
+                                        types: ["(cities)"]
+                                    }}
                                     shouldFetchSuggestions={addressText?.length > 2}
                                     onChange={(item: any) => {
                                         setAddressText(item);
@@ -768,22 +782,17 @@ const BannerSearch = (props: PropsType) => {
                                                     </div>
                                                 </div>
                                                 : null}
-                                            {!loading &&
-                                                addressText?.length > 2 &&
-                                                !suggestions?.length &&
-                                                !enableCurrentLocation &&
-                                                !Object.keys(selectedAddress).length
-                                                ? (
-                                                    <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
-                                                        <div className="flex_row recent_search auto_loc">
-                                                            <div className="flex_col_sm_4">
-                                                                <div className="loc_suggestions">
-                                                                    {'No Result Found.'}
-                                                                </div>
+                                            {inputFocus2 && !suggestions?.length && !Object.keys(selectedAddress).length ? (
+                                                <div style={{ minHeight: '50px' }} className="custom_autosuggestion location" id="autocomplete-dropdown-container">
+                                                    <div className="flex_row recent_search auto_loc">
+                                                        <div className="flex_col_sm_4">
+                                                            <div className="loc_suggestions">
+                                                                {'No Result Found.'}
                                                             </div>
                                                         </div>
                                                     </div>
-                                                ) : null}
+                                                </div>
+                                            ) : null}
                                         </div>
                                     )}
                                 </PlacesAutocomplete>
@@ -822,7 +831,7 @@ const BannerSearch = (props: PropsType) => {
                                                 setSelectedAddress({
                                                     lat: location_coordinates[1],
                                                     lng: location_coordinates[0]
-                                                }); 
+                                                });
                                             }}>
                                             <div className="autosuggestion_icon card loc name">
                                                 <span>{item.allText?.mainText}</span>
@@ -914,3 +923,12 @@ const mapDispatchToProps = (dispatch: any) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(BannerSearch);
+
+
+/**
+!loading &&
+addressText?.length > 2 &&
+!suggestions?.length &&
+!enableCurrentLocation &&
+!Object.keys(selectedAddress).length
+**/

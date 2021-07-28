@@ -114,8 +114,21 @@ export const removeBankDetails = () => ({
   type: actionTypes.REMOVE_BANK_DETAILS_START,
 });
 
+export const getSettings = () => ({
+  type: actionTypes.GET_SETTINGS,
+});
+
+export const updateSettings = (settings: any, newSettings: any) => ({
+  type: actionTypes.UPDATE_SETTINGS,
+  settings,
+  newSettings,
+});
+
 export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data });
 export const getProfileBuilder = () => ({ type: actionTypes.GET_PROFILE_BUILDER });
+
+export const getPaymentHistory = (page: number, search: string, init: boolean) => ({ type: actionTypes.GET_PAYMENT_HISTORY, page, search, init });
+export const getPaymentDetails = (jobId: string) => ({ type: actionTypes.GET_PAYMENT_DETAILS, jobId });
 
 export const tradieUpdatePassword = async (data: any) => {
   setLoading(true);
@@ -137,4 +150,35 @@ export const getAllPostedJob = async (page: any) => {
   }
   setShowToast(true, response.message);
   return { success: false };
+}
+
+export const getSavedJobList = (page: number) => ({
+  type: actionTypes.GET_SAVED_JOBS,
+  page,
+});
+
+export const getPrivacyPolicy = async () => {
+  const userType = storageService.getItem('userType');
+
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie/' : 'builder/'}privacyPolicy?type=web`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false, data: '' };
+}
+
+export const getTnc = async () => {
+  const userType = storageService.getItem('userType');
+
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie/' : 'builder/'}tnc?type=web`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false, data: '' };
 }

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 // @ts-ignore
 import { Link } from "react-router-dom";
 import { callLogin } from '../../redux/auth/actions';
@@ -8,8 +8,7 @@ import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
-import ForgetPassword from '../forgetPassword/forgetPassword';
-
+import { firebaseLogInWithEmailPassword } from '../../services/firebase';
 interface Propstype {
     history: any,
     showModal?: boolean,
@@ -26,10 +25,21 @@ const LoginPage = (props: Propstype) => {
         password: ''
     })
     const [showPassword, setShowPassword] = useState(false)
+    let window_: any = window;
+    window_.Intercom('shutdown');
+
 
     const backButtonHandler = () => {
         props?.history?.push('/signup')
     }
+
+    useEffect(() => {
+        if (window_?.Intercom) {
+            window_.Intercom('shutdown');
+            window_.Intercom('hide');
+            localStorage.clear();
+        }
+    }, [])
 
     const changeHandler = (e: any) => {
         setLoginData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
@@ -106,14 +116,22 @@ const LoginPage = (props: Propstype) => {
         e.preventDefault();
         const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
         if (validateForm()) {
-            const res: any = await callLogin(newData)
+            const res: any = await callLogin(newData);
             if (res.success) {
+                const authData = {
+                    email: newData.email,
+                    password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
+                }
+                firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {
                     window.location.reload();
                     // props.setShowModal(!props.showModal);
                     return;
                 }
-                props?.history?.push('/')
+                if (res?.data) {
+                    localStorage.setItem('email', res.data.email);
+                }
+                props?.history?.push('/');
             }
         }
     }

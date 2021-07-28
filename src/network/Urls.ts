@@ -129,6 +129,15 @@ const Urls = {
     publishJobAgain: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}publishJobAgain`,
     getAllPostedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getAllJobs`,
     payment: `${versions.v1}${ServiceEnum.payment}`,
+    notification: `${versions.v1}${ServiceEnum.home}notification`,
+    addFCMNotifToken: `${versions.v1}${ServiceEnum.auth}addDeviceToken`,
+    tradieSavedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getSavedJobs`,
+    tradieSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getSettingsData`,
+    builderSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getSettingsData`,
+    tradieUpdateSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}settings`,
+    builderUpdateSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}settings`,
+    privacyPolicy: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}privacyPolicy`,
+    tnc: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}tnc`,
 }
 
 export const urlFor = (service: String): string => {

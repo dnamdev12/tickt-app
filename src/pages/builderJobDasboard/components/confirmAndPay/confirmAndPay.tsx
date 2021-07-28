@@ -30,29 +30,34 @@ const ConfirmAndPay = (props: any) => {
     const fetchMyAPI = useCallback(async () => {
         let result: any = await getCardList();
         let data: any = result.data;
+        let filterItems: any = []
         if (data?.length) {
-            let filterItems: any = data.map((item: any) => {
+            filterItems = data.map((item: any) => {
+                let exp_date = (item?.exp_month).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
                 return {
                     cardId: item?.cardId,
                     number: `${item?.last4}`,
                     cardholderName: item?.name,
-                    date: `${item?.exp_month}/${((item?.exp_year).toString()).substring(2, 4)}`,
+                    date: `${exp_date}/${((item?.exp_year).toString()).substring(2, 4)}`,
                     cvv: '000',
                     cardType: item?.funding,
                     fetched: true
                 }
             });
-
-            if (filterItems?.length) {
-                setPaymentDetail(filterItems)
-            }
         }
+        setPaymentDetail(filterItems)
     }, [])
 
 
     useEffect(() => {
         fetchMyAPI();
     }, [])
+
+    useEffect(() => {
+        if (toggle == false) {
+            fetchMyAPI();
+        }
+    }, [toggle]);
 
     const backToScreen = () => {
         setToggle(false);
@@ -73,6 +78,7 @@ const ConfirmAndPay = (props: any) => {
                 editItem={editItem}
                 backToScreen={backToScreen}
                 setDetials={setDetials}
+                hideExtra={props.hideExtra}
                 onSubmitAccept={props.onSubmitAccept}
             />
         )
@@ -82,12 +88,14 @@ const ConfirmAndPay = (props: any) => {
         <div className="flex_row">
             <div className="flex_col_sm_8">
                 <div className="relate">
-                    <button
-                        onClick={() => {
-                            props.backToScreen()
-                        }}
-                        className="back"></button>
-                    <span className="xs_sub_title">
+                    {!props.hideExtra ? (
+                        <button
+                            onClick={() => {
+                                props.backToScreen()
+                            }}
+                            className="back"></button>
+                    ) : null}
+                    <span className={!props.hideExtra ? `xs_sub_title` : 'xs_sub_title mb-0'}>
                         {props?.jobName}
                     </span>
 
@@ -150,21 +158,27 @@ const ConfirmAndPay = (props: any) => {
                                                 console.log(err);
                                             }
                                         }}
-                                        className="icon lodge">Edit</li>
+                                        className="icon lodge">{'Edit'}</li>
                                     <li
                                         onClick={() => {
-                                            setDeleteToggle((prev: any) => !prev)
+                                            setDeleteToggle((prev: any) => !prev);
                                         }}
-                                        className="icon delete">Delete</li>
+                                        className="icon delete">{'Delete'}</li>
                                 </ul>
                             </div>
                         </span>
                     ) : null}
                 </div>
                 <div className="form_field">
-                    <span className="sub_title">
-                        {'Confirm and pay'}
-                    </span>
+                    {!props.hideExtra ? (
+                        <span className="sub_title">
+                            {'Confirm and pay'}
+                        </span>
+                    ) : (
+                        <span className="sub_title">
+                            {'Payment Details'}
+                        </span>
+                    )}
                 </div>
                 <div className="mb130">
                     {paymentDetail?.length ?
@@ -208,25 +222,46 @@ const ConfirmAndPay = (props: any) => {
                         {paymentDetail?.length ? 'Add another card' : 'Add card'}
                     </button>
                 </div>
+                {!props.hideExtra ? (
+                    <React.Fragment>
+                        <div className="form_field">
+                            <span className="payment_note">
+                                Tickt does not store your payment information.
+                            </span>
+                            <p className="commn_para">
+                                Tickt does not handle payment for jobs, we only facilitate
+                                communication between tradies and builders. If you have problems
+                                receiving your payment, please contact your builder.
+                            </p>
+                        </div>
 
-                <div className="form_field">
-                    <span className="payment_note">
-                        Tickt does not store your payment information.
-                    </span>
-                    <p className="commn_para">
-                        Tickt does not handle payment for jobs, we only facilitate
-                        communication between tradies and builders. If you have problems
-                        receiving your payment, please contact your builder.
-                    </p>
-                </div>
-                <button
-                    onClick={() => {
-                        // this will submit the accept request.
-                        props.onSubmitAccept();
-                    }}
-                    className={`fill_btn full_btn btn-effect ${!paymentDetail?.length ? 'disable_btn' : ''}`}>
-                    {'Continue'}
-                </button>
+                        <button
+                            onClick={() => {
+                                // this will submit the accept request.
+                                props.onSubmitAccept({
+                                    total: props.total,
+                                    cardId: paymentDetail[selected]?.cardId
+                                });
+                            }}
+                            className={`fill_btn full_btn btn-effect ${!paymentDetail?.length ? 'disable_btn' : ''}`}>
+                            {'Continue'}
+                        </button>
+                    </React.Fragment>
+                ) : (
+                    <React.Fragment>
+                        <div className="form_field">
+                            <span className="payment_note">
+                                Tickt does not store your payment information.
+                            </span>
+                            <p className="commn_para">
+                                Tickt does not handle payment for jobs, we only facilitate
+                                communication between tradies and builders. If you have problems
+                                receiving your payment, please contact your builder.
+                            </p>
+                        </div>
+                    </React.Fragment>
+                )}
+
             </div>
         </div>
     )

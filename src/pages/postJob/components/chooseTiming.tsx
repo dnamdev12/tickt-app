@@ -3,9 +3,17 @@ import React, { useState, useEffect } from 'react';
 // import menu from '../../../assets/images/menu-line-white.svg';
 // import bell from '../../../assets/images/ic-notification.png';
 // import dummy from '../../../assets/images/u_placeholder.jpg';
+
 // @ts-ignore
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
+
+
+// @ts-ignore
+// import { DateRangePicker } from '../../../plugins/react-date-range/dist/index';
+// import '../../../plugins/react-date-range/dist/styles.css';
+
+
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';

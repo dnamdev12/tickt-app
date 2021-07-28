@@ -321,7 +321,7 @@ const TradieSearchJobResult = (props: PropsType) => {
                                     <div className="flex_col_sm_8">
                                         {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
                                         <span className="title">{paramsData.jobResults === 'viewNearByJob' ? 'All around me' : paramsData.jobResults === 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
-                                            <span className="count">{`${jobListData.length ? `${jobListData.length === 1 ? '1 result' : `${jobListData.length} results`}` : ''}`}</span>
+                                            <span className="count">{`${jobListData.length ? `${jobListData.length === 1 ? '1 result' : `${jobListData.length} result(s)`}` : ''}`}</span>
                                         </span>
                                         <SearchResultFilters
                                             searchByFilter={searchByFilter}

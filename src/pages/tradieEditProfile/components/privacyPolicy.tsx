@@ -1,10 +1,12 @@
 import { Component } from 'react'
-
+// import { getPrivacyPolicy } from '../../../redux/profile/actions';
+import { setLoading } from '../../../redux/common/actions'
 interface Props {
 }
 
 interface State {
     isToggleSidebar: boolean,
+    url: string,
 }
 
 export class PrivacyPolicy extends Component<Props, State> {
@@ -12,21 +14,29 @@ export class PrivacyPolicy extends Component<Props, State> {
         super(props)
         this.state = {
             isToggleSidebar: false,
+            url: '',
         }
     }
 
-    componentDidMount() {
-    }
+    // componentDidMount = async () => {
+    //   const { data: { privacyPolicy_url } } = await getPrivacyPolicy();
+    //   this.setState({
+    //     url: privacyPolicy_url,
+    //   });
+    // }
 
     render() {
         let props: any = this.props;
-        console.log(this.state, "state--------------", props, "props------------");
+        let url: any = props?.privacyPolicy_url;
+        console.log({ url, props }, '---url')
+
+        if (!url) {
+            setLoading(true);
+        }
         return (
-            <div>
-                <span className="sub_title"> Privacy Policy</span>
-                <p className="commn_para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.</p>
-                <p className="commn_para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.</p>
-                <p className="commn_para">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat asperiores consequatur ducimus eveniet, in mollitia explicabo iure suscipit autem maxime ipsam at odit eum porro labore libero deleniti. Qui, aliquid.</p>
+            <div className="h-75vh">
+                {/* <span className="sub_title"> Privacy Policy</span> */}
+                {url && <iframe src={url} title="Privacy Policy" width="100%" height="100%" />}
             </div>
         )
     }

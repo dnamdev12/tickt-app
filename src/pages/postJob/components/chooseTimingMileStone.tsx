@@ -7,12 +7,21 @@ import React, { useState, useEffect } from 'react';
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
+
+
+
+// @ts-ignore
+// import { DateRangePicker } from '../../../plugins/react-date-range/dist/index';
+// import '../../../plugins/react-date-range/dist/styles.css';
+// import '../../../plugins/react-date-range/dist/theme/default.css';
 import moment from 'moment';
+import { setShowToast } from '../../../redux/common/actions';
 
 interface Proptypes {
     data: any;
     stepCompleted: Boolean;
     milestones: any,
+    randomColors: any,
     editMilestoneTiming: any;
     editMileStone: any;
     handleStepForward: (data: any) => void;
@@ -27,6 +36,7 @@ const default_format = 'YYYY-MM-DD';
 const ChooseTimingMileStone = ({
     data,
     stepCompleted,
+    randomColors,
     handleStepForward,
     updateMileStoneTimings,
     editMileStone,
@@ -44,9 +54,99 @@ const ChooseTimingMileStone = ({
     const [error, setError] = useState('');
     const [localChanges, setLocalChanges] = useState(false);
 
+    const onMountCallable = () => {
+        let count_times: any = {};
+        let filteredItems = milestones.filter((item: any) => {
+            let to_date = item?.to_date;
+            let from_date = item?.from_date;
+
+            if (from_date) {
+                count_times[from_date] = 0;
+            }
+
+            if (to_date) {
+                count_times[to_date] = 0;
+            }
+
+            if (Object.keys(item).length && item?.from_date) {
+                return item;
+            }
+
+            let ifMatch = milestones.find((item_: any) => {
+                if (item_.to_date === to_date && from_date === item_.from_date) {
+                    return item_;
+                }
+            })
+
+            return ifMatch
+        });
+
+
+        if (filteredItems?.length) {
+            filteredItems.forEach((item: any, index: any) => {
+                let to_date = item?.to_date;
+                let from_date = item?.from_date;
+
+                let leftSpace: any = '0px';
+
+                if (!to_date && from_date) {
+                    if (count_times[from_date] > -1) {
+                        count_times[from_date]++;
+                    }
+
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    if (from_element) {
+                        from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                    }
+                }
+
+                if (to_date && from_date) {
+                    if (count_times[from_date] > -1) {
+                        count_times[from_date]++;
+                    }
+
+                    if (count_times[to_date] > -1) {
+                        count_times[to_date]++;
+                    }
+
+                    let colorbyIndex = randomColors[index];
+
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
+                    if (from_element) {
+                        let element_from = from_element[0];
+                        if (from_element?.length > 1) {
+                            element_from = from_element[1];
+                        }
+
+                        if (element_from) {
+                            element_from.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'}; from:${from_date}`);
+                        }
+                    }
+
+                    let to_element: any = document.getElementsByClassName(`color_${count_times[to_date]}_${to_date}`);
+                    if (to_element) {
+                        let element_to = to_element[0];
+                        if (to_element?.length > 1) {
+                            element_to = to_element[1];
+                        }
+                        if (element_to) {
+                            element_to.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[to_date] == 1 ? '10px' : count_times[to_date] == 2 ? '20px' : count_times[to_date] == 3 ? '30px' : '40px'}; to:${to_date}`);
+                        }
+                    }
+                }
+            })
+        }
+    }
+
+    useEffect(() => {
+        onMountCallable()
+    }, [])
+
+
     const handleChange = (item: any) => {
         setRange(item.selection);
         handleCheck(item.selection);
+        onMountCallable()
     };
 
     const handleCheck = (item: any) => {
@@ -60,6 +160,67 @@ const ChooseTimingMileStone = ({
         }
     }
 
+    const checkBeforeExist = (time: any, milestones_?:any) => {
+        let count_times: any = {};
+        let catch_boolean: boolean = true;
+        let milestoneItems:any = milestones;
+        
+        if(milestones_){
+            milestoneItems = milestones_;
+        }
+
+        milestoneItems.forEach((mile: any) => {
+
+            let mile_start = mile.from_date;
+            let mile_end = mile.to_date;
+
+            let time_start = time.from_date;
+            let time_end = time.to_date;
+
+
+            if (count_times[mile_start] == undefined) {
+                count_times[mile_start] = 1
+            } else {
+                count_times[mile_start] = count_times[mile_start] + 1;
+            }
+
+
+            if (count_times[mile_end] == undefined) {
+                count_times[mile_end] = 1
+            } else {
+                count_times[mile_end] = count_times[mile_end] + 1;
+            }
+
+            if (count_times[mile_start] === 4) {
+                if (mile_start == time_start || mile_start == time_end) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            } else {
+                if (count_times[time_start] === 4) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            }
+
+            if (count_times[mile_end] === 4) {
+                if (mile_end == time_start || mile_end == time_end) {
+                    setShowToast(true, 'Selected end data is fully engage');
+                    catch_boolean = false;
+                }
+            } else {
+                if (count_times[time_end] === 4) {
+                    setShowToast(true, 'Selected start data is fully engage');
+                    catch_boolean = false;
+                }
+            }
+
+
+        });
+
+        return catch_boolean;
+    }
+
     const handleContinue = () => {
         let moment_start = moment(range.startDate).format('MM-DD-YYYY')
         let moment_end = moment(range.endDate).format('MM-DD-YYYY')
@@ -71,19 +232,22 @@ const ChooseTimingMileStone = ({
         let item_index = null;
         item_index = milestones.length ? milestones.length - 1 : 0;
 
-        if (editMileStone == null) {
-            addTimeToMileStone(timings, item_index);
-            handleStepBack();
-        } else {
-            updateMileStoneTimings(timings);
-            addTimeToMileStone(timings, editMileStone);
-            handleStepForward(15);
+        let isChecked = checkBeforeExist(timings);
+
+        if (isChecked) {
+            if (editMileStone == null) {
+                addTimeToMileStone(timings, item_index);
+                handleStepBack();
+            } else {
+                updateMileStoneTimings(timings);
+                addTimeToMileStone(timings, editMileStone);
+                handleStepForward(15);
+            }
         }
         // handleStepComplete(formattedDates);
     }
 
     const checkDisable = () => {
-        // let from_date = moment(range.startDate).format(default_format);
         if (range?.startDate && range?.startDate !== 'Invalid date') {
             return false;
         }
