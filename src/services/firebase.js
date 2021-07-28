@@ -29,7 +29,7 @@ var qaStgFirebaseConfig = {
 };
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(devFirebaseConfig);
+    firebase.initializeApp(qaStgFirebaseConfig);
 }
 export const auth = firebase.auth();
 export const messaging = firebase.messaging();

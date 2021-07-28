@@ -90,10 +90,9 @@ const UserMessages = (props: any) => {
         }
         setItemsMedia(mediaMsgs);
         setFsSlideListner(fsSlideObj);
-        console.log('itemsMedia: ', itemsMedia, 'mediaMsgs', mediaMsgs, "fsSlideObj", fsSlideObj, 'newMediaMsgs');
         // setIsLoading(false);
     }
-    console.log('itemsMedia: ', itemsMedia);
+    console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
     const sendMessage = async () => {
         //setIsLoading(true);
@@ -286,6 +285,7 @@ const UserMessages = (props: any) => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
                                 }}
+                                style={{ height: '84px', width: '84px' }}
                             />
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </figure>
@@ -301,6 +301,7 @@ const UserMessages = (props: any) => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
                             }}
+                            style={{ height: '84px', width: '84px' }}
                         />
                         <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                     </figure>
