@@ -47,7 +47,7 @@ const SearchResultTradie = (props: any) => {
         // specializationId: stateData?.specializations,
 
         if (stateData?.location) {
-    
+
             data['location'] = stateData?.location;
         }
         if (stateData?.calender?.startDate) {
@@ -57,12 +57,14 @@ const SearchResultTradie = (props: any) => {
             data['to_date'] = moment(stateData?.calender?.endDate).format('YYYY-MM-DD')
         }
         let spec_count: any = stateData?.specializations?.length;
+        console.log({ stateData }, 'stateData')
         setLocalInfo({
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
             tradeId: data.tradeId,
             specializationId: data.specializationId,
-            doingLocalChanges:false,
+            location: data.location,
+            doingLocalChanges: false,
 
         })
         props.postHomeSearchData(data);
@@ -86,7 +88,7 @@ const SearchResultTradie = (props: any) => {
     let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
     let isLoading: any = props.isLoading;
-    
+
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>

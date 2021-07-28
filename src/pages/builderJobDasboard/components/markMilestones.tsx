@@ -21,6 +21,7 @@ import EditMilestones from './editMilestones/index';
 import CancelJobs from './cancelJobs/cancelJob'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import { CancelJob } from '../../../redux/jobs/actions';
+import storageService from '../../../utils/storageService';
 
 import SeeDetailsComponents from './seeDetails';
 
@@ -128,10 +129,10 @@ const MarkMilestones = (props: any) => {
         }
     }
 
-    const redirectToInfo = ({ jobId, status }: any) => {
+    const redirectToInfo = ({ jobId, status, tradieId }: any) => {
         console.log({ jobId });
         let props_: any = props;
-        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true&activeType=active`)
+        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active`)
         props_.history.push(`/job-detail?${urlEncode}`);
     }
 
@@ -336,8 +337,19 @@ const MarkMilestones = (props: any) => {
                     }}
                     className="tradie_card posted_by view_more ">
                     <span
-                        onClick={(e) => { e.stopPropagation() }}
-                        className="chat circle"></span>
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            props.history.push({
+                                pathname: `/chat`,
+                                state: {
+                                    tradieId: item_details?.tradieId,
+                                    builderId: storageService.getItem('userInfo')?._id,
+                                    jobId: item_details?.jobId,
+                                    jobName: item_details?.jobName
+                                }
+                            })
+                        }}
+                        className="chat circle" />
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
@@ -356,8 +368,8 @@ const MarkMilestones = (props: any) => {
                         className="edit_icon"
                         title="More"
                         onClick={() => {
-                            let { jobId, tradeId, specializationId, status } = selectedItem;
-                            redirectToInfo({ jobId, status })
+                            let { jobId, tradeId, specializationId, tradieId, status } = selectedItem;
+                            redirectToInfo({ jobId, status, tradieId })
                         }}>
                         <img src={more} alt="more" />
                     </span>

@@ -236,9 +236,6 @@ var DayCell =
     _createClass(DayCell, [{
       key: "render",
       value: function render() {
-        console.log({
-          props: this.props
-        })
         return _react["default"].createElement("button", _extends({
           type: "button",
           onMouseEnter: this.handleMouseEvent,
@@ -261,16 +258,16 @@ var DayCell =
           className: this.props.styles.dayNumber
         }, _react["default"].createElement("span", null, (0, _dateFns.format)(this.props.day, this.props.dayDisplayFormat))
           , _react["default"].createElement("span", {
-            className: `red ${_moment(this.props.day).format('MM-DD-YYYY')}`
+            className: `color_1_${_moment(this.props.day).format('MM-DD-YYYY')}`
           }),
           _react["default"].createElement("span", {
-            className: `green ${_moment(this.props.day).format('MM-DD-YYYY')}`
+            className: `color_2_${_moment(this.props.day).format('MM-DD-YYYY')}`
           }),
           _react["default"].createElement("span", {
-            className: `blue ${_moment(this.props.day).format('MM-DD-YYYY')}`
+            className: `color_3_${_moment(this.props.day).format('MM-DD-YYYY')}`
           }),
           _react["default"].createElement("span", {
-            className: `yellow ${_moment(this.props.day).format('MM-DD-YYYY')}`
+            className: `color_4_${_moment(this.props.day).format('MM-DD-YYYY')}`
           })
         ));
       }

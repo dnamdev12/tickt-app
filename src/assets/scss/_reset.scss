@@ -691,3 +691,51 @@ span.item-star {
     position: absolute;
     right: 5%;
 }
+
+.red_08-01-2021.active {   
+    padding: 5px;
+    background: red;
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+    border-radius: 5px;
+}
+
+.green_08-01-2021.active {   
+    padding: 5px;
+    background: green;
+    position: absolute;
+    bottom: 0;
+    left: 20px;
+    border-radius: 5px;
+}
+
+.blue_08-01-2021.active {   
+    padding: 5px;
+    background: blue;
+    position: absolute;
+    bottom: 0;
+    left: 30px;
+    border-radius: 5px;
+}
+
+.yellow_08-01-2021.active {   
+    padding: 5px;
+    background: yellow;
+    position: absolute;
+    bottom: 0;
+    left: 40px;
+    border-radius: 5px;
+}
+
+.rdrDayPassive {
+    opacity: 0 !important;
+}
+
+.mb-0 {
+    margin-bottom: 0 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer;
+}

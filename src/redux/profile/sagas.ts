@@ -168,9 +168,7 @@ function* getTradieProfile({ data }: any) {
 }
 
 function* getProfileBuilder() {
-  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.builder)
-  setLoading(false);
   if (response.status_code === 200) {
     yield put({ type: actionTypes.SET_PROFILE_BUILDER, payload: response.result });
   } else {

@@ -18,6 +18,7 @@ import {
     handleCancelReply
 } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
+import storageService from '../../utils/storageService';
 
 import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
@@ -94,6 +95,7 @@ const JobDetailsPage = (props: PropsType) => {
     const [toggler, setToggler] = useState(false);
     const [showEditBtn, setEditBtn] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+    const [tradieId, setTradieId] = useState<string>('');
 
 
     // console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo');
@@ -106,7 +108,7 @@ const JobDetailsPage = (props: PropsType) => {
 
 
     const preFetch = async () => {
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = window.atob((props.history?.location?.search).substring(1))
         const params = new URLSearchParams(location_search);
 
         if (params.get('edit')) {
@@ -130,6 +132,10 @@ const JobDetailsPage = (props: PropsType) => {
                     setJobDetailsData(res.data);
                 }
             }
+        }
+        if (params.get('tradieId')) {
+            const id: string | null = params.get('tradieId');
+            setTradieId(id ? id : '');
         }
         fetchQuestionsList();
     }
@@ -398,6 +404,7 @@ const JobDetailsPage = (props: PropsType) => {
             activeType = params.get('activeType');
         }
     }
+    console.log({ activeType })
 
     console.log({ paramStatus })
     const renderByStatus = ({ status }: any) => {
@@ -475,7 +482,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 <button
                                     className="back"
                                     onClick={() => {
-                                        if(activeType){
+                                        if (activeType) {
                                             props.history.push(`/jobs?active=${activeType}`)
                                         } else {
                                             props.history?.goBack()
@@ -568,6 +575,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 'I got a better job' :
                                                 'I am not the right fit for the job'}
                                         </p>
+                                        {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
                                         <button
                                             onClick={() => {
                                                 handleCancelJob(1, jobDetailsData)
@@ -610,7 +618,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_4">
                                 <span className="sub_title">Job Milestones
                                     {/* <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`} */}
-                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber } `}{`of ${jobDetailsData?.totalMilestones || ''}`} </b>
+                                    <b className="ft_normal"> {`${jobDetailsData?.milestoneNumber} `}{`of ${jobDetailsData?.totalMilestones || ''}`} </b>
                                 </span>
 
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -873,15 +881,31 @@ const JobDetailsPage = (props: PropsType) => {
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
-                                    <div className="tradie_card posted_by view_more ">
-                                        <a href="javascript:void(0)" className="chat circle"></a>
+                                    <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}>
+                                        {activeType == "active" && (
+                                            <span
+                                                className="chat circle"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    props.history.push({
+                                                        pathname: `/chat`,
+                                                        state: {
+                                                            tradieId: tradieId,
+                                                            builderId: storageService.getItem('userInfo')?._id,
+                                                            jobId: jobDetailsData?.jobId,
+                                                            jobName: jobDetailsData?.jobName
+                                                        }
+                                                    })
+                                                }}>
+                                            </span>
+                                        )}
                                         <div className="user_wrap">
-                                            <figure className="u_img">
+                                            <figure className={`${activeType !== "active" ? 'u_img cursor-pointer' : 'u_img'}`}>
                                                 {jobDetailsData?.postedBy?.builderImage ? (
                                                     <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
                                                 ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
                                             </figure>
-                                            <div className="details">
+                                            <div className={`${activeType !== "active" ? 'details cursor-pointer' : 'details'}`}>
                                                 <span
                                                     className="name"
                                                     onClick={() => {
@@ -891,7 +915,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     }}>
                                                     {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
                                                 </span>
-                                                {/* <span className="prof">Project Manager</span> */}
+
                                                 <span className="rating">
                                                     {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
                                                 </span>
@@ -904,7 +928,7 @@ const JobDetailsPage = (props: PropsType) => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     )
 }
 
