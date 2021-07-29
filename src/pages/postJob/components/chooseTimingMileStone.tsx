@@ -8,12 +8,11 @@ import React, { useState, useEffect } from 'react';
 // import 'react-date-range/dist/styles.css'; // main style file
 // import 'react-date-range/dist/theme/default.css'; // theme css file
 
-
-
 // @ts-ignore
 import { DateRangePicker } from '../../../plugins/react-date-range/dist/index';
 import '../../../plugins/react-date-range/dist/styles.css';
 import '../../../plugins/react-date-range/dist/theme/default.css';
+
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 

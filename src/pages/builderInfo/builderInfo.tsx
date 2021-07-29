@@ -24,7 +24,7 @@ import menu from '../../assets/images/menu-line-blue.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import storageService from '../../utils/storageService';
-
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 interface PropsType {

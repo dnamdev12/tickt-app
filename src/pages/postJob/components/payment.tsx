@@ -190,7 +190,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                     <option value="fixed">{'Fixed Price'}</option>
                     <option value="perHour">{'Per Hour'}</option>
                   </select> */}
-
                       <Select
                         className="select_menu"
                         value={reactSelect}
@@ -200,10 +199,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                           handleChange(item?.value, 'pay_type')
                         }}
                       />
-
-
                     </div>
-
                   </div>
                 </div>
               </div>

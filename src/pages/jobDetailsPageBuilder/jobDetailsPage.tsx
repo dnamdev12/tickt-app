@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Constants from '../../utils/constants';
 import {
     getHomeJobDetails,
@@ -35,6 +35,17 @@ import { renderTime } from '../../utils/common';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+
+import editIconBlue from '../../assets/images/ic-edit-blue.png';
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import { deleteOpenJob } from '../../redux/jobs/actions';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
@@ -97,15 +108,13 @@ const JobDetailsPage = (props: PropsType) => {
     const [selectedSlide, setSelectSlide] = useState(1);
     const [tradieId, setTradieId] = useState<string>('');
 
-
-    // console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo');
+    const [toggleDelete, setToggleDelete] = useState(false);
 
     useEffect(() => {
         (async () => {
             await preFetch();
         })();
     }, [])
-
 
     const preFetch = async () => {
         let location_search = window.atob((props.history?.location?.search).substring(1))
@@ -464,10 +473,94 @@ const JobDetailsPage = (props: PropsType) => {
         itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
+
+
+    const deleteJob = async (jobId: any) => {
+        await deleteOpenJob({ jobId });
+        props.history.push(`/jobs?active=${activeType}`)
+    }
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+                    {/* {["open", 'active'].includes(activeType) ? (
+                        <span className="dot_menu">
+                            <img src={editIconBlue} alt="edit" />
+                            <div className="edit_menu">
+                                <ul>
+                                    {activeType == "open" && (
+                                        <React.Fragment>
+                                            <li
+                                                onClick={() => {
+                                                    props.history.push(`/post-new-job?jobId=${paramJobId}`)
+                                                }}
+                                                className="icon edit_line">Edit</li>
+                                            <li
+                                                onClick={() => {
+                                                    setToggleDelete((prev: any) => !prev);
+                                                }}
+                                                className="icon delete">Delete</li>
+                                        </React.Fragment>
+                                    )}
+                                    {activeType == "active" && (
+                                        <React.Fragment>
+                                            <li
+                                                onClick={() => {
+                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&editMilestone=true`)
+                                                }}
+                                                className="icon edit_line">
+                                                Edit Milestone
+                                            </li>
+                                            <li
+                                                onClick={() => {
+                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&lodgeDispute=true`)
+                                                }}
+                                                className="icon lodge">
+                                                Lodge dispute
+                                            </li>
+                                            <li
+                                                onClick={() => {
+                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&cancelJob=true`)
+                                                }}
+                                                className="icon delete">
+                                                Cancel job
+                                            </li>
+                                        </React.Fragment>
+                                    )}
+                                </ul>
+                            </div>
+                        </span>
+                    ) : null} */}
+
+                    <Dialog
+                        open={toggleDelete}
+                        onClose={() => {
+                            setToggleDelete((prev: any) => !prev);
+                        }}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">
+                            {"Are you sure you want to delete the job ?"}
+                        </DialogTitle>
+                        <DialogActions>
+                            <Button
+                                onClick={() => {
+                                    deleteJob(paramJobId);
+                                }}
+                                color="primary"
+                                autoFocus>
+                                {'Yes'}
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setToggleDelete((prev: any) => !prev);
+                                }}
+                                color="primary">
+                                {'No'}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 
                     <FsLightbox
                         toggler={toggler}

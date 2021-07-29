@@ -9,9 +9,6 @@ import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob';
 import { renderTime } from '../../../utils/common';
-
-
-
 interface Active {
     amount: any,
     durations: any,
@@ -37,7 +34,6 @@ interface Active {
     activeType: any,
     setJobLabel: (item: any) => void
 }
-
 
 const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLoading }: any) => {
     let listData: any = dataItems;
@@ -72,11 +68,11 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
             />)
     }
 
-    if(isLoading || listData == undefined){
+    if (isLoading || listData == undefined) {
         return null;
     }
 
-    console.log({ listData , isLoading})
+    console.log({ listData, isLoading })
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -156,7 +152,9 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                         </span>
                                         <span className="approval_info">
                                             {(status).toUpperCase() === "APPROVED" && <img src={approved} alt="icon" />}
-                                            {((status).toUpperCase() === "NEEDS APPROVAL" || (status).toUpperCase() === "NEED APPROVAL") && <img src={waiting} alt="icon" />}
+                                            {((status).toUpperCase() === "NEEDS APPROVAL" || (status).toUpperCase() === "NEED APPROVAL") && (
+                                                <img src={waiting} alt="icon" />
+                                            )}
                                             {status}
                                             {/* {(status).toUpperCase() === "ACCEPTED CHANGE REQUEST"
                                                 ? "ACCEPTED C.R "

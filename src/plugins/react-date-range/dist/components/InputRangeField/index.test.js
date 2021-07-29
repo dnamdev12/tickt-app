@@ -6,7 +6,7 @@ var _enzyme = require("enzyme");
 
 var _InputRangeField = _interopRequireDefault(require("../InputRangeField"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var styles = {
   inputRange: 'range',
@@ -25,7 +25,7 @@ var toChangeEvent = function toChangeEvent(value) {
 describe('InputRangeField tests', function () {
   test('Should parse input value to number', function () {
     var onChange = jest.fn();
-    var wrapper = (0, _enzyme.mount)(_react["default"].createElement(_InputRangeField["default"], {
+    var wrapper = (0, _enzyme.mount)( /*#__PURE__*/_react.default.createElement(_InputRangeField.default, {
       label: "Input label",
       styles: styles,
       onChange: onChange,
@@ -48,7 +48,7 @@ describe('InputRangeField tests', function () {
     expect(wrapper).toMatchSnapshot();
   });
   test('Should rerender when props change', function () {
-    var wrapper = (0, _enzyme.mount)(_react["default"].createElement(_InputRangeField["default"], {
+    var wrapper = (0, _enzyme.mount)( /*#__PURE__*/_react.default.createElement(_InputRangeField.default, {
       value: 12,
       placeholder: "Placeholder",
       label: "Input label",
@@ -60,6 +60,46 @@ describe('InputRangeField tests', function () {
     expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('value')).toEqual(12);
     expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('placeholder')).toEqual('Placeholder');
     expect(wrapper.find(".".concat(styles.inputRangeLabel)).text()).toEqual('Input label');
+    wrapper.setProps({
+      value: '32'
+    });
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('value')).toEqual('32');
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('placeholder')).toEqual('Placeholder');
+    expect(wrapper.find(".".concat(styles.inputRangeLabel)).text()).toEqual('Input label');
+    wrapper.setProps({
+      placeholder: '-'
+    });
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('value')).toEqual('32');
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('placeholder')).toEqual('-');
+    expect(wrapper.find(".".concat(styles.inputRangeLabel)).text()).toEqual('Input label');
+    wrapper.setProps({
+      label: 'Label'
+    });
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('value')).toEqual('32');
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('placeholder')).toEqual('-');
+    expect(wrapper.find(".".concat(styles.inputRangeLabel)).text()).toEqual('Label');
+  });
+  test('Should render the label as a Component', function () {
+    var Label = function Label() {
+      return /*#__PURE__*/_react.default.createElement("span", {
+        className: "input-range-field-label"
+      }, "Input label");
+    };
+
+    var wrapper = (0, _enzyme.mount)( /*#__PURE__*/_react.default.createElement(_InputRangeField.default, {
+      value: 12,
+      placeholder: "Placeholder",
+      label: /*#__PURE__*/_react.default.createElement(Label, null),
+      styles: styles,
+      onChange: jest.fn(),
+      onFocus: jest.fn(),
+      onBlur: jest.fn()
+    }));
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('value')).toEqual(12);
+    expect(wrapper.find(".".concat(styles.inputRangeInput)).prop('placeholder')).toEqual('Placeholder');
+    expect(wrapper.find(".".concat(styles.inputRangeLabel)).text()).toEqual('Input label');
+    expect(wrapper.find(".".concat(styles.inputRangeLabel)).text()).toEqual('Input label');
+    expect(wrapper.find(".input-range-field-label").text()).toEqual('Input label');
     wrapper.setProps({
       value: '32'
     });

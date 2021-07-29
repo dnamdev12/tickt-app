@@ -1,9 +1,11 @@
 "use strict";
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports["default"] = void 0;
+exports.default = void 0;
 
 var _react = _interopRequireWildcard(require("react"));
 
@@ -23,31 +25,67 @@ var _reactList = _interopRequireDefault(require("react-list"));
 
 var _shallowEqual = require("shallow-equal");
 
-var _dateFns = require("date-fns");
+var _max = _interopRequireDefault(require("date-fns/max"));
+
+var _min = _interopRequireDefault(require("date-fns/min"));
+
+var _differenceInDays = _interopRequireDefault(require("date-fns/differenceInDays"));
+
+var _isSameMonth = _interopRequireDefault(require("date-fns/isSameMonth"));
+
+var _addDays = _interopRequireDefault(require("date-fns/addDays"));
+
+var _endOfMonth = _interopRequireDefault(require("date-fns/endOfMonth"));
+
+var _startOfMonth = _interopRequireDefault(require("date-fns/startOfMonth"));
+
+var _differenceInCalendarMonths = _interopRequireDefault(require("date-fns/differenceInCalendarMonths"));
+
+var _setMonth2 = _interopRequireDefault(require("date-fns/setMonth"));
+
+var _setYear2 = _interopRequireDefault(require("date-fns/setYear"));
+
+var _addYears = _interopRequireDefault(require("date-fns/addYears"));
+
+var _isSameDay = _interopRequireDefault(require("date-fns/isSameDay"));
+
+var _endOfWeek = _interopRequireDefault(require("date-fns/endOfWeek"));
+
+var _startOfWeek = _interopRequireDefault(require("date-fns/startOfWeek"));
+
+var _eachDayOfInterval = _interopRequireDefault(require("date-fns/eachDayOfInterval"));
+
+var _format = _interopRequireDefault(require("date-fns/format"));
+
+var _addMonths = _interopRequireDefault(require("date-fns/addMonths"));
 
 var _enUS = _interopRequireDefault(require("date-fns/locale/en-US"));
 
 var _styles = _interopRequireDefault(require("../../styles"));
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
+var _accessibility = require("../../accessibility");
 
-function _getRequireWildcardCache() { if (typeof WeakMap !== "function") return null; var cache = new WeakMap(); _getRequireWildcardCache = function _getRequireWildcardCache() { return cache; }; return cache; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { "default": obj }; } var cache = _getRequireWildcardCache(); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj["default"] = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
 
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
 
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) { symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); } keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
@@ -57,29 +95,33 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-var Calendar =
-/*#__PURE__*/
-function (_PureComponent) {
+var Calendar = /*#__PURE__*/function (_PureComponent) {
   _inherits(Calendar, _PureComponent);
+
+  var _super = _createSuper(Calendar);
 
   function Calendar(_props, context) {
     var _this;
 
     _classCallCheck(this, Calendar);
 
-    _this = _possibleConstructorReturn(this, _getPrototypeOf(Calendar).call(this, _props, context));
+    _this = _super.call(this, _props, context);
 
     _defineProperty(_assertThisInitialized(_this), "focusToDate", function (date) {
       var props = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : _this.props;
@@ -93,7 +135,7 @@ function (_PureComponent) {
         return;
       }
 
-      var targetMonthIndex = (0, _dateFns.differenceInCalendarMonths)(date, props.minDate, _this.dateOptions);
+      var targetMonthIndex = (0, _differenceInCalendarMonths.default)(date, props.minDate, _this.dateOptions);
 
       var visibleMonths = _this.list.getVisibleRange();
 
@@ -109,7 +151,7 @@ function (_PureComponent) {
 
     _defineProperty(_assertThisInitialized(_this), "updateShownDate", function () {
       var props = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : _this.props;
-      var newProps = props.scroll.enabled ? _objectSpread({}, props, {
+      var newProps = props.scroll.enabled ? _objectSpread(_objectSpread({}, props), {}, {
         months: _this.list.getVisibleRange().length
       }) : props;
       var newFocus = (0, _utils.calcFocusDate)(_this.state.focusedDate, newProps);
@@ -146,19 +188,39 @@ function (_PureComponent) {
           maxDate = _this$props.maxDate;
       var modeMapper = {
         monthOffset: function monthOffset() {
-          return (0, _dateFns.addMonths)(focusedDate, value);
+          return (0, _addMonths.default)(focusedDate, value);
         },
-        setMonth: function setMonth() {
-          return (0, _dateFns.setMonth)(focusedDate, value);
-        },
-        setYear: function setYear() {
-          return (0, _dateFns.setYear)(focusedDate, value);
-        },
+        setMonth: function (_setMonth) {
+          function setMonth() {
+            return _setMonth.apply(this, arguments);
+          }
+
+          setMonth.toString = function () {
+            return _setMonth.toString();
+          };
+
+          return setMonth;
+        }(function () {
+          return (0, _setMonth2.default)(focusedDate, value);
+        }),
+        setYear: function (_setYear) {
+          function setYear() {
+            return _setYear.apply(this, arguments);
+          }
+
+          setYear.toString = function () {
+            return _setYear.toString();
+          };
+
+          return setYear;
+        }(function () {
+          return (0, _setYear2.default)(focusedDate, value);
+        }),
         set: function set() {
           return value;
         }
       };
-      var newDate = (0, _dateFns.min)([(0, _dateFns.max)([modeMapper[mode](), minDate]), maxDate]);
+      var newDate = (0, _min.default)([(0, _max.default)([modeMapper[mode](), minDate]), maxDate]);
 
       _this.focusToDate(newDate, _this.props, false);
 
@@ -182,8 +244,8 @@ function (_PureComponent) {
 
 
       if (visibleMonths[0] === undefined) return;
-      var visibleMonth = (0, _dateFns.addMonths)(minDate, visibleMonths[0] || 0);
-      var isFocusedToDifferent = !(0, _dateFns.isSameMonth)(visibleMonth, focusedDate);
+      var visibleMonth = (0, _addMonths.default)(minDate, visibleMonths[0] || 0);
+      var isFocusedToDifferent = !(0, _isSameMonth.default)(visibleMonth, focusedDate);
 
       if (isFocusedToDifferent && !isFirstRender) {
         _this.setState({
@@ -200,59 +262,64 @@ function (_PureComponent) {
       var showMonthArrow = props.showMonthArrow,
           minDate = props.minDate,
           maxDate = props.maxDate,
-          showMonthAndYearPickers = props.showMonthAndYearPickers;
+          showMonthAndYearPickers = props.showMonthAndYearPickers,
+          ariaLabels = props.ariaLabels;
       var upperYearLimit = (maxDate || Calendar.defaultProps.maxDate).getFullYear();
       var lowerYearLimit = (minDate || Calendar.defaultProps.minDate).getFullYear();
       var styles = _this.styles;
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react.default.createElement("div", {
         onMouseUp: function onMouseUp(e) {
           return e.stopPropagation();
         },
         className: styles.monthAndYearWrapper
-      }, showMonthArrow ? _react["default"].createElement("button", {
+      }, showMonthArrow ? /*#__PURE__*/_react.default.createElement("button", {
         type: "button",
-        className: (0, _classnames3["default"])(styles.nextPrevButton, styles.prevButton),
+        className: (0, _classnames3.default)(styles.nextPrevButton, styles.prevButton),
         onClick: function onClick() {
           return changeShownDate(-1, 'monthOffset');
-        }
-      }, _react["default"].createElement("i", null)) : null, showMonthAndYearPickers ? _react["default"].createElement("span", {
+        },
+        "aria-label": ariaLabels.prevButton
+      }, /*#__PURE__*/_react.default.createElement("i", null)) : null, showMonthAndYearPickers ? /*#__PURE__*/_react.default.createElement("span", {
         className: styles.monthAndYearPickers
-      }, _react["default"].createElement("span", {
+      }, /*#__PURE__*/_react.default.createElement("span", {
         className: styles.monthPicker
-      }, _react["default"].createElement("select", {
+      }, /*#__PURE__*/_react.default.createElement("select", {
         value: focusedDate.getMonth(),
         onChange: function onChange(e) {
           return changeShownDate(e.target.value, 'setMonth');
-        }
+        },
+        "aria-label": ariaLabels.monthPicker
       }, _this.state.monthNames.map(function (monthName, i) {
-        return _react["default"].createElement("option", {
+        return /*#__PURE__*/_react.default.createElement("option", {
           key: i,
           value: i
         }, monthName);
-      }))), _react["default"].createElement("span", {
+      }))), /*#__PURE__*/_react.default.createElement("span", {
         className: styles.monthAndYearDivider
-      }), _react["default"].createElement("span", {
+      }), /*#__PURE__*/_react.default.createElement("span", {
         className: styles.yearPicker
-      }, _react["default"].createElement("select", {
+      }, /*#__PURE__*/_react.default.createElement("select", {
         value: focusedDate.getFullYear(),
         onChange: function onChange(e) {
           return changeShownDate(e.target.value, 'setYear');
-        }
+        },
+        "aria-label": ariaLabels.yearPicker
       }, new Array(upperYearLimit - lowerYearLimit + 1).fill(upperYearLimit).map(function (val, i) {
         var year = val - i;
-        return _react["default"].createElement("option", {
+        return /*#__PURE__*/_react.default.createElement("option", {
           key: year,
           value: year
         }, year);
-      })))) : _react["default"].createElement("span", {
+      })))) : /*#__PURE__*/_react.default.createElement("span", {
         className: styles.monthAndYearPickers
-      }, _this.state.monthNames[focusedDate.getMonth()], " ", focusedDate.getFullYear()), showMonthArrow ? _react["default"].createElement("button", {
+      }, _this.state.monthNames[focusedDate.getMonth()], " ", focusedDate.getFullYear()), showMonthArrow ? /*#__PURE__*/_react.default.createElement("button", {
         type: "button",
-        className: (0, _classnames3["default"])(styles.nextPrevButton, styles.nextButton),
+        className: (0, _classnames3.default)(styles.nextPrevButton, styles.nextButton),
         onClick: function onClick() {
           return changeShownDate(+1, 'monthOffset');
-        }
-      }, _react["default"].createElement("i", null)) : null);
+        },
+        "aria-label": ariaLabels.nextButton
+      }, /*#__PURE__*/_react.default.createElement("i", null)) : null);
     });
 
     _defineProperty(_assertThisInitialized(_this), "renderDateDisplay", function () {
@@ -264,39 +331,42 @@ function (_PureComponent) {
           dateDisplayFormat = _this$props3.dateDisplayFormat,
           editableDateInputs = _this$props3.editableDateInputs,
           startDatePlaceholder = _this$props3.startDatePlaceholder,
-          endDatePlaceholder = _this$props3.endDatePlaceholder;
+          endDatePlaceholder = _this$props3.endDatePlaceholder,
+          ariaLabels = _this$props3.ariaLabels;
       var defaultColor = rangeColors[focusedRange[0]] || color;
       var styles = _this.styles;
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react.default.createElement("div", {
         className: styles.dateDisplayWrapper
       }, ranges.map(function (range, i) {
         if (range.showDateDisplay === false || range.disabled && !range.showDateDisplay) return null;
-        return _react["default"].createElement("div", {
+        return /*#__PURE__*/_react.default.createElement("div", {
           className: styles.dateDisplay,
           key: i,
           style: {
             color: range.color || defaultColor
           }
-        }, _react["default"].createElement(_DateInput["default"], {
-          className: (0, _classnames3["default"])(styles.dateDisplayItem, _defineProperty({}, styles.dateDisplayItemActive, focusedRange[0] === i && focusedRange[1] === 0)),
+        }, /*#__PURE__*/_react.default.createElement(_DateInput.default, {
+          className: (0, _classnames3.default)(styles.dateDisplayItem, _defineProperty({}, styles.dateDisplayItemActive, focusedRange[0] === i && focusedRange[1] === 0)),
           readOnly: !editableDateInputs,
           disabled: range.disabled,
           value: range.startDate,
           placeholder: startDatePlaceholder,
           dateOptions: _this.dateOptions,
           dateDisplayFormat: dateDisplayFormat,
+          ariaLabel: ariaLabels.dateInput && ariaLabels.dateInput[range.key] && ariaLabels.dateInput[range.key].startDate,
           onChange: _this.onDragSelectionEnd,
           onFocus: function onFocus() {
             return _this.handleRangeFocusChange(i, 0);
           }
-        }), _react["default"].createElement(_DateInput["default"], {
-          className: (0, _classnames3["default"])(styles.dateDisplayItem, _defineProperty({}, styles.dateDisplayItemActive, focusedRange[0] === i && focusedRange[1] === 1)),
+        }), /*#__PURE__*/_react.default.createElement(_DateInput.default, {
+          className: (0, _classnames3.default)(styles.dateDisplayItem, _defineProperty({}, styles.dateDisplayItemActive, focusedRange[0] === i && focusedRange[1] === 1)),
           readOnly: !editableDateInputs,
           disabled: range.disabled,
           value: range.endDate,
           placeholder: endDatePlaceholder,
           dateOptions: _this.dateOptions,
           dateDisplayFormat: dateDisplayFormat,
+          ariaLabel: ariaLabels.dateInput && ariaLabels.dateInput[range.key] && ariaLabels.dateInput[range.key].endDate,
           onChange: _this.onDragSelectionEnd,
           onFocus: function onFocus() {
             return _this.handleRangeFocusChange(i, 1);
@@ -344,7 +414,7 @@ function (_PureComponent) {
         endDate: date
       };
 
-      if (displayMode !== 'dateRange' || (0, _dateFns.isSameDay)(newRange.startDate, date)) {
+      if (displayMode !== 'dateRange' || (0, _isSameDay.default)(newRange.startDate, date)) {
         _this.setState({
           drag: {
             status: false,
@@ -393,13 +463,13 @@ function (_PureComponent) {
       }
 
       if (direction === 'horizontal') return scrollArea.monthWidth;
-      var monthStep = (0, _dateFns.addMonths)(minDate, index);
+      var monthStep = (0, _addMonths.default)(minDate, index);
 
       var _getMonthDisplayRange = (0, _utils.getMonthDisplayRange)(monthStep, _this.dateOptions),
           start = _getMonthDisplayRange.start,
           end = _getMonthDisplayRange.end;
 
-      var isLongMonth = (0, _dateFns.differenceInDays)(end, start, _this.dateOptions) + 1 > 7 * 5;
+      var isLongMonth = (0, _differenceInDays.default)(end, start, _this.dateOptions) + 1 > 7 * 5;
       return isLongMonth ? scrollArea.longMonthHeight : scrollArea.monthHeight;
     });
 
@@ -407,7 +477,7 @@ function (_PureComponent) {
       locale: _props.locale
     };
     if (_props.weekStartsOn !== undefined) _this.dateOptions.weekStartsOn = _props.weekStartsOn;
-    _this.styles = (0, _utils.generateStyles)([_styles["default"], _props.classNames]);
+    _this.styles = (0, _utils.generateStyles)([_styles.default, _props.classNames]);
     _this.listSizeCache = {};
     _this.isFirstRender = true;
     _this.state = {
@@ -511,16 +581,16 @@ function (_PureComponent) {
       var _this4 = this;
 
       var now = new Date();
-      return _react["default"].createElement("div", {
+      return /*#__PURE__*/_react.default.createElement("div", {
         className: this.styles.weekDays
-      }, (0, _dateFns.eachDayOfInterval)({
-        start: (0, _dateFns.startOfWeek)(now, this.dateOptions),
-        end: (0, _dateFns.endOfWeek)(now, this.dateOptions)
+      }, (0, _eachDayOfInterval.default)({
+        start: (0, _startOfWeek.default)(now, this.dateOptions),
+        end: (0, _endOfWeek.default)(now, this.dateOptions)
       }).map(function (day, i) {
-        return _react["default"].createElement("span", {
+        return /*#__PURE__*/_react.default.createElement("span", {
           className: _this4.styles.weekDay,
           key: i
-        }, (0, _dateFns.format)(day, _this4.props.weekdayDisplayFormat, _this4.dateOptions));
+        }, (0, _format.default)(day, _this4.props.weekdayDisplayFormat, _this4.dateOptions));
       }));
     }
   }, {
@@ -548,12 +618,12 @@ function (_PureComponent) {
       var isVertical = direction === 'vertical';
       var monthAndYearRenderer = navigatorRenderer || this.renderMonthAndYear;
       var ranges = this.props.ranges.map(function (range, i) {
-        return _objectSpread({}, range, {
+        return _objectSpread(_objectSpread({}, range), {}, {
           color: range.color || rangeColors[i] || color
         });
       });
-      return _react["default"].createElement("div", {
-        className: (0, _classnames3["default"])(this.styles.calendarWrapper, className),
+      return /*#__PURE__*/_react.default.createElement("div", {
+        className: (0, _classnames3.default)(this.styles.calendarWrapper, className),
         onMouseUp: function onMouseUp() {
           return _this5.setState({
             drag: {
@@ -570,8 +640,8 @@ function (_PureComponent) {
             }
           });
         }
-      }, showDateDisplay && this.renderDateDisplay(), monthAndYearRenderer(focusedDate, this.changeShownDate, this.props), scroll.enabled ? _react["default"].createElement("div", null, isVertical && this.renderWeekdays(this.dateOptions), _react["default"].createElement("div", {
-        className: (0, _classnames3["default"])(this.styles.infiniteMonths, isVertical ? this.styles.monthsVertical : this.styles.monthsHorizontal),
+      }, showDateDisplay && this.renderDateDisplay(), monthAndYearRenderer(focusedDate, this.changeShownDate, this.props), scroll.enabled ? /*#__PURE__*/_react.default.createElement("div", null, isVertical && this.renderWeekdays(this.dateOptions), /*#__PURE__*/_react.default.createElement("div", {
+        className: (0, _classnames3.default)(this.styles.infiniteMonths, isVertical ? this.styles.monthsVertical : this.styles.monthsHorizontal),
         onMouseLeave: function onMouseLeave() {
           return onPreviewChange && onPreviewChange();
         },
@@ -580,8 +650,8 @@ function (_PureComponent) {
           height: scrollArea.calendarHeight + 11
         },
         onScroll: this.handleScroll
-      }, _react["default"].createElement(_reactList["default"], {
-        length: (0, _dateFns.differenceInCalendarMonths)((0, _dateFns.endOfMonth)(maxDate), (0, _dateFns.addDays)((0, _dateFns.startOfMonth)(minDate), -1), this.dateOptions),
+      }, /*#__PURE__*/_react.default.createElement(_reactList.default, {
+        length: (0, _differenceInCalendarMonths.default)((0, _endOfMonth.default)(maxDate), (0, _addDays.default)((0, _startOfMonth.default)(minDate), -1), this.dateOptions),
         treshold: 500,
         type: "variable",
         ref: function ref(target) {
@@ -590,8 +660,8 @@ function (_PureComponent) {
         itemSizeEstimator: this.estimateMonthSize,
         axis: isVertical ? 'y' : 'x',
         itemRenderer: function itemRenderer(index, key) {
-          var monthStep = (0, _dateFns.addMonths)(minDate, index);
-          return _react["default"].createElement(_Month["default"], _extends({}, _this5.props, {
+          var monthStep = (0, _addMonths.default)(minDate, index);
+          return /*#__PURE__*/_react.default.createElement(_Month.default, _extends({}, _this5.props, {
             onPreviewChange: onPreviewChange || _this5.updatePreview,
             preview: preview || _this5.state.preview,
             ranges: ranges,
@@ -618,11 +688,11 @@ function (_PureComponent) {
             showWeekDays: !isVertical
           }));
         }
-      }))) : _react["default"].createElement("div", {
-        className: (0, _classnames3["default"])(this.styles.months, isVertical ? this.styles.monthsVertical : this.styles.monthsHorizontal)
+      }))) : /*#__PURE__*/_react.default.createElement("div", {
+        className: (0, _classnames3.default)(this.styles.months, isVertical ? this.styles.monthsVertical : this.styles.monthsHorizontal)
       }, new Array(this.props.months).fill(null).map(function (_, i) {
-        var monthStep = (0, _dateFns.addMonths)(_this5.state.focusedDate, i);
-        return _react["default"].createElement(_Month["default"], _extends({}, _this5.props, {
+        var monthStep = (0, _addMonths.default)(_this5.state.focusedDate, i);
+        return /*#__PURE__*/_react.default.createElement(_Month.default, _extends({}, _this5.props, {
           onPreviewChange: onPreviewChange || _this5.updatePreview,
           preview: preview || _this5.state.preview,
           ranges: ranges,
@@ -655,7 +725,7 @@ Calendar.defaultProps = {
   disabledDates: [],
   disabledDay: function disabledDay() {},
   classNames: {},
-  locale: _enUS["default"],
+  locale: _enUS.default,
   ranges: [],
   focusedRange: [0, 0],
   dateDisplayFormat: 'MMM d, yyyy',
@@ -671,66 +741,68 @@ Calendar.defaultProps = {
     enabled: false
   },
   direction: 'vertical',
-  maxDate: (0, _dateFns.addYears)(new Date(), 20),
-  minDate: (0, _dateFns.addYears)(new Date(), -100),
+  maxDate: (0, _addYears.default)(new Date(), 20),
+  minDate: (0, _addYears.default)(new Date(), -100),
   rangeColors: ['#3d91ff', '#3ecf8e', '#fed14c'],
   startDatePlaceholder: 'Early',
   endDatePlaceholder: 'Continuous',
   editableDateInputs: false,
   dragSelectionEnabled: true,
-  fixedHeight: false
+  fixedHeight: false,
+  ariaLabels: {}
 };
 Calendar.propTypes = {
-  showMonthArrow: _propTypes["default"].bool,
-  showMonthAndYearPickers: _propTypes["default"].bool,
-  disabledDates: _propTypes["default"].array,
-  disabledDay: _propTypes["default"].func,
-  minDate: _propTypes["default"].object,
-  maxDate: _propTypes["default"].object,
-  date: _propTypes["default"].object,
-  onChange: _propTypes["default"].func,
-  onPreviewChange: _propTypes["default"].func,
-  onRangeFocusChange: _propTypes["default"].func,
-  classNames: _propTypes["default"].object,
-  locale: _propTypes["default"].object,
-  shownDate: _propTypes["default"].object,
-  onShownDateChange: _propTypes["default"].func,
-  ranges: _propTypes["default"].arrayOf(_DayCell.rangeShape),
-  preview: _propTypes["default"].shape({
-    startDate: _propTypes["default"].object,
-    endDate: _propTypes["default"].object,
-    color: _propTypes["default"].string
+  showMonthArrow: _propTypes.default.bool,
+  showMonthAndYearPickers: _propTypes.default.bool,
+  disabledDates: _propTypes.default.array,
+  disabledDay: _propTypes.default.func,
+  minDate: _propTypes.default.object,
+  maxDate: _propTypes.default.object,
+  date: _propTypes.default.object,
+  onChange: _propTypes.default.func,
+  onPreviewChange: _propTypes.default.func,
+  onRangeFocusChange: _propTypes.default.func,
+  classNames: _propTypes.default.object,
+  locale: _propTypes.default.object,
+  shownDate: _propTypes.default.object,
+  onShownDateChange: _propTypes.default.func,
+  ranges: _propTypes.default.arrayOf(_DayCell.rangeShape),
+  preview: _propTypes.default.shape({
+    startDate: _propTypes.default.object,
+    endDate: _propTypes.default.object,
+    color: _propTypes.default.string
   }),
-  dateDisplayFormat: _propTypes["default"].string,
-  monthDisplayFormat: _propTypes["default"].string,
-  weekdayDisplayFormat: _propTypes["default"].string,
-  weekStartsOn: _propTypes["default"].number,
-  dayDisplayFormat: _propTypes["default"].string,
-  focusedRange: _propTypes["default"].arrayOf(_propTypes["default"].number),
-  initialFocusedRange: _propTypes["default"].arrayOf(_propTypes["default"].number),
-  months: _propTypes["default"].number,
-  className: _propTypes["default"].string,
-  showDateDisplay: _propTypes["default"].bool,
-  showPreview: _propTypes["default"].bool,
-  displayMode: _propTypes["default"].oneOf(['dateRange', 'date']),
-  color: _propTypes["default"].string,
-  updateRange: _propTypes["default"].func,
-  scroll: _propTypes["default"].shape({
-    enabled: _propTypes["default"].bool,
-    monthHeight: _propTypes["default"].number,
-    longMonthHeight: _propTypes["default"].number,
-    monthWidth: _propTypes["default"].number,
-    calendarWidth: _propTypes["default"].number,
-    calendarHeight: _propTypes["default"].number
+  dateDisplayFormat: _propTypes.default.string,
+  monthDisplayFormat: _propTypes.default.string,
+  weekdayDisplayFormat: _propTypes.default.string,
+  weekStartsOn: _propTypes.default.number,
+  dayDisplayFormat: _propTypes.default.string,
+  focusedRange: _propTypes.default.arrayOf(_propTypes.default.number),
+  initialFocusedRange: _propTypes.default.arrayOf(_propTypes.default.number),
+  months: _propTypes.default.number,
+  className: _propTypes.default.string,
+  showDateDisplay: _propTypes.default.bool,
+  showPreview: _propTypes.default.bool,
+  displayMode: _propTypes.default.oneOf(['dateRange', 'date']),
+  color: _propTypes.default.string,
+  updateRange: _propTypes.default.func,
+  scroll: _propTypes.default.shape({
+    enabled: _propTypes.default.bool,
+    monthHeight: _propTypes.default.number,
+    longMonthHeight: _propTypes.default.number,
+    monthWidth: _propTypes.default.number,
+    calendarWidth: _propTypes.default.number,
+    calendarHeight: _propTypes.default.number
   }),
-  direction: _propTypes["default"].oneOf(['vertical', 'horizontal']),
-  startDatePlaceholder: _propTypes["default"].string,
-  endDatePlaceholder: _propTypes["default"].string,
-  navigatorRenderer: _propTypes["default"].func,
-  rangeColors: _propTypes["default"].arrayOf(_propTypes["default"].string),
-  editableDateInputs: _propTypes["default"].bool,
-  dragSelectionEnabled: _propTypes["default"].bool,
-  fixedHeight: _propTypes["default"].bool
+  direction: _propTypes.default.oneOf(['vertical', 'horizontal']),
+  startDatePlaceholder: _propTypes.default.string,
+  endDatePlaceholder: _propTypes.default.string,
+  navigatorRenderer: _propTypes.default.func,
+  rangeColors: _propTypes.default.arrayOf(_propTypes.default.string),
+  editableDateInputs: _propTypes.default.bool,
+  dragSelectionEnabled: _propTypes.default.bool,
+  fixedHeight: _propTypes.default.bool,
+  ariaLabels: _accessibility.ariaLabelsShape
 };
 var _default = Calendar;
-exports["default"] = _default;
+exports.default = _default;
