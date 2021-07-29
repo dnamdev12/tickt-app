@@ -312,6 +312,7 @@ const ChooseTimings = ({
                             showSelectionPreview={true}
                             showPreview={true}
                             fixedHeight={true}
+                            minDate={new Date()}
                         />
                     </div>
                     <span className="error_msg mtb-15">{error}</span>

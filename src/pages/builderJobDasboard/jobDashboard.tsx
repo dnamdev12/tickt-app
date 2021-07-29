@@ -85,10 +85,12 @@ class JobDashboard extends Component<Props, State> {
 
         let urlParams = new URLSearchParams(nextProps?.location?.search);
         let activeType_ = urlParams.get('active');
+        let jobId_ = urlParams.get('jobId');
+        let editMilestone_ = urlParams.get('editMilestone');
         console.log({
             activeType_,
-            activeType,
-            jobtype
+            jobId_,
+            editMilestone_
         }, 'nextProps')
         if (activeType_) {
             if (activeType_ !== activeType) {
@@ -181,6 +183,9 @@ class JobDashboard extends Component<Props, State> {
         if (['active', 'past', 'open', 'applicant', 'approval'].includes(jobtype)) {
             this.setState({ activeType: jobtype }, () => {
                 // this.props.history.replace('/jobs')
+                console.log({
+                    props:this.props
+                },'----???>>>');
                 this.props.history.push(`/jobs?active=${jobtype}`);
             })
         }
@@ -213,7 +218,7 @@ class JobDashboard extends Component<Props, State> {
         const { toggleSidebar, setSelected } = this;
         let props: any = this.props;
         let isLoading: any = props.isLoading;
-        console.log({ approvalJobs }, '------------------------------->')
+        // console.log({ approvalJobs }, '------------------------------->')
         return (
             <div className="app_wrapper">
                 <div className="custom_container">
