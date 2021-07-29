@@ -120,7 +120,7 @@ const LoginPage = (props: Propstype) => {
             if (res.success) {
                 const authData = {
                     email: newData.email,
-                    password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
+                    password: '12345678', //'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
                 }
                 firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {

@@ -11,6 +11,7 @@ import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 // import Loader from "react-loader-spinner";

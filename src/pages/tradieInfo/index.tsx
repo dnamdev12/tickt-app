@@ -39,7 +39,7 @@ import menu from '../../assets/images/menu-line-blue.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 import AddVoucherComponent from './addVoucher';

@@ -45,7 +45,7 @@ import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import storageService from '../../../../utils/storageService';
 import { validateABN } from '../../../../utils/common';
-
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 interface Props {

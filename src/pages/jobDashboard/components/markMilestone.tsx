@@ -6,6 +6,8 @@ import UploadMedia from '../../postJob/components/uploadMedia';
 import { renderTime } from '../../../utils/common';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob'
+
+//@ts-ignore
 import FsLightbox from 'fslightbox-react';
 
 import dummy from '../../../assets/images/u_placeholder.jpg';

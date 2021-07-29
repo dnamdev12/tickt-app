@@ -7,6 +7,7 @@ import FixedRate from './confirmAndPay/fixedRate';
 import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 
