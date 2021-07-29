@@ -770,3 +770,16 @@ export const deleteReviewTradie = async (data:any) => {
   return { success: false };
 }
 
+
+// builder can delete an open job
+export const deleteOpenJob = async (data:any) => {
+  setLoading(true)
+  const response: FetchResponse = await NetworkOps.delete(`${Urls.job}remove?jobId=${data.jobId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+

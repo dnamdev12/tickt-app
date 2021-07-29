@@ -4,38 +4,16 @@ import 'firebase/auth';
 import 'firebase/database';
 import 'firebase/firestore';
 
-import moment from 'moment';
 import storageService from "../utils/storageService";
-
-let devFirebaseConfig = {
-    apiKey: "AIzaSyDq9WSnxFSvLIkzb5ucqQdDdh6zFUicGUE",
-    authDomain: "tickt-test.firebaseapp.com",
-    databaseURL: "https://tickt-test-default-rtdb.firebaseio.com",
-    projectId: "tickt-test",
-    storageBucket: "tickt-test.appspot.com",
-    messagingSenderId: "268252142860",
-    appId: "1:268252142860:web:b62a9d4bd768f127237d29"
-};
-
-var qaStgFirebaseConfig = {
-    apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
-    authDomain: "tickt-app.firebaseapp.com",
-    databaseURL: "https://tickt-app-default-rtdb.firebaseio.com",
-    projectId: "tickt-app",
-    storageBucket: "tickt-app.appspot.com",
-    messagingSenderId: "795502342919",
-    appId: "1:795502342919:web:37a2294b55f69051d30ba2",
-    measurementId: "G-KT3LTB6JMT"
-};
+import { devFirebaseConfig, qaStgFirebaseConfig } from '../utils/globalConfig';
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(devFirebaseConfig);
+    // firebase.initializeApp(process.env.NODE !== 'development' ? devFirebaseConfig : qaStgFirebaseConfig);
+    firebase.initializeApp(qaStgFirebaseConfig);
 }
 export const auth = firebase.auth();
 export const messaging = firebase.messaging();
-export var db = firebase.database();
-//export var db = firebase.firestore();
-const usersRef = db.ref('users');
+export const db = firebase.database();
 
 const CHAT_TYPE = 'single';
 const FIREBASE_COLLECTION = {
@@ -55,7 +33,10 @@ let inboxListner;
 const getRegisterToken = () => {
     return new Promise((resolve, reject) => {
         messaging.getToken({
+            //stg key
             vapidKey: 'BHtgSVj0gw6YQDd6ByTPx_gyRtBWKlHBVYKFsemnv1t6bTH9efAseLWaoJx2GvTu0NW314ZF4DOj_eJ7tub9kHI'
+            //dev key
+            // vapidKey: 'BIbDXMIQtgqMHxUUEMxqWwWecGohuxao1TWNzhtWA321cHQRYcX0O9uNL0C2CWmGzzxzwBA8wjsUof2QI6S22wo'
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
@@ -89,7 +70,9 @@ export function requestPermission() {
                 getRegisterToken();
                 console.log('Token Already sent');
                 resolve({ success: false });
-            } else if (permission === 'granted' && !isTokenSentToServer()) {
+            }
+            // else if (permission === 'granted' && !isTokenSentToServer()) {
+            else {
                 const data = getRegisterToken();
                 resolve(data);
             }

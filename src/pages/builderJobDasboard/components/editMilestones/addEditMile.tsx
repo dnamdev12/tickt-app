@@ -12,15 +12,15 @@ import { renderTimeWithCustomFormat } from '../../../../utils/common';
 import { setShowToast } from '../../../../redux/common/actions';
 
 // @ts-ignore
-import { DateRangePicker } from '../../../../plugins/react-date-range/dist/index';
-import '../../../../plugins/react-date-range/dist/styles.css'
-import '../../../../plugins/react-date-range/dist/theme/default.css'
+// import { DateRangePicker } from '../../../../plugins/react-date-range/dist/index';
+// import '../../../../plugins/react-date-range/dist/styles.css'
+// import '../../../../plugins/react-date-range/dist/theme/default.css'
 import { randomColors as getRandomColors } from '../../../../utils/common'
 
 // @ts-ignore
-// import { DateRangePicker } from 'react-date-range';
-// import 'react-date-range/dist/styles.css'; // main style file
-// import 'react-date-range/dist/theme/default.css'; // theme css file
+import { DateRangePicker } from 'react-date-range';
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
 
 // for error messages
 const label: { [index: string]: string } = {
