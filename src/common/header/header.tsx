@@ -23,6 +23,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
 import { auth, messaging } from '../../services/firebase';
+import { onNotificationClick } from '../../utils/common';
 
 const DISABLE_HEADER = [
     '/signup',
@@ -65,17 +66,21 @@ const Header = (props: any) => {
 
     const onMessageListner = () => {
         messaging.onMessage((payload: any) => {
-            console.log('firebase notification received inside header : ', payload);
-
-            // var notifications = new Notification(title, options);
-            // notifications.onclick = function (event) {
-            //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
-            //     window.open('http://localhost:3000/active-jobs', '_self');
-            // }
+            console.log('firebase notification received inside header : ', payload, "dddddddd", payload.data);
+            const title = payload.data.title;
+            const options = {
+                body: payload.data.notificationText
+            }
+            var notifications = new Notification(title, options);
+            notifications.onclick = function (event) {
+                console.log('event: ', event);
+                event.preventDefault(); // prevent the browser from focusing the Notification's tab
+                window.open('http://localhost:3000/active-jobs', '_self');
+            }
 
             // custom notification
-            setShowNotification(true, payload);
-            setLatestNotifData(payload);
+            // setShowNotification(true, payload);
+            // setLatestNotifData(payload.data);
         })
     }
 
@@ -538,7 +543,12 @@ const Header = (props: any) => {
 
                                         {notificationData.list?.length > 0 &&
                                             notificationData.list.map((item: any) =>
-                                                <MenuItem className={`${item.read ? '' : 'unread'}`}>
+                                                <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={() => {
+                                                    handleClose('notification');
+                                                    // window.open(onNotificationClick(item), '_self');
+                                                    props.history.push(onNotificationClick(item));
+                                                }}
+                                                >
                                                     <div className="notif">
                                                         <figure className="not_img">
                                                             <img src={item?.image || dummy} alt="img" />

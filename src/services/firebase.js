@@ -40,7 +40,6 @@ const getRegisterToken = () => {
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
-                sessionStorage.setItem("FCM token", currentToken);
                 resolve({ success: true, deviceToken: currentToken });
             } else {
                 console.log('No registration token available.');

@@ -18,18 +18,19 @@ const Home = () => {
     }
 
     useEffect(() => {
-        (async ()=> {
-            if(userType === 1 || userType === 2){
+        (async () => {
+            if (userType === 1 || userType === 2) {
                 const res: any = await requestPermission();
                 const data: any = {
                     deviceToken: res.deviceToken,
                     deviceId: "dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz",
                     deviceType: 1
                 }
-                console.log(res,"getRegisterToken", data, "addFCMNotifToken");
-                if(res.success){
+                console.log(res, "getRegisterToken", data, "addFCMNotifToken");
+                if (res.success) {
                     const res2 = await addFCMNotifToken(data);
-                    if(res2.success){
+                    storageService.setItem("FCM token", res.deviceToken);
+                    if (res2.success) {
                         setTokenSentToServer(true);
                     } else {
                         setTokenSentToServer(false);
