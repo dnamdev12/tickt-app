@@ -1063,7 +1063,7 @@ export class PersonalInformation extends Component<Props, State> {
                                         <div className="form_field">
                                             <label className="form_label">Australian Business Number</label>
                                             <div className="text_field">
-                                                <input type="text" placeholder="Company Name" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
+                                                <input type="text" placeholder="Australian Business Number" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
                                             </div>
                                             {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
                                         </div>
