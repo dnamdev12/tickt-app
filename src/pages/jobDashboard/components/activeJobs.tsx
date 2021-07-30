@@ -58,7 +58,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
       <div className="detail_col">
         <span className="sub_title">Active Jobs</span>
         <div className="flex_row tradies_row">
-          {jobList.length ? jobList.map(
+          {!loading && jobList.length ? jobList.map(
             ({
               jobId,
               tradeId,
