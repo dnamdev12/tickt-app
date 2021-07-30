@@ -43,7 +43,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
     }, [bankDetails]);
 
     const validate = (name: string, value: string) => {
-      if (!value) {
+      if (!value?.trim()) {
         return `${errorLabel[name]} is required`;
       }
 
@@ -106,7 +106,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
     };
 
     const userType = storageService.getItem('userType');
-    const updated = data.account_name !== bankDetails.account_name || data.account_number !== bankDetails.account_number || data.bsb_number !== bankDetails.bsb_number;
+    const updated = data.account_name?.trim() !== bankDetails.account_name?.trim() || data.account_number !== bankDetails.account_number || data.bsb_number !== bankDetails.bsb_number;
 
     return (
         <div className="flex_row">
