@@ -106,7 +106,7 @@ const PastJobs = (props: Proptypes) => {
                 }}
                 >
                   <button className="fill_grey_btn full_btn">
-                    <img src={rateStar} alt="rating-star" /> Rate this job
+                    <img src={rateStar} alt="rating-star" /> Rate this builder
                   </button>
                 </NavLink>}
               </div>
