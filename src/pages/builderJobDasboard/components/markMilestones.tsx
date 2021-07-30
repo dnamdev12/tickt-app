@@ -55,7 +55,11 @@ const MarkMilestones = (props: any) => {
         setSeeDetails(false);
     }
 
-    const selectedItem: any = listData[selectedIndex];
+    let selectedItem: any = null;
+    if (listData?.length) {
+        selectedItem = listData[selectedIndex];
+
+    }
     useEffect(() => {
         fetchMilestoneDetail();
     }, [selectedMilestoneIndex]);
@@ -188,7 +192,7 @@ const MarkMilestones = (props: any) => {
 
 
     if (toggleItem?.edit) {
-        let details:any = itemDetails;
+        let details: any = itemDetails;
         if (details && Object.keys(details)?.length && Object.keys(selectedItem).length) {
             return (
                 <EditMilestones
