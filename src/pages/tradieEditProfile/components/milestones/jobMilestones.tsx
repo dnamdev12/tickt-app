@@ -111,13 +111,14 @@ const JobMilestones = (props: any) => {
         setAddEdit({ toggle: false });
         if (data) {
             let data_: any = data?.data;
-            if (data?.index) {
-                let index = data?.index;
+            let index = data?.index;
+            if (index) {
                 local_mile[index] = data_;
+            } else {
+                local_mile.push(data_); // if index is undefined
             }
-            local_mile.push(data_);
+            setLocalMile(local_mile);
         }
-        setLocalMile(local_mile);
     }
 
     if (toggleAddEdit?.toggle) {
