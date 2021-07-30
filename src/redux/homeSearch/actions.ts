@@ -22,7 +22,13 @@ export const resetHomeSearchJobData = () => ({ type: actionTypes.RESET_HOME_SEAR
 
 export const resetViewNearByJobData = () => ({ type: actionTypes.RESET_VIEW_NEARBY_JOBS });
 
-export const getNotificationList = (page: number) => ({ type: actionTypes.GET_NOTIFICATION_LIST, page });
+export const getNotificationList = async (page: number, resetUnreadNotif: boolean) => {
+    const response: FetchResponse = await NetworkOps.get(Urls.notification + `?page=${page}${resetUnreadNotif ? '&markRead=0' : ''}`);
+    if (response.status_code === 200) {
+        return { success: true, data: response };
+    }
+    return { success: false };
+}
 
 export const getHomeJobDetails = async (data: any) => {
     setSkeletonLoading(true);
@@ -112,7 +118,7 @@ export const milestoneAcceptOrDecline = async (data: any) => {
 
 
 export const searchTradies = async (data: any) => {
-    
+
     const response: FetchResponse = await NetworkOps.postToJson(Urls.homeSearch, data)
     if (response.status_code === 200) {
         return { success: true, data: response.result };
