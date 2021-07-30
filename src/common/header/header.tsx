@@ -23,6 +23,8 @@ import savedJobs from '../../assets/images/ic-job.png';
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
 import { auth, messaging } from '../../services/firebase';
+import { onNotificationClick, formatNotificationTime } from '../../utils/common';
+import { getNotificationList } from '../../redux/homeSearch/actions';
 
 const DISABLE_HEADER = [
     '/signup',
@@ -48,9 +50,13 @@ const Header = (props: any) => {
     const [toggleMenu, setToggleMenu] = useState(false);
     const [activeLink, setActiveLink] = useState('discover');
     const [latestNotifData, setLatestNotifData] = useState<any>('');
-    const [notificationData, setNotificationData] = useState<any>('');
+    const [notificationData, setNotificationData] = useState<any>({
+        count: 0,
+        list: [],
+        unreadCount: 0
+    });
     const [notificationPgNo, setNotificationPgNo] = useState<number>(1);
-    const [notificationCount, setNotificationCount] = useState<number | null>(null);
+    const [hasMoreNotif, setHasMoreNotif] = useState<boolean>(true);
     const [isIntercom, setIntercom] = useState(false);
     const [startTour, setStartTour] = useState(false);
     const [isFalse, setIsFalse] = useState(false);
@@ -65,22 +71,61 @@ const Header = (props: any) => {
 
     const onMessageListner = () => {
         messaging.onMessage((payload: any) => {
-            console.log('firebase notification received inside header : ', payload);
-
+            console.log('firebase notification received inside header : ', payload, "payload.data", payload.data);
+            // const title = payload.data.title;
+            // const options = {
+            //     body: payload.data.notificationText
+            // }
             // var notifications = new Notification(title, options);
             // notifications.onclick = function (event) {
+            //     console.log('event: ', event);
             //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
             //     window.open('http://localhost:3000/active-jobs', '_self');
             // }
 
-            // custom notification
             setShowNotification(true, payload);
-            setLatestNotifData(payload);
+            // setLatestNotifData(payload.data);
+            const newPushList = [...notificationData.list];
+            newPushList.unshift(payload.data);
+            setNotificationData((prevData: any) => ({
+                ...prevData,
+                coun: prevData.count + 1,
+                newPushList
+            }));
         })
     }
 
+    const callNotificationList = async (resetUnreadNotif?: boolean) => {
+        if (notificationData.list?.length && notificationData.list?.length >= notificationData?.count) {
+            setHasMoreNotif(false);
+            return;
+        }
+        const res1 = await getNotificationList(resetUnreadNotif ? 1 : notificationPgNo, resetUnreadNotif ? true : false);
+        if (res1.success) {
+            const result = res1.data?.result;
+            if (result?.list?.length < 10) {
+                setHasMoreNotif(false);
+            }
+            const notifList: any = [...notificationData.list, ...result?.list];
+
+            setNotificationData((prevData: any) => ({
+                ...prevData,
+                count: result?.count,
+                list: notifList,
+                unreadCount: result?.unreadCount
+            }));
+            if (resetUnreadNotif) {
+                handleClose('notification');
+                setNotificationPgNo(2);
+            } else {
+                setNotificationPgNo(notificationPgNo + 1);
+            }
+        }
+    }
+
+    console.log('notificationData: ', notificationData);
     useEffect(() => {
-        props.getNotificationList(notificationPgNo);
+        callNotificationList();
         onMessageListner();
         setActiveLink('discover');
 
@@ -453,7 +498,7 @@ const Header = (props: any) => {
                                 {storageService.getItem("jwtToken") &&
                                     <div className="notification_bell" onClick={(event) => handleClick(event, 'notification')}>
                                         <figure className="bell tour-notifications">
-                                            <span className="badge">{notificationData.unreadCount}</span>
+                                            <span className={`${notificationData.unreadCount ? 'badge' : ''}`}>{notificationData.unreadCount || ''}</span>
                                             <img src={bell} alt="notify" />
                                         </figure>
                                     </div>}
@@ -533,12 +578,16 @@ const Header = (props: any) => {
                                     >
                                         <div>
                                             <span className="sub_title">Notifications</span>
-                                            <a href="javascript:void(0)" className="link mark_all">Mark all as read</a>
+                                            <a href="javascript:void(0)" className="link mark_all" onClick={() => callNotificationList(true)}>Mark all as read</a>
                                         </div>
 
                                         {notificationData.list?.length > 0 &&
                                             notificationData.list.map((item: any) =>
-                                                <MenuItem className={`${item.read ? '' : 'unread'}`}>
+                                                <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={() => {
+                                                    handleClose('notification');
+                                                    props.history.push(onNotificationClick(item));
+                                                }}
+                                                >
                                                     <div className="notif">
                                                         <figure className="not_img">
                                                             <img src={item?.image || dummy} alt="img" />
@@ -551,13 +600,13 @@ const Header = (props: any) => {
                                                             <span className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}
                                                         </div>
-                                                        <span className="time">St 12:30 AM</span>
+                                                        <span className="time">{formatNotificationTime(item?.updatedAt, 'day')}</span>
                                                     </div>
                                                 </MenuItem>
                                             )}
-                                        <div className="more_notif">
+                                        {hasMoreNotif && <div className="more_notif" onClick={() => callNotificationList()}>
                                             <a className="link">View more</a>
-                                        </div>
+                                        </div>}
                                     </Menu>
                                     {/* Notification close */}
 
