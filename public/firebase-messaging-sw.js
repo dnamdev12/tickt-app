@@ -31,14 +31,14 @@ const qaStgFirebaseConfig = {
 firebase.initializeApp(qaStgFirebaseConfig);
 const messaging = firebase.messaging();
 
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/' })
-        .then(function (registration) {
-            console.log('Registration successful, scope is:', registration.scope);
-        }).catch(function (err) {
-            console.log('Service worker registration failed, error:', err);
-        });
-}
+// if ('serviceWorker' in navigator) {
+//     navigator.serviceWorker.register('firebase-messaging-sw.js', { scope: '/' })
+//         .then(function (registration) {
+//             console.log('Registration successful, scope is:', registration.scope);
+//         }).catch(function (err) {
+//             console.log('Service worker registration failed, error:', err);
+//         });
+// }
 
 messaging.onBackgroundMessage((payload) => {
     try {
