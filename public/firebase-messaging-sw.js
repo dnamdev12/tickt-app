@@ -32,7 +32,7 @@ firebase.initializeApp(qaStgFirebaseConfig);
 const messaging = firebase.messaging();
 
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('./firebase-messaging-sw.js', { scope: '/'})
+    navigator.serviceWorker.register('./firebase-messaging-sw.js')
         .then(function (registration) {
             console.log('Registration successful, scope is:', registration.scope);
         }).catch(function (err) {
@@ -43,8 +43,8 @@ if ('serviceWorker' in navigator) {
 messaging.onBackgroundMessage((payload) => {
     try {
         console.log("[firebase-messaging-sw.js] Received background message ", payload);
-        var title = payload.notification.title;
-        var body = payload.notification.body;
+        var title = "Tickt App";
+        var body = "Received new notification";
         var icon = '../src/assets/images/camera-black.png';
         var tag = 'simple-push-demo-notification-tag';
         var data = {
@@ -53,12 +53,11 @@ messaging.onBackgroundMessage((payload) => {
             }
         };
 
-
         return self.registration.showNotification(title, {
             body: body,
             icon: icon,
             // tag: tag,
-            // data: data
+            data: data
         });
     }
     catch (e) {
@@ -68,9 +67,12 @@ messaging.onBackgroundMessage((payload) => {
 
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
+    console.log(event.notification?.data?.doge, "dogeee111");
+    console.log(event?.data?.doge, "dogeee222");
     // event.notification.close();
     event.waitUntil(
-        self.clients.openWindow('http://localhost:3000/active-jobs')
+        // self.clients.openWindow('http://localhost:3000/active-jobs')
+        self.clients.openWindow('https://ticktreactdev.appskeeper.in/active-jobs')
         // self.clients.openWindow(onNotificationClick(event.notification.data))
     )
     // Get all the Window clients

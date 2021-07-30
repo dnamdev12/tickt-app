@@ -33,10 +33,7 @@ let inboxListner;
 const getRegisterToken = () => {
     return new Promise((resolve, reject) => {
         messaging.getToken({
-            //stg key
             vapidKey: 'BHtgSVj0gw6YQDd6ByTPx_gyRtBWKlHBVYKFsemnv1t6bTH9efAseLWaoJx2GvTu0NW314ZF4DOj_eJ7tub9kHI'
-            //dev key
-            // vapidKey: 'BIbDXMIQtgqMHxUUEMxqWwWecGohuxao1TWNzhtWA321cHQRYcX0O9uNL0C2CWmGzzxzwBA8wjsUof2QI6S22wo'
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
@@ -70,8 +67,7 @@ export function requestPermission() {
                 console.log('Token Already sent');
                 resolve({ success: false });
             }
-            // else if (permission === 'granted' && !isTokenSentToServer()) {
-            else {
+            else if (!isTokenSentToServer()) {
                 const data = getRegisterToken();
                 resolve(data);
             }

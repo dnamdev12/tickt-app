@@ -23,7 +23,7 @@ import savedJobs from '../../assets/images/ic-job.png';
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
 import { auth, messaging } from '../../services/firebase';
-import { onNotificationClick } from '../../utils/common';
+import { onNotificationClick, formatNotificationTime } from '../../utils/common';
 import { getNotificationList } from '../../redux/homeSearch/actions';
 
 const DISABLE_HEADER = [
@@ -71,11 +71,11 @@ const Header = (props: any) => {
 
     const onMessageListner = () => {
         messaging.onMessage((payload: any) => {
-            console.log('firebase notification received inside header : ', payload, "dddddddd", payload.data);
-            const title = payload.data.title;
-            const options = {
-                body: payload.data.notificationText
-            }
+            console.log('firebase notification received inside header : ', payload, "payload.data", payload.data);
+            // const title = payload.data.title;
+            // const options = {
+            //     body: payload.data.notificationText
+            // }
             // var notifications = new Notification(title, options);
             // notifications.onclick = function (event) {
             //     console.log('event: ', event);
@@ -83,9 +83,15 @@ const Header = (props: any) => {
             //     window.open('http://localhost:3000/active-jobs', '_self');
             // }
 
-            // custom notification
             setShowNotification(true, payload);
-            setLatestNotifData(payload.data);
+            // setLatestNotifData(payload.data);
+            const newPushList = [...notificationData.list];
+            newPushList.unshift(payload.data);
+            setNotificationData((prevData: any) => ({
+                ...prevData,
+                coun: prevData.count + 1,
+                newPushList
+            }));
         })
     }
 
@@ -594,7 +600,7 @@ const Header = (props: any) => {
                                                             <span className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}
                                                         </div>
-                                                        <span className="time">St 12:30 AM</span>
+                                                        <span className="time">{formatNotificationTime(item?.updatedAt, 'day')}</span>
                                                     </div>
                                                 </MenuItem>
                                             )}

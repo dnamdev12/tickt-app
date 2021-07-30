@@ -1,27 +1,17 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setShowNotification } from '../redux/common/actions';
+import { formatNotificationTime } from '../utils/common';
 
 import dummy from '../assets/images/u_placeholder.jpg';
 import close from '../assets/images/icon-close-1.png';
 
 import { onNotificationClick } from '../utils/common';
 
-
 const NOTIFICATION_TIMEOUT = 5000;
 
-
 const CustomNotification = (props: any) => {
-    const notification = props?.notificationData?.notification;
-
-    // const title: string = payload.notification.title;
-    // const options: any = {
-    //     body: payload.notification.body,
-    //     data: {
-    //         time: new Date(Date.now()).toString(),
-    //         click_action: payload.data.click_action
-    //     }
-    // };
+    const notification = props?.notificationData;
 
     useEffect(() => {
         if (props?.showNotification) {
@@ -38,7 +28,6 @@ const CustomNotification = (props: any) => {
             </span>
             <div className="wrapppr" onClick={() => {
                 setShowNotification(false);
-                // window.open('http://localhost:3000/active-jobs', '_self');
                 window.open(onNotificationClick(notification), '_self');
             }}>
                 <div className="notif">
@@ -47,9 +36,9 @@ const CustomNotification = (props: any) => {
                     </figure>
                     <div className="info">
                         <span className="who line-1">{notification?.title}</span>
-                        <span className="line-1">{notification?.body}</span>
+                        <span className="line-1">{notification?.notificationText}</span>
                     </div>
-                    <span className="time">St 12:30 AM</span>
+                    <span className="time">{formatNotificationTime(notification?.updatedAt, 'day')}</span>
                 </div>
             </div>
         </div>
