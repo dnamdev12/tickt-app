@@ -55,7 +55,7 @@ const PaymentHistory = ({
   const userType = storageService.getItem('userType');
   const { totalEarnings = 0, totalJobs = 0, revenue = {} } = paymentHistory || {};
   const { revenueList = [] } = revenue;
-  const { status, tradieId, tradieName, tradieImage, builderId, builderName, builderImage, jobName, from_date, to_date, totalEarning, milestones = [] }: any = paymentDetails || {};
+  const { status, tradeId, specialization, tradieId, tradieName, tradieImage, builderId, builderName, builderImage, jobName, from_date, to_date, totalEarning, review, rating, milestones = [] }: any = paymentDetails || {};
 
   if (isLoading) {
     return null;
@@ -128,13 +128,13 @@ const PaymentHistory = ({
                     </figure>
                     <div className="details">
                       <span className="name">{userType === 1 ? builderName : tradieName}</span>
-                      <span className="rating">4.9, 36 reviews</span>
+                      <span className="rating">{rating || 0}, {review || 0} reviews</span>
                     </div>
                   </div>
                 </div>
                 <div className="relate">
                   <span className="sub_title">Job details</span>
-                  <span className="edit_icon" title="More" onClick={() => history.push(`/job-details-page?jobId=${jobId}`)}>
+                  <span className="edit_icon" title="More" onClick={() => history.push(`/job-details-page?jobId=${jobId}${userType === 1 ? `&tradeId=${tradeId}&specializationId=${specialization?.[0]}` : ''}`)}>
                     <img src={more} alt="more" />
                   </span>
                 </div>
