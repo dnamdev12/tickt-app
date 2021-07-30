@@ -192,16 +192,24 @@ const PaymentHistory = ({
                 </thead>
                 <tbody>
                   {searching ? (
-                    <div className="no_record">
-                      <img src={loader} alt="loader" width="130px" />
-                    </div>
+                    <tr>
+                      <td colSpan={5}>
+                        <div className="no_record">
+                          <img src={loader} alt="loader" width="130px" />
+                        </div>
+                      </td>
+                    </tr>
                   ) : !revenueList?.length ? (
-                    <div className="no_record">
-                      <figure className="no_img">
-                        <img src={noData} alt="data not found" />
-                      </figure>
-                      <span>No Data Found</span>
-                    </div>
+                    <tr>
+                      <td colSpan={5}>
+                        <div className="no_record">
+                          <figure className="no_img">
+                            <img src={noData} alt="data not found" />
+                          </figure>
+                          <span>No Data Found</span>
+                        </div>
+                      </td>
+                    </tr>
                   ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, earning }: any) => (
                     <tr key={_id}>
                       <td>

@@ -393,7 +393,7 @@ const Header = (props: any) => {
                 continuous
                 showSkipButton
                 scrollToFirstStep
-                spotlightPadding={0}
+                spotlightPadding={activeTarget === '.tour-notifications' ? 12 : 0}
                 disableOverlayClose
                 disableCloseOnEsc
                 steps={userType === 1 ? tradieTour : builderTour}

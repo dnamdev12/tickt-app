@@ -55,7 +55,7 @@ const NewJobs = ({ loading, getNewJobList, newJobList, newJobsCount, resetNewJob
       <div className="detail_col">
         <span className="sub_title">New Jobs</span>
         <div className="flex_row tradies_row">
-          {jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, jobDescription, time, amount, locationName, durations, viewersCount, questionsCount }) => (
+          {!loading && jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, jobDescription, time, amount, locationName, durations, viewersCount, questionsCount }) => (
             <div className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs&jobAction=invite`} className="more_detail circle"></NavLink>
