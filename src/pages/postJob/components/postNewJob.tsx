@@ -5,6 +5,7 @@ import Constants from '../../../utils/constants';
 import { useHistory, useLocation } from "react-router-dom";
 interface Proptypes {
   data: any,
+  jobUpdateParam?: any,
   editDetailPage: any,
   stepCompleted: Boolean,
   handleStepComplete: (data: any) => void,
@@ -14,6 +15,7 @@ interface Proptypes {
 
 const PostNewJob = ({
   data,
+  jobUpdateParam,
   editDetailPage,
   stepCompleted,
   handleStepJustUpdate,
@@ -121,7 +123,7 @@ const PostNewJob = ({
   }
 
   const { jobName, job_description } = basicDetails;
-
+  console.log({ jobUpdateParam, jobId })
   return (
     <div className="app_wrapper">
       <div className="section_wrapper">
@@ -134,7 +136,7 @@ const PostNewJob = ({
                     <div className="relate">
                       <button className="back" onClick={() => { handleStepForward(14) }}></button>
                       <span className="title">
-                        {jobId ? 'Republish a job' : 'Post new job'}
+                        {!jobUpdateParam && jobId ? 'Republish a job' : 'Post new job'}
                       </span>
                     </div>
                     <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
@@ -142,7 +144,7 @@ const PostNewJob = ({
                   : (
                     <React.Fragment>
                       <span className="title">
-                        {jobId ? 'Republish a job' : 'Post new job'}
+                        {!jobUpdateParam && jobId ? 'Republish a job' : 'Post new job'}
                       </span>
                       <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
                     </React.Fragment>

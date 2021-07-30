@@ -87,8 +87,9 @@ class TradieBox extends Component<PropsType, State> {
                     <div className="tags_wrap">
                         <ul>
                             {item?.tradeData?.length ?
-                                item?.tradeData?.map((item_trade: any) => (
-                                    <li className="main">
+                                item?.tradeData?.map((item_trade: any, index: any) => (
+                                    <li key={index}
+                                        className="main">
                                         <img src={item_trade?.tradeSelectedUrl} alt="icon" />
                                         {item_trade?.tradeName}
                                     </li>
@@ -101,11 +102,11 @@ class TradieBox extends Component<PropsType, State> {
                             <ul>
                                 {isItemSpec[index] ?
                                     item?.specializationData?.map((item_spec: any, index_spec: any) => (
-                                        <li>{item_spec?.specializationName}</li>
+                                        <li key={index_spec}>{item_spec?.specializationName}</li>
                                     ))
                                     :
                                     item?.specializationData?.slice(0, 4)?.map((item_spec: any, index_spec: any) => (
-                                        <li>{item_spec?.specializationName}</li>
+                                        <li key={index_spec}>{item_spec?.specializationName}</li>
                                     ))}
                                 {item?.specializationData?.length > 4 ? (
                                     <li>{'More'}</li>

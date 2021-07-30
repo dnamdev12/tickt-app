@@ -555,6 +555,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestAcceptedClicked: true }))}>Accept</button>
                                         <button className="fill_grey_btn btn-effect" onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestRejectedClicked: true }))}>Reject</button>
                                     </div>}
+                                    
                                     <span className="title line-1" title={jobDetailsData?.jobName}>{props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.jobName ? jobDetailsData?.jobName : ''}</span>
                                     <span className="tagg">{props.isSkeletonLoading ? <Skeleton /> : 'Job details'}</span>
                                     <div className="job_info">
@@ -578,19 +579,21 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}
                                         >Reject</button>
                                     </div>}
-                                    {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus ? (
+                                    {/* Added  && jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
+                                    {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus && !jobDetailsData?.isInvited ? (
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
                                             <button className={`fill_btn full_btn btn-effect${['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) ? ' disable_btn' : ''}`} disabled={['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
-                                    ) : paramStatus ? (
+                                    ) : (paramStatus) ? (
                                         <button
                                             className="fill_btn full_btn btn-effect"
                                             onClick={applyJobClicked}>
                                             {paramStatus}
                                         </button>
                                     ) : null}
-                                    {props.isSkeletonLoading ? <Skeleton /> : jobInviteAction === 'invite' &&
+                                    {/* Added  || jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
+                                    {props.isSkeletonLoading ? <Skeleton /> : (jobInviteAction === 'invite' || jobDetailsData?.isInvited) &&
                                         <>
                                             <div className="form_field">
                                                 <button

@@ -5,7 +5,6 @@ import SuccessPage from './components/successPage';
 import ResetPassword from './components/resetPassword';
 import VerifyPhoneNumber from './components/verifyPhoneNumber';
 import AuthParent from '../../common/auth/authParent';
-import VerifyEmail from './components/EmailVerification';
 
 interface Propstype {
     history: any,
@@ -25,7 +24,6 @@ const ForgetPassword = (props: Propstype) => {
     const [steps, setSteps] = useState(1);
     const [loginData, setLoginData] = useState({
         mobileNumber: '',
-        email:''
     })
 
     const updateSteps = (step: number, newData?: any) => {
@@ -38,7 +36,7 @@ const ForgetPassword = (props: Propstype) => {
     const backButtonHandler = () => {
         let minStep = 1;
         if (steps === 1) {
-            if (props.showModal) {
+            if(props.showModal){
                 props.modalUpdateSteps(0);
                 return;
             }
@@ -61,10 +59,9 @@ const ForgetPassword = (props: Propstype) => {
     const renderPages = () => {
         switch (steps) {
             case 1:
-                return <ResetPassword updateSteps={updateSteps} history={props.history} step={steps} />
+                return <ResetPassword updateSteps={updateSteps} history={props.history} step={steps} mobileNumber={loginData.mobileNumber} />
             case 2:
-                return <VerifyEmail updateSteps={updateSteps} history={props.history} step={steps} email={loginData.email} />
-            // return <VerifyPhoneNumber updateSteps={updateSteps} history={props.history} step={steps} mobileNumber={loginData.mobileNumber} />
+                return <VerifyPhoneNumber updateSteps={updateSteps} history={props.history} step={steps} mobileNumber={loginData.mobileNumber} />
             case 3:
                 return <CreatePassword onResetPassword={onResetPassword} />
             case 4:

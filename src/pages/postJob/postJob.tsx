@@ -62,6 +62,8 @@ const PostJob = (props: Proptypes) => {
     const [forceupdate, setForceUpdate] = useState({});
     const [jobId, setJobId] = useState('');
 
+    const [jobUpdateParam, setJobUpdateParam] = useState(false);
+
     const getCategories = useCallback(async () => {
         const { categories: categoriesData } = await callCategories();
         setCategoriesData(categoriesData);
@@ -97,12 +99,18 @@ const PostJob = (props: Proptypes) => {
 
     useEffect(() => {
         const params = new URLSearchParams(history.location?.search);
-        const jobId = params.get('jobId') || '';
-
-        if (jobId) {
-            setJobId(jobId);
-            getJobDetails(jobId);
-        }
+        const jobId:any = params.get('jobId') || '';
+        const update:any = params.get('update') || '';
+        
+        // if (jobId && update !== "true") {
+            if(jobId){
+                setJobId(jobId);
+                getJobDetails(jobId);
+            }
+        // } else {
+            // setJobUpdateParam(true);
+            // getJobDetails(jobId);
+        // }
     }, [getJobDetails, history.location]);
 
     const clearParentStates = () => {
@@ -295,6 +303,7 @@ const PostJob = (props: Proptypes) => {
             page = (
                 <PostNewJob
                     data={data}
+                    jobUpdateParam={jobUpdateParam}
                     handleStepForward={handleStepForward}
                     handleStepJustUpdate={handleStepJustUpdate}
                     editDetailPage={editDetailPage}

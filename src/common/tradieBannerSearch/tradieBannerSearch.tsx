@@ -23,6 +23,7 @@ import cross from "../../assets/images/close-black.png";
 import icgps from "../../assets/images/ic-gps.png";
 import residential from "../../assets/images/ic-residential.png";
 import close from "../../assets/images/icon-close-1.png";
+import { da } from '../../plugins/react-date-range/dist/locale';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -86,12 +87,14 @@ const TradieBannerSearch = (props: PropsType) => {
     const locationRef = useDetectClickOutside({ onTriggered: handleOnOutsideLocation });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
+    const [suggestionSelected, setSuggestion] = useState({});
+
     console.log(inputFocus1, inputFocus2, inputFocus3, "inputfocus---------");
 
     useEffect(() => {
         props.getRecentSearchList();
         props.getRecentLocationList();
-        getRecentLocationData();
+        // getRecentLocationData();
     }, []);
 
     useEffect(() => {
@@ -194,9 +197,9 @@ const TradieBannerSearch = (props: PropsType) => {
     }
 
     useEffect(() => {
-        if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
-            getRecentLocationData();
-        }
+        // if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+        //     getRecentLocationData();
+        // }
     }, [props.recentLocationData, recentLocation]);
 
     const handleCalenderRange = (item: any) => {
@@ -300,6 +303,7 @@ const TradieBannerSearch = (props: PropsType) => {
 
     const locationSelectedHandler = (address: string, placeId?: any, suggestion?: any) => {
         console.log(address, "address", placeId, "placeId", suggestion, "suggestion");
+        setSuggestion(suggestion?.formattedSuggestion)
         geocodeByAddress(address)
             .then((results: any) => getLatLng(results[0]))
             .then(({ lat, lng }: any) => {
@@ -342,7 +346,7 @@ const TradieBannerSearch = (props: PropsType) => {
             var latlng = new google.maps.LatLng(lat, long);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, function (results, status) {
-                
+
                 if (status !== google.maps.GeocoderStatus.OK) {
                     alert(status);
                 }
@@ -418,6 +422,7 @@ const TradieBannerSearch = (props: PropsType) => {
             const data = {
                 page: stateData.page,
                 isFiltered: false,
+                address:JSON.stringify(suggestionSelected),
                 tradeId: newSearchData?.tradeId ? newSearchData?.tradeId : stateData?.tradeId,
                 ...(stateData.isMapLocationSelected && { location: stateData?.location }),
                 // location: stateData?.location,
@@ -427,6 +432,7 @@ const TradieBannerSearch = (props: PropsType) => {
             }
             if (props?.location?.pathname === '/search-job-results') {
                 props.postHomeSearchData(data);
+                delete data.address;
             }
             const newData = {
                 ...data,
@@ -562,8 +568,9 @@ const TradieBannerSearch = (props: PropsType) => {
                     {stateData?.searchedJob?.length >= 1 && inputFocus1 && !inputFocus2 && renderJobResult()}
                     <li ref={locationRef} className="loc_box">
                         <div id="location-text-field-div">
+                      
                             <PlacesAutocomplete
-                                value={stateData?.selectedMapLocation}
+                                value={stateData?.selectedMapLocation !== "{}" ? stateData?.selectedMapLocation : ''}
                                 onChange={(city: string) => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: city, isMapLocationSelected: false }))}
                                 shouldFetchSuggestions={true}
                                 onSelect={locationSelectedHandler}
@@ -590,16 +597,42 @@ const TradieBannerSearch = (props: PropsType) => {
                                     To use this, change your location settings in browser.
                                 </span>}
                                 <div className="flex_row recent_search auto_loc">
-                                    {recentLocation?.length ?
+                                    {props?.recentLocationData?.length > 0 ?
                                         <span className="sub_title">Recent searches</span>
                                         : null}
-                                    {recentLocation?.map((item: any) => {
+                                    {/* {recentLocation?.map((item: any) => {
                                         return (
                                             <div className="flex_col_sm_4"
                                                 onClick={() => setStateData((prevData: any) => ({ ...prevData, location: item.location, selectedMapLocation: item.allText?.mainText, isMapLocationSelected: true }))}>
                                                 <div className="autosuggestion_icon card loc name">
                                                     <span>{item.allText?.mainText}</span>
                                                     <span className="name">{item.allText?.secondaryText}</span>
+                                                </div>
+                                            </div>)
+                                    })} */}
+
+                                    {props?.recentLocationData?.map((item: any) => {
+                                        return item?.address?.length > 0 && (
+                                            <div className="flex_col_sm_4"
+                                                onClick={() => {
+                                                    setStateData((prevData: any) => ({
+                                                        ...prevData,
+                                                        location: item.location,
+                                                        selectedMapLocation: JSON.parse(item?.address)?.mainText, //item.allText?.mainText,
+                                                        isMapLocationSelected: true
+                                                    }));
+                                                    setSuggestion(JSON.parse(item?.address));
+
+                                                    // let location_coordinates: any = item.location.coordinates
+                                                    // setAddressText(item.formatted_address);
+                                                    // setSelectedAddress({
+                                                    //     lat: location_coordinates[1],
+                                                    //     lng: location_coordinates[0]
+                                                    // });
+                                                }}>
+                                                <div className="autosuggestion_icon card loc name">
+                                                    <span>{JSON.parse(item?.address)?.mainText}</span>
+                                                    <span className="name">{JSON.parse(item?.address)?.secondaryText}</span>
                                                 </div>
                                             </div>)
                                     })}

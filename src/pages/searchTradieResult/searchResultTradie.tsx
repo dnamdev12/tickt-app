@@ -36,6 +36,7 @@ const SearchResultTradie = (props: any) => {
             page: 1,
             isFiltered: false,
         }
+
         if (stateData?.tradeId) {
             data['tradeId'] = stateData?.tradeId
         }
@@ -47,9 +48,13 @@ const SearchResultTradie = (props: any) => {
         // specializationId: stateData?.specializations,
 
         if (stateData?.location) {
-
             data['location'] = stateData?.location;
         }
+
+        if (props?.location?.state?.suggestionSelected) {
+            data['address'] = JSON.stringify(props?.location?.state?.suggestionSelected);
+        }
+
         if (stateData?.calender?.startDate) {
             data['from_date'] = moment(stateData?.calender?.startDate).format('YYYY-MM-DD')
         }
@@ -57,7 +62,17 @@ const SearchResultTradie = (props: any) => {
             data['to_date'] = moment(stateData?.calender?.endDate).format('YYYY-MM-DD')
         }
         let spec_count: any = stateData?.specializations?.length;
-        console.log({ stateData }, 'stateData')
+
+        if(!data?.address || !data?.address?.length){
+            delete data?.address;
+        }
+
+        // console.log({
+        //     stateData,
+        //     suggestionSelected: props?.location?.state?.suggestionSelected?.mainText,
+        //     address: props?.location?.state?.address
+        // })
+
         setLocalInfo({
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
@@ -65,9 +80,17 @@ const SearchResultTradie = (props: any) => {
             specializationId: data.specializationId,
             location: data.location,
             doingLocalChanges: false,
+            suggestionSelected: stateData?.suggestionSelected
+        });
+        
+        if(props?.location?.state?.suggestionSelected?.mainText == props?.location?.state?.address){
+            return
+        }
 
-        })
-        props.postHomeSearchData(data);
+        if(!stateData?.suggestionSelected){
+            props.postHomeSearchData(data);
+        }
+
     }, []);
 
     const getTitleInfo = (info: any) => {

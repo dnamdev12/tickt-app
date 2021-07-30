@@ -97,6 +97,8 @@ const BannerSearch = (props: PropsType) => {
 
     const [calenderRange1, setCalenderRange1] = useState<any>(example_calender);
 
+    const [suggestionSelected, setSuggestion] = useState({});
+
     const handleOnOutsideSearch = () => {
         setOnChange(false);
         setInputFocus1(false)
@@ -136,7 +138,7 @@ const BannerSearch = (props: PropsType) => {
         if (getRecentLocationList) {
             getRecentLocationList();
         }
-        getRecentLocationData();
+        // getRecentLocationData();
     }, [])
 
     useEffect(() => {
@@ -155,9 +157,9 @@ const BannerSearch = (props: PropsType) => {
     // }, [addressText])
 
     useEffect(() => {
-        if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
-            getRecentLocationData();
-        }
+        // if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+        //     getRecentLocationData();
+        // }
     }, [props.recentLocationData, recentLocation]);
 
     useEffect(() => {
@@ -389,13 +391,11 @@ const BannerSearch = (props: PropsType) => {
                     ]
                 }
                 if (addressText) {
-                    data['address'] = addressText;
+                    data['address'] = addressText && Object.keys(suggestionSelected).length ? JSON.stringify(suggestionSelected) : '';
                 }
             } else {
                 delete data.location;
             }
-
-
 
             if (moment(calenderRange1?.startDate).isValid()) {
                 data['from_date'] = moment(calenderRange1?.startDate).format('YYYY-MM-DD')
@@ -431,6 +431,11 @@ const BannerSearch = (props: PropsType) => {
                 }
             }
 
+    
+            if(!data?.address || !data?.address?.length){
+                delete data?.address;
+            }
+
             if (!localChanges) {
                 props.postHomeSearchData(data);
             }
@@ -443,7 +448,8 @@ const BannerSearch = (props: PropsType) => {
                     specializations: data.specializationId,
                     location: Object.keys(selected_address).length ? { "coordinates": [selected_address?.lng, selected_address?.lat] } : null,
                     calender: calenderRange1,
-                    address: addressText
+                    address: addressText,
+                    suggestionSelected: suggestionSelected
                 }
             })
         }
@@ -636,13 +642,16 @@ const BannerSearch = (props: PropsType) => {
                                         }
                                     }}
                                     shouldFetchSuggestions={addressText?.length > 2}
-                                    onSelect={async (address) => {
+                                    onSelect={async (address: string, placeId?: any, suggestion?: any) => {
+                                        console.log({ address, placeId, suggestion });
                                         let selected_address: any = address;
                                         if (address.indexOf(',')) {
                                             selected_address = address.split(',')[0];
                                         }
-                                        setAddressText(selected_address);
+                                        setSuggestion(suggestion?.formattedSuggestion)
+                                        setAddressText(suggestion?.formattedSuggestion?.mainText);
                                         let response = await Geocode.fromAddress(address);
+                                        console.log({ selected_address })
                                         if (response?.results?.length) {
                                             const { lat, lng } = response.results[0].geometry.location;
                                             setSelectedAddress({ lat, lng });
@@ -764,25 +773,33 @@ const BannerSearch = (props: PropsType) => {
                                     {'You have blocked your location. To use this, change your location settings in browser.'}
                                 </span>)}
                             <div className="flex_row recent_search auto_loc">
-                                {recentLocation?.length ?
+
+                                {props?.recentLocationData?.length > 0 &&
                                     <span className="sub_title">
                                         {'Recent searches'}
-                                    </span>
-                                    : null}
-                                {recentLocation?.map((item: any) => {
-                                    return (
+                                    </span>}
+                                {props?.recentLocationData?.map((item: any) => {
+                                    return item?.address?.length > 0 && (
                                         <div className="flex_col_sm_4"
                                             onClick={() => {
-                                                let location_coordinates: any = item.location.coordinates
-                                                setAddressText(item.formatted_address);
+                                                setAddressText(JSON.parse(item?.address)?.mainText);
                                                 setSelectedAddress({
-                                                    lat: location_coordinates[1],
-                                                    lng: location_coordinates[0]
+                                                    lat: item?.location?.coordinates[1],
+                                                    lng: item?.location?.coordinates[0],
                                                 });
+
+                                                setSuggestion(JSON.parse(item?.address));
+
+                                                // let location_coordinates: any = item.location.coordinates
+                                                // setAddressText(item.formatted_address);
+                                                // setSelectedAddress({
+                                                //     lat: location_coordinates[1],
+                                                //     lng: location_coordinates[0]
+                                                // });
                                             }}>
                                             <div className="autosuggestion_icon card loc name">
-                                                <span>{item.allText?.mainText}</span>
-                                                <span className="name">{item.allText?.secondaryText}</span>
+                                                <span>{JSON.parse(item?.address)?.mainText}</span>
+                                                <span className="name">{JSON.parse(item?.address)?.secondaryText}</span>
                                             </div>
                                         </div>)
                                 })}

@@ -33,6 +33,7 @@ const store = createStore(rootReducer, composeEnhancers(
 //run the saga
 sagaMiddleware.run(rootSaga);
 
+
 const App = () => {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
