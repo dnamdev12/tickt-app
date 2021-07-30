@@ -53,7 +53,11 @@ interface State {
     openJobs: any
     applicantJobs: any,
     approvalJobs: any,
-    applicantsListJobs: any
+    applicantsListJobs: any,
+    enableEditMilestone: any,
+    enableLodgeDispute: any,
+    enableCancelJob: any,
+    globalJobId: string
 }
 class JobDashboard extends Component<Props, State> {
     constructor(props: any) {
@@ -69,14 +73,18 @@ class JobDashboard extends Component<Props, State> {
             openJobs: [],
             applicantJobs: [],
             approvalJobs: [],
-            applicantsListJobs: []
-
+            applicantsListJobs: [],
+            enableEditMilestone: false,
+            enableLodgeDispute: false,
+            enableCancelJob: false,
+            globalJobId: ''
         }
     }
 
     componentDidMount() {
         this.props.getActiveJobsBuilder(1);
     }
+
     // milestone dates should be lie betwwn job details
     componentDidUpdate(prevProps: any) {
         let nextProps: any = this.props;
@@ -87,11 +95,15 @@ class JobDashboard extends Component<Props, State> {
         let activeType_ = urlParams.get('active');
         let jobId_ = urlParams.get('jobId');
         let editMilestone_ = urlParams.get('editMilestone');
+        let lodgeDispute_ = urlParams.get('lodgeDispute');
+        let cancelJob_ = urlParams.get('cancelJob');
+
         console.log({
             activeType_,
             jobId_,
             editMilestone_
-        }, 'nextProps')
+        }, 'nextProps');
+
         if (activeType_) {
             if (activeType_ !== activeType) {
                 this.setState({
@@ -100,8 +112,8 @@ class JobDashboard extends Component<Props, State> {
                         jobtype: activeType_,
                         jobid: null,
                         sortby: 1,
-                        specializationId: ''
-                    }
+                        specializationId: '',
+                    },
                 }, () => {
                     this.setAfterItems({
                         jobtype: activeType_,
@@ -115,6 +127,10 @@ class JobDashboard extends Component<Props, State> {
         if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state.activeJobs)) {
             let { active, needApprovalCount, newApplicantsCount } = activeJobs;
             this.setState({
+                globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
+                enableEditMilestone: editMilestone_ === "true" ? true : false,
+                enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
+                enableCancelJob: cancelJob_ === "true" ? true : false,
                 activeJobs: active,
                 count: {
                     approveCount: needApprovalCount,
@@ -184,8 +200,8 @@ class JobDashboard extends Component<Props, State> {
             this.setState({ activeType: jobtype }, () => {
                 // this.props.history.replace('/jobs')
                 console.log({
-                    props:this.props
-                },'----???>>>');
+                    props: this.props
+                }, '----???>>>');
                 this.props.history.push(`/jobs?active=${jobtype}`);
             })
         }
@@ -209,6 +225,10 @@ class JobDashboard extends Component<Props, State> {
 
     render() {
         let {
+            enableEditMilestone,
+            enableLodgeDispute,
+            enableCancelJob,
+            globalJobId,
             isToggleSidebar,
             activeType,
             selectedItem: { jobtype, jobid, specializationId },
@@ -218,6 +238,8 @@ class JobDashboard extends Component<Props, State> {
         const { toggleSidebar, setSelected } = this;
         let props: any = this.props;
         let isLoading: any = props.isLoading;
+
+
         // console.log({ approvalJobs }, '------------------------------->')
         return (
             <div className="app_wrapper">
@@ -317,6 +339,10 @@ class JobDashboard extends Component<Props, State> {
                                     activeType={activeType}
                                     setJobLabel={setSelected}
                                     history={props.history}
+                                    globalJobId={globalJobId}
+                                    enableEditMilestone={enableEditMilestone}
+                                    enableLodgeDispute={enableLodgeDispute}
+                                    enableCancelJob={enableCancelJob}
                                 />)}
                             {jobtype === 'open' && (
                                 <OpenJobsComponent

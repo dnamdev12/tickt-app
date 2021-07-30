@@ -32,10 +32,13 @@ interface Mile {
     status: any,
     fromDate: any,
     toDate: any,
+    enableEditMilestone: boolean,
+    enableLodgeDispute: boolean,
+    enableCancelJob: boolean
 }
 
 const MarkMilestones = (props: any) => {
-    const { resetStateLocal, listData, selectedIndex } = props;
+    const { resetStateLocal, listData, selectedIndex, enableEditMilestone, enableLodgeDispute, enableCancelJob } = props;
     const [enableApprove, setEnableApprove] = useState(false);
     const [itemDetails, setDetails] = useState(null);
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
@@ -56,6 +59,8 @@ const MarkMilestones = (props: any) => {
     useEffect(() => {
         fetchMilestoneDetail();
     }, [selectedMilestoneIndex]);
+
+
 
     const fetchMilestoneDetail = async () => {
         if (selectedMilestoneIndex && Object.keys(selectedMilestoneIndex).length) {
@@ -86,6 +91,26 @@ const MarkMilestones = (props: any) => {
         }
     }, [expandItem]);
 
+    useEffect(() => {
+        if (enableEditMilestone) {
+            setToggleItem({
+                edit: true, cancel: false, lodge: false
+            })
+        }
+
+        if (enableLodgeDispute) {
+            setToggleItem({
+                edit: false, cancel: false, lodge: true
+            })
+        }
+
+        if (enableCancelJob) {
+            setToggleItem({
+                edit: false, cancel: true, lodge: false
+            })
+        }
+    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob])
+
 
     const classChecks = (isActive: any, isPrevDone: any) => {
         if (isActive === 1 && isPrevDone === false) {
@@ -100,7 +125,6 @@ const MarkMilestones = (props: any) => {
             return 'disable'
         }
     }
-
 
     const preFetch = async () => {
         let { jobId } = selectedItem;
@@ -161,14 +185,19 @@ const MarkMilestones = (props: any) => {
         setExpandItem({});
     }
 
+
+
     if (toggleItem?.edit) {
-        return (
-            <EditMilestones
-                details={itemDetails}
-                item={selectedItem}
-                backTab={backTab}
-            />
-        )
+        let details:any = itemDetails;
+        if (details && Object.keys(details)?.length && Object.keys(selectedItem).length) {
+            return (
+                <EditMilestones
+                    details={details}
+                    item={selectedItem}
+                    backTab={backTab}
+                />
+            )
+        }
     }
 
     if (toggleItem?.lodge) {
@@ -237,7 +266,9 @@ const MarkMilestones = (props: any) => {
 
 
                 </div>
-                <span className="sub_title">Job Milestones</span>
+                <span className="sub_title">
+                    {'Job Milestones'}
+                </span>
                 <p className="commn_para">
                     {"Your job point of contact has indicated they want to be notified when you reach the following milestones. Tap the milestone and Submit when a milestone is completed"}
                 </p>
@@ -300,9 +331,6 @@ const MarkMilestones = (props: any) => {
                                             {'See Details'}
                                         </button>
                                     ) : null}
-
-
-
                                 </div>
 
                                 {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
@@ -320,7 +348,6 @@ const MarkMilestones = (props: any) => {
                                         {'Check and Approve'}
                                     </button>
                                 ) : null}
-
                             </li>
                         );
                     }
@@ -363,7 +390,9 @@ const MarkMilestones = (props: any) => {
                 </div>
 
                 <div className="relate">
-                    <span className="sub_title">Job details</span>
+                    <span className="sub_title">
+                        {'Job details'}
+                    </span>
                     <span
                         className="edit_icon"
                         title="More"

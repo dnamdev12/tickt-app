@@ -32,10 +32,25 @@ interface Active {
     tradieImage: any,
     tradeSelectedUrl: any,
     activeType: any,
-    setJobLabel: (item: any) => void
+    setJobLabel: (item: any) => void,
+    enableEditMilestone: boolean,
+    enableLodgeDispute: boolean,
+    enableCancelJob: boolean
+    globalJobId: string
 }
 
-const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLoading }: any) => {
+const ActiveJobs = ({
+    setJobLabel,
+    activeType,
+    history,
+    dataItems,
+    jobType,
+    isLoading,
+    enableEditMilestone,
+    enableLodgeDispute,
+    enableCancelJob,
+    globalJobId
+}: any) => {
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
@@ -50,7 +65,25 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
 
     useEffect(() => {
         console.log('here!')
-    }, [jobType])
+    }, [jobType]);
+
+
+    useEffect(() => {
+        let filteredItem: any = {};
+        listData.forEach((item_: any, index: any) => {
+            if (item_.jobId === globalJobId) {
+                filteredItem = {
+                    ...item_,
+                    index
+                }
+            }
+        })
+
+        if (Object.keys(filteredItem)?.length) {
+            setSelectedIndex(filteredItem?.index);
+            setLocalState(true);
+        }
+    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob,])
 
     // const redirectToInfo = ({ jobId, status }: any) => {
     //     if (jobId?.length && status?.length) {
@@ -60,11 +93,15 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
     // }
 
     if (localState && selectedIndex !== null) {
+        console.log({ localState, selectedIndex, listData })
         return (
             <MarkMilestones
                 resetStateLocal={resetStateLocal}
                 selectedIndex={selectedIndex}
                 listData={listData}
+                enableEditMilestone={enableEditMilestone}
+                enableLodgeDispute={enableLodgeDispute}
+                enableCancelJob={enableCancelJob}
             />)
     }
 

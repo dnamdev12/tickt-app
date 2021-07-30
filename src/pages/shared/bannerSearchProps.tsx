@@ -94,6 +94,8 @@ const BannerSearch = (props: PropsType) => {
 
     const [calenderRange1, setCalenderRange1] = useState<any>(example_calender);
 
+    const [suggestionSelected, setSuggestion] = useState({});
+
     const handleOnOutsideSearch = () => {
         setOnChange(false);
         setInputFocus1(false);
@@ -213,14 +215,14 @@ const BannerSearch = (props: PropsType) => {
         if (getRecentLocationList) {
             getRecentLocationList();
         }
-        getRecentLocationData();
+        // getRecentLocationData();
     }, []);
 
     useEffect(() => {
-        if (props.recentLocationData?.length &&
-            JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
-            getRecentLocationData();
-        }
+        // if (props.recentLocationData?.length &&
+        //     JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+        //     getRecentLocationData();
+        // }
     }, [props.recentLocationData, recentLocation])
 
 
@@ -438,6 +440,18 @@ const BannerSearch = (props: PropsType) => {
         let local_info: any = props?.localInfo;
         let prev_address: any = props?.location?.state?.address;
 
+        let suggestion_selected: any = local_info?.suggestionSelected;
+
+        if (suggestion_selected) {
+            suggestion_selected = JSON.stringify(local_info?.suggestionSelected);
+        }
+
+        if (suggestionSelected && Object.keys(suggestionSelected).length) {
+            if (JSON.stringify(local_info?.suggestionSelected) !== JSON.stringify(suggestionSelected)) {
+                suggestion_selected = JSON.stringify(suggestionSelected);
+            }
+        }
+
         let tradeId: any = null;
         let specializationId: any = null;
 
@@ -472,11 +486,17 @@ const BannerSearch = (props: PropsType) => {
                         parseFloat(selected_address?.lat)
                     ]
                 }
-                if (prev_address == addressText) {
-                    data['address'] = prev_address
-                } else {
-                    if(addressText?.length){
-                        data['address'] = addressText
+                // if (prev_address == addressText) {
+                //     data['address'] = prev_address
+                // } else {
+                //     if (addressText?.length) {
+                //         data['address'] = addressText
+                //     }
+                // }
+
+                if (suggestion_selected) {
+                    if (addressText) {
+                        data['address'] = suggestion_selected;
                     }
                 }
             } else {
@@ -504,8 +524,13 @@ const BannerSearch = (props: PropsType) => {
                         ]
                     }
                 }
+                if (suggestion_selected) {
+                    if (addressText) {
+                        data['address'] = addressText && suggestion_selected ? suggestion_selected : '';
+                    }
+                }
             }
-
+            
             props.getTitleInfo({
                 name: searchText,
                 isTradeName: false,
@@ -515,7 +540,9 @@ const BannerSearch = (props: PropsType) => {
                 location: data.location,
                 from_date: data?.from_date,
                 to_date: data?.to_date,
-                doingLocalChanges: true
+                doingLocalChanges: true,
+                address: data?.address,
+                suggestionSelected: suggestion_selected ? JSON.parse(suggestion_selected) : null
             })
             props.postHomeSearchData(data);
         }
@@ -698,12 +725,16 @@ const BannerSearch = (props: PropsType) => {
                                     onChange={(item: any) => {
                                         setAddressText(item);
                                     }}
-                                    onSelect={async (address) => {
+                                    onSelect={async (address: string, placeId?: any, suggestion?: any) => {
                                         let selected_address: any = address;
                                         if (address.indexOf(',')) {
                                             selected_address = address.split(',')[0];
                                         }
-                                        setAddressText(selected_address);
+                                        console.log({
+                                            address: suggestion?.formattedSuggestion
+                                        })
+                                        setSuggestion(suggestion?.formattedSuggestion)
+                                        setAddressText(suggestion?.formattedSuggestion?.mainText);
                                         let response = await Geocode.fromAddress(address);
                                         if (response?.results?.length) {
                                             const { lat, lng } = response.results[0].geometry.location;
@@ -817,12 +848,11 @@ const BannerSearch = (props: PropsType) => {
                                     To use this, change your location settings in browser.
                                 </span>)}
                             <div className="flex_row recent_search auto_loc">
-                                {recentLocation?.length ?
+                                {props?.recentLocationData?.length > 0 &&
                                     <span className="sub_title">
                                         {'Recent searches'}
-                                    </span>
-                                    : null}
-                                {recentLocation?.map((item: any) => {
+                                    </span>}
+                                {/* {recentLocation?.map((item: any) => {
                                     return (
                                         <div className="flex_col_sm_4"
                                             onClick={() => {
@@ -836,6 +866,32 @@ const BannerSearch = (props: PropsType) => {
                                             <div className="autosuggestion_icon card loc name">
                                                 <span>{item.allText?.mainText}</span>
                                                 <span className="name">{item.allText?.secondaryText}</span>
+                                            </div>
+                                        </div>)
+                                })} */}
+
+                                {props?.recentLocationData?.map((item: any) => {
+                                    return item?.address?.length > 0 && (
+                                        <div className="flex_col_sm_4"
+                                            onClick={() => {
+                                                setAddressText(JSON.parse(item?.address)?.mainText);
+                                                setSelectedAddress({
+                                                    lat: item?.location?.coordinates[1],
+                                                    lng: item?.location?.coordinates[0],
+                                                });
+
+                                                setSuggestion(JSON.parse(item?.address));
+
+                                                // let location_coordinates: any = item.location.coordinates
+                                                // setAddressText(item.formatted_address);
+                                                // setSelectedAddress({
+                                                //     lat: location_coordinates[1],
+                                                //     lng: location_coordinates[0]
+                                                // });
+                                            }}>
+                                            <div className="autosuggestion_icon card loc name">
+                                                <span>{JSON.parse(item?.address)?.mainText}</span>
+                                                <span className="name">{JSON.parse(item?.address)?.secondaryText}</span>
                                             </div>
                                         </div>)
                                 })}

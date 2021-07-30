@@ -229,7 +229,7 @@ const SearchFilter = (props: any) => {
 
     const updateOnChange = (sort?: any) => {
         let local_info: any = props.localInfo;
-        console.log({sort, local_info},'-------------------------->><<-------------- item_coord');
+        console.log({ sort, local_info }, '-------------------------->><<-------------- item_coord');
         const tradeInfo = props.tradeListData.find((item: any) => item._id === sortByFilter.tradeId[0]);
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
         const { specializationId, tradeId } = sortByFilter;
@@ -272,7 +272,6 @@ const SearchFilter = (props: any) => {
         let get_position: any = localStorage.getItem('position');
         if (sort === 2) {
             let item_coord: any = local_info?.location?.coordinates?.length ? JSON.parse(get_position).reverse() : local_info?.location?.coordinates;
-            console.log({item_coord},'item_coord')
             if (item_coord?.length) {
                 data['location'] = {
                     "coordinates": item_coord,
@@ -281,8 +280,9 @@ const SearchFilter = (props: any) => {
         } else {
             if (local_info?.location) {
                 data['location'] = local_info?.location;
+            } else {
+                delete data.location;
             }
-            delete data.location;
         }
 
         if (local_info?.from_date) {
@@ -293,10 +293,17 @@ const SearchFilter = (props: any) => {
             data['to_date'] = local_info?.to_date;
         }
 
-        console.log({
-            data,
-            sort
-        },'item_coord')
+        
+        if(local_info?.suggestionSelected){
+            data['address'] = JSON.stringify(local_info?.suggestionSelected);
+        }
+
+
+        if(!data?.address || !data?.address?.length){
+            delete data?.address;
+        }
+
+
 
         props.postHomeSearchData(data)
         props.getTitleInfo({

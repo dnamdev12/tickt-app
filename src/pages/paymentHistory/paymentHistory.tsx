@@ -9,7 +9,6 @@ import noData from '../../assets/images/no-search-data.png';
 import moment from 'moment';
 import { renderTime } from '../../utils/common';
 import { debounce } from 'lodash';
-
 interface Props {
   isLoading: boolean,
   searching: boolean,
@@ -202,7 +201,7 @@ const PaymentHistory = ({
                       </figure>
                       <span>No Data Found</span>
                     </div>
-                  ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, earning }: any) => (
+                  ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, to_date, earning }: any) => (
                     <tr key={_id}>
                       <td>
                         <div className="img_txt_wrap">
@@ -221,7 +220,8 @@ const PaymentHistory = ({
                       </td>
                       <td><span className="inner_title line-3">{status}</span></td>
                       <td><span className="inner_title line-3">{userType === 1 ? builderName : tradieName}</span></td>
-                      <td><span className="inner_title">{moment(from_date).format('DD.MM.YYYY')}</span></td>
+                      {/* <td><span className="inner_title">{moment(from_date).format('DD.MM.YYYY')}</span></td> */}
+                      <td><span className="inner_title">{renderTime(from_date, to_date)}</span></td>
                       <td><span className="inner_title">{earning}</span></td>
                     </tr>
                   ))}

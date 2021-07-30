@@ -10,16 +10,16 @@ firebase.initializeApp(qaStgFirebaseConfig);
 const messaging = firebase.messaging();
 
 messaging.onBackgroundMessage((payload) => {
-    console.log("[firebase-messaging-sw.js] Received background message ", payload );
+    console.log("[firebase-messaging-sw.js] Received background message ", payload);
     // Customize notification type here => notification/data
     const title = payload?.notification?.title;
     const options = {
         body: payload?.notification?.body,
     };
-   return self.registration.showNotification(title, options);
+    return self.registration.showNotification(title, options);
 });
 
-    self.addEventListener("notificationclick", (event) => {
+self.addEventListener("notificationclick", (event) => {
     console.log(event);
     // var click_action = event.notification.data.click_action
     event.notification.close();
@@ -33,8 +33,8 @@ messaging.onBackgroundMessage((payload) => {
     // Otherwise, open a new tab to the applicable URL and focus it.
     // if (!hadWindowToFocus) self.clients.openWindow(event.notification.data.click_action).then(windowClient => windowClient ? windowClient.focus() : null);
     // }));
-    })
+})
 
-    self.addEventListener("notificationclose", (event) => {
+self.addEventListener("notificationclose", (event) => {
     console.log('notification close');
 })

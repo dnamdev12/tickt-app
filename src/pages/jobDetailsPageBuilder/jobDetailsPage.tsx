@@ -484,7 +484,7 @@ const JobDetailsPage = (props: PropsType) => {
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    {/* {["open", 'active'].includes(activeType) ? (
+                    {["open", 'active'].includes(activeType) ? (
                         <span className="dot_menu">
                             <img src={editIconBlue} alt="edit" />
                             <div className="edit_menu">
@@ -493,7 +493,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         <React.Fragment>
                                             <li
                                                 onClick={() => {
-                                                    props.history.push(`/post-new-job?jobId=${paramJobId}`)
+                                                    setShowToast(true, 'Under Development');
+                                                    // props.history.push(`/post-new-job?update=true&jobId=${paramJobId}`)
                                                 }}
                                                 className="icon edit_line">Edit</li>
                                             <li
@@ -510,29 +511,28 @@ const JobDetailsPage = (props: PropsType) => {
                                                     props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&editMilestone=true`)
                                                 }}
                                                 className="icon edit_line">
-                                                Edit Milestone
+                                                {'Edit Milestone'}
                                             </li>
                                             <li
                                                 onClick={() => {
                                                     props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&lodgeDispute=true`)
                                                 }}
                                                 className="icon lodge">
-                                                Lodge dispute
+                                                {'Lodge dispute'}
                                             </li>
                                             <li
                                                 onClick={() => {
                                                     props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&cancelJob=true`)
                                                 }}
                                                 className="icon delete">
-                                                Cancel job
+                                                {'Cancel job'}
                                             </li>
                                         </React.Fragment>
                                     )}
                                 </ul>
                             </div>
                         </span>
-                    ) : null} */}
-
+                    ) : null} 
                     <Dialog
                         open={toggleDelete}
                         onClose={() => {
@@ -974,8 +974,9 @@ const JobDetailsPage = (props: PropsType) => {
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
-                                    <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}>
-                                        {activeType == "active" && (
+                                    <div className={`tradie_card posted_by`}>
+                                    {/* <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}> */}
+                                        {/* {activeType == "active" && (
                                             <span
                                                 className="chat circle"
                                                 onClick={(e) => {
@@ -991,14 +992,14 @@ const JobDetailsPage = (props: PropsType) => {
                                                     })
                                                 }}>
                                             </span>
-                                        )}
+                                        )} */}
                                         <div className="user_wrap">
-                                            <figure className={`${activeType !== "active" ? 'u_img cursor-pointer' : 'u_img'}`}>
+                                            <figure className={`u_img`}>
                                                 {jobDetailsData?.postedBy?.builderImage ? (
                                                     <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
                                                 ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
                                             </figure>
-                                            <div className={`${activeType !== "active" ? 'details cursor-pointer' : 'details'}`}>
+                                            <div className='details'>
                                                 <span
                                                     className="name"
                                                     onClick={() => {
