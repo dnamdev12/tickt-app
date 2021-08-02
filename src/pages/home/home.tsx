@@ -29,7 +29,6 @@ const Home = () => {
                 console.log(res, "getRegisterToken", data, "addFCMNotifToken");
                 if (res.success) {
                     const res2 = await addFCMNotifToken(data);
-                    storageService.setItem("FCM token", res.deviceToken);
                     if (res2.success) {
                         setTokenSentToServer(true);
                     } else {

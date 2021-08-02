@@ -11,7 +11,8 @@ import { onNotificationClick } from '../utils/common';
 const NOTIFICATION_TIMEOUT = 5000;
 
 const CustomNotification = (props: any) => {
-    const notification = props?.notificationData;
+    const notification = props.notificationData?.data;
+    console.log('notification: ', notification);
 
     useEffect(() => {
         if (props?.showNotification) {

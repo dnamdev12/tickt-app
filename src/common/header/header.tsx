@@ -49,7 +49,6 @@ const Header = (props: any) => {
     const [showHeader, setShowHeader] = useState<boolean>(false);
     const [toggleMenu, setToggleMenu] = useState(false);
     const [activeLink, setActiveLink] = useState('discover');
-    const [latestNotifData, setLatestNotifData] = useState<any>('');
     const [notificationData, setNotificationData] = useState<any>({
         count: 0,
         list: [],
@@ -71,7 +70,7 @@ const Header = (props: any) => {
 
     const onMessageListner = () => {
         messaging.onMessage((payload: any) => {
-            console.log('firebase notification received inside header : ', payload, "payload.data", payload.data);
+            console.log('firebase notification received inside header : ', payload);
             // const title = payload.data.title;
             // const options = {
             //     body: payload.data.notificationText
@@ -84,14 +83,16 @@ const Header = (props: any) => {
             // }
 
             setShowNotification(true, payload);
-            // setLatestNotifData(payload.data);
-            const newPushList = [...notificationData.list];
-            newPushList.unshift(payload.data);
-            setNotificationData((prevData: any) => ({
-                ...prevData,
-                coun: prevData.count + 1,
-                newPushList
-            }));
+            setNotificationData((prevData: any) => {
+                let newPushList = [...prevData.list];
+                newPushList.unshift(payload.data);
+                console.log('newPushList: ', newPushList);
+                return {
+                    ...prevData,
+                    count: prevData.count + 1,
+                    list: newPushList
+                }
+            });
         })
     }
 
@@ -508,7 +509,6 @@ const Header = (props: any) => {
                                             <img src={renderByType({ name: 'userImage' }) || dummy} alt="profile-img" />
                                         </figure>}
 
-
                                     <Menu className="sub_menu"
                                         id="simple-menu"
                                         anchorEl={anchorEl}
@@ -562,7 +562,6 @@ const Header = (props: any) => {
                                             <span className="setting_icon logout">Logout</span>
                                         </MenuItem>
                                     </Menu>
-
 
                                     {/* Notification */}
                                     <Menu className="sub_menu notifications"
