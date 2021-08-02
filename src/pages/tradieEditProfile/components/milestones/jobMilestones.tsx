@@ -112,10 +112,11 @@ const JobMilestones = (props: any) => {
         if (data) {
             let data_: any = data?.data;
             let index = data?.index;
-            if (index) {
-                local_mile[index] = data_;
+        
+            if(index == undefined){
+                local_mile.push(data_);
             } else {
-                local_mile.push(data_); // if index is undefined
+                local_mile[index] = data_;
             }
             setLocalMile(local_mile);
         }

@@ -16,9 +16,7 @@ import Skeleton from 'react-loading-skeleton';
 
 // import Loader from "react-loader-spinner";
 // import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-
-import { AsyncImage } from '../../../utils/common';
-
+// import { AsyncImage } from '../../../utils/common';
 
 interface Proptypes {
     jobName?: string;
@@ -90,21 +88,21 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
         }
 
-        if(!loadByIndex[index]){
+        if (!loadByIndex[index]) {
             console.log('Hered!!!')
             resolve(image_render);
         }
     });
 
 
-    const calc = async (item:any, index:any) => {
+    const calc = async (item: any, index: any) => {
         let result = await randomDelay(item, index);
-        console.log({result});
+        console.log({ result });
         return result;
     };
 
     const asyncFunc = async () => {
-        const p = filesUrl.map((item:any, index:any) => calc(item.link, index));
+        const p = filesUrl.map((item: any, index: any) => calc(item.link, index));
         const results = await Promise.all(p);
         setAsyncLoad(results);
     };
@@ -217,6 +215,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         onClick={() => { setItemToggle(index) }}
                         title={get_split_name}
                         src={item}
+                        async-src={item}
+                        decoding="async"
+                        loading="lazy"
                         onLoad={() => {
                             loadByIndex[index] = false;
                             console.log('image_render', '--->', { loadByIndex })
@@ -232,6 +233,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         onClick={() => { setItemToggle(index) }}
                         title={get_split_name}
                         src={videoThumbnail}
+                        async-src={item}
+                        decoding="async"
+                        loading="lazy"
                         alt="media"
                         onLoad={() => {
                             loadByIndex[index] = false;
@@ -246,27 +250,36 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         id={`media_${index}`}
                         title={get_split_name}
                         src={docThumbnail}
+                        async-src={item}
+                        decoding="async"
+                        loading="lazy"
                         onLoad={() => {
                             loadByIndex[index] = false;
                         }}
                         alt="media"
                     />)
             }
-            console.log({ image_render, index: loadByIndex[index] })
-            return !loadByIndex[index] && (
+            // let checkRender: any = document.getElementById(`media_${index}`);
+            // if (checkRender?.complete) {
+            return (
                 <figure className="img_video">
                     <React.Fragment>
-                        {image_render}
-                        <AsyncImage
-                            onClick={() => { removeFromItem(index) }}
-                            src={remove}
-                            alt="remove"
-                            className="remove"
-                        />
+                        {image_render && (
+                            <React.Fragment>
+                                {image_render}
+                                <img
+                                    onClick={() => { removeFromItem(index) }}
+                                    src={remove}
+                                    alt="remove"
+                                    className="remove"
+                                />
+                            </React.Fragment>
+                        )}
                     </React.Fragment>
                     {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
                 </figure>
             )
+            // }
         }
     }
 
@@ -339,10 +352,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     <div className="flex_row">
                         <div className="flex_col_sm_12">
                             <div className="upload_img_video">
-                                {renderAsyncLoad ? renderAsyncLoad : null}
-                                {/* {filesUrl?.length ?
+                                {/* {renderAsyncLoad ? renderAsyncLoad : null} */}
+                                {filesUrl?.length ?
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
-                                    : null} */}
+                                    : null}
 
                                 {filesUrl?.length < 6 ? (
                                     <React.Fragment>
