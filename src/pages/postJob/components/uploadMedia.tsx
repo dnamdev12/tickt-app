@@ -90,21 +90,21 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
         }
 
-        if(!loadByIndex[index]){
+        if (!loadByIndex[index]) {
             console.log('Hered!!!')
             resolve(image_render);
         }
     });
 
 
-    const calc = async (item:any, index:any) => {
+    const calc = async (item: any, index: any) => {
         let result = await randomDelay(item, index);
-        console.log({result});
+        console.log({ result });
         return result;
     };
 
     const asyncFunc = async () => {
-        const p = filesUrl.map((item:any, index:any) => calc(item.link, index));
+        const p = filesUrl.map((item: any, index: any) => calc(item.link, index));
         const results = await Promise.all(p);
         setAsyncLoad(results);
     };
@@ -252,8 +252,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         alt="media"
                     />)
             }
-            console.log({ image_render, index: loadByIndex[index] })
-            return !loadByIndex[index] && (
+            // console.log({ image_render, index: loadByIndex[index] })
+            return (
                 <figure className="img_video">
                     <React.Fragment>
                         {image_render}
@@ -339,10 +339,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     <div className="flex_row">
                         <div className="flex_col_sm_12">
                             <div className="upload_img_video">
-                                {renderAsyncLoad ? renderAsyncLoad : null}
-                                {/* {filesUrl?.length ?
+                                {/* {renderAsyncLoad ? renderAsyncLoad : null} */}
+                                {filesUrl?.length ?
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
-                                    : null} */}
+                                    : null}
 
                                 {filesUrl?.length < 6 ? (
                                     <React.Fragment>
