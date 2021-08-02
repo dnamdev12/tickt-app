@@ -341,7 +341,7 @@ const MarkMilestone = ({
                   ) => {
                     const prevMilestoneStatus = milestones[index - 1]?.status;
                     const isActive =
-                      status === 0 &&
+                      (status === 0 || status === 5) &&
                       // completed or approved
                       ([1, 2].includes(prevMilestoneStatus) ||
                         prevMilestoneStatus === undefined);
