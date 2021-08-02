@@ -272,7 +272,7 @@ export const onNotificationClick = (notification: any) => {
     // if (extra_data.charAt(0) === '"' && extra_data.charAt(extra_data.length - 1) === '"') {
     //     extraData = extra_data.substr(1, extra_data.length - 2);
     // }
-    switch (notificationType) {
+    switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {
                 return `/tradie-info?tradeId=${receiverId}&type=1`;
