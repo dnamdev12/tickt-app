@@ -584,7 +584,7 @@ const Header = (props: any) => {
                                     >
                                         <div>
                                             <span className="sub_title">Notifications</span>
-                                            <a href="javascript:void(0)" className="link mark_all" onClick={() => callNotificationList(true)}>Mark all as read</a>
+                                            {notificationData.list?.length > 0 && <a href="javascript:void(0)" className="link mark_all" onClick={() => callNotificationList(true)}>Mark all as read</a>}
                                         </div>
 
                                         {notificationData.list?.length > 0 &&
@@ -610,16 +610,16 @@ const Header = (props: any) => {
                                                     </div>
                                                 </MenuItem>
                                             )}
-                                        {hasMoreNotif && <div className="more_notif" onClick={() => callNotificationList()}>
+                                        {hasMoreNotif && notificationData.list?.length > 0 && <div className="more_notif" onClick={() => callNotificationList()}>
                                             <a className="link">View more</a>
                                         </div>}
 
-                                        {/* <div className="no_notification">
+                                        {notificationData?.list?.length === 0 && <div className="no_notification">
                                             <figure>
                                                 <img src={noNotification} alt="no-notifications" />
                                             </figure>
                                             <span>No Notifications</span>
-                                        </div> */}
+                                        </div>}
 
                                     </Menu>
                                     {/* Notification close */}
