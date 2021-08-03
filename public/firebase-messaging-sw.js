@@ -38,7 +38,8 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 const onNotificationClick = (notification) => {
-    let url = 'http://localhost:3000/';
+    // let url = 'http://localhost:3000/';
+    let url = 'https://ticktreactqa.appskeeper.in/';
     const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
     switch (Number(notificationType)) {
         case 1: //TRADIE
