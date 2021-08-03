@@ -261,6 +261,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
             // let checkRender: any = document.getElementById(`media_${index}`);
             // if (checkRender?.complete) {
+            // console.log({ image_render, index: loadByIndex[index] })
             return (
                 <figure className="img_video">
                     <React.Fragment>

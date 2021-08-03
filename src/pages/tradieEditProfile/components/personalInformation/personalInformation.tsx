@@ -323,6 +323,8 @@ export class PersonalInformation extends Component<Props, State> {
         const newErrors: any = {};
         if (!this.state.basicDetailsData?.fullName) {
             newErrors.fullName = Constants.errorStrings.fullNameEmpty;
+        } else if (this.state.basicDetailsData?.fullName.trim()?.length > 50) {
+            newErrors.fullName = 'Maximum 50 characters are allowed.';
         } else {
             const nameRegex = new RegExp(regex.fullname);
             if (!nameRegex.test(this.state.basicDetailsData?.fullName.trim())) {
@@ -358,6 +360,8 @@ export class PersonalInformation extends Component<Props, State> {
         } else {
             if (!this.state.basicDetailsData?.companyName) {
                 newErrors.companyName = Constants.errorStrings.companyNameEmpty;
+            } else if (this.state.basicDetailsData?.companyName.trim()?.length > 50) {
+                newErrors.companyName = 'Maximum 50 characters are allowed.';
             } else {
                 const nameRegex = new RegExp(regex.fullname);
                 if (!nameRegex.test(this.state.basicDetailsData.companyName.trim())) {
@@ -366,6 +370,8 @@ export class PersonalInformation extends Component<Props, State> {
             }
             if (!this.state.basicDetailsData?.position) {
                 newErrors.position = Constants.errorStrings.positionNameEmpty;
+            } else if (this.state.basicDetailsData?.position.trim()?.length > 50) {
+                newErrors.position = 'Maximum 50 characters are allowed.';
             } else {
                 const positionRegex = new RegExp(regex.fullname);
                 if (!positionRegex.test(this.state.basicDetailsData.position.trim())) {

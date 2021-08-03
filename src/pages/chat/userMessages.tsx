@@ -361,9 +361,9 @@ const UserMessages = (props: any) => {
                             <span className="name"
                                 onClick={() => {
                                     if (storageService.getItem('userType') === 2) {
-                                        props.history.push(`/tradie-info?tradeId=${props.roomData?.oppUserInfo?.userId}&type=1`)
+                                        props.history.push(`/tradie-info?tradeId=${props.roomData?.oppUserInfo?.userId}&hideInvite=true`);
                                     } else {
-                                        props.history.push(`/builder-info?builderId=${props.roomData?.oppUserInfo?.userId}&type=2`)
+                                        props.history.push(`/builder-info?builderId=${props.roomData?.oppUserInfo?.userId}`);
                                     }
                                 }}>{props.roomData?.oppUserInfo?.name}</span>
                             {!toggle && <span

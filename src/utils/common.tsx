@@ -225,129 +225,129 @@ export const formatNotificationTime = (updatedAt: any, type: string) => {
     return formattedDate;
 }
 
-    export const AsyncImage = (props: any) => {
-        const [loadedSrc, setLoadedSrc] = React.useState(null);
-        React.useEffect(() => {
-            setLoadedSrc(null);
-            if (props.src) {
-                const handleLoad = () => {
-                    setLoadedSrc(props.src);
-                };
-                const image = new Image();
-                image.addEventListener('load', handleLoad);
-                image.src = props.src;
-                return () => {
-                    image.removeEventListener('load', handleLoad);
-                };
-            }
-        }, [props.src]);
-        if (loadedSrc === props.src) {
-            return (
-                <img {...props} alt='set-load-images' />
-            );
+export const AsyncImage = (props: any) => {
+    const [loadedSrc, setLoadedSrc] = React.useState(null);
+    React.useEffect(() => {
+        setLoadedSrc(null);
+        if (props.src) {
+            const handleLoad = () => {
+                setLoadedSrc(props.src);
+            };
+            const image = new Image();
+            image.addEventListener('load', handleLoad);
+            image.src = props.src;
+            return () => {
+                image.removeEventListener('load', handleLoad);
+            };
         }
-        return null;
-    };
-
-    // const NOTIFICATION_TYPE = {
-    //     TRADIE: 1,
-    //     BUILDER: 2,
-    //     JOB: 3,
-    //     PAYMENT: 4,
-    //     DISPUTES: 5,
-    //     REVIEW_TRADIE: 7,
-    //     REVIEW_BUILDER: 8,
-    //     QUESTION: 9,
-    //     REVIEW: 10,
-    //     TERM_AND_CONDITION: 11,
-    //     JOB_DASHBOARD: 12, //With status key
-    //     BLOCK_ACCOUNT: 13,
-    //     MARK_MILESTONE: 14,
-    //     JOB_HOMEPAGE: 15, //tradeid and specialization id
-    //     REVIEW_SELF: 16
-    // }
-
-    export const onNotificationClick = (notification: any) => {
-        const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
-        // if (extra_data.charAt(0) === '"' && extra_data.charAt(extra_data.length - 1) === '"') {
-        //     extraData = extra_data.substr(1, extra_data.length - 2);
-        // }
-        switch (notificationType) {
-            case 1: //TRADIE
-                if (user_type == 1) {
-                    return `/tradie-info?tradeId=${receiverId}&type=1`;
-                } else {
-                    return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
-                }
-            case 2: //BUILDER
-                if (user_type == 1) {
-                    return `/builder-info?builderId=${receiverId}`;
-                } else {
-                    return `/builder-info?builderId=${receiverId}&type=2`;
-                }
-            case 3: //JOB
-                if (user_type == 1) {
-                    return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
-                } else {
-                    let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
-                    return `/job-detail?${urlEncode}`;
-                }
-            case 4: //PAYMENT
-                return '/payment-history';
-            case 5: //DISPUTES
-                if (user_type == 1) {
-                    return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
-                } else {
-                    let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
-                    return `/job-detail?${urlEncode}`;
-                }
-            // case 6: //REVIEW_TRADIE
-            case 7: //REVIEW_TRADIE
-                return `/jobs?active=past`;
-            case 8: //REVIEW_BUILDER
-                return `/past-jobs`;
-            case 9: //QUESTION
-                if (user_type == 1) {
-                    return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
-                } else {
-                    let urlEncode: any = window.btoa(`?jobId=${jobId}&status=open`)
-                    return `/job-detail?${urlEncode}`;
-                }
-            case 10: //REVIEW
-                if (user_type == 1) {
-                    return `/builder-info?builderId=${receiverId}`;
-                } else {
-                    return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
-                }
-            case 11: //TERM_AND_CONDITION
-                return `/update-user-info`;
-            case 12: //JOB_DASHBOARD
-                if (user_type == 1) {
-                    return `/active-jobs`;
-                } else {
-                    return `/jobs?active=active`;
-                }
-            case 13: //BLOCK_ACCOUNT
-                return '/';
-            case 14: //MARK_MILESTONE
-                if (user_type == 1) {
-                    return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
-                } else {
-                    return `/jobs?active=active`;
-                }
-            case 15: //JOB_HOMEPAGE
-                if (user_type == 1) {
-                    return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
-                } else {
-                    return `/`;
-                }
-            case 16: //TRADIE
-                if (user_type == 1) {
-                    return `/tradie-info?tradeId=${receiverId}&type=1`;
-                } else {
-                    return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
-                }
-            default:
-                return '/';
-        }
+    }, [props.src]);
+    if (loadedSrc === props.src) {
+        return (
+            <img {...props} alt='set-load-images' />
+        );
     }
+    return null;
+};
+
+// const NOTIFICATION_TYPE = {
+//     TRADIE: 1,
+//     BUILDER: 2,
+//     JOB: 3,
+//     PAYMENT: 4,
+//     DISPUTES: 5,
+//     REVIEW_TRADIE: 7,
+//     REVIEW_BUILDER: 8,
+//     QUESTION: 9,
+//     REVIEW: 10,
+//     TERM_AND_CONDITION: 11,
+//     JOB_DASHBOARD: 12, //With status key
+//     BLOCK_ACCOUNT: 13,
+//     MARK_MILESTONE: 14,
+//     JOB_HOMEPAGE: 15, //tradeid and specialization id
+//     REVIEW_SELF: 16
+// }
+
+export const onNotificationClick = (notification: any) => {
+    const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
+    // if (extra_data.charAt(0) === '"' && extra_data.charAt(extra_data.length - 1) === '"') {
+    //     extraData = extra_data.substr(1, extra_data.length - 2);
+    // }
+    switch (Number(notificationType)) {
+        case 1: //TRADIE
+            if (user_type == 1) {
+                return `/tradie-info?tradeId=${receiverId}&type=1`;
+            } else {
+                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+            }
+        case 2: //BUILDER
+            if (user_type == 1) {
+                return `/builder-info?builderId=${receiverId}`;
+            } else {
+                return `/builder-info?builderId=${receiverId}&type=2`;
+            }
+        case 3: //JOB
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+            } else {
+                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                return `/job-detail?${urlEncode}`;
+            }
+        case 4: //PAYMENT
+            return '/payment-history';
+        case 5: //DISPUTES
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+            } else {
+                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                return `/job-detail?${urlEncode}`;
+            }
+        // case 6: //REVIEW_TRADIE
+        case 7: //REVIEW_TRADIE
+            return `/past-jobs`;
+        case 8: //REVIEW_BUILDER
+            return `/jobs?active=past`;
+        case 9: //QUESTION
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+            } else {
+                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=open`)
+                return `/job-detail?${urlEncode}`;
+            }
+        case 10: //REVIEW
+            if (user_type == 1) {
+                return `/builder-info?builderId=${receiverId}`;
+            } else {
+                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+            }
+        case 11: //TERM_AND_CONDITION
+            return `/update-user-info`;
+        case 12: //JOB_DASHBOARD
+            if (user_type == 1) {
+                return `/active-jobs`;
+            } else {
+                return `/jobs?active=active`;
+            }
+        case 13: //BLOCK_ACCOUNT
+            return '/';
+        case 14: //MARK_MILESTONE
+            if (user_type == 1) {
+                return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+            } else {
+                return `/jobs?active=active`;
+            }
+        case 15: //JOB_HOMEPAGE
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+            } else {
+                return `/`;
+            }
+        case 16: //TRADIE
+            if (user_type == 1) {
+                return `/tradie-info?tradeId=${receiverId}&type=1`;
+            } else {
+                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+            }
+        default:
+            return '/';
+    }
+}

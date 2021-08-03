@@ -55,7 +55,7 @@ const PaymentHistory = ({
   const userType = storageService.getItem('userType');
   const { totalEarnings = 0, totalJobs = 0, revenue = {} } = paymentHistory || {};
   const { revenueList = [] } = revenue;
-  const { status, tradieId, tradieName, tradieImage, builderId, builderName, builderImage, jobName, from_date, to_date, totalEarning, milestones = [] }: any = paymentDetails || {};
+  const { status, tradeId, specialization, tradieId, tradieName, tradieImage, builderId, builderName, builderImage, jobName, from_date, to_date, totalEarning, review, rating, milestones = [] }: any = paymentDetails || {};
 
   if (isLoading) {
     return null;
@@ -128,24 +128,13 @@ const PaymentHistory = ({
                     </figure>
                     <div className="details">
                       <span className="name">{userType === 1 ? builderName : tradieName}</span>
-                      <span className="rating">4.9, 36 reviews</span>
+                      <span className="rating">{rating || 0}, {review || 0} reviews</span>
                     </div>
                   </div>
                 </div>
                 <div className="relate">
                   <span className="sub_title">Job details</span>
-                  <span
-                    className="edit_icon"
-                    title="More"
-                    onClick={() => {
-                      let payment_:any = paymentDetails;
-                      console.log({
-                        payment_,
-                        tradieId: payment_?.tradieId,
-                        specialization: payment_.specialization[0]
-                      })
-                      history.push(`/job-details-page?jobId=${payment_?.jobId}`);
-                    }}>
+                  <span className="edit_icon" title="More" onClick={() => history.push(`/job-details-page?jobId=${jobId}${userType === 1 ? `&tradeId=${tradeId}&specializationId=${specialization?.[0]}` : ''}`)}>
                     <img src={more} alt="more" />
                   </span>
                 </div>
@@ -202,17 +191,25 @@ const PaymentHistory = ({
                 </thead>
                 <tbody>
                   {searching ? (
-                    <div className="no_record">
-                      <img src={loader} alt="loader" width="130px" />
-                    </div>
+                    <tr>
+                      <td colSpan={5}>
+                        <div className="no_record">
+                          <img src={loader} alt="loader" width="130px" />
+                        </div>
+                      </td>
+                    </tr>
                   ) : !revenueList?.length ? (
-                    <div className="no_record">
-                      <figure className="no_img">
-                        <img src={noData} alt="data not found" />
-                      </figure>
-                      <span>No Data Found</span>
-                    </div>
-                  ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, to_date, earning }: any) => (
+                    <tr>
+                      <td colSpan={5}>
+                        <div className="no_record">
+                          <figure className="no_img">
+                            <img src={noData} alt="data not found" />
+                          </figure>
+                          <span>No Data Found</span>
+                        </div>
+                      </td>
+                    </tr>
+                  ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, earning }: any) => (
                     <tr key={_id}>
                       <td>
                         <div className="img_txt_wrap">

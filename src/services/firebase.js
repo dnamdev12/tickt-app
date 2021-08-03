@@ -2,13 +2,10 @@ import firebase from "firebase/app";
 import "firebase/messaging";
 import 'firebase/auth';
 import 'firebase/database';
-import 'firebase/firestore';
-
 import storageService from "../utils/storageService";
-import { devFirebaseConfig, qaStgFirebaseConfig } from '../utils/globalConfig';
+import { qaStgFirebaseConfig } from '../utils/globalConfig';
 
 if (!firebase.apps.length) {
-    // firebase.initializeApp(process.env.NODE !== 'development' ? devFirebaseConfig : qaStgFirebaseConfig);
     firebase.initializeApp(qaStgFirebaseConfig);
 }
 export const auth = firebase.auth();
@@ -37,6 +34,7 @@ const getRegisterToken = () => {
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
+                storageService.setItem("FCM token", currentToken);
                 resolve({ success: true, deviceToken: currentToken });
             } else {
                 console.log('No registration token available.');

@@ -58,7 +58,7 @@ const PastJobs = (props: Proptypes) => {
       <div className="detail_col">
         <span className="sub_title">Past Jobs</span>
         <div className="flex_row tradies_row">
-          {jobList.length ? jobList.map((item: any) => (
+          {!props.loading && jobList.length ? jobList.map((item: any) => (
             <div className="flex_col_sm_6" key={item.jobId}>
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${item.jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
@@ -106,7 +106,7 @@ const PastJobs = (props: Proptypes) => {
                 }}
                 >
                   <button className="fill_grey_btn full_btn">
-                    <img src={rateStar} alt="rating-star" /> Rate this job
+                    <img src={rateStar} alt="rating-star" /> Rate this builder
                   </button>
                 </NavLink>}
               </div>
