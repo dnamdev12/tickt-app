@@ -60,7 +60,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
     const handleChange = ({ target: { name, value } }: any) => {
       setData((prevData: any) => ({
         ...prevData,
-        [name]: value,
+        [name]: value?.trimLeft(),
       }));
 
       if (submitClicked) {
@@ -87,7 +87,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
       }, '');
 
       const updatedBankDetails = {
-        account_name: data.account_name,
+        account_name: data.account_name?.trim(),
         account_number: data.account_number,
         bsb_number: data.bsb_number,
       };
