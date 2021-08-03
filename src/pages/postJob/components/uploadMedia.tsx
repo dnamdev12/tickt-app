@@ -16,9 +16,7 @@ import Skeleton from 'react-loading-skeleton';
 
 // import Loader from "react-loader-spinner";
 // import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-
-import { AsyncImage } from '../../../utils/common';
-
+// import { AsyncImage } from '../../../utils/common';
 
 interface Proptypes {
     jobName?: string;
@@ -217,6 +215,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         onClick={() => { setItemToggle(index) }}
                         title={get_split_name}
                         src={item}
+                        async-src={item}
+                        decoding="async"
+                        loading="lazy"
                         onLoad={() => {
                             loadByIndex[index] = false;
                             console.log('image_render', '--->', { loadByIndex })
@@ -232,6 +233,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         onClick={() => { setItemToggle(index) }}
                         title={get_split_name}
                         src={videoThumbnail}
+                        async-src={item}
+                        decoding="async"
+                        loading="lazy"
                         alt="media"
                         onLoad={() => {
                             loadByIndex[index] = false;
@@ -246,27 +250,37 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         id={`media_${index}`}
                         title={get_split_name}
                         src={docThumbnail}
+                        async-src={item}
+                        decoding="async"
+                        loading="lazy"
                         onLoad={() => {
                             loadByIndex[index] = false;
                         }}
                         alt="media"
                     />)
             }
+            // let checkRender: any = document.getElementById(`media_${index}`);
+            // if (checkRender?.complete) {
             // console.log({ image_render, index: loadByIndex[index] })
             return (
                 <figure className="img_video">
                     <React.Fragment>
-                        {image_render}
-                        <AsyncImage
-                            onClick={() => { removeFromItem(index) }}
-                            src={remove}
-                            alt="remove"
-                            className="remove"
-                        />
+                        {image_render && (
+                            <React.Fragment>
+                                {image_render}
+                                <img
+                                    onClick={() => { removeFromItem(index) }}
+                                    src={remove}
+                                    alt="remove"
+                                    className="remove"
+                                />
+                            </React.Fragment>
+                        )}
                     </React.Fragment>
                     {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
                 </figure>
             )
+            // }
         }
     }
 

@@ -718,7 +718,6 @@ export const lastUsedCard = async () => {
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
-  setShowToast(true, response.message);
   return { success: false };
 }
 

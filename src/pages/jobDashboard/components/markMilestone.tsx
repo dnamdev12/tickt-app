@@ -339,9 +339,10 @@ const MarkMilestone = ({
                     },
                     index
                   ) => {
+                    // As discussed now we take this status 4 as status 0 bacause after the decline on the change-request the status becomes 4.
                     const prevMilestoneStatus = milestones[index - 1]?.status;
                     const isActive =
-                      (status === 0 || status === 5) &&
+                      (status === 0 || status === 4 || status === 5) && // here changes done for status 4 
                       // completed or approved
                       ([1, 2].includes(prevMilestoneStatus) ||
                         prevMilestoneStatus === undefined);
@@ -351,7 +352,7 @@ const MarkMilestone = ({
                       <li
                         key={milestoneId}
                         className={
-                          [1, 2].includes(status)
+                          [1, 2,].includes(status)
                             ? `check`
                             : isActive
                               ? 'active'

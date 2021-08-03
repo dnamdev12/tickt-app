@@ -54,8 +54,6 @@ const PaymentDetails = (props: any) => {
         return false;
     }
 
-
-
     const handleContinue = async () => {
         let splitItem: any = [];
         if (stateData?.date?.length) {
