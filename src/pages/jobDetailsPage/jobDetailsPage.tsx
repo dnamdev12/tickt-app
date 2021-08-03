@@ -363,7 +363,11 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await replyCancellation(data);
         if (res.success) {
-            props.history.push('/request-monitored/cr');
+            if (type === 'acceptJobCancelRequest') {
+                props.history.push('/request-monitored/cc');
+            } else {
+                props.history.push('/request-monitored/cr');
+            }
             setJobActionState((prevData: any) => ({
                 ...prevData,
                 isCancelRequestAcceptedClicked: false,
@@ -560,7 +564,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="tagg">{props.isSkeletonLoading ? <Skeleton /> : 'Job details'}</span>
                                     <div className="job_info">
                                         {props.isSkeletonLoading ? <Skeleton count={2} /> : <ul>
-                                            <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
+                                            <li className={`icon ${['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? 'calendar' : 'clock'}`}>{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount || ''}</li>
                                             <li className="icon location line-1" title={jobDetailsData?.locationName}>{jobDetailsData?.locationName || ''}</li>
                                             {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ?

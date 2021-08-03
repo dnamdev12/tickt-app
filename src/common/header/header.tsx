@@ -541,7 +541,7 @@ const Header = (props: any) => {
                                             <MenuItem onClick={() => { handleClose('profile'); history.push('/payment-history'); }}>
                                                 <span className="setting_icon">
                                                     <img src={revenue} alt="revenue" />
-                                                    {props.userType === 1 ? 'My revenue' : 'Transaction history'}
+                                                    {props.userType === 1 ? 'Payment history' : 'Transaction history'}
                                                 </span>
                                             </MenuItem>
                                         )}

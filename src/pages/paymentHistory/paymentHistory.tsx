@@ -150,7 +150,7 @@ const PaymentHistory = ({
         <div className="custom_container">
           <div className="relate">
             <button className="back" onClick={() => history.goBack()}></button>
-            <span className="title">{userType === 1 ? 'My revenue' : 'Transaction history'}</span>
+            <span className="title">{userType === 1 ? 'Payment history' : 'Transaction history'}</span>
           </div>
           <ul className="total_count_card">
             <li className="revenue">
