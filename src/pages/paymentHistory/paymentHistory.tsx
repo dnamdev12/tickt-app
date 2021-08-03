@@ -121,7 +121,7 @@ const PaymentHistory = ({
               <div className="flex_col_sm_4 col_ruler">
                 <span className="sub_title">{userType === 1 ? 'Posted by' : 'Tradie'}</span>
                 <div className="tradie_card posted_by view_more ">
-                  <a href="javascript:void(0)" className="chat circle"></a>
+                  {/* <a href="javascript:void(0)" className="chat circle"></a> */}
                   <div className="user_wrap" onClick={() => history.push(`/${userType === 1 ? 'builder' : 'tradie'}-info?${userType === 1 ? 'builder' : 'trade'}Id=${userType === 1 ? builderId : tradieId}`)}>
                     <figure className="u_img">
                       <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="img" />

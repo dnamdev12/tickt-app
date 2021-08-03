@@ -51,7 +51,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
         case 'account_number':
           return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 6 ? 'Minimum 6 digits are required' : '';
         case 'bsb_number':
-          return !/^\d{3}-\d{3}$/.test(value) ? 'Please enter valid BSB Number like XYZ-ZZZ' : '';
+          return !/^\d{3}-\d{3}$/.test(value) ? 'Please enter valid BSB Number like 123-444' : '';
       }
 
       return '';
