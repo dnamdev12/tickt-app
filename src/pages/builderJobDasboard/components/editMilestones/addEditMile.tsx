@@ -114,10 +114,7 @@ const AddEditMile = (props: any) => {
         let filteredItems = milestones.filter((item: any) => {
             let toDate = item?.toDate;
             let fromDate = item?.fromDate;
-            console.log({
-                fromDate,
-                toDate
-            })
+
             if (fromDate) {
                 let from_format = moment(fromDate).format('MM-DD-YYYY')
                 item['from_date'] = from_format;
@@ -161,7 +158,7 @@ const AddEditMile = (props: any) => {
                         }
                     }
                 }
-                
+
                 if (to_date && from_date) {
                     if (count_times[from_date] > -1) {
                         count_times[from_date]++;
@@ -236,7 +233,7 @@ const AddEditMile = (props: any) => {
         setTimeout(() => {
             console.log('Callable------>')
             onMountCallable();
-        },1000);
+        }, 1000);
     }, [toggleCalender])
 
 
@@ -255,10 +252,10 @@ const AddEditMile = (props: any) => {
         return true;
     }
 
-    const checkBeforeExist = (time: any, milestones_?:any) => {
+    const checkBeforeExist = (time: any, milestones_?: any) => {
         let count_times: any = {};
         let catch_boolean: boolean = true;
-        let milestoneItems:any = props?.milestones;
+        let milestoneItems: any = props?.milestones;
 
         milestoneItems.forEach((mile: any) => {
 
@@ -321,7 +318,7 @@ const AddEditMile = (props: any) => {
         let index = props?.milestones?.length;
 
         let isChecked = checkBeforeExist(time);
-        if(isChecked){
+        if (isChecked) {
             addTimeToMileStone(time, index);
         }
         // setCalender(date.selection);
@@ -421,6 +418,7 @@ const AddEditMile = (props: any) => {
     if (!moment(calenderItems?.startDate).isValid()) {
         ItemCal = { startDate: new Date(), endDate: '', key: 'selection' }
     }
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_12">
@@ -506,7 +504,8 @@ const AddEditMile = (props: any) => {
                                 </span>
                             </div>
                             <p className="sub_title">
-                                {`${props.editMile !== '' ? 'Edit' : ''} Milestone ${props.editMile !== '' ? (props.editMile + 1) : (props.milestones?.length + 1)}`}
+                                {`${props.editMile !== '' ? 'Edit ' : ' Milestone '}`}
+                                {`${!props?.isSame && props.editMile ? ' Milestone ' + props.editMile : props?.isSame && props.editMile > -1 ? ' Milestone ' + (props.editMile + 1) : props?.milestones?.length + 1}`}
                             </p>
                         </div>
                     </div>
@@ -596,6 +595,7 @@ const AddEditMile = (props: any) => {
                                                 milestoneName: stateData.name,
                                                 isPhotoevidence: stateData.isPhoto,
                                                 order: stateData.order,
+                                                index: props.editMile,
                                                 status: stateData.status,
                                                 recommendedHours: stateData.recommended,
                                                 fromDate: calenderItems.startDate,

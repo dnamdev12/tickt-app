@@ -36,10 +36,14 @@ const EditMilestone = (props: any) => {
 
     useEffect(() => {
         if (!stateData?.length) {
-            setStateData(milestones);
-            setItems(milestones);
+            let filtered = milestones.map((item: any, index: any) => {
+                item['count'] = index + 1;
+                return item;
+            })
+            setStateData(filtered);
+            setItems(filtered);
         }
-    }, [props])
+    }, [])
 
     const reorder = (list: Array<any>, source: any, destination: any) => {
         let startIndex = source.index;
@@ -73,7 +77,7 @@ const EditMilestone = (props: any) => {
 
         // if (source.droppableId === destination.droppableId) {
         const reOrderItems = reorder(
-            stateData,
+            stateItems,
             source,
             destination
         );
@@ -82,7 +86,7 @@ const EditMilestone = (props: any) => {
 
     const checkIfValidDates = (item: any) => {
 
-        let isfilter = stateData.filter((item_: any) => {
+        let isfilter = stateItems.filter((item_: any) => {
             if (item_.hasOwnProperty('fromDate')) {
                 if (moment(item_?.fromDate).isValid()) {
                     item_['fromDate'] = moment(item_.fromDate).startOf('day').toDate()
@@ -135,7 +139,7 @@ const EditMilestone = (props: any) => {
         }
 
         let item_find: any = false;
-        let filteredItem = stateData;
+        let filteredItem = stateItems;
 
         if (filteredItem?.length) {
             filteredItem.forEach((item_date: any) => {
@@ -186,10 +190,14 @@ const EditMilestone = (props: any) => {
     }
 
     const addNewMile = (item: any) => {
-        let state_data: any = stateData;
-        if (itemData.edit) { // edit
+        let state_data: any = stateItems;
+        if (itemData?.edit) { // edit
             let index = parseInt(itemData.editId);
-            console.log({ item }, '---->')
+            let prev_count = null;
+            if (state_data?.length > 1) {
+                prev_count = state_data[index - 1].count;
+            }
+            console.log({ item, prev_count }, '---->')
             state_data[itemData.editId]['isPhotoevidence'] = item.isPhotoevidence;
             state_data[itemData.editId]['milestoneName'] = item.milestoneName;
             state_data[itemData.editId]['recommendedHours'] = item.recommendedHours;
@@ -197,12 +205,20 @@ const EditMilestone = (props: any) => {
             state_data[itemData.editId]['status'] = item.status;
             state_data[itemData.editId]['order'] = item.order;
 
+            if (prev_count) {
+                state_data[index]['count'] = prev_count + 1;
+            } else {
+                state_data[index]['count'] = 1;
+            }
+
             state_data[index]['fromDate'] = moment(item.fromDate).isValid() ? moment(item.fromDate).toISOString() : '';
             state_data[index]['toDate'] = moment(item.toDate).isValid() ? moment(item.toDate).toISOString() : '';
-            setStateData(state_data)
-
+            // setStateData(state_data);
+            setItems(state_data)
         } else {
-            setStateData((prev: any) => ([...prev, item]));
+            item['count'] = state_data?.length;
+            setItems((prev: any) => ([...prev, item]));
+            // setStateData((prev: any) => ([...prev, item]));
         }
     }
 
@@ -215,7 +231,9 @@ const EditMilestone = (props: any) => {
         return (
             <AddEditMile
                 item={item}
-                milestones={filtered}
+                milestones={stateItems}
+                // filtered={filtered}
+                isSame={JSON.stringify(filtered) === JSON.stringify(stateData)}
                 editMile={itemData.editId}
                 addNewMile={addNewMile}
                 resetItems={resetItems}
@@ -224,9 +242,30 @@ const EditMilestone = (props: any) => {
     }
 
     const removeMilestoneByIndex = (index: any) => {
-        stateData[index]['isDeleteRequest'] = true;
-        setStateData(stateData);
-        resetItems();
+        let state_data: any = stateItems;
+        state_data[index]['isDeleteRequest'] = true;
+        let count = 0;
+        if (state_data?.length) {
+            let filtered = state_data.map((item: any) => {
+                if (!item?.isDeleteRequest) {
+                    count++;
+                    item['count'] = count;
+                }
+                return item;
+            });
+            // setStateData(filtered);
+
+            let Items = filtered.filter((item: any) => {
+                if (!item?.isDeleteRequest) {
+                    return item;
+                }
+            })
+           
+            resetItems();
+            if (Items?.length) {
+                setItems(Items)
+            }
+        }
     }
 
     const checkIfChange = () => {
@@ -235,15 +274,17 @@ const EditMilestone = (props: any) => {
             isTrue = false;
         } else {
             stateData?.forEach((dt: any) => {
-                console.log({dt})
+                console.log({ dt })
                 if (dt?.description?.length) {
                     isTrue = false;
                 }
+
+                if (dt?.isDeleteRequest) {
+                    isTrue = false;
+                }
+
             });
         }
-        console.log({
-            isTrue
-        })
         return isTrue;
     }
 
@@ -297,6 +338,107 @@ const EditMilestone = (props: any) => {
         if (response?.success) {
             props.history.push('/milestone-request-sent-success');
         }
+    }
+
+
+    const customRenderElements = ({
+        milestoneName,
+        isPhotoevidence,
+        recommendedHours,
+        isDeleteRequest,
+        fromDate,
+        toDate,
+        status,
+        index,
+        custom_index
+    }: any) => {
+        console.log({
+            index,
+            custom_index
+        })
+        return (
+            <Draggable
+                key={`${index}-${milestoneName}`}
+                draggableId={`${milestoneName}-${index}`}
+                index={index}
+                isDragDisabled={![0, 4, -1].includes(status) ? true : false}
+            >
+                {(provided: any, snapshot: any) => (
+                    <li
+                        key={index}
+                        className={![0, 4, -1].includes(status) ? 'disable_milstone' : ''}
+                        ref={provided.innerRef}
+                        {...provided.draggableProps}
+                        {...provided.dragHandleProps}
+                        style={{
+                            ...provided.draggableProps.style,
+                        }}>
+                        {editItem[index] ? (
+                            <div className="edit_delete">
+                                <span
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        console.log({ index })
+                                        setItemData((prev: any) => ({
+                                            ...prev,
+                                            edit: true,
+                                            editId: index,
+                                            deleteId: ''
+                                        }));
+                                    }}
+                                    className="edit">
+                                </span>
+                                <span
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        setItemData((prev: any) => ({
+                                            ...prev,
+                                            editId: '',
+                                            deleteId: index
+                                        }));
+                                    }}
+                                    className="delete"></span>
+                            </div>
+                        ) : ''}
+                        <div className="checkbox_wrap agree_check">
+                            <input
+                                checked={editItem[index]}
+                                onClick={(e: any) => {
+                                    if ([0, 4, -1].includes(status)) {
+                                        checkOnClick(e, index)
+                                    } else {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                className="filter-type filled-in"
+                                type="checkbox"
+                                id={`milestone${index}`} />
+                            {console.log({
+                                custom_index,
+                                index
+                            })}
+                            <label htmlFor={`milestone${index}`}>{`${custom_index}. ${milestoneName}`}</label>
+                            <div className="info">
+                                {isPhotoevidence ?
+                                    <span>{'Photo evidence required'}</span>
+                                    : <span></span>}
+                                <span>
+                                    {renderTimeWithCustomFormat(
+                                        fromDate,
+                                        moment(fromDate).isSame(moment(toDate)) ? '' : toDate,
+                                        '',
+                                        ['DD MMM', 'DD MMM YY']
+                                    )}
+                                </span>
+                                <span>
+                                    {recommendedHours}
+                                </span>
+                            </div>
+                        </div>
+                    </li>
+                )}
+            </Draggable>
+        )
     }
 
     return (
@@ -384,110 +526,43 @@ const EditMilestone = (props: any) => {
 
             <div className="flex_row">
                 <div className="flex_col_sm_7">
-                    {console.log({ stateData })}
                     <DragDropContext onDragEnd={onDragEnd}>
                         <Droppable droppableId="milestones">
                             {(provided, snapshot) => (
                                 <ul ref={provided.innerRef}
                                     className={`milestones${snapshot.isDraggingOver ? ' dragging-over' : ''}`}>
-                                    {stateData?.length > 0 &&
-                                        stateData.filter((item: any) => {
-                                            if (!item?.isDeleteRequest) {
-                                                return item;
-                                            }
-                                        }).map(({
+                                    {stateItems?.length > 0 &&
+                                        stateItems.map(({
                                             milestoneName,
                                             isPhotoevidence,
                                             recommendedHours,
+                                            isDeleteRequest,
                                             fromDate,
                                             toDate,
-                                            status
+                                            status,
+                                            count
                                         }: {
                                             milestoneName: string,
                                             isPhotoevidence: boolean,
                                             fromDate: string,
                                             toDate: string,
                                             status: number
-                                            recommendedHours: any
-                                        }, index: any) => (
-                                            <Draggable
-                                                key={`${index}-${milestoneName}`}
-                                                draggableId={`${milestoneName}-${index}`}
-                                                index={index}
-                                                isDragDisabled={![0, 4, -1].includes(status) ? true : false}
-                                            >   
-                                                {(provided: any, snapshot: any) => (
-                                                    <li
-                                                        key={index}
-                                                        className={![0, 4, -1].includes(status) ? 'disable_milstone' : ''}
-                                                        ref={provided.innerRef}
-                                                        {...provided.draggableProps}
-                                                        {...provided.dragHandleProps}
-                                                        style={{
-                                                            ...provided.draggableProps.style,
-                                                        }}>
-                                                        {editItem[index] ? (
-                                                            <div className="edit_delete">
-                                                                <span
-                                                                    onClick={(e) => {
-                                                                        setItemData((prev: any) => ({
-                                                                            ...prev,
-                                                                            edit: true,
-                                                                            editId: index,
-                                                                            deleteId: ''
-                                                                        }));
-                                                                    }}
-                                                                    className="edit">
-                                                                </span>
-                                                                <span
-                                                                    onClick={(e) => {
-                                                                        e.preventDefault();
-                                                                        setItemData((prev: any) => ({
-                                                                            ...prev,
-                                                                            editId: '',
-                                                                            deleteId: index
-                                                                        }));
-                                                                    }}
-                                                                    className="delete"></span>
-                                                            </div>
-                                                        ) : ''}
-                                                        <div className="checkbox_wrap agree_check">
-                                                            <input
-                                                                checked={editItem[index]}
-                                                                onClick={(e: any) => {
-                                                                    if ([0, 4, -1].includes(status)) {
-                                                                        checkOnClick(e, index)
-                                                                    } else {
-                                                                        e.preventDefault();
-                                                                    }
-                                                                }}
-                                                                className="filter-type filled-in"
-                                                                type="checkbox"
-                                                                id={`milestone${index}`} />
-                                                            <label htmlFor={`milestone${index}`}>{`${index + 1}. ${milestoneName}`}</label>
-                                                            <div className="info">
-                                                                {isPhotoevidence ?
-                                                                    <span>{'Photo evidence required'}</span>
-                                                                    : <span></span>}
-                                                                <span>
-                                                                    {renderTimeWithCustomFormat(
-                                                                        fromDate,
-                                                                        moment(fromDate).isSame(moment(toDate)) ? '' : toDate,
-                                                                        '',
-                                                                        ['DD MMM', 'DD MMM YY']
-                                                                    )}
-                                                                </span>
-                                                                <span>
-                                                                    {recommendedHours}
-                                                                </span>
-                                                            </div>
-                                                        </div>
-                                                    </li>
-                                                )}
-                                            </Draggable>
-                                        ))}
+                                            recommendedHours: any,
+                                            isDeleteRequest?: boolean,
+                                            count?: any
+                                        }, index: any) => !!isDeleteRequest == false && (customRenderElements({
+                                            milestoneName,
+                                            isPhotoevidence,
+                                            recommendedHours,
+                                            isDeleteRequest,
+                                            fromDate,
+                                            toDate,
+                                            status,
+                                            index,
+                                            custom_index: count
+                                        })))}
                                     {provided.placeholder}
-                                    {stateData?.length === 0 && (
+                                    {stateItems?.length === 0 && (
                                         <figure className="placeholder_img">
                                             <img
                                                 src={milestonesPlaceholder}
@@ -499,7 +574,7 @@ const EditMilestone = (props: any) => {
                             )}
                         </Droppable>
                     </DragDropContext>
-                    {!stateData?.length ? (
+                    {!stateItems?.length ? (
                         <>
                             <div className="form_field">
                                 <button
@@ -530,7 +605,7 @@ const EditMilestone = (props: any) => {
                                         let checkIfItem: boolean = checkIfDatesValid();
                                         console.log({ checkIfItem })
                                         if (!checkIfItem) {
-                                            let check: boolean = checkIfValidDates(stateData);
+                                            let check: boolean = checkIfValidDates(stateItems);
                                             console.log({ check })
                                             if (check) {
                                                 submitData()
