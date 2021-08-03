@@ -19,6 +19,9 @@ import profile from '../../assets/images/ic-profile.png';
 import revenue from '../../assets/images/ic-revenue.png';
 import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
+import noNotification from '../../assets/images/no-notifications.png';
+
+
 
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
@@ -570,6 +573,10 @@ const Header = (props: any) => {
                                         keepMounted
                                         open={Boolean(anchorElNotif)}
                                         onClose={() => handleClose('notification')}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
                                         transformOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
@@ -595,7 +602,7 @@ const Header = (props: any) => {
                                                         </figure>
                                                         <div className="info">
                                                             {/* <span className="who line-1">{item.title}</span> */}
-                                                            <span className="who">{item.title}</span>
+                                                            <span className="who line-1">{item.title}</span>
                                                             <span className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}
                                                         </div>
@@ -606,6 +613,14 @@ const Header = (props: any) => {
                                         {hasMoreNotif && <div className="more_notif" onClick={() => callNotificationList()}>
                                             <a className="link">View more</a>
                                         </div>}
+
+                                        {/* <div className="no_notification">
+                                            <figure>
+                                                <img src={noNotification} alt="no-notifications" />
+                                            </figure>
+                                            <span>No Notifications</span>
+                                        </div> */}
+
                                     </Menu>
                                     {/* Notification close */}
 

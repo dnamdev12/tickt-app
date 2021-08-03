@@ -693,11 +693,9 @@ body {
   &.notifications{
     .MuiMenu-paper {
       width: 433px;
-      @media(max-width: 650px){
-        margin: 45px 0 0 0px;
-      }
+      margin: 0;
       .sub_title{
-        font-size: 26px;
+        font-size: 20px;
         margin-bottom: 20px;
       }
     }
@@ -709,7 +707,6 @@ body {
       background-color: #f6f7f9;
       padding-bottom: 10px;
       margin: 0 -32px 0px;
-      cursor: default;
       &:last-child{
         padding-bottom: 0;
       }
@@ -742,11 +739,12 @@ body {
     line-height: 1.43;
     color: var(--greyish-brown);
     margin: 2px 0;
-    display: block;
+    display: block !important;
   }
   .time{
     @include position(absolute, 0, 0, auto, auto);
     color: var(--dark-grey);
+    font-size: 12px;
   }
   .not_img{
     width: 64px;
@@ -781,6 +779,26 @@ body {
   .info{
     width: 55%;
     display: inline-block;
+  }
+}
+
+.no_notification{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-flow: column;
+  height: 330px;
+  figure{
+    height: 100px;
+    img{
+      height: 100px;
+    }
+  }
+  span{
+    color: #547ac2;
+    font-size: 14px;
+    display: block;
+    margin: 5px 0;
   }
 }
 
@@ -5327,7 +5345,7 @@ div#light-box div {
     .chat_col{
       width: 100%;
       position: relative;
-      padding: 20px 10px 20px 20px;
+      padding: 0px 10px 20px 20px;
       height: calc(100vh - 150px);
       transition: all ease-in 0.3s;
       &.active{
@@ -5363,6 +5381,7 @@ div#light-box div {
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
+          cursor: pointer;
           @media(max-width: 650px){
             width: 48%;
           }
@@ -5402,7 +5421,7 @@ div#light-box div {
           height: 415px;
         }
         @media(max-width: 768px){
-          height: 100%;
+          height: 75%;
         }
         .date_time{
           text-align: center;
@@ -5477,6 +5496,9 @@ div#light-box div {
         width: 100%;
         background: var(--white);
         box-shadow: 0 -2px 40px 0 rgba(174, 174, 174, 0.2);
+        @media(max-width: 768px){
+          bottom: 50px;
+        }
         input, textarea{
           border: none;
           padding: 16px 40px 16px 60px;
@@ -5485,11 +5507,17 @@ div#light-box div {
             box-shadow:  none !important;
           }
         }
+        .hide{
+          display: none !important;
+        }
         textarea{
           padding: 1px 2px 1px 60px;
           margin: 16px 0 0;
           min-height: auto;
           width: 92%;
+          @media(max-width: 768px){
+            width: 88%;
+          }
           &::placeholder{
             color: #858e97;
           }
@@ -5508,7 +5536,7 @@ div#light-box div {
       transform: translateX(100%);
       @media(max-width: 768px){
         width: 100%;
-        right: -100%;
+        height: 100%;
         position: absolute;
         border: none;
         background-color: var(--white);
@@ -5533,6 +5561,9 @@ div#light-box div {
 }
 
 .chat_list {
+  height: calc(100vh - 270px);
+  max-height: 100%;
+  overflow-y: auto;
   li {
     .chat{
       padding: 19px 10px 19px 120px;
@@ -5546,10 +5577,10 @@ div#light-box div {
         padding: 15px 10px 17px 120px;
         }
         @media(max-width: 768px){
-          padding: 15px 10px 17px 100px;
+          padding: 15px 10px 17px 20px;
         }
       @media(max-width: 650px){
-        padding: 12px 10px 12px 40px;
+        padding: 12px 10px;
       }
       &.active, &:hover{
         background: var(--white);
