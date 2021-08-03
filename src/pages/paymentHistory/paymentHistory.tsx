@@ -134,7 +134,18 @@ const PaymentHistory = ({
                 </div>
                 <div className="relate">
                   <span className="sub_title">Job details</span>
-                  <span className="edit_icon" title="More" onClick={() => history.push(`/job-details-page?jobId=${jobId}`)}>
+                  <span
+                    className="edit_icon"
+                    title="More"
+                    onClick={() => {
+                      let payment_:any = paymentDetails;
+                      console.log({
+                        payment_,
+                        tradieId: payment_?.tradieId,
+                        specialization: payment_.specialization[0]
+                      })
+                      history.push(`/job-details-page?jobId=${payment_?.jobId}`);
+                    }}>
                     <img src={more} alt="more" />
                   </span>
                 </div>

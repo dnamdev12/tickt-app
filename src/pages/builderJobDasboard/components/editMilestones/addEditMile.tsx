@@ -148,12 +148,20 @@ const AddEditMile = (props: any) => {
                         count_times[from_date]++;
                     }
 
-                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    // let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
-                        from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                        let element_from = from_element[0];
+                        if (from_element?.length > 1) {
+                            element_from = from_element[1];
+                        }
+
+                        if (element_from) {
+                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                        }
                     }
                 }
-
+                
                 if (to_date && from_date) {
                     if (count_times[from_date] > -1) {
                         count_times[from_date]++;

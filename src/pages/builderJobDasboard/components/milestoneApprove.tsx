@@ -133,6 +133,9 @@ const MilestoneApprove = (props: any) => {
                                         <img
                                             style={{ cursor: 'pointer' }}
                                             onClick={() => { setItemToggle(index) }}
+                                            async-src={media_item?.link}
+                                            decoding="async"
+                                            loading="lazy"
                                             src={media_item?.link} alt="media" />
                                     ) : media_item?.mediaType == 2 ? (
                                         <video
@@ -148,6 +151,9 @@ const MilestoneApprove = (props: any) => {
                                                     setLoadingTrue(true)
                                                 }}
                                                 src={media_item}
+                                                async-src={media_item}
+                                                decoding="async"
+                                                loading="lazy"
                                                 alt="media" />
                                         </>
                                     )}

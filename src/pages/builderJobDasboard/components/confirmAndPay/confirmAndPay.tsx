@@ -21,11 +21,32 @@ import { getCardList, deleteCard } from '../../../../redux/jobs/actions'
 const ConfirmAndPay = (props: any) => {
     const [toggle, setToggle] = useState(false);
     const [selected, setSelected] = useState(0);
-    const [editItem, setEditItem] = useState('');
+    const [editItem, setEditItem] = useState<any>('');
     const [deleteToggle, setDeleteToggle] = useState(false);
     const [paymentDetail, setPaymentDetail] = useState<any>([]);
 
 
+    const setAfterFetch = (filterItems: any) => {
+        console.log('Here!', {
+            toggle: props?.toggleDetails
+        })
+        if (props?.toggleDetails?.toggle) {
+            setToggle(true);
+            let data = props?.toggleDetails?.data;
+            let exp_date = (data?.exp_month).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
+            let data_:any = {
+                cardId: data?.cardId,
+                number: `${data?.last4}`,
+                cardholderName: data?.name,
+                date: `${exp_date}/${((data?.exp_year).toString()).substring(2, 4)}`,
+                cvv: '000',
+                cardType: data?.funding,
+                fetched: true
+            }
+
+            setEditItem(data_);
+        }
+    }
 
     const fetchMyAPI = useCallback(async () => {
         let result: any = await getCardList();
@@ -45,7 +66,8 @@ const ConfirmAndPay = (props: any) => {
                 }
             });
         }
-        setPaymentDetail(filterItems)
+        setPaymentDetail(filterItems);
+        setAfterFetch(filterItems)
     }, [])
 
 
@@ -61,6 +83,9 @@ const ConfirmAndPay = (props: any) => {
 
     const backToScreen = () => {
         setToggle(false);
+        if (props?.toggleDetails?.data) {
+            props.backToScreen();
+        }
     }
 
     const setDetials = (data: any) => {
@@ -72,6 +97,9 @@ const ConfirmAndPay = (props: any) => {
     }
 
     if (toggle) {
+        console.log({
+            editItem
+        })
         return (
             <PaymentDetails
                 jobName={props?.jobName}

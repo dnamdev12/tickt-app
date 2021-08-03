@@ -82,6 +82,9 @@ const SeeDetails = (props: any) => {
                                         <img
                                             style={{ cursor: 'pointer' }}
                                             onClick={() => { setItemToggle(index) }}
+                                            async-src={media_item?.link}
+                                            decoding="async"
+                                            loading="lazy"
                                             src={media_item?.link} alt="media" />
                                     ) : media_item?.mediaType == 2 ? (
                                         <video
@@ -91,6 +94,9 @@ const SeeDetails = (props: any) => {
                                     ) : (
                                         <img
                                             style={{ cursor: 'pointer' }}
+                                            async-src={media_item}
+                                            decoding="async"
+                                            loading="lazy"
                                             onClick={() => { setItemToggle(index) }}
                                             src={media_item} alt="media" />
                                     )}
@@ -111,11 +117,11 @@ const SeeDetails = (props: any) => {
                     <div className="form_field">
                         <button
                             onClick={() => {
-                                backToScreen() 
+                                backToScreen()
                             }}
                             className="fill_btn full_btn">OK</button>
                     </div>
-                  
+
                 </div>
             </div>
         )
