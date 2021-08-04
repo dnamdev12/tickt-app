@@ -26,6 +26,9 @@ import FixedConfirm from './components/confirmAndPay/fixedRate';
 import ConfirmAndPay from './components/confirmAndPay/confirmAndPay';
 import FixedRate from './components/confirmAndPay/fixedRate';
 
+import InfiniteScroll from "react-infinite-scroll-component";
+
+
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -57,7 +60,8 @@ interface State {
     enableEditMilestone: any,
     enableLodgeDispute: any,
     enableCancelJob: any,
-    globalJobId: string
+    globalJobId: string,
+    hasLoad: boolean
 }
 class JobDashboard extends Component<Props, State> {
     constructor(props: any) {
@@ -77,7 +81,8 @@ class JobDashboard extends Component<Props, State> {
             enableEditMilestone: false,
             enableLodgeDispute: false,
             enableCancelJob: false,
-            globalJobId: ''
+            globalJobId: '',
+            hasLoad: true
         }
     }
 
@@ -89,7 +94,8 @@ class JobDashboard extends Component<Props, State> {
     componentDidUpdate(prevProps: any) {
         let nextProps: any = this.props;
         let { activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs, approvalJobs } = nextProps;
-        let { activeType, selectedItem: { jobtype } } = this.state;
+        let { activeType, selectedItem: { jobtype }, currentPage, hasLoad } = this.state;
+        let state_: any = this.state;
 
         let urlParams = new URLSearchParams(nextProps?.location?.search);
         let activeType_ = urlParams.get('active');
@@ -97,12 +103,6 @@ class JobDashboard extends Component<Props, State> {
         let editMilestone_ = urlParams.get('editMilestone');
         let lodgeDispute_ = urlParams.get('lodgeDispute');
         let cancelJob_ = urlParams.get('cancelJob');
-
-        console.log({
-            activeType_,
-            jobId_,
-            editMilestone_
-        }, 'nextProps');
 
         if (activeType_) {
             if (activeType_ !== activeType) {
@@ -124,20 +124,53 @@ class JobDashboard extends Component<Props, State> {
             }
         }
 
-        if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state.activeJobs)) {
+        if (
+            jobtype === 'active' &&
+            JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
+            (this.state?.activeJobs?.length < currentPage * 10)
+        ) {
+
             let { active, needApprovalCount, newApplicantsCount } = activeJobs;
-            this.setState({
-                globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
-                enableEditMilestone: editMilestone_ === "true" ? true : false,
-                enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
-                enableCancelJob: cancelJob_ === "true" ? true : false,
-                activeJobs: active,
-                count: {
-                    approveCount: needApprovalCount,
-                    applicantCount: newApplicantsCount
+            let page_get = 0;
+            let prevValues = [];
+
+            if (Array.isArray(active) && active?.length) {
+                page_get = active[0]?.page;
+            }
+
+            if (Array.isArray(this.state?.activeJobs) && this.state?.activeJobs?.length) {
+                prevValues = this.state?.activeJobs;
+            };
+
+
+            if (hasLoad && !active?.length && page_get > 0) {
+                alert('false');
+                this.setState({ hasLoad: false });
+                // return
+            } else {
+                if (hasLoad && active?.length && page_get === currentPage) {
+                    this.setState({
+                        globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
+                        enableEditMilestone: editMilestone_ === "true" ? true : false,
+                        enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
+                        enableCancelJob: cancelJob_ === "true" ? true : false,
+                        activeJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active,
+                        count: {
+                            approveCount: needApprovalCount,
+                            applicantCount: newApplicantsCount
+                        }
+                    }, () => {
+                        console.log({
+                            activeJobs: this.state?.activeJobs,
+                            currentPage,
+                            page_get,
+                            active_length:active?.length
+                        }, 'inside')
+                    });
                 }
-            });
+            }
         }
+
 
         if (jobtype === 'past' && JSON.stringify(pastJobs?.past) !== JSON.stringify(this.state.pastJobs)) {
             let { past, needApprovalCount, newApplicantsCount } = pastJobs;
@@ -225,6 +258,8 @@ class JobDashboard extends Component<Props, State> {
 
     render() {
         let {
+            hasLoad,
+            currentPage,
             enableEditMilestone,
             enableLodgeDispute,
             enableCancelJob,
@@ -239,7 +274,11 @@ class JobDashboard extends Component<Props, State> {
         let props: any = this.props;
         let isLoading: any = props.isLoading;
 
-
+        console.log({
+            activeJobs,
+            currentPage,
+            hasLoad
+        }, 'inside')
         // console.log({ approvalJobs }, '------------------------------->')
         return (
             <div className="app_wrapper">
@@ -318,11 +357,34 @@ class JobDashboard extends Component<Props, State> {
                                 </ul>
                             </div>
                         </div>
-                        <div className="detail_col">
-                            {/* <FixedRate />
-                            <ConfirmAndPay /> */}
-                            {jobtype === 'past' && (
 
+                        <InfiniteScroll
+                            dataLength={activeJobs?.length}
+                            next={() => {
+                                console.log('callable - Here!', { cp: this.state.currentPage });
+                                this.setState({ currentPage: this.state.currentPage + 1 }, () => {
+                                    console.log('callable - Inside', { cp: this.state.currentPage });
+                                    this.props.getActiveJobsBuilder(this.state.currentPage);
+                                });
+                            }}
+                            hasMore={hasLoad}
+                            loader={<></>}
+                            className="detail_col element-side-scroll">
+                            {hasLoad ? '44' : '00'}
+                            <ActiveJobsComponent
+                                isLoading={isLoading}
+                                dataItems={activeJobs}
+                                jobType={jobtype}
+                                activeType={activeType}
+                                setJobLabel={setSelected}
+                                history={props.history}
+                                globalJobId={globalJobId}
+                                enableEditMilestone={enableEditMilestone}
+                                enableLodgeDispute={enableLodgeDispute}
+                                enableCancelJob={enableCancelJob}
+                            />
+
+                            {/* {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}
                                     dataItems={pastJobs}
@@ -380,8 +442,8 @@ class JobDashboard extends Component<Props, State> {
                                     setJobLabel={setSelected}
                                     activeType={activeType}
                                     history={props.history}
-                                />)}
-                        </div>
+                                />)} */}
+                        </InfiniteScroll>
                     </div>
                 </div>
             </div >
