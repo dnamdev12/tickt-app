@@ -43,7 +43,7 @@ const Vouchers = (props: any) => {
         // let res_profile: any = await HomeTradieProfile({ tradieId: id });
         if (res_profile.success) {
 
-            let completeItems = res_profile?.data?.vouchesData; //[]
+            let completeItems = res_profile?.data?.voucher; //[]
             // console.log({ res_profile })
             // if (res_profile?.data?.vouchesData?.length) {
 
@@ -63,7 +63,7 @@ const Vouchers = (props: any) => {
             //         }
             //     ])
             // }
-            setStateData(res_profile.data);
+            setStateData(res_profile.data.voucher);
         }
     }
 

@@ -10,6 +10,7 @@ const ChooseTheJob = (props: any) => {
 
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [stateData, setStateData] = useState([]);
+    const [isToggle, setToggle] = useState(false);
  
     const checkOnClick = (e: any, index: any) => {
         setEditItems((prev) => ({ [index]: e.target.checked }));
@@ -100,6 +101,12 @@ const ChooseTheJob = (props: any) => {
                                                 <input
                                                     checked={editItem[item?.jobId] == true ? true : false}
                                                     onChange={(e: any) => { checkOnClick(e, item?.jobId) }}
+                                                    onClick={() => {
+                                                        // let toggle:any = isToggle;
+                                                        // setToggle((prev) => {
+                                                        //     toggle = !isToggle;
+                                                        // });
+                                                    }}
                                                     className="filter-type filled-in"
                                                     type="checkbox"
                                                     id={`milestone${index}`} />

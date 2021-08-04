@@ -298,12 +298,9 @@ const SearchFilter = (props: any) => {
             data['address'] = JSON.stringify(local_info?.suggestionSelected);
         }
 
-
         if(!data?.address || !data?.address?.length){
             delete data?.address;
         }
-
-
 
         props.postHomeSearchData(data)
         props.getTitleInfo({
