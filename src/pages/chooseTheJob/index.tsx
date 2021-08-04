@@ -11,8 +11,12 @@ const ChooseTheJob = (props: any) => {
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [stateData, setStateData] = useState([]);
     const [isToggle, setToggle] = useState(false);
- 
+
     const checkOnClick = (e: any, index: any) => {
+        if(editItem[index]){
+            setEditItems({});
+            return
+        }
         setEditItems((prev) => ({ [index]: e.target.checked }));
     }
 
@@ -37,7 +41,7 @@ const ChooseTheJob = (props: any) => {
 
     useEffect(() => {
         console.log('Here!=====>', { editItem });
-    }, [editItem])
+    }, [editItem]);
 
     const handleSubmit = async () => {
         const { tradieId, path, cancelJob } = props?.location?.state;
@@ -53,7 +57,7 @@ const ChooseTheJob = (props: any) => {
                 props.history.push('/choose-the-job-success');
             }
         } else {
-            let filter:any = stateData.find((item: any) => item.jobId === key);
+            let filter: any = stateData.find((item: any) => item.jobId === key);
             if (filter?.invitationId) {
                 data['invitationId'] = filter?.invitationId;
                 let response = await CancelInviteForJob(data);
@@ -63,7 +67,7 @@ const ChooseTheJob = (props: any) => {
             }
         }
     }
-    
+
     const { tradieId, path, cancelJob } = props?.location?.state;
     return (
         <div className="app_wrapper">
@@ -101,12 +105,6 @@ const ChooseTheJob = (props: any) => {
                                                 <input
                                                     checked={editItem[item?.jobId] == true ? true : false}
                                                     onChange={(e: any) => { checkOnClick(e, item?.jobId) }}
-                                                    onClick={() => {
-                                                        // let toggle:any = isToggle;
-                                                        // setToggle((prev) => {
-                                                        //     toggle = !isToggle;
-                                                        // });
-                                                    }}
                                                     className="filter-type filled-in"
                                                     type="checkbox"
                                                     id={`milestone${index}`} />
