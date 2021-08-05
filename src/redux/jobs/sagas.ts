@@ -171,9 +171,9 @@ function* markMilestoneComplete({ data, callback }: any) {
 }
 
 function* getActiveJobsBuilder({ page }: any) {
-  // setLoading(true);
+  setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(`${Urls.activeJobListBuilder}?page=${page}`);
-  // setLoading(false);
+  setLoading(false);
   if (response.status_code === 200) {
     if(response?.result?.active && Array.isArray(response?.result?.active) && response?.result?.active?.length){
       response.result.active[0]['page'] = page;

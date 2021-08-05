@@ -124,52 +124,53 @@ class JobDashboard extends Component<Props, State> {
             }
         }
 
-        // if (
-        //     jobtype === 'active' &&
-        //     JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
-        //     (this.state?.activeJobs?.length < currentPage * 10)
-        // ) {
+        /*
+        if (
+            jobtype === 'active' &&
+            JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
+            (this.state?.activeJobs?.length < currentPage * 10)
+        ) {
 
-        //     let { active, needApprovalCount, newApplicantsCount } = activeJobs;
-        //     let page_get = 0;
-        //     let prevValues = [];
+            let { active, needApprovalCount, newApplicantsCount } = activeJobs;
+            let page_get = 0;
+            let prevValues = [];
 
-        //     if (Array.isArray(active) && active?.length) {
-        //         page_get = active[0]?.page;
-        //     }
+            if (Array.isArray(active) && active?.length) {
+                page_get = active[0]?.page;
+            }
 
-        //     if (Array.isArray(this.state?.activeJobs) && this.state?.activeJobs?.length) {
-        //         prevValues = this.state?.activeJobs;
-        //     };
+            if (Array.isArray(this.state?.activeJobs) && this.state?.activeJobs?.length) {
+                prevValues = this.state?.activeJobs;
+            };
 
 
-        //     if (hasLoad && !active?.length && page_get === 0 && this.state?.activeJobs?.length !== 0) {
-        //         if (this.state.hasLoad !== false) {
-        //             this.setState({ hasLoad: false });
-        //         }
-        //     } else {
-        //         if (hasLoad && active?.length && page_get === currentPage) {
-        //             this.setState({
-        //                 globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
-        //                 enableEditMilestone: editMilestone_ === "true" ? true : false,
-        //                 enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
-        //                 enableCancelJob: cancelJob_ === "true" ? true : false,
-        //                 activeJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active,
-        //                 count: {
-        //                     approveCount: needApprovalCount,
-        //                     applicantCount: newApplicantsCount
-        //                 }
-        //             }, () => {
-        //                 console.log({
-        //                     activeJobs: this.state?.activeJobs,
-        //                     currentPage,
-        //                     page_get,
-        //                     active_length: active?.length
-        //                 }, 'inside')
-        //             });
-        //         }
-        //     }
-        // }
+            if (hasLoad && !active?.length && page_get === 0 && this.state?.activeJobs?.length !== 0) {
+                if (this.state.hasLoad !== false) {
+                    this.setState({ hasLoad: false });
+                }
+            } else {
+                if (hasLoad && active?.length && page_get === currentPage) {
+                    this.setState({
+                        globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
+                        enableEditMilestone: editMilestone_ === "true" ? true : false,
+                        enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
+                        enableCancelJob: cancelJob_ === "true" ? true : false,
+                        activeJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active,
+                        count: {
+                            approveCount: needApprovalCount,
+                            applicantCount: newApplicantsCount
+                        }
+                    }, () => {
+                        console.log({
+                            activeJobs: this.state?.activeJobs,
+                            currentPage,
+                            page_get,
+                            active_length: active?.length
+                        }, 'inside')
+                    });
+                }
+            }
+        }*/
 
 
         if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs)) {
@@ -384,8 +385,26 @@ class JobDashboard extends Component<Props, State> {
                                 });
                             }}
                             hasMore={hasLoad}
-                            loader={<></>} */}
-                        <div className="detail_col element-side-scroll">
+                            loader={<></>}
+                            className="detail_col element-side-scroll">
+
+                            <ActiveJobsComponent
+                                isLoading={isLoading}
+                                dataItems={activeJobs}
+                                jobType={jobtype}
+                                activeType={activeType}
+                                setJobLabel={setSelected}
+                                history={props.history}
+                                globalJobId={globalJobId}
+                                enableEditMilestone={enableEditMilestone}
+                                enableLodgeDispute={enableLodgeDispute}
+                                enableCancelJob={enableCancelJob}
+                            />
+                        </InfiniteScroll> */}
+
+
+
+                         <div className="detail_col element-side-scroll">
 
                             {jobtype === 'past' && (
                                 <PastJobsComponent
@@ -446,7 +465,7 @@ class JobDashboard extends Component<Props, State> {
                                     activeType={activeType}
                                     history={props.history}
                                 />)}
-                        </div>
+                        </div> 
                     </div>
                 </div>
             </div >
