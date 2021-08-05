@@ -144,6 +144,7 @@ export const getSearchParamsData = (location?: any) => {
         heading: params.get('heading'),
         jobTypes: jobTypesArray,
         searchJob: params.get('searchJob')?.replaceAll("xxx", "&"),
+        min_budget: Number(params.get('min_budget')),
         max_budget: Number(params.get('max_budget')),
         pay_type: params.get('pay_type'),
         sortBy: Number(params.get('sortBy'))
