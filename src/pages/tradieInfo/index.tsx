@@ -676,7 +676,7 @@ class TradieInfo extends Component<Props, State> {
                                                             </div>
                                                         )}
                                                     </div>
-                                                ) : haveJobId ? (
+                                                ) : haveJobId && tradieInfo?.isRequested ? (
                                                     <>
                                                         <div className="form_field">
                                                             <button
