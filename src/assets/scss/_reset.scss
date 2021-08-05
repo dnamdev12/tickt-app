@@ -402,7 +402,7 @@ body {
 
 //--------------Range slider---------------------//
 .MuiSlider-root{
-    max-width: 384px;
+    max-width: 310px;
     height: 6px;
     border-radius: 19px;
     color: var(--blue-two);
@@ -413,12 +413,14 @@ body {
     }
     .MuiSlider-rail{
         background-color: #dfe5ef;
+        opacity: 1;
     }
 }
 .MuiSlider-thumb{
     width: 24px !important;
     height: 24px !important;
     margin-top: -10px !important;
+    background-color: #0b41a8 !important;
 }
 .MuiSlider-valueLabel {
     left: calc(-50% - -7px) !important;
