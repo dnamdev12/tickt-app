@@ -184,7 +184,7 @@ const AddEditMile = (props: any) => {
                     }
 
                     let to_element: any = document.getElementsByClassName(`color_${count_times[to_date]}_${to_date}`);
-                    console.log({ to_element })
+                    
                     if (to_element) {
                         let element_to = to_element[0];
                         if (to_element?.length > 1) {
@@ -464,6 +464,7 @@ const AddEditMile = (props: any) => {
                             padding: '12px 20px 0px'
                         }}
                         className="item-modal-ctm custom_wh portfolio_preview ">
+                            {console.log({jobDetail:props.jobDetail})}
                         <DateRangePicker
                             ranges={[ItemCal]}
                             onChange={(date: any) => {
@@ -504,8 +505,14 @@ const AddEditMile = (props: any) => {
                                 </span>
                             </div>
                             <p className="sub_title">
-                                {`${props.editMile !== '' ? 'Edit ' : ' Milestone '}`}
-                                {`${!props?.isSame && props.editMile ? ' Milestone ' + props.editMile : props?.isSame && props.editMile > -1 ? ' Milestone ' + (props.editMile + 1) : props?.milestones?.length + 1}`}
+                                {`${props.editMile === '' ? '' : 'Edit '}`}
+                                {`${props.editMile === '' && props?.isSame ? `Milestone-s ${props?.milestones?.length + 1}` :
+                                 props.editMile !== '' && props.editMile > -1 && props?.isSame ? `Mileston-es ${props.editMile + 1}` : 
+                                 props.editMile !== '' && props.editMile > -1 && !props?.isSame ? `Milest-one ${props.editMile + 1}` : 
+                                 props.editMile === '' && !props?.isSame ? `Miles-tone ${props?.milestones?.length + 1}` : null}`}
+                                {/* {`${!props?.isSame && props.editMile ? ' Mileston-e ' + props.editMile : props?.isSame && props.editMile > -1 ? ' Milesto-ne ' + (props.editMile + 1) : props?.milestones?.length + 1}`}
+                                {console.log({ props })} */}
+                                {console.log({ props })}
                             </p>
                         </div>
                     </div>

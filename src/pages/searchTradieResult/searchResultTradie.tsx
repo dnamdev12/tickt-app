@@ -46,7 +46,9 @@ const SearchResultTradie = (props: any) => {
         }
         // tradeId: stateData?.tradeId,
         // specializationId: stateData?.specializations,
-
+        console.log({
+            location: stateData?.location
+        })
         if (stateData?.location) {
             data['location'] = stateData?.location;
         }
@@ -63,7 +65,7 @@ const SearchResultTradie = (props: any) => {
         }
         let spec_count: any = stateData?.specializations?.length;
 
-        if(!data?.address || !data?.address?.length){
+        if (!data?.address || !data?.address?.length) {
             delete data?.address;
         }
 
@@ -82,14 +84,18 @@ const SearchResultTradie = (props: any) => {
             doingLocalChanges: false,
             suggestionSelected: stateData?.suggestionSelected
         });
-        
-        if(props?.location?.state?.suggestionSelected?.mainText == props?.location?.state?.address){
+
+        if(data?.address){
             return
         }
 
-        if(!stateData?.suggestionSelected){
+        console.log({
+            data
+        }, '----------------->><<---------------')
+
+        // if (!stateData?.suggestionSelected || (data?.location?.coordinates && Array.isArray(data?.location?.coordinates) && data?.location?.coordinates?.length)) {
             props.postHomeSearchData(data);
-        }
+        // }
 
     }, []);
 

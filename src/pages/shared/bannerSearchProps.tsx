@@ -357,7 +357,7 @@ const BannerSearch = (props: PropsType) => {
                         : null}
 
                     <div className="select_sphere recent_search">
-                        <span className="sub_title">Categories</span>
+                        <span className="sub_title">{'Categories'}</span>
                         <ul>
                             {tradeListData?.map(({ _id, trade_name, selected_url, specialisations }: { _id: string, trade_name: string, selected_url: string, specialisations: [] }) =>
                                 <li

@@ -162,7 +162,9 @@ const BuilderInfo = (props: PropsType) => {
         }
         const res2 = await getTradieReviewList(data);
         if (res2.success) {
-            setReviewList(res2.data);
+            let data_ = res2?.data?.list || res2?.data;
+            console.log({data_})
+            setReviewList(data_);
         }
     }
 
@@ -188,7 +190,9 @@ const BuilderInfo = (props: PropsType) => {
         }
         const res = await getTradieReviewList(data);
         if (res.success) {
-            setReviewList((prevData: any) => ([...prevData, ...res.data]));
+            console.log({res},'review-list');
+            let data_ = res?.data?.list || res?.data;
+            setReviewList((prevData: any) => ([...prevData, ...data_]));
             setReviewListPageNo(data.page);
         }
     }
@@ -251,7 +255,9 @@ const BuilderInfo = (props: PropsType) => {
                     page: 1
                 }
                 const res = await getTradieReviewList(listData);
-                setReviewList(res.data);
+                console.log({res},'review-list')
+                let data_ = res?.data?.list || res?.data;
+                setReviewList(data_);
                 // newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
                 setReviewListPageNo(1);
             }

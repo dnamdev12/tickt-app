@@ -222,7 +222,7 @@ export const formatNotificationTime = (updatedAt: any, type: string) => {
             formattedDate = moment(updatedAt).format('M/D/YYYY HH:mm');
         }
     }
-    console.log('formattedDate: ', formattedDate);
+    // console.log('formattedDate: ', formattedDate);
     return formattedDate;
 }
 

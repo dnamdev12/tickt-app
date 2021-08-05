@@ -228,8 +228,8 @@ const PaymentHistory = ({
                       </td>
                       <td><span className="inner_title line-3">{status}</span></td>
                       <td><span className="inner_title line-3">{userType === 1 ? builderName : tradieName}</span></td>
-                      {/* <td><span className="inner_title">{moment(from_date).format('DD.MM.YYYY')}</span></td> */}
-                      <td><span className="inner_title">{renderTime(from_date, to_date)}</span></td>
+                      <td><span className="inner_title">{moment(from_date).format('DD.MM.YYYY')}</span></td>
+                      {/* <td><span className="inner_title">{renderTime(from_date, to_date)}</span></td> */}
                       <td><span className="inner_title">{earning}</span></td>
                     </tr>
                   ))}

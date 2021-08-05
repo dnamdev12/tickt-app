@@ -504,9 +504,9 @@ export const changeRequest = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}changeRequest`, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message)
   return { success: false };
 }
 

@@ -23,6 +23,7 @@ const EditMilestone = (props: any) => {
     const { item, item: { jobId, jobName }, details: { milestones }, history } = props;
 
     const propsMile = Object.freeze(props?.details?.milestones);
+    const jobDetail:any = Object.freeze(props?.details);
     const [stateData, setStateData] = useState<any>([]);
     const [stateItems, setItems] = useState<any>([]);
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
@@ -81,7 +82,7 @@ const EditMilestone = (props: any) => {
             source,
             destination
         );
-        setStateData((prev: any) => (reOrderItems));
+        setItems((prev: any) => (reOrderItems));
     };
 
     const checkIfValidDates = (item: any) => {
@@ -194,9 +195,13 @@ const EditMilestone = (props: any) => {
         if (itemData?.edit) { // edit
             let index = parseInt(itemData.editId);
             let prev_count = null;
-            if (state_data?.length > 1) {
-                prev_count = state_data[index - 1].count;
+
+            if (state_data?.length > 1 && index > 0) {
+                prev_count = state_data[index - 1].count + 1;
+            } else {
+                prev_count = state_data[index].count;
             }
+
             console.log({ item, prev_count }, '---->')
             state_data[itemData.editId]['isPhotoevidence'] = item.isPhotoevidence;
             state_data[itemData.editId]['milestoneName'] = item.milestoneName;
@@ -205,18 +210,16 @@ const EditMilestone = (props: any) => {
             state_data[itemData.editId]['status'] = item.status;
             state_data[itemData.editId]['order'] = item.order;
 
-            if (prev_count) {
-                state_data[index]['count'] = prev_count + 1;
-            } else {
-                state_data[index]['count'] = 1;
-            }
+
+            state_data[index]['count'] = prev_count;
+
 
             state_data[index]['fromDate'] = moment(item.fromDate).isValid() ? moment(item.fromDate).toISOString() : '';
             state_data[index]['toDate'] = moment(item.toDate).isValid() ? moment(item.toDate).toISOString() : '';
             // setStateData(state_data);
             setItems(state_data)
         } else {
-            item['count'] = state_data?.length;
+            item['count'] = state_data?.length + 1;
             setItems((prev: any) => ([...prev, item]));
             // setStateData((prev: any) => ([...prev, item]));
         }
@@ -233,6 +236,7 @@ const EditMilestone = (props: any) => {
                 item={item}
                 milestones={stateItems}
                 // filtered={filtered}
+                jobDetail={jobDetail}
                 isSame={JSON.stringify(filtered) === JSON.stringify(stateData)}
                 editMile={itemData.editId}
                 addNewMile={addNewMile}
@@ -253,14 +257,14 @@ const EditMilestone = (props: any) => {
                 }
                 return item;
             });
-            // setStateData(filtered);
+            setStateData(filtered.concat(stateItems));
 
             let Items = filtered.filter((item: any) => {
                 if (!item?.isDeleteRequest) {
                     return item;
                 }
             })
-           
+
             resetItems();
             if (Items?.length) {
                 setItems(Items)
@@ -270,19 +274,19 @@ const EditMilestone = (props: any) => {
 
     const checkIfChange = () => {
         let isTrue = true;
-        if (!stateData?.length) {
+        if (!stateItems?.length) {
             isTrue = false;
         } else {
-            stateData?.forEach((dt: any) => {
-                console.log({ dt })
+            stateItems?.forEach((dt: any) => {
                 if (dt?.description?.length) {
                     isTrue = false;
                 }
+            });
 
+            stateData?.forEach((dt: any) => {
                 if (dt?.isDeleteRequest) {
                     isTrue = false;
                 }
-
             });
         }
         return isTrue;
@@ -290,7 +294,32 @@ const EditMilestone = (props: any) => {
 
     const submitData = async () => {
         let description_string = description;
-        let filtered = stateData.map((item: any, index: any) => {
+
+
+        let deletedItems: any = [];
+        let uniqueValues: any = {};
+        stateData.forEach((item: any) => {
+            if (item?.isDeleteRequest) {
+                if (item?.milestoneId) {
+                    if (uniqueValues[item?.milestoneId] == undefined) {
+                        uniqueValues[item?.milestoneId] = 1;
+                        deletedItems.push(item);
+                    }
+                }
+                //  else {
+                //     deletedItems.push(item);
+                // }
+            }
+        });
+
+        let filteredItems: any = deletedItems.concat(stateItems);
+
+        console.log({
+            deletedItems,
+            filteredItems
+        });
+
+        let filtered = filteredItems.map((item: any, index: any) => {
             let data: any = {
                 "milestoneId": item?.milestoneId || '',
                 "milestone_name": item?.milestoneName,
@@ -298,7 +327,8 @@ const EditMilestone = (props: any) => {
                 "from_date": moment(item?.fromDate).format("YYYY-MM-DD"),
                 "to_date": moment(item?.toDate).isValid() ? moment(item?.toDate).format("YYYY-MM-DD") : '',
                 "recommended_hours": item?.recommendedHours,
-                "description": item?.description
+                "description": item?.description,
+                "status": item?.status,
             }
 
             if (item.description?.length) {
@@ -321,10 +351,17 @@ const EditMilestone = (props: any) => {
             data['order'] = item.order;
             return data;
         }).filter((item: any) => {
-            if (item?.description?.length) {
-                delete item?.description;
+
+            if (![1, 2].includes(item?.status)) {
+                delete item?.status;
+
+                if (item?.description?.length) {
+                    delete item?.description;
+                }
+
                 return item;
             }
+
         });
 
         let data = {
@@ -333,6 +370,9 @@ const EditMilestone = (props: any) => {
             "milestones": filtered,
             "description": Array.from(new Set(description_string))
         };
+
+        console.log({ data })
+
 
         let response: any = await changeRequest(data);
         if (response?.success) {
@@ -440,7 +480,9 @@ const EditMilestone = (props: any) => {
             </Draggable>
         )
     }
-
+    console.log({
+        stateItems
+    }, '------>><<-----')
     return (
         <React.Fragment>
 
