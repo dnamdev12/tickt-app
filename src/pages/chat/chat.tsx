@@ -89,8 +89,29 @@ const Chat = (props: PropTypes) => {
             return;
         }
         setIsNoRecords(false);
+        // const sortedRes = res.sort(function (x: any, y: any) {
+        //     // console.log(x,"x", y,"y");
+        //     return x.lastMsg?.messageTimestamp - y.lastMsg?.messageTimestamp;
+        // })
+        let selectedRoomInfo: any = '';
+        const sortedRes = res.filter((item: any, index: number) => {
+            if (item.hasOwnProperty('lastMsg') || item.roomId === selectedRoomID) {
+                if (item.roomId === selectedRoomID) {
+                    selectedRoomInfo = item;
+                } else {
+                    return item;
+                }
+            }
+        });
 
-        setInBoxData(res);
+        let ress: any;
+        if (selectedRoomInfo) {
+            ress = [...sortedRes];
+            ress.unshift(selectedRoomInfo);
+        }
+        console.log('ress: ', ress, "sortedRes", sortedRes, "res", res);
+
+        setInBoxData((Array.isArray(ress) && selectedRoomInfo) ? ress : sortedRes);
         if (res.length > 0 && selectedRoomID === '') {
             selectedRoomID = res[0].roomId;
             setRoomId(res[0].roomId);
@@ -159,7 +180,7 @@ const Chat = (props: PropTypes) => {
             console.log('filteredVal: ', filteredVal, "searchQuery", searchQuery);
             setFilterInBoxData(filteredVal);
         }
-        if (inBoxData.length && isInitialLoader) {
+        if (inBoxData?.length && isInitialLoader) {
             setLoading(false);
             setIsInitialLoader(false);
         }
@@ -217,7 +238,7 @@ const Chat = (props: PropTypes) => {
                                             </a>
                                         </li>
                                     )
-                                }) : inBoxData.length > 0 ? inBoxData.map((item: any) => {
+                                }) : inBoxData?.length > 0 ? inBoxData.map((item: any) => {
                                     return (
                                         <li onClick={() => { getRoomDetails(item) }}>
                                             <a href="javascript:void(0)" className={`chat ${selectedRoomID === item.roomId ? 'active' : ''}`}>
@@ -227,7 +248,7 @@ const Chat = (props: PropTypes) => {
                                                 <div className="detail">
                                                     <span className="inner_title line-1">{item.oppUserInfo?.name}</span>
                                                     <span className="inner_title job line-1">{item.jobName}</span>
-                                                    <p className="commn_para line-1">{item.lastMsg?.messageText}</p>
+                                                    <p className="commn_para line-1">{item.lastMsg?.messageType === 'text' ? item.lastMsg?.messageText : item.lastMsg?.messageType === 'image' ? <em>Photo</em> : item.lastMsg?.messageType === 'video' ? <em>Video</em> : ''}</p>
                                                     {item.lastMsg?.messageTimestamp && <span className="date_time">{formatDateTime(item.lastMsg?.messageTimestamp, 'inboxTime')}</span>}
                                                     {(selectedRoomID === item.roomId) ? null : item.unreadMessages === 0 ? null : <span className="count">{item.unreadMessages}</span>}
                                                 </div>
@@ -246,7 +267,16 @@ const Chat = (props: PropTypes) => {
                             </ul>
                         </div>
                     </div>
-                    {isInitialLoader ? null : <UserMessages roomId={selectedRoomID} roomData={roomData} isNoRecords={isNoRecords} history={props.history} isLoading={props.isLoading} />}
+                    {isInitialLoader ? null :
+                        <UserMessages
+                            roomId={selectedRoomID}
+                            roomData={roomData}
+                            isNoRecords={isNoRecords}
+                            history={props.history}
+                            isLoading={props.isLoading}
+                            inBoxData={inBoxData}
+                            setInBoxData={setInBoxData}
+                        />}
                 </div>
             </div>
         </div >

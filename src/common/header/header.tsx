@@ -19,6 +19,9 @@ import profile from '../../assets/images/ic-profile.png';
 import revenue from '../../assets/images/ic-revenue.png';
 import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
+import noNotification from '../../assets/images/no-notifications.png';
+
+
 
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
@@ -538,7 +541,7 @@ const Header = (props: any) => {
                                             <MenuItem onClick={() => { handleClose('profile'); history.push('/payment-history'); }}>
                                                 <span className="setting_icon">
                                                     <img src={revenue} alt="revenue" />
-                                                    {props.userType === 1 ? 'My revenue' : 'Transaction history'}
+                                                    {props.userType === 1 ? 'Payment history' : 'Transaction history'}
                                                 </span>
                                             </MenuItem>
                                         )}
@@ -570,6 +573,10 @@ const Header = (props: any) => {
                                         keepMounted
                                         open={Boolean(anchorElNotif)}
                                         onClose={() => handleClose('notification')}
+                                        anchorOrigin={{
+                                            vertical: 'top',
+                                            horizontal: 'right',
+                                        }}
                                         transformOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
@@ -577,7 +584,7 @@ const Header = (props: any) => {
                                     >
                                         <div>
                                             <span className="sub_title">Notifications</span>
-                                            <a href="javascript:void(0)" className="link mark_all" onClick={() => callNotificationList(true)}>Mark all as read</a>
+                                            {notificationData.list?.length > 0 && <a href="javascript:void(0)" className="link mark_all" onClick={() => callNotificationList(true)}>Mark all as read</a>}
                                         </div>
 
                                         {notificationData.list?.length > 0 &&
@@ -595,7 +602,7 @@ const Header = (props: any) => {
                                                         </figure>
                                                         <div className="info">
                                                             {/* <span className="who line-1">{item.title}</span> */}
-                                                            <span className="who">{item.title}</span>
+                                                            <span className="who line-1">{item.title}</span>
                                                             <span className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}
                                                         </div>
@@ -603,9 +610,17 @@ const Header = (props: any) => {
                                                     </div>
                                                 </MenuItem>
                                             )}
-                                        {hasMoreNotif && <div className="more_notif" onClick={() => callNotificationList()}>
+                                        {hasMoreNotif && notificationData.list?.length > 0 && <div className="more_notif" onClick={() => callNotificationList()}>
                                             <a className="link">View more</a>
                                         </div>}
+
+                                        {notificationData?.list?.length === 0 && <div className="no_notification">
+                                            <figure>
+                                                <img src={noNotification} alt="no-notifications" />
+                                            </figure>
+                                            <span>No Notifications</span>
+                                        </div>}
+
                                     </Menu>
                                     {/* Notification close */}
 

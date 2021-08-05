@@ -30,6 +30,7 @@ const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
 const UserMessages = (props: any) => {
     const divRref = useRef<HTMLDivElement>(null);
     const [userId] = useState<string>(storageService.getItem('userInfo')?._id);
+    console.log('userId: ', userId);
     const [toggle, setToggle] = useState<boolean>(false);
     const [jobDetailLoader, setJobDetailLoader] = useState<boolean>(false);
     const [currentJobDetails, setCurrentJobDetails] = useState<any>(null);
@@ -39,7 +40,7 @@ const UserMessages = (props: any) => {
 
     const [itemsMedia, setItemsMedia] = useState([]);
     const [toggler, setToggler] = useState(false);
-    const [selectedSlide, setSelectSlide] = useState<any>(0);
+    const [selectedSlide, setSelectSlide] = useState<any>(1);
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
 
@@ -94,9 +95,20 @@ const UserMessages = (props: any) => {
     }
     console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
+    const setLatestInboxToTop = () => {
+        console.log('props.inboxData: ', props.inBoxData);
+        const currentIndex = [...props.inBoxData].findIndex((item: any) => item.roomId === props.roomId);
+        console.log('currentIndex: ', currentIndex);
+        const newInboxData = [...props.inBoxData];
+        newInboxData.splice(currentIndex, 1);
+        newInboxData.unshift(props.inBoxData[currentIndex]);
+        console.log('newInboxData: ', newInboxData);
+        props.setInBoxData(newInboxData);
+    }
     const sendMessage = async () => {
         //setIsLoading(true);
         if (messageText || messageText.trim() !== "") {
+            setLatestInboxToTop();
             sendTextMessage(props.roomId, messageText);
             setMessageText('');
             // await sendTextMessage(props.roomId, messageText); 
@@ -112,8 +124,10 @@ const UserMessages = (props: any) => {
 
     const sendImageVideoMsg = async (url: string, msgType: string) => {
         //setIsLoading(true);
-        if (url && url !== '')
+        if (url && url !== '') {
+            setLatestInboxToTop();
             await sendImageVideoMessage(props.roomId, url, msgType);
+        }
         setMessageText('');
     }
 
@@ -173,14 +187,17 @@ const UserMessages = (props: any) => {
     }
 
     const handleUpload = async (e: any) => {
+        let maxFileSize: number = 10;
         const formData = new FormData();
         const newFile = e.target.files[0];
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         console.log('fileType: ', fileType);
 
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
-
-        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+        if(["mp4", "wmv", "avi"].includes(fileType)){
+            maxFileSize = 20;
+        }
+        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > maxFileSize)) {
             setShowToast(true, "The file must be in proper format or size.")
             return;
         }

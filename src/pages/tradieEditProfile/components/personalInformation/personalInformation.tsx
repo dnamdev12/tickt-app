@@ -341,6 +341,18 @@ export class PersonalInformation extends Component<Props, State> {
             }
         }
 
+        if (!this.state.basicDetailsData?.abn) {
+            newErrors.abn = Constants.errorStrings.abnEmpty;
+        } else {
+            const abnRegex = new RegExp(regex.abn);
+            if (!abnRegex.test(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
+                newErrors.abn = Constants.errorStrings.abnErr
+            }
+            if (!validateABN(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
+                newErrors.abn = Constants.errorStrings.abnErr
+            }
+        }
+
         if (this.userType === 1) {
             const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
             console.log(newQualificationDoc, "newQualificationDoc validation");
@@ -376,18 +388,6 @@ export class PersonalInformation extends Component<Props, State> {
                 const positionRegex = new RegExp(regex.fullname);
                 if (!positionRegex.test(this.state.basicDetailsData.position.trim())) {
                     newErrors.position = Constants.errorStrings.positionNameErr;
-                }
-            }
-
-            if (!this.state.basicDetailsData?.abn) {
-                newErrors.abn = Constants.errorStrings.abnEmpty;
-            } else {
-                const abnRegex = new RegExp(regex.abn);
-                if (!abnRegex.test(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
-                    newErrors.abn = Constants.errorStrings.abnErr
-                }
-                if (!validateABN(this.state.basicDetailsData.abn.replaceAll(' ', ''))) {
-                    newErrors.abn = Constants.errorStrings.abnErr
                 }
             }
         }
@@ -457,13 +457,13 @@ export class PersonalInformation extends Component<Props, State> {
             const builderData = {
                 companyName: basicDetails?.companyName,
                 position: basicDetails?.position,
-                abn: basicDetails?.abn,
             }
 
             const data = {
                 fullName: basicDetails?.fullName,
                 mobileNumber: basicDetails?.mobileNumber,
                 email: basicDetails?.email,
+                abn: basicDetails?.abn,
                 qualificationDoc: this.userType === 1 ? [...newFilledQualification, ...newRemainingQualification] : undefined,
                 ...(this.userType === 1 ? {} : builderData),
             }
@@ -1066,14 +1066,14 @@ export class PersonalInformation extends Component<Props, State> {
                                             </div>
                                             {!!errors?.position && <span className="error_msg">{errors?.position}</span>}
                                         </div>
-                                        <div className="form_field">
-                                            <label className="form_label">Australian Business Number</label>
-                                            <div className="text_field">
-                                                <input type="text" placeholder="Australian Business Number" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
-                                            </div>
-                                            {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
-                                        </div>
                                     </>}
+                                <div className="form_field">
+                                    <label className="form_label">Australian Business Number</label>
+                                    <div className="text_field">
+                                        <input type="text" placeholder="Australian Business Number" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
+                                    </div>
+                                    {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
+                                </div>
                             </div>
 
                             {(this.userType === 1 && basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <><div className="form_field">
