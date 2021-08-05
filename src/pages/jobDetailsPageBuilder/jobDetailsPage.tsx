@@ -159,7 +159,9 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res2 = await getQuestionsList(questionData);
         if (res2.success) {
-            setQuestionList(res2.data);
+            console.log({res2},'question-list')
+            let data_elements = res2?.data?.list || res2?.data;
+            setQuestionList(data_elements);
         }
 
         if (isTrue) {
@@ -220,7 +222,9 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await getQuestionsList(data);
         if (res.success) {
-            setQuestionList((prevData: any) => ([...prevData, ...res.data]));
+            console.log({res},'question-list')
+            let data_elements = res?.data?.list || res?.data;
+            setQuestionList((prevData: any) => ([...prevData, ...data_elements]));
             setQuestionListPageNo(data.page);
         }
     }
