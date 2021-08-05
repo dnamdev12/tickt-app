@@ -477,7 +477,8 @@ const JobDetailsPage = (props: PropsType) => {
         itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
-    let question_list:any = questionList;
+    let questions_:any = questionList;
+    let question_list:any = questions_?.list || questions_;
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -792,7 +793,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         <span>No Questions Found</span>
                                     </div>}
                                     <div className="inner_wrap">
-                                        {question_list?.list?.map((item: any, index: number) => {
+                                        {question_list?.map((item: any, index: number) => {
                                             const { questionData } = item;
                                             return (
                                                 <div key={questionData?.questionId}>

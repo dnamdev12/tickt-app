@@ -438,7 +438,8 @@ class TradieInfo extends Component<Props, State> {
         let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: 1 });
         console.log({ res_trade })
         if (res_trade?.success) {
-            this.setState({ tradieReviews: res_trade.data })
+            let data_ = res_trade?.data?.list || res_trade?.data;
+            this.setState({ tradieReviews: data_ })
         }
     }
 

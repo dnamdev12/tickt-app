@@ -124,53 +124,69 @@ class JobDashboard extends Component<Props, State> {
             }
         }
 
-        if (
-            jobtype === 'active' &&
-            JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
-            (this.state?.activeJobs?.length < currentPage * 10)
-        ) {
+        // if (
+        //     jobtype === 'active' &&
+        //     JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
+        //     (this.state?.activeJobs?.length < currentPage * 10)
+        // ) {
+
+        //     let { active, needApprovalCount, newApplicantsCount } = activeJobs;
+        //     let page_get = 0;
+        //     let prevValues = [];
+
+        //     if (Array.isArray(active) && active?.length) {
+        //         page_get = active[0]?.page;
+        //     }
+
+        //     if (Array.isArray(this.state?.activeJobs) && this.state?.activeJobs?.length) {
+        //         prevValues = this.state?.activeJobs;
+        //     };
+
+
+        //     if (hasLoad && !active?.length && page_get === 0 && this.state?.activeJobs?.length !== 0) {
+        //         if (this.state.hasLoad !== false) {
+        //             this.setState({ hasLoad: false });
+        //         }
+        //     } else {
+        //         if (hasLoad && active?.length && page_get === currentPage) {
+        //             this.setState({
+        //                 globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
+        //                 enableEditMilestone: editMilestone_ === "true" ? true : false,
+        //                 enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
+        //                 enableCancelJob: cancelJob_ === "true" ? true : false,
+        //                 activeJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active,
+        //                 count: {
+        //                     approveCount: needApprovalCount,
+        //                     applicantCount: newApplicantsCount
+        //                 }
+        //             }, () => {
+        //                 console.log({
+        //                     activeJobs: this.state?.activeJobs,
+        //                     currentPage,
+        //                     page_get,
+        //                     active_length: active?.length
+        //                 }, 'inside')
+        //             });
+        //         }
+        //     }
+        // }
+
+
+        if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs)) {
 
             let { active, needApprovalCount, newApplicantsCount } = activeJobs;
-            let page_get = 0;
-            let prevValues = [];
-
-            if (Array.isArray(active) && active?.length) {
-                page_get = active[0]?.page;
-            }
-
-            if (Array.isArray(this.state?.activeJobs) && this.state?.activeJobs?.length) {
-                prevValues = this.state?.activeJobs;
-            };
-
-
-            if (hasLoad && !active?.length && page_get > 0) {
-                alert('false');
-                this.setState({ hasLoad: false });
-                // return
-            } else {
-                if (hasLoad && active?.length && page_get === currentPage) {
-                    this.setState({
-                        globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
-                        enableEditMilestone: editMilestone_ === "true" ? true : false,
-                        enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
-                        enableCancelJob: cancelJob_ === "true" ? true : false,
-                        activeJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active,
-                        count: {
-                            approveCount: needApprovalCount,
-                            applicantCount: newApplicantsCount
-                        }
-                    }, () => {
-                        console.log({
-                            activeJobs: this.state?.activeJobs,
-                            currentPage,
-                            page_get,
-                            active_length:active?.length
-                        }, 'inside')
-                    });
+            this.setState({
+                globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
+                enableEditMilestone: editMilestone_ === "true" ? true : false,
+                enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
+                enableCancelJob: cancelJob_ === "true" ? true : false,
+                activeJobs: active,
+                count: {
+                    approveCount: needApprovalCount,
+                    applicantCount: newApplicantsCount
                 }
-            }
+            })
         }
-
 
         if (jobtype === 'past' && JSON.stringify(pastJobs?.past) !== JSON.stringify(this.state.pastJobs)) {
             let { past, needApprovalCount, newApplicantsCount } = pastJobs;
@@ -358,7 +374,7 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
 
-                        <InfiniteScroll
+                        {/* <InfiniteScroll
                             dataLength={activeJobs?.length}
                             next={() => {
                                 console.log('callable - Here!', { cp: this.state.currentPage });
@@ -368,23 +384,10 @@ class JobDashboard extends Component<Props, State> {
                                 });
                             }}
                             hasMore={hasLoad}
-                            loader={<></>}
-                            className="detail_col element-side-scroll">
-                            {hasLoad ? '44' : '00'}
-                            <ActiveJobsComponent
-                                isLoading={isLoading}
-                                dataItems={activeJobs}
-                                jobType={jobtype}
-                                activeType={activeType}
-                                setJobLabel={setSelected}
-                                history={props.history}
-                                globalJobId={globalJobId}
-                                enableEditMilestone={enableEditMilestone}
-                                enableLodgeDispute={enableLodgeDispute}
-                                enableCancelJob={enableCancelJob}
-                            />
+                            loader={<></>} */}
+                        <div className="detail_col element-side-scroll">
 
-                            {/* {jobtype === 'past' && (
+                            {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}
                                     dataItems={pastJobs}
@@ -442,8 +445,8 @@ class JobDashboard extends Component<Props, State> {
                                     setJobLabel={setSelected}
                                     activeType={activeType}
                                     history={props.history}
-                                />)} */}
-                        </InfiniteScroll>
+                                />)}
+                        </div>
                     </div>
                 </div>
             </div >
