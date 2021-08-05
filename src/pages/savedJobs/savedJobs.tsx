@@ -1,23 +1,42 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import InfiniteScroll from 'react-infinite-scroll-component';
 import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import noData from '../../assets/images/no-search-data.png';
 
 
-const SavedJobs = ({ getSavedJobList, savedJobs, isLoading, ...props }: any) => {
+const SavedJobs = ({ getSavedJobList, clearSavedJobList, savedJobs, isLoading, ...props }: any) => {
+  const [page, setPage] = useState(1);
+  const [jobs, setJobs] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
 
     const backButtonClicked = () => {
         props.history?.goBack();
     }
 
     useEffect(() => {
-      getSavedJobList(1);
-    }, [getSavedJobList]);
+      return clearSavedJobList;
+    }, [clearSavedJobList]);
 
-    // both APIs will give same results, but commented API will not get called if we directly open saved jobs page
-    // const savedJobsData = props.jobDataWithJobTypeLatLong?.saved_jobs
-    const savedJobsData = savedJobs;
+    useEffect(() => {
+      getSavedJobList(page);
+    }, [getSavedJobList, page]);
+
+    useEffect(() => {
+      setJobs((jobs) => (jobs || []).concat(savedJobs));
+      setHasMore(savedJobs.length === 10);
+    }, [savedJobs]);
+
+    const loadMoreJobs = () => {
+      setPage((page) => page + 1);
+    };
 
     return (
+      <InfiniteScroll
+        dataLength={jobs.length}
+        next={loadMoreJobs}
+        hasMore={hasMore}
+        loader={<h4></h4>}
+      >
         <div className={'app_wrapper'} >
             <div className="section_wrapper">
                 <div className="custom_container">
@@ -26,10 +45,10 @@ const SavedJobs = ({ getSavedJobList, savedJobs, isLoading, ...props }: any) => 
                         <span className="title">Saved jobs</span>
                     </div>
                     <div className="flex_row tradies_row">
-                        {isLoading ? null : savedJobsData?.length > 0 ?
-                            (savedJobsData?.map((jobData: any) => {
+                        {jobs?.length > 0 ?
+                            (jobs?.map((jobData: any) => {
                                 return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId}/>
-                            })) : 
+                            })) : !isLoading &&
                             <div className="no_record">
                                 <figure className="no_img">
                                     <img src={noData} alt="data not found" />
@@ -40,6 +59,7 @@ const SavedJobs = ({ getSavedJobList, savedJobs, isLoading, ...props }: any) => 
                 </div>
             </div>
         </div>
+      </InfiniteScroll>
     )
 }
 
