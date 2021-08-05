@@ -167,8 +167,8 @@ const SearchResultFilters = (props: any) => {
     const showResultsByBudget = (e: any) => {
         e.preventDefault();
         // if (validateForm()) {
-            sortByPriceClose();
-            showResultsByAllFilter();
+        sortByPriceClose();
+        showResultsByAllFilter();
         // }
     }
 
@@ -370,6 +370,7 @@ const SearchResultFilters = (props: any) => {
                         <img src={cancel} alt="cancel" />
                     </span>
                     <span className="sub_title">Maximum budget</span>
+                    {/* <span className="info_note">Middle price per day is $40</span> */}
 
                     {/* <div className="form_field">
                         <div className="text_field">
@@ -380,42 +381,38 @@ const SearchResultFilters = (props: any) => {
                             />
                     </div> */}
 
-                    <div className="flex_row">
-                        <div className="flex_col_sm_5">
-                            <div className="form_field">
-                                <div className="radio_wrap agree_check">
-                                    <input className="filter-type filled-in" name="pay_type" type="radio" id="perHour" checked={sortByPrice.pay_type === 'Per hour' ? true : false}
-                                        onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Per hour" }))}
-                                    />
-                                    <label htmlFor="perHour">Per hour</label>
-                                </div>
-                                <div className="radio_wrap agree_check">
-                                    <input className="filter-type filled-in" name="pay_type" type="radio" id="fixed" checked={sortByPrice.pay_type === 'Fixed price' ? true : false}
-                                        onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price" }))}
-                                    />
-                                    <label htmlFor="fixed">Fixed price</label>
-                                </div>
-                            </div>
 
-                            <span>{`$${sortByPrice.showBudget[0]} - $${sortByPrice.showBudget[1]}`}</span>
-                            {/* <div className="form_field"> */}
-                            <Typography id="range-slider" gutterBottom></Typography>
-                            <Slider
-                                min={0}
-                                max={99999}
-                                value={sortByPrice.showBudget}
-                                onChange={handleSliderChange}
-                                // valueLabelDisplay="auto"
-                                aria-labelledby="range-slider"
-                            // getAriaValueText={valuetext}
+                    <div className="form_field">
+                        <div className="radio_wrap agree_check">
+                            <input className="filter-type filled-in" name="pay_type" type="radio" id="perHour" checked={sortByPrice.pay_type === 'Per hour' ? true : false}
+                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Per hour" }))}
                             />
-                            {/* </div> */}
-
-                            {/* <div className="form_field">
-                                <button className="fill_btn full_btn">Continue</button>
-                            </div> */}
+                            <label htmlFor="perHour">Per hour</label>
+                        </div>
+                        <div className="radio_wrap agree_check">
+                            <input className="filter-type filled-in" name="pay_type" type="radio" id="fixed" checked={sortByPrice.pay_type === 'Fixed price' ? true : false}
+                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price" }))}
+                            />
+                            <label htmlFor="fixed">Fixed price</label>
                         </div>
                     </div>
+                    <div className="form_field">
+                        <span className="per_day">{`$${sortByPrice.showBudget[0]} - $${sortByPrice.showBudget[1]}`}</span>
+                        <Typography id="range-slider" gutterBottom></Typography>
+                        <Slider
+                            min={0}
+                            max={99999}
+                            value={sortByPrice.showBudget}
+                            onChange={handleSliderChange}
+                            // valueLabelDisplay="auto"
+                            aria-labelledby="range-slider"
+                        // getAriaValueText={valuetext}
+                        />
+                    </div>
+
+                    {/* <div className="form_field">
+                                <button className="fill_btn full_btn">Continue</button>
+                            </div> */}
 
                     <div className="f_spacebw">
                         {/* <span className={sortByPrice.payTypeClicked ? "price up" : 'price down'} onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, payTypeClicked: !prevData.payTypeClicked }))}>

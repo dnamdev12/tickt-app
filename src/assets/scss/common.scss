@@ -2237,15 +2237,9 @@ body {
 			display: block;
 		}
 		.per_day {
-			font-size: 12px;
-			line-height: 1.5;
-			margin: 5px 0;
-			color: var(--greyish-brown);
+			font: 16px/1.33 'Neue Haas Grotesk Text Pro Medium';
+			color: var(--blue);
 			display: block;
-			cursor: pointer;
-			&:hover, &.active{
-				color: var(--blue-two);
-			}
 		}
 		.price {
       font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
@@ -4212,7 +4206,10 @@ body {
       @media(max-width: 650px){
        padding: 12px 10px 12px 40px;
       }
-      &.active, &:hover{
+      &:hover{
+        background: #ffffff;
+      }
+      &.active{
         font-family: "Neue Haas Grotesk Text Pro Bold";
         background: #ffffff;
       }

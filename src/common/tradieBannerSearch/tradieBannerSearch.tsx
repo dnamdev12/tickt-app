@@ -422,7 +422,7 @@ const TradieBannerSearch = (props: PropsType) => {
             const data = {
                 page: stateData.page,
                 isFiltered: false,
-                address:JSON.stringify(suggestionSelected),
+                address: JSON.stringify(suggestionSelected),
                 tradeId: newSearchData?.tradeId ? newSearchData?.tradeId : stateData?.tradeId,
                 ...(stateData.isMapLocationSelected && { location: stateData?.location }),
                 // location: stateData?.location,
@@ -568,7 +568,7 @@ const TradieBannerSearch = (props: PropsType) => {
                     {stateData?.searchedJob?.length >= 1 && inputFocus1 && !inputFocus2 && renderJobResult()}
                     <li ref={locationRef} className="loc_box">
                         <div id="location-text-field-div">
-                      
+
                             <PlacesAutocomplete
                                 value={stateData?.selectedMapLocation !== "{}" ? stateData?.selectedMapLocation : ''}
                                 onChange={(city: string) => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: city, isMapLocationSelected: false }))}
@@ -596,7 +596,7 @@ const TradieBannerSearch = (props: PropsType) => {
                                     You have blocked your location.
                                     To use this, change your location settings in browser.
                                 </span>}
-                                <div className="flex_row recent_search auto_loc">
+                                <div className="recent_search auto_loc">
                                     {props?.recentLocationData?.length > 0 ?
                                         <span className="sub_title">Recent searches</span>
                                         : null}
@@ -610,32 +610,33 @@ const TradieBannerSearch = (props: PropsType) => {
                                                 </div>
                                             </div>)
                                     })} */}
+                                    <div className="flex_row">
+                                        {props?.recentLocationData?.map((item: any) => {
+                                            return item?.address?.length > 0 && (
+                                                <div className="flex_col_sm_4"
+                                                    onClick={() => {
+                                                        setStateData((prevData: any) => ({
+                                                            ...prevData,
+                                                            location: item.location,
+                                                            selectedMapLocation: JSON.parse(item?.address)?.mainText, //item.allText?.mainText,
+                                                            isMapLocationSelected: true
+                                                        }));
+                                                        setSuggestion(JSON.parse(item?.address));
 
-                                    {props?.recentLocationData?.map((item: any) => {
-                                        return item?.address?.length > 0 && (
-                                            <div className="flex_col_sm_4"
-                                                onClick={() => {
-                                                    setStateData((prevData: any) => ({
-                                                        ...prevData,
-                                                        location: item.location,
-                                                        selectedMapLocation: JSON.parse(item?.address)?.mainText, //item.allText?.mainText,
-                                                        isMapLocationSelected: true
-                                                    }));
-                                                    setSuggestion(JSON.parse(item?.address));
-
-                                                    // let location_coordinates: any = item.location.coordinates
-                                                    // setAddressText(item.formatted_address);
-                                                    // setSelectedAddress({
-                                                    //     lat: location_coordinates[1],
-                                                    //     lng: location_coordinates[0]
-                                                    // });
-                                                }}>
-                                                <div className="autosuggestion_icon card loc name">
-                                                    <span>{JSON.parse(item?.address)?.mainText}</span>
-                                                    <span className="name">{JSON.parse(item?.address)?.secondaryText}</span>
-                                                </div>
-                                            </div>)
-                                    })}
+                                                        // let location_coordinates: any = item.location.coordinates
+                                                        // setAddressText(item.formatted_address);
+                                                        // setSelectedAddress({
+                                                        //     lat: location_coordinates[1],
+                                                        //     lng: location_coordinates[0]
+                                                        // });
+                                                    }}>
+                                                    <div className="autosuggestion_icon card loc name">
+                                                        <span>{JSON.parse(item?.address)?.mainText}</span>
+                                                        <span className="name">{JSON.parse(item?.address)?.secondaryText}</span>
+                                                    </div>
+                                                </div>)
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         }
