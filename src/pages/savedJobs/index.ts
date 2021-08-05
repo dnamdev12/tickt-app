@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import SavedJobsComponent from './savedJobs';
-import { getSavedJobList } from '../../redux/profile/actions';
+import { getSavedJobList, clearSavedJobList } from '../../redux/profile/actions';
 
 const mapStateToProps = (state: any) => {
     return {
@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch: any) => {
   return bindActionCreators(
       {
           getSavedJobList,
+          clearSavedJobList,
       },
       dispatch
   );
