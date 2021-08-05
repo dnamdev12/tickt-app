@@ -262,8 +262,8 @@ const AddEditMile = (props: any) => {
             let mile_start = mile.from_date;
             let mile_end = mile.to_date;
 
-            let time_start = time.from_date;
-            let time_end = time.to_date;
+            let time_start = moment(time.fromDate).isValid() ? moment(time.fromDate).format('MM-DD-YYYY') : '';
+            let time_end = moment(time.toDate).isValid() ? moment(time.toDate).format('MM-DD-YYYY') : '';
 
 
             if (count_times[mile_start] == undefined) {
@@ -271,7 +271,6 @@ const AddEditMile = (props: any) => {
             } else {
                 count_times[mile_start] = count_times[mile_start] + 1;
             }
-
 
             if (count_times[mile_end] == undefined) {
                 count_times[mile_end] = 1
@@ -302,8 +301,6 @@ const AddEditMile = (props: any) => {
                     catch_boolean = false;
                 }
             }
-
-
         });
 
         return catch_boolean;
@@ -506,13 +503,13 @@ const AddEditMile = (props: any) => {
                             </div>
                             <p className="sub_title">
                                 {`${props.editMile === '' ? '' : 'Edit '}`}
-                                {`${props.editMile === '' && props?.isSame ? `Milestone-s ${props?.milestones?.length + 1}` :
-                                 props.editMile !== '' && props.editMile > -1 && props?.isSame ? `Mileston-es ${props.editMile + 1}` : 
-                                 props.editMile !== '' && props.editMile > -1 && !props?.isSame ? `Milest-one ${props.editMile + 1}` : 
-                                 props.editMile === '' && !props?.isSame ? `Miles-tone ${props?.milestones?.length + 1}` : null}`}
+                                {`${props.editMile === '' && props?.isSame ? `Milestones ${props?.milestones?.length + 1}` :
+                                 props.editMile !== '' && props.editMile > -1 && props?.isSame ? `Milestones ${props.editMile + 1}` : 
+                                 props.editMile !== '' && props.editMile > -1 && !props?.isSame ? `Milestone ${props.editMile + 1}` : 
+                                 props.editMile === '' && !props?.isSame ? `Milestone ${props?.milestones?.length + 1}` : null}`}
                                 {/* {`${!props?.isSame && props.editMile ? ' Mileston-e ' + props.editMile : props?.isSame && props.editMile > -1 ? ' Milesto-ne ' + (props.editMile + 1) : props?.milestones?.length + 1}`}
                                 {console.log({ props })} */}
-                                {console.log({ props })}
+                                {/* {console.log({ props })} */}
                             </p>
                         </div>
                     </div>
