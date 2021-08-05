@@ -415,7 +415,9 @@ const AddEditMile = (props: any) => {
     if (!moment(calenderItems?.startDate).isValid()) {
         ItemCal = { startDate: new Date(), endDate: '', key: 'selection' }
     }
-
+    
+    let min_date:any = moment(item?.fromDate).isValid() ? moment(item?.fromDate).toDate() : new Date();
+    let max_date:any = moment(item?.toDate).isValid() && !moment(item?.fromDate).isSame(item?.toDate) ? moment(item?.toDate).toDate() : moment().add(2, 'years').toDate();
     return (
         <div className="flex_row">
             <div className="flex_col_sm_12">
@@ -475,8 +477,8 @@ const AddEditMile = (props: any) => {
                             showDateDisplay={false}
                             showSelectionPreview={true}
                             showPreview={true}
-                            minDate={moment(item?.fromDate).isValid() ? moment(item?.fromDate).toDate() : new Date()}
-                            maxDate={moment(item?.toDate).isValid() && !moment(item?.fromDate).isSame(item?.toDate) ? moment(item?.toDate).toDate() : moment().add(2, 'years').toDate()}
+                            minDate={min_date}
+                            maxDate={max_date}
                             fixedHeight={true}
                         />
                     </div>
