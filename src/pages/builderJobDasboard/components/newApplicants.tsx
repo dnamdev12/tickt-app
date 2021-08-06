@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { useEffect, useState } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import { withRouter } from 'react-router';
@@ -33,7 +33,9 @@ interface Applicant {
 const NewApplicants = (props: any) => {
     const { dataItems, jobType, setJobLabel, isLoading } = props;
     let listData: any = dataItems;
-    console.log({ dataItems, isLoading })
+
+    const [isRender, setRender] = useState(false);
+
 
 
     const redirectToInfo = ({ jobId }: any) => {
@@ -46,8 +48,13 @@ const NewApplicants = (props: any) => {
         }
     }
 
+    useEffect(() => {
+        if(isLoading == false){
+            setRender(true);
+        }
+    },[isLoading])
 
-    if (isLoading || listData == undefined) {
+    if(!isRender){
         return null;
     }
 

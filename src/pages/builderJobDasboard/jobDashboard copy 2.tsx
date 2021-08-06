@@ -1,6 +1,12 @@
-import { Component } from 'react'
+import React, { Component } from 'react'
+import { Route, Switch, useHistory } from 'react-router-dom';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
+import media from '../../assets/images/portfolio-placeholder.jpg';
+import approved from '../../assets/images/approved.png';
+import tradieListData from '../shared/tradieListData';
+import rateStar from '../../assets/images/ic-star-fill.png';
+import moment from 'moment';
 
 import ActiveJobsComponent from './components/activeJobs';
 import OpenJobsComponent from './components/openJobs';
@@ -9,7 +15,19 @@ import NewApplicantComponent from './components/newApplicants';
 import NeedApproval from './components/needApproval';
 import ApplicantsList from './components/applicantsList';
 
+
+import MarkMilestones from './components/markMilestones';
+import DeclineMilestone from './components/declineMilestone';
+import DeclineMilestoneSuccess from './components/declineMilestoneSuccess';
+import { getNewApprovalList } from '../../redux/jobs/actions';
+import { setShowToast } from '../../redux/common/actions';
+
+import FixedConfirm from './components/confirmAndPay/fixedRate';
+import ConfirmAndPay from './components/confirmAndPay/confirmAndPay';
+import FixedRate from './components/confirmAndPay/fixedRate';
+
 import InfiniteScroll from "react-infinite-scroll-component";
+
 
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
@@ -43,13 +61,11 @@ interface State {
     enableLodgeDispute: any,
     enableCancelJob: any,
     globalJobId: string,
-    hasLoad: boolean,
-    actualLoad: boolean,
+    hasLoad: boolean
 }
 class JobDashboard extends Component<Props, State> {
     constructor(props: any) {
         super(props)
-
         this.state = {
             currentPage: 1,
             isToggleSidebar: false,
@@ -66,8 +82,7 @@ class JobDashboard extends Component<Props, State> {
             enableLodgeDispute: false,
             enableCancelJob: false,
             globalJobId: '',
-            hasLoad: true,
-            actualLoad: false
+            hasLoad: true
         }
     }
 
@@ -88,11 +103,6 @@ class JobDashboard extends Component<Props, State> {
         let editMilestone_ = urlParams.get('editMilestone');
         let lodgeDispute_ = urlParams.get('lodgeDispute');
         let cancelJob_ = urlParams.get('cancelJob');
-
-        console.log({
-            activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs, approvalJobs,
-            state: this.state
-        })
 
         if (activeType_) {
             if (activeType_ !== activeType) {
@@ -119,7 +129,7 @@ class JobDashboard extends Component<Props, State> {
             JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
             (this.state?.activeJobs?.length < currentPage * 10)
         ) {
-            console.log('inside');
+
             let { active, needApprovalCount, newApplicantsCount } = activeJobs;
             let page_get = 0;
             let prevValues = [];
@@ -148,8 +158,7 @@ class JobDashboard extends Component<Props, State> {
                         count: {
                             approveCount: needApprovalCount,
                             applicantCount: newApplicantsCount
-                        },
-                        actualLoad: true
+                        }
                     });
                 }
             }
@@ -185,8 +194,7 @@ class JobDashboard extends Component<Props, State> {
                         count: {
                             approveCount: needApprovalCount,
                             applicantCount: newApplicantsCount
-                        },
-                        actualLoad: true
+                        }
                     });
                 }
             }
@@ -223,17 +231,41 @@ class JobDashboard extends Component<Props, State> {
                         count: {
                             approveCount: needApprovalCount,
                             applicantCount: newApplicantsCount
-                        },
-                        actualLoad: true
+                        }
                     });
                 }
             }
         }
 
 
+        if (
+            jobtype === 'applicantList' &&
+            JSON.stringify(applicantsListJobs) !== JSON.stringify(this.state?.applicantsListJobs) &&
+            (this.state?.applicantsListJobs?.length < currentPage * 10)
+        ) {
+            let page_get = 0;
+            let prevValues = [];
 
-        if (jobtype === 'applicantList' && JSON.stringify(applicantsListJobs) !== JSON.stringify(this.state.applicantsListJobs)) {
-            this.setState({ applicantsListJobs });
+            if (Array.isArray(applicantsListJobs) && applicantsListJobs?.length) {
+                page_get = applicantsListJobs[0]?.page;
+            }
+
+            if (Array.isArray(this.state?.applicantsListJobs) && this.state?.applicantsListJobs?.length) {
+                prevValues = this.state?.applicantsListJobs;
+            };
+
+
+            if (hasLoad && !applicantsListJobs?.length && page_get === 0 && this.state?.applicantsListJobs?.length !== 0) {
+                if (this.state.hasLoad !== false) {
+                    this.setState({ hasLoad: false });
+                }
+            } else {
+                if (hasLoad && applicantsListJobs?.length && page_get === currentPage) {
+                    this.setState({
+                        applicantsListJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...applicantsListJobs] : applicantsListJobs,
+                    });
+                }
+            }
         }
 
         if (
@@ -261,7 +293,6 @@ class JobDashboard extends Component<Props, State> {
                 if (hasLoad && applicantJobs?.length && page_get === currentPage) {
                     this.setState({
                         applicantJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...applicantJobs] : applicantJobs,
-                        actualLoad: true
                     });
                 }
             }
@@ -293,15 +324,71 @@ class JobDashboard extends Component<Props, State> {
                 if (hasLoad && approvalJobs?.length && page_get === currentPage) {
                     this.setState({
                         approvalJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...approvalJobs] : approvalJobs,
-                        actualLoad: true
                     });
                 }
             }
         }
+
+
+        /*if (jobtype === 'active' && JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs)) {
+
+            let { active, needApprovalCount, newApplicantsCount } = activeJobs;
+            this.setState({
+                globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
+                enableEditMilestone: editMilestone_ === "true" ? true : false,
+                enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
+                enableCancelJob: cancelJob_ === "true" ? true : false,
+                activeJobs: active,
+                count: {
+                    approveCount: needApprovalCount,
+                    applicantCount: newApplicantsCount
+                }
+            })
+        }*/
+
+        // if (jobtype === 'past' && JSON.stringify(pastJobs?.past) !== JSON.stringify(this.state.pastJobs)) {
+        //     let { past, needApprovalCount, newApplicantsCount } = pastJobs;
+        //     this.setState({
+        //         pastJobs: past,
+        //         count: {
+        //             approveCount: needApprovalCount,
+        //             applicantCount: newApplicantsCount
+        //         }
+        //     });
+        // }
+
+        // if (jobtype === 'open' && JSON.stringify(openJobs?.open) !== JSON.stringify(this.state.openJobs)) {
+        //     let { open, needApprovalCount, newApplicantsCount } = openJobs;
+        //     console.log({ open, needApprovalCount, newApplicantsCount })
+        //     this.setState({
+        //         openJobs: open,
+        //         count: {
+        //             approveCount: needApprovalCount,
+        //             applicantCount: newApplicantsCount
+        //         }
+        //     });
+        // }
+
+        // if (jobtype === 'applicantList' && JSON.stringify(applicantsListJobs) !== JSON.stringify(this.state.applicantsListJobs)) {
+        //     this.setState({ applicantsListJobs });
+        // }
+
+        // if (jobtype === 'applicant' && JSON.stringify(applicantJobs) !== JSON.stringify(this.state.applicantJobs)) {
+        //     if (applicantJobs && Array.isArray(applicantJobs)) {
+        //         this.setState({ applicantJobs })
+        //     }
+        // }
+
+        // if (jobtype === 'approval' && JSON.stringify(approvalJobs) !== JSON.stringify(this.state.approvalJobs)) {
+        //     if (approvalJobs && Array.isArray(approvalJobs)) {
+        //         this.setState({ approvalJobs })
+        //     }
+        // }
     }
 
     toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
     setSelected = (jobtype: any, jobid?: any, sortby?: any, specializationId?: any) => {
+        const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, getNewApprovalList } = this.props;
         let { currentPage } = this.state;
         let item_position: any = localStorage.getItem('position');
         let locationLocal: any = JSON.parse(item_position);
@@ -318,25 +405,12 @@ class JobDashboard extends Component<Props, State> {
         }
 
         if (['active', 'past', 'open', 'applicant', 'approval'].includes(jobtype)) {
-            this.setState({
-                activeType: jobtype,
-                currentPage: 1,
-                hasLoad: true,
-                activeJobs: [],
-                pastJobs: [],
-                openJobs: [],
-                applicantJobs: [],
-                approvalJobs: [],
-                applicantsListJobs: [],
-                actualLoad: false
-            }, () => {
+            this.setState({ activeType: jobtype, currentPage: 1 }, () => {
                 this.props.history.push(`/jobs?active=${jobtype}`);
-                window.scrollTo(0, 0);
             })
         }
-
         this.setState({
-            selectedItem: { jobtype, jobid, sortby, specializationId },
+            selectedItem: { jobtype, jobid, sortby, specializationId }, 
             applicantsListJobs: []
         }, () => {
             this.setAfterItems({ jobtype, currentPage, dataItemsAddons });
@@ -356,7 +430,6 @@ class JobDashboard extends Component<Props, State> {
 
     render() {
         let {
-            actualLoad,
             hasLoad,
             currentPage,
             enableEditMilestone,
@@ -476,7 +549,6 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
 
-
                         <InfiniteScroll
                             dataLength={totalCount}
                             next={() => {
@@ -502,11 +574,15 @@ class JobDashboard extends Component<Props, State> {
                                         this.props.getNewApprovalList(cp);
                                     }
 
+                                    if (jobtype === 'applicantList') {
+                                        // let data__: any = { page: cp, jobId: jobid, sortBy: sortby };
+                                    }
                                 });
                             }}
                             hasMore={hasLoad}
                             loader={<></>}
-                            className={`detail_col element-side-scroll`}>
+                            className="detail_col element-side-scroll">
+
                             {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}

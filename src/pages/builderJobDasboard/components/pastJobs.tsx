@@ -31,7 +31,7 @@ interface Post {
 }
 
 
-export default function PastJobs(props: any): ReactElement {
+const PastJobs = (props: any) => {
     const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
     const [enableRateJob, setRateJob] = useState({ data: {}, isTrue: false }); // toggle-rate-job
@@ -75,7 +75,14 @@ export default function PastJobs(props: any): ReactElement {
         }
 
         window_.addEventListener('scroll', handleScroll, { passive: true });
-    }, [])
+    }, []);
+
+
+    useEffect(() => {
+        if (isLoading === false) {
+            setEnable(true);
+        }
+    }, [isLoading])
 
     if (enableRateJob?.isTrue) {
         return (
@@ -88,15 +95,9 @@ export default function PastJobs(props: any): ReactElement {
         )
     }
 
-
-    if (isLoading) {
-        return (
-            <React.Fragment>
-                {''}
-            </React.Fragment>
-        );
+    if (!isEnable) {
+        return null;
     }
-
 
     return (
         <React.Fragment>
@@ -232,3 +233,6 @@ export default function PastJobs(props: any): ReactElement {
         </React.Fragment>
     )
 }
+
+
+export default PastJobs;
