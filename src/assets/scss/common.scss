@@ -640,12 +640,13 @@ body {
   .MuiMenu-paper {
     padding: 20px 10px 0 32px;
     width: 262px;
-    margin: 45px 0 0 40px;
+    margin: 0 0 0 20px;
     border-radius: 3px;
     box-shadow: 0 20px 24px 0 rgba(132, 132, 132, 0.2);
     @media (max-width: 650px) {
       padding: 0 10px 0 20px;
       width: 230px;
+      margin: 0;
     }
     .sub_title {
       font-size: 20px;
@@ -697,7 +698,6 @@ body {
   &.notifications{
     .MuiMenu-paper {
       width: 433px;
-      margin: 0;
       .sub_title{
         font-size: 20px;
         margin-bottom: 20px;
