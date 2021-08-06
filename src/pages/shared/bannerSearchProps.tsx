@@ -847,11 +847,12 @@ const BannerSearch = (props: PropsType) => {
                                     You have blocked your location.
                                     To use this, change your location settings in browser.
                                 </span>)}
-                            <div className="flex_row recent_search auto_loc">
                                 {props?.recentLocationData?.length > 0 &&
-                                    <span className="sub_title">
-                                        {'Recent searches'}
-                                    </span>}
+                                        <span className="sub_title">
+                                            {'Recent searches'}
+                                        </span>}
+                            <div className="flex_row recent_search auto_loc">
+                                
                                 {/* {recentLocation?.map((item: any) => {
                                     return (
                                         <div className="flex_col_sm_4"

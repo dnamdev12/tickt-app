@@ -334,8 +334,8 @@ const TradieSearchJobResult = (props: PropsType) => {
                                         <div className="no_record">
                                             <figure className="no_img">
                                                 <img src={noData} alt="data not found" />
-                                                <span>No Data Found</span>
                                             </figure>
+                                            <span>No Data Found</span>
                                         </div>}
                                 </div> : (jobListData.length > 0 || props.isLoading) ?
                                     (jobListData.map((jobData: any) => {
