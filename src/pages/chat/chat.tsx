@@ -47,6 +47,7 @@ const Chat = (props: PropTypes) => {
     const [isInitialLoader, setIsInitialLoader] = useState(true);
 
     const { tradieId, builderId, jobName, jobId } = props.history?.location?.state ? props.history?.location?.state : { tradieId: '', builderId: '', jobName: '', jobId: '' };
+    console.log('tradieId, builderId, jobName, jobId: ', tradieId, builderId, jobName, jobId);
 
     useEffect(() => {
         console.log("Calling Did Mount");
@@ -248,7 +249,7 @@ const Chat = (props: PropTypes) => {
                                                 <div className="detail">
                                                     <span className="inner_title line-1">{item.oppUserInfo?.name}</span>
                                                     <span className="inner_title job line-1">{item.jobName}</span>
-                                                    <p className="commn_para line-1">{item.lastMsg?.messageType === 'text' ? item.lastMsg?.messageText : item.lastMsg?.messageType === 'image' ? <em>Photo</em> : item.lastMsg?.messageType === 'video' ? <em>Video</em> : ''}</p>
+                                                    <p className="commn_para line-1">{item.lastMsg?.messageType === 'text' ? item.lastMsg?.messageText : item.lastMsg?.messageType === 'image' ? <i style={{color:'#929292'}}>Photo</i> : item.lastMsg?.messageType === 'video' ? <i style={{color:'#929292'}}>Video</i> : ''}</p>
                                                     {item.lastMsg?.messageTimestamp && <span className="date_time">{formatDateTime(item.lastMsg?.messageTimestamp, 'inboxTime')}</span>}
                                                     {(selectedRoomID === item.roomId) ? null : item.unreadMessages === 0 ? null : <span className="count">{item.unreadMessages}</span>}
                                                 </div>

@@ -32,6 +32,7 @@ import LodgeSuccess from '../pages/builderJobDasboard/components/lodgeDispute/su
 import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/success';
 
 import ChooseTheJob from '../pages/chooseTheJob/index';
+import ChooseJobToStartChat from '../pages/chooseJobToStartChat/chooseJobToStartChat';
 import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
@@ -206,6 +207,11 @@ const routes = [
         name: 'chooseTheJob',
         path: ['/choose-the-job', '/cancel-the-job'],
         component: ChooseTheJob,
+    },
+    {
+        name: 'chooseJobToStartChat',
+        path: '/choose-job-to-start-chat',
+        component: ChooseJobToStartChat,
     },
     {
         name: 'needApprovalSuccess',

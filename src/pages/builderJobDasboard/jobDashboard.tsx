@@ -219,7 +219,9 @@ class JobDashboard extends Component<Props, State> {
         }
 
         if (jobtype === 'applicant' && JSON.stringify(applicantJobs) !== JSON.stringify(this.state.applicantJobs)) {
-            this.setState({ applicantJobs })
+            if(Array.isArray(applicantJobs)){
+                this.setState({ applicantJobs })
+            }
         }
 
         if (jobtype === 'approval' && JSON.stringify(approvalJobs) !== JSON.stringify(this.state.approvalJobs)) {

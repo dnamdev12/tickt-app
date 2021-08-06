@@ -481,8 +481,8 @@ const JobDetailsPage = (props: PropsType) => {
         itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
-    let questions_:any = questionList;
-    let question_list:any = questions_?.list || questions_;
+    let questions_: any = questionList;
+    let question_list: any = questions_?.list || questions_;
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -549,7 +549,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.jobStatus === 'cancelled' && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Job cancelled</span>
                                         <p className="commn_para line-2">
-                                            {'Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. '}
+                                            {jobDetailsData?.reasonNoteForCancelJobRequest}
                                         </p>
                                     </div>}
                                     {jobDetailsData?.jobStatus !== 'cancelled' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">

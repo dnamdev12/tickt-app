@@ -584,7 +584,7 @@ const Header = (props: any) => {
                                     >
                                         <div>
                                             <span className="sub_title">Notifications</span>
-                                            {notificationData.list?.length > 0 && <a href="javascript:void(0)" className="link mark_all" onClick={() => callNotificationList(true)}>Mark all as read</a>}
+                                            {notificationData.unreadCount > 0 && <a href="javascript:void(0)" className="link mark_all" onClick={() => callNotificationList(true)}>Mark all as read</a>}
                                         </div>
 
                                         {notificationData.list?.length > 0 &&
@@ -601,7 +601,6 @@ const Header = (props: any) => {
                                                             <span className={`${item.read ? '' : 'dot'}`}></span>
                                                         </figure>
                                                         <div className="info">
-                                                            {/* <span className="who line-1">{item.title}</span> */}
                                                             <span className="who line-1">{item.title}</span>
                                                             <span className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}

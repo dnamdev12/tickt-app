@@ -187,7 +187,8 @@ class TradieInfo extends Component<Props, State> {
         let specializationId = urlParams.get('specializationId')
         let tradeId = urlParams.get('tradeId')
         let user_type = urlParams.get('type')
-        return { jobId, specializationId, tradeId, user_type };
+        let is_active = urlParams.get('active')
+        return { jobId, specializationId, tradeId, user_type, is_active };
     }
 
     componentDidMount() {
@@ -520,7 +521,7 @@ class TradieInfo extends Component<Props, State> {
             path: props.location.pathname + props.location.search
         })
         // let tradieInfo: any = props.tradieInfo;
-        const { user_type } = this.getItemsFromLocation();
+        const { user_type, is_active } = this.getItemsFromLocation();
         let { portfolioData, toggleVoucher } = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
@@ -594,6 +595,22 @@ class TradieInfo extends Component<Props, State> {
                                                         <span className="review_count"> jobs completed</span>
                                                     </li>
                                                 </ul>
+
+                                                {userType !== 1 && is_active == "true" ? (
+                                                    <button className="fill_btn full_btn btn-effect"
+                                                        onClick={() => {
+                                                            const tradieId = new URLSearchParams(props.history?.location?.search).get('tradeId');
+                                                            props.history.push({
+                                                                pathname: `/choose-job-to-start-chat`,
+                                                                state: {
+                                                                    tradieId: tradieId ? tradieId : '',
+                                                                }
+                                                            })
+                                                        }}>
+                                                        {'Write a message'}
+                                                    </button>
+                                                ) : ''}
+
 
                                                 {userType === 1 ? (
                                                     <button
@@ -1013,7 +1030,7 @@ class TradieInfo extends Component<Props, State> {
                                                     </div>
                                                 </div>
                                                 <p>{reviewData?.review}</p>
-                                           
+
                                                 {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
                                                     <span
                                                         onClick={() => {

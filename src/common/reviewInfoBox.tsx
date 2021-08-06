@@ -13,7 +13,7 @@ const ReviewInfoBox = (props: any) => {
                 <div className="rating_star">
                     <ReactStars
                         count={5}
-                        value={item.ratings}
+                        value={item.rating ? item.rating : item.ratings}
                         size={15}
                         edit={false}
                         isHalf={true}
@@ -25,10 +25,10 @@ const ReviewInfoBox = (props: any) => {
                 </div>
                 <div className="pic_shot_dtl">
                     <figure className="u_img">
-                        <img src={item.reviewSenderImage ? item.reviewSenderImage : dummy} alt="user-img" />
+                        <img src={item.userImage ? item.userImage : item.reviewSenderImage ? item.reviewSenderImage : dummy} alt="user-img" />
                     </figure>
                     <div className="name_wrap">
-                        <span className="user_name" title="Cheryl">{item.reviewSenderName}</span>
+                        <span className="user_name" title="Cheryl">{item.name ? item.name : item.reviewSenderName}</span>
                         <span className="date">{item.date}</span>
                     </div>
                 </div>
