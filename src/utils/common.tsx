@@ -250,6 +250,24 @@ export const AsyncImage = (props: any) => {
     return null;
 };
 
+// const JOB_STATUS = {
+//     OPEN: 1,
+//     ACTIVE: 2,
+//     CANCELLED: 3,
+//     EXPIRED: 4, 
+//     COMPLETED: 5, 
+//     NEED_APPROVAL: 6, 
+//     APPROVED: 7,
+//     PENDING_CANCELATION: 9,
+//     PENDING_DISPUTE: 10,
+//     PENDIND_CHANGE_REQUEST: 11,
+//     CHANGE_REQUEST_ACCEPTED: 12,
+//     CHANGED_REQUEST_DENIED:13,
+//     APPROVED_CANCELLATION: 14,
+//     APPROVED_CHANGE_REQUEST: 15, 
+//     DISPUTE_RESOLVED: 16
+// }
+
 // const NOTIFICATION_TYPE = {
 //     TRADIE: 1,
 //     BUILDER: 2,
@@ -321,7 +339,7 @@ export const onNotificationClick = (notification: any) => {
                 return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
         case 11: //TERM_AND_CONDITION
-            return `/update-user-info`;
+            return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
                 return `/active-jobs`;

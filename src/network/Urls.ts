@@ -138,6 +138,8 @@ const Urls = {
     builderUpdateSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}settings`,
     privacyPolicy: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}privacyPolicy`,
     tnc: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}tnc`,
+    tncWeb: `tncWeb`,
+    privacyPolicyWeb: `privacyPolicyWeb`
 }
 
 export const urlFor = (service: String): string => {

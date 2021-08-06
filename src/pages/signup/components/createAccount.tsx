@@ -5,6 +5,8 @@ import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import SocialAuth from "../../../common/auth/socialAuth";
 import { setShowToast } from '../../../redux/common/actions';
+import Urls from '../../../network/Urls';
+import { urlFor } from '../../../network/Urls';
 interface Propstype {
     updateSteps: (num: number, data: any) => void,
     step: number,
@@ -105,9 +107,9 @@ const CreateAccount = (props: Propstype) => {
                         <input className="filter-type filled-in" type="checkbox" name="tnc" id="tnc"
                             checked={signupData.tnc} onChange={tncHandler} />
                         <label htmlFor="tnc">I agree to </label>
-                        <a href="https://ticktdevapi.appskeeper.in/privacyPolicyWeb" target="_blank" rel="noopener" className="link">Privacy Policy</a>
+                        <a onClick={() => window.open(urlFor(Urls.privacyPolicyWeb), "_blank")} rel="noopener" className="link">Privacy Policy</a>
                         <label className="and">&nbsp;and&nbsp;</label>
-                        <a href="https://ticktdevapi.appskeeper.in/tncWeb" target="_blank" rel="noopener" className="link m-l-30">Terms &amp; Conditions</a>
+                        <a onClick={() => window.open(urlFor(Urls.tncWeb), "_blank")}  rel="noopener" className="link m-l-30">Terms &amp; Conditions</a>
                     </div>
                     {!!errors.tnc && <span className="error_msg m-t">{errors.tnc}</span>}
                 </div>

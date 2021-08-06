@@ -546,7 +546,7 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {jobDetailsData?.jobStatus === 'cancelled' && <div className="chang_req_card mb-sm">
+                                    {jobDetailsData?.jobStatus === 'cancelled' && jobDetailsData?.reasonNoteForCancelJobRequest && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Job cancelled</span>
                                         <p className="commn_para line-2">
                                             {jobDetailsData?.reasonNoteForCancelJobRequest}
