@@ -22,6 +22,7 @@ interface Post {
     status: any,
     toDate: any,
     totalMilestones: any,
+    isPublishedAgain: boolean,
     tradeId: any,
     tradieId: any,
     tradeName: any,
@@ -112,6 +113,7 @@ const PastJobs = (props: any) => {
                         isRated,
                         jobName,
                         locationName,
+                        isPublishedAgain,
                         milestoneNumber,
                         specializationId,
                         specializationName,
@@ -149,11 +151,6 @@ const PastJobs = (props: any) => {
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
                                         <li className="job_status">{status}</li>
-
-                                        {/* <li className="icon clock">{renderTime({fromDate,toDate})}</li>
-                                        <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{locationName}</li>
-                                        <li className="job_status">{status}</li> */}
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -211,7 +208,7 @@ const PastJobs = (props: any) => {
                                             </React.Fragment>
                                         </button>
                                         )
-                                        : status === "EXPIRED" && (
+                                        : (status === "EXPIRED" && !isPublishedAgain) && (
                                             <button
                                                 className="fill_grey_btn full_btn"
                                                 onClick={() => redirectToInfo({ jobId, status })}>

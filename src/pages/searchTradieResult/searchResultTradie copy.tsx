@@ -21,13 +21,18 @@ import moment from 'moment';
 // location
 // calender
 
+import InfiniteScroll from "react-infinite-scroll-component";
+
 const SearchResultTradie = (props: any) => {
+
     const location: any = useLocation();
     const [stateData, setStateData] = useState(location.state);
     const [isToggle, setToggleSearch] = useState(false);
     const [localInfo, setLocalInfo] = useState({}); // localInfo
     const [loading, setLoading] = useState(false);
-    const [localData, setLocalData] = useState([]);
+    const [localData, setLocalData] = useState<any>([]);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
     useEffect(() => {
         props.getRecentSearchList();
@@ -85,7 +90,7 @@ const SearchResultTradie = (props: any) => {
             suggestionSelected: stateData?.suggestionSelected
         });
 
-        if(data?.address){
+        if (data?.address) {
             return
         }
 
@@ -94,7 +99,7 @@ const SearchResultTradie = (props: any) => {
         }, '----------------->><<---------------')
 
         // if (!stateData?.suggestionSelected || (data?.location?.coordinates && Array.isArray(data?.location?.coordinates) && data?.location?.coordinates?.length)) {
-            props.postHomeSearchData(data);
+        props.postHomeSearchData(data);
         // }
 
     }, []);
@@ -104,19 +109,69 @@ const SearchResultTradie = (props: any) => {
     }
 
     useEffect(() => {
-        let home: any = props.homeSearchJobData?.length ? true : false;
-        if (home) {
-            setLocalData(props.homeSearchJobData)
-        } else {
-            setLocalData([])
+        let newValue: any = props.homeSearchJobData;
+        let local_info: any = localInfo;
+        let location_state: any = location?.state;
+        let length = localData?.length;
+        let cp = currentPage * 10;
+
+        let tradeId = '';
+        let tradeInfo = '';
+        
+        if (Array.isArray(localData) && localData[0] && Array.isArray(localData[0]?.tradeData) && localData[0]?.tradeData[0]?.tradeId) {
+            tradeId = localData[0]?.tradeData[0]?.tradeId;
         }
-    }, [props])
+
+        if(Array.isArray(local_info?.tradeId) && local_info?.tradeId[0]){
+            tradeInfo = local_info?.tradeId[0]
+        }
+
+        console.log({
+            tradeId,
+            tradeInfo,
+            local_info
+        })
+        if (tradeId !== tradeInfo) {
+            setCurrentPage(1);
+            setLocalData(newValue);
+            getTitleInfo({
+                name: local_info?.name,
+                count: local_info?.specializationId?.length === 1 ? 0 : local_info?.specializationId?.length,
+                tradeId: local_info.tradeId,
+                specializationId: local_info.specializationId,
+                location: local_info.location,
+                doingLocalChanges: true,
+                suggestionSelected: local_info?.suggestionSelected
+            })
+            return;
+        } else {
+            if (localData?.length && currentPage > 1) {
+                // alert(`Here! ${currentPage}`)
+                if (length < cp && hasMore) {
+                    if (!newValue?.length) {
+                        setHasMore(false);
+                        return
+                    }
+                    let data_ = [...localData, ...newValue];
+                    setLocalData(data_)
+                }
+            } else {
+                setCurrentPage(1);
+                setLocalData(newValue)
+            }
+        }
+    }, [props]);
 
     const handleChangeToggle = (value: any) => { setToggleSearch(value) }
 
     let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
     let isLoading: any = props.isLoading;
+    console.log({
+        localData
+    })
+
+    let uniqeValues = {};
 
     return (
         <div className="app_wrapper" >
@@ -134,7 +189,11 @@ const SearchResultTradie = (props: any) => {
                         <div className="flex_row mob_srch_option">
                             <div className="flex_col_sm_6"></div>
                             <div className="flex_col_sm_6 text-right">
-                                <button onClick={() => { setToggleSearch(true) }} className="fill_grey_btn btn-effect">Modify Search</button>
+                                <button
+                                    onClick={() => { setToggleSearch(true) }}
+                                    className="fill_grey_btn btn-effect">
+                                    {'Modify Search'}
+                                </button>
                             </div>
                         </div>
 
@@ -144,7 +203,7 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
-                                            {`${homeSearchJobData?.length} result(s)`}
+                                            {`${localData?.length} result(s)`}
                                         </span>
                                     </span>
                                     <SearchFilters
@@ -155,7 +214,42 @@ const SearchResultTradie = (props: any) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="flex_row tradies_row">
+
+                        <InfiniteScroll
+                            dataLength={localData?.length}
+                            next={() => {
+                                let cp = currentPage;
+                                setCurrentPage((prev: any) => prev + 1);
+                                cp = cp + 1;
+
+                                let location_state: any = local_info; //location?.state;
+
+                                // if (JSON.stringify(location?.state?.tradeId) !== JSON.stringify(local_info?.tradeId)) {
+                                //     location_state = local_info?.tradeId;
+                                // }
+
+                                let data: any = {
+                                    page: cp,
+                                    isFiltered: false,
+                                }
+
+                                if (location_state?.location) {
+                                    data['location'] = location_state?.location;
+                                }
+
+                                if (location_state?.tradeId?.length) {
+                                    data['tradeId'] = location_state?.tradeId
+                                }
+
+                                if (location_state?.specializationId?.length) {
+                                    data['specializationId'] = location_state?.specializationId;
+                                }
+                                console.log({ data, location, location_state, local_info }, 'data------>');
+                                props.postHomeSearchData(data);
+                            }}
+                            hasMore={hasMore}
+                            loader={<></>}
+                            className="flex_row tradies_row">
                             {localData?.length ?
                                 localData.map((item: any, index: number) => (
                                     <TradieBox item={item} index={index} />
@@ -168,7 +262,7 @@ const SearchResultTradie = (props: any) => {
                                         </figure>
                                         <span>{'No Data Found'}</span>
                                     </div> : null}
-                        </div>
+                        </InfiniteScroll>
 
                     </div>
                 </div>
