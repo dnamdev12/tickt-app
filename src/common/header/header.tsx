@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useLocation, withRouter, useHistory } from "react-router-dom";
 import Joyride from 'react-joyride';
+import Modal from '@material-ui/core/Modal';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import storageService from '../../utils/storageService';
@@ -11,23 +12,22 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import { useDispatch } from 'react-redux'
+import { setShowNotification } from '../../redux/common/actions';
+import { auth, messaging } from '../../services/firebase';
+import { onNotificationClick, formatNotificationTime } from '../../utils/common';
+import { getNotificationList } from '../../redux/homeSearch/actions';
+
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
 import bell from '../../assets/images/ic-notification.png';
+import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
 import profile from '../../assets/images/ic-profile.png';
 import revenue from '../../assets/images/ic-revenue.png';
 import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
 import noNotification from '../../assets/images/no-notifications.png';
-
-
-
-import { useDispatch } from 'react-redux'
-import { setShowNotification } from '../../redux/common/actions';
-import { auth, messaging } from '../../services/firebase';
-import { onNotificationClick, formatNotificationTime } from '../../utils/common';
-import { getNotificationList } from '../../redux/homeSearch/actions';
 
 const DISABLE_HEADER = [
     '/signup',
@@ -64,6 +64,7 @@ const Header = (props: any) => {
     const [isFalse, setIsFalse] = useState(false);
     const forceUpdate = useForceUpdate();
     const [activeTarget, setActiveTarget] = useState('');
+    const [logoutClicked, setLogoutClicked] = useState(false);
 
 
     function useForceUpdate() {
@@ -281,6 +282,7 @@ const Header = (props: any) => {
 
     const logoutHandler = async () => {
         dispatch({ type: 'USER_LOGGED_OUT' });
+        setLogoutClicked(false);
         storageService.clearAll();
         await auth.signOut();
         history.push('/login');
@@ -523,11 +525,11 @@ const Header = (props: any) => {
                                         anchorOrigin={{
                                             vertical: 'bottom',
                                             horizontal: 'center',
-                                          }}
-                                          transformOrigin={{
+                                        }}
+                                        transformOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
-                                          }}
+                                        }}
                                     >
                                         <span className="sub_title">
                                             {renderByType({ name: 'userName' })}
@@ -567,10 +569,38 @@ const Header = (props: any) => {
                                                 </span>
                                             </MenuItem>
                                         )}
-                                        <MenuItem onClick={() => { handleClose('profile'); logoutHandler(); }}>
+                                        <MenuItem onClick={() => {
+                                            handleClose('profile');
+                                            setLogoutClicked(true);
+                                        }}>
                                             <span className="setting_icon logout">Logout</span>
                                         </MenuItem>
                                     </Menu>
+
+                                    {/* logout popup */}
+                                    <Modal
+                                        className="custom_modal"
+                                        open={logoutClicked}
+                                        onClose={() => setLogoutClicked(false)}
+                                        aria-labelledby="simple-modal-title"
+                                        aria-describedby="simple-modal-description"
+                                    >
+                                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                            <div className="heading">
+                                                <span className="xs_sub_title">{`Logout Confirmation`}</span>
+                                                <button className="close_btn" onClick={() => setLogoutClicked(false)}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <div className="modal_message">
+                                                <p>{`Are you sure you want to logout?`}</p>
+                                            </div>
+                                            <div className="dialog_actions">
+                                                <button className="fill_btn btn-effect" onClick={logoutHandler}>Yes</button>
+                                                <button className="fill_grey_btn btn-effect" onClick={() => setLogoutClicked(false)}>No</button>
+                                            </div>
+                                        </div>
+                                    </Modal>
 
                                     {/* Notification */}
                                     <Menu className="sub_menu notifications"
@@ -584,11 +614,11 @@ const Header = (props: any) => {
                                         anchorOrigin={{
                                             vertical: 'bottom',
                                             horizontal: 'center',
-                                          }}
-                                          transformOrigin={{
+                                        }}
+                                        transformOrigin={{
                                             vertical: 'top',
                                             horizontal: 'right',
-                                          }}
+                                        }}
                                     >
                                         <div>
                                             <span className="sub_title">Notifications</span>
