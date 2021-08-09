@@ -28,10 +28,10 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
   }, []);
 
   const callJobList = async () => {
-    if (newJobsCount && jobList.length >= totalJobsCount) {
-      setHasMoreItems(false);
-      return;
-    }
+    // if (newJobsCount && jobList.length >= totalJobsCount) {
+    //   setHasMoreItems(false);
+    //   return;
+    // }
     getAppliedJobList(pageNo);
   }
 
@@ -46,13 +46,14 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
   }, [appliedJobList]);
 
   return (
-    <InfiniteScroll
-      dataLength={jobList.length}
-      next={callJobList}
-      hasMore={hasMoreItems}
-      loader={<h4></h4>}
-    >
-      <div className="detail_col">
+    <div className="detail_col">
+      <InfiniteScroll
+        dataLength={jobList.length}
+        next={callJobList}
+        style={{ overflowX: 'hidden' }}
+        hasMore={hasMoreItems}
+        loader={<></>}
+      >
         <span className="sub_title">Applied Jobs</span>
         <div className="flex_row tradies_row">
           {!loading && jobList.length ? jobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
@@ -104,8 +105,8 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
             </div>
           )}
         </div>
-      </div>
-    </InfiniteScroll>
+      </InfiniteScroll>
+    </div>
   );
 };
 

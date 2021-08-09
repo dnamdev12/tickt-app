@@ -111,22 +111,22 @@ const Chat = (props: PropTypes) => {
             ress.unshift(selectedRoomInfo);
         }
         console.log('ress: ', ress, "sortedRes", sortedRes, "res", res);
-
-        setInBoxData((Array.isArray(ress) && selectedRoomInfo) ? ress : sortedRes);
-        if (res.length > 0 && selectedRoomID === '') {
-            selectedRoomID = res[0].roomId;
-            setRoomId(res[0].roomId);
-            if (res[0] && res[0]?.unreadMessages > 0) {
-                res[0].unreadMessages = 0;
-                resetUnreadCounter(res[0].roomId);
+        const newRes = (Array.isArray(ress) && selectedRoomInfo) ? ress : sortedRes;
+        setInBoxData(newRes);
+        if (newRes.length > 0 && selectedRoomID === '') {
+            selectedRoomID = newRes[0].roomId;
+            setRoomId(newRes[0].roomId);
+            if (newRes[0] && newRes[0]?.unreadMessages > 0) {
+                newRes[0].unreadMessages = 0;
+                resetUnreadCounter(newRes[0].roomId);
             }
-            setRoomData(res[0]);
+            setRoomData(newRes[0]);
             return;
             // fetchJobDetail(res[0].item?.jobId);
         }
 
-        if (res.length > 0) {
-            let itemObj = res.find((x: any) => x.roomId == selectedRoomID);
+        if (newRes.length > 0) {
+            let itemObj = newRes.find((x: any) => x.roomId == selectedRoomID);
 
             if (itemObj && itemObj?.unreadMessages > 0) {
                 itemObj.unreadMessages = 0;

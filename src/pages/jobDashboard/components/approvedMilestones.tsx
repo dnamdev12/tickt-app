@@ -30,10 +30,10 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
   }, []);
 
   const callJobList = async () => {
-    if (newJobsCount && jobList.length >= totalJobsCount) {
-      setHasMoreItems(false);
-      return;
-    }
+    // if (newJobsCount && jobList.length >= totalJobsCount) {
+    //   setHasMoreItems(false);
+    //   return;
+    // }
     getApprovedMilestoneList(pageNo);
   }
 
@@ -48,13 +48,14 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
   }, [approvedMilestoneList]);
 
   return (
-    <InfiniteScroll
-      dataLength={jobList.length}
-      next={callJobList}
-      hasMore={hasMoreItems}
-      loader={<h4></h4>}
-    >
-      <div className="detail_col">
+    <div className="detail_col">
+      <InfiniteScroll
+        dataLength={jobList.length}
+        next={callJobList}
+        style={{ overflowX: 'hidden' }}
+        hasMore={hasMoreItems}
+        loader={<></>}
+      >
         <span className="sub_title">Approved Milestones</span>
         <div className="flex_row tradies_row">
           {!loading && jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
@@ -112,8 +113,8 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
             </div>
           )}
         </div>
-      </div>
-    </InfiniteScroll>
+      </InfiniteScroll>
+    </div>
   );
 };
 
