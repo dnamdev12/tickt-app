@@ -1038,6 +1038,7 @@ class TradieInfo extends Component<Props, State> {
                                                                     edit={false}
                                                                     size={30}
                                                                     activeColor="#ffd700"
+                                                                    color='#DFE5EF'
                                                                 />
                                                             </span>
                                                         </div>
@@ -1285,6 +1286,7 @@ class TradieInfo extends Component<Props, State> {
                                         }}
                                         size={40}
                                         activeColor="#ffd700"
+                                        color='#DFE5EF'
                                     />
                                     <div className="text_field">
                                         <textarea
