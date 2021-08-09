@@ -96,13 +96,10 @@ const UserMessages = (props: any) => {
     console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
     const setLatestInboxToTop = () => {
-        console.log('props.inboxData: ', props.inBoxData);
         const currentIndex = [...props.inBoxData].findIndex((item: any) => item.roomId === props.roomId);
-        console.log('currentIndex: ', currentIndex);
         const newInboxData = [...props.inBoxData];
         newInboxData.splice(currentIndex, 1);
         newInboxData.unshift(props.inBoxData[currentIndex]);
-        console.log('newInboxData: ', newInboxData);
         props.setInBoxData(newInboxData);
     }
     const sendMessage = async () => {
@@ -111,7 +108,6 @@ const UserMessages = (props: any) => {
             setLatestInboxToTop();
             sendTextMessage(props.roomId, messageText);
             setMessageText('');
-            // await sendTextMessage(props.roomId, messageText); 
         }
     }
 
@@ -152,20 +148,6 @@ const UserMessages = (props: any) => {
         }
     }
 
-    const singleMessage = (data: any) => {
-        if (data.senderId == userId) {
-            return (<div className="sender_message" key={data.messageId}>
-                <p>{data.messageText}</p>
-            </div>)
-        } else {
-            return (
-                <div className="recive_message" key={data.messageId}>
-                    <p>{data.messageText}</p>
-                </div>
-            )
-        }
-    }
-
     const renderMediaItems = (itemsMedia: any) => {
         let sources: any = [];
         let types: any = [];
@@ -193,7 +175,7 @@ const UserMessages = (props: any) => {
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         console.log('fileType: ', fileType);
 
-        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
+        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mb
         if(["mp4", "wmv", "avi"].includes(fileType)){
             maxFileSize = 20;
         }
@@ -220,7 +202,6 @@ const UserMessages = (props: any) => {
     }
 
     const renderTextMsg = (msg: any) => {
-        // let curDate = moment(data.messageTimestamp).format('dd-mm-yyyy');
         let curDate = formatDateTime(msg.messageTimestamp, 'day');
         const messageClass = msg.senderId === userId ? 'message' : 'message recive_msg';
         if (lastDate === '' || lastDate !== curDate) {
@@ -228,7 +209,6 @@ const UserMessages = (props: any) => {
             return (
                 <>
                     <div className="date_time">
-                        {/* <span>Today</span> */}
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
@@ -327,6 +307,7 @@ const UserMessages = (props: any) => {
     }
 
     const displayMessages = (msg: any, index: number) => {
+        if(index === 0) lastDate= '';
         switch (msg.messageType) {
             case "text":
                 return renderTextMsg(msg);

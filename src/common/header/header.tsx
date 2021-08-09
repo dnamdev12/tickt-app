@@ -101,7 +101,7 @@ const Header = (props: any) => {
     }
 
     const callNotificationList = async (resetUnreadNotif?: boolean) => {
-        if (notificationData.list?.length && notificationData.list?.length >= notificationData?.count) {
+        if (notificationData.list?.length > 0 && notificationData.list?.length >= notificationData?.count) {
             setHasMoreNotif(false);
             return;
         }

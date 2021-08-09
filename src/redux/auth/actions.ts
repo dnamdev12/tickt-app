@@ -20,20 +20,25 @@ export const postSignup = async (data: any) => {
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
+    storageService.setItem("userInfo", {
+      "email": response.result.email,
+      "userName": response.result.firstName,
+      "_id": response.result._id,
+    });
     return { success: true, result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
 };
 
-export const checkEmailId = async (email: string, hideToast?:boolean) => {
+export const checkEmailId = async (email: string, hideToast?: boolean) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkEmailId + `?email=${email}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, isProfileCompleted: response.result.isProfileCompleted, message: response.message };
   }
-  if(!hideToast){
+  if (!hideToast) {
     setShowToast(true, response.message);
   }
   return { success: false };
