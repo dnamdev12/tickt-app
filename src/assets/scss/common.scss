@@ -5653,38 +5653,73 @@ div#light-box div {
   overflow: hidden;
 }
 
+#react-joyride-step-4, #react-joyride-step-5{
+  .tour-tooltip {
+    margin: 20px 0 0 0px;
+    transform: translateX(-70%);
+    @media(max-width: 650px){
+      transform: translateX(-48%);
+    }
+    &-content{
+      &::before{
+        @include position(absolute, -32px, -65px, auto, auto);
+        background: url("../images/arrow-2.png") center no-repeat;
+        @media(max-width: 650px){
+          top: -32px;
+          right: -25px;
+        }
+      }
+    }
+  }
+}
+
+#react-joyride-step-4{
+  .tour-tooltip {
+    @media(max-width: 768px){
+      transform: translateX(-40%);
+    }
+  }
+}
+
+
 .tour-tooltip {
-  width: 420px;
-  margin: 10px auto auto;
+  margin: 20px 0 0 250px;
+  @media(max-width: 768px){
+    margin: 20px 0 0 270px;
+  }
   @media(max-width: 650px){
-    width: 85%;
+    margin: 10px 0 0 80px;
   }
   &-content {
     color: var(--white);
     font-family: 'Neue Haas Grotesk Text Pro Medium';
-    margin-bottom: 25px;
-    font-size: 17px;
-    line-height: 1.33;
+    max-width: 210px;
+    margin: 0 0 20px auto;
+    font-size: 16px;
+    line-height: 1.4;
     text-shadow: 0 0 20px #00000066;
-    text-align: center;
+    position: relative;
+    &::before{
+      @include position(absolute, -32px, auto, auto, -68px);
+      content: "";
+      width: 68px;
+      height: 68px;
+      background: url("../images/arrow-1.png") center no-repeat;
+      background-size: contain;   
+    }
   }
   &-footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    @media(max-width: 650px){
-      flex-wrap: wrap-reverse;
-      justify-content: center;
-    }
     button {
-      padding: 10px 15px;
-      &.skip_btn{
-        background-color: transparent;
-        border: 1px solid #dfe5ef;
-        color: #dfe5ef;
-        @media(max-width: 650px){
-          margin: 10px;
-        }
+      background-color: transparent;
+      display: flex;
+      align-items: center;
+      font-size: 16px;
+      color: #fff;
+      span{
+        margin-left: 5px;
       }
     }
   }
