@@ -386,9 +386,17 @@ class TradieInfo extends Component<Props, State> {
 
             if (type === "updateBuilderReview") {
                 const { reviewData: { review, reviewId, rating } } = reviewsData;
-                response = await updateReviewTradie({
-                    review, reviewId, rating
-                })
+                let data = {
+                    review,
+                    reviewId,
+                    rating
+                };
+
+                if (!data?.review?.length) {
+                    delete data.review;
+                }
+
+                response = await updateReviewTradie(data)
             }
 
             if (response?.success) {
