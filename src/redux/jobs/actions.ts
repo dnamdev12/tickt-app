@@ -583,9 +583,9 @@ export const ChooseJob = async (data: any) => {
 }
 
 export const getVouchers = async (data: any) => {
-  setLoading(true);
+  if (data.page === 1) { setLoading(true) }
   const response: FetchResponse = await NetworkOps.get(storageService.getItem('userType') === 1 ? `${Urls.tradieProfileVoucher}?tradieId=${data.tradieId}&page=${data.page}` : `${Urls.jobBuilder}getVoucher?tradieId=${data.tradieId}&page=${data.page}`);
-  setLoading(false);
+  if (data.page === 1) { setLoading(false) }
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -721,7 +721,7 @@ export const lastUsedCard = async () => {
   return { success: false };
 }
 
-export const fetchVouchesJobs = async (data:any) => {
+export const fetchVouchesJobs = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.job}builder/vouchesJob?page=${data.page}&tradieId=${data.tradieId}`);
   setLoading(false);
@@ -733,7 +733,7 @@ export const fetchVouchesJobs = async (data:any) => {
 }
 
 
-export const updateTemplate = async (data:any) => {
+export const updateTemplate = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}editTemplate`, data);
   setLoading(false);
@@ -745,7 +745,7 @@ export const updateTemplate = async (data:any) => {
 }
 
 // builder can update reviews on tradie profile
-export const updateReviewTradie = async (data:any) => {
+export const updateReviewTradie = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}builder/updateReviewTradie`, data);
   setLoading(false);
@@ -758,7 +758,7 @@ export const updateReviewTradie = async (data:any) => {
 
 
 // builder can delete review on tradie profile
-export const deleteReviewTradie = async (data:any) => {
+export const deleteReviewTradie = async (data: any) => {
   setLoading(true)
   const response: FetchResponse = await NetworkOps.delete(`${Urls.job}builder/removeReviewTradie?reviewId=${data?.reviewId}`);
   setLoading(false);
@@ -771,7 +771,7 @@ export const deleteReviewTradie = async (data:any) => {
 
 
 // builder can delete an open job
-export const deleteOpenJob = async (data:any) => {
+export const deleteOpenJob = async (data: any) => {
   setLoading(true)
   const response: FetchResponse = await NetworkOps.delete(`${Urls.job}remove?jobId=${data.jobId}`);
   setLoading(false);

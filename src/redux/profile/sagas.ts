@@ -218,13 +218,13 @@ function* getPaymentHistory({ page, search, init }: any) {
   const userType = storageService.getItem('userType');
 
   if (init) {
-    setLoading(true);
+    page === 1 && setLoading(true);
   } else {
     yield put({ type: actionTypes.SET_SEARCHING, payload: true });
   }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.profile}${userType === 1 ? 'tradie' : 'builder'}/myRevenue?page=${page}${search ? `&search=${search}` : ''}`);
   if (init) {
-    setLoading(false);
+    page === 1 && setLoading(false);
   } else {
     yield put({ type: actionTypes.SET_SEARCHING, payload: false });
   }

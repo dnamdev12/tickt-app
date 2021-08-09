@@ -22,6 +22,7 @@ interface Post {
     status: any,
     toDate: any,
     totalMilestones: any,
+    isPublishedAgain: boolean,
     tradeId: any,
     tradieId: any,
     tradeName: any,
@@ -31,7 +32,7 @@ interface Post {
 }
 
 
-export default function PastJobs(props: any): ReactElement {
+const PastJobs = (props: any) => {
     const { dataItems, jobType, isLoading } = props;
     let listData: any = dataItems;
     const [enableRateJob, setRateJob] = useState({ data: {}, isTrue: false }); // toggle-rate-job
@@ -75,7 +76,14 @@ export default function PastJobs(props: any): ReactElement {
         }
 
         window_.addEventListener('scroll', handleScroll, { passive: true });
-    }, [])
+    }, []);
+
+
+    useEffect(() => {
+        if (isLoading === false) {
+            setEnable(true);
+        }
+    }, [isLoading])
 
     if (enableRateJob?.isTrue) {
         return (
@@ -88,15 +96,9 @@ export default function PastJobs(props: any): ReactElement {
         )
     }
 
-
-    if (isLoading) {
-        return (
-            <React.Fragment>
-                {''}
-            </React.Fragment>
-        );
+    if (!isEnable) {
+        return null;
     }
-
 
     return (
         <React.Fragment>
@@ -111,6 +113,7 @@ export default function PastJobs(props: any): ReactElement {
                         isRated,
                         jobName,
                         locationName,
+                        isPublishedAgain,
                         milestoneNumber,
                         specializationId,
                         specializationName,
@@ -148,11 +151,6 @@ export default function PastJobs(props: any): ReactElement {
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
                                         <li className="job_status">{status}</li>
-
-                                        {/* <li className="icon clock">{renderTime({fromDate,toDate})}</li>
-                                        <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{locationName}</li>
-                                        <li className="job_status">{status}</li> */}
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -210,7 +208,7 @@ export default function PastJobs(props: any): ReactElement {
                                             </React.Fragment>
                                         </button>
                                         )
-                                        : status === "EXPIRED" && (
+                                        : (status === "EXPIRED" && !isPublishedAgain) && (
                                             <button
                                                 className="fill_grey_btn full_btn"
                                                 onClick={() => redirectToInfo({ jobId, status })}>
@@ -232,3 +230,6 @@ export default function PastJobs(props: any): ReactElement {
         </React.Fragment>
     )
 }
+
+
+export default PastJobs;

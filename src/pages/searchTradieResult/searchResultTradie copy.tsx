@@ -22,9 +22,9 @@ import moment from 'moment';
 // calender
 
 import InfiniteScroll from "react-infinite-scroll-component";
-import { addListener } from 'process';
 
 const SearchResultTradie = (props: any) => {
+
     const location: any = useLocation();
     const [stateData, setStateData] = useState(location.state);
     const [isToggle, setToggleSearch] = useState(false);
@@ -33,8 +33,6 @@ const SearchResultTradie = (props: any) => {
     const [localData, setLocalData] = useState<any>([]);
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
-
-    const { homeSearchJobData } = props; // props here.
 
     useEffect(() => {
         props.getRecentSearchList();
@@ -110,93 +108,71 @@ const SearchResultTradie = (props: any) => {
         setLocalInfo(info)
     }
 
-    /*
     useEffect(() => {
-        let home: any = props.homeSearchJobData?.length ? true : false;
-        if (home) {
-            setLocalData(props.homeSearchJobData)
-        } else {
-            setLocalData([])
-        }
-    }, [props])
-    */
-
-    useEffect(() => {
-        let newProps = homeSearchJobData;
-        let propsPage = 0;
-        let propsTradeId = '';
-        let localTradeId = '';
-        let local_info:any = localInfo;
-
-        if (!hasMore) {
-            setHasMore((prev: any) => !prev);
-        }
-
-        if (homeSearchJobData && Array.isArray(homeSearchJobData) && homeSearchJobData?.length) {
-            propsTradeId = homeSearchJobData[0]?.tradeData[0]?.tradeId;
-            propsPage = homeSearchJobData[0]?.page;
-        }
-
-        if (localData && Array.isArray(localData) && localData?.length) {
-            localTradeId = localData[0]?.tradeData[0]?.tradeId;
-        }
-
+        let newValue: any = props.homeSearchJobData;
+        let local_info: any = localInfo;
+        let location_state: any = location?.state;
+        let length = localData?.length;
         let cp = currentPage * 10;
 
-        console.log({
-            cp,
-            currentPage,
-            propsPage,
-            localData,
-            homeSearchJobData,
-            propsTradeId,
-            localTradeId,
-            local_info
-        });
-
-
-        if (homeSearchJobData?.length && localData?.length && propsTradeId !== localTradeId) {
-            // alert('1')
-            setLocalData(newProps);
-            setCurrentPage(propsPage);
-            return
+        let tradeId = '';
+        let tradeInfo = '';
+        
+        if (Array.isArray(localData) && localData[0] && Array.isArray(localData[0]?.tradeData) && localData[0]?.tradeData[0]?.tradeId) {
+            tradeId = localData[0]?.tradeData[0]?.tradeId;
         }
 
-        if (!propsPage) {
-            if (!homeSearchJobData?.length && !propsPage) {
-                if (localData?.length && !local_info?.doingLocalChanges) {
-                    // alert(`2 ${local_info?.doingLocalChanges}`)
-                    setLocalData([]);
-                    setCurrentPage(1);
-                    return
-                }
+        if(Array.isArray(local_info?.tradeId) && local_info?.tradeId[0]){
+            tradeInfo = local_info?.tradeId[0]
+        }
 
-                setHasMore(false);
-            } else {
-                if (hasMore) {
-                    // alert('3')
-                    setHasMore(false);
-                }
-            }
+        console.log({
+            tradeId,
+            tradeInfo,
+            local_info
+        })
+        if (tradeId !== tradeInfo) {
+            setCurrentPage(1);
+            setLocalData(newValue);
+            getTitleInfo({
+                name: local_info?.name,
+                count: local_info?.specializationId?.length === 1 ? 0 : local_info?.specializationId?.length,
+                tradeId: local_info.tradeId,
+                specializationId: local_info.specializationId,
+                location: local_info.location,
+                doingLocalChanges: true,
+                suggestionSelected: local_info?.suggestionSelected
+            })
             return;
         } else {
-            if (currentPage == propsPage && localData?.length < cp) {
-                if (currentPage == 1) {
-                    setLocalData(newProps);
-                } else {
-                    setLocalData((prev: any) => [...prev, ...newProps]);
+            if (localData?.length && currentPage > 1) {
+                // alert(`Here! ${currentPage}`)
+                if (length < cp && hasMore) {
+                    if (!newValue?.length) {
+                        setHasMore(false);
+                        return
+                    }
+                    let data_ = [...localData, ...newValue];
+                    setLocalData(data_)
                 }
+            } else {
+                setCurrentPage(1);
+                setLocalData(newValue)
             }
         }
-
-    }, [homeSearchJobData]);
+    }, [props]);
 
     const handleChangeToggle = (value: any) => { setToggleSearch(value) }
 
-    // let homeSearchJobData: any = props.homeSearchJobData;
+    let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
     let isLoading: any = props.isLoading;
-    console.log({ localData, homeSearchJobData })
+    console.log({
+        localData
+    })
+
+    let uniqeValues = {};
+
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
@@ -213,7 +189,11 @@ const SearchResultTradie = (props: any) => {
                         <div className="flex_row mob_srch_option">
                             <div className="flex_col_sm_6"></div>
                             <div className="flex_col_sm_6 text-right">
-                                <button onClick={() => { setToggleSearch(true) }} className="fill_grey_btn btn-effect">Modify Search</button>
+                                <button
+                                    onClick={() => { setToggleSearch(true) }}
+                                    className="fill_grey_btn btn-effect">
+                                    {'Modify Search'}
+                                </button>
                             </div>
                         </div>
 
@@ -223,7 +203,7 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
-                                            {`${homeSearchJobData?.length} result(s) ${hasMore ? 'true' : 'false'}`}
+                                            {`${localData?.length} result(s)`}
                                         </span>
                                     </span>
                                     <SearchFilters
@@ -238,53 +218,33 @@ const SearchResultTradie = (props: any) => {
                         <InfiniteScroll
                             dataLength={localData?.length}
                             next={() => {
-                                console.log('callable');
-                                let cp = currentPage + 1;
+                                let cp = currentPage;
                                 setCurrentPage((prev: any) => prev + 1);
-                                let local_info: any = localInfo;
+                                cp = cp + 1;
+
+                                let location_state: any = local_info; //location?.state;
+
+                                // if (JSON.stringify(location?.state?.tradeId) !== JSON.stringify(local_info?.tradeId)) {
+                                //     location_state = local_info?.tradeId;
+                                // }
 
                                 let data: any = {
                                     page: cp,
                                     isFiltered: false,
                                 }
 
-                                if (local_info?.location) {
-                                    data['location'] = local_info?.location;
+                                if (location_state?.location) {
+                                    data['location'] = location_state?.location;
                                 }
 
-                                if (local_info?.tradeId?.length) {
-                                    data['tradeId'] = local_info?.tradeId
+                                if (location_state?.tradeId?.length) {
+                                    data['tradeId'] = location_state?.tradeId
                                 }
 
-                                if (local_info?.specializationId?.length) {
-                                    data['specializationId'] = local_info?.specializationId;
+                                if (location_state?.specializationId?.length) {
+                                    data['specializationId'] = location_state?.specializationId;
                                 }
-
-                                if (props?.location?.state?.suggestionSelected && props?.location?.state?.suggestionSelected !== "{}") {
-                                    data['address'] = JSON.stringify(props?.location?.state?.suggestionSelected);
-                                }
-
-                                if (local_info?.from_date) {
-                                    data['from_date'] = local_info?.from_date;
-                                }
-
-                                if (local_info?.to_date) {
-                                    data['to_date'] = local_info?.to_date;
-                                }
-
-                                // if (!data?.hasOwnProperty('tradeId') && !data?.hasOwnProperty('specializationId') && !data?.hasOwnProperty('location')) {
-                                //     data['location'] = { coordinates: [144.9631, -37.8136] }
-                                // }
-
-                                if(!data?.hasOwnProperty('specializationId')){
-                                    data['isFiltered'] = true;
-                                }
-
-                                console.log({
-                                    local_info,
-                                    data,
-                                    cp
-                                });
+                                console.log({ data, location, location_state, local_info }, 'data------>');
                                 props.postHomeSearchData(data);
                             }}
                             hasMore={hasMore}

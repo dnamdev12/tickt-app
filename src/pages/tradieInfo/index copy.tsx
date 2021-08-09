@@ -296,6 +296,10 @@ class TradieInfo extends Component<Props, State> {
             }
 
             this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: item_ } }));
+
+            // let reviewsData = this.state.reviewsData;
+            // const newData = [...reviewsData.replyShownHideList].filter(id => id !== replyId);
+            // this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
         } else if (type === 'showReviewClicked') {
             let item_: any = {};
             let reply_id: any = replyId;
@@ -307,6 +311,10 @@ class TradieInfo extends Component<Props, State> {
             }
 
             this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: item_ } }));
+            // let reviewsData = this.state.reviewsData;
+            // const newData: any = [...reviewsData.replyShownHideList];
+            // newData.push(replyId);
+            // this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
         } else if (type === 'editBuilderReview') {
             this.setState((prevData: any) => ({
 
@@ -594,20 +602,17 @@ class TradieInfo extends Component<Props, State> {
                                                     </li>
                                                 </ul>
 
+
                                                 {userType !== 1 && is_active == "true" ? (
-                                                    <button className="fill_btn full_btn btn-effect"
+                                                    <button
+                                                        className="fill_btn full_btn btn-effect"
                                                         onClick={() => {
-                                                            const tradieId = new URLSearchParams(props.history?.location?.search).get('tradeId');
-                                                            props.history.push({
-                                                                pathname: `/choose-job-to-start-chat`,
-                                                                state: {
-                                                                    tradieId: tradieId ? tradieId : '',
-                                                                }
-                                                            })
+                                                            props.history.push('/update-user-info')
                                                         }}>
                                                         {'Write a message'}
                                                     </button>
                                                 ) : ''}
+
 
 
                                                 {userType === 1 ? (
@@ -691,7 +696,7 @@ class TradieInfo extends Component<Props, State> {
                                                             </div>
                                                         )}
                                                     </div>
-                                                ) : haveJobId && tradieInfo?.isRequested ? (
+                                                ) : haveJobId ? (
                                                     <>
                                                         <div className="form_field">
                                                             <button
@@ -716,7 +721,12 @@ class TradieInfo extends Component<Props, State> {
                                             <span className="sub_title">About</span>
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
-                                    ) : null}
+                                    ) :
+                                        // <div>
+                                        //     <span className="sub_title">About</span>
+                                        //     <p className="commn_para">You have not added your information yet, Please go to edit and add.</p>
+                                        // </div>
+                                        null}
                                 </div>
                                 <div className="flex_col_sm_4">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
@@ -740,6 +750,7 @@ class TradieInfo extends Component<Props, State> {
                                                     onClick={(e: any) => {
                                                         e.preventDefault();
                                                         this.setState({ toggleSpecialisation: !this.state.toggleSpecialisation })
+                                                        // setShowSpecs(!showSpecs);
                                                     }}>
                                                     {toggleSpecialisation ? 'Show more' : 'Show less'}
                                                 </span>
@@ -1044,7 +1055,8 @@ class TradieInfo extends Component<Props, State> {
                                                     </div>
                                                     <p>{reviewData?.review}</p>
 
-                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                    {storageService.getItem('userType') === 2 &&
+                                                        item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
                                                         <span
                                                             onClick={() => {
                                                                 reviewHandler(
@@ -1058,7 +1070,8 @@ class TradieInfo extends Component<Props, State> {
                                                             {'Edit '}
                                                         </span>
                                                     ) : null}
-                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                    {storageService.getItem('userType') === 2 &&
+                                                        item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
                                                         <span
                                                             onClick={() => {
                                                                 this.setState({
@@ -1101,21 +1114,21 @@ class TradieInfo extends Component<Props, State> {
                                                             : ''
                                                     )}
                                                     {/* {Object.keys(replyData).length > 0 &&
-                                                !(reviewsData?.replyShownHideList.includes(replyId) ||
-                                                    reviewsData.replyShownHideList.includes(replyId)) &&
-                                                <span
-                                                    className="show_hide_ans link"
-                                                    onClick={() => { reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId) }}>
-                                                    {'Show review'}
-                                                </span>}
-                                            {reviewData?.isModifiable && Object.keys(item?.reviewData?.replyData).length ? (
-                                                <span
-                                                    className="action link"
-                                                    onClick={() => {
-                                                        reviewHandler('reviewReplyClicked', reviewData.reviewId)
-                                                    }}>
-                                                    {'Reply'}
-                                                </span>) : null} */}
+                                                    !(reviewsData?.replyShownHideList.includes(replyId) ||
+                                                        reviewsData.replyShownHideList.includes(replyId)) &&
+                                                    <span
+                                                        className="show_hide_ans link"
+                                                        onClick={() => { reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId) }}>
+                                                        {'Show review'}
+                                                    </span>}
+                                                {reviewData?.isModifiable && Object.keys(item?.reviewData?.replyData).length ? (
+                                                    <span
+                                                        className="action link"
+                                                        onClick={() => {
+                                                            reviewHandler('reviewReplyClicked', reviewData.reviewId)
+                                                        }}>
+                                                        {'Reply'}
+                                                    </span>) : null} */}
                                                 </div>
                                                 {/* {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) && */}
                                                 {Object.keys(reviewsData.replyShownHideList).length &&
