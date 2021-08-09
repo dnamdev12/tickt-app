@@ -284,8 +284,9 @@ const Header = (props: any) => {
         dispatch({ type: 'USER_LOGGED_OUT' });
         setLogoutClicked(false);
         storageService.clearAll();
-        await auth.signOut();
+        auth.signOut();
         history.push('/login');
+        window.location.reload();
     }
 
     const postClicked = () => {
