@@ -224,7 +224,6 @@ export const createInbox = async (userid, roomId, jobId, oppuserid, jobName) => 
 }
 
 export const getFirebaseInboxData = async (listner) => {
-    console.log(listner, "listner firebaseInboxData")
     // debugger;
     let userId = getLoggedInuserId();
     if (!userId) {

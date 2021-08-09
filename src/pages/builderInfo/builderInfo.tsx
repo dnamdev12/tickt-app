@@ -629,6 +629,7 @@ const BuilderInfo = (props: PropsType) => {
                                                         halfIcon={<i className="fa fa-star-half-alt"></i>}
                                                         fullIcon={<i className="fa fa-star"></i>}
                                                         activeColor="#ffd700"
+                                                        color='#DFE5EF'
                                                     />
                                                 </div>
                                             </div>
@@ -690,6 +691,7 @@ const BuilderInfo = (props: PropsType) => {
                             onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
                             size={40}
                             activeColor="#ffd700"
+                            color='#DFE5EF'
                         />
                         <div className="text_field">
                             <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
