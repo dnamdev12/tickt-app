@@ -20,12 +20,20 @@ const MilestoneApprove = (props: any) => {
     const [loadingTrue, setLoadingTrue] = useState(false);
 
     if (data) {
-        let {
-            selectedMilestoneIndex: { index },
-            itemDetails: { milestones },
-            selectedMile: { description, hoursWorked, images },
-            selectedItem: { jobName, jobId }
-        } = data;
+        let jobName:any = data?.selectedItem?.jobName;
+        let jobId:any = data?.selectedItem?.jobId;
+        let description:any = data?.selectedMile?.description;
+        let hoursWorked:any = data?.selectedMile?.hoursWorked;
+        let images:any = data?.selectedMile?.images;
+        let milestones:any = data?.itemDetails?.milestones;
+        let index:any = data?.selectedMilestoneIndex?.index;
+
+        // let {
+        //     selectedMilestoneIndex: { index },
+        //     itemDetails: { milestones },
+        //     selectedMile: { description, hoursWorked, images },
+        //     selectedItem: { jobName, jobId }
+        // } = data;
 
         let item: any = milestones[index];
 

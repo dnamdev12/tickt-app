@@ -129,7 +129,7 @@ const PaymentHistory = ({
                     {milestones.map(({ _id, milestone_name, milestoneEarning, isPhotoevidence, from_date, to_date, status }: any) => (
                       <li
                         key={_id}
-                        className={status !== 'Pending' ? 'check' : 'disabled'}
+                        className={status !== 'Pending' && status !== 'Comming'  ? 'check' : 'disabled'}
                       >
                         <div className="circle_stepper">
                           <span></span>
@@ -161,7 +161,7 @@ const PaymentHistory = ({
                     </figure>
                     <div className="details">
                       <span className="name">{userType === 1 ? builderName : tradieName}</span>
-                      <span className="rating">{rating.toFixed(1) || 0}, {review || 0} reviews</span>
+                      <span className="rating">{rating ? rating.toFixed(1) :  0}, {review || 0} reviews</span>
                     </div>
                   </div>
                 </div>
@@ -188,7 +188,7 @@ const PaymentHistory = ({
           <ul className="total_count_card">
             <li className="revenue">
               <span className="show_label">{userType === 1 ? 'Total earnings' : 'Total payment sent'}</span>
-              <span className="title">${totalEarnings}</span>
+              <span className="title">${totalEarnings && totalEarnings?.toFixed(2) ? totalEarnings?.toFixed(2) : totalEarnings}</span>
             </li>
             <li className="job">
               <span className="show_label">Total Jobs</span>

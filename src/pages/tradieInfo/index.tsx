@@ -203,6 +203,7 @@ class TradieInfo extends Component<Props, State> {
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         if (nextProps.tradieProfileViewData && !_.isEqual(nextProps.tradieProfileViewData, prevState.tradieInfo)) {
+            alert('Ok!')
             return {
                 tradieInfo: nextProps.tradieProfileViewData
             }
@@ -213,7 +214,7 @@ class TradieInfo extends Component<Props, State> {
     componentDidUpdate() {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
-        console.log({ tradeStatus })
+       
         if (tradeStatus) {
             props.history.push('/jobs');
         }
@@ -400,6 +401,7 @@ class TradieInfo extends Component<Props, State> {
             }
 
             if (response?.success) {
+                this.forceUpdate();
                 this.setItems();
             }
 
@@ -581,6 +583,10 @@ class TradieInfo extends Component<Props, State> {
                                             onLoad={() => this.setState({
                                                 profilePictureLoading: false,
                                             })}
+                                            onError={(e: any) => {
+                                                let e_: any = e;
+                                                e_.target.src = profilePlaceholder;
+                                            }}
                                             hidden={this.state.profilePictureLoading}
                                         />}
                                     </figure>
@@ -977,7 +983,6 @@ class TradieInfo extends Component<Props, State> {
                         </div> : null
                     )}
 
-                {console.log({ toggleAddVoucher: this.state.toggleAddVoucher })}
                 {storageService.getItem('userType') === 2 && <AddVoucherComponent
                     toggleProps={this.state.toggleAddVoucher}
                     id={tradieInfo?.tradieId}

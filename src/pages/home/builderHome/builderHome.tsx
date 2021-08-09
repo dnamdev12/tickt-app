@@ -181,7 +181,14 @@ const BuilderHome = (props: any) => {
                                         }}
                                         data-aos-duration="1000">
                                         <figure className="tradies_img">
-                                            <img src={item.userImage || dummy} alt="tradies-img" />
+                                            <img 
+                                            src={item.userImage || dummy}
+                                             alt="tradies-img"
+                                             onError={(e: any) => {
+                                                let e_: any = e;
+                                                e_.target.src = dummy;
+                                            }}
+                                             />
                                         </figure>
                                         <span className="name">{item.userName}</span>
                                         <span className="post">{item.trade}</span>

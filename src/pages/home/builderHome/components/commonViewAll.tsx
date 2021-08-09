@@ -24,7 +24,7 @@ const SavedJobs = (props: any) => {
 
     useEffect(() => {
         console.log({
-            state:props?.location?.state
+            state: props?.location?.state
         })
         setLoad(false);
         if (props?.location?.state?.title === "Saved tradespeople" || props.location.pathname === '/saved-tradespeople') {
@@ -83,7 +83,14 @@ const SavedJobs = (props: any) => {
                                             }}
                                             data-aos-duration="1000">
                                             <figure className="tradies_img">
-                                                <img src={item.userImage || dummy} alt="tradies-img" />
+                                                <img
+                                                    src={item.userImage || dummy}
+                                                    alt="tradies-img"
+                                                    onError={(e: any) => {
+                                                        let e_: any = e;
+                                                        e_.target.src = dummy;
+                                                    }}
+                                                />
                                             </figure>
                                             <span className="name">{item.userName}</span>
                                             <span className="post">{item.trade}</span>

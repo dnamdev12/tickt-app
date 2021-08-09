@@ -585,7 +585,7 @@ const TradieBannerSearch = (props: PropsType) => {
                                 {renderPlacesData}
                             </PlacesAutocomplete>
                         </div>
-                        {!stateData?.selectedMapLocation && inputFocus2 &&
+                        {(!stateData?.selectedMapLocation || stateData?.selectedMapLocation === "{}") && inputFocus2 &&
                             <div className="custom_autosuggestion location" id="current-location-search-div">
                                 <a className="location-btn" onClick={getCurrentLocation}>
                                     <span className="gps_icon">
@@ -597,6 +597,9 @@ const TradieBannerSearch = (props: PropsType) => {
                                     To use this, change your location settings in browser.
                                 </span>}
                                 <div className="recent_search auto_loc">
+                                    {console.log({
+                                        recent: props?.recentLocationData
+                                    })}
                                     {props?.recentLocationData?.length > 0 ?
                                         <span className="sub_title">Recent searches</span>
                                         : null}

@@ -626,6 +626,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <div className="job_info">
                                         {!isPastJob ? (
                                             <ul>
+                                                
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
@@ -641,7 +642,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             </ul>
                                         ) : (
                                             <ul>
-                                                <li className="icon clock">
+                                                <li className="icon calendar">
                                                     {jobDetailsData?.time ?
                                                         jobDetailsData.time :
                                                         renderTime(

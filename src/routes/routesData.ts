@@ -180,7 +180,7 @@ const routes = [
     },
     {
         name: 'cancelsuccess',
-        path: '/cancel-job-success',
+        path: '/replyCancellation',
         component: CancelJobSuccess,
     },
     {

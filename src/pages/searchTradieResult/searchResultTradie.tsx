@@ -126,7 +126,12 @@ const SearchResultTradie = (props: any) => {
         let propsPage = 0;
         let propsTradeId = '';
         let localTradeId = '';
-        let local_info:any = localInfo;
+        let local_info: any = localInfo;
+        let local_info_tradeId = '';
+
+        if (local_info?.tradeId && Array.isArray(local_info?.tradeId) && local_info?.tradeId?.length) {
+            local_info_tradeId = local_info?.tradeId[0];
+        }
 
         if (!hasMore) {
             setHasMore((prev: any) => !prev);
@@ -165,9 +170,13 @@ const SearchResultTradie = (props: any) => {
         if (!propsPage) {
             if (!homeSearchJobData?.length && !propsPage) {
                 if (localData?.length && !local_info?.doingLocalChanges) {
-                    // alert(`2 ${local_info?.doingLocalChanges}`)
-                    setLocalData([]);
-                    setCurrentPage(1);
+                    // alert(`2 ${local_info?.doingLocalChanges}-${JSON.stringify({ propsTradeId, localTradeId })}`)
+                    if (local_info_tradeId?.length && local_info_tradeId !== localTradeId) {
+                        setLocalData([]);
+                        setCurrentPage(1);
+                    } else {
+                        setHasMore(false);        
+                    }
                     return
                 }
 
@@ -223,7 +232,7 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
-                                            {`${homeSearchJobData?.length} result(s) ${hasMore ? 'true' : 'false'}`}
+                                            {`${localData?.length} result(s)`}
                                         </span>
                                     </span>
                                     <SearchFilters
@@ -272,11 +281,15 @@ const SearchResultTradie = (props: any) => {
                                     data['to_date'] = local_info?.to_date;
                                 }
 
+                                if(local_info?.sortBy){
+                                    data['sortBy'] = local_info?.sortBy;
+                                }
+
                                 // if (!data?.hasOwnProperty('tradeId') && !data?.hasOwnProperty('specializationId') && !data?.hasOwnProperty('location')) {
                                 //     data['location'] = { coordinates: [144.9631, -37.8136] }
                                 // }
 
-                                if(!data?.hasOwnProperty('specializationId')){
+                                if (!data?.hasOwnProperty('specializationId')) {
                                     data['isFiltered'] = true;
                                 }
 

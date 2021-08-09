@@ -173,7 +173,6 @@ function* markMilestoneComplete({ data, callback }: any) {
 function* getActiveJobsBuilder({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.activeJobListBuilder}?page=${page}`);
-  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     if (response?.result?.active && Array.isArray(response?.result?.active) && response?.result?.active?.length) {
       response.result.active[0]['page'] = page;
@@ -182,15 +181,16 @@ function* getActiveJobsBuilder({ page }: any) {
       type: actionTypes.SET_BUILDER_ACTIVE_JOBS,
       payload: response.result,
     });
-
+    
+    if (page === 1) { setLoading(false); }
     return;
   }
+  if (page === 1) { setLoading(false); }
 }
 
 function* getPastJobsBuilder({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.pastJobListBuilder}?page=${page}`);
-  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     if (response?.result?.past && Array.isArray(response?.result?.past) && response?.result?.past?.length) {
       response.result.past[0]['page'] = page;
@@ -199,15 +199,18 @@ function* getPastJobsBuilder({ page }: any) {
       type: actionTypes.SET_BUILDER_PAST_JOBS,
       payload: response.result,
     });
-
+    
+    if (page === 1) { setLoading(false); }
     return;
   }
+  if (page === 1) { setLoading(false); }
+
 }
 
 function* getOpenJobsBuilder({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.OpenJobLisBuilder}?page=${page}`);
-  if (page === 1) { setLoading(false); }
+  
   if (response.status_code === 200) {
     if (response?.result?.open && Array.isArray(response?.result?.open) && response?.result?.open?.length) {
       response.result.open[0]['page'] = page;
@@ -216,15 +219,16 @@ function* getOpenJobsBuilder({ page }: any) {
       type: actionTypes.SET_BUILDER_OPEN_JOBS,
       payload: response.result,
     });
-
+    if (page === 1) { setLoading(false); }
     return;
   }
+  if (page === 1) { setLoading(false); }
 }
 
 function* getBuilderNewApplicants({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.newApplicantsBuilder}?page=${page}`);
-  if (page === 1) { setLoading(false); }
+  
   if (response.status_code === 200) {
     if (response?.result && Array.isArray(response?.result) && response?.result?.length) {
       response.result[0]['page'] = page;
@@ -233,25 +237,26 @@ function* getBuilderNewApplicants({ page }: any) {
       type: actionTypes.SET_BUILDER_NEW_APPLICANTS,
       payload: response.result,
     });
-
+    if (page === 1) { setLoading(false); }
     return;
   }
+  if (page === 1) { setLoading(false); }
 }
 
 function* getnewJobApplicationListBuilder({ item }: any) {
-  console.log({ item }, '--------------->')
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.postToJson(Urls.newJobApplicationListBuilder, item);
   // const response: FetchResponse = yield NetworkOps.get(`${Urls.newJobApplicationListBuilder}?page=${page}`);
-  setLoading(false);
+ 
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.SET_BUILDER_NEW_APPLICANTS_LIST,
       payload: response.result,
     });
-
+    setLoading(false);
     return;
   }
+  setLoading(false);
 }
 
 // function* getTradieReviewList({ data }: any) {
@@ -288,14 +293,16 @@ function* getAcceptDeclineTradie({ data }: any) {
 function* getNewApprovalList({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.needApproval}?page=${page}`);
-  if (page === 1) { setLoading(false); }
+  
   if (response.status_code === 200) {
     if (response?.result && Array.isArray(response?.result) && response?.result?.length) {
       response.result[0]['page'] = page;
     }
     yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: response.result });
+    if (page === 1) { setLoading(false); }
   } else {
     yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: false });
+    if (page === 1) { setLoading(false); }
   }
 }
 

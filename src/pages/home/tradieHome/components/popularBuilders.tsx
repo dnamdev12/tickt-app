@@ -12,7 +12,7 @@ const PopularBuilders = (props: any) => {
 
     return (
         <>
-            { popularBuildersData?.length > 0 && <div className="section_wrapper">
+            {popularBuildersData?.length > 0 && <div className="section_wrapper">
                 <div className="custom_container">
                     <span className="title">Popular builders</span>
                     <ul className="popular_tradies">
@@ -20,7 +20,14 @@ const PopularBuilders = (props: any) => {
                             return (
                                 <li key={`${item.userName}item${index}`} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000">
                                     <figure className="tradies_img">
-                                        <img src={item.userImage ? item.userImage : dummy} alt="tradies-img" />
+                                        <img
+                                            src={item.userImage ? item.userImage : dummy}
+                                            alt="tradies-img"
+                                            onError={(e: any) => {
+                                                let e_: any = e;
+                                                e_.target.src = dummy;
+                                            }}
+                                        />
                                     </figure>
                                     <span className="name">{item.userName}</span>
                                     <span className="post">{item.trade}</span>
