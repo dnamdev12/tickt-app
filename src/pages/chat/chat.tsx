@@ -60,7 +60,6 @@ const Chat = (props: PropTypes) => {
 
         return () => {
             // debugger;
-            alert('1111111111')
             stopListeningOfRoom(selectedRoomID);
             setInBoxData([]);
             setFilterInBoxData([]);
