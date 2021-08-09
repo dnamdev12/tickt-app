@@ -39,6 +39,8 @@ const PaymentHistory = ({
     totalJobs: 0,
     revenueList: []
   });
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     const urlParams = new URLSearchParams(search);
@@ -46,7 +48,7 @@ const PaymentHistory = ({
     setJobId(jobId);
 
     if (!jobId) {
-      getPaymentHistory(1, '', true);
+      getPaymentHistory(currentPage, '', true);
     } else {
       getPaymentDetails(jobId);
     }
@@ -56,22 +58,36 @@ const PaymentHistory = ({
 
 
   useEffect(() => {
+    console.log({ paymentHistory })
     const { totalEarnings, totalJobs, revenue } = paymentHistory;
-    setStateData({
-      totalEarnings,
-      totalJobs,
-      revenueList: revenue?.revenueList
-    });
-  }, [searchPayementHistory]);
+    let newValues = revenue?.revenueList || [];
+    if (newValues?.length) {
+      setStateData((prev: any) => ({
+        totalEarnings,
+        totalJobs,
+        revenueList: currentPage > 1 ? [...prev?.revenueList, ...newValues] : newValues
+      }));
+    } else {
+      if (stateData?.revenueList?.length) {
+        setHasMore(false);
+      }
+    }
+  }, [searchPayementHistory, paymentHistory]);
 
   const handleSearch = ({ target: { value } }: any) => {
+    setStateData({
+      totalEarnings: 0,
+      totalJobs: 0,
+      revenueList: []
+    })
+    setCurrentPage(1);
+    setHasMore(true);
     setSearchQuery(value);
     searchPayementHistory(value);
   };
 
   const userType = storageService.getItem('userType');
-  const { totalEarnings = 0, totalJobs = 0, revenue = {} } = paymentHistory || {};
-  const { revenueList = [] } = revenue;
+  const { totalEarnings = 0, totalJobs = 0, revenueList = [] } = stateData || {};
   const { status, tradeId, specialization, tradieId, tradieName, tradieImage, builderId, builderName, builderImage, jobName, from_date, to_date, totalEarning, review, rating, milestones = [] }: any = paymentDetails || {};
 
   if (isLoading) {
@@ -145,7 +161,7 @@ const PaymentHistory = ({
                     </figure>
                     <div className="details">
                       <span className="name">{userType === 1 ? builderName : tradieName}</span>
-                      <span className="rating">{rating || 0}, {review || 0} reviews</span>
+                      <span className="rating">{rating.toFixed(1) || 0}, {review || 0} reviews</span>
                     </div>
                   </div>
                 </div>
@@ -195,28 +211,31 @@ const PaymentHistory = ({
           <div className="last_jobs">
 
 
-            <div className="table_wrap">
-              <table cellPadding="0" cellSpacing="0">
-                <thead>
-                  <tr>
-                    <th><span className="form_label">Job</span></th>
-                    <th><span className="form_label">Status</span></th>
-                    <th> <span className="form_label">Hired {userType === 1 ? 'by' : 'tradie'}</span></th>
-                    <th><span className="form_label">Date</span></th>
-                    <th> <span className="form_label">Price</span></th>
-                  </tr>
-                </thead>
-                <tbody id="table-scrollable">
+            <div id="table-scrollable" className="table_wrap">
+              <InfiniteScroll
+                dataLength={revenueList?.length}
+                next={() => {
+                  console.log('Here!!!');
+                  let cp = currentPage + 1;
+                  setCurrentPage((prev: any) => prev + 1);
+                  // 
+                  getPaymentHistory(cp, '', true);
+                }}
+                hasMore={hasMore}
+                loader={<></>}>
+                <table cellPadding="0" cellSpacing="0">
+                  <thead>
+                    <tr>
+                      <th><span className="form_label">Job</span></th>
+                      <th><span className="form_label">Status</span></th>
+                      <th> <span className="form_label">Hired {userType === 1 ? 'by' : 'tradie'}</span></th>
+                      <th><span className="form_label">Date</span></th>
+                      <th> <span className="form_label">Price</span></th>
+                    </tr>
+                  </thead>
+                  <tbody >
 
-                  <InfiniteScroll
-                    dataLength={revenueList?.length}
-                    next={() => {
-                      console.log('Here!!!');
 
-
-                    }}
-                    hasMore={true}
-                    loader={<></>}>
                     {searching ? (
                       <tr>
                         <td colSpan={5}>
@@ -236,7 +255,19 @@ const PaymentHistory = ({
                           </div>
                         </td>
                       </tr>
-                    ) : revenueList.map(({ _id, jobId, status, jobName, tradieName, tradieImage, tradeName, builderName, builderImage, from_date, earning }: any) => (
+                    ) : revenueList.map(({
+                      _id,
+                      jobId,
+                      status,
+                      jobName,
+                      tradieName,
+                      tradieImage,
+                      tradeName,
+                      builderName,
+                      builderImage,
+                      from_date,
+                      earning
+                    }: any) => (
                       <tr key={_id}>
                         <td>
                           <div className="img_txt_wrap">
@@ -260,9 +291,9 @@ const PaymentHistory = ({
                         <td><span className="inner_title">{earning}</span></td>
                       </tr>
                     ))}
-                  </InfiniteScroll>
-                </tbody>
-              </table>
+                  </tbody>
+                </table>
+              </InfiniteScroll>
             </div>
 
 
