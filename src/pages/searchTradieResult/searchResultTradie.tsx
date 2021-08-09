@@ -145,21 +145,8 @@ const SearchResultTradie = (props: any) => {
         if (localData && Array.isArray(localData) && localData?.length) {
             localTradeId = localData[0]?.tradeData[0]?.tradeId;
         }
-
+        
         let cp = currentPage * 10;
-
-        console.log({
-            cp,
-            currentPage,
-            propsPage,
-            localData,
-            homeSearchJobData,
-            propsTradeId,
-            localTradeId,
-            local_info
-        });
-
-
         if (homeSearchJobData?.length && localData?.length && propsTradeId !== localTradeId) {
             // alert('1')
             setLocalData(newProps);
