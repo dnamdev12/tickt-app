@@ -21,6 +21,7 @@ const ReviewInfoBox = (props: any) => {
                         halfIcon={<i className="fa fa-star-half-alt"></i>}
                         fullIcon={<i className="fa fa-star"></i>}
                         activeColor="#ffd700"
+                        color='#DFE5EF'
                     />
                 </div>
                 <div className="pic_shot_dtl">
