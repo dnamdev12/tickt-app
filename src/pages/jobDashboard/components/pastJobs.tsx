@@ -31,10 +31,10 @@ const PastJobs = (props: Proptypes) => {
   }, []);
 
   const callJobList = async () => {
-    if (props.newJobsCount && jobList.length >= totalJobsCount) {
-      setHasMoreItems(false);
-      return;
-    }
+    // if (props.newJobsCount && jobList.length >= totalJobsCount) {
+    //   setHasMoreItems(false);
+    //   return;
+    // }
     props.getPastJobList(pageNo);
   }
 
@@ -49,13 +49,14 @@ const PastJobs = (props: Proptypes) => {
   }, [props.pastJobList]);
 
   return (
-    <InfiniteScroll
-      dataLength={jobList.length}
-      next={callJobList}
-      hasMore={hasMoreItems}
-      loader={<h4></h4>}
-    >
-      <div className="detail_col">
+    <div className="detail_col">
+      <InfiniteScroll
+        dataLength={jobList.length}
+        next={callJobList}
+        style={{ overflowX: 'hidden' }}
+        hasMore={hasMoreItems}
+        loader={<></>}
+      >
         <span className="sub_title">Past Jobs</span>
         <div className="flex_row tradies_row">
           {!props.loading && jobList.length ? jobList.map((item: any) => (
@@ -120,8 +121,8 @@ const PastJobs = (props: Proptypes) => {
             </div>
           )}
         </div >
-      </div>
-    </InfiniteScroll>
+      </InfiniteScroll>
+    </div>
   );
 };
 

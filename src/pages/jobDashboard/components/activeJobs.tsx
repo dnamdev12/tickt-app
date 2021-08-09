@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { renderTime } from '../../../utils/common';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -31,10 +31,10 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
   }, []);
 
   const callJobList = async () => {
-    if (newJobsCount && jobList.length >= totalJobsCount) {
-      setHasMoreItems(false);
-      return;
-    }
+    // if (newJobsCount && jobList.length >= totalJobsCount) {
+    //   setHasMoreItems(false);
+    //   return;
+    // }
     getActiveJobList(pageNo);
   }
 
@@ -49,13 +49,15 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
   }, [activeJobList]);
 
   return (
-    <InfiniteScroll
-      dataLength={jobList.length}
-      next={callJobList}
-      hasMore={hasMoreItems}
-      loader={<h4></h4>}
-    >
-      <div className="detail_col">
+    <div className="detail_col">
+      <InfiniteScroll
+        dataLength={jobList.length}
+        next={callJobList}
+        style={{ overflowX: 'hidden' }}
+        // height={600}
+        hasMore={hasMoreItems}
+        loader={<></>}
+      >
         <span className="sub_title">Active Jobs</span>
         <div className="flex_row tradies_row">
           {!loading && jobList.length ? jobList.map(
@@ -134,8 +136,8 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
               </div>
             )}
         </div>
-      </div>
-    </InfiniteScroll>
+      </InfiniteScroll>
+    </div>
   );
 };
 

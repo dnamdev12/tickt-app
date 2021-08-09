@@ -659,7 +659,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </div>
                                     {((paramStatus === 'EXPIRED' || paramStatus === 'expired') && !jobDetailsData?.isPublishedAgain) && (
                                         <button
-                                            className="fill_btn full_btn btn-effect"
+                                            className="fill_btn full_btn btn-effect mt-sm"
                                             onClick={() => props.history.push(`/post-new-job?jobId=${paramJobId}`)}>
                                             Publish again
                                         </button>

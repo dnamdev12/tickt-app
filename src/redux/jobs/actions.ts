@@ -782,3 +782,14 @@ export const deleteOpenJob = async (data: any) => {
   return { success: false };
 }
 
+export const getActiveJobsTradieBuilder = async (data: any) => {
+  setLoading(true);
+  let url = storageService.getItem('userType') === 1 ? `${Urls.job}tradie/activeJobList?page=${data.page}&builderId=${data?.oppUserId}` : `${Urls.job}builder/activeJobList?page=${data.page}&tradieId=${data?.oppUserId}`
+  const response: FetchResponse = await NetworkOps.get(url);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+

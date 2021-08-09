@@ -106,26 +106,10 @@ const BuilderInfo = (props: PropsType) => {
         replyShownHideList: []
     })
     const [showSpecs, setShowSpecs] = useState<boolean>(false);
-    console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo");
+    console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo", props.history, "history");
 
     useEffect(() => {
         setItems();
-        // props.callTradeList();
-        // (async () => {
-        //     const builderId: any = new URLSearchParams(props.location?.search).get('builderId');
-        //     const res1 = await getBuilderProfile(builderId);
-        //     if (res1?.success) {
-        //         setProfileData(res1.data);
-        //         const data = {
-        //             builderId: res1.data?.builderId,
-        //             page: 1
-        //         }
-        //         const res2 = await getTradieReviewList(data);
-        //         if (res2.success) {
-        //             setReviewList(res2.data);
-        //         }
-        //     }
-        // })();
     }, []);
 
     useEffect(() => {
@@ -163,7 +147,7 @@ const BuilderInfo = (props: PropsType) => {
         const res2 = await getTradieReviewList(data);
         if (res2.success) {
             let data_ = res2?.data?.list || res2?.data;
-            console.log({data_})
+            console.log({ data_ })
             setReviewList(data_);
         }
     }
@@ -190,8 +174,7 @@ const BuilderInfo = (props: PropsType) => {
         }
         const res = await getTradieReviewList(data);
         if (res.success) {
-            console.log({res},'review-list');
-            let data_ = res?.data?.list || res?.data;
+            let data_ = res?.data?.list;
             setReviewList((prevData: any) => ([...prevData, ...data_]));
             setReviewListPageNo(data.page);
         }
@@ -255,8 +238,7 @@ const BuilderInfo = (props: PropsType) => {
                     page: 1
                 }
                 const res = await getTradieReviewList(listData);
-                console.log({res},'review-list')
-                let data_ = res?.data?.list || res?.data;
+                let data_ = res?.data?.list;
                 setReviewList(data_);
                 // newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
                 setReviewListPageNo(1);
@@ -415,7 +397,16 @@ const BuilderInfo = (props: PropsType) => {
                                                     {"Edit"}
                                                 </button>
                                                 :
-                                                <button className="fill_btn full_btn btn-effect">
+                                                <button className="fill_btn full_btn btn-effect"
+                                                    onClick={() => {
+                                                        const builderId = new URLSearchParams(props.history?.location?.search).get('builderId');
+                                                        props.history.push({
+                                                            pathname: `/choose-job-to-start-chat`,
+                                                            state: {
+                                                                builderId: builderId ? builderId : '',
+                                                            }
+                                                        })
+                                                    }}>
                                                     {"Write a message"}
                                                 </button>}
                                         </>}
@@ -539,9 +530,6 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_col_sm_6">
                             <span className="xs_sub_title">Job Description</span>
                             <div className="job_content">
-                                {/* <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p> */}
                                 <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
                             </div>
                         </div>
@@ -578,9 +566,9 @@ const BuilderInfo = (props: PropsType) => {
                 <div className="custom_container">
                     <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Reviews'}</span>
                     {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
-                        {(props.isSkeletonLoading || props.isLoading || profileData?.reviewData?.length > 0) ?
-                            (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
-                                return <ReviewInfoBox item={jobData} {...props} />
+                        {(props.isSkeletonLoading || props.isLoading || reviewList.length > 0) ?
+                            (reviewList.slice(0, 8)?.map((item: any) => {
+                                return <ReviewInfoBox item={item.reviewData} />
                             })) :
                             <div className="no_record">
                                 <figure className="no_data_img">
@@ -627,14 +615,14 @@ const BuilderInfo = (props: PropsType) => {
                                                     <img src={reviewData?.userImage || dummy} alt="user-img" />
                                                 </figure>
                                                 <div className="details">
-                                                    <span className="user_name">{reviewData?.userName || ''}</span>
+                                                    <span className="user_name">{reviewData?.name || ''}</span>
                                                     <span className="date">{reviewData?.date || ''}</span>
                                                 </div>
                                                 <div className="rating_star">
                                                     <ReactStars
                                                         count={5}
                                                         value={reviewData.rating}
-                                                        size={20}
+                                                        size={30}
                                                         edit={false}
                                                         isHalf={true}
                                                         emptyIcon={<i className="far fa-star"></i>}
@@ -660,7 +648,7 @@ const BuilderInfo = (props: PropsType) => {
                                                         <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
                                                     </figure>
                                                     <div className="details">
-                                                        <span className="user_name">{reviewData?.replyData?.userName || ''}</span>
+                                                        <span className="user_name">{reviewData?.replyData?.name || ''}</span>
                                                         <span className="date">{reviewData?.replyData?.date || ''}</span>
                                                     </div>
                                                 </div>
@@ -695,6 +683,14 @@ const BuilderInfo = (props: PropsType) => {
                     </div>
                     <div className="form_field">
                         <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
+                        <ReactStars
+                            value={reviewsData.rating || 0}
+                            count={5}
+                            isHalf={true}
+                            onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
+                            size={40}
+                            activeColor="#ffd700"
+                        />
                         <div className="text_field">
                             <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
                             <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>

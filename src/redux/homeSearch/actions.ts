@@ -23,7 +23,7 @@ export const resetHomeSearchJobData = () => ({ type: actionTypes.RESET_HOME_SEAR
 export const resetViewNearByJobData = () => ({ type: actionTypes.RESET_VIEW_NEARBY_JOBS });
 
 export const getNotificationList = async (page: number, resetUnreadNotif: boolean) => {
-    const response: FetchResponse = await NetworkOps.get(Urls.notification + `?page=${page}${resetUnreadNotif ? '&markRead=0' : ''}`);
+    const response: FetchResponse = await NetworkOps.get(Urls.notification + `?page=${page}${resetUnreadNotif ? '&markRead=1' : ''}`);
     if (response.status_code === 200) {
         return { success: true, data: response };
     }

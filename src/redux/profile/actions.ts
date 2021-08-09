@@ -157,6 +157,11 @@ export const getSavedJobList = (page: number) => ({
   page,
 });
 
+export const clearSavedJobList = () => ({
+  type: actionTypes.SET_SAVED_JOBS,
+  payload: [],
+});
+
 export const getPrivacyPolicy = async () => {
   const userType = storageService.getItem('userType');
 

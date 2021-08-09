@@ -594,17 +594,20 @@ class TradieInfo extends Component<Props, State> {
                                                     </li>
                                                 </ul>
 
-
                                                 {userType !== 1 && is_active == "true" ? (
-                                                    <button
-                                                        className="fill_btn full_btn btn-effect"
+                                                    <button className="fill_btn full_btn btn-effect"
                                                         onClick={() => {
-                                                            props.history.push('/update-user-info')
+                                                            const tradieId = new URLSearchParams(props.history?.location?.search).get('tradeId');
+                                                            props.history.push({
+                                                                pathname: `/choose-job-to-start-chat`,
+                                                                state: {
+                                                                    tradieId: tradieId ? tradieId : '',
+                                                                }
+                                                            })
                                                         }}>
                                                         {'Write a message'}
                                                     </button>
                                                 ) : ''}
-
 
 
                                                 {userType === 1 ? (
@@ -688,7 +691,7 @@ class TradieInfo extends Component<Props, State> {
                                                             </div>
                                                         )}
                                                     </div>
-                                                ) : haveJobId ? (
+                                                ) : haveJobId && tradieInfo?.isRequested ? (
                                                     <>
                                                         <div className="form_field">
                                                             <button
@@ -1041,8 +1044,7 @@ class TradieInfo extends Component<Props, State> {
                                                     </div>
                                                     <p>{reviewData?.review}</p>
 
-                                                    {storageService.getItem('userType') === 2 &&
-                                                        item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
                                                         <span
                                                             onClick={() => {
                                                                 reviewHandler(
@@ -1056,8 +1058,7 @@ class TradieInfo extends Component<Props, State> {
                                                             {'Edit '}
                                                         </span>
                                                     ) : null}
-                                                    {storageService.getItem('userType') === 2 &&
-                                                        item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
                                                         <span
                                                             onClick={() => {
                                                                 this.setState({
@@ -1099,7 +1100,24 @@ class TradieInfo extends Component<Props, State> {
                                                             </span>)
                                                             : ''
                                                     )}
+                                                    {/* {Object.keys(replyData).length > 0 &&
+                                                !(reviewsData?.replyShownHideList.includes(replyId) ||
+                                                    reviewsData.replyShownHideList.includes(replyId)) &&
+                                                <span
+                                                    className="show_hide_ans link"
+                                                    onClick={() => { reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId) }}>
+                                                    {'Show review'}
+                                                </span>}
+                                            {reviewData?.isModifiable && Object.keys(item?.reviewData?.replyData).length ? (
+                                                <span
+                                                    className="action link"
+                                                    onClick={() => {
+                                                        reviewHandler('reviewReplyClicked', reviewData.reviewId)
+                                                    }}>
+                                                    {'Reply'}
+                                                </span>) : null} */}
                                                 </div>
+                                                {/* {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) && */}
                                                 {Object.keys(reviewsData.replyShownHideList).length &&
                                                     reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                     <div className="question_ans_card answer">

@@ -137,7 +137,7 @@ const ApplicantsList = (props: Props) => {
                             index={index}
                             specializationId={specializationId}
                             jobId={jobid}
-                            hideInvite={false}
+                            hideInvite={item.status === 'CANCELLED JOB'}
                             showStatus
                         />
                     ))
