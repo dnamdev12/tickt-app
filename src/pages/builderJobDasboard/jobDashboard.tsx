@@ -547,7 +547,7 @@ class JobDashboard extends Component<Props, State> {
                             }}
                             hasMore={hasLoad}
                             loader={<></>}
-                            className={`detail_col element-side-scroll`}>
+                            className={`detail_col element-side-scroll hide_scroll`}>
                             {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}
