@@ -109,7 +109,7 @@ export const isHandleChanges = (data: any) => ({ type: actionTypes.GET_LOCAL_CHA
 export const getTradieQuestionList = async (data: any) => {
   const response: FetchResponse = await NetworkOps.get(Urls.tradieQuestionList + `?jobId=${data.jobId}&page=${data.page}`);
   if (response.status_code === 200) {
-    return { success: true, data: response.result };
+    return { success: true, data: response.result?.list };
   }
   setShowToast(true, response.message);
   return { success: false };

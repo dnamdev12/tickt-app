@@ -97,12 +97,12 @@ const Header = (props: any) => {
         })
     }
 
-    const callNotificationList = async (resetUnreadNotif?: boolean) => {
+    const callNotificationList = async (resetUnreadNotif?: boolean, isInit?: boolean) => {
         if (notificationData.list?.length > 0 && notificationData.list?.length >= notificationData?.count) {
             setHasMoreNotif(false);
             return;
         }
-        const res1 = await getNotificationList(resetUnreadNotif ? 1 : notificationPgNo, resetUnreadNotif ? true : false);
+        const res1 = await getNotificationList(resetUnreadNotif ? 1 : notificationPgNo, (resetUnreadNotif && isInit) ? false : resetUnreadNotif ? true : false);
         if (res1.success) {
             const result = res1.data?.result;
             if (result?.list?.length < 10) {
@@ -143,7 +143,7 @@ const Header = (props: any) => {
     const callOnPathChange = () => {
         console.log('Inside --- callOnPathChange user_id')
         if (userType) {
-            notificationData.list?.length === 0 && callNotificationList();
+            (notificationData.list?.length === 0 || pathname === '/') && callNotificationList(true, true);
             if (userType === 1) {
                 if (!profileData || (profileData && !_.isEqual(props.tradieProfileData, profileData))) {
                     props.callTradieProfileData();

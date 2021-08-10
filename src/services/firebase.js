@@ -4,6 +4,7 @@ import 'firebase/auth';
 import 'firebase/database';
 import storageService from "../utils/storageService";
 import { qaStgFirebaseConfig } from '../utils/globalConfig';
+import moment from 'moment';
 
 if (!firebase.apps.length) {
     firebase.initializeApp(qaStgFirebaseConfig);
@@ -377,11 +378,13 @@ export const sendTextMessage = async (roomId, message) => {
     };
     await db.ref(`${FIREBASE_COLLECTION.LAST_MESSAGES}/${roomId}/chatLastMessage`).set(msgData);
     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}/${messageID}`).set(msgData);
+    msgData.messageTimestamp = moment().toDate().getTime();
 
     //TODO Implement Update Message Counter
     //https://stackoverflow.com/questions/42276881/increment-firebase-value-from-javascript-subject-to-constraint
     let inboxId = `${senderId}_${jobId}`;
     await db.ref(`${FIREBASE_COLLECTION.INBOX}/${receiverId}/${inboxId}`).child('unreadMessages').set(firebase.database.ServerValue.increment(1));
+    return msgData;
 }
 
 export const sendImageVideoMessage = async (roomId, url, type) => {
@@ -422,11 +425,13 @@ export const sendImageVideoMessage = async (roomId, url, type) => {
     };
     await db.ref(`${FIREBASE_COLLECTION.LAST_MESSAGES}/${roomId}/chatLastMessage`).set(msgData);
     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}/${messageID}`).set(msgData);
+    msgData.messageTimestamp = moment().toDate().getTime();
 
     //TODO Implement Update Message Counter
     //https://stackoverflow.com/questions/42276881/increment-firebase-value-from-javascript-subject-to-constraint
     let inboxId = `${senderId}_${jobId}`;
     await db.ref(`${FIREBASE_COLLECTION.INBOX}/${receiverId}/${inboxId}`).child('unreadMessages').set(firebase.database.ServerValue.increment(1));
+    return msgData;
 }
 
 export const resetUnreadCounter = async (roomId) => {

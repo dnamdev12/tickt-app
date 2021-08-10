@@ -30,7 +30,6 @@ const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
 const UserMessages = (props: any) => {
     const divRref = useRef<HTMLDivElement>(null);
     const [userId] = useState<string>(storageService.getItem('userInfo')?._id);
-    console.log('userId: ', userId);
     const [toggle, setToggle] = useState<boolean>(false);
     const [jobDetailLoader, setJobDetailLoader] = useState<boolean>(false);
     const [currentJobDetails, setCurrentJobDetails] = useState<any>(null);
@@ -62,7 +61,6 @@ const UserMessages = (props: any) => {
 
     const scrollToBottom = () => {
         if (null !== divRref?.current) {
-            console.log("divRref.current", divRref.current)
             const scroll =
                 divRref.current.scrollHeight -
                 divRref.current.clientHeight;
@@ -78,6 +76,7 @@ const UserMessages = (props: any) => {
     const onReceiveOfNewMsg = (arrmsg: any) => {
         console.log('arrmsg: ', arrmsg);
         setMessages(arrmsg);
+        // setInBoxLastMsg(arrmsg[arrmsg.length - 1]);
         let fsSlideObj: any = {};
         let mediaMsgs: any = [];
         let slideCount = 1;
@@ -95,25 +94,29 @@ const UserMessages = (props: any) => {
     }
     console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
-    const setLatestInboxToTop = () => {
-        const currentIndex = [...props.inBoxData].findIndex((item: any) => item.roomId === props.roomId);
+    const setInboxToTopWithLastMsg = (lastMsg: any) => {
         const newInboxData = [...props.inBoxData];
+        const currentIndex = newInboxData.findIndex(i => i.roomId === props.roomId);
+        newInboxData[currentIndex].lastMsg = lastMsg;
         newInboxData.splice(currentIndex, 1);
         newInboxData.unshift(props.inBoxData[currentIndex]);
         props.setInBoxData(newInboxData);
+        console.log('lastMsg: ', lastMsg);
+        console.log('currentIndex: ', currentIndex);
+        console.log('newInboxData: ', newInboxData);
     }
+
     const sendMessage = async () => {
         //setIsLoading(true);
         if (messageText || messageText.trim() !== "") {
-            setLatestInboxToTop();
-            sendTextMessage(props.roomId, messageText);
             setMessageText('');
+            const lastMsg: any = await sendTextMessage(props.roomId, messageText);
+            setInboxToTopWithLastMsg(lastMsg);
         }
     }
 
     const handleKeyDown = (event: any) => {
         if (event.key === 'Enter') {
-            console.log('do validate');
             sendMessage();
         }
     }
@@ -121,8 +124,8 @@ const UserMessages = (props: any) => {
     const sendImageVideoMsg = async (url: string, msgType: string) => {
         //setIsLoading(true);
         if (url && url !== '') {
-            setLatestInboxToTop();
-            await sendImageVideoMessage(props.roomId, url, msgType);
+            const lastMsg: any = await sendImageVideoMessage(props.roomId, url, msgType);
+            setInboxToTopWithLastMsg(lastMsg);
         }
         setMessageText('');
     }
@@ -173,10 +176,9 @@ const UserMessages = (props: any) => {
         const formData = new FormData();
         const newFile = e.target.files[0];
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
-        console.log('fileType: ', fileType);
 
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mb
-        if(["mp4", "wmv", "avi"].includes(fileType)){
+        if (["mp4", "wmv", "avi"].includes(fileType)) {
             maxFileSize = 20;
         }
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > maxFileSize)) {
@@ -307,7 +309,7 @@ const UserMessages = (props: any) => {
     }
 
     const displayMessages = (msg: any, index: number) => {
-        if(index === 0) lastDate= '';
+        if (index === 0) lastDate = '';
         switch (msg.messageType) {
             case "text":
                 return renderTextMsg(msg);
@@ -318,15 +320,8 @@ const UserMessages = (props: any) => {
         }
     }
 
-
-    console.log(props.roomData, "props.roomData");
-
     const { sources, types } = renderMediaItems(itemsMedia);
-    console.log({
-        sources, types,
-        selectedSlide,
-        toggler
-    })
+
     return (props.isNoRecords ? (
         <div className="detail_col">
             <div className="flex_row">
