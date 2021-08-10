@@ -208,6 +208,7 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const submitQuestionHandler = async (type: string) => {
+        console.log('type: ', type);
         if (['askQuestion', 'deleteQuestion', 'updateQuestion'].includes(type)) {
             if (!validateForm(type)) {
                 return;
@@ -481,8 +482,7 @@ const JobDetailsPage = (props: PropsType) => {
         itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
-    let questions_: any = questionList;
-    let question_list: any = questions_?.list || questions_;
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -500,7 +500,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
-                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && isTradieWorking && (
+                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && isTradieWorking && jobDetailsData.jobStatus === 'active' && (
                                 <div className="flex_col_sm_4 text-right">
                                     <span className="dot_menu">
                                         <img src={editIconBlue} alt="edit" />
@@ -552,7 +552,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             {jobDetailsData?.reasonNoteForCancelJobRequest}
                                         </p>
                                     </div>}
-                                    {jobDetailsData?.jobStatus !== 'cancelled' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
+                                    {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
                                             {jobDetailsData?.reasonForChangeRequest}
@@ -575,7 +575,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
                                         </ul>}
                                     </div>
-                                    {jobDetailsData?.jobStatus !== 'cancelled' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
+                                    {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
                                             <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li>
@@ -593,7 +593,6 @@ const JobDetailsPage = (props: PropsType) => {
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
                                             <button className="fill_btn full_btn btn-effect" onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
-                                            {/* <button className={`fill_btn full_btn btn-effect${['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) ? ' disable_btn' : ''}`} disabled={['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button> */}
                                         </div>
                                     ) : (paramStatus) ? (
                                         <button
@@ -797,7 +796,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         <span>No Questions Found</span>
                                     </div>}
                                     <div className="inner_wrap">
-                                        {question_list?.map((item: any, index: number) => {
+                                        {questionList?.map((item: any, index: number) => {
                                             const { questionData } = item;
                                             return (
                                                 <div key={questionData?.questionId}>
@@ -936,7 +935,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
                                     {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
-                                        {isTradieWorking && <a href="javascript:void(0)" className="chat circle"
+                                        {isTradieWorking && jobDetailsData.jobStatus === 'active' && <a href="javascript:void(0)" className="chat circle"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 props.history.push({

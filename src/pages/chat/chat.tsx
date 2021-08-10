@@ -29,6 +29,7 @@ interface PropTypes {
 }
 
 let selectedRoomID = '';
+let isFreshChatRoute: boolean = false;
 
 const Chat = (props: PropTypes) => {
     // const [initializing, setInitializing] = useState<boolean>(true);
@@ -47,12 +48,13 @@ const Chat = (props: PropTypes) => {
     console.log('tradieId, builderId, jobName, jobId: ', tradieId, builderId, jobName, jobId);
 
     useEffect(() => {
-        console.log("Calling Did Mount");
         console.log("roomId:: from didmout", selectedRoomID);
         (async () => {
             setLoading(true);
             if (tradieId && builderId && jobName && jobId) {
                 await setInitialItems();
+            } else {
+                isFreshChatRoute = true;
             }
             await getFirebaseInboxData(onUpdateofInbox);
             // debugger;
@@ -61,14 +63,6 @@ const Chat = (props: PropTypes) => {
         return () => {
             // debugger;
             stopListeningOfRoom(selectedRoomID);
-            setInBoxData([]);
-            setFilterInBoxData([]);
-            setIsNoRecords(false);
-            setRoomData({});
-            setRoomId('');
-            setSearchQuery('');
-            setSearchActive(false);
-            setIsInitialLoader(true);
             selectedRoomID = '';
         }
     }, []);
@@ -77,7 +71,7 @@ const Chat = (props: PropTypes) => {
         const roomID: string = `${jobId}_${tradieId}_${builderId}`;
         selectedRoomID = roomID;
         if (await checkRoomExist(roomID)) {
-            console.log('RoomExist: =================>');
+            console.log('RoomAlreadyExist: =================>');
             return;
         } else {
             await createRoom(jobId, tradieId, builderId, jobName);
@@ -86,21 +80,20 @@ const Chat = (props: PropTypes) => {
     }
 
     const onUpdateofInbox = async (res: any) => {
-        console.log("resources::", res);
         console.log("roomId::", selectedRoomID);
-        // const sortedRes = res.sort(function (x: any, y: any) {
-        //     // console.log(x,"x", y,"y");
-        //     return x.lastMsg?.messageTimestamp - y.lastMsg?.messageTimestamp;
-        // })
         let selectedRoomInfo: any = '';
         const sortedRes = res.filter((item: any, index: number) => {
             if (item.hasOwnProperty('lastMsg') || item.roomId === selectedRoomID) {
-                if (item.roomId === selectedRoomID) {
+                if (item.roomId === selectedRoomID && !isFreshChatRoute) {
                     selectedRoomInfo = item;
                 } else {
                     return item;
                 }
             }
+        });
+
+        sortedRes?.sort(function (x: any, y: any) {
+            return y.lastMsg?.messageTimestamp - x.lastMsg?.messageTimestamp;
         });
 
         if (sortedRes.length === 0 && !selectedRoomInfo) {
@@ -169,19 +162,17 @@ const Chat = (props: PropTypes) => {
     console.log(props.history, "history", roomId, "roomId", roomData, "roomData", selectedRoomID, "selectedRoomID", inBoxData, 'inBoxData');
 
     const getRoomDetails = async (item: any) => {
-        console.log("Get Selected Item", item.itemId);
         stopListeningOfRoom(selectedRoomID);
         selectedRoomID = item.roomId;
         setRoomId(item.roomId);
         setRoomData(item);
-        // fetchEquipmentDetail(item.itemId);
         resetUnreadCounter(item.roomId);
+        // fetchEquipmentDetail(item.itemId);
     }
 
     useEffect(() => {
         if (searchQuery) {
             let filteredVal = inBoxData.filter((item: any) => item.oppUserInfo?.name?.toLowerCase()?.includes(searchQuery.toLowerCase()));
-            console.log('filteredVal: ', filteredVal, "searchQuery", searchQuery);
             setFilterInBoxData(filteredVal);
         }
         if ((inBoxData.length || inBoxData[0]?.['firstKey'] === 'emptyRes') && isInitialLoader) {
