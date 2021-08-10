@@ -26,6 +26,14 @@ import savedJobs from '../../assets/images/ic-job.png';
 import noNotification from '../../assets/images/no-notifications.png';
 import _ from 'lodash';
 
+import skipBtn from '../../assets/images/skip.png';
+import backBtn from '../../assets/images/back.png';
+import nextBtn from '../../assets/images/next.png';
+import doneBtn from '../../assets/images/check-mark.png';
+
+
+
+
 const DISABLE_HEADER = [
     '/signup',
     '/login',
@@ -415,17 +423,24 @@ const Header = (props: any) => {
                     <div className="tour-tooltip" {...tooltipProps}>
                         <div className="tour-tooltip-content">{step.content}</div>
                         <div className="tour-tooltip-footer">
-                            <button className="fill_btn skip_btn" {...skipProps}>Skip</button>
-                            <div>
-                                {index > 0 && (
-                                    <button className="fill_grey_btn" {...backProps}>Back</button>
-                                )}
-                                {continuous && (
-                                    <button className="fill_btn m-l-20" {...primaryProps} title={isLastStep ? 'Done' : 'Next'}>
-                                        {isLastStep ? 'Done' : 'Next'} {step.showProgress && `(${index + 1}/${size})`}
-                                    </button>
-                                )}
-                            </div>
+                            <button className="" {...skipProps} title="Skip">
+                                <img src={skipBtn} alt="skip" className="skip" />
+                            </button>
+                            {index > 0 && (
+                                <button className="" {...backProps} title="Back">
+                                    <img src={backBtn} alt="back" />
+                                </button>
+                            )}
+                            {continuous && (
+                                // <button className="" {...primaryProps} title={isLastStep ? 'Done' : 'Next'}>
+                                //     {isLastStep ? 'Done' : 'Next'} {step.showProgress && `(${index + 1}/${size})`}
+                                // </button>
+
+                                <button className="" {...primaryProps} title={isLastStep ? 'Done' : 'Next'}>
+                                    {isLastStep ? <img src={doneBtn} alt="done" /> : <img src={nextBtn} alt="next" />} 
+                                    <span>{step.showProgress && `(${index + 1}/${size})`}</span>
+                                </button>
+                            )}
                         </div>
                     </div>
                 )}
