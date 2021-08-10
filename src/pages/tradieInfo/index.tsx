@@ -203,7 +203,6 @@ class TradieInfo extends Component<Props, State> {
 
     static getDerivedStateFromProps(nextProps: any, prevState: any) {
         if (nextProps.tradieProfileViewData && !_.isEqual(nextProps.tradieProfileViewData, prevState.tradieInfo)) {
-            alert('Ok!')
             return {
                 tradieInfo: nextProps.tradieProfileViewData
             }

@@ -5,8 +5,6 @@ import {
     callTradieProfileData,
     getProfileBuilder
 } from '../../redux/profile/actions';
-import { getNotificationList } from './../../redux/homeSearch/actions';
-
 
 const mapStateToProps = (state: any) => {
     return {

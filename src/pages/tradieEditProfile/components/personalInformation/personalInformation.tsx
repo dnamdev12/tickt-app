@@ -60,6 +60,7 @@ interface Props {
     getTradieBasicDetails: () => void,
     callTradeList: () => void,
     callTradieProfileData: () => void,
+    getProfileBuilder: () => void,
     cleanTradieBasicDetails: () => void,
     cleanTradieProfileViewData: () => void,
 }
@@ -478,6 +479,7 @@ export class PersonalInformation extends Component<Props, State> {
                     basicDetailsData: basicDetails
                 }));
                 this.props.getTradieBasicDetails();
+                this.userType === 1 ? this.props.callTradieProfileData() : this.props.getProfileBuilder();
             }
         }
     }
@@ -642,7 +644,8 @@ export class PersonalInformation extends Component<Props, State> {
             this.setState({
                 formData: null,
                 isProfileViewDataChanged: false
-            })
+            });
+            this.userType === 1 ? this.props.callTradieProfileData() : this.props.getProfileBuilder();
         }
     }
 

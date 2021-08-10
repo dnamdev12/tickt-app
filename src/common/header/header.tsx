@@ -7,10 +7,6 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import storageService from '../../utils/storageService';
 import AuthModal from '../auth/authModal';
-import Button from '@material-ui/core/Button';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { useDispatch } from 'react-redux'
 import { setShowNotification } from '../../redux/common/actions';
@@ -28,6 +24,7 @@ import revenue from '../../assets/images/ic-revenue.png';
 import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
 import noNotification from '../../assets/images/no-notifications.png';
+import _ from 'lodash';
 
 const DISABLE_HEADER = [
     '/signup',
@@ -65,7 +62,7 @@ const Header = (props: any) => {
     const forceUpdate = useForceUpdate();
     const [activeTarget, setActiveTarget] = useState('');
     const [logoutClicked, setLogoutClicked] = useState(false);
-
+    const [profileData, setProfileData] = useState('');
 
     function useForceUpdate() {
         const [value, setValue] = useState(0); // integer state
@@ -129,8 +126,8 @@ const Header = (props: any) => {
     }
 
     console.log('notificationData: ', notificationData);
+
     useEffect(() => {
-        callNotificationList();
         onMessageListner();
         setActiveLink('discover');
 
@@ -145,24 +142,34 @@ const Header = (props: any) => {
 
     const callOnPathChange = () => {
         console.log('Inside --- callOnPathChange user_id')
-        if (type) {
-            if (type === 1) {
-                props.callTradieProfileData();
-                setIsFalse(true)
-            }
-            if (type === 2) {
-                props.getProfileBuilder();
-                setIsFalse(true)
+        if (userType) {
+            notificationData.list?.length === 0 && callNotificationList();
+            if (userType === 1) {
+                if (!profileData || (profileData && !_.isEqual(props.tradieProfileData, profileData))) {
+                    props.callTradieProfileData();
+                }
+            } else if (userType === 2) {
+                if (!profileData || (profileData && !_.isEqual(props.builderProfile, profileData))) {
+                    props.getProfileBuilder();
+                }
             }
         }
-
         if (DISABLE_HEADER.includes(pathname)) {
-            setShowHeader(false)
+            setShowHeader(false);
         } else {
-            setShowHeader(true)
+            setShowHeader(true);
         }
         setUserType(storageService.getItem('userType'))
     }
+
+    useEffect(() => {
+        if (props.tradieProfileData && Object.keys(props.tradieProfileData)?.length) {
+            setProfileData(props.tradieProfileData);
+        }
+        if (props.builderProfile && Object.keys(props.builderProfile)?.length) {
+            setProfileData(props.builderProfile);
+        }
+    }, [props.tradieProfileData, props.builderProfile])
 
     useEffect(() => {
         if (props?.builderProfile && Object.keys(props?.builderProfile).length && !isIntercom) {
@@ -199,22 +206,13 @@ const Header = (props: any) => {
     }
 
     useEffect(() => {
-        if (props.notificationList) {
-            setNotificationData(props.notificationList);
-        }
-    }, [props.notificationList]);
-
-    useEffect(() => {
-
         if (pathname === '/login') {
             // window_.Intercom('hide');
         }
-
         if (pathname === '/') {
             setActiveLink('discover');
             setHidden();
         }
-
         if ([
             '/jobs',
             '/active-jobs',
@@ -228,17 +226,14 @@ const Header = (props: any) => {
             setActiveLink('jobs');
             setHidden();
         }
-
         if (pathname === '/post-new-job') {
             setActiveLink('post');
             setHidden();
         }
-
         if (pathname === '/chat') {
             setActiveLink('chat')
             setHidden();
         }
-
         if (['/builder-info', '/saved-tradespeople', '/search-tradie-results'].includes(pathname)) {
             setHidden();
         }
@@ -256,13 +251,6 @@ const Header = (props: any) => {
             document.body.classList.remove('no-scroll');
         }
     }, [startTour]);
-
-    const handleFirstLogin = () => {
-        const firstLogin = storageService.getItem('firstLogin');
-        if (firstLogin === 'true') {
-            storageService.setItem('firstLogin', 'false');
-        }
-    }
 
     const handleClick = (event: any, type: string) => {
         if (type === 'notification') {
@@ -313,11 +301,8 @@ const Header = (props: any) => {
     }
 
     const renderByType = ({ name }: any) => {
-        if (type === 2) {
-            return props?.builderProfile[name];
-        }
-        if (type === 1) {
-            return props?.tradieProfileData[name];
+        if (userType === 1 || userType === 2) {
+            return profileData?.[name];
         }
     }
 
