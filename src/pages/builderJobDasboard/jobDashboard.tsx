@@ -72,7 +72,42 @@ class JobDashboard extends Component<Props, State> {
     }
 
     componentDidMount() {
-        this.props.getActiveJobsBuilder(1);
+        let { activeType, selectedItem: { jobtype }, currentPage, hasLoad } = this.state;
+        let nextProps: any = this.props;
+        if (nextProps?.location?.search) {
+
+            let urlParams = new URLSearchParams(nextProps?.location?.search);
+            let activeType_ = urlParams.get('active');
+            let jobId_ = urlParams.get('jobId');
+            let editMilestone_ = urlParams.get('editMilestone');
+            let lodgeDispute_ = urlParams.get('lodgeDispute');
+            let cancelJob_ = urlParams.get('cancelJob');
+
+            if (activeType_) {
+                if (activeType_ !== activeType) {
+                    // alert(`${activeType_}--${activeType}`)
+                    this.setState({
+                        activeType: activeType_,
+                        selectedItem: {
+                            jobtype: activeType_,
+                            jobid: null,
+                            sortby: 1,
+                            specializationId: '',
+                        },
+                    }, () => {
+                        this.setAfterItems({
+                            jobtype: activeType_,
+                            currentPage: 1,
+                            dataItemsAddons: { page: 1, jobId: null, sortBy: 1 }
+                        })
+                    })
+                } else {
+                    this.props.getActiveJobsBuilder(1);
+                }
+            }
+        } else {
+            this.props.getActiveJobsBuilder(1);
+        }
     }
 
     // milestone dates should be lie betwwn job details
@@ -91,27 +126,30 @@ class JobDashboard extends Component<Props, State> {
 
         console.log({
             activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs, approvalJobs,
-            state: this.state
+            state: this.state,
+            activeType_,
+            activeType
         })
 
         if (activeType_) {
-            if (activeType_ !== activeType) {
-                this.setState({
-                    activeType: activeType_,
-                    selectedItem: {
-                        jobtype: activeType_,
-                        jobid: null,
-                        sortby: 1,
-                        specializationId: '',
-                    },
-                }, () => {
-                    this.setAfterItems({
-                        jobtype: activeType_,
-                        currentPage: 1,
-                        dataItemsAddons: { page: 1, jobId: null, sortBy: 1 }
-                    })
-                })
-            }
+            // if (activeType_ !== activeType) {
+            //     alert(`${activeType_}--${activeType}`)
+            //     this.setState({
+            //         activeType: activeType_,
+            //         selectedItem: {
+            //             jobtype: activeType_,
+            //             jobid: null,
+            //             sortby: 1,
+            //             specializationId: '',
+            //         },
+            //     }, () => {
+            //         // this.setAfterItems({
+            //         //     jobtype: activeType_,
+            //         //     currentPage: 1,
+            //         //     dataItemsAddons: { page: 1, jobId: null, sortBy: 1 }
+            //         // })
+            //     })
+            // }
         }
 
         if (
@@ -337,15 +375,15 @@ class JobDashboard extends Component<Props, State> {
 
         this.setState({
             selectedItem: { jobtype, jobid, sortby, specializationId },
-            applicantsListJobs: []
+            applicantsListJobs: [],
         }, () => {
-            this.setAfterItems({ jobtype, currentPage, dataItemsAddons });
+            this.setAfterItems({ jobtype, currentPage: this.state.currentPage, dataItemsAddons });
         });
     }
 
     setAfterItems = ({ jobtype, currentPage, dataItemsAddons }: any) => {
         const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, getNewApprovalList } = this.props;
-
+        // alert(`${jobtype}-${currentPage}`)
         if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
         if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
         if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
@@ -480,29 +518,32 @@ class JobDashboard extends Component<Props, State> {
                         <InfiniteScroll
                             dataLength={totalCount}
                             next={() => {
-                                this.setState({ currentPage: this.state.currentPage + 1 }, () => {
-                                    let cp: any = this.state.currentPage;
-                                    if (jobtype === 'active') {
-                                        this.props.getActiveJobsBuilder(cp);
-                                    }
+                                if (totalCount == this.state.currentPage * 10) {
+                                    this.setState({ currentPage: this.state.currentPage + 1 }, () => {
+                                        let cp: any = this.state.currentPage;
+                                        // alert(`cp-${cp}`)
+                                        if (jobtype === 'active') {
+                                            this.props.getActiveJobsBuilder(cp);
+                                        }
 
-                                    if (jobtype === 'past') {
-                                        this.props.getPastJobsBuilder(cp)
-                                    }
+                                        if (jobtype === 'past') {
+                                            this.props.getPastJobsBuilder(cp)
+                                        }
 
-                                    if (jobtype === 'open') {
-                                        this.props.getOpenJobsBuilder(cp);
-                                    }
+                                        if (jobtype === 'open') {
+                                            this.props.getOpenJobsBuilder(cp);
+                                        }
 
-                                    if (jobtype === 'applicant') {
-                                        this.props.getNewApplicantsBuilder(cp);
-                                    }
+                                        if (jobtype === 'applicant') {
+                                            this.props.getNewApplicantsBuilder(cp);
+                                        }
 
-                                    if (jobtype === 'approval') {
-                                        this.props.getNewApprovalList(cp);
-                                    }
+                                        if (jobtype === 'approval') {
+                                            this.props.getNewApprovalList(cp);
+                                        }
 
-                                });
+                                    });
+                                }
                             }}
                             hasMore={hasLoad}
                             loader={<></>}

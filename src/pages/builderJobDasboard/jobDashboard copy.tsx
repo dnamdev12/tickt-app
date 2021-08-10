@@ -28,7 +28,6 @@ import FixedRate from './components/confirmAndPay/fixedRate';
 
 import InfiniteScroll from "react-infinite-scroll-component";
 
-
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,

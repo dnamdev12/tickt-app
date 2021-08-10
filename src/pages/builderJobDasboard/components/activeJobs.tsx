@@ -112,7 +112,9 @@ const ActiveJobs = ({
     console.log({ listData, isLoading })
     return (
         <React.Fragment>
-            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
+            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs 
+            {/* {listData?.length} */}
+            </span>
             <div className="flex_row tradies_row">
                 {listData?.length ?
                     listData.map(({
