@@ -33,7 +33,7 @@ const CustomNotification = (props: any) => {
             }}>
                 <div className="notif">
                     <figure className="not_img">
-                        <img src={dummy} alt="img" />
+                        <img src={notification?.image || dummy} alt="img" />
                     </figure>
                     <div className="info">
                         <span className="who line-1">{notification?.title}</span>
