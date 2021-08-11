@@ -23,7 +23,6 @@ import cross from "../../assets/images/close-black.png";
 import icgps from "../../assets/images/ic-gps.png";
 import residential from "../../assets/images/ic-residential.png";
 import close from "../../assets/images/icon-close-1.png";
-import { da } from '../../plugins/react-date-range/dist/locale';
 
 Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
 Geocode.setLanguage("en");
@@ -87,7 +86,7 @@ const TradieBannerSearch = (props: PropsType) => {
     const locationRef = useDetectClickOutside({ onTriggered: handleOnOutsideLocation });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
-    const [suggestionSelected, setSuggestion] = useState({});
+    const [suggestionSelected, setSuggestion] = useState<any>('');
 
     console.log(inputFocus1, inputFocus2, inputFocus3, "inputfocus---------");
 
@@ -103,7 +102,7 @@ const TradieBannerSearch = (props: PropsType) => {
                 page: paramsData?.page ? paramsData?.page : 1,
                 searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
                 isFiltered: paramsData?.isFiltered ? paramsData?.isFiltered : false,
-                isSearchedJobSelected: paramsData?.searchJob ? true : false,
+                isSearchedJobSelected: paramsData?.specializationId?.length > 1 ? false : true,
                 tradeId: paramsData?.tradeId ? paramsData?.tradeId : [],
                 specializationId: paramsData?.specializationId ? paramsData?.specializationId : [],
                 location: {
@@ -312,10 +311,9 @@ const TradieBannerSearch = (props: PropsType) => {
                         coordinates: [lng, lat]
                     }
                 }
-                setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: suggestion?.formattedSuggestion?.mainText, isMapLocationSelected: true }))
+                setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: suggestion?.formattedSuggestion?.mainText, isMapLocationSelected: true }));
                 setInputFocus2(false);
-            }
-            );
+            });
     }
 
     const filterFromAddress = (results: any) => {
@@ -422,7 +420,7 @@ const TradieBannerSearch = (props: PropsType) => {
             const data = {
                 page: stateData.page,
                 isFiltered: false,
-                address: JSON.stringify(suggestionSelected),
+                ...(suggestionSelected && { address: JSON.stringify(suggestionSelected) }),
                 tradeId: newSearchData?.tradeId ? newSearchData?.tradeId : stateData?.tradeId,
                 ...(stateData.isMapLocationSelected && { location: stateData?.location }),
                 // location: stateData?.location,
@@ -432,8 +430,8 @@ const TradieBannerSearch = (props: PropsType) => {
             }
             if (props?.location?.pathname === '/search-job-results') {
                 props.postHomeSearchData(data);
-                delete data.address;
             }
+            delete data.address;
             const newData = {
                 ...data,
                 lat: stateData.location.coordinates[1],
@@ -450,7 +448,7 @@ const TradieBannerSearch = (props: PropsType) => {
                 delete newData.heading;
                 delete newData.jobResults;
             }
-            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0') && delete newData[key]);
+            Object.keys(newData).forEach(key => (newData[key] === '' || newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0') && delete newData[key]);
             var url = 'search-job-results?';
             for (let [key, value] of Object.entries(newData)) {
                 url += `${key}=${value}&`
@@ -484,7 +482,10 @@ const TradieBannerSearch = (props: PropsType) => {
                     <img src={Location} alt="location" />
                 </span>
                 {stateData?.selectedMapLocation && inputFocus2 && <span className="detect_icon" >
-                    <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '', isMapLocationSelected: false }))} />
+                    <img src={cross} alt="cross" onClick={() => {
+                        setSuggestion('');
+                        setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '', isMapLocationSelected: false }));
+                    }} />
                 </span>}
                 {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
             </div>

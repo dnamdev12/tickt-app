@@ -31,9 +31,6 @@ import backBtn from '../../assets/images/back.png';
 import nextBtn from '../../assets/images/next.png';
 import doneBtn from '../../assets/images/check-mark.png';
 
-
-
-
 const DISABLE_HEADER = [
     '/signup',
     '/login',
@@ -116,7 +113,7 @@ const Header = (props: any) => {
             if (result?.list?.length < 10) {
                 setHasMoreNotif(false);
             }
-            const notifList: any = [...notificationData.list, ...result?.list];
+            const notifList: any = (resetUnreadNotif || isInit) ? result?.list : [...notificationData.list, ...result?.list];
 
             setNotificationData((prevData: any) => ({
                 ...prevData,
@@ -437,7 +434,7 @@ const Header = (props: any) => {
                                 // </button>
 
                                 <button className="" {...primaryProps} title={isLastStep ? 'Done' : 'Next'}>
-                                    {isLastStep ? <img src={doneBtn} alt="done" /> : <img src={nextBtn} alt="next" />} 
+                                    {isLastStep ? <img src={doneBtn} alt="done" /> : <img src={nextBtn} alt="next" />}
                                     <span>{step.showProgress && `(${index + 1}/${size})`}</span>
                                 </button>
                             )}

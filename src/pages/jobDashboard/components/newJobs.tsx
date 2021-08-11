@@ -42,6 +42,7 @@ const NewJobs = ({ loading, getNewJobList, newJobList, newJobsCount, resetNewJob
       setJobList(allJobs);
       setPageNo(pageNo + 1);
       if (newJobList.length < 10) { setHasMoreItems(false); }
+      resetNewJobList();
     }
   }, [newJobList]);
 

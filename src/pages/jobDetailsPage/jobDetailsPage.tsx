@@ -365,9 +365,9 @@ const JobDetailsPage = (props: PropsType) => {
         const res = await replyCancellation(data);
         if (res.success) {
             if (type === 'acceptJobCancelRequest') {
-                props.history.push('/request-monitored/cc');
+                props.history.push('/request-monitored/ccr');
             } else {
-                props.history.push('/request-monitored/cr');
+                props.history.push('/request-monitored/cc');
             }
             setJobActionState((prevData: any) => ({
                 ...prevData,
@@ -386,7 +386,11 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await replyChangeRequest(data);
         if (res.success) {
-            props.history.push('/request-monitored/cr');
+            if (type === 'acceptChangeRequest') {
+                props.history.push('/request-monitored/cr');
+            } else {
+                props.history.push('/request-monitored/cc');
+            }
             setJobActionState((prevData: any) => ({
                 ...prevData,
                 isChangeRequestAcceptedClicked: false,
@@ -717,7 +721,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     {!!errors.replyCancelReason && <span className="error_msg">{errors.replyCancelReason}</span>}
                                 </div>
                                 <div className="bottom_btn custom_btn">
-                                    {jobActionState.isCancelRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyCancellationHandler('RejectJobCancelRequest')}>Send</button>}
+                                    {jobActionState.isCancelRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyCancellationHandler('rejectJobCancelRequest')}>Send</button>}
                                     {jobActionState.isChangeRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyChangeRequestHandler('rejectChangeRequest')}>Send</button>}
                                     <button className="fill_grey_btn btn-effect" onClick={() => closeJobActionConfirmationModal('isCancelRequestRejectedClicked')}>Cancel</button>
                                 </div>

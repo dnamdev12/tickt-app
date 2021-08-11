@@ -45,6 +45,7 @@ const PastJobs = (props: Proptypes) => {
       setJobList(allJobs);
       setPageNo(pageNo + 1);
       if (props.pastJobList.length < 10) { setHasMoreItems(false); }
+      props.resetPastJobList();
     }
   }, [props.pastJobList]);
 

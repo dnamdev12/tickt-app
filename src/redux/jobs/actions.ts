@@ -473,7 +473,7 @@ export const tradieCancelJob = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true };
   }
-  // setShowToast(true, response.message);
+  setShowToast(true, response.message);
   return { success: false };
 }
 

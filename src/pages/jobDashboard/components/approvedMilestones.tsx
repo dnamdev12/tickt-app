@@ -44,6 +44,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
       setJobList(allJobs);
       setPageNo(pageNo + 1);
       if (approvedMilestoneList.length < 10) { setHasMoreItems(false); }
+      resetApprovedMilestoneList();
     }
   }, [approvedMilestoneList]);
 
