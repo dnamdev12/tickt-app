@@ -124,9 +124,10 @@ const onNotificationClick = (notification) => {
 
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
-    const url = onNotificationClick(event.notification?.data);
+    let url = onNotificationClick(event.notification?.data);
+    console.log('url: ', url);
     event.waitUntil(
-        self.clients.openWindow('https://ticktreactdev.appskeeper.in/jobs?active=past')
+        self.clients.openWindow(`${url}`)
     )
 
     // event.waitUntil(
