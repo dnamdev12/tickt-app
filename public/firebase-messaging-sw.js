@@ -89,7 +89,7 @@ const onNotificationClick = (notification) => {
                 return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
         case 11: //TERM_AND_CONDITION
-            return `${url}update-user-info`;
+            return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
                 return `${url}active-jobs`;
@@ -108,7 +108,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `/`;
+                return `${url}`;
             }
         case 16: //TRADIE
             if (user_type == 1) {
@@ -123,27 +123,27 @@ const onNotificationClick = (notification) => {
 
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
-    // event.waitUntil(
-        // self.clients.openWindow(onNotificationClick(event.notification?.data))
-    // )
-    
     event.waitUntil(
-        self.clients.matchAll({ type: 'window' }).then(windowClients => {
-            console.log('windowClients: ', windowClients);
-            // Check if there is already a window/tab open with the target URL
-            for (var i = 0; i < windowClients.length; i++) {
-                var client = windowClients[i];
-                // If so, just focus it.
-                if (client.url == onNotificationClick(event.notification?.data) && 'focus' in client) {
-                    return client.focus();
-                }
-            }
-            // If not, then open the target URL in a new window/tab.
-            if (self.clients.openWindow) {
-                return self.clients.openWindow(onNotificationClick(event.notification?.data));
-            }
-        })
-    );
+        self.clients.openWindow(onNotificationClick(event.notification?.data))
+    )
+
+    // event.waitUntil(
+    //     self.clients.matchAll({ type: 'window' }).then(windowClients => {
+    //         console.log('windowClients: ', windowClients);
+    //         // Check if there is already a window/tab open with the target URL
+    //         for (var i = 0; i < windowClients.length; i++) {
+    //             var client = windowClients[i];
+    //             // If so, just focus it.
+    //             if (client.url == onNotificationClick(event.notification?.data) && 'focus' in client) {
+    //                 return client.focus();
+    //             }
+    //         }
+    //         // If not, then open the target URL in a new window/tab.
+    //         if (self.clients.openWindow) {
+    //             return self.clients.openWindow(onNotificationClick(event.notification?.data));
+    //         }
+    //     })
+    // );
     return self.clients.openWindow();
 })
 
