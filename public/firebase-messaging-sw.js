@@ -24,10 +24,11 @@ messaging.onBackgroundMessage((payload) => {
         var title = payload.data?.title;
         var body = payload.data?.notificationText;
         var data = { ...payload.data }
+        var icon = data?.app_icon; 
 
         return self.registration.showNotification(title, {
             // tag: tag,
-            // icon: icon,
+            icon: icon,
             body: body,
             data: data
         });
