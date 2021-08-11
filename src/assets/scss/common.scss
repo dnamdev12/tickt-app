@@ -4119,10 +4119,12 @@ body {
   margin: 0 0 0 -190px;
   position: fixed;
   @media (max-width: 1366px){
-    margin: 0 0 0 -130px;
+    margin: 0 0 0 -140px;
+    width: 380px;
   }
   @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    margin: 0 0 0 -120px;
+    margin: 0 0 0 -140px;
+    width: 380px;
   }
   &.active{
     @media(max-width: 768px){
@@ -4316,10 +4318,10 @@ body {
   padding: 48px 20px 0 40px;
   margin-left: 240px;
   @media (max-width: 1366px){
-    margin-left: 290px;
+    margin-left: 220px;
   }
   @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    margin-left: 290px;
+    margin-left: 220px;
   }
   @media(max-width: 768px){
     width: 100%;
@@ -5653,7 +5655,7 @@ div#light-box div {
   overflow: hidden;
 }
 
-#react-joyride-step-4, #react-joyride-step-5{
+#react-joyride-step-4, #react-joyride-step-5, #react-joyride-step-3{
   .tour-tooltip {
     margin: 20px 0 0 0px;
     transform: translateX(-70%);
@@ -5680,7 +5682,6 @@ div#light-box div {
     }
   }
 }
-
 
 .tour-tooltip {
   margin: 20px 0 0 250px;
