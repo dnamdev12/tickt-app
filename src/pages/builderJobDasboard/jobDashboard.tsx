@@ -85,7 +85,6 @@ class JobDashboard extends Component<Props, State> {
 
             if (activeType_) {
                 if (activeType_ !== activeType) {
-                    // alert(`${activeType_}--${activeType}`)
                     this.setState({
                         activeType: activeType_,
                         selectedItem: {
@@ -110,6 +109,23 @@ class JobDashboard extends Component<Props, State> {
         }
     }
 
+
+    checkAndUpdateCount = ({
+        needApprovalCount,
+        newApplicantsCount
+    }: any) => {
+        let { approveCount, applicantCount } = this.state?.count
+        if (needApprovalCount !== approveCount ||
+            newApplicantsCount !== applicantCount) {
+            this.setState({
+                count: {
+                    approveCount: needApprovalCount,
+                    applicantCount: newApplicantsCount
+                },
+            })
+        }
+    }
+
     // milestone dates should be lie betwwn job details
     componentDidUpdate(prevProps: any) {
         let nextProps: any = this.props;
@@ -126,136 +142,126 @@ class JobDashboard extends Component<Props, State> {
 
         console.log({
             activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs, approvalJobs,
-            state: this.state,
-            activeType_,
-            activeType
+            1: jobtype === 'active',
+            2: JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs),
+            3: (this.state?.activeJobs?.length < currentPage * 10)
         })
-
-        if (activeType_) {
-            // if (activeType_ !== activeType) {
-            //     alert(`${activeType_}--${activeType}`)
-            //     this.setState({
-            //         activeType: activeType_,
-            //         selectedItem: {
-            //             jobtype: activeType_,
-            //             jobid: null,
-            //             sortby: 1,
-            //             specializationId: '',
-            //         },
-            //     }, () => {
-            //         // this.setAfterItems({
-            //         //     jobtype: activeType_,
-            //         //     currentPage: 1,
-            //         //     dataItemsAddons: { page: 1, jobId: null, sortBy: 1 }
-            //         // })
-            //     })
-            // }
-        }
 
         if (
             jobtype === 'active' &&
-            JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
+                !activeJobs?.active?.length ? true : JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
             (this.state?.activeJobs?.length < currentPage * 10)
         ) {
-            console.log('inside');
-            let { active, needApprovalCount, newApplicantsCount } = activeJobs;
-            let page_get = 0;
-            let prevValues = [];
+            if (activeJobs?.active) {
 
-            if (Array.isArray(active) && active?.length) {
-                page_get = active[0]?.page;
-            }
+                let { active, needApprovalCount, newApplicantsCount } = activeJobs;
+                let page_get = 0;
+                let prevValues = [];
 
-            if (Array.isArray(this.state?.activeJobs) && this.state?.activeJobs?.length) {
-                prevValues = this.state?.activeJobs;
-            };
-
-
-            if (hasLoad && !active?.length && page_get === 0 && this.state?.activeJobs?.length !== 0) {
-                if (this.state.hasLoad !== false) {
-                    this.setState({ hasLoad: false });
+                if (Array.isArray(active) && active?.length) {
+                    page_get = active[0]?.page;
                 }
-            } else {
-                if (hasLoad && active?.length && page_get === currentPage) {
+
+                if (Array.isArray(this.state?.activeJobs) && this.state?.activeJobs?.length) {
+                    prevValues = this.state?.activeJobs;
+                };
+
+                if (hasLoad && !active?.length && page_get === 0 && this.state?.activeJobs?.length !== 0) {
+                    if (this.state.hasLoad !== false) {
+                        this.setState({ hasLoad: false });
+                    }
+                } else if (hasLoad && active?.length && page_get === currentPage) {
+                    let result = page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active;
+
                     this.setState({
                         globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
                         enableEditMilestone: editMilestone_ === "true" ? true : false,
                         enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
                         enableCancelJob: cancelJob_ === "true" ? true : false,
-                        activeJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active,
+                        activeJobs: result,
                         count: {
                             approveCount: needApprovalCount,
                             applicantCount: newApplicantsCount
                         },
                         actualLoad: true
                     });
+                } else {
+                    this.checkAndUpdateCount({
+                        needApprovalCount,
+                        newApplicantsCount
+                    })
                 }
             }
         }
 
         if (
             jobtype === 'open' &&
-            JSON.stringify(openJobs?.open) !== JSON.stringify(this.state?.openJobs) &&
+                !openJobs?.open?.length ? true : JSON.stringify(openJobs?.open) !== JSON.stringify(this.state?.openJobs) &&
             (this.state?.openJobs?.length < currentPage * 10)
         ) {
-            
-            let { open, needApprovalCount, newApplicantsCount } = openJobs;
-            let page_get = 0;
-            let prevValues = [];
+            if (openJobs?.open) {
+                let { open, needApprovalCount, newApplicantsCount } = openJobs;
+                let page_get = 0;
+                let prevValues = [];
 
-            if (Array.isArray(open) && open?.length) {
-                page_get = open[0]?.page;
-            }
-
-            if (Array.isArray(this.state?.openJobs) && this.state?.openJobs?.length) {
-                prevValues = this.state?.openJobs;
-            };
-
-
-            if (hasLoad && !open?.length && page_get === 0 && this.state?.openJobs?.length !== 0) {
-                if (this.state.hasLoad !== false) {
-                    this.setState({ hasLoad: false });
+                if (Array.isArray(open) && open?.length) {
+                    page_get = open[0]?.page;
                 }
-            } else {
-                if (hasLoad && open?.length && page_get === currentPage) {
+
+                if (Array.isArray(this.state?.openJobs) && this.state?.openJobs?.length) {
+                    prevValues = this.state?.openJobs;
+                };
+
+
+                if (hasLoad && !open?.length && page_get === 0 && this.state?.openJobs?.length !== 0) {
+                    if (this.state.hasLoad !== false) {
+                        this.setState({ hasLoad: false });
+                    }
+                } else if (hasLoad && open?.length && page_get === currentPage) {
+                    let result = page_get > 0 && page_get === currentPage ? [...prevValues, ...open] : open
                     this.setState({
-                        openJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...open] : open,
+                        openJobs: result,
                         count: {
                             approveCount: needApprovalCount,
                             applicantCount: newApplicantsCount
                         },
                         actualLoad: true
                     });
+                } else {
+                    this.checkAndUpdateCount({
+                        needApprovalCount,
+                        newApplicantsCount
+                    })
                 }
+
             }
         }
 
-
         if (
             jobtype === 'past' &&
-            JSON.stringify(pastJobs?.open) !== JSON.stringify(this.state?.pastJobs) &&
+                !pastJobs?.past?.length ? true : JSON.stringify(pastJobs?.past) !== JSON.stringify(this.state?.pastJobs) &&
             (this.state?.pastJobs?.length < currentPage * 10)
         ) {
+            if (pastJobs?.past) {
 
-            let { past, needApprovalCount, newApplicantsCount } = pastJobs;
-            let page_get = 0;
-            let prevValues = [];
+                let { past, needApprovalCount, newApplicantsCount } = pastJobs;
+                let page_get = 0;
+                let prevValues = [];
 
-            if (Array.isArray(past) && past?.length) {
-                page_get = past[0]?.page;
-            }
-
-            if (Array.isArray(this.state?.pastJobs) && this.state?.pastJobs?.length) {
-                prevValues = this.state?.pastJobs;
-            };
-
-
-            if (hasLoad && !past?.length && page_get === 0 && this.state?.pastJobs?.length !== 0) {
-                if (this.state.hasLoad !== false) {
-                    this.setState({ hasLoad: false });
+                if (Array.isArray(past) && past?.length) {
+                    page_get = past[0]?.page;
                 }
-            } else {
-                if (hasLoad && past?.length && page_get === currentPage) {
+
+                if (Array.isArray(this.state?.pastJobs) && this.state?.pastJobs?.length) {
+                    prevValues = this.state?.pastJobs;
+                };
+
+
+                if (hasLoad && !past?.length && page_get === 0 && this.state?.pastJobs?.length !== 0) {
+                    if (this.state.hasLoad !== false) {
+                        this.setState({ hasLoad: false });
+                    }
+                } else if (hasLoad && past?.length && page_get === currentPage) {
                     this.setState({
                         pastJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...past] : past,
                         count: {
@@ -264,11 +270,14 @@ class JobDashboard extends Component<Props, State> {
                         },
                         actualLoad: true
                     });
+                } else {
+                    this.checkAndUpdateCount({
+                        needApprovalCount,
+                        newApplicantsCount
+                    })
                 }
             }
         }
-
-
 
         if (jobtype === 'applicantList' && JSON.stringify(applicantsListJobs) !== JSON.stringify(this.state.applicantsListJobs)) {
             this.setState({ applicantsListJobs });
@@ -340,10 +349,11 @@ class JobDashboard extends Component<Props, State> {
 
     toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
     setSelected = (jobtype: any, jobid?: any, sortby?: any, specializationId?: any) => {
+
         let { currentPage } = this.state;
         let item_position: any = localStorage.getItem('position');
         let locationLocal: any = JSON.parse(item_position);
-
+      
         let dataItemsAddons: any = { page: currentPage, jobId: jobid, sortBy: sortby };
         if (sortby === 2) {
             dataItemsAddons['location'] = {
@@ -383,7 +393,7 @@ class JobDashboard extends Component<Props, State> {
 
     setAfterItems = ({ jobtype, currentPage, dataItemsAddons }: any) => {
         const { getActiveJobsBuilder, getPastJobsBuilder, getOpenJobsBuilder, getNewApplicantsBuilder, getnewJobApplicationListBuilder, getNewApprovalList } = this.props;
-        // alert(`${jobtype}-${currentPage}`)
+
         if (jobtype === 'active') { getActiveJobsBuilder(currentPage); }
         if (jobtype === 'past') { getPastJobsBuilder(currentPage); }
         if (jobtype === 'open') { getOpenJobsBuilder(currentPage); }
@@ -521,7 +531,7 @@ class JobDashboard extends Component<Props, State> {
                                 if (totalCount == this.state.currentPage * 10) {
                                     this.setState({ currentPage: this.state.currentPage + 1 }, () => {
                                         let cp: any = this.state.currentPage;
-                                        // alert(`cp-${cp}`)
+
                                         if (jobtype === 'active') {
                                             this.props.getActiveJobsBuilder(cp);
                                         }

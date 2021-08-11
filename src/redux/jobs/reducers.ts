@@ -105,11 +105,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderActionJobs: action.payload,
-        builderOpenJobs: [],
-        builderPastJobs: [],
-        builderNewApplicants: [],
-        builderNewApplicantsList: [],
-        newApprovalList: [],
+        builderOpenJobs: null,
+        builderPastJobs: null,
+        builderNewApplicants:null,
+        builderNewApplicantsList:null,
+        newApprovalList:null,
         tradieRequestStatus: false,
       };
 
@@ -117,11 +117,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderOpenJobs: action.payload,
-        builderActionJobs: [],
-        builderPastJobs: [],
-        builderNewApplicants: [],
-        builderNewApplicantsList: [],
-        newApprovalList: [],
+        builderActionJobs: null,
+        builderPastJobs: null,
+        builderNewApplicants: null,
+        builderNewApplicantsList: null,
+        newApprovalList: null,
         tradieRequestStatus: false,
       };
 
@@ -129,11 +129,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderPastJobs: action.payload,
-        builderActionJobs: [],
-        builderOpenJobs: [],
-        builderNewApplicants: [],
-        builderNewApplicantsList: [],
-        newApprovalList: [],
+        builderActionJobs: null,
+        builderOpenJobs: null,
+        builderNewApplicants: null,
+        builderNewApplicantsList: null,
+        newApprovalList: null,
         tradieRequestStatus: false,
       };
 
@@ -142,11 +142,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderNewApplicants: action.payload,
-        builderActionJobs: [],
-        builderOpenJobs: [],
-        builderPastJobs: [],
-        builderNewApplicantsList: [],
-        newApprovalList: [],
+        builderActionJobs: null,
+        builderOpenJobs: null,
+        builderPastJobs: null,
+        builderNewApplicantsList: null,
+        newApprovalList: null,
         tradieRequestStatus: false,
       };
 
@@ -156,11 +156,11 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         tradieRequestStatus: false,
         builderNewApplicantsList: action.payload,
-        builderActionJobs: [],
-        builderOpenJobs: [],
-        builderPastJobs: [],
-        builderNewApplicants: [],
-        newApprovalList: [],
+        builderActionJobs: null,
+        builderOpenJobs: null,
+        builderPastJobs: null,
+        builderNewApplicants: null,
+        newApprovalList: null,
       };
 
     // case actionTypes.SET_TRADIE_REVIEW_LIST:
@@ -187,11 +187,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         newApprovalList: action.payload,
-        builderActionJobs: [],
-        builderOpenJobs: [],
-        builderPastJobs: [],
-        builderNewApplicants: [],
-        builderNewApplicantsList: [],
+        builderActionJobs: null,
+        builderOpenJobs: null,
+        builderPastJobs: null,
+        builderNewApplicants: null,
+        builderNewApplicantsList: null,
       };
 
 
