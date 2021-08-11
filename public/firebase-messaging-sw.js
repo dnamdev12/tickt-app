@@ -136,17 +136,17 @@ self.addEventListener("notificationclick", (event) => {
     //         for (var i = 0; i < windowClients.length; i++) {
     //             var client = windowClients[i];
     //             // If so, just focus it.
-    //             if (client.url == onNotificationClick(event.notification?.data) && 'focus' in client) {
+    //             if (client.url == url && 'focus' in client) {
     //                 return client.focus();
     //             }
     //         }
     //         // If not, then open the target URL in a new window/tab.
     //         if (self.clients.openWindow) {
-    //             return self.clients.openWindow(onNotificationClick(event.notification?.data));
+    //             return self.clients.openWindow(url);
     //         }
     //     })
     // );
-    return self.clients.openWindow();
+    // return self.clients.openWindow();
 })
 
 self.addEventListener("notificationclose", (event) => {
