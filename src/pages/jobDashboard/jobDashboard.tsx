@@ -167,43 +167,23 @@ const JobDashboard = ({
               <ul className="dashboard_menu">
                 <li>
                   <NavLink className="icon star" to="/active-jobs"
-                    isActive={() => ['/active-jobs', '/mark-milestone'].includes(pathname)}
-                    onClick={(e: any) => {
-                      if (history.location.pathname === '/active-jobs') {
-                        e.preventDefault();
-                      }
-                    }}>
+                    isActive={() => ['/active-jobs', '/mark-milestone'].includes(pathname)}>
                     <span className="menu_txt">Active</span>
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="icon applied" to="/applied-jobs"
-                    onClick={(e: any) => {
-                      if (history.location.pathname === '/applied-jobs') {
-                        e.preventDefault();
-                      }
-                    }}>
+                  <NavLink className="icon applied" to="/applied-jobs">
                     <span className="menu_txt">Applied</span>
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="icon past" to="/past-jobs"
-                    onClick={(e: any) => {
-                      if (history.location.pathname === '/past-jobs') {
-                        e.preventDefault();
-                      }
-                    }}>
+                  <NavLink className="icon past" to="/past-jobs">
                     <span className="menu_txt">Past</span>
                   </NavLink>
                 </li>
                 {/* <hr></hr> */}
                 <li>
-                  <NavLink className="icon new" to="/new-jobs"
-                    onClick={(e: any) => {
-                      if (history.location.pathname === '/new-jobs') {
-                        e.preventDefault();
-                      }
-                    }}>
+                  <NavLink className="icon new" to="/new-jobs">
                     <span className="menu_txt">New
                       {!!newJobsCount && (
                         <span className="badge_count">
@@ -212,16 +192,10 @@ const JobDashboard = ({
                       )}
                     </span>
 
-
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="icon approved" to="/approved-milestones"
-                    onClick={(e: any) => {
-                      if (history.location.pathname === '/approved-milestones') {
-                        e.preventDefault();
-                      }
-                    }}>
+                  <NavLink className="icon approved" to="/approved-milestones">
                     <span className="menu_txt">Approved Milestones
                       {!!milestonesCount && (
                         <span className="badge_count">

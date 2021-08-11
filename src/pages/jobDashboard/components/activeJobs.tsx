@@ -46,6 +46,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
       setJobList(allJobs);
       setPageNo(pageNo + 1);
       if (activeJobList.length < 10) { setHasMoreItems(false); }
+      resetActiveJobList();
     }
   }, [activeJobList]);
 

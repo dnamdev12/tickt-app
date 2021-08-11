@@ -1,8 +1,9 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import NetworkOps, { FetchResponse } from "../../network/NetworkOps";
 import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
 import { setShowToast, setLoading } from '../common/actions';
+import * as selectors from './selectors';
 
 function* setHomeBuilder(action: any) {
   const { data } = action;
@@ -20,9 +21,8 @@ function* setLocalChanges(action: any) {
   yield put({ type: actionTypes.SET_LOCAL_CHANGES, payload: action });
 }
 
-// activeJobList
 function* getActiveJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
+  // yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.activeJobList}?page=${page}`
@@ -39,9 +39,8 @@ function* getActiveJobList({ page }: any) {
   }
 }
 
-// appliedJobList
 function* getAppliedJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
+  // yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.appliedJobList}?page=${page}`
@@ -58,9 +57,8 @@ function* getAppliedJobList({ page }: any) {
   }
 }
 
-// pastJobList
 function* getPastJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
+  // yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.pastJobList}?page=${page}`
@@ -79,15 +77,21 @@ function* getPastJobList({ page }: any) {
 
 
 function* resetActiveJobList() {
-  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
+  const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
+  const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetAppliedJobList() {
-  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
+  const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
+  const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
+  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetPastJobList() {
-  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
+  const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
+  const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
+  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetNewJobList() {
@@ -98,9 +102,8 @@ function* resetApprovedMilestoneList() {
   yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
 }
 
-// newJobList
 function* getNewJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
+  // yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.newJobList}?page=${page}`
@@ -117,9 +120,8 @@ function* getNewJobList({ page }: any) {
   }
 }
 
-// approvedMilestoneList
 function* getApprovedMilestoneList({ page }: any) {
-  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
+  // yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.approvedMilestoneList}?page=${page}`
@@ -182,7 +184,7 @@ function* getActiveJobsBuilder({ page }: any) {
       type: actionTypes.SET_BUILDER_ACTIVE_JOBS,
       payload: response.result,
     });
-    
+
     return;
   }
   if (page === 1) { setLoading(false); }
@@ -200,7 +202,7 @@ function* getPastJobsBuilder({ page }: any) {
       type: actionTypes.SET_BUILDER_PAST_JOBS,
       payload: response.result,
     });
-    
+
     return;
   }
   if (page === 1) { setLoading(false); }
@@ -210,7 +212,7 @@ function* getPastJobsBuilder({ page }: any) {
 function* getOpenJobsBuilder({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.OpenJobLisBuilder}?page=${page}`);
-  
+
   if (response.status_code === 200) {
     if (response?.result?.open && Array.isArray(response?.result?.open) && response?.result?.open?.length) {
       response.result.open[0]['page'] = page;
@@ -228,7 +230,7 @@ function* getOpenJobsBuilder({ page }: any) {
 function* getBuilderNewApplicants({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.newApplicantsBuilder}?page=${page}`);
-  
+
   if (response.status_code === 200) {
     if (response?.result && Array.isArray(response?.result) && response?.result?.length) {
       response.result[0]['page'] = page;
@@ -247,7 +249,7 @@ function* getnewJobApplicationListBuilder({ item }: any) {
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.postToJson(Urls.newJobApplicationListBuilder, item);
   // const response: FetchResponse = yield NetworkOps.get(`${Urls.newJobApplicationListBuilder}?page=${page}`);
- 
+
   if (response.status_code === 200) {
     setLoading(false);
     yield put({
@@ -268,8 +270,6 @@ function* getnewJobApplicationListBuilder({ item }: any) {
 //     yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: [] });
 //   }
 // }
-
-
 
 function* getTradieReviewListOnBuilder({ data }: any) {
   const response: FetchResponse = yield NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
@@ -293,7 +293,7 @@ function* getAcceptDeclineTradie({ data }: any) {
 function* getNewApprovalList({ page }: any) {
   if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.needApproval}?page=${page}`);
-  
+
   if (response.status_code === 200) {
     if (response?.result && Array.isArray(response?.result) && response?.result?.length) {
       response.result[0]['page'] = page;

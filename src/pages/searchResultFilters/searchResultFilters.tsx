@@ -38,6 +38,7 @@ const SearchResultFilters = (props: any) => {
         budget: [5000, 50000],
         showBudget: [5000, 50000],
         maxBudgetView: null,
+        showResultClicked: false
     });
     // const [sliderValue, setSliderValue] = useState([200, 670]);
 
@@ -61,8 +62,9 @@ const SearchResultFilters = (props: any) => {
                     showResultsButtonClicked: true
                 }));
             }
-            if (paramsList.max_budget && paramsList.pay_type) {
-                setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsList.pay_type, max_budget: paramsList.max_budget }));
+            if (paramsList.min_budget && paramsList.max_budget && paramsList.pay_type) {
+                const newBudget = [paramsList.min_budget, paramsList.max_budget];
+                setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsList.pay_type, budget: newBudget, showResultClicked: true }));
             }
             if (paramsList.sortBy) {
                 setSortBySorting((prevData: any) => ({ ...prevData, sortBy: paramsList.sortBy }));
@@ -74,7 +76,7 @@ const SearchResultFilters = (props: any) => {
     useEffect(() => {
         if (props.cleanFiltersData) {
             setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], jobTypes: [], specializationId: [], allSpecializationClicked: false, showResultsButtonClicked: false, sortByFilterClicked: false }));
-            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Fixed price', max_budget: null, payTypeClicked: false }));
+            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Per hour', payTypeClicked: false, showResultClicked: false }));
             setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
         }
     }, [props.cleanFiltersData]);
@@ -141,9 +143,9 @@ const SearchResultFilters = (props: any) => {
             ...(sortByFilter.tradeId?.length && { tradeId: sortByFilter.tradeId }),
             ...(sortByFilter.jobTypes?.length && { jobTypes: sortByFilter.jobTypes }),
             ...(sortByFilter.specializationId?.length && { specializationId: sortByFilter.specializationId }),
-            ...(sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] > 0 && { pay_type: sortByPrice.pay_type }),
-            ...(sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] > 0 && { min_budget: Number(sortByPrice.budget[0]) }),
-            ...(sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] > 0 && { max_budget: Number(sortByPrice.budget[1]) }),
+            ...(sortByPrice.showResultClicked && sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] > 0 && { pay_type: sortByPrice.pay_type }),
+            ...(sortByPrice.showResultClicked && sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] > 0 && { min_budget: Number(sortByPrice.budget[0]) }),
+            ...(sortByPrice.showResultClicked && sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] > 0 && { max_budget: Number(sortByPrice.budget[1]) }),
             ...(item?.sortBy && { sortBy: Number(item?.sortBy) }),
         }
         props.searchByFilter(data);
@@ -166,6 +168,7 @@ const SearchResultFilters = (props: any) => {
 
     const showResultsByBudget = (e: any) => {
         e.preventDefault();
+        setSortByPrice((prevData: any) => ({ ...prevData, showResultClicked: true }));
         // if (validateForm()) {
         sortByPriceClose();
         showResultsByAllFilter();
@@ -204,8 +207,7 @@ const SearchResultFilters = (props: any) => {
 
     const handleSliderChange = (event: any, newValue: any) => {
         console.log('newValue: ', newValue);
-        setSortByPrice((prevData: any) => ({ ...prevData, budget: newValue }));
-        setSortByPrice((prevData: any) => ({ ...prevData, showBudget: newValue }));
+        setSortByPrice((prevData: any) => ({ ...prevData, budget: newValue, showBudget: newValue }));
     }
 
     const filterChangeHandler = (id: any, name: string) => {
@@ -258,7 +260,7 @@ const SearchResultFilters = (props: any) => {
     useEffect(() => {
         if (specializationList?.length) {
             const newSpecialization = specializationList.map(({ _id }: { _id: string }) => {
-                return _id
+                return _id;
             })
             setSortByFilter((prevData: any) => ({ ...prevData, specializationId: newSpecialization, allSpecializationClicked: true }));
         }
@@ -274,7 +276,7 @@ const SearchResultFilters = (props: any) => {
                     </a>
                 </li>
                 <li>
-                    <a className={sortByPrice.max_budget ? "active" : ''} onClick={sortByPriceClick}>Price</a>
+                    <a className={sortByPrice.showResultClicked ? "active" : ''} onClick={sortByPriceClick}>Price</a>
                 </li>
                 <li>
                     <a className={sortBySorting.sortBy ? "active" : ''} onClick={sortBySortingClick}>Sorting</a>
