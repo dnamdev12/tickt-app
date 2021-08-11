@@ -125,27 +125,27 @@ const onNotificationClick = (notification) => {
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
     const url = onNotificationClick(event.notification?.data);
-    // event.waitUntil(
-    //     self.clients.openWindow(url)
-    // )
-
     event.waitUntil(
-        self.clients.matchAll({ type: 'window' }).then(windowClients => {
-            console.log('windowClients: ', windowClients);
-            // Check if there is already a window/tab open with the target URL
-            for (var i = 0; i < windowClients.length; i++) {
-                var client = windowClients[i];
-                // If so, just focus it.
-                if (client.url == url && 'focus' in client) {
-                    return client.focus();
-                }
-            }
-            // If not, then open the target URL in a new window/tab.
-            if (self.clients.openWindow) {
-                return self.clients.openWindow(url);
-            }
-        })
-    );
+        self.clients.openWindow('https://ticktreactdev.appskeeper.in/jobs?active=past')
+    )
+
+    // event.waitUntil(
+    //     self.clients.matchAll({ type: 'window' }).then(windowClients => {
+    //         console.log('windowClients: ', windowClients);
+    //         // Check if there is already a window/tab open with the target URL
+    //         for (var i = 0; i < windowClients.length; i++) {
+    //             var client = windowClients[i];
+    //             // If so, just focus it.
+    //             if (client.url == url && 'focus' in client) {
+    //                 return client.focus();
+    //             }
+    //         }
+    //         // If not, then open the target URL in a new window/tab.
+    //         if (self.clients.openWindow) {
+    //             return self.clients.openWindow(url);
+    //         }
+    //     })
+    // );
     // return self.clients.openWindow();
 })
 
