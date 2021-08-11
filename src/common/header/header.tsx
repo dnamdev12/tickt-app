@@ -95,7 +95,7 @@ const Header = (props: any) => {
                 console.log('newPushList: ', newPushList);
                 return {
                     ...prevData,
-                    count: prevData.count + 1,
+                    unreadCount: prevData.unreadCount + 1,
                     list: newPushList
                 }
             });
