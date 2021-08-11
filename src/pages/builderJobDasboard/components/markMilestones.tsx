@@ -388,7 +388,11 @@ const MarkMilestones = (props: any) => {
                         <div className="details">
                             <span className="name">{item_details?.tradie?.tradieName || ''}</span>
                             {/* <span className="prof">Project Manager</span> */}
-                            <span className="rating">{item_details?.tradie?.reviews || 0} reviews</span>
+                            {item_details?.tradie && (
+                                <span className="rating">
+                                    {item_details?.tradie?.ratings || 0} , {item_details?.tradie?.reviews || 0} reviews
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>

@@ -8,7 +8,7 @@ import PastJobsComponent from './components/pastJobs';
 import NewApplicantComponent from './components/newApplicants';
 import NeedApproval from './components/needApproval';
 import ApplicantsList from './components/applicantsList';
-
+//@ts-ignore
 import InfiniteScroll from "react-infinite-scroll-component";
 
 interface Props {
@@ -198,7 +198,7 @@ class JobDashboard extends Component<Props, State> {
             JSON.stringify(openJobs?.open) !== JSON.stringify(this.state?.openJobs) &&
             (this.state?.openJobs?.length < currentPage * 10)
         ) {
-
+            
             let { open, needApprovalCount, newApplicantsCount } = openJobs;
             let page_get = 0;
             let prevValues = [];
@@ -547,7 +547,9 @@ class JobDashboard extends Component<Props, State> {
                             }}
                             hasMore={hasLoad}
                             loader={<></>}
+                            style={{ overflowX: 'hidden' }}
                             className={`detail_col element-side-scroll hide_scroll`}>
+                            {/* // className={`detail_col element-side-scroll hide_scroll`}> */}
                             {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}

@@ -207,7 +207,7 @@ const MarkMilestone = ({
 
 
   const { jobId, jobName, milestones, postedBy } = milestoneList || {};
-  const { builderId, builderImage, builderName, reviews } = postedBy || {};
+  const { builderId, builderImage, builderName, reviews , ratings} = postedBy || {};
 
   const hoursMinutes = data.actualHours.split(':').map((key: string) => parseInt(key));
   const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
@@ -482,7 +482,7 @@ const MarkMilestone = ({
                   <div className="details">
                     <span className="name">{builderName}</span>
                     {/* <span className="prof">Project Manager</span> */}
-                    <span className="rating">{reviews} reviews</span>
+                    <span className="rating">{ratings} , {reviews} reviews</span>
                   </div>
                 </div>
               </div>

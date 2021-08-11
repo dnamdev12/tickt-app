@@ -21,9 +21,9 @@ const initialState = {
   builderPastJobs: [],
   builderNewApplicants: [],
   builderNewApplicantsList: [],
+  newApprovalList: [],
   tradieReviewList: [],
   tradieReviews: [],
-  newApprovalList: [],
   tradieRequestStatus: false
 }
 
@@ -105,27 +105,36 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderActionJobs: action.payload,
-        builderNewApplicants: null,
+        builderOpenJobs: [],
+        builderPastJobs: [],
+        builderNewApplicants: [],
+        builderNewApplicantsList: [],
+        newApprovalList: [],
         tradieRequestStatus: false,
-        builderNewApplicantsList: null,
       };
 
     case actionTypes.SET_BUILDER_OPEN_JOBS:
       return {
         ...state,
         builderOpenJobs: action.payload,
-        builderNewApplicants: null,
+        builderActionJobs: [],
+        builderPastJobs: [],
+        builderNewApplicants: [],
+        builderNewApplicantsList: [],
+        newApprovalList: [],
         tradieRequestStatus: false,
-        builderNewApplicantsList: null,
       };
 
     case actionTypes.SET_BUILDER_PAST_JOBS:
       return {
         ...state,
         builderPastJobs: action.payload,
-        builderNewApplicants: null,
+        builderActionJobs: [],
+        builderOpenJobs: [],
+        builderNewApplicants: [],
+        builderNewApplicantsList: [],
+        newApprovalList: [],
         tradieRequestStatus: false,
-        builderNewApplicantsList: null,
       };
 
     case actionTypes.SET_BUILDER_NEW_APPLICANTS:
@@ -133,6 +142,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         builderNewApplicants: action.payload,
+        builderActionJobs: [],
+        builderOpenJobs: [],
+        builderPastJobs: [],
+        builderNewApplicantsList: [],
+        newApprovalList: [],
         tradieRequestStatus: false,
       };
 
@@ -142,6 +156,11 @@ const reducer = (state = initialState, action: any) => {
         ...state,
         tradieRequestStatus: false,
         builderNewApplicantsList: action.payload,
+        builderActionJobs: [],
+        builderOpenJobs: [],
+        builderPastJobs: [],
+        builderNewApplicants: [],
+        newApprovalList: [],
       };
 
     // case actionTypes.SET_TRADIE_REVIEW_LIST:
@@ -168,6 +187,11 @@ const reducer = (state = initialState, action: any) => {
       return {
         ...state,
         newApprovalList: action.payload,
+        builderActionJobs: [],
+        builderOpenJobs: [],
+        builderPastJobs: [],
+        builderNewApplicants: [],
+        builderNewApplicantsList: [],
       };
 
 
