@@ -24,10 +24,11 @@ messaging.onBackgroundMessage((payload) => {
         var title = payload.data?.title;
         var body = payload.data?.notificationText;
         var data = { ...payload.data }
+        var icon = data?.app_icon; 
 
         return self.registration.showNotification(title, {
             // tag: tag,
-            // icon: icon,
+            icon: icon,
             body: body,
             data: data
         });
@@ -40,6 +41,7 @@ messaging.onBackgroundMessage((payload) => {
 const onNotificationClick = (notification) => {
     // let url = 'http://localhost:3000/';
     let url = 'https://ticktreactqa.appskeeper.in/';
+    // let url = 'https://ticktreactdev.appskeeper.in/';
     const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
     switch (Number(notificationType)) {
         case 1: //TRADIE
@@ -123,8 +125,10 @@ const onNotificationClick = (notification) => {
 
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
+    let url = onNotificationClick(event.notification?.data);
+    console.log('url: ', url);
     event.waitUntil(
-        self.clients.openWindow(onNotificationClick(event.notification?.data))
+        self.clients.openWindow(`${url}`)
     )
 
     // event.waitUntil(
@@ -134,17 +138,17 @@ self.addEventListener("notificationclick", (event) => {
     //         for (var i = 0; i < windowClients.length; i++) {
     //             var client = windowClients[i];
     //             // If so, just focus it.
-    //             if (client.url == onNotificationClick(event.notification?.data) && 'focus' in client) {
+    //             if (client.url == url && 'focus' in client) {
     //                 return client.focus();
     //             }
     //         }
     //         // If not, then open the target URL in a new window/tab.
     //         if (self.clients.openWindow) {
-    //             return self.clients.openWindow(onNotificationClick(event.notification?.data));
+    //             return self.clients.openWindow(url);
     //         }
     //     })
     // );
-    return self.clients.openWindow();
+    // return self.clients.openWindow();
 })
 
 self.addEventListener("notificationclose", (event) => {
