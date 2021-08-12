@@ -550,12 +550,14 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {jobDetailsData?.jobStatus === 'cancelled' && jobDetailsData?.reasonNoteForCancelJobRequest && <div className="chang_req_card mb-sm">
-                                        <span className="sub_title">Job cancelled</span>
-                                        <p className="commn_para line-2">
-                                            {jobDetailsData?.reasonNoteForCancelJobRequest}
-                                        </p>
-                                    </div>}
+                                    {jobDetailsData?.jobStatus === 'cancelled' &&
+                                        jobDetailsData?.reasonForCancelJobRequest > 0 && <div className="chang_req_card mb-sm">
+                                            <span className="sub_title">Job cancelled</span>
+                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                            <p className="commn_para line-2">
+                                                {jobDetailsData?.reasonNoteForCancelJobRequest}
+                                            </p>
+                                        </div>}
                                     {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">

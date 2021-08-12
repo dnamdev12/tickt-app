@@ -110,6 +110,11 @@ const JobDetailsPage = (props: PropsType) => {
 
     const [toggleDelete, setToggleDelete] = useState(false);
 
+    const [jobAcceptModal, setJobAcceptModal] = useState(false);
+    const [jobRejectModal, setJobRejectModal] = useState(false);
+    const [jobData, setJobData] = useState({});
+    const [replyText, setReplyText] = useState('');
+
     useEffect(() => {
         (async () => {
             await preFetch();
@@ -442,16 +447,46 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const handleCancelJob = async (type: any, job_detail: any) => {
-        let data = {
+        if (type == 1) {
+            setJobAcceptModal(true);
+            setJobRejectModal(false);
+        } else {
+            setJobAcceptModal(false);
+            setJobRejectModal(true);
+        }
+
+        setJobData({
             "jobId": job_detail?.jobId,
             "status": type,
             "note": type === 1 ? "this is accepted" : "this is rejected"
+        });
+        // let data = {
+        //     "jobId": job_detail?.jobId,
+        //     "status": type,
+        //     "note": type === 1 ? "this is accepted" : "this is rejected"
+        // }
+        // let response = await handleCancelReply(data);
+        // if (response?.success) {
+        //     await preFetch();
+        // }
+    }
+
+    const operationCancelJob = async () => {
+        let data: any = jobData;
+        if (data?.status) {
+            data['note'] = replyText;
         }
         let response = await handleCancelReply(data);
         if (response?.success) {
-            await preFetch();
+            if (data?.status === 1) {
+                props.history.push('/request-monitored/ccr');
+            } else {
+                props.history.push('/request-monitored/cc/bb');
+            }
+            // await preFetch();
         }
     }
+
 
     const renderFilteredItems = (itemsMedia: any) => {
         let sources: any = [];
@@ -623,9 +658,12 @@ const JobDetailsPage = (props: PropsType) => {
                                 <div className="detail_card">
                                     {console.log({ jobDetailsData })}
                                     {paramStatus === 'CANCELLED' &&
-                                        jobDetailsData?.reasonNoteForCancelJobRequest &&
+                                        jobDetailsData?.reasonForCancelJobRequest > 0 &&
                                         <div className="chang_req_card mb-sm">
                                             <span className="sub_title">Job cancelled</span>
+                                            <p className="commn_para line-2">
+                                                {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                            </p>
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
@@ -675,6 +713,97 @@ const JobDetailsPage = (props: PropsType) => {
                                             Publish again
                                         </button>
                                     )}
+
+                                    <Modal
+                                        className="custom_modal"
+                                        open={jobRejectModal}
+                                        onClose={() => {
+                                            setJobRejectModal(false)
+                                        }}
+                                        aria-labelledby="simple-modal-title"
+                                        aria-describedby="simple-modal-description"
+                                    >
+                                        <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                            <div className="heading">
+                                                <span className="sub_title">{`Your reply to job cancellation`}</span>
+                                                <button
+                                                    className="close_btn"
+                                                    onClick={() => {
+                                                        setJobRejectModal(false)
+                                                    }}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <div className="form_field">
+                                                <label className="form_label">{`Let the tradie and Tickt know if you accept or reject cancelling for this job.`}</label>
+                                                <div className="text_field">
+                                                    <textarea
+                                                        placeholder={`I disagree with this cancelling`}
+                                                        maxLength={250}
+                                                        value={replyText}
+                                                        onChange={(e: any) => { setReplyText(e.target.value) }}
+                                                    />
+                                                    <span className="char_count">{`${replyText?.length}/250`}</span>
+                                                </div>
+                                                {replyText?.length > 250 && <span className="error_msg">{errors.replyCancelReason}</span>}
+                                            </div>
+                                            <div className="bottom_btn custom_btn">
+                                                <button
+                                                    className="fill_btn full_btn btn-effect"
+                                                    onClick={() => {
+                                                        operationCancelJob();
+                                                    }}>
+                                                    {'Send'}
+                                                </button>
+                                                <button
+                                                    className="fill_grey_btn btn-effect"
+                                                    onClick={() => {
+                                                        setJobRejectModal(false);
+                                                        setJobData({});
+                                                    }}>
+                                                    {'Cancel'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </Modal>
+
+                                    <Modal
+                                        className="custom_modal"
+                                        open={jobAcceptModal}
+                                        onClose={() => {
+                                            setJobAcceptModal(false);
+                                        }}
+                                        aria-labelledby="simple-modal-title"
+                                        aria-describedby="simple-modal-description"
+                                    >
+                                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                            <div className="heading">
+                                                <span className="xs_sub_title">{`Accept Job Cancellation Request`}</span>
+                                                <button
+                                                    className="close_btn"
+                                                    onClick={() => {
+                                                        setJobAcceptModal(false);
+                                                    }}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <div className="modal_message">
+                                                <p>Are you sure you still want to proceed?</p>
+                                            </div>
+                                            <div className="dialog_actions">
+                                                <button
+                                                    className="fill_btn btn-effect"
+                                                    onClick={() => {
+                                                        operationCancelJob();
+                                                    }}>Yes</button>
+                                                <button className="fill_grey_btn btn-effect"
+                                                    onClick={() => {
+                                                        setJobAcceptModal(false);
+                                                        setJobData({});
+                                                    }}>No</button>
+                                            </div>
+                                        </div>
+                                    </Modal>
 
                                     {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
