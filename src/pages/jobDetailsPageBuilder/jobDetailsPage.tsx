@@ -159,7 +159,7 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res2 = await getQuestionsList(questionData);
         if (res2.success) {
-            console.log({res2},'question-list')
+            console.log({ res2 }, 'question-list')
             let data_elements = res2?.data?.list || res2?.data;
             setQuestionList(data_elements);
         }
@@ -222,7 +222,7 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await getQuestionsList(data);
         if (res.success) {
-            console.log({res},'question-list')
+            console.log({ res }, 'question-list')
             let data_elements = res?.data?.list || res?.data;
             setQuestionList((prevData: any) => ([...prevData, ...data_elements]));
             setQuestionListPageNo(data.page);
@@ -536,7 +536,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 </ul>
                             </div>
                         </span>
-                    ) : null} 
+                    ) : null}
                     <Dialog
                         open={toggleDelete}
                         onClose={() => {
@@ -621,12 +621,22 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
+                                    {console.log({ jobDetailsData })}
+                                    {paramStatus === 'CANCELLED' &&
+                                        jobDetailsData?.reasonNoteForCancelJobRequest &&
+                                        <div className="chang_req_card mb-sm">
+                                            <span className="sub_title">Job cancelled</span>
+                                            <p className="commn_para line-2">
+                                                {jobDetailsData?.reasonNoteForCancelJobRequest}
+                                            </p>
+                                        </div>}
+
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         {!isPastJob ? (
                                             <ul>
-                                                
+
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
@@ -980,7 +990,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
                                     <div className={`tradie_card posted_by`}>
-                                    {/* <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}> */}
+                                        {/* <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}> */}
                                         {/* {activeType == "active" && (
                                             <span
                                                 className="chat circle"

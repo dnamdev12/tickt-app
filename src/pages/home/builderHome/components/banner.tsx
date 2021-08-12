@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import Searchicon from "../../../../assets/images/main-search.png";
 import search from "../../../../assets/images/ic-search.png";
 import cross from "../../../../assets/images/close-black.png";
@@ -12,21 +12,46 @@ import BannerSearch from '../../../shared/bannerSearch';
 
 
 const Banner = (props: any) => {
+    const [positions, setPositions] = useState<any>([]);
 
-    const viewMoreClicked = () => {
+    const preFetch = (isTrue?:boolean) => {
         let position: any = props.position;
-        console.log({ position });
+        let positions_:any = [];
+        if (position?.long && !positions?.length) {
+            let long: any = parseFloat(position?.long);
+            let lat: any = parseFloat(position?.lat);
+            positions_ = [long, lat];
+            setPositions(positions_);
+        }
+        if(isTrue && positions_?.length){
+            redirectToUrl(positions_);
+        }
+    }
+
+    const redirectToUrl = (position:any) => {
         props.history.push({
             pathname: `search-tradie-results`,
             state: {
                 name: null,
                 tradeId: null,
                 specializations: null,
-                location: Object.keys(position).length ? { "coordinates": [parseFloat(position?.long), parseFloat(position?.lat)] } : null,
+                location: Object.keys(position).length ? { "coordinates": position} : null,
                 calender: null,
                 address: null
             }
         })
+    }
+
+    useEffect(() => {
+        preFetch();
+    }, [])
+
+    const viewMoreClicked = () => {
+        if (positions?.length) {
+            redirectToUrl(positions)
+        } else {
+            preFetch(true);
+        }
     }
 
     return (

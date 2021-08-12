@@ -175,21 +175,61 @@ class JobDashboard extends Component<Props, State> {
                     if (JSON.stringify(prevValues) === JSON.stringify(active) && page_get === currentPage) {
                         // same data items here!
                     } else {
-                        result = page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active;
+                        let concatedItems: any = prevValues;
+                        let firstItem: any = null;
+                        if (Array.isArray(active) && active?.length) {
+                            firstItem = active[0];
+                        }
+                        if (firstItem?.jobId) {
+                            let ifMatch = prevValues.find((item: any) => item.jobId === firstItem?.jobId);
+                            if (!ifMatch) {
+                                concatedItems = [...prevValues, ...active]
+                            }
+
+                        }
+                        result = page_get > 0 && page_get === currentPage ? concatedItems : active;
                     }
 
-                    this.setState({
-                        globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
-                        enableEditMilestone: editMilestone_ === "true" ? true : false,
-                        enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
-                        enableCancelJob: cancelJob_ === "true" ? true : false,
-                        activeJobs: result,
-                        count: {
-                            approveCount: needApprovalCount,
-                            applicantCount: newApplicantsCount
-                        },
-                        actualLoad: true
-                    });
+                    let globalJobId = jobId_ && jobId_?.length ? jobId_ : ''
+                    let enableEditMilestone = editMilestone_ === "true" ? true : false;
+                    let enableLodgeDispute = lodgeDispute_ === "true" ? true : false;
+                    let enableCancelJob = cancelJob_ === "true" ? true : false;
+                    let { approveCount, applicantCount } = this.state?.count
+
+                    if (needApprovalCount !== approveCount ||
+                        newApplicantsCount !== applicantCount ||
+                        this.state.globalJobId !== globalJobId ||
+                        this.state.enableEditMilestone !== enableEditMilestone ||
+                        this.state.enableLodgeDispute !== enableLodgeDispute ||
+                        this.state.enableCancelJob !== enableCancelJob ||
+                        this.state.enableCancelJob !== enableCancelJob ||
+                        this.state.activeJobs?.length !== result?.length
+                    ) {
+                        console.log({
+                            1: needApprovalCount !== approveCount,
+                            2: newApplicantsCount !== applicantCount,
+                            3: this.state.globalJobId !== globalJobId,
+                            4: this.state.enableEditMilestone !== enableEditMilestone,
+                            5: this.state.enableLodgeDispute !== enableLodgeDispute,
+                            6: this.state.enableCancelJob !== enableCancelJob,
+                            7: this.state.enableCancelJob !== enableCancelJob,
+                            8: this.state.activeJobs?.length !== result?.length,
+                            9: this.state.activeJobs?.length,
+                            10: result?.length
+                        })
+                        this.setState({
+                            globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
+                            enableEditMilestone: editMilestone_ === "true" ? true : false,
+                            enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
+                            enableCancelJob: cancelJob_ === "true" ? true : false,
+                            activeJobs: result,
+                            count: {
+                                approveCount: needApprovalCount,
+                                applicantCount: newApplicantsCount
+                            },
+                            actualLoad: true
+                        });
+                    }
                 } else {
                     this.checkAndUpdateCount({
                         needApprovalCount,
@@ -571,6 +611,8 @@ class JobDashboard extends Component<Props, State> {
                                         }
 
                                     });
+                                } else {
+                                    this.setState({ hasLoad: false })
                                 }
                             }}
                             hasMore={hasLoad}
