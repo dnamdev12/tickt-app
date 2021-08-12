@@ -171,7 +171,12 @@ class JobDashboard extends Component<Props, State> {
                         this.setState({ hasLoad: false });
                     }
                 } else if (hasLoad && active?.length && page_get === currentPage) {
-                    let result = page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active;
+                    let result = [];
+                    if (JSON.stringify(prevValues) === JSON.stringify(active) && page_get === currentPage) {
+                        // same data items here!
+                    } else {
+                        result = page_get > 0 && page_get === currentPage ? [...prevValues, ...active] : active;
+                    }
 
                     this.setState({
                         globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
@@ -218,7 +223,12 @@ class JobDashboard extends Component<Props, State> {
                         this.setState({ hasLoad: false });
                     }
                 } else if (hasLoad && open?.length && page_get === currentPage) {
-                    let result = page_get > 0 && page_get === currentPage ? [...prevValues, ...open] : open
+                    let result = [];
+                    if (JSON.stringify(prevValues) === JSON.stringify(open) && page_get === currentPage) {
+                        // same data items here!
+                    } else {
+                        result = page_get > 0 && page_get === currentPage ? [...prevValues, ...open] : open;
+                    }
                     this.setState({
                         openJobs: result,
                         count: {
@@ -262,8 +272,16 @@ class JobDashboard extends Component<Props, State> {
                         this.setState({ hasLoad: false });
                     }
                 } else if (hasLoad && past?.length && page_get === currentPage) {
+
+                    let result = [];
+                    if (JSON.stringify(prevValues) === JSON.stringify(past) && page_get === currentPage) {
+                        // same data items here!
+                    } else {
+                        result = page_get > 0 && page_get === currentPage ? [...prevValues, ...past] : past;
+                    }
+
                     this.setState({
-                        pastJobs: page_get > 0 && page_get === currentPage ? [...prevValues, ...past] : past,
+                        pastJobs: result,
                         count: {
                             approveCount: needApprovalCount,
                             applicantCount: newApplicantsCount
@@ -353,7 +371,7 @@ class JobDashboard extends Component<Props, State> {
         let { currentPage } = this.state;
         let item_position: any = localStorage.getItem('position');
         let locationLocal: any = JSON.parse(item_position);
-      
+
         let dataItemsAddons: any = { page: currentPage, jobId: jobid, sortBy: sortby };
         if (sortby === 2) {
             dataItemsAddons['location'] = {

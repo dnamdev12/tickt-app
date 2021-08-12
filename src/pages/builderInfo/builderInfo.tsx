@@ -677,22 +677,25 @@ const BuilderInfo = (props: PropsType) => {
             >
                 <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                     <div className="heading">
-                        <span className="sub_title">{`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
+                        <span className="sub_title">
+                            {`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
                         <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
                             <img src={cancel} alt="cancel" />
                         </button>
                     </div>
                     <div className="form_field">
                         <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
-                        <ReactStars
-                            value={reviewsData.rating || 0}
-                            count={5}
-                            isHalf={true}
-                            onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
-                            size={40}
-                            activeColor="#ffd700"
-                            color='#DFE5EF'
-                        />
+                        {reviewsData.updateParentReviews && (
+                            <ReactStars
+                                value={reviewsData.rating || 0}
+                                count={5}
+                                isHalf={true}
+                                onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
+                                size={40}
+                                activeColor="#ffd700"
+                                color='#DFE5EF'
+                            />
+                        )}
                         <div className="text_field">
                             <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
                             <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>

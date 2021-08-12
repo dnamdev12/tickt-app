@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ckeditor/ckeditor5-alignment": "^29.1.0",
+    "@ckeditor/ckeditor5-basic-styles": "^29.1.0",
+    "@ckeditor/ckeditor5-editor-classic": "^29.1.0",
+    "@ckeditor/ckeditor5-essentials": "^29.1.0",
+    "@ckeditor/ckeditor5-react": "^3.0.2",
     "@material-ui/core": "^4.11.3",
     "@material-ui/styles": "^4.11.3",
     "@react-google-maps/api": "^2.1.1",
