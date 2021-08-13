@@ -16,7 +16,9 @@ const RequestMonitored = (props: PropsType) => {
     useEffect(() => {
         if (!isLoad) { setLoading(false) }
     }, [isLoad])
+    console.log({ pathname });
 
+    let isBuilderCancelRequest = pathname === '/request-monitored/cc/bb' ? true : false;
     return (
         <div className="img_text_wrap">
             <figure className="full_image">
@@ -30,9 +32,15 @@ const RequestMonitored = (props: PropsType) => {
                 <div className="short_info">
                     <div className="content">
                         <h1 className="title">{`${(pathname === '/request-monitored/cr' || pathname === '/request-monitored/ccr') ? "Congratulations!" : "Got it!"}`}</h1>
-                        <span className="show_label">
-                            {`${pathname === '/request-monitored/cr' ? "You have successfully accepted the change request." : pathname === '/request-monitored/ccr' ? "You have successfully accepted the cancel request." : "We will send it to your builder."}`}
-                        </span>
+                        {isBuilderCancelRequest ? (
+                            <span className="show_label">
+                                {"We’ll send it to your tradie."}
+                            </span>
+                        ) : (
+                            <span className="show_label">
+                                {`${pathname === '/request-monitored/cr' ? "You have successfully accepted the change request." : pathname === '/request-monitored/ccr' ? "You have successfully accepted the cancel request." : "We’ll send it to your builder."}`}
+                            </span>
+                        )}
                         <div className="btn_wrapr">
                             <button className="fill_btn btn-effect" onClick={() => props.history?.push('/')}>OK</button>
                         </div>

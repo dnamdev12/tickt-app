@@ -121,10 +121,18 @@ const BannerSearch = (props: PropsType) => {
     });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
-    const [sortBy, setSortBy] = useState(1);
+    const [sortBy, setSortBy] = useState(0);
 
     const handleCalenderRange = (item: any) => {
-        setCalenderRange1(item.selection1)
+        setCalenderRange1(item.selection1);
+        console.log({
+            localInfo: props.localInfo
+        });
+        props.getTitleInfo({
+            ...props.localInfo,
+            from_date: moment(item.selection1?.startDate).format('YYYY-MM-DD'),
+            to_date: moment(item.selection1?.endDate).format('YYYY-MM-DD'),
+        });
     };
 
     const [checkRender, setRender] = useState(false);
@@ -473,10 +481,13 @@ const BannerSearch = (props: PropsType) => {
         if (validateForm()) {
             let data: any = {
                 page: 1,
-                sortBy: sortBy,
                 isFiltered: true,
                 tradeId: tradeId,
                 specializationId: specializationId,
+            }
+
+            if (sortBy > 0) {
+                data['sortBy'] = sortBy;
             }
 
             if (Object.keys(selectedAddress).length) {
@@ -530,7 +541,7 @@ const BannerSearch = (props: PropsType) => {
                     }
                 }
             }
-            
+
             props.getTitleInfo({
                 name: searchText,
                 isTradeName: false,
@@ -621,11 +632,14 @@ const BannerSearch = (props: PropsType) => {
 
     let custom_name = searchText;
     if (!checkOnChange) {
-        if (length_spec > 1) {
+        if (length_spec > 1 && custom_name?.length) {
             custom_name = `${custom_name} +${length_spec - 1}`;
         }
     }
-
+    console.log({
+        searchText,
+        custom_name
+    })
     return (
         <div className="home_search">
             <button
@@ -847,12 +861,12 @@ const BannerSearch = (props: PropsType) => {
                                     You have blocked your location.
                                     To use this, change your location settings in browser.
                                 </span>)}
-                                {props?.recentLocationData?.length > 0 &&
-                                        <span className="sub_title">
-                                            {'Recent searches'}
-                                        </span>}
+                            {props?.recentLocationData?.length > 0 &&
+                                <span className="sub_title">
+                                    {'Recent searches'}
+                                </span>}
                             <div className="flex_row recent_search auto_loc">
-                                
+
                                 {/* {recentLocation?.map((item: any) => {
                                     return (
                                         <div className="flex_col_sm_4"
@@ -920,7 +934,13 @@ const BannerSearch = (props: PropsType) => {
                                             src={cross}
                                             alt="cross"
                                             onClick={() => {
-                                                setCalenderRange1({ startDate: '', endDate: '', key: 'selection1' })
+                                                setCalenderRange1({ startDate: '', endDate: '', key: 'selection1' });
+                                                console.log({ localInfo: props.localInfo })
+                                                props.getTitleInfo({
+                                                    ...props.localInfo,
+                                                    from_date: '',
+                                                    to_date: ''
+                                                });
                                             }} />
                                     </span>}
                             </div>

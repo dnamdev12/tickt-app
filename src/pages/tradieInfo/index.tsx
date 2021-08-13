@@ -56,6 +56,10 @@ import Button from '@material-ui/core/Button';
 //@ts-ignore
 import ReactStars from "react-rating-stars-component";
 
+import Rating from 'react-rating';
+
+
+
 import InfiniteScroll from "react-infinite-scroll-component";
 
 const USER_TYPE = storageService.getItem('userType');
@@ -110,6 +114,10 @@ interface State {
     currentReviewPage: number
 }
 
+
+const empty_star_rating_below = (<span className="" data-index="4" data-forhalf="★" style={{ position: "relative", overflow: "hidden", cursor: "pointer", display: "block", float: "left", color: "rgb(223, 229, 239)", fontSize: "24px" }}>★</span>);
+
+const full_star_rating_below = (<span className="" data-index="0" data-forhalf="★" style={{ position: "relative", overflow: "hidden", cursor: "pointer", display: "block", float: "left", color: "rgb(255, 215, 0)", fontSize: "24px" }}>★</span>);
 class TradieInfo extends Component<Props, State> {
     state = {
         toggleSpecialisation: true,
@@ -213,7 +221,7 @@ class TradieInfo extends Component<Props, State> {
     componentDidUpdate() {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
-       
+
         if (tradeStatus) {
             props.history.push('/jobs');
         }
@@ -522,6 +530,12 @@ class TradieInfo extends Component<Props, State> {
     }
 
     render() {
+
+        const SVGIcon = (props: any) =>
+            <svg className={props.className} pointerEvents="none">
+                <use xlinkHref={props.href} />
+            </svg>;
+
         let props: any = this.props;
         console.log({
             props,
@@ -1040,10 +1054,10 @@ class TradieInfo extends Component<Props, State> {
                                                         </figure>
 
                                                         <div className="details">
-                                                            <span className="user_name">{reviewData?.userName}</span>
+                                                            <span className="user_name">{reviewData?.name}</span>
                                                             <span className="date">{reviewData?.date}</span>
                                                             <span className="item-star">
-                                                                <ReactStars
+                                                                {/* <ReactStars
                                                                     classNames="review-stars"
                                                                     value={reviewData?.rating}
                                                                     count={5}
@@ -1051,7 +1065,17 @@ class TradieInfo extends Component<Props, State> {
                                                                     size={30}
                                                                     activeColor="#ffd700"
                                                                     color='#DFE5EF'
+                                                                /> */}
+
+
+                                                                <Rating
+                                                                    fractions={2}
+                                                                    emptySymbol={empty_star_rating_below}
+                                                                    fullSymbol={full_star_rating_below}
+                                                                    initialRating={reviewData?.rating}
+                                                                    readonly={true}
                                                                 />
+
                                                             </span>
                                                         </div>
                                                     </div>

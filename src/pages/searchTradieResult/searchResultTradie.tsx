@@ -128,7 +128,6 @@ const SearchResultTradie = (props: any) => {
         let localTradeId = '';
         let local_info: any = localInfo;
         let local_info_tradeId = '';
-
         if (local_info?.tradeId && Array.isArray(local_info?.tradeId) && local_info?.tradeId?.length) {
             local_info_tradeId = local_info?.tradeId[0];
         }
@@ -145,28 +144,52 @@ const SearchResultTradie = (props: any) => {
         if (localData && Array.isArray(localData) && localData?.length) {
             localTradeId = localData[0]?.tradeData[0]?.tradeId;
         }
-        
+
         let cp = currentPage * 10;
-        if (homeSearchJobData?.length && localData?.length && propsTradeId !== localTradeId) {
-            // alert('1')
-            setLocalData(newProps);
-            setCurrentPage(propsPage);
-            return
+        console.log({
+            local_info,
+            propsTradeId,
+            localTradeId,
+            propsPage,
+            homeSearchJobData,
+            currentPage,
+            localData
+        }, 'local_info')
+        if (local_info_tradeId) { // case if view more with no any trade-id
+            if (homeSearchJobData?.length && localData?.length && propsTradeId !== localTradeId) {
+                // alert('1')
+                setLocalData(newProps);
+                setCurrentPage(propsPage);
+                return
+            }
+
+            if (homeSearchJobData?.length && localData?.length && propsTradeId == localTradeId && currentPage > 1 && propsPage == 1) {
+                // alert(`1.1`)
+                setLocalData(newProps);
+                setCurrentPage(propsPage);
+                return
+            }
         }
 
         if (!propsPage) {
             if (!homeSearchJobData?.length && !propsPage) {
-                if (localData?.length && !local_info?.doingLocalChanges) {
-                    // alert(`2 ${local_info?.doingLocalChanges}-${JSON.stringify({ propsTradeId, localTradeId })}`)
-                    if (local_info_tradeId?.length && local_info_tradeId !== localTradeId) {
-                        setLocalData([]);
-                        setCurrentPage(1);
-                    } else {
-                        setHasMore(false);        
-                    }
-                    return
-                }
 
+                // if (localData?.length && !local_info?.doingLocalChanges) {
+
+                //     alert(`2 ${local_info?.doingLocalChanges}-${JSON.stringify({ propsTradeId, localTradeId })}`)
+
+                //     if (local_info_tradeId?.length && local_info_tradeId !== localTradeId) {
+                //         setLocalData([]);
+                //         setCurrentPage(1);
+                //     } else {
+                //         setHasMore(false);
+                //     }
+                //     return
+                // }
+
+                // alert(`2.1`)
+                setLocalData([]);
+                setCurrentPage(1);
                 setHasMore(false);
             } else {
                 if (hasMore) {
@@ -178,8 +201,10 @@ const SearchResultTradie = (props: any) => {
         } else {
             if (currentPage == propsPage && localData?.length < cp) {
                 if (currentPage == 1) {
+                    // alert('4')
                     setLocalData(newProps);
                 } else {
+                    // alert('5')
                     setLocalData((prev: any) => [...prev, ...newProps]);
                 }
             }
@@ -235,57 +260,61 @@ const SearchResultTradie = (props: any) => {
                             dataLength={localData?.length}
                             next={() => {
                                 console.log('callable');
-                                let cp = currentPage + 1;
-                                setCurrentPage((prev: any) => prev + 1);
-                                let local_info: any = localInfo;
+                                if (localData?.length < currentPage * 10) {
+                                    setHasMore(false);
+                                } else {
+                                    let cp = currentPage + 1;
+                                    setCurrentPage((prev: any) => prev + 1);
+                                    let local_info: any = localInfo;
+                                    console.log({local_info});
+                                    let data: any = {
+                                        page: cp,
+                                        isFiltered: false,
+                                    }
 
-                                let data: any = {
-                                    page: cp,
-                                    isFiltered: false,
+                                    if (local_info?.location) {
+                                        data['location'] = local_info?.location;
+                                    }
+
+                                    if (local_info?.tradeId?.length) {
+                                        data['tradeId'] = local_info?.tradeId
+                                    }
+
+                                    if (local_info?.specializationId?.length) {
+                                        data['specializationId'] = local_info?.specializationId;
+                                    }
+
+                                    if (props?.location?.state?.suggestionSelected && props?.location?.state?.suggestionSelected !== "{}") {
+                                        data['address'] = JSON.stringify(props?.location?.state?.suggestionSelected);
+                                    }
+
+                                    if (local_info?.from_date) {
+                                        data['from_date'] = local_info?.from_date;
+                                    }
+
+                                    if (local_info?.to_date) {
+                                        data['to_date'] = local_info?.to_date;
+                                    }
+
+                                    if (local_info?.sortBy > 0) {
+                                        data['sortBy'] = local_info?.sortBy;
+                                    }
+
+                                    // if (!data?.hasOwnProperty('tradeId') && !data?.hasOwnProperty('specializationId') && !data?.hasOwnProperty('location')) {
+                                    //     data['location'] = { coordinates: [144.9631, -37.8136] }
+                                    // }
+
+                                    if (!data?.hasOwnProperty('specializationId')) {
+                                        data['isFiltered'] = true;
+                                    }
+
+                                    console.log({
+                                        local_info,
+                                        data,
+                                        cp
+                                    });
+                                    props.postHomeSearchData(data);
                                 }
-
-                                if (local_info?.location) {
-                                    data['location'] = local_info?.location;
-                                }
-
-                                if (local_info?.tradeId?.length) {
-                                    data['tradeId'] = local_info?.tradeId
-                                }
-
-                                if (local_info?.specializationId?.length) {
-                                    data['specializationId'] = local_info?.specializationId;
-                                }
-
-                                if (props?.location?.state?.suggestionSelected && props?.location?.state?.suggestionSelected !== "{}") {
-                                    data['address'] = JSON.stringify(props?.location?.state?.suggestionSelected);
-                                }
-
-                                if (local_info?.from_date) {
-                                    data['from_date'] = local_info?.from_date;
-                                }
-
-                                if (local_info?.to_date) {
-                                    data['to_date'] = local_info?.to_date;
-                                }
-
-                                if(local_info?.sortBy){
-                                    data['sortBy'] = local_info?.sortBy;
-                                }
-
-                                // if (!data?.hasOwnProperty('tradeId') && !data?.hasOwnProperty('specializationId') && !data?.hasOwnProperty('location')) {
-                                //     data['location'] = { coordinates: [144.9631, -37.8136] }
-                                // }
-
-                                if (!data?.hasOwnProperty('specializationId')) {
-                                    data['isFiltered'] = true;
-                                }
-
-                                console.log({
-                                    local_info,
-                                    data,
-                                    cp
-                                });
-                                props.postHomeSearchData(data);
                             }}
                             hasMore={hasMore}
                             loader={<></>}

@@ -150,7 +150,7 @@ const PastJobs = (props: any) => {
                                         <li className="icon calendar">{renderTime(fromDate, toDate)}</li>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="icon location line-1">{locationName}</li>
-                                        <li className="job_status">{status}</li>
+                                        <li style={{paddingTop:'10px'}} className="job_status">{status}</li>
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">

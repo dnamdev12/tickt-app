@@ -254,12 +254,13 @@ const MarkMilestones = (props: any) => {
                                     className="icon edit_line">
                                     {'Edit Milestone'}
                                 </li>
-
-                                <li
-                                    onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
-                                    className="icon lodge">
-                                    {'Lodge dispute'}
-                                </li>
+                                {!item_detail?.dispute && (
+                                    <li
+                                        onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
+                                        className="icon lodge">
+                                        {'Lodge dispute'}
+                                    </li>
+                                )}
 
                                 <li
                                     onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
