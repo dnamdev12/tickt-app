@@ -106,7 +106,7 @@ const ChooseJobToStartChat = (props: any) => {
                             </div>
                         </div>
 
-                        {activeJobs?.length > 0 && <div style={{ marginTop: '50px' }} className="form_field">
+                        {activeJobs?.length > 0 && <div className="form_field">
                             <button onClick={handleSubmit} className={`fill_btn full_btn btn-effect ${(!Object.keys(editItem).length && !jobId && !jobName) ? 'disable_btn' : ''}`}>
                                 Start chat
                             </button>
