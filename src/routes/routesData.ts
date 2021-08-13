@@ -49,6 +49,7 @@ import SupportChat from '../pages/tradieEditProfile/components/supportChat'
 import PaymentHistory from '../pages/paymentHistory';
 
 import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
+import GuestPage from '../pages/home/guestHome';
 
 const routes = [
     {
@@ -78,6 +79,11 @@ const routes = [
         path: '/reset-password',
         component: ForgerPassword,
         authRoute: true,
+    },
+    {
+        name: 'guest-user',
+        path: '/guest-user',
+        component: GuestPage,
     },
     {
         name: 'postnewjob',

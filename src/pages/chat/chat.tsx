@@ -12,6 +12,7 @@ import { setShowToast, setLoading } from '../../redux/common/actions';
 import { formatDateTime } from '../../utils/common';
 import { format, formatRelative, lightFormat } from 'date-fns';
 import {
+    auth,
     createRoom,
     checkRoomExist,
     getFirebaseInboxData,
@@ -34,7 +35,7 @@ let isFreshChatRoute: boolean = false;
 const Chat = (props: PropTypes) => {
     // const [initializing, setInitializing] = useState<boolean>(true);
     // firebase authenticated user details
-    // const [user, setUser] = useState<any>(() => auth.currentUser);
+    const [user, setUser] = useState<any>(() => auth.currentUser);
     const [inBoxData, setInBoxData] = useState<any>([]);
     const [filterInBoxData, setFilterInBoxData] = useState<any>([]);
     const [isNoRecords, setIsNoRecords] = useState<boolean>(false);
@@ -49,6 +50,11 @@ const Chat = (props: PropTypes) => {
 
     useEffect(() => {
         console.log("roomId:: from didmout", selectedRoomID);
+        console.log('user: ', user);
+        if(!user){
+            setLoading(false);
+            return;
+        }
         (async () => {
             setLoading(true);
             if (tradieId && builderId && jobName && jobId) {

@@ -120,11 +120,13 @@ export const firebaseSignUpWithEmailPassword = async ({ email, password, id, ful
     }
 };
 
-export const firebaseLogInWithEmailPassword = async (authData, loginRes) => {
+export const firebaseLogInWithEmailPassword = async (authData, loginRes, isSignup) => {
+    console.log('authData: ', authData);
     try {
         let response = await auth.signInWithEmailAndPassword(authData.email, authData.password);
         if (response) {
             console.log('firebase auth login success: ');
+            if(isSignup) return;
             await db.ref(`${FIREBASE_COLLECTION.USERS}/${loginRes?._id}`).set({
                 email: loginRes?.email,
                 image: loginRes?.user_image,

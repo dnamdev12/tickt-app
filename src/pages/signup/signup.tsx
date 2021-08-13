@@ -43,6 +43,7 @@ const Signup = (props: Propstype) => {
         firstName: '',
         mobileNumber: '',
         email: '',
+        user_image: '',
         password: '',
         socialId: '',
         accountType: '',
@@ -134,12 +135,14 @@ const Signup = (props: Propstype) => {
     }
 
     const onNewAccount = (profileData: any, socialType: string) => {
+        console.log('profileData: ', profileData);
         setSteps(steps + 1);
         const newProfileData = {
             firstName: profileData.name,
             authType: "signup",
             email: profileData.email,
             accountType: socialType,
+            user_image: profileData?.imageUrl || '', 
             ...(socialType === 'google' && { socialId: profileData.googleId }),
             ...(socialType === 'linkedIn' && { socialId: profileData.socialId })
         }
