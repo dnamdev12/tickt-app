@@ -173,7 +173,7 @@ const Signup = (props: Propstype) => {
         if (res.success) {
             firebaseSignUpWithEmailPassword({
                 email: res.result?.email,
-                password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@',
+                password: '12345678',
                 id: res.result?._id,
                 fullName: res.result?.firstName,
                 user_type: res.result?.user_type

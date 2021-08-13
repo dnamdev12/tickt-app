@@ -7,12 +7,13 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import storageService from '../../utils/storageService';
 import AuthModal from '../auth/authModal';
-
-import { useDispatch } from 'react-redux'
+import Urls, { urlFor } from '../../network/Urls';
+import { useDispatch } from 'react-redux';
 import { setShowNotification } from '../../redux/common/actions';
-import { auth, messaging } from '../../services/firebase';
+import { messaging, deleteToken, signOut } from '../../services/firebase';
 import { onNotificationClick, formatNotificationTime } from '../../utils/common';
 import { getNotificationList } from '../../redux/homeSearch/actions';
+import moment from 'moment';
 
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
@@ -274,12 +275,20 @@ const Header = (props: any) => {
     };
 
     const logoutHandler = async () => {
-        dispatch({ type: 'USER_LOGGED_OUT' });
+        signOut();
+        deleteToken();
         setLogoutClicked(false);
-        storageService.clearAll();
-        auth.signOut();
+        dispatch({ type: 'USER_LOGGED_OUT' });
         history.push('/login');
-        window.location.reload();
+        fetch(urlFor(Urls.logout), {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: storageService.getItem('jwtToken'),
+                'timezone': moment.tz.guess()
+            }
+        });
+        storageService.clearAll();
     }
 
     const postClicked = () => {

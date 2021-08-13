@@ -18,6 +18,7 @@ const ServiceEnum = {
 const Urls = {
     signup: `${versions.v1}${ServiceEnum.auth}signup`,
     login: `${versions.v1}${ServiceEnum.auth}login`,
+    logout: `${versions.v1}${ServiceEnum.auth}logout`,
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
@@ -139,7 +140,8 @@ const Urls = {
     privacyPolicy: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}privacyPolicy`,
     tnc: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}tnc`,
     tncWeb: `tncWeb`,
-    privacyPolicyWeb: `privacyPolicyWeb`
+    privacyPolicyWeb: `privacyPolicyWeb`,
+    getPopularBuilder: `${versions.v1}${ServiceEnum.home}getPopularBuilder`
 }
 
 export const urlFor = (service: String): string => {

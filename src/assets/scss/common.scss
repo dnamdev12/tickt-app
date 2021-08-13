@@ -1482,7 +1482,7 @@ body {
         display: block;
         font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
         color: var(--blue);
-        max-width: 135px;
+        max-width: 125px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
@@ -1553,7 +1553,7 @@ body {
 }
 
 .rating_star {
-  @include position(absolute, 8px, 16px, auto, auto);
+  @include position(absolute, 12px, 10px, auto, auto);
   font-size: 14px;
   .react-stars {
     span{
@@ -3268,10 +3268,6 @@ body {
 			}
 		}
 	}
-  .job_status {
-    color: var(--blue-two);
-    padding: 0px 10px 10px;
-  }
 	.tags_wrap {
 		ul {
 			margin: 0;

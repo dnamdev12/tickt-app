@@ -58,7 +58,7 @@ const isTokenSentToServer = () => {
     return storageService.getItem('sentToServer') === '1';
 }
 
-export function requestPermission() {
+export const requestPermission = () => {
     return new Promise((resolve, reject) => {
         Notification.requestPermission().then((permission) => {
             if (permission === 'granted' && isTokenSentToServer()) {
@@ -78,12 +78,19 @@ export function requestPermission() {
     })
 }
 
-export function deleteToken() {
+export const deleteToken = () => {
     messaging.deleteToken().then(() => {
-        console.log('Token deleted.');
-        // ...
+        console.log('FCM Token deleted.');
     }).catch((err) => {
-        console.log('Unable to delete token. ', err);
+        console.log('Unable to delete FCM token. ', err);
+    });
+}
+
+export const signOut = () => {
+    auth.signOut().then(() => {
+        console.log('Firebase signout successful.');
+    }).catch((err) => {
+        console.log('Firebase sign out error.', err);
     });
 }
 
@@ -138,7 +145,7 @@ export const loginAnonymously = () => {
     // debugger;
     auth.signInAnonymously()
         .then(() => alert("anonymous signed in success"))
-        .catch(function (error) {
+        .catch((error) => {
             // Handle Errors here.
             var errorCode = error.code;
             var errorMessage = error.message;
@@ -151,15 +158,7 @@ export const loginAnonymously = () => {
 }
 
 export const getLoggedInuserId = () => {
-    if (!loggedInuserId) {
-        let userInfo = storageService.getItem("userInfo");
-        if (userInfo) {
-            loggedInuserId = userInfo._id;
-        } else {
-            loggedInuserId = '';
-        }
-    }
-    return loggedInuserId;
+    return storageService.getItem("userInfo")._id;
 }
 
 export const createRoom = async (jobId, tradieId, builderId, jobName) => {

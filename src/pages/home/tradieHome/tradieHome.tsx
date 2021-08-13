@@ -58,9 +58,9 @@ const TradieHome = (props: any) => {
             <HomeBanner {...props} currentCoordinates={tradieHomeData.location} setTradieHomeData={setTradieHomeData} />
             <JobTypeList {...props} currentCoordinates={tradieHomeData.location} />
             <SavedJobs {...props} />
-            <PopularBuilders {...props} />
-            <RecommendedJobs {...props} />
-            <MostViewedJobs {...props} />
+            <PopularBuilders {...props} coordinates={tradieHomeData.location.coordinates} />
+            <RecommendedJobs {...props} coordinates={tradieHomeData.location.coordinates} />
+            <MostViewedJobs {...props} coordinates={tradieHomeData.location.coordinates} />
         </div>
     )
 }

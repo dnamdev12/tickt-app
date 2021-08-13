@@ -19,7 +19,7 @@ const ReviewInfoBox = (props: any) => {
                     {/* <ReactStars
                         count={5}
                         value={item.rating ? item.rating : item.ratings}
-                        size={15}
+                        size={18}
                         edit={false}
                         isHalf={true}
                         emptyIcon={<i className="far fa-star"></i>}
