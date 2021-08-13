@@ -476,6 +476,11 @@ const JobDetailsPage = (props: PropsType) => {
         if (data?.status) {
             data['note'] = replyText;
         }
+
+        // if (!data?.note) {
+        //     delete data?.note;
+        // }
+
         let response = await handleCancelReply(data);
         if (response?.success) {
             if (data?.status === 1) {

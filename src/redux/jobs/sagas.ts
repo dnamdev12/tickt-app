@@ -306,6 +306,10 @@ function* getNewApprovalList({ page }: any) {
   }
 }
 
+function* getClearJobs() {
+  yield put({ type: actionTypes.SET_CLEAR_JOBS, payload: true });
+}
+
 function* postJobWatcher() {
   try {
     yield takeLatest(actionTypes.FETCH_HOME_BUILDER, setHomeBuilder);
@@ -334,6 +338,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, getAcceptDeclineTradie)
 
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPROVAL_LIST, getNewApprovalList);
+    yield takeLatest(actionTypes.GET_CLEAR_JOBS, getClearJobs);
 
   } catch (e) {
     console.log(e);

@@ -28,7 +28,7 @@ const getKey = () => {
 }
 var responseElement: any = {};
 const BuilderHome = (props: any) => {
-    let { callTradeList, getRecentSearchList, setHomeBuilder, builderHome, tradeListData, tradieHomeData } = props;
+    let { callTradeList, getRecentSearchList, setHomeBuilder, builderHome, tradeListData, tradieHomeData, getClearJobs} = props;
     const [addressItem, setAddressItem] = useState();
     const [position, setPosition] = useState<any>({});
     const [stateData, setStateData] = useState({});
@@ -98,6 +98,7 @@ const BuilderHome = (props: any) => {
         // console.log({ data }, 'Here! -->')
         // if (!data || !Object.keys(data)?.length || !data?.saved_tradespeople?.length) {
         checkPermission();
+        getClearJobs();
         // }
     }, []);
 

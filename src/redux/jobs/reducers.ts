@@ -107,9 +107,9 @@ const reducer = (state = initialState, action: any) => {
         builderActionJobs: action.payload,
         builderOpenJobs: null,
         builderPastJobs: null,
-        builderNewApplicants:null,
-        builderNewApplicantsList:null,
-        newApprovalList:null,
+        builderNewApplicants: null,
+        builderNewApplicantsList: null,
+        newApprovalList: null,
         tradieRequestStatus: false,
       };
 
@@ -193,6 +193,20 @@ const reducer = (state = initialState, action: any) => {
         builderNewApplicants: null,
         builderNewApplicantsList: null,
       };
+
+
+    case actionTypes.SET_CLEAR_JOBS:
+      return {
+        ...state,
+        builderActionJobs: [],
+        builderOpenJobs: [],
+        builderPastJobs: [],
+        builderNewApplicants: [],
+        builderNewApplicantsList: [],
+        newApprovalList: [],
+        tradieReviewList: [],
+        tradieReviews: [],
+      }
 
 
     default: return state;

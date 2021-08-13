@@ -23,7 +23,7 @@ const EditMilestone = (props: any) => {
     const { item, item: { jobId, jobName }, details: { milestones }, history } = props;
 
     const propsMile = Object.freeze(props?.details?.milestones);
-    const jobDetail:any = Object.freeze(props?.details);
+    const jobDetail: any = Object.freeze(props?.details);
     const [stateData, setStateData] = useState<any>([]);
     const [stateItems, setItems] = useState<any>([]);
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
@@ -348,7 +348,7 @@ const EditMilestone = (props: any) => {
             if (!item?.milestoneId) {
                 delete data.milestoneId;
             }
-            data['order'] = item.order;
+            data['order'] = index + 1;
             return data;
         }).filter((item: any) => {
 
@@ -372,8 +372,7 @@ const EditMilestone = (props: any) => {
         };
 
         console.log({ data })
-
-
+        
         let response: any = await changeRequest(data);
         if (response?.success) {
             props.history.push('/milestone-request-sent-success');

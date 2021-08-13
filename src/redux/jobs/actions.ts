@@ -4,6 +4,8 @@ import * as actionTypes from './constants';
 import { setShowToast, setLoading, setSkeletonLoading } from '../common/actions';
 import storageService from '../../utils/storageService';
 
+export const getClearJobs = () => ({ type: actionTypes.GET_CLEAR_JOBS });
+
 //jobTypeList
 export const callCategories = async () => {
   const response: FetchResponse = await NetworkOps.get(Urls.jobTypeList);
@@ -460,9 +462,9 @@ export const CancelJob = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}canceljob`, data);
   setLoading(false);
   if (response.status_code === 200) {
-    // setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message)
   return { success: false };
 }
 
@@ -621,7 +623,7 @@ export const handleCancelReply = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}replyCancellation`, data);
   setLoading(false);
-  setShowToast(true, response?.message);
+  // setShowToast(true, response?.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -793,3 +795,15 @@ export const getActiveJobsTradieBuilder = async (data: any) => {
   return { success: false };
 }
 
+
+export const getPopularTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}getPopularTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+// https://ticktdevapi.appskeeper.in/v1/home/getPopularTradie?long=144.9631&lat=-37.8136&page=1&perPage=10

@@ -292,6 +292,7 @@ class JobDashboard extends Component<Props, State> {
                 !pastJobs?.past?.length ? true : JSON.stringify(pastJobs?.past) !== JSON.stringify(this.state?.pastJobs) &&
             (this.state?.pastJobs?.length < currentPage * 10)
         ) {
+   
             if (pastJobs?.past) {
 
                 let { past, needApprovalCount, newApplicantsCount } = pastJobs;
@@ -312,14 +313,12 @@ class JobDashboard extends Component<Props, State> {
                         this.setState({ hasLoad: false });
                     }
                 } else if (hasLoad && past?.length && page_get === currentPage) {
-
                     let result = [];
                     if (JSON.stringify(prevValues) === JSON.stringify(past) && page_get === currentPage) {
                         // same data items here!
                     } else {
                         result = page_get > 0 && page_get === currentPage ? [...prevValues, ...past] : past;
                     }
-
                     this.setState({
                         pastJobs: result,
                         count: {
@@ -434,19 +433,21 @@ class JobDashboard extends Component<Props, State> {
                 applicantJobs: [],
                 approvalJobs: [],
                 applicantsListJobs: [],
-                actualLoad: false
+                actualLoad: false,
+                selectedItem: { jobtype, jobid, sortby, specializationId },
             }, () => {
                 this.props.history.push(`/jobs?active=${jobtype}`);
                 window.scrollTo(0, 0);
+                this.setAfterItems({ jobtype, currentPage: this.state.currentPage, dataItemsAddons });
             })
+        } else {
+            this.setState({
+                selectedItem: { jobtype, jobid, sortby, specializationId },
+                applicantsListJobs: [],
+            }, () => {
+                this.setAfterItems({ jobtype, currentPage: this.state.currentPage, dataItemsAddons });
+            });
         }
-
-        this.setState({
-            selectedItem: { jobtype, jobid, sortby, specializationId },
-            applicantsListJobs: [],
-        }, () => {
-            this.setAfterItems({ jobtype, currentPage: this.state.currentPage, dataItemsAddons });
-        });
     }
 
     setAfterItems = ({ jobtype, currentPage, dataItemsAddons }: any) => {
@@ -612,7 +613,7 @@ class JobDashboard extends Component<Props, State> {
 
                                     });
                                 } else {
-                                    this.setState({ hasLoad: false })
+                                    // this.setState({ hasLoad: false })
                                 }
                             }}
                             hasMore={hasLoad}
