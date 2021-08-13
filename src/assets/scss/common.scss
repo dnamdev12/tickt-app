@@ -1553,7 +1553,7 @@ body {
 }
 
 .rating_star {
-  @include position(absolute, 8px, 10px, auto, auto);
+  @include position(absolute, 12px, 10px, auto, auto);
   font-size: 14px;
   .react-stars {
     span{
