@@ -125,3 +125,13 @@ export const searchTradies = async (data: any) => {
     }
     return { success: false, data: response.result };
 }
+
+export const getPopularBuilder = async (data: any) => {
+    setLoading(true);
+    const response: FetchResponse = await NetworkOps.get(Urls.getPopularBuilder + `?long=${data.long}&lat=${data.lat}&page=${data.page}&perPage=${data.perPage}`);
+    setLoading(false);
+    if (response.status_code === 200) {
+        return { success: true, result: response.result };
+    }
+    return { success: false };
+}
