@@ -919,12 +919,12 @@ export class PersonalInformation extends Component<Props, State> {
                                     </div>
                                     {!!errors?.email && <span className="error_msg">{errors?.email}</span>}
                                 </div>
-                                <div className="form_field f_spacebw">
+                                {storageService.getItem('userInfo')?.accountType === 'normal' && <div className="form_field f_spacebw">
                                     <a className="link" onClick={() => this.setState({ changeEmailModalClicked: true, profileModalClicked: false })}> Change Email</a>
                                     <a className="link"
                                         onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
                                     >Change Password</a>
-                                </div>
+                                </div>}
                                 {this.userType === 1 && (<div className="form_field">
                                     <label className="form_label">Qualification documents </label>
 

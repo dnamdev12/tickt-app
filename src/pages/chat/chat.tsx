@@ -44,6 +44,7 @@ const Chat = (props: PropTypes) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchActive, setSearchActive] = useState(false);
     const [isInitialLoader, setIsInitialLoader] = useState(true);
+    const [isMobInbox, setIsMobInbox] = useState<boolean>(false);
 
     const { tradieId, builderId, jobName, jobId } = props.history?.location?.state ? props.history?.location?.state : { tradieId: '', builderId: '', jobName: '', jobId: '' };
     console.log('tradieId, builderId, jobName, jobId: ', tradieId, builderId, jobName, jobId);
@@ -51,8 +52,9 @@ const Chat = (props: PropTypes) => {
     useEffect(() => {
         console.log("roomId:: from didmout", selectedRoomID);
         console.log('user: ', user);
-        if(!user){
+        if (!user) {
             setLoading(false);
+            setIsMobInbox(true);
             return;
         }
         (async () => {
@@ -191,12 +193,12 @@ const Chat = (props: PropTypes) => {
     return (
         <div className="app_wrapper">
             <div className="custom_container">
-                <span className="mob_side_nav">
+                <span className="mob_side_nav" onClick={() => setIsMobInbox(true)}>
                     <img src={menu} alt="mob-side-nav" />
                 </span>
                 <div className="f_row chat_wrapr">
-                    <div className="side_nav_col">
-                        <button className="close_nav">
+                    <div className={`side_nav_col ${isMobInbox ? 'active' : ''}`}>
+                        <button className="close_nav" onClick={() => setIsMobInbox(false)}>
                             <img src={close} alt="close" />
                         </button>
                         <div className="stick">

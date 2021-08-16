@@ -28,7 +28,7 @@ function* getRecentSearchList() {
 function* getRecentLocationList() {
     const response: FetchResponse = yield NetworkOps.get(Urls.getRecentLocation);
     if (response.status_code === 200) {
-        yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: response.data.resultData });
+        yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: response.result.resultData });
     } else {
         yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: [] });
     }
@@ -47,7 +47,7 @@ function* getJobTypeList() {
 function* getViewNearByJob(action: any) {
     const { data } = action;
     setLoading(true);
-    const response: FetchResponse = yield NetworkOps.get(Urls.viewNearByJob + `?lat=${data.lat}&long=${data.long}&page=${1}`)
+    const response: FetchResponse = yield NetworkOps.get(Urls.viewNearByJob + `?lat=${data.lat}&long=${data.long}&page=${data.page}`);
     setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_VIEW_NEARBY_JOBS, payload: response.result });

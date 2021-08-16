@@ -24,6 +24,7 @@ export const postSignup = async (data: any) => {
       "email": response.result.email,
       "userName": response.result.firstName,
       "_id": response.result._id,
+      "accountType": response.result?.accountType
     });
     return { success: true, result: response.result };
   }
@@ -97,6 +98,7 @@ export const callLogin = async (data: any) => {
       "email": response.result?.email,
       "userName": response.result?.userName,
       "_id": response.result?._id,
+      "accountType": response.result?.accountType
     });
 
     if (response.result.user_type === 1) {
