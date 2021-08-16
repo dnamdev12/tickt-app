@@ -203,13 +203,13 @@ const BannerSearch = (props: PropsType) => {
     }, [props])
 
     useEffect(() => {
-        if (addressText !== null) {
-            if (addressText?.length > 2) {
-                document.getElementById('location-input-tag')?.focus();
-            } else {
-                document.getElementById('location_search_static')?.focus();
-            }
-        }
+        // if (addressText !== null) {
+        //     if (addressText?.length > 2) {
+        //         document.getElementById('location-input-tag')?.focus(); // commented this for first render un-focus
+        //     } else {
+        //         document.getElementById('location_search_static')?.focus();
+        //     }
+        // }
         if ((!addressText || !addressText?.length) && inputFocus2) {
             setSelectedAddress({});
             setSelectedTrade({});
@@ -224,6 +224,7 @@ const BannerSearch = (props: PropsType) => {
             getRecentLocationList();
         }
         // getRecentLocationData();
+
     }, []);
 
     useEffect(() => {
@@ -537,7 +538,8 @@ const BannerSearch = (props: PropsType) => {
                 }
                 if (suggestion_selected) {
                     if (addressText) {
-                        data['address'] = addressText && suggestion_selected ? suggestion_selected : '';
+                        let case_1 = typeof (suggestion_selected) == 'string' ? suggestion_selected : JSON.stringify(suggestion_selected);
+                        data['address'] = addressText && suggestion_selected ? case_1 : '';
                     }
                 }
             }

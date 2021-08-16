@@ -74,8 +74,10 @@ const PostNewJob = ({
 
   const handleChange = ({ target: { value, name } }: { target: { value: string, name: string } }) => {
     let valueElem: any = (value).trimLeft()
-    if (name === "jobName") {
-      valueElem = valueElem.replace(/[^a-zA-Z|0-9 ]/g, "");
+    if (name === "jobName" || name === "job_description") {
+      if(name === "jobName"){
+        valueElem = valueElem.replace(/[^a-zA-Z|0-9 ]/g, "");
+      }
       valueElem = capitalize(valueElem) //.charAt(0).toUpperCase() + valueElem.substring(1);
     }
 
