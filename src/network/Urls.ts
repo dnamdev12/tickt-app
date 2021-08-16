@@ -141,7 +141,8 @@ const Urls = {
     tnc: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}tnc`,
     tncWeb: `tncWeb`,
     privacyPolicyWeb: `privacyPolicyWeb`,
-    getPopularBuilder: `${versions.v1}${ServiceEnum.home}getPopularBuilder`
+    getPopularBuilder: `${versions.v1}${ServiceEnum.home}getPopularBuilder`,
+    unReadNotification: `${versions.v1}${ServiceEnum.home}unReadNotification`,
 }
 
 export const urlFor = (service: String): string => {

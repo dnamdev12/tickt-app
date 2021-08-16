@@ -2,11 +2,11 @@ import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setShowNotification } from '../redux/common/actions';
 import { formatNotificationTime } from '../utils/common';
+import { onNotificationClick } from '../utils/common';
+import { markNotifAsRead } from '../redux/auth/actions';
 
 import dummy from '../assets/images/u_placeholder.jpg';
 import close from '../assets/images/icon-close-1.png';
-
-import { onNotificationClick } from '../utils/common';
 
 const NOTIFICATION_TIMEOUT = 5000;
 
@@ -28,8 +28,11 @@ const CustomNotification = (props: any) => {
                 <img src={close} alt="img" />
             </span>
             <div className="wrapppr" onClick={() => {
+                markNotifAsRead({ notificationId: notification?._id });
                 setShowNotification(false);
-                window.open(onNotificationClick(notification), '_self');
+                setTimeout(() => {
+                    window.open(onNotificationClick(notification), '_self');
+                }, 100);
             }}>
                 <div className="notif">
                     <figure className="not_img">
@@ -39,7 +42,8 @@ const CustomNotification = (props: any) => {
                         <span className="who line-1">{notification?.title}</span>
                         <span className="line-1">{notification?.notificationText}</span>
                     </div>
-                    <span className="time">{formatNotificationTime(notification?.updatedAt, 'day')}</span>
+                    {/* <span className="time">{formatNotificationTime(notification?.updatedAt, 'day')}</span> */}
+                    <span className="time">{'now'}</span>
                 </div>
             </div>
         </div>

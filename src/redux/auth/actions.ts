@@ -189,3 +189,11 @@ export const addFCMNotifToken = async (data: object) => {
   }
   return { success: false };
 };
+
+export const markNotifAsRead = async (data: any) => {
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.unReadNotification, data);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  return { success: false };
+};
