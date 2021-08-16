@@ -33,7 +33,7 @@ let selectedRoomID = '';
 let isFreshChatRoute: boolean = false;
 
 const Chat = (props: PropTypes) => {
-    // const [initializing, setInitializing] = useState<boolean>(true);
+    const [initializing, setInitializing] = useState<boolean>(true);
     // firebase authenticated user details
     const [user, setUser] = useState<any>(() => auth.currentUser);
     const [inBoxData, setInBoxData] = useState<any>([]);
@@ -51,12 +51,6 @@ const Chat = (props: PropTypes) => {
 
     useEffect(() => {
         console.log("roomId:: from didmout", selectedRoomID);
-        console.log('user: ', user);
-        if (!user) {
-            setLoading(false);
-            setIsMobInbox(true);
-            return;
-        }
         (async () => {
             setLoading(true);
             if (tradieId && builderId && jobName && jobId) {
@@ -145,27 +139,31 @@ const Chat = (props: PropTypes) => {
         }
     }
 
-    // useEffect(() => {
-    // let unsubscribe = auth.onAuthStateChanged(user => {
-    //     if (user) {
-    //         setUser(user);
-    //         chatsRef.doc(chatDocumentId).get().then(doc => {
-    //             if (doc.exists) {
-    //                 setIsChatAlreadyExist(true);
-    //             }
-    //         }).catch((error) => {
-    //             console.log("Error getting document:", error);
-    //         });
-    //     } else {
-    //         setUser(false);
-    //     }
-    //     if (initializing) {
-    //         setInitializing(false);
-    //     }
-    // });
+    console.log('user: ', user);
 
-    // return unsubscribe;
-    // }, [initializing]);
+    useEffect(() => {
+        let unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                setUser(user);
+                setIsMobInbox(false);
+                // chatsRef.doc(chatDocumentId).get().then(doc => {
+                //     if (doc.exists) {
+                //         setIsChatAlreadyExist(true);
+                //     }
+                // }).catch((error) => {
+                //     console.log("Error getting document:", error);
+                // });
+            } else {
+                setUser(false);
+                setIsMobInbox(true);
+            }
+            if (initializing) {
+                setInitializing(false);
+            }
+        });
+
+        return unsubscribe;
+    }, [initializing]);
 
     console.log(props.history, "history", roomId, "roomId", roomData, "roomData", selectedRoomID, "selectedRoomID", inBoxData, 'inBoxData');
 

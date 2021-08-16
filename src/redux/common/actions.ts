@@ -1,7 +1,8 @@
 import * as actionTypes from './constants';
 import {store} from '../../App';
 
-export const setLoading = (isLoading: boolean) => {
+export const setLoading = (isLoading: boolean, iddd?: any) => {
+    console.log('iddd: ', iddd);
     store.dispatch({type: actionTypes.SET_LOADING, payload: isLoading})
 };
 

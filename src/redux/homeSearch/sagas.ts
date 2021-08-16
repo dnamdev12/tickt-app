@@ -28,7 +28,7 @@ function* getRecentSearchList() {
 function* getRecentLocationList() {
     const response: FetchResponse = yield NetworkOps.get(Urls.getRecentLocation);
     if (response.status_code === 200) {
-        yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: response.result.resultData });
+        yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: response.data.resultData });
     } else {
         yield put({ type: actionTypes.SET_RECENT_LOCATION_LIST, payload: [] });
     }
