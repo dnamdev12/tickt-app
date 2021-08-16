@@ -104,7 +104,7 @@ const Header = (props: any) => {
     }
 
     const callNotificationList = async (resetUnreadNotif?: boolean, isInit?: boolean) => {
-        if (notificationData.list?.length > 0 && notificationData.list?.length >= notificationData?.count) {
+        if (notificationData.list?.length > 0 && notificationData.list?.length > notificationData?.count) {
             setHasMoreNotif(false);
             return;
         }
@@ -148,8 +148,8 @@ const Header = (props: any) => {
 
     const callOnPathChange = () => {
         console.log('Inside --- callOnPathChange user_id')
-        if (userType) {
-            (notificationData.list?.length === 0 || pathname === '/') && callNotificationList(true, true);
+        if (userType && !DISABLE_HEADER.includes(pathname) && pathname !== 'guest-user') {
+            callNotificationList(true, true);
             if (userType === 1) {
                 if (!profileData || (profileData && !_.isEqual(props.tradieProfileData, profileData))) {
                     props.callTradieProfileData();

@@ -60,23 +60,19 @@ const LoginPage = (props: Propstype) => {
         if (!loginData.password) {
             newErrors.password = Constants.errorStrings.password;
         }
-        //  else {
-        //     const passwordRegex = new RegExp(regex.password);
-        //     if (!passwordRegex.test(loginData.password.trim())) {
-        //         newErrors.password = Constants.errorStrings.passwordInvalid;
-        //     }
-        // }
 
         setErrors(newErrors);
         return !Object.keys(newErrors).length;
     }
 
     const onNewAccount = (profileData: any, socialType: string) => {
+        console.log('profileData: ', profileData);
         const newProfileData = {
             firstName: profileData.name,
             authType: "signup",
             email: profileData.email,
             accountType: socialType,
+            user_image: profileData?.imageUrl,
             ...(socialType === 'google' && { socialId: profileData.googleId }),
             ...(socialType === 'linkedIn' && { socialId: profileData.socialId })
         }
@@ -124,9 +120,8 @@ const LoginPage = (props: Propstype) => {
                 }
                 firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {
-                    window.location.reload();
-                    // props.setShowModal(!props.showModal);
-                    return;
+                    // window.location.reload();
+                    props.setShowModal(!props.showModal);
                 }
                 if (res?.data) {
                     localStorage.setItem('email', res.data.email);

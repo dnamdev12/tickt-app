@@ -22,13 +22,11 @@ function* setLocalChanges(action: any) {
 }
 
 function* getActiveJobList({ page }: any) {
-  // yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.activeJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_ACTIVE_JOBS_END,
@@ -40,13 +38,11 @@ function* getActiveJobList({ page }: any) {
 }
 
 function* getAppliedJobList({ page }: any) {
-  // yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.appliedJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_APPLIED_JOBS_END,
@@ -58,13 +54,11 @@ function* getAppliedJobList({ page }: any) {
 }
 
 function* getPastJobList({ page }: any) {
-  // yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.pastJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_PAST_JOBS_END,
@@ -103,13 +97,11 @@ function* resetApprovedMilestoneList() {
 }
 
 function* getNewJobList({ page }: any) {
-  // yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.newJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_NEW_JOBS_END,
@@ -121,13 +113,11 @@ function* getNewJobList({ page }: any) {
 }
 
 function* getApprovedMilestoneList({ page }: any) {
-  // yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.approvedMilestoneList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_APPROVED_MILESTONE_END,

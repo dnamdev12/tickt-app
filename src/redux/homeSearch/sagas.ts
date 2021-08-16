@@ -47,7 +47,7 @@ function* getJobTypeList() {
 function* getViewNearByJob(action: any) {
     const { data } = action;
     setLoading(true);
-    const response: FetchResponse = yield NetworkOps.get(Urls.viewNearByJob + `?lat=${data.lat}&long=${data.long}&page=${1}`)
+    const response: FetchResponse = yield NetworkOps.get(Urls.viewNearByJob + `?lat=${data.lat}&long=${data.long}&page=${data.page}`);
     setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_VIEW_NEARBY_JOBS, payload: response.result });

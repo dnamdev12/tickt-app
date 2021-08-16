@@ -12,6 +12,7 @@ import { setShowToast, setLoading } from '../../redux/common/actions';
 import { formatDateTime } from '../../utils/common';
 import { format, formatRelative, lightFormat } from 'date-fns';
 import {
+    auth,
     createRoom,
     checkRoomExist,
     getFirebaseInboxData,
@@ -32,9 +33,9 @@ let selectedRoomID = '';
 let isFreshChatRoute: boolean = false;
 
 const Chat = (props: PropTypes) => {
-    // const [initializing, setInitializing] = useState<boolean>(true);
+    const [initializing, setInitializing] = useState<boolean>(true);
     // firebase authenticated user details
-    // const [user, setUser] = useState<any>(() => auth.currentUser);
+    const [user, setUser] = useState<any>(() => auth.currentUser);
     const [inBoxData, setInBoxData] = useState<any>([]);
     const [filterInBoxData, setFilterInBoxData] = useState<any>([]);
     const [isNoRecords, setIsNoRecords] = useState<boolean>(false);
@@ -43,6 +44,7 @@ const Chat = (props: PropTypes) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchActive, setSearchActive] = useState(false);
     const [isInitialLoader, setIsInitialLoader] = useState(true);
+    const [isMobInbox, setIsMobInbox] = useState<boolean>(false);
 
     const { tradieId, builderId, jobName, jobId } = props.history?.location?.state ? props.history?.location?.state : { tradieId: '', builderId: '', jobName: '', jobId: '' };
     console.log('tradieId, builderId, jobName, jobId: ', tradieId, builderId, jobName, jobId);
@@ -137,27 +139,31 @@ const Chat = (props: PropTypes) => {
         }
     }
 
-    // useEffect(() => {
-    // let unsubscribe = auth.onAuthStateChanged(user => {
-    //     if (user) {
-    //         setUser(user);
-    //         chatsRef.doc(chatDocumentId).get().then(doc => {
-    //             if (doc.exists) {
-    //                 setIsChatAlreadyExist(true);
-    //             }
-    //         }).catch((error) => {
-    //             console.log("Error getting document:", error);
-    //         });
-    //     } else {
-    //         setUser(false);
-    //     }
-    //     if (initializing) {
-    //         setInitializing(false);
-    //     }
-    // });
+    console.log('user: ', user);
 
-    // return unsubscribe;
-    // }, [initializing]);
+    useEffect(() => {
+        let unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                setUser(user);
+                setIsMobInbox(false);
+                // chatsRef.doc(chatDocumentId).get().then(doc => {
+                //     if (doc.exists) {
+                //         setIsChatAlreadyExist(true);
+                //     }
+                // }).catch((error) => {
+                //     console.log("Error getting document:", error);
+                // });
+            } else {
+                setUser(false);
+                setIsMobInbox(true);
+            }
+            if (initializing) {
+                setInitializing(false);
+            }
+        });
+
+        return unsubscribe;
+    }, [initializing]);
 
     console.log(props.history, "history", roomId, "roomId", roomData, "roomData", selectedRoomID, "selectedRoomID", inBoxData, 'inBoxData');
 
@@ -185,12 +191,12 @@ const Chat = (props: PropTypes) => {
     return (
         <div className="app_wrapper">
             <div className="custom_container">
-                <span className="mob_side_nav">
+                <span className="mob_side_nav" onClick={() => setIsMobInbox(true)}>
                     <img src={menu} alt="mob-side-nav" />
                 </span>
                 <div className="f_row chat_wrapr">
-                    <div className="side_nav_col">
-                        <button className="close_nav">
+                    <div className={`side_nav_col ${isMobInbox ? 'active' : ''}`}>
+                        <button className="close_nav" onClick={() => setIsMobInbox(false)}>
                             <img src={close} alt="close" />
                         </button>
                         <div className="stick">
