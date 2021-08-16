@@ -223,7 +223,7 @@ const JobDetails = ({
                 if (!item?.from_date?.length || item?.from_date === "Invalid date") {
                     delete item?.from_date;
                 }
-        
+
                 item['order'] = index + 1;
                 return item;
             }
@@ -325,6 +325,9 @@ const JobDetails = ({
 
     const format = 'MM-DD-YYYY';
     const { sources, types } = renderFilteredItems();
+    console.log({
+        sources, types
+    })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -360,7 +363,12 @@ const JobDetails = ({
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
                                     <span className="title line-3 pr-20" title={data?.jobName}>{data?.jobName}
-                                        <span onClick={() => { forwardScreenStep(1) }} className="edit_icon" title="Edit">
+                                        <span
+                                            onClick={() => { forwardScreenStep(1) }}
+                                            className="edit_icon"
+                                            title="Edit"
+                                            style={{ zIndex: 999 }}
+                                        >
                                             <img src={editIconBlue} alt="edit" />
                                         </span>
                                     </span>
