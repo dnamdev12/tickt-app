@@ -214,18 +214,29 @@ const BannerSearch = (props: PropsType) => {
             setSelectedAddress({});
             setSelectedTrade({});
         }
+
+        if (!addressText?.length) {
+            fetchItemsSearchWithLocation(1);
+        }
+
+
     }, [addressText])
 
     useEffect(() => {
-        if (getRecentSearchList) {
+        fetchItemsSearchWithLocation();
+        // getRecentLocationData();
+
+    }, []);
+
+
+    const fetchItemsSearchWithLocation = (fetch?: any) => {
+        if (getRecentSearchList && fetch !== 1) {
             getRecentSearchList();
         }
         if (getRecentLocationList) {
             getRecentLocationList();
         }
-        // getRecentLocationData();
-
-    }, []);
+    }
 
     useEffect(() => {
         // if (props.recentLocationData?.length &&

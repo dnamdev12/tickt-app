@@ -406,6 +406,7 @@ const JobDetailsPage = (props: PropsType) => {
     let paramJobId: any = '';
     let activeType: any = '';
     let isPastJob: boolean = false;
+    let hideDispute:any = null;
     if (props.location?.search) {
         let location_search = window.atob((props.location?.search).substring(1))
         const params = new URLSearchParams(location_search);
@@ -421,8 +422,12 @@ const JobDetailsPage = (props: PropsType) => {
         if (params.get('activeType')) {
             activeType = params.get('activeType');
         }
+
+        if (params.get('hide_dipute')) {
+            hideDispute = params.get('hide_dipute');
+        }
     }
-    console.log({ activeType })
+    console.log({ activeType , hideDispute})
 
     console.log({ paramStatus })
     const renderByStatus = ({ status }: any) => {
@@ -557,13 +562,15 @@ const JobDetailsPage = (props: PropsType) => {
                                                 className="icon edit_line">
                                                 {'Edit Milestone'}
                                             </li>
-                                            <li
-                                                onClick={() => {
-                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&lodgeDispute=true`)
-                                                }}
-                                                className="icon lodge">
-                                                {'Lodge dispute'}
-                                            </li>
+                                            {hideDispute === "false" && (
+                                                <li
+                                                    onClick={() => {
+                                                        props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&lodgeDispute=true`)
+                                                    }}
+                                                    className="icon lodge">
+                                                    {'Lodge dispute'}
+                                                </li>
+                                            )}
                                             <li
                                                 onClick={() => {
                                                     props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&cancelJob=true`)

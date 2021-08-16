@@ -36,7 +36,8 @@ interface Active {
     enableEditMilestone: boolean,
     enableLodgeDispute: boolean,
     enableCancelJob: boolean
-    globalJobId: string
+    globalJobId: string,
+    mathrandom?: any
 }
 
 const ActiveJobs = ({
@@ -112,8 +113,8 @@ const ActiveJobs = ({
     console.log({ listData, isLoading })
     return (
         <React.Fragment>
-            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs 
-            {/* {listData?.length} */}
+            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs
+                {/* {listData?.length} */}
             </span>
             <div className="flex_row tradies_row">
                 {listData?.length ?
@@ -139,6 +140,7 @@ const ActiveJobs = ({
                         tradieId,
                         tradeSelectedUrl,
                         tradieImage,
+                        mathrandom,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card"

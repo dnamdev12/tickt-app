@@ -170,6 +170,7 @@ const JobDetails = ({
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(index + 1);
                                 }}
+                                preload="metadata"
                                 src={item?.url}
                             />)
                     }
@@ -325,9 +326,6 @@ const JobDetails = ({
 
     const format = 'MM-DD-YYYY';
     const { sources, types } = renderFilteredItems();
-    console.log({
-        sources, types
-    })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -363,12 +361,7 @@ const JobDetails = ({
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
                                     <span className="title line-3 pr-20" title={data?.jobName}>{data?.jobName}
-                                        <span
-                                            onClick={() => { forwardScreenStep(1) }}
-                                            className="edit_icon"
-                                            title="Edit"
-                                            style={{ zIndex: 999 }}
-                                        >
+                                        <span onClick={() => { forwardScreenStep(1) }} className="edit_icon" title="Edit">
                                             <img src={editIconBlue} alt="edit" />
                                         </span>
                                     </span>
