@@ -39,10 +39,10 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 const onNotificationClick = (notification) => {
-    const url = process.env.REACT_APP_BASE_URL;
+    // const url = process.env.REACT_APP_BASE_URL;
     // const url = 'http://localhost:3000/';
     // const url = 'https://ticktreactqa.appskeeper.in/';
-    // const url = 'https://ticktreactdev.appskeeper.in/';
+    const url = 'https://ticktreactdev.appskeeper.in/';
     const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
     switch (Number(notificationType)) {
         case 1: //TRADIE
