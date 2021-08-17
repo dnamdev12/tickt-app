@@ -216,6 +216,11 @@ const TradieSearchJobResult = (props: PropsType) => {
             delete data.heading;
             delete data.jobResults;
         }
+        if (allFiltersData.max_budget === 0) {
+            delete data.min_budget;
+            delete data.max_budget;
+            delete data.pay_type;
+        }
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length) {
             const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
             const specializationName = specializationList?.find((i: any) => i._id === allFiltersData?.specializationId[0])?.name;

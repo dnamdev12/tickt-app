@@ -284,7 +284,9 @@ export const AsyncImage = (props: any) => {
 //     MARK_MILESTONE: 14,
 //     JOB_HOMEPAGE: 15, //tradeid and specialization id
 //     REVIEW_SELF: 16
+//     TRADIE_VOUCH_RECEIVED: 17
 // }
+//      extra_data => JOB_SATUS=INACTIVE: 
 
 export const onNotificationClick = (notification: any) => {
     const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
@@ -306,7 +308,7 @@ export const onNotificationClick = (notification: any) => {
             }
         case 3: //JOB
             if (user_type == 1) {
-                return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
                 let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `/job-detail?${urlEncode}`;
@@ -315,16 +317,15 @@ export const onNotificationClick = (notification: any) => {
             return '/payment-history';
         case 5: //DISPUTES
             if (user_type == 1) {
-                return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
                 let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `/job-detail?${urlEncode}`;
             }
-        // case 6: //REVIEW_TRADIE
         case 7: //REVIEW_TRADIE
-            return `/past-jobs`;
+            return `/jobs?active=past&jobId=${jobId}`;
         case 8: //REVIEW_BUILDER
-            return `/jobs?active=past`;
+            return `/review-builder?jobId=${jobId}`;
         case 9: //QUESTION
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
@@ -342,9 +343,11 @@ export const onNotificationClick = (notification: any) => {
             return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
-                return `/active-jobs`;
+                const type = extra_data?.redirect_status;
+                return type === 1 ? `/past-jobs` : type === 2 ? `/active-jobs` : type === 3 ? '/new-jobs' : '/active-jobs';
             } else {
-                return `/jobs?active=active`;
+                const type = extra_data?.redirect_status;
+                return `/jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
             return '/';
@@ -358,7 +361,8 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `/`;
+                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                return `/job-detail?${urlEncode}`;
             }
         case 16: //TRADIE
             if (user_type == 1) {
@@ -366,6 +370,8 @@ export const onNotificationClick = (notification: any) => {
             } else {
                 return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
+        case 17:
+            return `/tradie-vouchers`;
         default:
             return '/';
     }

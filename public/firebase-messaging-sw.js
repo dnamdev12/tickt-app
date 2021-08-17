@@ -39,10 +39,10 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 const onNotificationClick = (notification) => {
-    const url = process.env.REACT_APP_BASE_URL;
+    // const url = process.env.REACT_APP_BASE_URL;
     // const url = 'http://localhost:3000/';
     // const url = 'https://ticktreactqa.appskeeper.in/';
-    // const url = 'https://ticktreactdev.appskeeper.in/';
+    const url = 'https://ticktreactdev.appskeeper.in/';
     const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
     switch (Number(notificationType)) {
         case 1: //TRADIE
@@ -59,7 +59,7 @@ const onNotificationClick = (notification) => {
             }
         case 3: //JOB
             if (user_type == 1) {
-                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
                 let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `${url}job-detail?${urlEncode}`;
@@ -68,16 +68,15 @@ const onNotificationClick = (notification) => {
             return `${url}payment-history`;
         case 5: //DISPUTES
             if (user_type == 1) {
-                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
                 let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `${url}job-detail?${urlEncode}`;
             }
-        // case 6: //REVIEW_TRADIE
         case 7: //REVIEW_TRADIE
-            return `${url}past-jobs`;
+            return `${url}jobs?active=past&jobId=${jobId}`;
         case 8: //REVIEW_BUILDER
-            return `${url}jobs?active=past`;
+            return `${url}review-builder?jobId=${jobId}`;
         case 9: //QUESTION
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
@@ -95,9 +94,11 @@ const onNotificationClick = (notification) => {
             return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
-                return `${url}active-jobs`;
+                const type = extra_data?.redirect_status;
+                return type === 1 ? `${url}past-jobs` : type === 2 ? `${url}active-jobs` : type === 3 ? `${url}new-jobs` : `${url}active-jobs`;
             } else {
-                return `${url}jobs?active=active`;
+                const type = extra_data?.redirect_status;
+                return `${url}jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
             return `${url}`;
@@ -111,7 +112,8 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `${url}`;
+                let urlEncode = window.btoa(`?jobId=${jobId}&status=open`)
+                return `${url}job-detail?${urlEncode}`;
             }
         case 16: //TRADIE
             if (user_type == 1) {
@@ -119,6 +121,8 @@ const onNotificationClick = (notification) => {
             } else {
                 return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
+        case 17:
+            return `${url}tradie-vouchers`;
         default:
             return `${url}`;
     }

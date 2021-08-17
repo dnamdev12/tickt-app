@@ -13,7 +13,10 @@ import { setShowNotification } from '../../redux/common/actions';
 import { messaging, deleteToken, signOut } from '../../services/firebase';
 import { onNotificationClick, formatNotificationTime } from '../../utils/common';
 import { getNotificationList } from '../../redux/homeSearch/actions';
+import { markNotifAsRead } from '../../redux/auth/actions';
+
 import moment from 'moment';
+import _ from 'lodash';
 
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
@@ -25,7 +28,6 @@ import revenue from '../../assets/images/ic-revenue.png';
 import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
 import noNotification from '../../assets/images/no-notifications.png';
-import _ from 'lodash';
 
 import skipBtn from '../../assets/images/skip.png';
 import backBtn from '../../assets/images/back.png';
@@ -643,6 +645,7 @@ const Header = (props: any) => {
                                         {notificationData.list?.length > 0 &&
                                             notificationData.list.map((item: any) =>
                                                 <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={() => {
+                                                    markNotifAsRead({ notificationId: item?._id });
                                                     handleClose('notification');
                                                     props.history.push(onNotificationClick(item));
                                                 }}

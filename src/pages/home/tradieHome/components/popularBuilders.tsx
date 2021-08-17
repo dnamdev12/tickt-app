@@ -23,10 +23,10 @@ const PopularBuilders = (props: any) => {
                     <ul className="popular_tradies">
                         {popularBuildersData?.length ? popularBuildersData?.map((item: any, index: number) => {
                             return (
-                                <li key={`${item.userName}item${index}`} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000">
+                                <li key={item._id} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000">
                                     <figure className="tradies_img">
                                         <img
-                                            src={item.userImage ? item.userImage : dummy}
+                                            src={item.user_image ? item.user_image : dummy}
                                             alt="tradies-img"
                                             onError={(e: any) => {
                                                 let e_: any = e;
@@ -34,8 +34,8 @@ const PopularBuilders = (props: any) => {
                                             }}
                                         />
                                     </figure>
-                                    <span className="name">{item.userName}</span>
-                                    <span className="post">{item.trade}</span>
+                                    <span className="name">{item.firstName}</span>
+                                    {/* <span className="post">{item.trade[0]?.trade_name}</span> */}
                                 </li>)
                         }) : <span>No Data Found</span>}
                     </ul>
