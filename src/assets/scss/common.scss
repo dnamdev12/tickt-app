@@ -1486,6 +1486,9 @@ body {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        @media(max-width: 1366px){
+          max-width: 110px;
+        }
       }
       .date {
         font-size: 12px;
