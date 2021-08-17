@@ -5,8 +5,8 @@ const PopularBuilders = (props: any) => {
     console.log('props: ', props);
 
     const viewAllBuilders = () => {
-        setShowToast(true, 'Under development');
-        return;
+        // setShowToast(true, 'Under development');
+        // return;
         props.history.push({
             pathname: 'popular-builders',
             state: { coordinates: props.coordinates }
@@ -35,7 +35,7 @@ const PopularBuilders = (props: any) => {
                                         />
                                     </figure>
                                     <span className="name">{item.firstName}</span>
-                                    {/* <span className="post">{item.trade[0]?.trade_name}</span> */}
+                                    <span className="post">{item.trade[0]?.trade_name}</span>
                                 </li>)
                         }) : <span>No Data Found</span>}
                     </ul>

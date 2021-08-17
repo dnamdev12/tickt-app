@@ -547,7 +547,7 @@ const Header = (props: any) => {
 
                                         <MenuItem onClick={() => {
                                             handleClose('pofile');
-                                            history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`);
+                                            history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}`);
                                         }}>
                                             <span className="setting_icon">
                                                 <img src={profile} alt="profile" />

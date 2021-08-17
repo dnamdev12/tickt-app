@@ -317,7 +317,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.RESET_ACTIVE_JOBS_START, resetActiveJobList);
     yield takeLatest(actionTypes.RESET_APPLIED_JOBS_START, resetAppliedJobList);
     yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetNewJobList);
-    yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetApprovedMilestoneList);
+    yield takeLatest(actionTypes.RESET_APPROVED_MILESTONE_START, resetApprovedMilestoneList);
 
     yield takeLatest(actionTypes.GET_BUILDER_ACTIVE_JOBS, getActiveJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_PAST_JOBS, getPastJobsBuilder);

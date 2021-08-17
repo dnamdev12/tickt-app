@@ -825,7 +825,7 @@ export class PersonalInformation extends Component<Props, State> {
                             {isSkeletonLoading ? <Skeleton /> : <a href="javascript:void(0)" className="view_profile"
                                 onClick={() => {
                                     props.cleanTradieProfileViewData();
-                                    props.history.push(`/${this.userType === 1 ? 'tradie' : 'builder'}-info?${this.userType === 1 ? 'trade' : 'builder'}Id=${basicDetailsData?.userId}&type=${this.userType}`);
+                                    props.history.push(`/${this.userType === 1 ? 'tradie' : 'builder'}-info?${this.userType === 1 ? 'trade' : 'builder'}Id=${basicDetailsData?.userId}`);
                                 }}>
                                 <img src={viewProfile} alt="view-profile" />View public profile</a>}
                         </div>
