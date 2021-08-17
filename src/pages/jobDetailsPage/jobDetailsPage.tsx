@@ -109,9 +109,9 @@ const JobDetailsPage = (props: PropsType) => {
 
     useEffect(() => {
         const params = new URLSearchParams(props.location?.search);
-        const isTradieWorking: any = params.get('isActive');
+        // const isTradieWorking: any = params.get('isActive');
         const jobInviteAction: any = params.get('jobAction');
-        setIsTradieWorking(isTradieWorking);
+        // setIsTradieWorking(isTradieWorking);
         setJobInviteAction(jobInviteAction);
         (async () => {
             const redirectFrom: any = params.get('redirect_from');
@@ -122,7 +122,6 @@ const JobDetailsPage = (props: PropsType) => {
             if (redirectFrom) {
                 data.jobId = params.get('jobId');
                 res1 = await getJobDetails(data.jobId);
-
             } else {
                 data.jobId = params.get('jobId');
                 data.tradeId = params.get('tradeId');
@@ -504,7 +503,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
-                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && isTradieWorking && jobDetailsData.jobStatus === 'active' && (
+                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && jobDetailsData.jobStatus === 'active' && (
                                 <div className="flex_col_sm_4 text-right">
                                     <span className="dot_menu">
                                         <img src={editIconBlue} alt="edit" />
@@ -941,7 +940,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
                                     {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
-                                        {isTradieWorking && jobDetailsData.jobStatus === 'active' && <a href="javascript:void(0)" className="chat circle"
+                                        {jobDetailsData.jobStatus === 'active' && <a href="javascript:void(0)" className="chat circle"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 props.history.push({
