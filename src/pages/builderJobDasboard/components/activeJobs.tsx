@@ -49,6 +49,7 @@ const ActiveJobs = ({
     isLoading,
     enableEditMilestone,
     enableLodgeDispute,
+    enableMakMilestone,
     enableCancelJob,
     globalJobId
 }: any) => {
@@ -84,7 +85,7 @@ const ActiveJobs = ({
             setSelectedIndex(filteredItem?.index);
             setLocalState(true);
         }
-    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob,])
+    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob, enableMakMilestone]);
 
     // const redirectToInfo = ({ jobId, status }: any) => {
     //     if (jobId?.length && status?.length) {

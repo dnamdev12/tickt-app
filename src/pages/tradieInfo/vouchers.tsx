@@ -15,20 +15,29 @@ import VoucherDetailModal from './voucherDetail';
 
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { useLocation } from "react-router-dom";
+
 const Vouchers = (props: any) => {
     const [stateData, setStateData] = useState<any>([]);
     const [errors, setErrors] = useState({});
     const [toggleRecommendation, setToggleRecommendation] = useState({ isTrue: false, item: {} });
-
     const [jobsList, setJobsList] = useState([]);
     const [toggle, setToggle] = useState(false);
     const [selectedItem, setSelectedItem] = useState({});
-
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
-    const { id, path } = props?.location?.state;
+    let id = props?.location?.state?.id;
+    let path = props?.location?.state?.path;
+    let search: any = props?.location?.search || '';
 
+    if (search?.length) {
+        const urlParams = new URLSearchParams(search);
+        let tradieId: any = urlParams.get('tradieId');
+        if (tradieId?.length) {
+            id = tradieId;
+        }
+    }
     const closeToggle = (isRecall?: string) => {
         setToggleRecommendation({ isTrue: false, item: {} });
         setSelectedItem({});
@@ -37,6 +46,8 @@ const Vouchers = (props: any) => {
             prefetch();
         }
     }
+
+
 
     useEffect(() => {
         prefetch();
@@ -78,7 +89,11 @@ const Vouchers = (props: any) => {
                                 <button
                                     onClick={() => {
                                         // let path: any = props.location.state.path;
-                                        props.history.push(`tradie-info${path}`);
+                                        if (!path) {
+                                            props.history.push('/');
+                                        } else {
+                                            props.history.push(`tradie-info${path}`);
+                                        }
                                     }}
                                     className="back"></button>
                                 <span className="title">

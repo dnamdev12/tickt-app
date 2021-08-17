@@ -358,8 +358,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     }
 
     const { sources, types } = renderFilteredItems();
-    let IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
-    console.log({ IsRenderValues, isItemsLoad })
+    let IsRenderValues = null;
+    if (Object.values(isItemsLoad)?.length) {
+        IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
+    }
+    let checkErrors_: any = checkErrors();
+    console.log({ IsRenderValues, isItemsLoad, check: checkErrors_ })
     return (
         <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
@@ -469,7 +473,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                             })
                                         }
                                     }}
-                                    className={`fill_btn full_btn btn-effect ${checkErrors() == false && IsRenderValues == false ? 'disable_btn' : ''}`}>
+                                    className={`fill_btn full_btn btn-effect ${checkErrors_ && IsRenderValues == null ? 'disable_btn' : !checkErrors_ && !IsRenderValues ? 'disable_btn' : ''}`}>
                                     {'Submit'}
                                 </button>
                             </div>

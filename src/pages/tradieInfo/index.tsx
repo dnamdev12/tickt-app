@@ -910,7 +910,7 @@ class TradieInfo extends Component<Props, State> {
                             <span className="sub_title">Vouches</span>
                             <div className="flex_row">
 
-                                {tradieInfo?.vouchesData.map((item: any) => (
+                                {tradieInfo?.vouchesData.slice(0, 8).map((item: any) => (
                                     <div className="flex_col_sm_3">
                                         <div className="review_card vouchers">
                                             <div className="pic_shot_dtl">
@@ -952,7 +952,6 @@ class TradieInfo extends Component<Props, State> {
                                     </div>
                                 ))}
                             </div>
-                            {console.log({ tradieInfo })}
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {
