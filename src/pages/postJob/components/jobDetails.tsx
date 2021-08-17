@@ -170,6 +170,7 @@ const JobDetails = ({
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(index + 1);
                                 }}
+                                preload="metadata"
                                 src={item?.url}
                             />)
                     }
@@ -223,7 +224,7 @@ const JobDetails = ({
                 if (!item?.from_date?.length || item?.from_date === "Invalid date") {
                     delete item?.from_date;
                 }
-        
+
                 item['order'] = index + 1;
                 return item;
             }

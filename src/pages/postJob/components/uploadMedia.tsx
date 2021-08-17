@@ -14,6 +14,10 @@ import FsLightbox from 'fslightbox-react';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
+//@ts-ignore
+import genThumbnail from 'simple-thumbnail';
+
+
 // import Loader from "react-loader-spinner";
 // import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 // import { AsyncImage } from '../../../utils/common';
@@ -181,6 +185,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
         formData.append('file', newFile);
         const res = await onFileUpload(formData)
+       
         if (res.success) {
             let link: string = res.imgUrl;
             let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx", "msword"].includes(fileType) ? 3 : 4

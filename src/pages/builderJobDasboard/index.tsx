@@ -10,6 +10,11 @@ import {
     getNewApprovalList,
 } from '../../redux/jobs/actions';
 
+import {
+    getClearJobs
+} from '../../redux/jobs/actions';
+
+
 const mapStateToProps = (state: any) => {
     console.log({ state });
     const {
@@ -36,6 +41,7 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = (dispatch: any) => {
     return bindActionCreators(
         {
+            getClearJobs,
             getActiveJobsBuilder,
             getPastJobsBuilder,
             getOpenJobsBuilder,

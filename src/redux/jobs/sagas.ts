@@ -168,6 +168,7 @@ function* getActiveJobsBuilder({ page }: any) {
   if (response.status_code === 200) {
     if (response?.result?.active && Array.isArray(response?.result?.active) && response?.result?.active?.length) {
       response.result.active[0]['page'] = page;
+      response.result.active[0]['mathrandom'] = Math.random();
     }
     if (page === 1) { setLoading(false); }
     yield put({
