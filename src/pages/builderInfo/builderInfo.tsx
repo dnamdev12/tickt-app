@@ -123,7 +123,8 @@ const BuilderInfo = (props: PropsType) => {
         // let jobId = urlParams.get('jobId')
         // let specializationId = urlParams.get('specializationId')
         let builderId: any = urlParams.get('builderId');
-        let user_type = urlParams.get('type');
+        // let user_type = urlParams.get('type');
+        let user_type = storageService.getItem('userType');
         return { builderId, user_type };
     }
 
@@ -426,7 +427,7 @@ const BuilderInfo = (props: PropsType) => {
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
                                         // Add active class when click on show more
                                         <ul className={`${!showSpecs ? 'more_tags active' : ''}`}>
-                                        {/* <ul className={`more_tags ${showSpecs ? 'active' : ''}`}> */}
+                                            {/* <ul className={`more_tags ${showSpecs ? 'active' : ''}`}> */}
                                             {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
                                               <Fragment key={_id}>
                                                 <li className="main">

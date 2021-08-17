@@ -62,7 +62,6 @@ import Rating from 'react-rating';
 
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const USER_TYPE = storageService.getItem('userType');
 interface Props {
     tradieInfo: any,
     tradieId: any,
@@ -200,7 +199,7 @@ class TradieInfo extends Component<Props, State> {
         let jobId = urlParams.get('jobId')
         let specializationId = urlParams.get('specializationId')
         let tradeId = urlParams.get('tradeId')
-        let user_type = urlParams.get('type')
+        let user_type = storageService.getItem('userType');
         let is_active = urlParams.get('active')
         return { jobId, specializationId, tradeId, user_type, is_active };
     }
@@ -435,7 +434,7 @@ class TradieInfo extends Component<Props, State> {
         const { jobId, tradeId, user_type } = this.getItemsFromLocation();
 
         if (user_type == '1' || this.props.userType == 1) {
-            console.log(USER_TYPE, "USER_TYPE", user_type, "user_type", this.props.userType, "this.props.userType");
+            console.log(user_type, "user_type", this.props.userType, "this.props.userType");
             this.props.getTradieProfileView();
         } else if (jobId) {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
