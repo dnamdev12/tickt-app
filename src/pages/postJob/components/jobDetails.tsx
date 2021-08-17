@@ -138,16 +138,20 @@ const JobDetails = ({
         let data_clone: any = data;
         if (data_clone?.urls?.length) {
             let format_items = data_clone?.urls?.map((item: any) => {
-                let split_item_format = item.link.split('.');
+                let split_item_format = item?.link?.split('.');
                 let get_split_fromat = split_item_format[split_item_format.length - 1];
 
                 if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
-                    return { url: item.link, format: get_split_fromat };
+                    return {
+                        url: item?.link,
+                        format: get_split_fromat,
+                        posture: item?.base64 || ''
+                    };
                 }
             }).filter((item: any) => item! !== undefined);
 
             let filterItems: any = [];
-
+            console.log({format_items})
             if (format_items?.length) {
                 format_items.forEach((item: any, index: number) => {
                     let render_item: any = null;
@@ -170,6 +174,7 @@ const JobDetails = ({
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(index + 1);
                                 }}
+                                poster={item?.posture}
                                 preload="metadata"
                                 src={item?.url}
                             />)

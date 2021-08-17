@@ -38,7 +38,14 @@ interface Mile {
 }
 
 const MarkMilestones = (props: any) => {
-    const { resetStateLocal, listData, selectedIndex, enableEditMilestone, enableLodgeDispute, enableCancelJob } = props;
+
+    let resetStateLocal = props?.resetStateLocal;
+    let listData = props?.listData;
+    let selectedIndex = props?.selectedIndex;
+    let enableEditMilestone = props?.enableEditMilestone;
+    let enableLodgeDispute = props?.enableLodgeDispute;
+    let enableCancelJob = props?.enableCancelJob;
+
     const [enableApprove, setEnableApprove] = useState(false);
     const [itemDetails, setDetails] = useState(null);
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
@@ -193,14 +200,16 @@ const MarkMilestones = (props: any) => {
 
     if (toggleItem?.edit) {
         let details: any = itemDetails;
-        if (details && Object.keys(details)?.length && Object.keys(selectedItem).length) {
-            return (
-                <EditMilestones
-                    details={details}
-                    item={selectedItem}
-                    backTab={backTab}
-                />
-            )
+        if (details && selectedItem) {
+            if (details && Object.keys(details)?.length && Object.keys(selectedItem).length) {
+                return (
+                    <EditMilestones
+                        details={details}
+                        item={selectedItem}
+                        backTab={backTab}
+                    />
+                )
+            }
         }
     }
 

@@ -147,19 +147,19 @@ const SavedJobs = (props: any) => {
                                     (stateData?.map((item: any, index: any) => {
                                         return (
                                             <li
-                                                key={`${item.userName}item${index}`}
+                                                key={`${item.firstName}item${index}`}
                                                 data-aos="flip-right"
                                                 data-aos-delay="200"
                                                 onClick={() => {
                                                     // setShowToast(true,'Under development');
-                                                    if (props?.history && item?.tradieId) {
-                                                        props?.history?.push(`tradie-info?tradeId=${item?.tradieId}&hideInvite=${false}`);
+                                                    if (props?.history && item?._id) {
+                                                        props?.history?.push(`tradie-info?tradeId=${item?._id}&hideInvite=${false}`);
                                                     }
                                                 }}
                                                 data-aos-duration="1000">
                                                 <figure className="tradies_img">
                                                     <img
-                                                        src={item.userImage || dummy}
+                                                        src={item.user_image || dummy}
                                                         alt="tradies-img"
                                                         onError={(e: any) => {
                                                             let e_: any = e;
@@ -167,8 +167,10 @@ const SavedJobs = (props: any) => {
                                                         }}
                                                     />
                                                 </figure>
-                                                <span className="name">{item.userName}</span>
-                                                <span className="post">{item.trade}</span>
+                                                <span className="name">{item?.firstName}</span>
+                                                <span className="post">
+                                                    {item?.trade && Array.isArray(item?.trade) && item?.trade[0] && item?.trade[0]?.trade_name ? item?.trade[0]?.trade_name : ''}
+                                                </span>
                                             </li>)
                                     })) : (
                                         <div className="no_record">

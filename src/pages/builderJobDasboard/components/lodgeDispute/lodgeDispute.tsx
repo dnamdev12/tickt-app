@@ -19,7 +19,11 @@ import { lodgeDispute } from '../../../../redux/jobs/actions';
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
 const LodgeDispute = (props: any) => {
-    const { item: { jobId, jobName }, history } = props;
+
+    let item = props?.item;
+    let jobId = props?.item?.jobId;
+    let jobName = props?.item?.jobName;
+    let history = props?.history;
     const [stateData, setStateData] = useState({ reason: 0, detail: '', upload: [] });
     const [errorData, setErrorData] = useState({ reason: '', detail: '', upload: '' });
     const [filesUrl, setFilesUrl] = useState([] as any);

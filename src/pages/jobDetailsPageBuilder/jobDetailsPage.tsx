@@ -406,7 +406,7 @@ const JobDetailsPage = (props: PropsType) => {
     let paramJobId: any = '';
     let activeType: any = '';
     let isPastJob: boolean = false;
-    let hideDispute:any = null;
+    let hideDispute: any = null;
     if (props.location?.search) {
         let location_search = window.atob((props.location?.search).substring(1))
         const params = new URLSearchParams(location_search);
@@ -427,7 +427,7 @@ const JobDetailsPage = (props: PropsType) => {
             hideDispute = params.get('hide_dipute');
         }
     }
-    console.log({ activeType , hideDispute})
+    console.log({ activeType, hideDispute })
 
     console.log({ paramStatus })
     const renderByStatus = ({ status }: any) => {
@@ -528,7 +528,7 @@ const JobDetailsPage = (props: PropsType) => {
         await deleteOpenJob({ jobId });
         props.history.push(`/jobs?active=${activeType}`)
     }
-
+    console.log({ activeType })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -668,7 +668,7 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {console.log({ jobDetailsData })}
+                                    {console.log({ jobDetailsData, paramStatus })}
                                     {paramStatus === 'CANCELLED' &&
                                         jobDetailsData?.reasonForCancelJobRequest > 0 &&
                                         <div className="chang_req_card mb-sm">
@@ -680,7 +680,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
                                         </div>}
-
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
