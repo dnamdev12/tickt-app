@@ -106,7 +106,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                return `${url}jobs?active=active`;
+                return `${url}jobs?active=active&jobId=${jobId}f&markMilestone=true`;
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {
@@ -122,7 +122,11 @@ const onNotificationClick = (notification) => {
                 return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
         case 17:
-            return `${url}tradie-vouchers`;
+            if (user_type == 1) {
+                return `${url}tradie-vouchers?tradieId=${receiverId}`;
+            } else {
+                return `${url}`;
+            }
         default:
             return `${url}`;
     }

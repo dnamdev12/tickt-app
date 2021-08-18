@@ -135,3 +135,24 @@ export const getPopularBuilder = async (data: any) => {
     }
     return { success: false };
 }
+
+export const getMostViewedJobs = async (data: any) => {
+    setLoading(true);
+    // const response: FetchResponse = await NetworkOps.get(Urls.getMostViewedJobs + `?long=${data.long}&lat=${data.lat}&page=${data.page}&perPage=${data.perPage}`);
+    const response: FetchResponse = await NetworkOps.get(Urls.getMostViewedJobs + `?page=${data.page}&perPage=${data.perPage}`);
+    setLoading(false);
+    if (response.status_code === 200) {
+        return { success: true, result: response.result };
+    }
+    return { success: false };
+}
+
+export const getRecommendedJobs = async (data: any) => {
+    setLoading(true);
+    const response: FetchResponse = await NetworkOps.get(Urls.getRecommendedJobs + `?page=${data.page}&perPage=${data.perPage}&long=${data.long}&lat=${data.lat}`);
+    setLoading(false);
+    if (response.status_code === 200) {
+        return { success: true, result: response.result };
+    }
+    return { success: false };
+}
