@@ -43,7 +43,8 @@ const onNotificationClick = (notification) => {
     // const url = 'http://localhost:3000/';
     // const url = 'https://ticktreactqa.appskeeper.in/';
     const url = 'https://ticktreactdev.appskeeper.in/';
-    const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
+    const { notificationType, user_type, receiverId, senderId, jobId } = notification;
+    let extra_data = JSON.parse(notification?.extra_data);
     switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {
@@ -94,10 +95,10 @@ const onNotificationClick = (notification) => {
             return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
-                const type = extra_data?.redirect_status;
+                const type = +extra_data?.redirect_status;
                 return type === 1 ? `${url}past-jobs` : type === 2 ? `${url}active-jobs` : type === 3 ? `${url}new-jobs` : `${url}active-jobs`;
             } else {
-                const type = extra_data?.redirect_status;
+                const type = +extra_data?.redirect_status;
                 return `${url}jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT

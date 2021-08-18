@@ -343,10 +343,10 @@ export const onNotificationClick = (notification: any) => {
             return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
-                const type = extra_data?.redirect_status;
+                const type = +extra_data?.redirect_status;
                 return type === 1 ? `/past-jobs` : type === 2 ? `/active-jobs` : type === 3 ? '/new-jobs' : '/active-jobs';
             } else {
-                const type = extra_data?.redirect_status;
+                const type = +extra_data?.redirect_status;
                 return `/jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
