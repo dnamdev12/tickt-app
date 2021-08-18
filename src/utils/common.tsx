@@ -355,7 +355,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                return `/jobs?active=active&jobId=${jobId}f&markMilestone=true`;
+                return `/jobs?active=active&jobId=${jobId}&markMilestone=true`;
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {

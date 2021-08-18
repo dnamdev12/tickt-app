@@ -106,7 +106,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                return `${url}jobs?active=active&jobId=${jobId}f&markMilestone=true`;
+                return `${url}jobs?active=active&jobId=${jobId}&markMilestone=true`;
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {
