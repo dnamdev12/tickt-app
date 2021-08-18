@@ -296,15 +296,15 @@ export const onNotificationClick = (notification: any) => {
     switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {
-                return `/tradie-info?tradeId=${receiverId}&type=1`;
+                return `/tradie-info?tradeId=${receiverId}`;
             } else {
                 return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
         case 2: //BUILDER
             if (user_type == 1) {
-                return `/builder-info?builderId=${receiverId}`;
+                return `/builder-info?builderId=${senderId}`;
             } else {
-                return `/builder-info?builderId=${receiverId}&type=2`;
+                return `/builder-info?builderId=${receiverId}`;
             }
         case 3: //JOB
             if (user_type == 1) {
@@ -335,9 +335,9 @@ export const onNotificationClick = (notification: any) => {
             }
         case 10: //REVIEW
             if (user_type == 1) {
-                return `/builder-info?builderId=${receiverId}`;
+                return `/builder-info?builderId=${senderId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;
@@ -366,9 +366,9 @@ export const onNotificationClick = (notification: any) => {
             }
         case 16: //TRADIE
             if (user_type == 1) {
-                return `/tradie-info?tradeId=${receiverId}&type=1`;
+                return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 17:
             if (user_type == 1) {

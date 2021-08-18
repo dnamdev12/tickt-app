@@ -47,13 +47,13 @@ const onNotificationClick = (notification) => {
     switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {
-                return `${url}tradie-info?tradeId=${receiverId}&type=1`;
+                return `${url}tradie-info?tradeId=${receiverId}`;
             } else {
                 return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
         case 2: //BUILDER
             if (user_type == 1) {
-                return `${url}builder-info?builderId=${receiverId}`;
+                return `${url}builder-info?builderId=${senderId}`;
             } else {
                 return `${url}builder-info?builderId=${receiverId}&type=2`;
             }
@@ -86,9 +86,9 @@ const onNotificationClick = (notification) => {
             }
         case 10: //REVIEW
             if (user_type == 1) {
-                return `${url}builder-info?builderId=${receiverId}`;
+                return `${url}builder-info?builderId=${senderId}`;
             } else {
-                return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `${url}tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;
@@ -117,9 +117,9 @@ const onNotificationClick = (notification) => {
             }
         case 16: //TRADIE
             if (user_type == 1) {
-                return `${url}tradie-info?tradeId=${receiverId}&type=1`;
+                return `${url}tradie-info?tradeId=${receiverId}`;
             } else {
-                return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `${url}tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 17:
             if (user_type == 1) {
