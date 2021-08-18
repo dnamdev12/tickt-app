@@ -334,6 +334,7 @@ export const answerQuestion = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false, data: response.result };
 }
 
@@ -345,6 +346,7 @@ export const updateAnswer = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false, data: response.result };
 }
 
@@ -356,6 +358,7 @@ export const deleteAnswer = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false, data: response.result };
 }
 
@@ -416,10 +419,10 @@ export const getTradeProfile = async (data: any) => {
 
 export const ratingTradieProfile = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewTradie, data);
-  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false, data: response.result };
 }
 
@@ -799,6 +802,26 @@ export const getActiveJobsTradieBuilder = async (data: any) => {
 export const getPopularTradies = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.home}getPopularTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const getRecommendedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}recommendedTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const getMostViewedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}mostViewedTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };

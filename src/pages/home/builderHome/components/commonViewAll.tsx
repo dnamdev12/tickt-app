@@ -3,7 +3,7 @@ import noData from '../../../../assets/images/no-search-data.png';
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom';
-import { getSavedTradies, getPopularTradies } from '../../../../redux/jobs/actions'
+import { getSavedTradies, getPopularTradies, getRecommendedTradies, getMostViewedTradies } from '../../../../redux/jobs/actions'
 import { setShowToast, setLoading } from '../../../../redux/common/actions';
 
 //@ts-ignore
@@ -59,6 +59,57 @@ const SavedJobs = (props: any) => {
         }
     }
 
+
+    const preFetchRecommendedTradie = async (page?: any) => {
+        let positions = localStorage.getItem('position');
+        if (positions) {
+            positions = JSON.parse(positions).reverse();
+
+            if (Array.isArray(positions)) {
+                let response = await getRecommendedTradies({
+                    lat: positions[1],
+                    long: positions[0],
+                    page: page
+                });
+
+                if (response?.success) {
+                    if (page > 1) {
+                        let data = response?.data?.data || [];
+                        setStateData((prev: any) => ([...prev, ...data]))
+                    } else {
+                        setStateData(response?.data?.data || []);
+                        setLoad(true);
+                    }
+                }
+            }
+        }
+    }
+
+    const preFetchMostViewedTradie = async (page?: any) => {
+        let positions = localStorage.getItem('position');
+        if (positions) {
+            positions = JSON.parse(positions).reverse();
+
+            if (Array.isArray(positions)) {
+                let response = await getMostViewedTradies({
+                    lat: positions[1],
+                    long: positions[0],
+                    page: page
+                });
+
+                if (response?.success) {
+                    if (page > 1) {
+                        let data = response?.data?.data || [];
+                        setStateData((prev: any) => ([...prev, ...data]))
+                    } else {
+                        setStateData(response?.data?.data || []);
+                        setLoad(true);
+                    }
+                }
+            }
+        }
+    }
+
     useEffect(() => {
         console.log({
             state: props?.location?.state,
@@ -70,6 +121,10 @@ const SavedJobs = (props: any) => {
             preFetch(1);
         } else if (props?.location?.state?.title === "Popular tradespeople" || props.location.pathname === '/popular-tradespeople') {
             preFetchPopularTradie(1);
+        } else if (props?.location?.state?.title === "Recommended tradespeople" || props.location.pathname === '/recommended-tradespeople') {
+            preFetchRecommendedTradie(1);
+        } else if (props?.location?.state?.title === "Most Viewed tradespeople" || props.location.pathname === '/most-viewed-tradespeople') {
+            preFetchMostViewedTradie(1);
         } else {
             setStateData(props?.location?.state?.data);
             setLoad(true);
@@ -107,6 +162,13 @@ const SavedJobs = (props: any) => {
                             preFetchPopularTradie(cp);
                         }
 
+                        if (props?.location?.state?.title === "Recommended tradespeople") {
+                            preFetchRecommendedTradie(cp);
+                        }
+
+                        if (props?.location?.state?.title === "Most Viewed tradespeople") {
+                            preFetchMostViewedTradie(cp);
+                        }
                     } else {
                         setHasLoad(false);
                     }
