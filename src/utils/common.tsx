@@ -355,7 +355,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                return `/jobs?active=active`;
+                return `/jobs?active=active&jobId=${jobId}f&markMilestone=true`;
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {
@@ -371,7 +371,11 @@ export const onNotificationClick = (notification: any) => {
                 return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
         case 17:
-            return `/tradie-vouchers`;
+            if (user_type == 1) {
+                return `/tradie-vouchers?tradieId=${receiverId}`;
+            } else {
+                return '/'
+            }
         default:
             return '/';
     }

@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { getPopularBuilder } from '../../redux/homeSearch/actions';
 
 import dummy from '../../assets/images/u_placeholder.jpg';
-import Location from "../../assets/images/ic-location.png";
+import menu from '../../assets/images/menu-line-blue.png';
+
+import noData from '../../assets/images/no-search-data.png';
 
 const PopularBuilders = (props: any) => {
     const [buildersList, setBuildersList] = useState<Array<any>>([]);
@@ -36,8 +39,8 @@ const PopularBuilders = (props: any) => {
             }
             setBuildersList(allBuilders);
             setPageNo(pageNo + 1);
-            if (res.result?.data?.totalCount !== totalCount) {
-                setTotalCount(res.result?.data?.totalCount);
+            if (res.result?.totalCount !== totalCount) {
+                setTotalCount(res.result?.totalCount);
             }
         }
     }
@@ -45,59 +48,80 @@ const PopularBuilders = (props: any) => {
         props.history?.goBack();
     }
 
-    console.log('props: ', props);
+    console.log('props: ', props, buildersList.length, "zzz", totalCount);
 
     return (
-        <div className="app_wrapper">
-            <div className="section_wrapper bg_gray">
-                <div className="custom_container">
-                    <div className="relate">
-                        <button className="back" onClick={backButtonClicked}></button>
-                        <span className="title">Popular builders</span>
-                    </div>
-                    <InfiniteScroll
-                        dataLength={buildersList.length}
-                        next={callJobList}
-                        style={{ overflowX: 'hidden' }}
-                        hasMore={hasMoreItems}
-                        loader={<></>}
-                    >
-                        <div className="flex_row tradies_row">
-                            <div className="flex_col_sm_4">
-                                <div className="tradie_card">
-                                    <a href="javascript:void(0)" className="more_detail circle"></a>
-                                    <div className="user_wrap">
-                                        <figure className="u_img">
-                                            <img src={dummy} alt="traide-img" />
-                                        </figure>
-                                        <div className="details">
-                                            <span className="name">John Oldman</span>
-                                            <span className="rating">4.9, 36 reviews </span>
-                                        </div>
-                                    </div>
-                                    <div className="tags_wrap">
-                                        <ul>
-                                            <li className="main">
-                                                <img src={Location} alt="icon" />Plumber
-                                            </li>
-                                            <li className="main">
-                                                <img src={Location} alt="icon" />Electrician
-                                            </li>
-                                            <li>Electrical Instrumentation</li>
-                                            <li>Security and Fire Alarm Installation</li>
-                                            <li>Electrical Instrumentation</li>
-                                            <li>Security and Fire Alarm Installation</li>
-                                            <li>More</li>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
+        <InfiniteScroll
+            dataLength={buildersList.length}
+            next={callJobList}
+            style={{ overflowX: 'hidden' }}
+            hasMore={hasMoreItems}
+            loader={<></>}
+        >
+            <div className="app_wrapper">
+                <div className="section_wrapper bg_gray">
+                    <div className="custom_container">
+                        <div className="relate">
+                            <button className="back" onClick={backButtonClicked}></button>
+                            <span className="title">Popular builders</span>
                         </div>
-                    </InfiniteScroll>
+                        <div className="flex_row tradies_row">
+                            {(buildersList?.length > 0 || props.isLoading) ? buildersList.map((item: any) => {
+                                return (
+                                    <div className="flex_col_sm_4">
+                                        <div className="tradie_card">
+                                            <a href="javascript:void(0)" className="more_detail circle"
+                                                onClick={(e: any) => {
+                                                    e.preventDefault();
+                                                    props.history.push(`/builder-info?builderId=${item._id}`)
+                                                }} />
+                                            <div className="user_wrap">
+                                                <figure className="u_img">
+                                                    <img
+                                                        src={item.user_image || dummy}
+                                                        onError={(e: any) => {
+                                                            let e_: any = e;
+                                                            e_.target.src = dummy;
+                                                        }}
+                                                        alt="img" />
+                                                </figure>
+                                                <div className="details">
+                                                    <span className="name">{item.firstName}</span>
+                                                    <span className="rating">{`${item.reviewCount ? `${item.ratings}, ${item.reviews} reviews` : `0, 0 reviews`}`}</span>
+                                                </div>
+                                            </div>
+                                            <div className="tags_wrap">
+                                                <ul>
+                                                    {item.trade?.length ? item.trade.map(({ _id, selected_url, trade_name }: { _id: string, selected_url: string, trade_name: string }) => (
+                                                        <li key={_id} className="main">
+                                                            <img src={selected_url || menu} alt="" />{trade_name || ''}
+                                                        </li>)) : <i style={{ color: '#929292' }}>
+                                                        {'No Trade Found'}
+                                                    </i>}
+                                                    {item.trade?.length > 0 && item.specializations.slice(0, 5 - item.trade?.length).map((item: any) => <li key={item._id}>{item.name}</li>)}
+                                                    {item.trade?.length > 0 && (item.trade?.length + item.specializations?.length > 5) && <li>More</li>}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>)
+                            }) : <div className="no_record">
+                                <figure className="no_img">
+                                    <img src={noData} alt="data not found" />
+                                </figure>
+                                <span>No Data Found</span>
+                            </div>}
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        </InfiniteScroll>
     )
 }
 
-export default PopularBuilders;
+const mapStateToProps = (state: any) => {
+    return {
+        isLoading: state.common.isLoading,
+    }
+}
+
+export default connect(mapStateToProps, null)(PopularBuilders);
