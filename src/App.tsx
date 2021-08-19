@@ -15,10 +15,6 @@ import { useClearCache } from "react-clear-cache";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
-const HomeClone = (props:any) => {
-  props.history.push('/')
-  return null;
-}
 
 
 declare global {
@@ -71,7 +67,6 @@ const App = () => {
 };
 
 export {
-  store,
-  HomeClone
+  store
 }
 export default App;

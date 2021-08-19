@@ -51,7 +51,10 @@ import PaymentHistory from '../pages/paymentHistory';
 import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
 import GuestPage from '../pages/home/guestHome';
 
-import { HomeClone } from '../App';
+const HomeClone = (props: any) => {
+    props.history.push('/')
+    return null;
+}
 
 const routes = [
     {
