@@ -87,7 +87,7 @@ const PopularBuilders = (props: any) => {
                                                 </figure>
                                                 <div className="details">
                                                     <span className="name">{item.firstName}</span>
-                                                    <span className="rating">{`${item.reviewCount ? `${item.rating}, ${item.review} reviews` : `0, 0 reviews`}`}</span>
+                                                    <span className="rating">{`${item.reviewCount ? `${item.rating % 1 === 0 ? item.rating : item.rating?.toFixed(2)}, ${item.review} reviews` : `0, 0 reviews`}`}</span>
                                                 </div>
                                             </div>
                                             <div className="tags_wrap">

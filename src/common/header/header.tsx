@@ -658,8 +658,8 @@ const Header = (props: any) => {
                                                         </figure>
                                                         <div className="info">
                                                             {/* <span className="who line-1">{item.title}</span> */}
-                                                            <span className="who line-1">{item.title}</span>
-                                                            <span className="line-1">{item.notificationText}</span>
+                                                            <span title={item.title} className="who line-1">{item.title}</span>
+                                                            <span title={item.notificationText} className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}
                                                         </div>
                                                         <span className="time">{formatNotificationTime(item?.updatedAt, 'day')}</span>
