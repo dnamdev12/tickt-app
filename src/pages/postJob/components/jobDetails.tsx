@@ -151,7 +151,7 @@ const JobDetails = ({
             }).filter((item: any) => item! !== undefined);
 
             let filterItems: any = [];
-            console.log({format_items})
+            console.log({ format_items })
             if (format_items?.length) {
                 format_items.forEach((item: any, index: number) => {
                     let render_item: any = null;
@@ -230,6 +230,7 @@ const JobDetails = ({
                     delete item?.from_date;
                 }
 
+
                 item['order'] = index + 1;
                 return item;
             }
@@ -249,12 +250,24 @@ const JobDetails = ({
 
         if (!data_clone?.urls?.length) {
             delete data_clone?.urls
+        } else {
+            let urls_: any = data_clone?.urls;
+            let filteredItems: any = [];
+            if (urls_ && Array.isArray(urls_) && urls_?.length) {
+                filteredItems = urls_.map((item_dt: any) => {
+                    if (item_dt?.base64) {
+                        delete item_dt?.base64;
+                    }
+                    return item_dt;
+                });
+                data_clone['urls'] = filteredItems;
+            }
         }
 
         if (jobId) {
             data_clone.jobId = jobId;
         }
-
+     
         const createJob = jobId ? publishJobAgain : createPostJob;
 
         let response: any = await createJob(data_clone);
