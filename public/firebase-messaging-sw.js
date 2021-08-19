@@ -122,7 +122,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `${url}home`;
+                return `${url}chat`;
             }
         case 16: //SELF_REVIEW_LIST_OPEN
             if (user_type == 1) {
@@ -134,7 +134,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}tradie-vouchers?tradieId=${receiverId}`;
             } else {
-                return `${url}home`;
+                return `${url}jobs`;
             }
         default:
             return `${url}home`;

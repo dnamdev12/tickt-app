@@ -56,18 +56,21 @@ const HomeClone = (props: any) => {
     return null;
 }
 
+
+// , {
+//     name: 'home-clone',
+//     path: '/home',
+//     component: HomeClone,
+//     authRoute: false,
+//     privateRoute: true,
+//     exact: true,
+// },
+
 const routes = [
     {
         name: 'main',
-        path: '/',
+        path: ['/', '/home'],
         component: Home,
-        authRoute: false,
-        privateRoute: true,
-        exact: true,
-    }, {
-        name: 'home-clone',
-        path: '/home',
-        component: HomeClone,
         authRoute: false,
         privateRoute: true,
         exact: true,
