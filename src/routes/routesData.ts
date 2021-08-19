@@ -51,11 +51,20 @@ import PaymentHistory from '../pages/paymentHistory';
 import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
 import GuestPage from '../pages/home/guestHome';
 
+import { HomeClone } from '../App';
+
 const routes = [
     {
         name: 'main',
         path: '/',
         component: Home,
+        authRoute: false,
+        privateRoute: true,
+        exact: true,
+    }, {
+        name: 'home-clone',
+        path: '/home',
+        component: HomeClone,
         authRoute: false,
         privateRoute: true,
         exact: true,

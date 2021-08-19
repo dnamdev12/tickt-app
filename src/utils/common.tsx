@@ -298,7 +298,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 2: //BUILDER
             if (user_type == 1) {
@@ -330,7 +330,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                let urlEncode: any = `?jobId=${jobId}&status=open`
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}`
                 return `/job-detail?${urlEncode}`;
             }
         case 10: //OPEN OPPOSITE USER REVIEW LIST

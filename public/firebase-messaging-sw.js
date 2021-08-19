@@ -50,7 +50,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}tradie-info?tradeId=${receiverId}`;
             } else {
-                return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `${url}tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 2: //BUILDER
             if (user_type == 1) {
@@ -82,7 +82,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                let urlEncode = `?jobId=${jobId}&status=open`
+                let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}`
                 return `${url}job-detail?${urlEncode}`;
             }
         case 10: //OPEN OPPOSITE USER REVIEW LIST
@@ -102,7 +102,7 @@ const onNotificationClick = (notification) => {
                 return `${url}jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
-            return `${url}`;
+            return `${url}home`;
         case 14: //MARK_MILESTONE
             if (user_type == 1) {
                 if (extra_data?.jobStatusText === 'COMPLETED') {
@@ -122,7 +122,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `${url}`;
+                return `${url}home`;
             }
         case 16: //SELF_REVIEW_LIST_OPEN
             if (user_type == 1) {
@@ -134,10 +134,10 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}tradie-vouchers?tradieId=${receiverId}`;
             } else {
-                return `${url}`;
+                return `${url}home`;
             }
         default:
-            return `${url}`;
+            return `${url}home`;
     }
 }
 
