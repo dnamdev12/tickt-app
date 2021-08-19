@@ -164,6 +164,7 @@ export const getLoggedInuserId = () => {
 }
 
 export const createRoom = async (jobId, tradieId, builderId, jobName) => {
+    let loggedInuserId = getLoggedInuserId();
 
     const roomID = `${jobId}_${tradieId}_${builderId}`;
 
@@ -201,7 +202,7 @@ export const createRoom = async (jobId, tradieId, builderId, jobName) => {
     // await createItem(itemInfo);
     //loggedin user inbox
     await createInbox(tradieId, roomID, jobId, builderId, jobName);
-    // supplier user inbox
+    // opposite user inbox
     await createInbox(builderId, roomID, jobId, tradieId, jobName);
     return roomInfoObj;
 }
@@ -323,7 +324,7 @@ export const getMessagesOfRoom = async (roomId, listner) => {
     //     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).off('value', msgListnerObj);
     // }
 
-    msgListnerObj = db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).orderByChild('messageTimestamp').on("value", (snapshot) => {
+    msgListnerObj = db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).orderByChild('messageTimestamp').limitToLast(500).on("value", (snapshot) => {
         let itemlist = [];
         snapshot.forEach((snap) => {
             itemlist.push(snap.val());
