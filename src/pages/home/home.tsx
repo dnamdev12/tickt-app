@@ -7,7 +7,7 @@ import storageService from '../../utils//storageService';
 import { addFCMNotifToken } from '../../redux/auth/actions';
 import { requestPermission } from "../../services/firebase";
 
-const Home = () => {
+const Home = (props:any) => {
     const [userType] = useState(storageService.getItem('userType'))
     const location: any = useLocation();
     const history: any = useHistory();
@@ -36,6 +36,7 @@ const Home = () => {
                 }
             }
         })();
+        props.history.replace('/');
     }, []);
 
     if (userType === 1) {
