@@ -1469,7 +1469,12 @@ export class PersonalInformation extends Component<Props, State> {
                                 {portfolioJobDetail?.portfolioImage?.map((image: string, index: number) => {
                                     return (
                                         <figure className="img_video" key={image}>
-                                            <img src={image ? image : dummy} alt="portfolio-images" />
+                                            <img
+                                                src={image ? image : dummy}
+                                                async-src={image ? image : dummy}
+                                                decoding="async"
+                                                loading="lazy"
+                                                alt="portfolio-images" />
                                             <img src={remove} alt="remove" className="remove"
                                                 onClick={() => {
                                                     const data: any = { ...portfolioJobDetail };
