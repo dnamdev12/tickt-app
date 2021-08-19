@@ -296,15 +296,15 @@ export const onNotificationClick = (notification: any) => {
     switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {
-                return `/tradie-info?tradeId=${receiverId}&type=1`;
+                return `/tradie-info?tradeId=${receiverId}`;
             } else {
                 return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
             }
         case 2: //BUILDER
             if (user_type == 1) {
-                return `/builder-info?builderId=${receiverId}`;
+                return `/builder-info?builderId=${senderId}`;
             } else {
-                return `/builder-info?builderId=${receiverId}&type=2`;
+                return `/builder-info?builderId=${receiverId}`;
             }
         case 3: //JOB
             if (user_type == 1) {
@@ -333,20 +333,20 @@ export const onNotificationClick = (notification: any) => {
                 let urlEncode: any = window.btoa(`?jobId=${jobId}&status=open`)
                 return `/job-detail?${urlEncode}`;
             }
-        case 10: //REVIEW
+        case 10: //VIEW SELF REVIEW
             if (user_type == 1) {
-                return `/builder-info?builderId=${receiverId}`;
+                return `/tradie-info?tradeId=${senderId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/builder-info?builderId=${senderId}`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
-                const type = extra_data?.redirect_status;
+                const type = +extra_data?.redirect_status;
                 return type === 1 ? `/past-jobs` : type === 2 ? `/active-jobs` : type === 3 ? '/new-jobs' : '/active-jobs';
             } else {
-                const type = extra_data?.redirect_status;
+                const type = +extra_data?.redirect_status;
                 return `/jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
@@ -366,9 +366,9 @@ export const onNotificationClick = (notification: any) => {
             }
         case 16: //TRADIE
             if (user_type == 1) {
-                return `/tradie-info?tradeId=${receiverId}&type=1`;
+                return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 17:
             if (user_type == 1) {

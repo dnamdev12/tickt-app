@@ -28,7 +28,7 @@ const MostViewedJobs = (props: any) => {
         const res = await getMostViewedJobs(data);
         if (res.success) {
             const allJobs = [...jobList, ...res.result?.data];
-            if (res.result?.data?.length < 10) {
+            if (res.result?.length < 10) {
                 setHasMoreItems(false);
             }
             setJobList(allJobs);

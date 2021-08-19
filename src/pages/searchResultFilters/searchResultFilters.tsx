@@ -374,14 +374,14 @@ const SearchResultFilters = (props: any) => {
                                 className="foo"
                                 displayType={'text'}
                                 thousandSeparator={true}
-                                prefix={'$ '}
+                                prefix={'$'}
                             />
                             <NumberFormat
                                 value={sortByPrice.budget[1]}
                                 className="foo"
                                 displayType={'text'}
                                 thousandSeparator={true}
-                                prefix={' - $ '}
+                                prefix={' - $'}
                             />
                         </span>
                         <Typography id="range-slider" gutterBottom></Typography>
