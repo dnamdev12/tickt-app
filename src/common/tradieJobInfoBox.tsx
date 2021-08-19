@@ -26,7 +26,8 @@ const TradieJobInfoBox = (props: any) => {
                 jobStatus: item?.jobStatus
             })
             // 'P2pvYklkPTYwOGY4Y2VkNjk0OWViMWIwMjM1ZjE2MSZzdGF0dXM9ZXhwaXJlZCZlZGl0PXRydWUmam9iPXBhc3Q=' 
-            let urlEncode: any = window.btoa(string_item)
+            // let urlEncode: any = window.btoa(string_item)
+            let urlEncode: any = string_item;
             props.history.push(`/job-detail?${urlEncode}`);
         }
     }

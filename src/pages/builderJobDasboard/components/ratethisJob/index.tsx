@@ -68,7 +68,8 @@ const RateThisJob = (props: any) => {
     }
 
     const jobClickHandler = ({ jobId }: any) => {
-        let urlEncode: any = window.btoa(`?jobId=${jobId}`)
+        // let urlEncode: any = window.btoa(`?jobId=${jobId}`)
+        let urlEncode: any = `?jobId=${jobId}`;
         props.history.push(`/job-detail?${urlEncode}`);
     }
 

@@ -45,7 +45,8 @@ const PastJobs = (props: any) => {
 
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&job=past&activeType=${props?.activeType}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&job=past&activeType=${props?.activeType}`)
+            let urlEncode: any = `?jobId=${jobId}&status=${status}&job=past&activeType=${props?.activeType}`
             props.history.push(`/job-detail?${urlEncode}`);
         }
     }

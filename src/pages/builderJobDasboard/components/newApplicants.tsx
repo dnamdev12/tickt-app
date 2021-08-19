@@ -43,7 +43,8 @@ const NewApplicants = (props: any) => {
         const props_: any = props;
         console.log({props_})
         if (jobId?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
+            let urlEncode: any = `?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`
             props_.history.push(`/job-detail?${urlEncode}`);
         }
     }

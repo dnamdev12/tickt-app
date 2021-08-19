@@ -76,7 +76,8 @@ class NeedApproval extends Component<Props, State> {
     redirectToInfo = ({ jobId, status }: any) => {
         let props: any = this.props;
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`)
+            let urlEncode: any = `?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`
             this.props.history.push(`/job-detail?${urlEncode}`);
         }
     }

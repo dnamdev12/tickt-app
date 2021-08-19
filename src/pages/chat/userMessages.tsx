@@ -469,7 +469,8 @@ const UserMessages = (props: any) => {
                                     if (storageService.getItem('userType') === 1) {
                                         props.history.push(`/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs`);
                                     } else {
-                                        let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
+                                        // let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
+                                        let urlEncode: any = `?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`
                                         props.history.push(`/job-detail?${urlEncode}`);
                                     }
                                 }}>View Job details</button>
