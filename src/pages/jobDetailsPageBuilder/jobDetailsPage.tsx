@@ -122,7 +122,7 @@ const JobDetailsPage = (props: PropsType) => {
     }, [])
 
     const preFetch = async () => {
-        let location_search = window.atob((props.history?.location?.search).substring(1))
+        let location_search = (props?.history?.location?.search).substring(1) //window.atob()
         const params = new URLSearchParams(location_search);
 
         if (params.get('edit')) {
@@ -156,7 +156,7 @@ const JobDetailsPage = (props: PropsType) => {
 
 
     const fetchQuestionsList = async (isTrue?: boolean) => {
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1); //window.atob()
         const params = new URLSearchParams(location_search);
         const questionData: any = {
             jobId: params.get('jobId'),
@@ -219,7 +219,7 @@ const JobDetailsPage = (props: PropsType) => {
 
     const loadMoreQuestionHandler = async () => {
         // will handle the pagination later
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1);// window.atob()
         const params = new URLSearchParams(location_search);
         const data: any = {
             jobId: params.get('jobId'),
@@ -408,7 +408,7 @@ const JobDetailsPage = (props: PropsType) => {
     let isPastJob: boolean = false;
     let hideDispute: any = null;
     if (props.location?.search) {
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1); //window.atob()
         const params = new URLSearchParams(location_search);
         if (params.get('status')) {
             paramStatus = params.get('status');

@@ -310,7 +310,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true` // &activeType=active
                 return `/job-detail?${urlEncode}`;
             }
         case 4: //PAYMENT
@@ -319,7 +319,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`
                 return `/job-detail?${urlEncode}`;
             }
         case 7: //REVIEW_TRADIE
@@ -330,7 +330,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=open`)
+                let urlEncode: any = `?jobId=${jobId}&status=open`
                 return `/job-detail?${urlEncode}`;
             }
         case 10: //OPEN OPPOSITE USER REVIEW LIST
@@ -360,7 +360,7 @@ export const onNotificationClick = (notification: any) => {
                 }
             } else {
                 if (extra_data?.jobStatusText === 'COMPLETED') {
-                    let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=past`)
+                    let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=past`
                     return `/job-detail?${urlEncode}`;
                 } else {
                     return `/jobs?active=active&jobId=${jobId}&markMilestone=true`;
