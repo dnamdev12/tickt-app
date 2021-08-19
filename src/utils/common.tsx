@@ -277,13 +277,13 @@ export const AsyncImage = (props: any) => {
 //     REVIEW_TRADIE: 7,
 //     REVIEW_BUILDER: 8,
 //     QUESTION: 9,
-//     REVIEW: 10,
+//     OPEN_OPPOSITE_USER_REVIEW_LIST: 10,
 //     TERM_AND_CONDITION: 11,
 //     JOB_DASHBOARD: 12, //With status key
 //     BLOCK_ACCOUNT: 13,
 //     MARK_MILESTONE: 14,
 //     JOB_HOMEPAGE: 15, //tradeid and specialization id
-//     REVIEW_SELF: 16
+//     SELF_REVIEW_LIST_OPEN: 16
 //     TRADIE_VOUCH_RECEIVED: 17
 // }
 //      extra_data => JOB_SATUS=INACTIVE: 
@@ -310,7 +310,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `/job-detail?${urlEncode}`;
             }
         case 4: //PAYMENT
@@ -319,7 +319,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `/job-detail?${urlEncode}`;
             }
         case 7: //REVIEW_TRADIE
@@ -333,11 +333,11 @@ export const onNotificationClick = (notification: any) => {
                 let urlEncode: any = window.btoa(`?jobId=${jobId}&status=open`)
                 return `/job-detail?${urlEncode}`;
             }
-        case 10: //VIEW SELF REVIEW
-            if (user_type == 1) {
-                return `/tradie-info?tradeId=${senderId}`;
+        case 10: //OPEN OPPOSITE USER REVIEW LIST
+            if (user_type == 1) {//tradieId builderId in extra_data
+                return `/builder-info?builderId=${extra_data?.builderId}`;
             } else {
-                return `/builder-info?builderId=${senderId}`;
+                return `/tradie-info?tradeId=${extra_data?.tradieId}`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;
@@ -353,22 +353,30 @@ export const onNotificationClick = (notification: any) => {
             return '/';
         case 14: //MARK_MILESTONE
             if (user_type == 1) {
-                return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
+                } else {
+                    return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                }
             } else {
-                return `/jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=past`)
+                    return `/job-detail?${urlEncode}`;
+                } else {
+                    return `/jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                }
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
-                return `/job-detail?${urlEncode}`;
+                return '/';
             }
-        case 16: //TRADIE
+        case 16: //SELF_REVIEW_LIST_OPEN
             if (user_type == 1) {
                 return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
+                return `/builder-info?builderId=${receiverId}`;
             }
         case 17:
             if (user_type == 1) {

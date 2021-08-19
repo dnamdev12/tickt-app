@@ -62,7 +62,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `${url}job-detail?${urlEncode}`;
             }
         case 4: //PAYMENT
@@ -71,7 +71,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`)
                 return `${url}job-detail?${urlEncode}`;
             }
         case 7: //REVIEW_TRADIE
@@ -85,11 +85,11 @@ const onNotificationClick = (notification) => {
                 let urlEncode = window.btoa(`?jobId=${jobId}&status=open`)
                 return `${url}job-detail?${urlEncode}`;
             }
-        case 10: //VIEW SELF REVIEW
-            if (user_type == 1) {   
-                return `${url}tradie-info?tradeId=${senderId}`;
+        case 10: //OPEN OPPOSITE USER REVIEW LIST
+            if (user_type == 1) {//tradieId builderId in extra_data
+                return `${url}builder-info?builderId=${extra_data?.builderId}`;
             } else {
-                return `${url}builder-info?builderId=${senderId}`;
+                return `${url}tradie-info?tradeId=${extra_data?.tradieId}`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;
@@ -105,24 +105,32 @@ const onNotificationClick = (notification) => {
             return `${url}`;
         case 14: //MARK_MILESTONE
             if (user_type == 1) {
-                return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
+                } else {
+                    return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                }
             } else {
-                return `${url}jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`)
+                    return `${url}job-detail?${urlEncode}`;
+                } else {
+                    return `${url}jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                }
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                let urlEncode = window.btoa(`?jobId=${jobId}&status=open`)
-                return `${url}job-detail?${urlEncode}`;
+                return `${url}`;
             }
-        case 16: //TRADIE
+        case 16: //SELF_REVIEW_LIST_OPEN
             if (user_type == 1) {
                 return `${url}tradie-info?tradeId=${receiverId}`;
             } else {
-                return `${url}tradie-info?tradeId=${senderId}&hideInvite=true`;
+                return `${url}builder-info?builderId=${receiverId}`;
             }
-        case 17:
+        case 17: //TRADIE_RECEIVE_VOUCH
             if (user_type == 1) {
                 return `${url}tradie-vouchers?tradieId=${receiverId}`;
             } else {
