@@ -3,6 +3,7 @@ import { getJobDetails } from '../../redux/jobs/actions';
 import storageService from '../../utils/storageService';
 
 import notFound from '../../assets/images/not-found.png';
+import chatVideoIcon from '../../assets/images/video@3x.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import viewMore from '../../assets/images/icon-direction-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
@@ -108,7 +109,7 @@ const UserMessages = (props: any) => {
 
     const sendMessage = async () => {
         //setIsLoading(true);
-        if (messageText || messageText.trim() !== "") {
+        if (messageText && messageText.trimLeft() !== "") {
             setMessageText('');
             const lastMsg: any = await sendTextMessage(props.roomId, messageText);
             setInboxToTopWithLastMsg(lastMsg);
@@ -243,6 +244,17 @@ const UserMessages = (props: any) => {
                     <div className={`${messageClass}`}>
                         <figure className="media">
                             <img src={msg.mediaUrl || notFound} alt="media"
+                                async-src={msg.mediaUrl || notFound}
+                                decoding="async"
+                                loading="lazy"
+                                onError={(e: any) => {
+                                    if (e?.target?.onerror) {
+                                        e.target.onerror = null;
+                                    }
+                                    if (e?.target?.src) {
+                                        e.target.src = notFound;
+                                    }
+                                }}
                                 onClick={() => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
@@ -257,6 +269,17 @@ const UserMessages = (props: any) => {
                 <div className={`${messageClass}`}>
                     <figure className="media">
                         <img src={msg.mediaUrl || notFound} alt="media"
+                            async-src={msg.mediaUrl || notFound}
+                            decoding="async"
+                            loading="lazy"
+                            onError={(e: any) => {
+                                if (e?.target?.onerror) {
+                                    e.target.onerror = null;
+                                }
+                                if (e?.target?.src) {
+                                    e.target.src = notFound;
+                                }
+                            }}
                             onClick={() => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
@@ -278,8 +301,9 @@ const UserMessages = (props: any) => {
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
-                        <figure className="media">
+                        <figure className="media" style={{ backgroundColor: 'black' }}>
                             <video src={msg.mediaUrl || notFound}
+                                poster={chatVideoIcon}
                                 onClick={() => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
@@ -294,8 +318,9 @@ const UserMessages = (props: any) => {
         } else
             return (
                 <div className={`${messageClass}`}>
-                    <figure className="media">
+                    <figure className="media" style={{ backgroundColor: 'black' }}>
                         <video src={msg.mediaUrl || notFound}
+                            poster={chatVideoIcon}
                             onClick={() => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
@@ -339,7 +364,7 @@ const UserMessages = (props: any) => {
                 key={sources?.length}
                 // disableLocalStorage={true}
                 onClose={() => {
-                    setSelectSlide(0)
+                    setSelectSlide(1)
                 }}
             />
             <div className="detail_col">

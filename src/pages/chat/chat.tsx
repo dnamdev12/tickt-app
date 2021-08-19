@@ -113,7 +113,7 @@ const Chat = (props: PropTypes) => {
             ress = [...sortedRes];
             ress.unshift(selectedRoomInfo);
         }
-        console.log('ress: ', ress, "sortedRes", sortedRes, "res", res);
+        console.log('ress: ', ress, "sortedRes", sortedRes, "res", res, "selectedRoomInfo", selectedRoomInfo);
         const newRes = (Array.isArray(ress) && selectedRoomInfo) ? ress : sortedRes;
         setInBoxData(newRes.length === 0 ? [{ 'firstKey': 'emptyRes' }] : newRes);
         if (newRes.length > 0 && selectedRoomID === '') {

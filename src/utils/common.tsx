@@ -333,11 +333,11 @@ export const onNotificationClick = (notification: any) => {
                 let urlEncode: any = window.btoa(`?jobId=${jobId}&status=open`)
                 return `/job-detail?${urlEncode}`;
             }
-        case 10: //REVIEW
+        case 10: //VIEW SELF REVIEW
             if (user_type == 1) {
-                return `/builder-info?builderId=${senderId}`;
+                return `/tradie-info?tradeId=${senderId}`;
             } else {
-                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
+                return `/builder-info?builderId=${senderId}`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;

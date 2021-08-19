@@ -85,11 +85,11 @@ const onNotificationClick = (notification) => {
                 let urlEncode = window.btoa(`?jobId=${jobId}&status=open`)
                 return `${url}job-detail?${urlEncode}`;
             }
-        case 10: //REVIEW
-            if (user_type == 1) {
-                return `${url}builder-info?builderId=${senderId}`;
+        case 10: //VIEW SELF REVIEW
+            if (user_type == 1) {   
+                return `${url}tradie-info?tradeId=${senderId}`;
             } else {
-                return `${url}tradie-info?tradeId=${senderId}&hideInvite=true`;
+                return `${url}builder-info?builderId=${senderId}`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;
