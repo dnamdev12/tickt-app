@@ -41,8 +41,8 @@ messaging.onBackgroundMessage((payload) => {
 const onNotificationClick = (notification) => {
     // const url = process.env.REACT_APP_BASE_URL;
     // const url = 'http://localhost:3000/';
-    // const url = 'https://ticktreactqa.appskeeper.in/';
-    const url = 'https://ticktreactdev.appskeeper.in/';
+    const url = 'https://ticktreactqa.appskeeper.in/';
+    // const url = 'https://ticktreactdev.appskeeper.in/';
     const { notificationType, user_type, receiverId, senderId, jobId } = notification;
     let extra_data = JSON.parse(notification?.extra_data);
     switch (Number(notificationType)) {
