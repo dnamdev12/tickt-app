@@ -538,7 +538,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <img src={editIconBlue} alt="edit" />
                             <div className="edit_menu">
                                 <ul>
-                                    {activeType == "open" && (
+                                    {/* {activeType == "open" && (
                                         <React.Fragment>
                                             <li
                                                 onClick={() => {
@@ -552,7 +552,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 }}
                                                 className="icon delete">Delete</li>
                                         </React.Fragment>
-                                    )}
+                                    )} */}
                                     {activeType == "active" && (
                                         <React.Fragment>
                                             <li
