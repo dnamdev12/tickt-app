@@ -164,8 +164,8 @@ const BannerSearch = (props: PropsType) => {
             if (state?.location && state?.location?.coordinates?.length) {
                 let coordinates = state.location.coordinates;
                 let valueItem = {
-                    lat: coordinates[0],
-                    lng: coordinates[1]
+                    lat: coordinates[1],
+                    lng: coordinates[0]
                 };
                 setSelectedAddress(valueItem);
             }
