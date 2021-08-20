@@ -35,7 +35,7 @@ const getRegisterToken = () => {
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
-                storageService.setItem("FCM token", currentToken);
+                storageService.setItem("fcmToken", currentToken);
                 resolve({ success: true, deviceToken: currentToken });
             } else {
                 console.log('No registration token available.');
@@ -196,7 +196,6 @@ export const createRoom = async (jobId, tradieId, builderId, jobName) => {
     roomInfoObj.chatRoomMembers = chatRoomMembers;
     roomInfoObj.chatLastUpdates = chatLastUpdates;
 
-    console.log(roomInfoObj, 'roomINfoObj', `${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`, "TESTTTTTTTTTTTTTTT");
     await db.ref(`${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`).set(roomInfoObj);
     // debugger;
     // await createItem(itemInfo);

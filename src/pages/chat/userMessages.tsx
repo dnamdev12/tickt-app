@@ -308,7 +308,7 @@ const UserMessages = (props: any) => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
                                 }}
-                                style={{ height: '84px', width: '84px' }}
+                                style={{ height: '84px', width: '84px', padding: '25px' }}
                             />
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </figure>
@@ -325,7 +325,7 @@ const UserMessages = (props: any) => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
                             }}
-                            style={{ height: '84px', width: '84px' }}
+                            style={{ height: '84px', width: '84px', padding: '25px' }}
                         />
                         <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                     </figure>

@@ -14,6 +14,9 @@ export const callTradeList = () => ({ type: actionTypes.CALL_TRADE_LIST })
 
 export const postSignup = async (data: any) => {
   console.log(data);
+  var today = new Date();
+  var uniqueToken = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+  data.deviceToken = uniqueToken;
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
   setLoading(false);
@@ -24,7 +27,8 @@ export const postSignup = async (data: any) => {
       "email": response.result.email,
       "userName": response.result.firstName,
       "_id": response.result._id,
-      "accountType": response.result?.accountType
+      "accountType": response.result?.accountType,
+      "deviceId": uniqueToken
     });
     return { success: true, result: response.result };
   }
@@ -80,6 +84,9 @@ export const createPassword = async (passwordInfo: object) => {
 
 
 export const callLogin = async (data: any) => {
+  var today = new Date();
+  var uniqueToken = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+  data.deviceToken = uniqueToken;
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.login, data);
   setLoading(false);
@@ -98,7 +105,8 @@ export const callLogin = async (data: any) => {
       "email": response.result?.email,
       "userName": response.result?.userName,
       "_id": response.result?._id,
-      "accountType": response.result?.accountType
+      "accountType": response.result?.accountType,
+      "deviceId": uniqueToken
     });
 
     if (response.result.user_type === 1) {
@@ -138,6 +146,9 @@ export const checkSocialId = async (data: any) => {
 
 export const socialSignupLogin = async (data: any) => {
   console.log(data);
+  var today = new Date();
+  var uniqueToken = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+  data.deviceToken = uniqueToken;
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.SocialAuth, data);
   setLoading(false);
@@ -148,6 +159,7 @@ export const socialSignupLogin = async (data: any) => {
       "email": response.result?.email,
       "userName": response.result?.firstName || 'name',
       "_id": response.result?._id,
+      "deviceId": uniqueToken
     });
     return { success: true, successToken: response.result.token, result: response.result };
   }

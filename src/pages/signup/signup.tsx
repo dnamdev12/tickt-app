@@ -152,12 +152,12 @@ const Signup = (props: Propstype) => {
     const onSubmitSignup = async (lastStepFields: any) => {
         var res: any;
         const newData = { ...signupData, ...lastStepFields };
-        const data = {
+        let data = {
             ...newData,
             //company_name: newData.companyName,
             trade: [newData.trade],
             user_type: signupData.user_type,
-            deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+            // deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
         }
         //delete data.companyName;
         if (data.user_type === 2) {

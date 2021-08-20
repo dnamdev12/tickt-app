@@ -7,7 +7,7 @@ import storageService from '../../utils//storageService';
 import { addFCMNotifToken } from '../../redux/auth/actions';
 import { requestPermission } from "../../services/firebase";
 
-const Home = (props:any) => {
+const Home = (props: any) => {
     const [userType] = useState(storageService.getItem('userType'))
     const location: any = useLocation();
     const history: any = useHistory();
@@ -21,8 +21,8 @@ const Home = (props:any) => {
             if (userType === 1 || userType === 2) {
                 const res: any = await requestPermission();
                 const data: any = {
-                    deviceToken: res.deviceToken,
-                    deviceId: "dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz",
+                    deviceToken: res.deviceToken, //fcm device token
+                    deviceId: `${storageService.getItem('userInfo')?.deviceId}`,
                     deviceType: 1
                 }
                 console.log(res, "getRegisterToken", data, "addFCMNotifToken");

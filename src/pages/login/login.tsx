@@ -110,7 +110,8 @@ const LoginPage = (props: Propstype) => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
-        const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
+        let newData = { email: loginData.email, password: loginData.password };
+        // const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
         if (validateForm()) {
             const res: any = await callLogin(newData);
             if (res.success) {

@@ -38,12 +38,12 @@ const SocialAuth = (props: Propstype) => {
         if (res.success) {
             if (res.isProfileCompleted) {
                 //in case of existing social account
-                const data: any = {
+                let data: any = {
                     //firstName: profileData.name,
                     authType: "login",
                     email: response.profileObj?.email,
                     socialId: response.profileObj?.googleId,
-                    deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+                    // deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "google",
                     ...(props.userType && { user_type: props.userType })
                 }
@@ -79,11 +79,11 @@ const SocialAuth = (props: Propstype) => {
         if (resCheckId.success) {
             if (resCheckId.isProfileCompleted) {
                 //in case of existing social account
-                const data: any = {
+                let data: any = {
                     //firstName: profileData.name,
                     authType: "login",
                     email: resSocial.result?.email,
-                    deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+                    // deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "linkedIn",
                     socialId: resSocial.result?.id,
                     ...(props.userType && { user_type: props.userType })
