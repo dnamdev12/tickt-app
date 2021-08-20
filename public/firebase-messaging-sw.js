@@ -144,6 +144,8 @@ const onNotificationClick = (notification) => {
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
     let url = onNotificationClick(event.notification?.data);
+    let dot = url.includes('?') ? '&' : '?' ;
+    url = url + `${dot}pushNotifId=${event.notification?.data?._id}`;
     console.log('url: ', url);
     event.waitUntil(
         self.clients.openWindow(`${url}`)

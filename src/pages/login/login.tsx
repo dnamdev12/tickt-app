@@ -124,9 +124,6 @@ const LoginPage = (props: Propstype) => {
                     // window.location.reload();
                     props.setShowModal(!props.showModal);
                 }
-                if (res?.data) {
-                    localStorage.setItem('email', res.data.email);
-                }
                 props?.history?.push('/');
             }
         }

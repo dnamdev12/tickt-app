@@ -35,7 +35,6 @@ const getRegisterToken = () => {
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
-                storageService.setItem("fcmToken", currentToken);
                 resolve({ success: true, deviceToken: currentToken });
             } else {
                 console.log('No registration token available.');
@@ -43,7 +42,7 @@ const getRegisterToken = () => {
                 resolve({ success: false });
             }
         }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
+            console.log('An error occurred while retrieving  from firebase. ', err);
             setTokenSentToServer(false);
             reject({ success: false });
         });
@@ -52,6 +51,7 @@ const getRegisterToken = () => {
 
 const setTokenSentToServer = (sent) => {
     storageService.setItem('sentToServer', sent ? '1' : '0');
+    storageService.setItem('fcmToken', '');
 }
 
 const isTokenSentToServer = () => {
@@ -61,18 +61,16 @@ const isTokenSentToServer = () => {
 export const requestPermission = () => {
     return new Promise((resolve, reject) => {
         Notification.requestPermission().then((permission) => {
-            if (permission === 'granted' && isTokenSentToServer()) {
-                getRegisterToken();
-                console.log('Token Already sent');
-                resolve({ success: false });
-            }
-            else if (!isTokenSentToServer()) {
-                const data = getRegisterToken();
-                resolve(data);
-            }
+            const data = getRegisterToken();
+            resolve(data);
+            // if (permission === 'granted' && isTokenSentToServer()) {
+            //     const data = getRegisterToken();
+            //     console.log('Token Already sent');
+            //     resolve(data);
+            // }
         })
             .catch((err) => {
-                console.log('Unable to get permission to show notification : ', err);
+                console.log('Unable to get permission to show notification browser : ', err);
                 reject({ success: false });
             });
     })
@@ -126,7 +124,7 @@ export const firebaseLogInWithEmailPassword = async (authData, loginRes, isSignu
         let response = await auth.signInWithEmailAndPassword(authData.email, authData.password);
         if (response) {
             console.log('firebase auth login success: ');
-            if(isSignup) return;
+            if (isSignup) return;
             await db.ref(`${FIREBASE_COLLECTION.USERS}/${loginRes?._id}`).set({
                 email: loginRes?.email,
                 image: loginRes?.user_image,

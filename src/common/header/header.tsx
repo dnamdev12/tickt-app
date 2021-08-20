@@ -132,24 +132,27 @@ const Header = (props: any) => {
             }
         }
     }
-
-    console.log('notificationData: ', notificationData);
+    console.log('notificationDataHeader: ', notificationData);
 
     useEffect(() => {
         onMessageListner();
         setActiveLink('discover');
-
-        const firstLogin = storageService.getItem('firstLogin');
-        if (firstLogin === 'true') {
-            // setTourDialog(true);
-        }
         setUserType(storageService.getItem('userType'))
         callOnPathChange();
+
+        const pushNotifId = new URLSearchParams(props.location?.search)?.get('pushNotifId');
+        if (pushNotifId) {
+            (async () => {
+                const res: any = markNotifAsRead({ notificationId: pushNotifId });
+                if (res.success) {
+                    callNotificationList(true, true);
+                }
+            })();
+        }
     }, []);
 
 
     const callOnPathChange = () => {
-        console.log('Inside --- callOnPathChange user_id')
         if (userType && !DISABLE_HEADER.includes(pathname) && pathname !== 'guest-user') {
             callNotificationList(true, true);
             if (userType === 1) {
@@ -282,7 +285,7 @@ const Header = (props: any) => {
         setLogoutClicked(false);
         dispatch({ type: 'USER_LOGGED_OUT' });
         history.push('/login');
-        fetch(urlFor(Urls.logout), {
+        fetch(urlFor(`${Urls.logout}?deviceId=${storageService.getItem('userInfo')?.deviceId}`), {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -410,7 +413,6 @@ const Header = (props: any) => {
                         zIndex: 2000,
                     },
                     overlay: {
-                        // background: 'linear-gradient(180deg, rgba(22, 29, 74, 0.80) 20%, rgba(22, 29, 74, 0.5) 30%)',
                         background: '#00000099',
                     }
                 }}
