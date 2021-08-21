@@ -290,9 +290,18 @@ export const AsyncImage = (props: any) => {
 // }
 //      extra_data => JOB_SATUS=INACTIVE: 
 
+const isJson = (data: any) => {
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
+}
+
 export const onNotificationClick = (notification: any) => {
     const { notificationType, user_type, receiverId, senderId, jobId } = notification;
-    let extra_data = JSON.parse(notification?.extra_data);
+    let extra_data = isJson(notification?.extra_data);
+    console.log('extra_data: ', extra_data);
 
     switch (Number(notificationType)) {
         case 1: //TRADIE

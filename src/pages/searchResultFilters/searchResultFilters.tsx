@@ -37,7 +37,7 @@ const SearchResultFilters = (props: any) => {
         pay_type: 'Per hour',
         budget: [2100, 5100],
         showBudgetPerHour: [2100, 5100],
-        showBudgetFixed: [21000, 51000],
+        showBudgetFixed: [210000, 510000],
         showResultClicked: false
     });
 
@@ -361,7 +361,7 @@ const SearchResultFilters = (props: any) => {
                         </div>
                         <div className="radio_wrap agree_check">
                             <input className="filter-type filled-in" name="pay_type" type="radio" id="fixed" checked={sortByPrice.pay_type === 'Fixed price' ? true : false}
-                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", budget: [21000, 51000], showBudgetFixed: [21000, 51000] }))}
+                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", budget: [210000, 510000], showBudgetFixed: [210000, 510000] }))}
                             />
                             <label htmlFor="fixed">Fixed price</label>
                         </div>
@@ -387,7 +387,8 @@ const SearchResultFilters = (props: any) => {
                         <Typography id="range-slider" gutterBottom></Typography>
                         <Slider
                             min={0}
-                            max={sortByPrice.pay_type === 'Per hour' ? 10000 : 99999}
+                            max={sortByPrice.pay_type === 'Per hour' ? 10000 : 999999}
+                            step={sortByPrice.pay_type === 'Per hour' ? 100 : 10000}
                             value={sortByPrice.pay_type === 'Per hour' ? sortByPrice.showBudgetPerHour : sortByPrice.showBudgetFixed}
                             onChange={handleSliderChange}
                             aria-labelledby="range-slider"
