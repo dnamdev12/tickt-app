@@ -197,7 +197,7 @@ const SearchFilter = (props: any) => {
             </li>
             <li>
                 <a className={sortBySorting.sortBy > 0 ? 'active' : ''} onClick={sortBySortingClick}>
-                    {'Sorting'}
+                    {`Sorting`}
                     {/* 
                     {sortBySorting.sortBy === 0 && 'Sort by'}
                     {sortBySorting.sortBy === 1 && 'Highest rated'}
@@ -211,7 +211,7 @@ const SearchFilter = (props: any) => {
 
     const showResultSearch = () => {
         if (!sortByFilter?.tradeId?.length) {
-            updateOnChange();
+            updateOnChange(sortBySorting.sortBy);
             sortByFilterClose();
             setFilterEnable(false);
             return
@@ -222,7 +222,7 @@ const SearchFilter = (props: any) => {
         //     return;
         // }
 
-        updateOnChange();
+        updateOnChange(sortBySorting.sortBy);
         sortByFilterClose();
         setFilterEnable(true);
     }

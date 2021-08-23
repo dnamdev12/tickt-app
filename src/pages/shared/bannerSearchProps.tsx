@@ -498,6 +498,15 @@ const BannerSearch = (props: PropsType) => {
                 specializationId: specializationId,
             }
 
+            if (!tradeId?.length) {
+                setShowToast(true, 'please enter the valid search text.');
+                return;
+            }
+
+            if (!specializationId?.length) {
+                delete data?.specializationId;
+            }
+
             if (sortBy > 0) {
                 data['sortBy'] = sortBy;
             }

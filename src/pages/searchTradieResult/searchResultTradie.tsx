@@ -121,6 +121,20 @@ const SearchResultTradie = (props: any) => {
     }, [props])
     */
 
+
+    const checkIfExist = (data: any) => {
+        if (data && Array.isArray(data) && data?.length) {
+            let element_id = data[0].tradieId;
+            let response = localData.find((item: any) => item.tradieId === element_id);
+            if (response) {
+                console.log({ response }, 'duplicate');
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
+
     useEffect(() => {
         let newProps = homeSearchJobData;
         let propsPage = 1;
@@ -170,14 +184,15 @@ const SearchResultTradie = (props: any) => {
                 setLocalData(newProps);
                 setCurrentPage(propsPage);
             } else if (propsPage > 1 && currentPage > 1 && currentPage === propsPage) {
-                setLocalData((prev: any) => [...prev, ...newProps]);
+                if (!checkIfExist(newProps)) {
+                    setLocalData((prev: any) => [...prev, ...newProps]);
+                }
             } else if (propsPage === 1 && currentPage > 1) {
                 setLocalData(newProps);
                 setCurrentPage(propsPage);
             } else {
                 if (!local_info_tradeId?.length && localTradeId?.length && propsTradeId?.length) {
                     if (localTradeId === propsTradeId) {
-                        alert('Ok!---1')
                         setLocalData(newProps);
                         setCurrentPage(propsPage);
                     }
