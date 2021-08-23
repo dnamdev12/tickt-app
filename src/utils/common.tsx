@@ -396,7 +396,7 @@ export const onNotificationClick = (notification: any) => {
                 return '/'
             }
         case 18: //ADMIN_NOTIFICATION_ANNOUNCEMENT
-            return `/admin-announcement-page`;
+            return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
         default:
             return '/';
     }

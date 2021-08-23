@@ -602,13 +602,18 @@ const JobDetailsPage = (props: PropsType) => {
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
                                             <button className="fill_btn full_btn btn-effect" onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
-                                    ) : (paramStatus) ? (
-                                        <button
-                                            className="fill_btn full_btn btn-effect"
-                                            onClick={applyJobClicked}>
-                                            {paramStatus}
-                                        </button>
-                                    ) : null}
+                                    ) : (!jobDetailsData?.applyButtonDisplay && ['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())) ?
+                                        <div className="bottom_btn">
+                                            <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
+                                            <button className="fill_btn full_btn btn-effect disable_btn" >{jobDetailsData?.appliedStatus?.toUpperCase()}</button>
+                                        </div>
+                                        : (paramStatus) ? (
+                                            <button
+                                                className="fill_btn full_btn btn-effect"
+                                                onClick={applyJobClicked}>
+                                                {paramStatus}
+                                            </button>
+                                        ) : null}
                                     {/* Added  || jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
                                     {props.isSkeletonLoading ? <Skeleton /> : (jobInviteAction === 'invite' || jobDetailsData?.isInvited) &&
                                         <>

@@ -157,9 +157,9 @@ export const getRecommendedJobs = async (data: any) => {
     return { success: false };
 }
 
-export const getAdminNotifType18 = async (data: any) => {
+export const getAdminNotificationData = async ({ admin_notification_id }: any) => {
     setLoading(true);
-    const response: FetchResponse = await NetworkOps.putToJson(Urls.getAdminNotifType18, data);
+    const response: FetchResponse = await NetworkOps.get(Urls.getAdminNotificationData + `?admin_notification_id=${admin_notification_id}`);
     setLoading(false);
     if (response.status_code === 200) {
         return { success: true, result: response.result };

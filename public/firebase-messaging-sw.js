@@ -134,10 +134,10 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}tradie-vouchers?tradieId=${receiverId}`;
             } else {
-                return `${url}`;
+                return `${url}home`;
             }
         case 18: //ADMIN_NOTIFICATION
-            return `/admin-announcement-page`;
+            return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
         default:
             return `${url}home`;
     }

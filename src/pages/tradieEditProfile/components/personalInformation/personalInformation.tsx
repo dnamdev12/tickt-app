@@ -911,6 +911,26 @@ export class PersonalInformation extends Component<Props, State> {
                                     </div>
                                     {!!errors?.mobileNumber && <span className="error_msg">{errors?.mobileNumber}</span>}
                                 </div>
+                                {this.userType === 1 && <div className="form_field">
+                                    <label className="form_label">Australian Business Number</label>
+                                    <div className="text_field">
+                                        <NumberFormat
+                                            value={basicDetailsData?.abn}
+                                            displayType={'input'}
+                                            type={'tel'}
+                                            placeholder="51 824 753 556"
+                                            format="## ### ### ###"
+                                            isNumericString={true}
+                                            onValueChange={(values) => {
+                                                const { formattedValue, value } = values;
+                                                const newBasicDetails = { ...this.state.basicDetailsData };
+                                                newBasicDetails.abn = value;
+                                                this.setState({ basicDetailsData: newBasicDetails, isEditProfileModalChanged: true });
+                                            }}
+                                        />
+                                    </div>
+                                    {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
+                                </div>}
                                 <div className="form_field">
                                     <label className="form_label">Email</label>
                                     <div className="text_field f_spacebw">
@@ -935,17 +955,6 @@ export class PersonalInformation extends Component<Props, State> {
                                                 const docDetails: any = url && this.qualificationFileDetails(url);
                                                 return (
                                                     <>
-                                                        {/* <div className="form_field">
-                                                        <div className="relate">
-                                                            <div className="checkbox_wrap agree_check">
-                                                                <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'} />
-                                                                <label htmlFor={qualificationName + 'upload'} className="line-1">{qualificationName || ''}</label>
-                                                            </div>
-                                                            <div className="edit_delete tr">
-                                                                <span className="remove" title="Remove"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div> */}
                                                         <div className="f_spacebw mt-15" key={qualification_id}>
                                                             <div className="checkbox_wrap agree_check">
                                                                 <input
@@ -996,17 +1005,6 @@ export class PersonalInformation extends Component<Props, State> {
                                         remainingQualificationDoc?.map(({ _id, name, url, isSelected, fileName }: { _id: string, name: string, url: string, isSelected: string, fileName: string }) => {
                                             const docDetails: any = url && this.qualificationFileDetails(url);
                                             return (
-                                                // <div className="form_field">
-                                                //     <div className="relate">
-                                                //         <div className="checkbox_wrap agree_check">
-                                                //             <input name="qualification" className="filter-type filled-in" type="checkbox" id={name + 'upload'} />
-                                                //             <label htmlFor={name + 'upload'} className="line-1">{name}</label>
-                                                //         </div>
-                                                //         <div className="edit_delete tr">
-                                                //             <span className="remove" title="Remove"></span>
-                                                //         </div>
-                                                //     </div>
-                                                // </div>
                                                 <>
                                                     <div className="f_spacebw mt-15" key={_id}>
                                                         <div className="checkbox_wrap agree_check">
@@ -1069,14 +1067,28 @@ export class PersonalInformation extends Component<Props, State> {
                                             </div>
                                             {!!errors?.position && <span className="error_msg">{errors?.position}</span>}
                                         </div>
+                                        <div className="form_field">
+                                            <label className="form_label">Australian Business Number</label>
+                                            <div className="text_field">
+                                                {/* <input type="text" placeholder="51 824 753 556" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} /> */}
+                                                <NumberFormat
+                                                    value={basicDetailsData?.abn}
+                                                    displayType={'input'}
+                                                    type={'tel'}
+                                                    placeholder="51 824 753 556"
+                                                    format="## ### ### ###"
+                                                    isNumericString={true}
+                                                    onValueChange={(values) => {
+                                                        const { formattedValue, value } = values;
+                                                        const newBasicDetails = { ...this.state.basicDetailsData };
+                                                        newBasicDetails.abn = value;
+                                                        this.setState({ basicDetailsData: newBasicDetails, isEditProfileModalChanged: true });
+                                                    }}
+                                                />
+                                            </div>
+                                            {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
+                                        </div>
                                     </>}
-                                <div className="form_field">
-                                    <label className="form_label">Australian Business Number</label>
-                                    <div className="text_field">
-                                        <input type="text" placeholder="Australian Business Number" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
-                                    </div>
-                                    {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
-                                </div>
                             </div>
 
                             {(this.userType === 1 && basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <><div className="form_field">

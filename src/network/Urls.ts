@@ -146,7 +146,7 @@ const Urls = {
     getMostViewedJobs: `${versions.v1}${ServiceEnum.home}mostViewedJobs`, //Admin
     getRecommendedJobs: `${versions.v1}${ServiceEnum.home}recommendedJobs`, //Admin
     getChatJobList: `${versions.v1}${ServiceEnum.job}jobList`, //Admin
-    getAdminNotifType18: `${versions.v1}${ServiceEnum.home}getAdminNotifType18`, //Admin
+    getAdminNotificationData: `${versions.v1}${ServiceEnum.home}notification/admin`, //Admin
 }
 
 export const urlFor = (service: String): string => {
