@@ -151,6 +151,10 @@ const JobDetailsPage = (props: PropsType) => {
             const id: string | null = params.get('tradieId');
             setTradieId(id ? id : '');
         }
+
+        if (params.get('openQList') === "true") {
+            setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }));
+        }
         fetchQuestionsList();
     }
 
