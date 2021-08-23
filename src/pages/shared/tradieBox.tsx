@@ -79,6 +79,7 @@ class TradieBox extends Component<PropsType, State> {
                         </figure>
                         <div className="details">
                             <span className="name">{item?.tradieName || item?.tradie_details?.firstName}</span>
+                            {/* {item?.tradieId} */}
                             <span className="rating">{(item?.ratings) || (item?.tradie_details?.rating)?.toFixed(1) || 0} , {item?.reviews || (item?.tradie_details?.review) || 0} reviews </span>
                             {/* <span className="rating">{item?.ratings || randomRating} , {item?.reviews || randomReview} reviews </span> */}
                         </div>

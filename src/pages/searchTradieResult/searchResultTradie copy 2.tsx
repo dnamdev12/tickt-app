@@ -121,23 +121,9 @@ const SearchResultTradie = (props: any) => {
     }, [props])
     */
 
-
-    const checkIfExist = (data: any) => {
-        if (data && Array.isArray(data) && data?.length) {
-            let element_id = data[0].tradieId;
-            let response = localData.find((item: any) => item.tradieId === element_id);
-            if (response) {
-                console.log({ response }, 'duplicate');
-                return true;
-            }
-            return false;
-        }
-        return false;
-    }
-
     useEffect(() => {
         let newProps = homeSearchJobData;
-        let propsPage = 1;
+        let propsPage = 0;
         let propsTradeId = '';
         let localTradeId = '';
         let local_info: any = localInfo;
@@ -160,45 +146,70 @@ const SearchResultTradie = (props: any) => {
         }
 
         let cp = currentPage * 10;
-
-        if (!local_info_tradeId?.length && localTradeId?.length) {
-            getTitleInfo({
-                name: '',
-                count: 0,
-                tradeId: [],
-                specializationId: [],
-                location: null,
-                doingLocalChanges: false,
-                suggestionSelected: ''
-            })
-        }
-
-        if (propsPage) {
-            if (local_info_tradeId?.length && localTradeId?.length) {
-                if (!propsTradeId?.length && local_info_tradeId === localTradeId) {
-                    return
-                }
-            }
-
-            if (propsPage === 1 && currentPage === 1) {
+        console.log({
+            local_info,
+            propsTradeId,
+            localTradeId,
+            propsPage,
+            homeSearchJobData,
+            currentPage,
+            localData
+        }, 'local_info')
+        if (local_info_tradeId) { // case if view more with no any trade-id
+            if (homeSearchJobData?.length && localData?.length && propsTradeId !== localTradeId) {
+                // alert('1')
                 setLocalData(newProps);
                 setCurrentPage(propsPage);
-            } else if (propsPage > 1 && currentPage > 1 && currentPage === propsPage) {
-                if (!checkIfExist(newProps)) {
+                return
+            }
+
+            if (homeSearchJobData?.length && localData?.length && propsTradeId == localTradeId && currentPage > 1 && propsPage == 1) {
+                // alert(`1.1`)
+                setLocalData(newProps);
+                setCurrentPage(propsPage);
+                return
+            }
+        }
+
+        if (!propsPage) {
+            if (!homeSearchJobData?.length && !propsPage) {
+
+                // if (localData?.length && !local_info?.doingLocalChanges) {
+
+                //     alert(`2 ${local_info?.doingLocalChanges}-${JSON.stringify({ propsTradeId, localTradeId })}`)
+
+                //     if (local_info_tradeId?.length && local_info_tradeId !== localTradeId) {
+                //         setLocalData([]);
+                //         setCurrentPage(1);
+                //     } else {
+                //         setHasMore(false);
+                //     }
+                //     return
+                // }
+
+                // alert(`2.1`)
+                setLocalData([]);
+                setCurrentPage(1);
+                setHasMore(false);
+            } else {
+                if (hasMore) {
+                    // alert('3')
+                    setHasMore(false);
+                }
+            }
+            return;
+        } else {
+            if (currentPage == propsPage && localData?.length < cp) {
+                if (currentPage == 1) {
+                    // alert('4')
+                    setLocalData(newProps);
+                } else {
+                    // alert('5')
                     setLocalData((prev: any) => [...prev, ...newProps]);
                 }
-            } else if (propsPage === 1 && currentPage > 1) {
-                setLocalData(newProps);
-                setCurrentPage(propsPage);
-            } else {
-                if (!local_info_tradeId?.length && localTradeId?.length && propsTradeId?.length) {
-                    if (localTradeId === propsTradeId) {
-                        setLocalData(newProps);
-                        setCurrentPage(propsPage);
-                    }
-                }
             }
         }
+
     }, [homeSearchJobData]);
 
     const handleChangeToggle = (value: any) => { setToggleSearch(value) }
@@ -233,6 +244,7 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
+                                            {localData && localData[0] && localData[0]?.tradieName ? localData[0]?.tradieName : '--'} <br/>
                                             {`${localData?.length} result(s)`}
                                         </span>
                                     </span>
@@ -250,12 +262,12 @@ const SearchResultTradie = (props: any) => {
                             next={() => {
                                 console.log('callable');
                                 if (localData?.length < currentPage * 10) {
-                                    // setHasMore(false);
+                                    setHasMore(false);
                                 } else {
                                     let cp = currentPage + 1;
                                     setCurrentPage((prev: any) => prev + 1);
                                     let local_info: any = localInfo;
-                                    console.log({ local_info });
+                                    console.log({local_info});
                                     let data: any = {
                                         page: cp,
                                         isFiltered: false,
