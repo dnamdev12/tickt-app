@@ -218,8 +218,10 @@ export const formatNotificationTime = (updatedAt: any, type: string) => {
         date.setHours(0, 0, 0, 0);
         if (JSON.stringify(currentDate) == JSON.stringify(date)) {
             formattedDate = moment(updatedAt).format('HH:mm');
-        } else {
+        } else if (updatedAt) {
             formattedDate = moment(updatedAt).format('M/D/YYYY HH:mm');
+        } else {
+            formattedDate = moment(updatedAt).format('HH:mm');
         }
     }
     // console.log('formattedDate: ', formattedDate);
@@ -288,11 +290,19 @@ export const AsyncImage = (props: any) => {
 // }
 //      extra_data => JOB_SATUS=INACTIVE: 
 
+const isJson = (data: any) => {
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
+}
+
 export const onNotificationClick = (notification: any) => {
-    const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
-    // if (extra_data.charAt(0) === '"' && extra_data.charAt(extra_data.length - 1) === '"') {
-    //     extraData = extra_data.substr(1, extra_data.length - 2);
-    // }
+    const { notificationType, user_type, receiverId, senderId, jobId } = notification;
+    let extra_data = isJson(notification?.extra_data);
+    console.log('extra_data: ', extra_data);
+
     switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {

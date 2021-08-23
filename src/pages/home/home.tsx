@@ -25,13 +25,16 @@ const Home = (props: any) => {
                     deviceId: `${storageService.getItem('userInfo')?.deviceId}`,
                     deviceType: 1
                 }
-                console.log(res, "getRegisterToken", data, "addFCMNotifToken");
+                console.log(data.deviceToken, "---------------diff----------------", storageService.getItem('fcmToken'));
                 if (res.success) {
-                    const res2 = await addFCMNotifToken(data);
-                    if (res2.success) {
-                        setTokenSentToServer(true);
-                    } else {
-                        setTokenSentToServer(false);
+                    if (storageService.getItem('fcmToken') !== data.deviceToken) {
+                        const res2 = await addFCMNotifToken(data);
+                        if (res2.success) {
+                            storageService.setItem("fcmToken", data.deviceToken);
+                            setTokenSentToServer(true);
+                        } else {
+                            setTokenSentToServer(false);
+                        }
                     }
                 }
             }

@@ -54,7 +54,8 @@ const UserMessages = (props: any) => {
             setCurrentJobDetails(null);
             setToggle(false);
         }
-    }, [props.roomId, props.roomData]);
+    }, [props.roomId]);
+    // }, [props.roomId, props.roomData]);
 
     useEffect(() => {
         scrollToBottom();
@@ -78,21 +79,24 @@ const UserMessages = (props: any) => {
         console.log('arrmsg: ', arrmsg);
         setMessages(arrmsg);
         // setInBoxLastMsg(arrmsg[arrmsg.length - 1]);
+        // setIsLoading(false);
+    }
+
+    useEffect(() => {
         let fsSlideObj: any = {};
         let mediaMsgs: any = [];
         let slideCount = 1;
-        if (arrmsg.length) {
-            mediaMsgs = arrmsg.filter((item: any, index: number) => {
+        if (messages.length) {
+            mediaMsgs = messages.filter((item: any, index: number) => {
                 if (item.messageType === 'image' || item.messageType === 'video') {
                     fsSlideObj[`${index}`] = slideCount++;
                     return item;
                 }
             });
+            setItemsMedia(mediaMsgs);
+            setFsSlideListner(fsSlideObj);
         }
-        setItemsMedia(mediaMsgs);
-        setFsSlideListner(fsSlideObj);
-        // setIsLoading(false);
-    }
+    }, [messages]);
     console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
     const setInboxToTopWithLastMsg = (lastMsg: any) => {

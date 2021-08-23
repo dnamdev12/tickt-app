@@ -8,7 +8,7 @@ import { markNotifAsRead } from '../redux/auth/actions';
 import dummy from '../assets/images/u_placeholder.jpg';
 import close from '../assets/images/icon-close-1.png';
 
-const NOTIFICATION_TIMEOUT = 5000;
+const NOTIFICATION_TIMEOUT = 3750;
 
 const CustomNotification = (props: any) => {
     const notification = props.notificationData?.data;
@@ -43,7 +43,7 @@ const CustomNotification = (props: any) => {
                         <span className="line-1">{notification?.notificationText}</span>
                     </div>
                     {/* <span className="time">{formatNotificationTime(notification?.updatedAt, 'day')}</span> */}
-                    <span className="time">{'now'}</span>
+                    <span className="time">{'just now'}</span>
                 </div>
             </div>
         </div>

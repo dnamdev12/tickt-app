@@ -334,7 +334,7 @@ export const answerQuestion = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
-  
+
   return { success: false, data: response.result };
 }
 
@@ -342,7 +342,7 @@ export const updateAnswer = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.updateAnswer, data)
   setLoading(false);
-  
+
   setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
@@ -445,7 +445,7 @@ export const lodgeDispute = async (data: any) => {
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
-  setShowToast(true, response.message)
+  setShowToast(true, response.message);
   return { success: false };
 }
 
