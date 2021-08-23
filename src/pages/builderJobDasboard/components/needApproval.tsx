@@ -109,7 +109,7 @@ class NeedApproval extends Component<Props, State> {
         }
 
 
-        if(!isRender){
+        if (!isRender) {
             return null;
         }
 
@@ -158,6 +158,14 @@ class NeedApproval extends Component<Props, State> {
                                             <img
                                                 src={tradeSelectedUrl || jobTypePlaceholder}
                                                 alt="traide-img"
+                                                onError={(e: any) => {
+                                                    if (e?.target?.onerror) {
+                                                        e.target.onerror = null;
+                                                    }
+                                                    if (e?.target?.src) {
+                                                        e.target.src = jobTypePlaceholder;
+                                                    }
+                                                }}
                                             />
                                         </figure>
                                         <div className="details">

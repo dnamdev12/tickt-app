@@ -127,7 +127,18 @@ const ReviewBuilder = (props: Proptypes) => {
                     <div className="tradie_card posted_by view_more ">
                         <div className="user_wrap" onClick={() => builderClicked()}>
                             <figure className="u_img">
-                                <img src={isParam ? item.postedBy?.builderImage : item.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
+                                <img
+                                    src={isParam ? item.postedBy?.builderImage : item.builderData?.builderImage ? item.builderData?.builderImage : dummy}
+                                    alt="traide-img"
+                                    onError={(e: any) => {
+                                        if (e?.target?.onerror) {
+                                            e.target.onerror = null;
+                                        }
+                                        if (e?.target?.src) {
+                                            e.target.src = dummy;
+                                        }
+                                    }}
+                                />
                             </figure>
                             <div className="details">
                                 <span className="name">{item.builderData?.builderName || item.postedBy?.builderName}</span>

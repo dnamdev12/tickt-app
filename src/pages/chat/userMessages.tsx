@@ -378,7 +378,18 @@ const UserMessages = (props: any) => {
                     <div className={`chat_col ${toggle ? 'active' : ''}`}>
                         <div className="chat_user">
                             <figure className="u_img">
-                                <img src={props.roomData?.oppUserInfo?.image || dummy} alt="user-img" />
+                                <img
+                                    src={props.roomData?.oppUserInfo?.image || dummy}
+                                    alt="user-img"
+                                    onError={(e: any) => {
+                                        if (e?.target?.onerror) {
+                                            e.target.onerror = null;
+                                        }
+                                        if (e?.target?.src) {
+                                            e.target.src = dummy;
+                                        }
+                                    }}
+                                />
                             </figure>
                             <span className="name"
                                 onClick={() => {

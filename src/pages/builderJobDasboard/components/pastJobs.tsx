@@ -137,7 +137,16 @@ const PastJobs = (props: any) => {
                                     <figure className="u_img">
                                         <img
                                             src={jobData?.tradeSelectedUrl || jobTypePlaceholder}
-                                            alt="traide-img" />
+                                            alt="traide-img"
+                                            onError={(e: any) => {
+                                                if (e?.target?.onerror) {
+                                                    e.target.onerror = null;
+                                                }
+                                                if (e?.target?.src) {
+                                                    e.target.src = jobTypePlaceholder;
+                                                }
+                                            }}
+                                            />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>

@@ -1151,7 +1151,18 @@ const JobDetailsPage = (props: PropsType) => {
                                         <div className="user_wrap">
                                             <figure className={`u_img`}>
                                                 {jobDetailsData?.postedBy?.builderImage ? (
-                                                    <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
+                                                    <img
+                                                        src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy}
+                                                        alt="traide-img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
                                                 ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
                                             </figure>
                                             <div className='details'>

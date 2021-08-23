@@ -207,7 +207,7 @@ const MarkMilestone = ({
 
 
   const { jobId, jobName, milestones, postedBy } = milestoneList || {};
-  const { builderId, builderImage, builderName, reviews , ratings} = postedBy || {};
+  const { builderId, builderImage, builderName, reviews, ratings } = postedBy || {};
 
   const hoursMinutes = data.actualHours.split(':').map((key: string) => parseInt(key));
   const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
@@ -477,7 +477,18 @@ const MarkMilestone = ({
                   } />
                 <div className="user_wrap" onClick={() => history.push(`/builder-info?builderId=${builderId}`)}>
                   <figure className="u_img">
-                    <img src={builderImage || dummy} alt="traide-img" />
+                    <img
+                      src={builderImage || dummy}
+                      alt="traide-img"
+                      onError={(e: any) => {
+                        if (e?.target?.onerror) {
+                          e.target.onerror = null;
+                        }
+                        if (e?.target?.src) {
+                          e.target.src = dummy;
+                        }
+                      }}
+                    />
                   </figure>
                   <div className="details">
                     <span className="name">{builderName}</span>

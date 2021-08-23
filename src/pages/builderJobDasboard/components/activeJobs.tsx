@@ -160,6 +160,14 @@ const ActiveJobs = ({
                                     <figure className="u_img">
                                         <img
                                             src={tradeSelectedUrl || jobTypePlaceholder}
+                                            onError={(e: any) => {
+                                                if (e?.target?.onerror) {
+                                                    e.target.onerror = null;
+                                                }
+                                                if (e?.target?.src) {
+                                                    e.target.src = jobTypePlaceholder;
+                                                }
+                                            }}
                                             alt="traide-img" />
                                     </figure>
                                     <div className="details">

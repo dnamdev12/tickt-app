@@ -267,7 +267,7 @@ const JobDetails = ({
         if (jobId) {
             data_clone.jobId = jobId;
         }
-     
+
         const createJob = jobId ? publishJobAgain : createPostJob;
 
         let response: any = await createJob(data_clone);
@@ -507,7 +507,18 @@ const JobDetails = ({
                                         <span className="chat circle"></span>
                                         <div className="user_wrap">
                                             <figure className="u_img">
-                                                <img src={builderProfile?.userImage || dummy} alt="traide-img" />
+                                                <img
+                                                    src={builderProfile?.userImage || dummy}
+                                                    alt="traide-img"
+                                                    onError={(e: any) => {
+                                                        if (e?.target?.onerror) {
+                                                            e.target.onerror = null;
+                                                        }
+                                                        if (e?.target?.src) {
+                                                            e.target.src = dummy;
+                                                        }
+                                                    }}
+                                                />
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{builderProfile?.userName}</span>

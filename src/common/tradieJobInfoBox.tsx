@@ -39,7 +39,18 @@ const TradieJobInfoBox = (props: any) => {
                 <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(item)} />
                 <div className="user_wrap">
                     <figure className="u_img">
-                        <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="" />
+                        <img
+                            src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy}
+                            alt=""
+                            onError={(e: any) => {
+                                if (e?.target?.onerror) {
+                                    e.target.onerror = null;
+                                }
+                                if (e?.target?.src) {
+                                    e.target.src = dummy;
+                                }
+                            }}
+                        />
                     </figure>
                     <div className="details">
                         <span className="name">{item.tradeName}</span>

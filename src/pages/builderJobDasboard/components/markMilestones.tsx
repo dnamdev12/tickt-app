@@ -394,7 +394,18 @@ const MarkMilestones = (props: any) => {
                         className="chat circle" />
                     <div className="user_wrap">
                         <figure className="u_img">
-                            <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
+                            <img
+                                src={item_details?.tradie?.tradieImage || dummy}
+                                alt="traide-img"
+                                onError={(e: any) => {
+                                    if (e?.target?.onerror) {
+                                        e.target.onerror = null;
+                                    }
+                                    if (e?.target?.src) {
+                                        e.target.src = dummy;
+                                    }
+                                }}
+                            />
                         </figure>
                         <div className="details">
                             <span className="name">{item_details?.tradie?.tradieName || ''}</span>

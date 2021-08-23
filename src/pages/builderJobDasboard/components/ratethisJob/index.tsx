@@ -174,6 +174,14 @@ const RateThisJob = (props: any) => {
                                 <img
                                     src={data?.jobData?.tradeSelectedUrl || dummy}
                                     alt="traide-img"
+                                    onError={(e: any) => {
+                                        if (e?.target?.onerror) {
+                                            e.target.onerror = null;
+                                        }
+                                        if (e?.target?.src) {
+                                            e.target.src = dummy;
+                                        }
+                                    }}
                                 />
                             </figure>
                             <div
@@ -214,7 +222,18 @@ const RateThisJob = (props: any) => {
                     <div className="tradie_card posted_by view_more ">
                         <div className="user_wrap">
                             <figure className="u_img">
-                                <img src={data?.tradieData?.tradieImage || dummy} alt="traide-img" />
+                                <img 
+                                src={data?.tradieData?.tradieImage || dummy} 
+                                alt="traide-img"
+                                onError={(e: any) => {
+                                    if (e?.target?.onerror) {
+                                        e.target.onerror = null;
+                                    }
+                                    if (e?.target?.src) {
+                                        e.target.src = dummy;
+                                    }
+                                }}
+                                />
                             </figure>
                             <div
                                 className="details"

@@ -221,7 +221,18 @@ const Chat = (props: PropTypes) => {
                                         <li onClick={() => { getRoomDetails(item) }}>
                                             <a href="javascript:void(0)" className={`chat ${selectedRoomID === item.roomId ? 'active' : ''}`}>
                                                 <figure className="u_img">
-                                                    <img src={item.oppUserInfo?.image || dummy} alt="img" />
+                                                    <img
+                                                        src={item.oppUserInfo?.image || dummy}
+                                                        alt="img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
                                                 </figure>
                                                 <div className="detail">
                                                     <span className="inner_title line-1">{item.oppUserInfo?.name}</span>
@@ -238,7 +249,18 @@ const Chat = (props: PropTypes) => {
                                         <li onClick={() => { getRoomDetails(item) }}>
                                             <a href="javascript:void(0)" className={`chat ${selectedRoomID === item.roomId ? 'active' : ''}`}>
                                                 <figure className="u_img">
-                                                    <img src={item.oppUserInfo?.image || dummy} alt="img" />
+                                                    <img
+                                                        src={item.oppUserInfo?.image || dummy}
+                                                        alt="img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
                                                 </figure>
                                                 <div className="detail">
                                                     <span className="inner_title line-1">{item.oppUserInfo?.name}</span>

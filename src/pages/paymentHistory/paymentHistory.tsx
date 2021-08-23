@@ -159,7 +159,18 @@ const PaymentHistory = ({
                   {/* <a href="javascript:void(0)" className="chat circle"></a> */}
                   <div className="user_wrap" onClick={() => history.push(`/${userType === 1 ? 'builder' : 'tradie'}-info?${userType === 1 ? 'builder' : 'trade'}Id=${userType === 1 ? builderId : tradieId}`)}>
                     <figure className="u_img">
-                      <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="img" />
+                      <img
+                        src={(userType === 1 ? builderImage : tradieImage) || dummy}
+                        alt="img"
+                        onError={(e: any) => {
+                          if (e?.target?.onerror) {
+                            e.target.onerror = null;
+                          }
+                          if (e?.target?.src) {
+                            e.target.src = dummy;
+                          }
+                        }}
+                      />
                     </figure>
                     <div className="details">
                       <span className="name">{userType === 1 ? builderName : tradieName}</span>

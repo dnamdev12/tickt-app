@@ -899,7 +899,18 @@ class TradieInfo extends Component<Props, State> {
                                         <div className="review_card vouchers">
                                             <div className="pic_shot_dtl">
                                                 <figure className="u_img">
-                                                    <img src={item?.builderImage || dummy} alt="user-img" />
+                                                    <img
+                                                        src={item?.builderImage || dummy}
+                                                        alt="user-img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
                                                 </figure>
                                                 <div className="name_wrap">
                                                     <span className="user_name" title={item?.builderName || ''}>
