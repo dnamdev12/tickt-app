@@ -143,7 +143,7 @@ const Header = (props: any) => {
         const pushNotifId = new URLSearchParams(props.location?.search)?.get('pushNotifId');
         if (pushNotifId) {
             (async () => {
-                const res: any = markNotifAsRead({ notificationId: pushNotifId });
+                const res: any = await markNotifAsRead({ notificationId: pushNotifId });
                 if (res.success) {
                     callNotificationList(true, true);
                 }
