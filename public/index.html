@@ -7,6 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#000000" />
   <meta name="description" content="Web site for tickt" />
+  <meta http-equiv='cache-control' content='no-cache'>
+  <meta http-equiv='expires' content='0'>
+  <meta http-equiv='pragma' content='no-cache'>
   <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
   <!--
       manifest.json provides metadata used when your web app is installed on a
@@ -69,7 +72,7 @@
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
 </body>
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
+<!-- The core Firebase JS SDK is always required and must be listed first -->
 <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-messaging.js"></script>
 <!-- TODO: Add SDKs for Firebase products that you want to use
@@ -97,11 +100,11 @@
 <script>
   if ('serviceWorker' in navigator) {
     navigator.serviceWorker.register('./firebase-messaging-sw.js')
-        .then(function (registration) {
-            console.log('Registration successful, scope is:', registration.scope);
-        }).catch(function (err) {
-            console.log('Service worker registration failed inside index.html, error:', err);
-        });
+      .then(function (registration) {
+        console.log('Registration successful, scope is:', registration.scope);
+      }).catch(function (err) {
+        console.log('Service worker registration failed inside index.html, error:', err);
+      });
   }
 </script>
 
