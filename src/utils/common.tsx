@@ -286,7 +286,8 @@ export const AsyncImage = (props: any) => {
 //     MARK_MILESTONE: 14,
 //     JOB_HOMEPAGE: 15, //tradeid and specialization id
 //     SELF_REVIEW_LIST_OPEN: 16
-//     TRADIE_VOUCH_RECEIVED: 17
+//     TRADIE_RECEIVE_VOUCH: 17
+//     ADMIN_NOTIFICATION: 18
 // }
 //      extra_data => JOB_SATUS=INACTIVE: 
 
@@ -338,9 +339,9 @@ export const onNotificationClick = (notification: any) => {
             return `/review-builder?jobId=${jobId}`;
         case 9: //QUESTION
             if (user_type == 1) {
-                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}&openQList=true`;
             } else {
-                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}`
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&openQList=true`
                 return `/job-detail?${urlEncode}`;
             }
         case 10: //OPEN OPPOSITE USER REVIEW LIST
@@ -388,12 +389,14 @@ export const onNotificationClick = (notification: any) => {
             } else {
                 return `/builder-info?builderId=${receiverId}`;
             }
-        case 17:
+        case 17: //TRADIE_RECEIVE_VOUCH
             if (user_type == 1) {
                 return `/tradie-vouchers?tradieId=${receiverId}`;
             } else {
                 return '/'
             }
+        case 18: //ADMIN_NOTIFICATION_ANNOUNCEMENT
+            return `/admin-announcement-page`;
         default:
             return '/';
     }

@@ -137,6 +137,9 @@ const JobDetailsPage = (props: PropsType) => {
             }
             const res2 = await getTradieQuestionList(questionData);
             if (res2.success) {
+                if (params.get('openQList') === 'true') {
+                    setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }));
+                }
                 setQuestionList(res2.data);
             }
         })();

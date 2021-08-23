@@ -80,9 +80,9 @@ const onNotificationClick = (notification) => {
             return `${url}review-builder?jobId=${jobId}`;
         case 9: //QUESTION
             if (user_type == 1) {
-                return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+                return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}&openQList=true`;
             } else {
-                let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}`
+                let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&openQList=true`
                 return `${url}job-detail?${urlEncode}`;
             }
         case 10: //OPEN OPPOSITE USER REVIEW LIST
@@ -136,6 +136,8 @@ const onNotificationClick = (notification) => {
             } else {
                 return `${url}`;
             }
+        case 18: //ADMIN_NOTIFICATION
+            return `/admin-announcement-page`;
         default:
             return `${url}home`;
     }
@@ -144,7 +146,7 @@ const onNotificationClick = (notification) => {
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
     let url = onNotificationClick(event.notification?.data);
-    let dot = url.includes('?') ? '&' : '?' ;
+    let dot = url.includes('?') ? '&' : '?';
     url = url + `${dot}pushNotifId=${event.notification?.data?._id}`;
     console.log('url: ', url);
     event.waitUntil(

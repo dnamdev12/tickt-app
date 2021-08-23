@@ -156,3 +156,13 @@ export const getRecommendedJobs = async (data: any) => {
     }
     return { success: false };
 }
+
+export const getAdminNotifType18 = async (data: any) => {
+    setLoading(true);
+    const response: FetchResponse = await NetworkOps.putToJson(Urls.getAdminNotifType18, data);
+    setLoading(false);
+    if (response.status_code === 200) {
+        return { success: true, result: response.result };
+    }
+    return { success: false };
+}
