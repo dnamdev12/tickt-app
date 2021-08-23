@@ -151,10 +151,6 @@ const JobDetailsPage = (props: PropsType) => {
             const id: string | null = params.get('tradieId');
             setTradieId(id ? id : '');
         }
-
-        if (params.get('openQList') === "true") {
-            setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }));
-        }
         fetchQuestionsList();
     }
 
@@ -168,6 +164,9 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res2 = await getQuestionsList(questionData);
         if (res2.success) {
+            if (params.get('openQList') === "true") {
+                setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }));
+            }
             console.log({ res2 }, 'question-list')
             let data_elements = res2?.data?.list || res2?.data;
             setQuestionList(data_elements);

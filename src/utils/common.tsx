@@ -288,6 +288,7 @@ export const AsyncImage = (props: any) => {
 //     SELF_REVIEW_LIST_OPEN: 16
 //     TRADIE_RECEIVE_VOUCH: 17
 //     ADMIN_NOTIFICATION: 18
+//     PRIVACY_POLICY: 19
 // }
 //      extra_data => JOB_SATUS=INACTIVE: 
 
@@ -397,6 +398,8 @@ export const onNotificationClick = (notification: any) => {
             }
         case 18: //ADMIN_NOTIFICATION_ANNOUNCEMENT
             return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
+        case 19: //PRIVACY_POLICY
+            return `/update-user-info?menu=pp`;
         default:
             return '/';
     }

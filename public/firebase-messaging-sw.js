@@ -92,7 +92,7 @@ const onNotificationClick = (notification) => {
                 return `${url}tradie-info?tradeId=${extra_data?.tradieId}`;
             }
         case 11: //TERM_AND_CONDITION
-            return `/update-user-info?menu=tnc`;
+            return `${url}update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
                 const type = +extra_data?.redirect_status;
@@ -137,7 +137,9 @@ const onNotificationClick = (notification) => {
                 return `${url}home`;
             }
         case 18: //ADMIN_NOTIFICATION
-            return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
+            return `${url}admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
+        case 19: //PRIVACY_POLICY
+            return `${url}update-user-info?menu=pp`;
         default:
             return `${url}home`;
     }
