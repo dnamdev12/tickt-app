@@ -23,7 +23,8 @@ const PopularBuilders = (props: any) => {
                     <ul className="popular_tradies">
                         {popularBuildersData?.length ? popularBuildersData?.map((item: any, index: number) => {
                             return (
-                                <li key={item._id} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000">
+                                <li key={item._id} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000"
+                                    onClick={() => props.history?.push(`/builder-info?builderId=${item?._id}`)}>
                                     <figure className="tradies_img">
                                         <img
                                             src={item.user_image ? item.user_image : dummy}

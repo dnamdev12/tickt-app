@@ -141,24 +141,43 @@ export const firebaseLogInWithEmailPassword = async (authData, loginRes, isSignu
 
 ////////////////////////  firebase chat
 
-export const loginAnonymously = () => {
-    // debugger;
-    auth.signInAnonymously()
-        .then(() => alert("anonymous signed in success"))
-        .catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/operation-not-allowed') {
-                alert('You must enable Anonymous auth in the Firebase Console.');
-            } else {
-                console.error(error);
-            }
-        });
+export const loginAnonymously = async () => {
+    let userInfo = storageService.getItem("userInfo");
+    try {
+        let response = await auth.signInAnonymously();
+        if (response) {
+            console.log('firebase anonymous auth login success: ');
+            await db.ref(`${FIREBASE_COLLECTION.USERS}/${userInfo?._id}`).set({
+                email: userInfo?.email,
+                image: userInfo?.user_image,
+                name: userInfo?.userName,
+                userId: userInfo?._id,
+                onlineStatus: true,
+                userType: userInfo?.user_type,
+            });
+        }
+    } catch (error) {
+        console.log('firebase anonymous auth login failure: ');
+        var errorCode = error.code;
+        if (errorCode === 'auth/operation-not-allowed') {
+            alert('You must enable Anonymous auth in the Firebase Console.');
+        } else {
+            console.error(error);
+        }
+    }
 }
 
 export const getLoggedInuserId = () => {
     return storageService.getItem("userInfo")._id;
+}
+
+export const updateChatUserImageAndName = async (updateType, value) => {
+    let loggedInuserId = getLoggedInuserId();
+
+    await db.ref(`${FIREBASE_COLLECTION.USERS}/${loggedInuserId}`).update({
+        ...(updateType === 'userImage' && { image: value }),
+        ...(updateType === 'userName' && { name: value }),
+    });
 }
 
 export const createRoom = async (jobId, tradieId, builderId, jobName) => {

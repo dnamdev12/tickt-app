@@ -8,7 +8,7 @@ import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
-import { firebaseLogInWithEmailPassword } from '../../services/firebase';
+import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../services/firebase';
 interface Propstype {
     history: any,
     showModal?: boolean,
@@ -119,7 +119,8 @@ const LoginPage = (props: Propstype) => {
                     email: newData.email,
                     password: '12345678', //'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
                 }
-                firebaseLogInWithEmailPassword(authData, res?.data);
+                loginAnonymously();
+                // firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {
                     // window.location.reload();
                     props.setShowModal(!props.showModal);

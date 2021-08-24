@@ -137,6 +137,7 @@ export const getSearchParamsData = (location?: any) => {
         long: Number(params.get('long')),
         defaultLat: Number(params.get('defaultLat')),
         defaultLong: Number(params.get('defaultLong')),
+        addres: params.get('addres'),
         address: params.get('address'),
         from_date: params.get('from_date'),
         to_date: params.get('to_date'),
