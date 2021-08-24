@@ -24,9 +24,11 @@ export const postSignup = async (data: any) => {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
     storageService.setItem("userInfo", {
-      "email": response.result.email,
-      "userName": response.result.firstName,
-      "_id": response.result._id,
+      "email": response.result?.email,
+      "user_image": response.result?.user_image,
+      "user_type": response.result?.user_type,
+      "userName": response.result?.firstName,
+      "_id": response.result?._id,
       "accountType": response.result?.accountType,
       "deviceId": uniqueToken
     });
@@ -103,6 +105,8 @@ export const callLogin = async (data: any) => {
     storageService.setItem("userType", response.result.user_type);
     storageService.setItem("userInfo", {
       "email": response.result?.email,
+      "user_image": response.result?.user_image,
+      "user_type": response.result?.user_type,
       "userName": response.result?.userName,
       "_id": response.result?._id,
       "accountType": response.result?.accountType,
@@ -157,6 +161,8 @@ export const socialSignupLogin = async (data: any) => {
     storageService.setItem("userType", response.result.user_type);
     storageService.setItem("userInfo", {
       "email": response.result?.email,
+      "user_image": response.result?.user_image,
+      "user_type": response.result?.user_type,
       "userName": response.result?.firstName || 'name',
       "_id": response.result?._id,
       "deviceId": uniqueToken

@@ -10,7 +10,7 @@ import { GoogleLogin } from 'react-google-login';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 // @ts-ignore
 //import AppleLogin from 'react-apple-login';
-import { firebaseLogInWithEmailPassword } from '../../services/firebase';
+import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../services/firebase';
 
 interface Propstype {
     onNewAccount: Function,
@@ -60,7 +60,8 @@ const SocialAuth = (props: Propstype) => {
                         _id: res.result?._id,
                         user_type: res.result?.user_type,
                     }
-                    firebaseLogInWithEmailPassword(authData, loginRes);
+                    loginAnonymously();
+                    // firebaseLogInWithEmailPassword(authData, loginRes);
                     if (props.showModal) {
                         props.setShowModal(!props.showModal);
                     }
@@ -102,7 +103,8 @@ const SocialAuth = (props: Propstype) => {
                         _id: resAuth.result?._id,
                         user_type: resAuth.result?.user_type,
                     }
-                    firebaseLogInWithEmailPassword(authData, loginRes);
+                    loginAnonymously();
+                    // firebaseLogInWithEmailPassword(authData, loginRes);
                     if (props.showModal) {
                         props.setShowModal(!props.showModal);
                     }

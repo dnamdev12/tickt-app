@@ -156,6 +156,8 @@ const Chat = (props: PropTypes) => {
             } else {
                 setUser(false);
                 setIsMobInbox(true);
+                setLoading(false);
+                setIsInitialLoader(false);
             }
             if (initializing) {
                 setInitializing(false);
@@ -284,7 +286,7 @@ const Chat = (props: PropTypes) => {
                             </ul>
                         </div>
                     </div>
-                    {isInitialLoader ? null :
+                    {(isInitialLoader || inBoxData?.length === 0) ? null :
                         <UserMessages
                             roomId={selectedRoomID}
                             roomData={roomData}

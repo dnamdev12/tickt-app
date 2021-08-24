@@ -47,6 +47,7 @@ import storageService from '../../../../utils/storageService';
 import { validateABN } from '../../../../utils/common';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
+import { updateChatUserImageAndName } from '../../../../services/firebase';
 
 interface Props {
     history: any,
@@ -358,7 +359,6 @@ export class PersonalInformation extends Component<Props, State> {
             const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
             console.log(newQualificationDoc, "newQualificationDoc validation");
             if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
-                // newErrors.qualificationDoc = "Please upload all selected documents";
                 setShowToast(true, "Please upload all selected documents");
                 return;
             }
@@ -366,7 +366,6 @@ export class PersonalInformation extends Component<Props, State> {
             const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
             console.log(newRemainingDoc, "newRemainingDoc validation");
             if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
-                // newErrors.qualificationDoc = "Please upload all selected documents";
                 setShowToast(true, "Please upload all selected documents");
                 return;
             }
@@ -471,6 +470,7 @@ export class PersonalInformation extends Component<Props, State> {
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
                 this.props.cleanTradieBasicDetails();
+                updateChatUserImageAndName('userName', data.fullName);
                 basicDetails.qualificationDoc = this.userType === 1 ? data.qualificationDoc : [];
                 this.setState((prevState: any) => ({
                     profileModalClicked: false,
@@ -641,6 +641,9 @@ export class PersonalInformation extends Component<Props, State> {
         }
         const res2 = await tradieUpdateProfileDetails(data);
         if (res2?.success) {
+            if (this.state.formData) {
+                updateChatUserImageAndName('userImage', data.userImage);
+            }
             this.setState({
                 formData: null,
                 isProfileViewDataChanged: false
@@ -690,10 +693,6 @@ export class PersonalInformation extends Component<Props, State> {
             const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
             const item = newqualificationDoc?.find(i => i.qualification_id === id);
             const itemIndex = newqualificationDoc?.indexOf(item);
-            // if (!item) {
-            // newqualificationDoc.push({ qualification_id: id, url: '' });
-            // } else {
-            // newqualificationDoc.splice(itemIndex, 1);
             if (item.isSelected) {
                 newqualificationDoc.splice(itemIndex, 1, { qualification_id: id, url: '' });
             } else {
@@ -786,13 +785,6 @@ export class PersonalInformation extends Component<Props, State> {
         const tradeList: any = props.tradeListData;
         const isSkeletonLoading: any = props.isSkeletonLoading;
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === trade[0])?.specialisations;
-
-        // const addedTradeList = profileViewData?.areasOfSpecialization?.tradeData?.map(({ tradeId }: { tradeId: string }) => tradeId) || [];
-        // const addedSpecializationList = profileViewData?.areasOfSpecialization?.specializationData?.map(({ specializationId }: { specializationId: string }) => specializationId) || [];
-        // const addedTradeData = tradeList.filter(({ _id }: { _id: string }) => addedTradeList.includes(_id));
-        // addedTradeData.forEach(({ specialisations }: any, index: number) => {
-        //   addedTradeData[index].specialisations = specialisations.filter(({ _id }: { _id: string }) => addedSpecializationList.includes(_id));
-        // });
 
         return (
             <>
@@ -1180,16 +1172,6 @@ export class PersonalInformation extends Component<Props, State> {
                     </span>}
                     <div className="tags_wrap">
                         {isSkeletonLoading ? <Skeleton count={3} /> : <ul>
-                            {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
-                                <React.Fragment key={_id}>
-                                  <li className="main">
-                                      <img src={selected_url || menu} alt="" />{trade_name}
-                                  </li>
-                                  {specialisations?.map(({ _id, name }: { _id: string, name: string }) => {
-                                    return <li key={_id}>{name}</li>
-                                  })}
-                                </React.Fragment>
-                            ))} */}
                             {profileViewData?.areasOfSpecialization?.tradeData?.map(({ tradeId, tradeName, tradeSelectedUrl }: { tradeId: string, tradeName: string, tradeSelectedUrl: string }, index: number) => {
                                 if (this.userType === 1 && index > 0) {
                                     return null;
