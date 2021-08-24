@@ -8,7 +8,7 @@ import addMedia from "../../../assets/images/add-image.png";
 import videoThumbnail from '../../../assets/images/add-video.png';
 import docThumbnail from '../../../assets/images/add-document.png'
 import { onFileUpload } from '../../../redux/auth/actions';
-import { setShowToast } from '../../../redux/common/actions';
+import { setLoading, setShowToast } from '../../../redux/common/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 //@ts-ignore
@@ -186,8 +186,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         }
 
         formData.append('file', newFile);
-        const res = await onFileUpload(formData)
-
+        setLoadItems({});
+        const res = await onFileUpload(formData);
+        setLoading(true);
         if (res.success) {
             let link: string = res.imgUrl;
             let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx", "msword"].includes(fileType) ? 3 : 4
@@ -216,7 +217,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         let get_split_name = split_item_name[split_item_name.length - 1];
         let image_render: any = null;
         let loadByIndex = { [index]: true };
-
+        // setLoading(true);
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
                 image_render = (
@@ -362,6 +363,15 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     if (Object.values(isItemsLoad)?.length) {
         IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
     }
+
+    if(IsRenderValues === false){
+        setLoading(true);
+    }
+
+    if(IsRenderValues === true){
+        setLoading(false);
+    }
+
     let checkErrors_: any = checkErrors();
     console.log({ IsRenderValues, isItemsLoad, check: checkErrors_ })
     return (

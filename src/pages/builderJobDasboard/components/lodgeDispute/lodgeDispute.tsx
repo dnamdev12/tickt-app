@@ -7,7 +7,7 @@ import addMedia from "../../../../assets/images/add-image.png";
 import noDataFound from "../../../../assets/images/no-search-data.png";
 
 import { onFileUpload } from '../../../../redux/auth/actions';
-import { setShowToast } from '../../../../redux/common/actions';
+import { setShowToast, setLoading } from '../../../../redux/common/actions';
 
 import { withRouter } from 'react-router-dom';
 
@@ -32,6 +32,8 @@ const LodgeDispute = (props: any) => {
     const [update, forceUpdate] = useState({});
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+
+    const [isItemsLoad, setLoadItems] = useState({});
 
 
     const { reason, detail, upload } = stateData;
@@ -63,6 +65,23 @@ const LodgeDispute = (props: any) => {
         }))
     }, [stateData]);
 
+
+    useEffect(() => {
+        let IsRenderValues = null;
+        if (Object.values(isItemsLoad)?.length) {
+            IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
+        }
+
+        if (IsRenderValues === false) {
+            setLoading(true);
+        }
+
+        if (IsRenderValues === true) {
+            setLoading(false);
+        }
+
+    }, [isItemsLoad])
+
     const removeFromItem = (index: any) => {
         filesUrl.splice(index, 1);
         setFilesUrl(filesUrl);
@@ -92,6 +111,7 @@ const LodgeDispute = (props: any) => {
         }
 
         formData.append('file', newFile);
+        setLoadItems({});
         const res = await onFileUpload(formData)
         if (res.success) {
             let link: string = res.imgUrl;
@@ -100,6 +120,9 @@ const LodgeDispute = (props: any) => {
                 "mediaType": check_type,
                 "link": link
             }]);
+            setLoadItems((prev: any) => ({
+                [filesUrl.length - 1]: false
+            }))
             setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
         }
     }
@@ -118,7 +141,17 @@ const LodgeDispute = (props: any) => {
         let image_render: any = null;
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
-                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={item} alt="media" />
+                image_render = <img
+                    onClick={() => { setItemToggle(index) }}
+                    title={get_split_name}
+                    src={item}
+                    alt="media"
+                    onLoad={() => {
+                        setLoadItems((prev: any) => ({
+                            [index]: true
+                        }))
+                    }}
+                />
             }
             return (
                 <figure className="img_video">
@@ -170,6 +203,8 @@ const LodgeDispute = (props: any) => {
     }
 
     const { sources, types } = renderFilteredItems();
+
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">

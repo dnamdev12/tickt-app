@@ -385,8 +385,16 @@ const JobDetailsPage = (props: PropsType) => {
             if (postedBy && Array.isArray(postedBy) && postedBy[0] && postedBy[0].builderImage) {
                 return (
                     <img
-                        src={postedBy[0].builderImage}
+                        src={postedBy[0].builderImage || dummy}
                         alt="traide-img"
+                        onError={(e: any) => {
+                            if (e?.target?.onerror) {
+                                e.target.onerror = null;
+                            }
+                            if (e?.target?.src) {
+                                e.target.src = dummy;
+                            }
+                        }}
                     />
                 )
             } else {
@@ -1153,9 +1161,9 @@ const JobDetailsPage = (props: PropsType) => {
                                         )} */}
                                         <div className="user_wrap">
                                             <figure className={`u_img`}>
-                                                {jobDetailsData?.postedBy?.builderImage ? (
+                                                {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
                                                     <img
-                                                        src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy}
+                                                        src={jobDetailsData?.postedBy?.builderImage || dummy}
                                                         alt="traide-img"
                                                         onError={(e: any) => {
                                                             if (e?.target?.onerror) {
@@ -1166,7 +1174,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                             }
                                                         }}
                                                     />
-                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
+                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
+                                                    <img
+                                                        src={dummy}
+                                                        alt="traide-img"
+                                                    />
+                                                )}
                                             </figure>
                                             <div className='details'>
                                                 <span

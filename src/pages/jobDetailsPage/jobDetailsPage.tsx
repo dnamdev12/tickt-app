@@ -437,7 +437,15 @@ const JobDetailsPage = (props: PropsType) => {
             if (postedBy && Array.isArray(postedBy) && postedBy[0] && postedBy[0].builderImage) {
                 return (
                     <img
-                        src={postedBy[0].builderImage}
+                        src={postedBy[0]?.builderImage || dummy}
+                        onError={(e: any) => {
+                            if (e?.target?.onerror) {
+                                e.target.onerror = null;
+                            }
+                            if (e?.target?.src) {
+                                e.target.src = dummy;
+                            }
+                        }}
                         alt="traide-img"
                     />
                 )
@@ -948,21 +956,22 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
                                     {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
-                                        {jobDetailsData.jobStatus === 'active' && <a href="javascript:void(0)" className="chat circle"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                props.history.push({
-                                                    pathname: `/chat`,
-                                                    state: {
-                                                        tradieId: storageService.getItem('userInfo')?._id,
-                                                        builderId: jobDetailsData?.postedBy?.builderId,
-                                                        jobId: jobDetailsData?.jobId,
-                                                        jobName: jobDetailsData?.jobName
-                                                    }
-                                                })
-                                            }
-                                            }
-                                        />}
+                                        {jobDetailsData.jobStatus === 'active' &&
+                                            <span className="chat circle"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    props.history.push({
+                                                        pathname: `/chat`,
+                                                        state: {
+                                                            tradieId: storageService.getItem('userInfo')?._id,
+                                                            builderId: jobDetailsData?.postedBy?.builderId,
+                                                            jobId: jobDetailsData?.jobId,
+                                                            jobName: jobDetailsData?.jobName
+                                                        }
+                                                    })
+                                                }
+                                                }
+                                            />}
                                         <div className="user_wrap"
                                             onClick={() => {
                                                 if (jobDetailsData?.postedBy?.builderName) {
@@ -970,9 +979,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                 }
                                             }}>
                                             <figure className="u_img">
-                                                {jobDetailsData?.postedBy?.builderImage ? (
+                                                {console.log({
+                                                    image: jobDetailsData?.postedBy?.builderImage
+                                                })}
+                                                {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
                                                     <img
-                                                        src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy}
+                                                        src={jobDetailsData?.postedBy?.builderImage || dummy}
                                                         alt="traide-img"
                                                         onError={(e: any) => {
                                                             if (e?.target?.onerror) {
@@ -983,7 +995,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                             }
                                                         }}
                                                     />
-                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
+                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
+                                                    <img
+                                                        src={dummy}
+                                                        alt="traide-img"
+                                                    />
+                                                )}
                                             </figure>
                                             <div className="details">
                                                 <span className="name">
