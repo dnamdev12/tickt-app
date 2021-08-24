@@ -10,7 +10,7 @@ import noDataFound from "../../../assets/images/no-search-data.png";
 interface Proptypes {
   loading: boolean;
   newJobsCount: number,
-  approvedMilestoneList: Array<any>,
+  approvedMilestoneList: any,
   getApprovedMilestoneList: (page: number) => void,
   resetApprovedMilestoneList: () => void,
 };
@@ -19,6 +19,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
   const [jobList, setJobList] = useState<Array<any>>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
+  const [isLoad, setIsLoad] = useState(true);
 
   let totalJobsCount: number = newJobsCount;
   console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
@@ -38,10 +39,11 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
   }
 
   useEffect(() => {
-    if (approvedMilestoneList.length) {
+    if (approvedMilestoneList?.length || Array.isArray(approvedMilestoneList)) {
       const allJobs = [...jobList, ...approvedMilestoneList];
       console.log(jobList, "jobList", approvedMilestoneList, "props.approvedMilestoneList", allJobs, "allJobs");
       setJobList(allJobs);
+      setIsLoad(false);
       setPageNo(pageNo + 1);
       if (approvedMilestoneList.length < 10) { setHasMoreItems(false); }
       resetApprovedMilestoneList();
@@ -59,7 +61,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
       >
         <span className="sub_title">Approved Milestones</span>
         <div className="flex_row tradies_row">
-          {!loading && jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
+          {!isLoad && !loading && jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
             <div key={jobId} className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
@@ -116,7 +118,7 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                 </div>
               </div>
             </div>
-          )) : !loading && (
+          )) : !isLoad && !loading && (
             <div className="no_record  m-t-vh">
               <figure className="no_img">
                 <img src={noDataFound} alt="data not found" />
