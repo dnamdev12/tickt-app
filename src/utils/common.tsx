@@ -405,3 +405,71 @@ export const onNotificationClick = (notification: any) => {
             return '/';
     }
 }
+
+
+export const JobCancelReasons = (type: number) => {
+    switch (type) {
+        case 1:
+            return 'Experiencing delays on other projects.';
+
+        case 2:
+            return 'Current project has taken longer than expected.';
+
+        case 3:
+            return 'Staff shortages.';
+
+        case 4:
+            return 'Injury or unwell.';
+
+        case 5:
+            return 'No longer available.';
+
+        default:
+            return ''
+    }
+}
+
+
+export const JobLodgeReasons = (type: number) => {
+    switch (type) {
+        case 1:
+            return 'Site has not been prepared for works to be carried out.';
+
+        case 2:
+            return 'Inadequate access.';
+
+        case 3:
+            return 'No access equipment on site as indicated in JD.';
+
+        case 4:
+            return 'Materials had not been delivered and supplied by the builder as part of the JD.';
+
+        case 5:
+            return 'Tradespersons work does not be regulations or comply with the VBA.';
+
+        case 6:
+            return 'Tradesperson has not supplied a Certificate of Currency for their work.';
+
+        case 7:
+            return 'Tradespersons work is not at an acceptable standard.';
+
+        default:
+            return ''
+    }
+}
+
+// CANCELLATION Reasons:
+// 1.Experiencing delays on other projects.
+// 2. Current project has taken longer than expected.
+// 3. Staff shortages.
+// 4. Injury or unwell.
+// 5. No longer available.
+
+// LODGE Dispute
+// 1. Site has not been prepared for works to be carried out.
+// 2. Inadequate access.
+// 3. No access equipment on site as indicated in JD
+// 4. Materials had not been delivered and supplied by the builder as part of the JD.
+// 5. Tradespersons work does not be regulations or comply with the VBA.
+// 6. Tradesperson has not supplied a Certificate of Currency for their work.
+// 7. Tradespersons work is not at an acceptable standard

@@ -16,6 +16,8 @@ import FsLightbox from 'fslightbox-react';
 
 import { lodgeDispute } from '../../../../redux/jobs/actions';
 
+import { JobLodgeReasons } from '../../../../utils/common';
+
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
 const LodgeDispute = (props: any) => {
@@ -186,6 +188,23 @@ const LodgeDispute = (props: any) => {
         }
     }
 
+
+
+    const renderTypes = ({ id, }: any) => {
+        return (
+            <div className="checkbox_wrap agree_check">
+                <input
+                    value={reason}
+                    onClick={() => { setStateData((prev: any) => ({ ...prev, reason: id })) }}
+                    checked={reason === id}
+                    name="Reason" className="filter-type filled-in" type="checkbox" id={`reason${id}`} />
+                <label htmlFor={`reason${id}`}>
+                    {JobLodgeReasons(id)}
+                </label>
+            </div>
+        )
+    }
+
     const renderFilteredItems = () => {
         let sources: any = [];
         let types: any = [];
@@ -229,26 +248,22 @@ const LodgeDispute = (props: any) => {
 
                 <div className="reason_wrap">
                     <div className="f_spacebw">
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 1 })) }}
-                                checked={reason === 1}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason1" />
-                            <label htmlFor="reason1">
-                                {'I got a better job'}
-                            </label>
-                        </div>
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 2 })) }}
-                                checked={reason === 2}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason2" />
-                            <label htmlFor="reason2">
-                                {'I am not the right fit for the job'}
-                            </label>
-                        </div>
+                        {renderTypes({ id: 1 })}
+                        {renderTypes({ id: 2 })}
+                    </div>
+
+                    <div className="f_spacebw">
+                        {renderTypes({ id: 3 })}
+                        {renderTypes({ id: 4 })}
+                    </div>
+
+                    <div className="f_spacebw">
+                        {renderTypes({ id: 5 })}
+                        {renderTypes({ id: 6 })}
+                    </div>
+
+                    <div className="f_spacebw">
+                        {renderTypes({ id: 7 })}
                     </div>
 
                 </div>

@@ -35,6 +35,9 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import FsLightbox from 'fslightbox-react';
 import Skeleton from 'react-loading-skeleton';
 import storageService from '../../utils/storageService';
+
+import { JobCancelReasons } from '../../utils/common';
+
 interface PropsType {
     history: any,
     location: any,
@@ -563,7 +566,8 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.jobStatus === 'cancelled' &&
                                         jobDetailsData?.reasonForCancelJobRequest > 0 && <div className="chang_req_card mb-sm">
                                             <span className="sub_title">Job cancelled</span>
-                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                            {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'} */}
+                                            {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
@@ -594,7 +598,11 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
-                                            <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li>
+                                            {/* <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li> */}
+                                            <li>
+                                                {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                            </li>
+
                                             <li>{jobDetailsData?.reasonNoteForCancelJobRequest}</li>
                                         </p>
                                         <button className="fill_btn btn-effect"

@@ -50,6 +50,8 @@ import { deleteOpenJob } from '../../redux/jobs/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 import { setShowToast } from '../../redux/common/actions';
+
+import { JobCancelReasons } from '../../utils/common';
 interface PropsType {
     history: any,
     location: any,
@@ -685,7 +687,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         <div className="chang_req_card mb-sm">
                                             <span className="sub_title">Job cancelled</span>
                                             <p className="commn_para line-2">
-                                                {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                                {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                                {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'} */}
                                             </p>
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
@@ -830,9 +833,10 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para">
-                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ?
+                                            {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                            {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ?
                                                 'I got a better job' :
-                                                'I am not the right fit for the job'}
+                                                'I am not the right fit for the job'} */}
                                         </p>
                                         {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
                                         <button
