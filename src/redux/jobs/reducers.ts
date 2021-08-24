@@ -8,11 +8,11 @@ const initialState = {
   builderHome: null,
   testBuilderHome: null,
   localChanges: false,
-  activeJobList: [],
-  appliedJobList: [],
-  pastJobList: [],
-  newJobList: [],
-  approvedMilestoneList: [],
+  activeJobList: null,
+  appliedJobList: null,
+  pastJobList: null,
+  newJobList: null,
+  approvedMilestoneList: null,
   milestoneList: [],
   milestonesCount: 0,
   newJobsCount: 0,
@@ -62,7 +62,7 @@ const reducer = (state = initialState, action: any) => {
     case actionTypes.GET_ACTIVE_JOBS_END:
       return {
         ...state,
-        activeJobList: action.payload?.active || [],
+        activeJobList: action.payload?.active,
         milestonesCount: action.payload?.milestonesCount,
         newJobsCount: action.payload?.newJobsCount,
       };
