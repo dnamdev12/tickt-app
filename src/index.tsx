@@ -10,9 +10,9 @@ import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 import '../src/assets/scss/common.scss'
 
 // added this check to remove console from code (In-Production)
-// if (process.env.NODE_ENV !== "development") {
-//   console.log = () => { };
-// }
+if (process.env.NODE_ENV !== "development") {
+  console.log = () => { };
+}
 
 const app = (
   <React.StrictMode>
