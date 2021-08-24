@@ -210,11 +210,6 @@ const LodgeDispute = (props: PropTypes) => {
                             {commonRenderValues({ id: 5 })}
                             {commonRenderValues({ id: 6 })}
                         </div>
-
-                        <div className="f_spacebw">
-                            {commonRenderValues({ id: 7 })}
-                        </div>
-
                     </div>
 
                 </div>
