@@ -304,8 +304,10 @@ const Header = (props: any) => {
 
     const chatClicked = () => {
         setToggleMenu(false);
-        setActiveLink('chat');
-        history.push('/chat')
+        if (userType === 1 || userType === 2) {
+            setActiveLink('chat');
+            history.push('/chat');
+        }
     }
 
     const jobClick = () => {
@@ -463,6 +465,9 @@ const Header = (props: any) => {
                             <figure>
                                 <img
                                     onClick={() => {
+                                        if (userType === 0) {
+                                            return;
+                                        }
                                         if (pathname === '/') {
                                             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                                             return;
@@ -479,8 +484,12 @@ const Header = (props: any) => {
                             <li className="tour-discover">
                                 <a
                                     onClick={() => {
-                                        setActiveLink('discover');
-                                        history.push('/');
+                                        if (userType === 1 || userType === 2) {
+                                            setActiveLink('discover');
+                                            history.push('/');
+                                        } else {
+                                            return;
+                                        }
                                     }}
                                     className={startTour ? activeTarget === '.tour-discover a' ? 'active' : '' : activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}

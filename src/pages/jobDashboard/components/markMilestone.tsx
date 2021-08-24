@@ -380,7 +380,7 @@ const MarkMilestone = ({
 
                         {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
                           <>
-                            <div className="decline_reason">
+                            {Object.keys(declinedReason)?.length > 0 && <div className="decline_reason">
                               <FsLightbox
                                 toggler={toggler}
                                 slide={selectedSlide}
@@ -409,7 +409,7 @@ const MarkMilestone = ({
                                   })}
                                 </Carousel>
                               }
-                            </div>
+                            </div>}
                             <button
                               onClick={() => {
                                 if (declinedCount >= 5) {

@@ -199,7 +199,7 @@ const LodgeDispute = (props: any) => {
                     checked={reason === id}
                     name="Reason" className="filter-type filled-in" type="checkbox" id={`reason${id}`} />
                 <label htmlFor={`reason${id}`}>
-                    {JobLodgeReasons(id)}
+                    {JobLodgeReasons(id, true)}
                 </label>
             </div>
         )

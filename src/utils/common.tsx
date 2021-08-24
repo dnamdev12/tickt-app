@@ -430,7 +430,7 @@ export const JobCancelReasons = (type: number) => {
 }
 
 
-export const JobLodgeReasons = (type: number) => {
+export const JobLodgeReasons = (type: number, isBuilder?: boolean) => {
     switch (type) {
         case 1:
             return 'Site has not been prepared for works to be carried out.';
@@ -442,19 +442,31 @@ export const JobLodgeReasons = (type: number) => {
             return 'No access equipment on site as indicated in JD.';
 
         case 4:
-            return 'Materials had not been delivered and supplied by the builder as part of the JD.';
-
+            if (isBuilder) {
+                return 'Materials had not been delivered and supplied by the builder as part of the JD.';
+            } else {
+                return `Builder's work does not be regulations or comply with the VBA.`;
+            }
         case 5:
-            return 'Tradespersons work does not be regulations or comply with the VBA.';
-
+            if (isBuilder) {
+                return `Tradesperson's work does not be regulations or comply with the VBA.`;
+            } else {
+                return `Builder has not supplied a Certificate of Currency for their work.`;
+            }
         case 6:
-            return 'Tradesperson has not supplied a Certificate of Currency for their work.';
-
+            if (isBuilder) {
+                return `Tradesperson has not supplied a Certificate of Currency for their work.`;
+            } else {
+                return `Builder's work is not at an acceptable standard.`;
+            }
         case 7:
-            return 'Tradespersons work is not at an acceptable standard.';
-
+            if (isBuilder) {
+                return `Tradesperson's work is not at an acceptable standard.`;
+            } else {
+                return '';
+            }
         default:
-            return ''
+            return '';
     }
 }
 
