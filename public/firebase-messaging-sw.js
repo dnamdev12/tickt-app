@@ -39,94 +39,117 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 const onNotificationClick = (notification) => {
-    const url = process.env.REACT_APP_BASE_URL;
+    // const url = process.env.REACT_APP_BASE_URL;
     // const url = 'http://localhost:3000/';
-    // const url = 'https://ticktreactqa.appskeeper.in/';
+    const url = 'https://ticktreactqa.appskeeper.in/';
     // const url = 'https://ticktreactdev.appskeeper.in/';
-    const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
+    const { notificationType, user_type, receiverId, senderId, jobId } = notification;
+    let extra_data = JSON.parse(notification?.extra_data);
     switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {
-                return `${url}tradie-info?tradeId=${receiverId}&type=1`;
+                return `${url}tradie-info?tradeId=${receiverId}`;
             } else {
-                return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `${url}tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 2: //BUILDER
             if (user_type == 1) {
-                return `${url}builder-info?builderId=${receiverId}`;
+                return `${url}builder-info?builderId=${senderId}`;
             } else {
                 return `${url}builder-info?builderId=${receiverId}&type=2`;
             }
         case 3: //JOB
             if (user_type == 1) {
-                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`
                 return `${url}job-detail?${urlEncode}`;
             }
         case 4: //PAYMENT
             return `${url}payment-history`;
         case 5: //DISPUTES
             if (user_type == 1) {
-                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`
                 return `${url}job-detail?${urlEncode}`;
             }
-        // case 6: //REVIEW_TRADIE
         case 7: //REVIEW_TRADIE
-            return `${url}past-jobs`;
+            return `${url}jobs?active=past&jobId=${jobId}`;
         case 8: //REVIEW_BUILDER
-            return `${url}jobs?active=past`;
+            return `${url}review-builder?jobId=${jobId}`;
         case 9: //QUESTION
             if (user_type == 1) {
-                return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+                return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}&openQList=true`;
             } else {
-                let urlEncode = window.btoa(`?jobId=${jobId}&status=open`)
+                let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&openQList=true`
                 return `${url}job-detail?${urlEncode}`;
             }
-        case 10: //REVIEW
-            if (user_type == 1) {
-                return `${url}builder-info?builderId=${receiverId}`;
+        case 10: //OPEN OPPOSITE USER REVIEW LIST
+            if (user_type == 1) {//tradieId builderId in extra_data
+                return `${url}builder-info?builderId=${extra_data?.builderId}`;
             } else {
-                return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `${url}tradie-info?tradeId=${extra_data?.tradieId}`;
             }
         case 11: //TERM_AND_CONDITION
-            return `/update-user-info?menu=tnc`;
+            return `${url}update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
-                return `${url}active-jobs`;
+                const type = +extra_data?.redirect_status;
+                return type === 1 ? `${url}past-jobs` : type === 2 ? `${url}active-jobs` : type === 3 ? `${url}new-jobs` : `${url}active-jobs`;
             } else {
-                return `${url}jobs?active=active`;
+                const type = +extra_data?.redirect_status;
+                return `${url}jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
-            return `${url}`;
+            return `${url}home`;
         case 14: //MARK_MILESTONE
             if (user_type == 1) {
-                return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
+                } else {
+                    return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                }
             } else {
-                return `${url}jobs?active=active`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`
+                    return `${url}job-detail?${urlEncode}`;
+                } else {
+                    return `${url}jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                }
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `${url}`;
+                return `${url}home`;
             }
-        case 16: //TRADIE
+        case 16: //SELF_REVIEW_LIST_OPEN
             if (user_type == 1) {
-                return `${url}tradie-info?tradeId=${receiverId}&type=1`;
+                return `${url}tradie-info?tradeId=${receiverId}`;
             } else {
-                return `${url}tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `${url}builder-info?builderId=${receiverId}`;
             }
+        case 17: //TRADIE_RECEIVE_VOUCH
+            if (user_type == 1) {
+                return `${url}tradie-vouchers?tradieId=${receiverId}`;
+            } else {
+                return `${url}home`;
+            }
+        case 18: //ADMIN_NOTIFICATION
+            return `${url}admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
+        case 19: //PRIVACY_POLICY
+            return `${url}update-user-info?menu=pp`;
         default:
-            return `${url}`;
+            return `${url}home`;
     }
 }
 
 self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
     let url = onNotificationClick(event.notification?.data);
+    let dot = url.includes('?') ? '&' : '?';
+    url = url + `${dot}pushNotifId=${event.notification?.data?._id}`;
     console.log('url: ', url);
     event.waitUntil(
         self.clients.openWindow(`${url}`)

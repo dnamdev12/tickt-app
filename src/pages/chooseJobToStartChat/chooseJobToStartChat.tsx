@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import storageService from '../../utils/storageService';
-import { getActiveJobsTradieBuilder } from '../../redux/jobs/actions';
+import { getJobsBWTradieBuilder } from '../../redux/jobs/actions';
 import { renderTimeWithCustomFormat } from '../../utils/common';
 
 import noData from '../../assets/images/no-search-data.png';
@@ -13,8 +13,9 @@ const ChooseJobToStartChat = (props: any) => {
     const [jobId, setJobId] = useState('');
     const [jobName, setJobName] = useState('');
 
-    const [activeJobs, setActiveJobs] = useState<Array<any>>([]);
+    const [jobList, setJobList] = useState<Array<any>>([]);
     const [pageNo, setPageNo] = useState<number>(1);
+    const [totalCount, setTotalCount] = useState<number>(1);
     const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
     const [oppUserId, setOppUserId] = useState<string | null>('');
 
@@ -35,26 +36,31 @@ const ChooseJobToStartChat = (props: any) => {
     }, []);
 
     const callJobList = async () => {
-        // if (activeJobs.length >= totalJobsCount) {
-        //     setHasMoreItems(false);
-        //     return;
-        // }
+        if (jobList.length >= totalCount) {
+            setHasMoreItems(false);
+            return;
+        }
         console.log('props: ', props);
         const oppUsrId = new URLSearchParams(props.history?.location?.state).get(storageService.getItem('userType') === 1 ? 'builderId' : 'tradieId');
         console.log('oppUsrId: ', oppUsrId);
         setOppUserId(oppUsrId);
         const data = {
             oppUserId: oppUsrId,
-            page: pageNo
+            page: pageNo,
+            perPage: 10,
+            user_type: storageService.getItem('userType') === 1 ? 2 : 1
         }
-        const res1 = await getActiveJobsTradieBuilder(data);
-        if (res1.success) {
-            const allJobs = [...activeJobs, ...res1.data?.active];
-            if (res1.data?.length < 10) {
+        const res = await getJobsBWTradieBuilder(data);
+        if (res.success) {
+            const allJobs = [...jobList, ...res.result?.data];
+            if (res.result?.data?.length < 10) {
                 setHasMoreItems(false);
             }
-            setActiveJobs(allJobs);
+            setJobList(allJobs);
             setPageNo(pageNo + 1);
+            if (res.result?.totalCount !== totalCount) {
+                setTotalCount(res.result?.totalCount);
+            }
         }
     }
 
@@ -72,7 +78,7 @@ const ChooseJobToStartChat = (props: any) => {
 
     return (
         <InfiniteScroll
-            dataLength={activeJobs.length}
+            dataLength={jobList.length}
             next={callJobList}
             hasMore={hasMoreItems}
             loader={<h4></h4>}
@@ -95,7 +101,7 @@ const ChooseJobToStartChat = (props: any) => {
                                     </div>
                                 </div>
 
-                                {!props.isLoading && activeJobs?.length === 0 && <div className="no_record">
+                                {!props.isLoading && jobList?.length === 0 && <div className="no_record">
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />
                                     </figure>
@@ -106,7 +112,7 @@ const ChooseJobToStartChat = (props: any) => {
                             </div>
                         </div>
 
-                        {activeJobs?.length > 0 && <div className="form_field">
+                        {jobList?.length > 0 && <div className="form_field">
                             <button onClick={handleSubmit} className={`fill_btn full_btn btn-effect ${(!Object.keys(editItem).length && !jobId && !jobName) ? 'disable_btn' : ''}`}>
                                 Start chat
                             </button>
@@ -115,34 +121,37 @@ const ChooseJobToStartChat = (props: any) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_5">
                                 <ul className={`milestones`}>
-                                    {activeJobs?.length > 0 &&
-                                        activeJobs.map((item: any, index: any) => (
-                                            <li key={index}>
-                                                <div className="checkbox_wrap agree_check">
-                                                    <input
-                                                        checked={editItem[item?.jobId] == true ? true : false}
-                                                        onChange={(e: any) => { checkOnClick(e, item?.jobId, item?.jobName) }}
-                                                        className="filter-type filled-in"
-                                                        type="checkbox"
-                                                        id={`milestone${index}`} />
-                                                    <label
-                                                        htmlFor={`milestone${index}`}>
-                                                        {`${item?.tradeName}`}
-                                                    </label>
-                                                    <div className="info">
-                                                        <span>{item?.jobName}</span>
-                                                        <span>
-                                                            {renderTimeWithCustomFormat(
-                                                                item?.fromDate,
-                                                                item?.toDate,
-                                                                '',
-                                                                ['DD MMM', 'DD MMM YY']
-                                                            )}
-                                                        </span>
+                                    {jobList?.length > 0 &&
+                                        jobList.map((i: any, index: any) => {
+                                            const item: any = i.jobData;
+                                            return (
+                                                <li key={index}>
+                                                    <div className="checkbox_wrap agree_check">
+                                                        <input
+                                                            checked={editItem[item?._id] == true ? true : false}
+                                                            onChange={(e: any) => { checkOnClick(e, item?._id, item?.jobName) }}
+                                                            className="filter-type filled-in"
+                                                            type="checkbox"
+                                                            id={`milestone${index}`} />
+                                                        <label
+                                                            htmlFor={`milestone${index}`}>
+                                                            {`${item?.tradeName}`}
+                                                        </label>
+                                                        <div className="info">
+                                                            <span>{item?.jobName}</span>
+                                                            <span>
+                                                                {renderTimeWithCustomFormat(
+                                                                    item?.from_date,
+                                                                    item?.to_date,
+                                                                    '',
+                                                                    ['DD MMM', 'DD MMM YY']
+                                                                )}
+                                                            </span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </li>
-                                        ))}
+                                                </li>
+                                            )
+                                        })}
                                 </ul>
                             </div>
                         </div>

@@ -50,6 +50,8 @@ import { deleteOpenJob } from '../../redux/jobs/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 import { setShowToast } from '../../redux/common/actions';
+
+import { JobCancelReasons } from '../../utils/common';
 interface PropsType {
     history: any,
     location: any,
@@ -122,7 +124,7 @@ const JobDetailsPage = (props: PropsType) => {
     }, [])
 
     const preFetch = async () => {
-        let location_search = window.atob((props.history?.location?.search).substring(1))
+        let location_search = (props?.history?.location?.search).substring(1) //window.atob()
         const params = new URLSearchParams(location_search);
 
         if (params.get('edit')) {
@@ -156,7 +158,7 @@ const JobDetailsPage = (props: PropsType) => {
 
 
     const fetchQuestionsList = async (isTrue?: boolean) => {
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1); //window.atob()
         const params = new URLSearchParams(location_search);
         const questionData: any = {
             jobId: params.get('jobId'),
@@ -164,6 +166,9 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res2 = await getQuestionsList(questionData);
         if (res2.success) {
+            if (params.get('openQList') === "true") {
+                setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }));
+            }
             console.log({ res2 }, 'question-list')
             let data_elements = res2?.data?.list || res2?.data;
             setQuestionList(data_elements);
@@ -219,7 +224,7 @@ const JobDetailsPage = (props: PropsType) => {
 
     const loadMoreQuestionHandler = async () => {
         // will handle the pagination later
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1);// window.atob()
         const params = new URLSearchParams(location_search);
         const data: any = {
             jobId: params.get('jobId'),
@@ -382,8 +387,16 @@ const JobDetailsPage = (props: PropsType) => {
             if (postedBy && Array.isArray(postedBy) && postedBy[0] && postedBy[0].builderImage) {
                 return (
                     <img
-                        src={postedBy[0].builderImage}
+                        src={postedBy[0].builderImage || dummy}
                         alt="traide-img"
+                        onError={(e: any) => {
+                            if (e?.target?.onerror) {
+                                e.target.onerror = null;
+                            }
+                            if (e?.target?.src) {
+                                e.target.src = dummy;
+                            }
+                        }}
                     />
                 )
             } else {
@@ -406,8 +419,9 @@ const JobDetailsPage = (props: PropsType) => {
     let paramJobId: any = '';
     let activeType: any = '';
     let isPastJob: boolean = false;
+    let hideDispute: any = null;
     if (props.location?.search) {
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1); //window.atob()
         const params = new URLSearchParams(location_search);
         if (params.get('status')) {
             paramStatus = params.get('status');
@@ -421,8 +435,12 @@ const JobDetailsPage = (props: PropsType) => {
         if (params.get('activeType')) {
             activeType = params.get('activeType');
         }
+
+        if (params.get('hide_dipute')) {
+            hideDispute = params.get('hide_dipute');
+        }
     }
-    console.log({ activeType })
+    console.log({ activeType, hideDispute })
 
     console.log({ paramStatus })
     const renderByStatus = ({ status }: any) => {
@@ -523,7 +541,7 @@ const JobDetailsPage = (props: PropsType) => {
         await deleteOpenJob({ jobId });
         props.history.push(`/jobs?active=${activeType}`)
     }
-
+    console.log({ activeType })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -533,7 +551,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <img src={editIconBlue} alt="edit" />
                             <div className="edit_menu">
                                 <ul>
-                                    {activeType == "open" && (
+                                    {/* {activeType == "open" && (
                                         <React.Fragment>
                                             <li
                                                 onClick={() => {
@@ -547,7 +565,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 }}
                                                 className="icon delete">Delete</li>
                                         </React.Fragment>
-                                    )}
+                                    )} */}
                                     {activeType == "active" && (
                                         <React.Fragment>
                                             <li
@@ -557,13 +575,15 @@ const JobDetailsPage = (props: PropsType) => {
                                                 className="icon edit_line">
                                                 {'Edit Milestone'}
                                             </li>
-                                            <li
-                                                onClick={() => {
-                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&lodgeDispute=true`)
-                                                }}
-                                                className="icon lodge">
-                                                {'Lodge dispute'}
-                                            </li>
+                                            {hideDispute === "false" && (
+                                                <li
+                                                    onClick={() => {
+                                                        props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&lodgeDispute=true`)
+                                                    }}
+                                                    className="icon lodge">
+                                                    {'Lodge dispute'}
+                                                </li>
+                                            )}
                                             <li
                                                 onClick={() => {
                                                     props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&cancelJob=true`)
@@ -661,19 +681,19 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {console.log({ jobDetailsData })}
+                                    {console.log({ jobDetailsData, paramStatus })}
                                     {paramStatus === 'CANCELLED' &&
                                         jobDetailsData?.reasonForCancelJobRequest > 0 &&
                                         <div className="chang_req_card mb-sm">
                                             <span className="sub_title">Job cancelled</span>
                                             <p className="commn_para line-2">
-                                                {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                                {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                                {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'} */}
                                             </p>
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
                                         </div>}
-
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
@@ -813,9 +833,10 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para">
-                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ?
+                                            {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                            {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ?
                                                 'I got a better job' :
-                                                'I am not the right fit for the job'}
+                                                'I am not the right fit for the job'} */}
                                         </p>
                                         {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
                                         <button
@@ -1144,9 +1165,25 @@ const JobDetailsPage = (props: PropsType) => {
                                         )} */}
                                         <div className="user_wrap">
                                             <figure className={`u_img`}>
-                                                {jobDetailsData?.postedBy?.builderImage ? (
-                                                    <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
-                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
+                                                {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
+                                                    <img
+                                                        src={jobDetailsData?.postedBy?.builderImage || dummy}
+                                                        alt="traide-img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
+                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
+                                                    <img
+                                                        src={dummy}
+                                                        alt="traide-img"
+                                                    />
+                                                )}
                                             </figure>
                                             <div className='details'>
                                                 <span

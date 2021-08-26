@@ -62,7 +62,6 @@ import Rating from 'react-rating';
 
 import InfiniteScroll from "react-infinite-scroll-component";
 
-const USER_TYPE = storageService.getItem('userType');
 interface Props {
     tradieInfo: any,
     tradieId: any,
@@ -200,7 +199,7 @@ class TradieInfo extends Component<Props, State> {
         let jobId = urlParams.get('jobId')
         let specializationId = urlParams.get('specializationId')
         let tradeId = urlParams.get('tradeId')
-        let user_type = urlParams.get('type')
+        let user_type = storageService.getItem('userType');
         let is_active = urlParams.get('active')
         return { jobId, specializationId, tradeId, user_type, is_active };
     }
@@ -435,7 +434,7 @@ class TradieInfo extends Component<Props, State> {
         const { jobId, tradeId, user_type } = this.getItemsFromLocation();
 
         if (user_type == '1' || this.props.userType == 1) {
-            console.log(USER_TYPE, "USER_TYPE", user_type, "user_type", this.props.userType, "this.props.userType");
+            console.log(user_type, "user_type", this.props.userType, "this.props.userType");
             this.props.getTradieProfileView();
         } else if (jobId) {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
@@ -910,12 +909,23 @@ class TradieInfo extends Component<Props, State> {
                             <span className="sub_title">Vouches</span>
                             <div className="flex_row">
 
-                                {tradieInfo?.vouchesData.map((item: any) => (
+                                {tradieInfo?.vouchesData.slice(0, 8).map((item: any) => (
                                     <div className="flex_col_sm_3">
                                         <div className="review_card vouchers">
                                             <div className="pic_shot_dtl">
                                                 <figure className="u_img">
-                                                    <img src={item?.builderImage || dummy} alt="user-img" />
+                                                    <img
+                                                        src={item?.builderImage || dummy}
+                                                        onError={(e: any) => {
+                                                            if(e?.target?.onerror){
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                        alt="user-img"
+                                                    />
                                                 </figure>
                                                 <div className="name_wrap">
                                                     <span className="user_name" title={item?.builderName || ''}>
@@ -952,7 +962,6 @@ class TradieInfo extends Component<Props, State> {
                                     </div>
                                 ))}
                             </div>
-                            {console.log({ tradieInfo })}
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {

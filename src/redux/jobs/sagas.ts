@@ -28,12 +28,9 @@ function* getActiveJobList({ page }: any) {
   );
   if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
-    yield put({
-      type: actionTypes.GET_ACTIVE_JOBS_END,
-      payload: response.result,
-    });
-
-    return;
+    yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
   }
 }
 
@@ -44,12 +41,9 @@ function* getAppliedJobList({ page }: any) {
   );
   if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
-    yield put({
-      type: actionTypes.GET_APPLIED_JOBS_END,
-      payload: response.result,
-    });
-
-    return;
+    yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
   }
 }
 
@@ -60,12 +54,9 @@ function* getPastJobList({ page }: any) {
   );
   if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
-    yield put({
-      type: actionTypes.GET_PAST_JOBS_END,
-      payload: response.result,
-    });
-
-    return;
+    yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
   }
 }
 
@@ -73,27 +64,27 @@ function* getPastJobList({ page }: any) {
 function* resetActiveJobList() {
   const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
   const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
-  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: null, milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetAppliedJobList() {
   const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
   const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
-  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
+  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: null, milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetPastJobList() {
   const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
   const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
-  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
+  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: null, milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetNewJobList() {
-  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
+  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: null });
 }
 
 function* resetApprovedMilestoneList() {
-  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
+  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: null });
 }
 
 function* getNewJobList({ page }: any) {
@@ -103,12 +94,9 @@ function* getNewJobList({ page }: any) {
   );
   if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
-    yield put({
-      type: actionTypes.GET_NEW_JOBS_END,
-      payload: response.result,
-    });
-
-    return;
+    yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
   }
 }
 
@@ -119,12 +107,9 @@ function* getApprovedMilestoneList({ page }: any) {
   );
   if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
-    yield put({
-      type: actionTypes.GET_APPROVED_MILESTONE_END,
-      payload: response.result,
-    });
-
-    return;
+    yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: response.result });
+  } else {
+    yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
   }
 }
 
@@ -168,6 +153,7 @@ function* getActiveJobsBuilder({ page }: any) {
   if (response.status_code === 200) {
     if (response?.result?.active && Array.isArray(response?.result?.active) && response?.result?.active?.length) {
       response.result.active[0]['page'] = page;
+      response.result.active[0]['mathrandom'] = Math.random();
     }
     if (page === 1) { setLoading(false); }
     yield put({
@@ -316,7 +302,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.RESET_ACTIVE_JOBS_START, resetActiveJobList);
     yield takeLatest(actionTypes.RESET_APPLIED_JOBS_START, resetAppliedJobList);
     yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetNewJobList);
-    yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetApprovedMilestoneList);
+    yield takeLatest(actionTypes.RESET_APPROVED_MILESTONE_START, resetApprovedMilestoneList);
 
     yield takeLatest(actionTypes.GET_BUILDER_ACTIVE_JOBS, getActiveJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_PAST_JOBS, getPastJobsBuilder);

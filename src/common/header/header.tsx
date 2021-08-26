@@ -13,7 +13,10 @@ import { setShowNotification } from '../../redux/common/actions';
 import { messaging, deleteToken, signOut } from '../../services/firebase';
 import { onNotificationClick, formatNotificationTime } from '../../utils/common';
 import { getNotificationList } from '../../redux/homeSearch/actions';
+import { markNotifAsRead } from '../../redux/auth/actions';
+
 import moment from 'moment';
+import _ from 'lodash';
 
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import menu from '../../assets/images/menu-line-white.svg';
@@ -25,7 +28,6 @@ import revenue from '../../assets/images/ic-revenue.png';
 import guide from '../../assets/images/ic-tutorial.png';
 import savedJobs from '../../assets/images/ic-job.png';
 import noNotification from '../../assets/images/no-notifications.png';
-import _ from 'lodash';
 
 import skipBtn from '../../assets/images/skip.png';
 import backBtn from '../../assets/images/back.png';
@@ -130,24 +132,27 @@ const Header = (props: any) => {
             }
         }
     }
-
-    console.log('notificationData: ', notificationData);
+    console.log('notificationDataHeader: ', notificationData);
 
     useEffect(() => {
         onMessageListner();
         setActiveLink('discover');
-
-        const firstLogin = storageService.getItem('firstLogin');
-        if (firstLogin === 'true') {
-            // setTourDialog(true);
-        }
         setUserType(storageService.getItem('userType'))
         callOnPathChange();
+
+        const pushNotifId = new URLSearchParams(props.location?.search)?.get('pushNotifId');
+        if (pushNotifId) {
+            (async () => {
+                const res: any = await markNotifAsRead({ notificationId: pushNotifId });
+                if (res.success) {
+                    callNotificationList(true, true);
+                }
+            })();
+        }
     }, []);
 
 
     const callOnPathChange = () => {
-        console.log('Inside --- callOnPathChange user_id')
         if (userType && !DISABLE_HEADER.includes(pathname) && pathname !== 'guest-user') {
             callNotificationList(true, true);
             if (userType === 1) {
@@ -280,7 +285,7 @@ const Header = (props: any) => {
         setLogoutClicked(false);
         dispatch({ type: 'USER_LOGGED_OUT' });
         history.push('/login');
-        fetch(urlFor(Urls.logout), {
+        fetch(urlFor(`${Urls.logout}?deviceId=${storageService.getItem('userInfo')?.deviceId}`), {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -299,8 +304,10 @@ const Header = (props: any) => {
 
     const chatClicked = () => {
         setToggleMenu(false);
-        setActiveLink('chat');
-        history.push('/chat')
+        if (userType === 1 || userType === 2) {
+            setActiveLink('chat');
+            history.push('/chat');
+        }
     }
 
     const jobClick = () => {
@@ -408,7 +415,6 @@ const Header = (props: any) => {
                         zIndex: 2000,
                     },
                     overlay: {
-                        // background: 'linear-gradient(180deg, rgba(22, 29, 74, 0.80) 20%, rgba(22, 29, 74, 0.5) 30%)',
                         background: '#00000099',
                     }
                 }}
@@ -459,6 +465,9 @@ const Header = (props: any) => {
                             <figure>
                                 <img
                                     onClick={() => {
+                                        if (userType === 0) {
+                                            return;
+                                        }
                                         if (pathname === '/') {
                                             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                                             return;
@@ -475,8 +484,12 @@ const Header = (props: any) => {
                             <li className="tour-discover">
                                 <a
                                     onClick={() => {
-                                        setActiveLink('discover');
-                                        history.push('/');
+                                        if (userType === 1 || userType === 2) {
+                                            setActiveLink('discover');
+                                            history.push('/');
+                                        } else {
+                                            return;
+                                        }
                                     }}
                                     className={startTour ? activeTarget === '.tour-discover a' ? 'active' : '' : activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
@@ -545,7 +558,7 @@ const Header = (props: any) => {
 
                                         <MenuItem onClick={() => {
                                             handleClose('pofile');
-                                            history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}&type=${props.userType}`);
+                                            history.push(`/${props.userType === 1 ? 'tradie' : 'builder'}-info?${props.userType === 1 ? 'trade' : 'builder'}Id=${renderByType({ name: 'userId' })}`);
                                         }}>
                                             <span className="setting_icon">
                                                 <img src={profile} alt="profile" />
@@ -643,6 +656,7 @@ const Header = (props: any) => {
                                         {notificationData.list?.length > 0 &&
                                             notificationData.list.map((item: any) =>
                                                 <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={() => {
+                                                    markNotifAsRead({ notificationId: item?._id });
                                                     handleClose('notification');
                                                     props.history.push(onNotificationClick(item));
                                                 }}
@@ -655,8 +669,8 @@ const Header = (props: any) => {
                                                         </figure>
                                                         <div className="info">
                                                             {/* <span className="who line-1">{item.title}</span> */}
-                                                            <span className="who line-1">{item.title}</span>
-                                                            <span className="line-1">{item.notificationText}</span>
+                                                            <span title={item.title} className="who line-1">{item.title}</span>
+                                                            <span title={item.notificationText} className="line-1">{item.notificationText}</span>
                                                             {/* <span className="see">See the message</span> */}
                                                         </div>
                                                         <span className="time">{formatNotificationTime(item?.updatedAt, 'day')}</span>

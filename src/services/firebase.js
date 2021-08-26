@@ -35,7 +35,6 @@ const getRegisterToken = () => {
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
-                storageService.setItem("FCM token", currentToken);
                 resolve({ success: true, deviceToken: currentToken });
             } else {
                 console.log('No registration token available.');
@@ -43,7 +42,7 @@ const getRegisterToken = () => {
                 resolve({ success: false });
             }
         }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
+            console.log('An error occurred while retrieving  from firebase. ', err);
             setTokenSentToServer(false);
             reject({ success: false });
         });
@@ -52,6 +51,7 @@ const getRegisterToken = () => {
 
 const setTokenSentToServer = (sent) => {
     storageService.setItem('sentToServer', sent ? '1' : '0');
+    storageService.setItem('fcmToken', '');
 }
 
 const isTokenSentToServer = () => {
@@ -61,18 +61,16 @@ const isTokenSentToServer = () => {
 export const requestPermission = () => {
     return new Promise((resolve, reject) => {
         Notification.requestPermission().then((permission) => {
-            if (permission === 'granted' && isTokenSentToServer()) {
-                getRegisterToken();
-                console.log('Token Already sent');
-                resolve({ success: false });
-            }
-            else if (!isTokenSentToServer()) {
-                const data = getRegisterToken();
-                resolve(data);
-            }
+            const data = getRegisterToken();
+            resolve(data);
+            // if (permission === 'granted' && isTokenSentToServer()) {
+            //     const data = getRegisterToken();
+            //     console.log('Token Already sent');
+            //     resolve(data);
+            // }
         })
             .catch((err) => {
-                console.log('Unable to get permission to show notification : ', err);
+                console.log('Unable to get permission to show notification browser : ', err);
                 reject({ success: false });
             });
     })
@@ -126,7 +124,7 @@ export const firebaseLogInWithEmailPassword = async (authData, loginRes, isSignu
         let response = await auth.signInWithEmailAndPassword(authData.email, authData.password);
         if (response) {
             console.log('firebase auth login success: ');
-            if(isSignup) return;
+            if (isSignup) return;
             await db.ref(`${FIREBASE_COLLECTION.USERS}/${loginRes?._id}`).set({
                 email: loginRes?.email,
                 image: loginRes?.user_image,
@@ -143,27 +141,47 @@ export const firebaseLogInWithEmailPassword = async (authData, loginRes, isSignu
 
 ////////////////////////  firebase chat
 
-export const loginAnonymously = () => {
-    // debugger;
-    auth.signInAnonymously()
-        .then(() => alert("anonymous signed in success"))
-        .catch((error) => {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/operation-not-allowed') {
-                alert('You must enable Anonymous auth in the Firebase Console.');
-            } else {
-                console.error(error);
-            }
-        });
+export const loginAnonymously = async () => {
+    let userInfo = storageService.getItem("userInfo");
+    try {
+        let response = await auth.signInAnonymously();
+        if (response) {
+            console.log('firebase anonymous auth login success: ');
+            await db.ref(`${FIREBASE_COLLECTION.USERS}/${userInfo?._id}`).set({
+                email: userInfo?.email,
+                image: userInfo?.user_image,
+                name: userInfo?.userName,
+                userId: userInfo?._id,
+                onlineStatus: true,
+                userType: userInfo?.user_type,
+            });
+        }
+    } catch (error) {
+        console.log('firebase anonymous auth login failure: ');
+        var errorCode = error.code;
+        if (errorCode === 'auth/operation-not-allowed') {
+            alert('You must enable Anonymous auth in the Firebase Console.');
+        } else {
+            console.error(error);
+        }
+    }
 }
 
 export const getLoggedInuserId = () => {
     return storageService.getItem("userInfo")._id;
 }
 
+export const updateChatUserImageAndName = async (updateType, value) => {
+    let loggedInuserId = getLoggedInuserId();
+
+    await db.ref(`${FIREBASE_COLLECTION.USERS}/${loggedInuserId}`).update({
+        ...(updateType === 'userImage' && { image: value }),
+        ...(updateType === 'userName' && { name: value }),
+    });
+}
+
 export const createRoom = async (jobId, tradieId, builderId, jobName) => {
+    let loggedInuserId = getLoggedInuserId();
 
     const roomID = `${jobId}_${tradieId}_${builderId}`;
 
@@ -195,13 +213,12 @@ export const createRoom = async (jobId, tradieId, builderId, jobName) => {
     roomInfoObj.chatRoomMembers = chatRoomMembers;
     roomInfoObj.chatLastUpdates = chatLastUpdates;
 
-    console.log(roomInfoObj, 'roomINfoObj', `${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`, "TESTTTTTTTTTTTTTTT");
     await db.ref(`${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`).set(roomInfoObj);
     // debugger;
     // await createItem(itemInfo);
     //loggedin user inbox
     await createInbox(tradieId, roomID, jobId, builderId, jobName);
-    // supplier user inbox
+    // opposite user inbox
     await createInbox(builderId, roomID, jobId, tradieId, jobName);
     return roomInfoObj;
 }
@@ -323,7 +340,7 @@ export const getMessagesOfRoom = async (roomId, listner) => {
     //     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).off('value', msgListnerObj);
     // }
 
-    msgListnerObj = db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).orderByChild('messageTimestamp').on("value", (snapshot) => {
+    msgListnerObj = db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).orderByChild('messageTimestamp').limitToLast(500).on("value", (snapshot) => {
         let itemlist = [];
         snapshot.forEach((snap) => {
             itemlist.push(snap.val());

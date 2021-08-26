@@ -330,10 +330,11 @@ export const answerQuestion = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.answerQuestion, data)
   setLoading(false);
-
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+
   return { success: false, data: response.result };
 }
 
@@ -342,6 +343,7 @@ export const updateAnswer = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putToJson(Urls.updateAnswer, data)
   setLoading(false);
 
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -353,6 +355,7 @@ export const deleteAnswer = async (data: any) => {
   const response: FetchResponse = await NetworkOps.delete(`${Urls.deleteAnswer}?questionId=${data.questionId}&answerId=${data.answerId}`)
   setLoading(false);
 
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -416,10 +419,10 @@ export const getTradeProfile = async (data: any) => {
 
 export const ratingTradieProfile = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewTradie, data);
-  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false, data: response.result };
 }
 
@@ -440,9 +443,9 @@ export const lodgeDispute = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}lodgeDispute`, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false };
 }
 
@@ -784,13 +787,12 @@ export const deleteOpenJob = async (data: any) => {
   return { success: false };
 }
 
-export const getActiveJobsTradieBuilder = async (data: any) => {
+export const getJobsBWTradieBuilder = async (data: any) => {
   setLoading(true);
-  let url = storageService.getItem('userType') === 1 ? `${Urls.job}tradie/activeJobList?page=${data.page}&builderId=${data?.oppUserId}` : `${Urls.job}builder/activeJobList?page=${data.page}&tradieId=${data?.oppUserId}`
-  const response: FetchResponse = await NetworkOps.get(url);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.getChatJobList}?userId=${data?.oppUserId}&page=${data.page}&perPage=${data.perPage}&user_type=${data.user_type}`);
   setLoading(false);
   if (response.status_code === 200) {
-    return { success: true, data: response.result };
+    return { success: true, result: response.result };
   }
   return { success: false };
 }
@@ -799,6 +801,26 @@ export const getActiveJobsTradieBuilder = async (data: any) => {
 export const getPopularTradies = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.home}getPopularTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const getRecommendedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}recommendedTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const getMostViewedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}mostViewedTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result };

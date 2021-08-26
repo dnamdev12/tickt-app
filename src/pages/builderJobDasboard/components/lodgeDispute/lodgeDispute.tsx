@@ -7,7 +7,7 @@ import addMedia from "../../../../assets/images/add-image.png";
 import noDataFound from "../../../../assets/images/no-search-data.png";
 
 import { onFileUpload } from '../../../../redux/auth/actions';
-import { setShowToast } from '../../../../redux/common/actions';
+import { setShowToast, setLoading } from '../../../../redux/common/actions';
 
 import { withRouter } from 'react-router-dom';
 
@@ -16,10 +16,16 @@ import FsLightbox from 'fslightbox-react';
 
 import { lodgeDispute } from '../../../../redux/jobs/actions';
 
+import { JobLodgeReasons } from '../../../../utils/common';
+
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
 const LodgeDispute = (props: any) => {
-    const { item: { jobId, jobName }, history } = props;
+
+    let item = props?.item;
+    let jobId = props?.item?.jobId;
+    let jobName = props?.item?.jobName;
+    let history = props?.history;
     const [stateData, setStateData] = useState({ reason: 0, detail: '', upload: [] });
     const [errorData, setErrorData] = useState({ reason: '', detail: '', upload: '' });
     const [filesUrl, setFilesUrl] = useState([] as any);
@@ -28,6 +34,8 @@ const LodgeDispute = (props: any) => {
     const [update, forceUpdate] = useState({});
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+
+    const [isItemsLoad, setLoadItems] = useState({});
 
 
     const { reason, detail, upload } = stateData;
@@ -59,6 +67,23 @@ const LodgeDispute = (props: any) => {
         }))
     }, [stateData]);
 
+
+    useEffect(() => {
+        let IsRenderValues = null;
+        if (Object.values(isItemsLoad)?.length) {
+            IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
+        }
+
+        if (IsRenderValues === false) {
+            setLoading(true);
+        }
+
+        if (IsRenderValues === true) {
+            setLoading(false);
+        }
+
+    }, [isItemsLoad])
+
     const removeFromItem = (index: any) => {
         filesUrl.splice(index, 1);
         setFilesUrl(filesUrl);
@@ -88,6 +113,7 @@ const LodgeDispute = (props: any) => {
         }
 
         formData.append('file', newFile);
+        setLoadItems({});
         const res = await onFileUpload(formData)
         if (res.success) {
             let link: string = res.imgUrl;
@@ -96,6 +122,9 @@ const LodgeDispute = (props: any) => {
                 "mediaType": check_type,
                 "link": link
             }]);
+            setLoadItems((prev: any) => ({
+                [filesUrl.length - 1]: false
+            }))
             setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
         }
     }
@@ -114,7 +143,17 @@ const LodgeDispute = (props: any) => {
         let image_render: any = null;
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
-                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={item} alt="media" />
+                image_render = <img
+                    onClick={() => { setItemToggle(index) }}
+                    title={get_split_name}
+                    src={item}
+                    alt="media"
+                    onLoad={() => {
+                        setLoadItems((prev: any) => ({
+                            [index]: true
+                        }))
+                    }}
+                />
             }
             return (
                 <figure className="img_video">
@@ -149,6 +188,23 @@ const LodgeDispute = (props: any) => {
         }
     }
 
+
+
+    const renderTypes = ({ id, }: any) => {
+        return (
+            <div className="checkbox_wrap agree_check">
+                <input
+                    value={reason}
+                    onClick={() => { setStateData((prev: any) => ({ ...prev, reason: id })) }}
+                    checked={reason === id}
+                    name="Reason" className="filter-type filled-in" type="checkbox" id={`reason${id}`} />
+                <label htmlFor={`reason${id}`}>
+                    {JobLodgeReasons(id, true)}
+                </label>
+            </div>
+        )
+    }
+
     const renderFilteredItems = () => {
         let sources: any = [];
         let types: any = [];
@@ -166,6 +222,8 @@ const LodgeDispute = (props: any) => {
     }
 
     const { sources, types } = renderFilteredItems();
+
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
@@ -190,26 +248,22 @@ const LodgeDispute = (props: any) => {
 
                 <div className="reason_wrap">
                     <div className="f_spacebw">
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 1 })) }}
-                                checked={reason === 1}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason1" />
-                            <label htmlFor="reason1">
-                                {'I got a better job'}
-                            </label>
-                        </div>
-                        <div className="checkbox_wrap agree_check">
-                            <input
-                                value={reason}
-                                onClick={() => { setStateData((prev: any) => ({ ...prev, reason: 2 })) }}
-                                checked={reason === 2}
-                                name="Reason" className="filter-type filled-in" type="checkbox" id="reason2" />
-                            <label htmlFor="reason2">
-                                {'I am not the right fit for the job'}
-                            </label>
-                        </div>
+                        {renderTypes({ id: 1 })}
+                        {renderTypes({ id: 2 })}
+                    </div>
+
+                    <div className="f_spacebw">
+                        {renderTypes({ id: 3 })}
+                        {renderTypes({ id: 4 })}
+                    </div>
+
+                    <div className="f_spacebw">
+                        {renderTypes({ id: 5 })}
+                        {renderTypes({ id: 6 })}
+                    </div>
+
+                    <div className="f_spacebw">
+                        {renderTypes({ id: 7 })}
                     </div>
 
                 </div>
@@ -218,7 +272,7 @@ const LodgeDispute = (props: any) => {
 
             <div className="flex_col_sm_9">
                 <div className="form_field">
-                    <label className="form_label">Details</label>
+                    <label className="form_label">Details (optional)</label>
                     <div className="text_field">
                         <textarea
                             value={detail}

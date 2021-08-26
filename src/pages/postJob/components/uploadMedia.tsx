@@ -8,11 +8,17 @@ import addMedia from "../../../assets/images/add-image.png";
 import videoThumbnail from '../../../assets/images/add-video.png';
 import docThumbnail from '../../../assets/images/add-document.png'
 import { onFileUpload } from '../../../redux/auth/actions';
-import { setShowToast } from '../../../redux/common/actions';
+import { setLoading, setShowToast } from '../../../redux/common/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
+
+//@ts-ignore
+// import genThumbnail from 'simple-thumbnail';
+
+import { thumbnailExtract } from '../../../common/thumbnail';
+
 
 // import Loader from "react-loader-spinner";
 // import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
@@ -46,7 +52,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [submitClicked, setSubmitClicked] = useState(false);
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
-    const [isLoadImage, setLoadImage] = useState({});
+    const [isItemsLoad, setLoadItems] = useState({});
 
     const [renderAsyncLoad, setAsyncLoad] = useState<any>(null);
 
@@ -180,7 +186,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         }
 
         formData.append('file', newFile);
-        const res = await onFileUpload(formData)
+        setLoadItems({});
+        const res = await onFileUpload(formData);
+        setLoading(true);
         if (res.success) {
             let link: string = res.imgUrl;
             let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx", "msword"].includes(fileType) ? 3 : 4
@@ -188,6 +196,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 "mediaType": check_type,
                 "link": link
             }]);
+            setLoadItems((prev: any) => ({
+                [filesUrl.length - 1]: false
+            }))
             setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
         }
     }
@@ -198,7 +209,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         setSelectSlide(index + 1);
     }
 
-    const renderbyFileFormat = (item: any, index: any) => {
+    const renderbyFileFormat = (item: any, index: any, base64?: any) => {
         let split_item_format = item.split('.');
         let get_split_fromat = split_item_format[split_item_format.length - 1];
 
@@ -206,7 +217,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         let get_split_name = split_item_name[split_item_name.length - 1];
         let image_render: any = null;
         let loadByIndex = { [index]: true };
-
+        // setLoading(true);
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
                 image_render = (
@@ -219,29 +230,64 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         decoding="async"
                         loading="lazy"
                         onLoad={() => {
+                            console.log('Loaded!')
                             loadByIndex[index] = false;
                             console.log('image_render', '--->', { loadByIndex })
+                            setLoadItems((prev: any) => ({
+                                [index]: true
+                            }))
                         }}
                         alt="media"
                     />)
             }
 
             if (videoFormats.includes(get_split_fromat)) {
-                image_render = (
-                    <img
-                        id={`media_${index}`}
-                        onClick={() => { setItemToggle(index) }}
-                        title={get_split_name}
-                        src={videoThumbnail}
-                        async-src={item}
-                        decoding="async"
-                        loading="lazy"
-                        alt="media"
-                        onLoad={() => {
-                            loadByIndex[index] = false;
-                        }}
-                        style={{ padding: '17px' }}
-                    />);
+                // image_render = (
+                //     <img
+                //         id={`media_${index}`}
+                //         onClick={() => { setItemToggle(index) }}
+                //         title={get_split_name}
+                //         src={videoThumbnail}
+                //         async-src={item}
+                //         decoding="async"
+                //         loading="lazy"
+                //         alt="media"
+                //         onLoad={() => {
+                //             loadByIndex[index] = false;
+                //         }}
+                //         style={{ padding: '17px' }}
+                //     />);
+
+                if (base64) {
+                    image_render = (
+                        <video
+                            id={`media_${index}`}
+                            crossOrigin="anonymous"
+                            src={item}
+                            poster={base64}
+                            controls={false}
+                            onLoadedData={() => {
+                                console.log('Loaded!')
+                                setLoadItems((prev: any) => ({
+                                    [index]: true
+                                }))
+                            }}
+                            onClick={() => { setItemToggle(index) }} />
+                    )
+                } else {
+                    image_render = (
+                        <video id={`media_${index}`} crossOrigin="anonymous"
+                            src={item}
+                            controls={false}
+                            onLoadedData={() => {
+                                console.log('Loaded!')
+                                setLoadItems((prev: any) => ({
+                                    [index]: true
+                                }))
+                            }}
+                            onClick={() => { setItemToggle(index) }} />
+                    )
+                }
             }
 
             if (docformats.includes(get_split_fromat)) {
@@ -255,13 +301,17 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         loading="lazy"
                         onLoad={() => {
                             loadByIndex[index] = false;
+                            console.log('Loaded!')
+                            setLoadItems((prev: any) => ({
+                                [index]: true
+                            }))
                         }}
                         alt="media"
                     />)
             }
             // let checkRender: any = document.getElementById(`media_${index}`);
             // if (checkRender?.complete) {
-            // console.log({ image_render, index: loadByIndex[index] })
+            // console.log({image_render, index: loadByIndex[index] })
             return (
                 <figure className="img_video">
                     <React.Fragment>
@@ -309,7 +359,21 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     }
 
     const { sources, types } = renderFilteredItems();
-    console.log({ isLoadImage })
+    let IsRenderValues = null;
+    if (Object.values(isItemsLoad)?.length) {
+        IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
+    }
+
+    if(IsRenderValues === false){
+        setLoading(true);
+    }
+
+    if(IsRenderValues === true){
+        setLoading(false);
+    }
+
+    let checkErrors_: any = checkErrors();
+    console.log({ IsRenderValues, isItemsLoad, check: checkErrors_ })
     return (
         <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
@@ -321,6 +385,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         sources={sources}
                         types={types}
                     />
+
+                    <canvas id="canvas-extractor" style={{ display: 'none' }}></canvas>
 
                     <div className="form_field">
                         <div className="flex_row">
@@ -355,7 +421,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             <div className="upload_img_video">
                                 {/* {renderAsyncLoad ? renderAsyncLoad : null} */}
                                 {filesUrl?.length ?
-                                    filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
+                                    filesUrl.map((item: any, index: number) => (renderbyFileFormat(item?.link, index, item?.base64)))
                                     : null}
 
                                 {filesUrl?.length < 6 ? (
@@ -395,12 +461,29 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                 <button
                                     onClick={() => {
                                         setSubmitClicked(true);
-                                        handleStepComplete({
-                                            urls: filesUrl,
-                                            description: hasDescription ? description : undefined,
-                                        })
+                                        let filteredItems: any = [];
+                                        let isRender: boolean = false;
+                                        filesUrl.forEach((item: any, index: any) => {
+                                            if (item?.mediaType === 2) {
+                                                if (!item?.base64) {
+                                                    let base64 = thumbnailExtract({
+                                                        canvasId: '#canvas-extractor',
+                                                        videoId: `#media_${index}`
+                                                    });
+                                                    item['base64'] = base64;
+                                                }
+                                            }
+                                            filteredItems.push(item);
+                                        });
+                                        if (!isRender) {
+                                            setFilesUrl(filteredItems);
+                                            handleStepComplete({
+                                                urls: filteredItems,
+                                                description: hasDescription ? description : undefined,
+                                            })
+                                        }
                                     }}
-                                    className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}>
+                                    className={`fill_btn full_btn btn-effect ${checkErrors_ && IsRenderValues == null ? 'disable_btn' : !checkErrors_ && !IsRenderValues ? 'disable_btn' : ''}`}>
                                     {'Submit'}
                                 </button>
                             </div>

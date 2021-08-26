@@ -76,7 +76,8 @@ class NeedApproval extends Component<Props, State> {
     redirectToInfo = ({ jobId, status }: any) => {
         let props: any = this.props;
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`)
+            let urlEncode: any = `?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`
             this.props.history.push(`/job-detail?${urlEncode}`);
         }
     }
@@ -108,7 +109,7 @@ class NeedApproval extends Component<Props, State> {
         }
 
 
-        if(!isRender){
+        if (!isRender) {
             return null;
         }
 
@@ -157,6 +158,14 @@ class NeedApproval extends Component<Props, State> {
                                             <img
                                                 src={tradeSelectedUrl || jobTypePlaceholder}
                                                 alt="traide-img"
+                                                onError={(e: any) => {
+                                                    if (e?.target?.onerror) {
+                                                        e.target.onerror = null;
+                                                    }
+                                                    if (e?.target?.src) {
+                                                        e.target.src = jobTypePlaceholder;
+                                                    }
+                                                }}
                                             />
                                         </figure>
                                         <div className="details">

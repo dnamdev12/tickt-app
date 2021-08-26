@@ -1,6 +1,15 @@
+import { useState, useEffect } from 'react';
+import storageService from '../../utils//storageService';
+
 import uc from '../../assets/images/uc.png';
 
-const GuestHome = () => {
+const GuestHome = (props: any) => {
+    const [userType] = useState(storageService.getItem('userType'));
+
+    if (userType === 1 || userType === 2) {
+        props.history?.push('/');
+    }
+
     return (
         <div className="app_wrapper">
             {/* Under construction */}

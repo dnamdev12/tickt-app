@@ -38,7 +38,14 @@ interface Mile {
 }
 
 const MarkMilestones = (props: any) => {
-    const { resetStateLocal, listData, selectedIndex, enableEditMilestone, enableLodgeDispute, enableCancelJob } = props;
+
+    let resetStateLocal = props?.resetStateLocal;
+    let listData = props?.listData;
+    let selectedIndex = props?.selectedIndex;
+    let enableEditMilestone = props?.enableEditMilestone;
+    let enableLodgeDispute = props?.enableLodgeDispute;
+    let enableCancelJob = props?.enableCancelJob;
+
     const [enableApprove, setEnableApprove] = useState(false);
     const [itemDetails, setDetails] = useState(null);
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
@@ -160,7 +167,8 @@ const MarkMilestones = (props: any) => {
     const redirectToInfo = ({ jobId, status, tradieId }: any) => {
         console.log({ jobId });
         let props_: any = props;
-        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active`)
+        // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active&hide_dipute=${item_detail?.dispute}`)
+        let urlEncode: any = `?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active&hide_dipute=${item_detail?.dispute}`;
         props_.history.push(`/job-detail?${urlEncode}`);
     }
 
@@ -193,14 +201,16 @@ const MarkMilestones = (props: any) => {
 
     if (toggleItem?.edit) {
         let details: any = itemDetails;
-        if (details && Object.keys(details)?.length && Object.keys(selectedItem).length) {
-            return (
-                <EditMilestones
-                    details={details}
-                    item={selectedItem}
-                    backTab={backTab}
-                />
-            )
+        if (details && selectedItem) {
+            if (details && Object.keys(details)?.length && Object.keys(selectedItem).length) {
+                return (
+                    <EditMilestones
+                        details={details}
+                        item={selectedItem}
+                        backTab={backTab}
+                    />
+                )
+            }
         }
     }
 
@@ -384,7 +394,18 @@ const MarkMilestones = (props: any) => {
                         className="chat circle" />
                     <div className="user_wrap">
                         <figure className="u_img">
-                            <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
+                            <img
+                                src={item_details?.tradie?.tradieImage || dummy}
+                                alt="traide-img"
+                                onError={(e: any) => {
+                                    if (e?.target?.onerror) {
+                                        e.target.onerror = null;
+                                    }
+                                    if (e?.target?.src) {
+                                        e.target.src = dummy;
+                                    }
+                                }}
+                            />
                         </figure>
                         <div className="details">
                             <span className="name">{item_details?.tradie?.tradieName || ''}</span>

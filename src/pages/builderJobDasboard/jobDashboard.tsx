@@ -10,7 +10,6 @@ import NeedApproval from './components/needApproval';
 import ApplicantsList from './components/applicantsList';
 //@ts-ignore
 import InfiniteScroll from "react-infinite-scroll-component";
-
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -18,6 +17,7 @@ interface Props {
     getOpenJobsBuilder: (page: number) => void,
     getnewJobApplicationListBuilder: (item: any) => void,
     getNewApprovalList: (page: number) => void,
+    getClearJobs: () => void,
     activeJobs: any,
     pastJobs: any,
     openJobs: any
@@ -42,6 +42,7 @@ interface State {
     enableEditMilestone: any,
     enableLodgeDispute: any,
     enableCancelJob: any,
+    enableMakMilestone: any,
     globalJobId: string,
     hasLoad: boolean,
     actualLoad: boolean,
@@ -65,6 +66,7 @@ class JobDashboard extends Component<Props, State> {
             enableEditMilestone: false,
             enableLodgeDispute: false,
             enableCancelJob: false,
+            enableMakMilestone: false,
             globalJobId: '',
             hasLoad: true,
             actualLoad: false
@@ -82,6 +84,7 @@ class JobDashboard extends Component<Props, State> {
             let editMilestone_ = urlParams.get('editMilestone');
             let lodgeDispute_ = urlParams.get('lodgeDispute');
             let cancelJob_ = urlParams.get('cancelJob');
+            let markMilestone_ = urlParams.get('markMilestone');
 
             if (activeType_) {
                 if (activeType_ !== activeType) {
@@ -139,18 +142,23 @@ class JobDashboard extends Component<Props, State> {
         let editMilestone_ = urlParams.get('editMilestone');
         let lodgeDispute_ = urlParams.get('lodgeDispute');
         let cancelJob_ = urlParams.get('cancelJob');
+        let markMilestone_ = urlParams.get('markMilestone');
+
+        let stateActive = this.state.activeJobs;
 
         console.log({
             activeJobs, pastJobs, openJobs, applicantsListJobs, applicantJobs, approvalJobs,
             1: jobtype === 'active',
-            2: JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs),
-            3: (this.state?.activeJobs?.length < currentPage * 10)
+            2: !activeJobs?.active?.length ? true : JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs),
+            3: (stateActive?.length < currentPage * 10),
+            stateActive: stateActive,
+            currentPage
         })
 
         if (
             jobtype === 'active' &&
                 !activeJobs?.active?.length ? true : JSON.stringify(activeJobs?.active) !== JSON.stringify(this.state?.activeJobs) &&
-            (this.state?.activeJobs?.length < currentPage * 10)
+            (this.state?.activeJobs?.length < currentPage * 10 || this.state?.activeJobs?.length === currentPage * 10)
         ) {
             if (activeJobs?.active) {
 
@@ -174,27 +182,51 @@ class JobDashboard extends Component<Props, State> {
                     let result = [];
                     if (JSON.stringify(prevValues) === JSON.stringify(active) && page_get === currentPage) {
                         // same data items here!
+                        alert('Ok!')
                     } else {
                         let concatedItems: any = prevValues;
                         let firstItem: any = null;
+
                         if (Array.isArray(active) && active?.length) {
                             firstItem = active[0];
                         }
+
                         if (firstItem?.jobId) {
                             let ifMatch = prevValues.find((item: any) => item.jobId === firstItem?.jobId);
                             if (!ifMatch) {
                                 concatedItems = [...prevValues, ...active]
                             }
-
                         }
-                        result = page_get > 0 && page_get === currentPage ? concatedItems : active;
+
+                        result = page_get > 0 && page_get === currentPage ?
+                            page_get == 1 && currentPage == 1 ? active : concatedItems
+                            : active;
                     }
 
                     let globalJobId = jobId_ && jobId_?.length ? jobId_ : ''
                     let enableEditMilestone = editMilestone_ === "true" ? true : false;
                     let enableLodgeDispute = lodgeDispute_ === "true" ? true : false;
                     let enableCancelJob = cancelJob_ === "true" ? true : false;
-                    let { approveCount, applicantCount } = this.state?.count
+                    let enableMakMilestone = markMilestone_ === "true" ? true : false;
+                    let { approveCount, applicantCount } = this.state?.count;
+
+                    let randomState = this.state.activeJobs && Array.isArray(this.state.activeJobs) && this.state.activeJobs[0] && this.state.activeJobs[0].mathrandom ? this.state.activeJobs[0].mathrandom : ''
+
+                    let randomResult = result && Array.isArray(result) && result[0] && result[0].mathrandom ? result[0].mathrandom : '';
+
+                    // console.log({
+                    //     1: needApprovalCount !== approveCount,
+                    //     2: newApplicantsCount !== applicantCount,
+                    //     3: this.state.globalJobId !== globalJobId,
+                    //     4: this.state.enableEditMilestone !== enableEditMilestone,
+                    //     5: this.state.enableLodgeDispute !== enableLodgeDispute,
+                    //     6: this.state.enableCancelJob !== enableCancelJob,
+                    //     7: this.state.enableCancelJob !== enableCancelJob,
+                    //     8: this.state.activeJobs?.length !== result?.length,
+                    //     9: this.state.activeJobs?.length,
+                    //     10: result,
+                    //     11: randomState !== randomResult, 
+                    // })
 
                     if (needApprovalCount !== approveCount ||
                         newApplicantsCount !== applicantCount ||
@@ -203,25 +235,16 @@ class JobDashboard extends Component<Props, State> {
                         this.state.enableLodgeDispute !== enableLodgeDispute ||
                         this.state.enableCancelJob !== enableCancelJob ||
                         this.state.enableCancelJob !== enableCancelJob ||
-                        this.state.activeJobs?.length !== result?.length
+                        this.state.enableMakMilestone !== enableMakMilestone ||
+                        this.state.activeJobs?.length !== result?.length ||
+                        randomState !== randomResult
                     ) {
-                        console.log({
-                            1: needApprovalCount !== approveCount,
-                            2: newApplicantsCount !== applicantCount,
-                            3: this.state.globalJobId !== globalJobId,
-                            4: this.state.enableEditMilestone !== enableEditMilestone,
-                            5: this.state.enableLodgeDispute !== enableLodgeDispute,
-                            6: this.state.enableCancelJob !== enableCancelJob,
-                            7: this.state.enableCancelJob !== enableCancelJob,
-                            8: this.state.activeJobs?.length !== result?.length,
-                            9: this.state.activeJobs?.length,
-                            10: result?.length
-                        })
                         this.setState({
                             globalJobId: jobId_ && jobId_?.length ? jobId_ : '',
                             enableEditMilestone: editMilestone_ === "true" ? true : false,
                             enableLodgeDispute: lodgeDispute_ === "true" ? true : false,
                             enableCancelJob: cancelJob_ === "true" ? true : false,
+                            enableMakMilestone: markMilestone_ === "true" ? true : false,
                             activeJobs: result,
                             count: {
                                 approveCount: needApprovalCount,
@@ -292,7 +315,7 @@ class JobDashboard extends Component<Props, State> {
                 !pastJobs?.past?.length ? true : JSON.stringify(pastJobs?.past) !== JSON.stringify(this.state?.pastJobs) &&
             (this.state?.pastJobs?.length < currentPage * 10)
         ) {
-   
+
             if (pastJobs?.past) {
 
                 let { past, needApprovalCount, newApplicantsCount } = pastJobs;
@@ -436,8 +459,10 @@ class JobDashboard extends Component<Props, State> {
                 actualLoad: false,
                 selectedItem: { jobtype, jobid, sortby, specializationId },
             }, () => {
+                this.props.getClearJobs();
                 this.props.history.push(`/jobs?active=${jobtype}`);
                 window.scrollTo(0, 0);
+
                 this.setAfterItems({ jobtype, currentPage: this.state.currentPage, dataItemsAddons });
             })
         } else {
@@ -445,6 +470,7 @@ class JobDashboard extends Component<Props, State> {
                 selectedItem: { jobtype, jobid, sortby, specializationId },
                 applicantsListJobs: [],
             }, () => {
+                this.props.getClearJobs();
                 this.setAfterItems({ jobtype, currentPage: this.state.currentPage, dataItemsAddons });
             });
         }
@@ -469,6 +495,7 @@ class JobDashboard extends Component<Props, State> {
             enableEditMilestone,
             enableLodgeDispute,
             enableCancelJob,
+            enableMakMilestone,
             globalJobId,
             isToggleSidebar,
             activeType,
@@ -642,6 +669,7 @@ class JobDashboard extends Component<Props, State> {
                                     enableEditMilestone={enableEditMilestone}
                                     enableLodgeDispute={enableLodgeDispute}
                                     enableCancelJob={enableCancelJob}
+                                    enableMakMilestone={enableMakMilestone}
                                 />)}
                             {jobtype === 'open' && (
                                 <OpenJobsComponent

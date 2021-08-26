@@ -10,6 +10,8 @@ import moment from 'moment';
 import { renderTime } from '../../utils/common';
 import { debounce } from 'lodash';
 import InfiniteScroll from "react-infinite-scroll-component";
+import NumberFormat from 'react-number-format';
+
 interface Props {
   isLoading: boolean,
   searching: boolean,
@@ -129,7 +131,7 @@ const PaymentHistory = ({
                     {milestones.map(({ _id, milestone_name, milestoneEarning, isPhotoevidence, from_date, to_date, status }: any) => (
                       <li
                         key={_id}
-                        className={status !== 'Pending' && status !== 'Comming'  ? 'check' : 'disabled'}
+                        className={status !== 'Pending' && status !== 'Comming' ? 'check' : 'disabled'}
                       >
                         <div className="circle_stepper">
                           <span></span>
@@ -157,11 +159,22 @@ const PaymentHistory = ({
                   {/* <a href="javascript:void(0)" className="chat circle"></a> */}
                   <div className="user_wrap" onClick={() => history.push(`/${userType === 1 ? 'builder' : 'tradie'}-info?${userType === 1 ? 'builder' : 'trade'}Id=${userType === 1 ? builderId : tradieId}`)}>
                     <figure className="u_img">
-                      <img src={(userType === 1 ? builderImage : tradieImage) || dummy} alt="img" />
+                      <img
+                        src={(userType === 1 ? builderImage : tradieImage) || dummy}
+                        alt="img"
+                        onError={(e: any) => {
+                          if (e?.target?.onerror) {
+                            e.target.onerror = null;
+                          }
+                          if (e?.target?.src) {
+                            e.target.src = dummy;
+                          }
+                        }}
+                      />
                     </figure>
                     <div className="details">
                       <span className="name">{userType === 1 ? builderName : tradieName}</span>
-                      <span className="rating">{rating ? rating.toFixed(1) :  0}, {review || 0} reviews</span>
+                      <span className="rating">{rating ? rating.toFixed(1) : 0}, {review || 0} reviews</span>
                     </div>
                   </div>
                 </div>
@@ -188,7 +201,16 @@ const PaymentHistory = ({
           <ul className="total_count_card">
             <li className="revenue">
               <span className="show_label">{userType === 1 ? 'Total earnings' : 'Total payment sent'}</span>
-              <span className="title">${totalEarnings && totalEarnings?.toFixed(2) ? totalEarnings?.toFixed(2) : totalEarnings}</span>
+              {/* <span className="title">${totalEarnings && totalEarnings?.toFixed(2) ? totalEarnings?.toFixed(2) : totalEarnings}</span> */}
+              <span className="title">
+                <NumberFormat
+                  value={totalEarnings && totalEarnings?.toFixed(2) ? totalEarnings?.toFixed(2) : totalEarnings}
+                  className="foo"
+                  displayType={'text'}
+                  thousandSeparator={true}
+                  prefix={'$'}
+                />
+              </span>
             </li>
             <li className="job">
               <span className="show_label">Total Jobs</span>

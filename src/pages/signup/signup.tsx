@@ -152,12 +152,12 @@ const Signup = (props: Propstype) => {
     const onSubmitSignup = async (lastStepFields: any) => {
         var res: any;
         const newData = { ...signupData, ...lastStepFields };
-        const data = {
+        let data = {
             ...newData,
             //company_name: newData.companyName,
             trade: [newData.trade],
             user_type: signupData.user_type,
-            deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+            // deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
         }
         //delete data.companyName;
         if (data.user_type === 2) {
@@ -174,13 +174,13 @@ const Signup = (props: Propstype) => {
             res = await postSignup(data);
         }
         if (res.success) {
-            firebaseSignUpWithEmailPassword({
-                email: res.result?.email,
-                password: '12345678',
-                id: res.result?._id,
-                fullName: res.result?.firstName,
-                user_type: res.result?.user_type
-            });
+            // firebaseSignUpWithEmailPassword({  //firebase signup with email password
+            //     email: res.result?.email,
+            //     password: '12345678',
+            //     id: res.result?._id,
+            //     fullName: res.result?.firstName,
+            //     user_type: res.result?.user_type
+            // });
             if (signupData.user_type === 2) {
                 setSteps(8);
             } else {

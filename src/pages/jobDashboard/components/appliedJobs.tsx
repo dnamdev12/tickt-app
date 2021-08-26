@@ -8,7 +8,7 @@ import noDataFound from "../../../assets/images/no-search-data.png";
 interface Proptypes {
   loading: boolean;
   newJobsCount: number,
-  appliedJobList: Array<any>,
+  appliedJobList: any,
   getAppliedJobList: (page: number) => void,
   resetAppliedJobList: () => void;
 };
@@ -17,6 +17,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
   const [jobList, setJobList] = useState<Array<any>>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
+  const [isLoad, setIsLoad] = useState(true);
 
   let totalJobsCount: number = newJobsCount;
   console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
@@ -36,10 +37,11 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
   }
 
   useEffect(() => {
-    if (appliedJobList.length) {
+    if (appliedJobList?.length || Array.isArray(appliedJobList)) {
       const allJobs = [...jobList, ...appliedJobList];
       console.log(jobList, "jobList", appliedJobList, "props.appliedJobList", allJobs, "allJobs");
       setJobList(allJobs);
+      setIsLoad(false);
       setPageNo(pageNo + 1);
       if (appliedJobList.length < 10) { setHasMoreItems(false); }
       resetAppliedJobList();
@@ -57,13 +59,24 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
       >
         <span className="sub_title">Applied Jobs</span>
         <div className="flex_row tradies_row">
-          {!loading && jobList.length ? jobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
+          {!isLoad && !loading && jobList.length ? jobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
             <div className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
-                    <img src={tradeSelectedUrl || dummy} alt="" />
+                    <img
+                      src={tradeSelectedUrl || dummy}
+                      alt=""
+                      onError={(e: any) => {
+                        if (e?.target?.onerror) {
+                          e.target.onerror = null;
+                        }
+                        if (e?.target?.src) {
+                          e.target.src = dummy;
+                        }
+                      }}
+                    />
                   </figure>
                   <div className="details">
                     <span className="name">{tradeName}</span>
@@ -97,7 +110,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
                 </div>
               </div>
             </div>
-          )) : !loading && (
+          )) : !isLoad && !loading && (
             <div className="no_record  m-t-vh">
               <figure className="no_img">
                 <img src={noDataFound} alt="data not found" />

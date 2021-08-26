@@ -47,6 +47,7 @@ import storageService from '../../../../utils/storageService';
 import { validateABN } from '../../../../utils/common';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
+import { updateChatUserImageAndName } from '../../../../services/firebase';
 
 interface Props {
     history: any,
@@ -358,7 +359,6 @@ export class PersonalInformation extends Component<Props, State> {
             const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
             console.log(newQualificationDoc, "newQualificationDoc validation");
             if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
-                // newErrors.qualificationDoc = "Please upload all selected documents";
                 setShowToast(true, "Please upload all selected documents");
                 return;
             }
@@ -366,7 +366,6 @@ export class PersonalInformation extends Component<Props, State> {
             const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
             console.log(newRemainingDoc, "newRemainingDoc validation");
             if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
-                // newErrors.qualificationDoc = "Please upload all selected documents";
                 setShowToast(true, "Please upload all selected documents");
                 return;
             }
@@ -471,6 +470,7 @@ export class PersonalInformation extends Component<Props, State> {
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
                 this.props.cleanTradieBasicDetails();
+                updateChatUserImageAndName('userName', data.fullName);
                 basicDetails.qualificationDoc = this.userType === 1 ? data.qualificationDoc : [];
                 this.setState((prevState: any) => ({
                     profileModalClicked: false,
@@ -641,6 +641,9 @@ export class PersonalInformation extends Component<Props, State> {
         }
         const res2 = await tradieUpdateProfileDetails(data);
         if (res2?.success) {
+            if (this.state.formData) {
+                updateChatUserImageAndName('userImage', data.userImage);
+            }
             this.setState({
                 formData: null,
                 isProfileViewDataChanged: false
@@ -690,10 +693,6 @@ export class PersonalInformation extends Component<Props, State> {
             const newqualificationDoc: Array<any> = newBasicData?.qualificationDoc;
             const item = newqualificationDoc?.find(i => i.qualification_id === id);
             const itemIndex = newqualificationDoc?.indexOf(item);
-            // if (!item) {
-            // newqualificationDoc.push({ qualification_id: id, url: '' });
-            // } else {
-            // newqualificationDoc.splice(itemIndex, 1);
             if (item.isSelected) {
                 newqualificationDoc.splice(itemIndex, 1, { qualification_id: id, url: '' });
             } else {
@@ -787,13 +786,6 @@ export class PersonalInformation extends Component<Props, State> {
         const isSkeletonLoading: any = props.isSkeletonLoading;
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === trade[0])?.specialisations;
 
-        // const addedTradeList = profileViewData?.areasOfSpecialization?.tradeData?.map(({ tradeId }: { tradeId: string }) => tradeId) || [];
-        // const addedSpecializationList = profileViewData?.areasOfSpecialization?.specializationData?.map(({ specializationId }: { specializationId: string }) => specializationId) || [];
-        // const addedTradeData = tradeList.filter(({ _id }: { _id: string }) => addedTradeList.includes(_id));
-        // addedTradeData.forEach(({ specialisations }: any, index: number) => {
-        //   addedTradeData[index].specialisations = specialisations.filter(({ _id }: { _id: string }) => addedSpecializationList.includes(_id));
-        // });
-
         return (
             <>
                 <div className="flex_row f_col">
@@ -825,7 +817,7 @@ export class PersonalInformation extends Component<Props, State> {
                             {isSkeletonLoading ? <Skeleton /> : <a href="javascript:void(0)" className="view_profile"
                                 onClick={() => {
                                     props.cleanTradieProfileViewData();
-                                    props.history.push(`/${this.userType === 1 ? 'tradie' : 'builder'}-info?${this.userType === 1 ? 'trade' : 'builder'}Id=${basicDetailsData?.userId}&type=${this.userType}`);
+                                    props.history.push(`/${this.userType === 1 ? 'tradie' : 'builder'}-info?${this.userType === 1 ? 'trade' : 'builder'}Id=${basicDetailsData?.userId}`);
                                 }}>
                                 <img src={viewProfile} alt="view-profile" />View public profile</a>}
                         </div>
@@ -911,6 +903,26 @@ export class PersonalInformation extends Component<Props, State> {
                                     </div>
                                     {!!errors?.mobileNumber && <span className="error_msg">{errors?.mobileNumber}</span>}
                                 </div>
+                                {this.userType === 1 && <div className="form_field">
+                                    <label className="form_label">Australian Business Number</label>
+                                    <div className="text_field">
+                                        <NumberFormat
+                                            value={basicDetailsData?.abn}
+                                            displayType={'input'}
+                                            type={'tel'}
+                                            placeholder="51 824 753 556"
+                                            format="## ### ### ###"
+                                            isNumericString={true}
+                                            onValueChange={(values) => {
+                                                const { formattedValue, value } = values;
+                                                const newBasicDetails = { ...this.state.basicDetailsData };
+                                                newBasicDetails.abn = value;
+                                                this.setState({ basicDetailsData: newBasicDetails, isEditProfileModalChanged: true });
+                                            }}
+                                        />
+                                    </div>
+                                    {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
+                                </div>}
                                 <div className="form_field">
                                     <label className="form_label">Email</label>
                                     <div className="text_field f_spacebw">
@@ -935,17 +947,6 @@ export class PersonalInformation extends Component<Props, State> {
                                                 const docDetails: any = url && this.qualificationFileDetails(url);
                                                 return (
                                                     <>
-                                                        {/* <div className="form_field">
-                                                        <div className="relate">
-                                                            <div className="checkbox_wrap agree_check">
-                                                                <input name="qualification" checked={qualificationName ? true : false} className="filter-type filled-in" type="checkbox" id={qualificationName + 'upload'} />
-                                                                <label htmlFor={qualificationName + 'upload'} className="line-1">{qualificationName || ''}</label>
-                                                            </div>
-                                                            <div className="edit_delete tr">
-                                                                <span className="remove" title="Remove"></span>
-                                                            </div>
-                                                        </div>
-                                                    </div> */}
                                                         <div className="f_spacebw mt-15" key={qualification_id}>
                                                             <div className="checkbox_wrap agree_check">
                                                                 <input
@@ -996,17 +997,6 @@ export class PersonalInformation extends Component<Props, State> {
                                         remainingQualificationDoc?.map(({ _id, name, url, isSelected, fileName }: { _id: string, name: string, url: string, isSelected: string, fileName: string }) => {
                                             const docDetails: any = url && this.qualificationFileDetails(url);
                                             return (
-                                                // <div className="form_field">
-                                                //     <div className="relate">
-                                                //         <div className="checkbox_wrap agree_check">
-                                                //             <input name="qualification" className="filter-type filled-in" type="checkbox" id={name + 'upload'} />
-                                                //             <label htmlFor={name + 'upload'} className="line-1">{name}</label>
-                                                //         </div>
-                                                //         <div className="edit_delete tr">
-                                                //             <span className="remove" title="Remove"></span>
-                                                //         </div>
-                                                //     </div>
-                                                // </div>
                                                 <>
                                                     <div className="f_spacebw mt-15" key={_id}>
                                                         <div className="checkbox_wrap agree_check">
@@ -1069,14 +1059,28 @@ export class PersonalInformation extends Component<Props, State> {
                                             </div>
                                             {!!errors?.position && <span className="error_msg">{errors?.position}</span>}
                                         </div>
+                                        <div className="form_field">
+                                            <label className="form_label">Australian Business Number</label>
+                                            <div className="text_field">
+                                                {/* <input type="text" placeholder="51 824 753 556" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} /> */}
+                                                <NumberFormat
+                                                    value={basicDetailsData?.abn}
+                                                    displayType={'input'}
+                                                    type={'tel'}
+                                                    placeholder="51 824 753 556"
+                                                    format="## ### ### ###"
+                                                    isNumericString={true}
+                                                    onValueChange={(values) => {
+                                                        const { formattedValue, value } = values;
+                                                        const newBasicDetails = { ...this.state.basicDetailsData };
+                                                        newBasicDetails.abn = value;
+                                                        this.setState({ basicDetailsData: newBasicDetails, isEditProfileModalChanged: true });
+                                                    }}
+                                                />
+                                            </div>
+                                            {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
+                                        </div>
                                     </>}
-                                <div className="form_field">
-                                    <label className="form_label">Australian Business Number</label>
-                                    <div className="text_field">
-                                        <input type="text" placeholder="Australian Business Number" name='abn' value={basicDetailsData?.abn} onChange={this.changeHandler} />
-                                    </div>
-                                    {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
-                                </div>
                             </div>
 
                             {(this.userType === 1 && basicDetailsData?.qualificationDoc?.length < 6 && !addQualificationClicked) && <><div className="form_field">
@@ -1168,16 +1172,6 @@ export class PersonalInformation extends Component<Props, State> {
                     </span>}
                     <div className="tags_wrap">
                         {isSkeletonLoading ? <Skeleton count={3} /> : <ul>
-                            {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
-                                <React.Fragment key={_id}>
-                                  <li className="main">
-                                      <img src={selected_url || menu} alt="" />{trade_name}
-                                  </li>
-                                  {specialisations?.map(({ _id, name }: { _id: string, name: string }) => {
-                                    return <li key={_id}>{name}</li>
-                                  })}
-                                </React.Fragment>
-                            ))} */}
                             {profileViewData?.areasOfSpecialization?.tradeData?.map(({ tradeId, tradeName, tradeSelectedUrl }: { tradeId: string, tradeName: string, tradeSelectedUrl: string }, index: number) => {
                                 if (this.userType === 1 && index > 0) {
                                     return null;
@@ -1469,7 +1463,12 @@ export class PersonalInformation extends Component<Props, State> {
                                 {portfolioJobDetail?.portfolioImage?.map((image: string, index: number) => {
                                     return (
                                         <figure className="img_video" key={image}>
-                                            <img src={image ? image : dummy} alt="portfolio-images" />
+                                            <img
+                                                src={image ? image : dummy}
+                                                async-src={image ? image : dummy}
+                                                decoding="async"
+                                                loading="lazy"
+                                                alt="portfolio-images" />
                                             <img src={remove} alt="remove" className="remove"
                                                 onClick={() => {
                                                     const data: any = { ...portfolioJobDetail };

@@ -8,7 +8,7 @@ import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
-import { firebaseLogInWithEmailPassword } from '../../services/firebase';
+import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../services/firebase';
 interface Propstype {
     history: any,
     showModal?: boolean,
@@ -110,7 +110,8 @@ const LoginPage = (props: Propstype) => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
-        const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
+        let newData = { email: loginData.email, password: loginData.password };
+        // const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
         if (validateForm()) {
             const res: any = await callLogin(newData);
             if (res.success) {
@@ -118,13 +119,11 @@ const LoginPage = (props: Propstype) => {
                     email: newData.email,
                     password: '12345678', //'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
                 }
-                firebaseLogInWithEmailPassword(authData, res?.data);
+                loginAnonymously();
+                // firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {
                     // window.location.reload();
                     props.setShowModal(!props.showModal);
-                }
-                if (res?.data) {
-                    localStorage.setItem('email', res.data.email);
                 }
                 props?.history?.push('/');
             }

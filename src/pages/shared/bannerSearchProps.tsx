@@ -164,8 +164,8 @@ const BannerSearch = (props: PropsType) => {
             if (state?.location && state?.location?.coordinates?.length) {
                 let coordinates = state.location.coordinates;
                 let valueItem = {
-                    lat: coordinates[0],
-                    lng: coordinates[1]
+                    lat: coordinates[1],
+                    lng: coordinates[0]
                 };
                 setSelectedAddress(valueItem);
             }
@@ -214,18 +214,29 @@ const BannerSearch = (props: PropsType) => {
             setSelectedAddress({});
             setSelectedTrade({});
         }
+
+        if (!addressText?.length) {
+            fetchItemsSearchWithLocation(1);
+        }
+
+
     }, [addressText])
 
     useEffect(() => {
-        if (getRecentSearchList) {
+        fetchItemsSearchWithLocation();
+        // getRecentLocationData();
+
+    }, []);
+
+
+    const fetchItemsSearchWithLocation = (fetch?: any) => {
+        if (getRecentSearchList && fetch !== 1) {
             getRecentSearchList();
         }
         if (getRecentLocationList) {
             getRecentLocationList();
         }
-        // getRecentLocationData();
-
-    }, []);
+    }
 
     useEffect(() => {
         // if (props.recentLocationData?.length &&
@@ -485,6 +496,15 @@ const BannerSearch = (props: PropsType) => {
                 isFiltered: true,
                 tradeId: tradeId,
                 specializationId: specializationId,
+            }
+
+            if (!tradeId?.length) {
+                setShowToast(true, 'please enter the valid search text.');
+                return;
+            }
+
+            if (!specializationId?.length) {
+                delete data?.specializationId;
             }
 
             if (sortBy > 0) {

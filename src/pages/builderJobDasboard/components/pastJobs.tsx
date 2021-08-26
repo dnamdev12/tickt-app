@@ -7,6 +7,8 @@ import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png'
 import moment from 'moment';
 import RateThisJob from './ratethisJob/index';
 
+import { useLocation } from "react-router-dom";
+
 import { renderTime } from '../../../utils/common';
 interface Post {
     amount: any,
@@ -39,14 +41,18 @@ const PastJobs = (props: any) => {
     const [currentPage, setCurrentPage] = useState(1);
     let [isEnable, setEnable] = useState<any>(false);
 
+    const location = useLocation();
+
     const redirectToInfo = ({ jobId, status }: any) => {
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&job=past&activeType=${props?.activeType}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&job=past&activeType=${props?.activeType}`)
+            let urlEncode: any = `?jobId=${jobId}&status=${status}&job=past&activeType=${props?.activeType}`
             props.history.push(`/job-detail?${urlEncode}`);
         }
     }
 
     const backToScreen = () => {
+        props.history.replace('/jobs?active=past');
         setRateJob((prev: any) => ({
             data: {},
             isTrue: !prev.isTrue
@@ -54,29 +60,22 @@ const PastJobs = (props: any) => {
     }
 
     useEffect(() => {
-        let window_: any = window;
-        let document_: any = document;
-        function handleScroll() {
-            var c = [
-                document_.scrollingElement.scrollHeight,
-                document_.body.scrollHeight,
-                document_.body.offsetHeight].sort((a, b) => { return b - a }) // select longest candidate for scrollable length
-            let calculatedItems = (window_.innerHeight + window_.scrollY + 4 >= c[0]);
+        const urlSearchParams = new URLSearchParams(location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
 
-            if (calculatedItems && !isEnable) {
-                // setEnable((prev: any) => !isEnable);
-                // console.log({
-                //     isEnable,
-                //     calculatedItems
-                // });
-                // setCurrentPage(currentPage + 1);
-                // props.getPastJobsBuilder(currentPage + 1);
+        if (params?.jobId) {
+            let jobId_ = params?.jobId;
+            if (listData?.length) {
+                let result = listData.find((item: any) => item?.jobId === jobId_);
+                if (result) {
+                    setRateJob({
+                        data: result,
+                        isTrue: true
+                    });
+                }
             }
-            return calculatedItems; // compare with scroll position + some give
         }
-
-        window_.addEventListener('scroll', handleScroll, { passive: true });
-    }, []);
+    }, [props]);
 
 
     useEffect(() => {
@@ -99,7 +98,7 @@ const PastJobs = (props: any) => {
     if (!isEnable) {
         return null;
     }
-
+    // "60dadb661fed05158f8745e3"
     return (
         <React.Fragment>
             <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
@@ -138,7 +137,16 @@ const PastJobs = (props: any) => {
                                     <figure className="u_img">
                                         <img
                                             src={jobData?.tradeSelectedUrl || jobTypePlaceholder}
-                                            alt="traide-img" />
+                                            alt="traide-img"
+                                            onError={(e: any) => {
+                                                if (e?.target?.onerror) {
+                                                    e.target.onerror = null;
+                                                }
+                                                if (e?.target?.src) {
+                                                    e.target.src = jobTypePlaceholder;
+                                                }
+                                            }}
+                                            />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>

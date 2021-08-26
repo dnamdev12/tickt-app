@@ -277,7 +277,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                 handleCombineMileStones(localMilestones);
                                                 handleStepForward(10)
                                             } else {
-                                                setShowToast(true, "Please arrange milestonea date wise.")
+                                                setShowToast(true, "Please arrange milestone date wise.")
                                             }
                                         }
                                     }}
@@ -441,7 +441,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                             handleStepForward(13)
                                                         }
                                                     } else {
-                                                        setShowToast(true, "Please arrange milestonea date wise.")
+                                                        setShowToast(true, "Please arrange milestone date wise.")
                                                     }
                                                 }
                                             }}

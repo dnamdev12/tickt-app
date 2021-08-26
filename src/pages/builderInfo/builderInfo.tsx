@@ -123,7 +123,8 @@ const BuilderInfo = (props: PropsType) => {
         // let jobId = urlParams.get('jobId')
         // let specializationId = urlParams.get('specializationId')
         let builderId: any = urlParams.get('builderId');
-        let user_type = urlParams.get('type');
+        // let user_type = urlParams.get('type');
+        let user_type = storageService.getItem('userType');
         return { builderId, user_type };
     }
 
@@ -367,7 +368,16 @@ const BuilderInfo = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
                                     {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
-                                    {!props.isSkeletonLoading && <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" onLoad={() => setProfilePictureLoading(false)} hidden={profilePictureLoading} />}
+                                    {!props.isSkeletonLoading &&
+                                        <img
+                                            src={profileData?.builderImage || profilePlaceholder}
+                                            alt="profile-pic"
+                                            onLoad={() => setProfilePictureLoading(false)}
+                                            // onError={(e: any) => {
+                                            //     let e_: any = e;
+                                            //     e_.target.src = dummy;
+                                            // }}
+                                            hidden={profilePictureLoading} />}
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">
@@ -425,7 +435,8 @@ const BuilderInfo = (props: PropsType) => {
                                 <div className="tags_wrap">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
                                         // Add active class when click on show more
-                                        <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
+                                        <ul className={`${!showSpecs ? 'more_tags active' : ''}`}>
+                                            {/* <ul className={`more_tags ${showSpecs ? 'active' : ''}`}> */}
                                             {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
                                               <Fragment key={_id}>
                                                 <li className="main">
@@ -436,28 +447,52 @@ const BuilderInfo = (props: PropsType) => {
                                                 })}
                                               </Fragment>
                                             ))} */}
-                                            {profileData?.areasOfSpecialization?.tradeData?.map(({ tradeId, tradeSelectedUrl, tradeName }: { tradeId: string, tradeSelectedUrl: string, tradeName: string }) => (
+                                            {console.log({
+                                                areasOfSpecialization: profileData?.areasOfSpecialization
+                                            })}
+                                            {profileData?.areasOfSpecialization?.tradeData?.map(({
+                                                tradeId,
+                                                tradeSelectedUrl,
+                                                tradeName }: {
+                                                    tradeId: string,
+                                                    tradeSelectedUrl: string,
+                                                    tradeName: string
+                                                }) => (
                                                 <li key={tradeId} className="main">
                                                     <img src={tradeSelectedUrl || menu} alt="" />{tradeName || ''}
                                                 </li>
                                             ))}
                                             {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
-                                                return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                return (
+                                                    <li key={item.specializationId}>
+                                                        {item.specializationName || ''}
+                                                    </li>
+                                                )
                                             })}
                                         </ul>) : (
                                         <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
-                                            {profileData?.tradeName && <li className="main">
-                                                <img src={profileData?.tradeSelectedUrl || menu} alt="" />{profileData?.tradeName || ''}
-                                            </li>}
+                                            {profileData?.tradeName &&
+                                                <li className="main">
+                                                    <img src={profileData?.tradeSelectedUrl || menu} alt="" />
+                                                    {profileData?.tradeName || ''}
+                                                </li>}
                                             {profileData?.areasOfjobs?.map((item: any) => {
-                                                return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                return (
+                                                    <li key={item.specializationId}>
+                                                        {item.specializationName || ''}
+                                                    </li>
+                                                )
                                             })}
                                         </ul>)}
-                                    {(profileData?.areasOfjobs?.length > 6 || (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) && <a href="javascript:void(0)" className="link show_more"
-                                        onClick={(e: any) => {
-                                            e.preventDefault();
-                                            setShowSpecs(!showSpecs);
-                                        }}>{showSpecs ? 'Show less' : 'Show more'}</a>}
+                                    {(profileData?.areasOfjobs?.length > 6 ||
+                                        (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) &&
+                                        <span className="link show_more"
+                                            onClick={(e: any) => {
+                                                e.preventDefault();
+                                                setShowSpecs(!showSpecs);
+                                            }}>
+                                            {showSpecs ? 'Show less' : 'Show more'}
+                                        </span>}
                                 </div>
 
                             </div>

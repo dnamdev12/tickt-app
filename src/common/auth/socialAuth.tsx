@@ -10,7 +10,7 @@ import { GoogleLogin } from 'react-google-login';
 import { LinkedIn } from 'react-linkedin-login-oauth2';
 // @ts-ignore
 //import AppleLogin from 'react-apple-login';
-import { firebaseLogInWithEmailPassword } from '../../services/firebase';
+import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../services/firebase';
 
 interface Propstype {
     onNewAccount: Function,
@@ -38,12 +38,12 @@ const SocialAuth = (props: Propstype) => {
         if (res.success) {
             if (res.isProfileCompleted) {
                 //in case of existing social account
-                const data: any = {
+                let data: any = {
                     //firstName: profileData.name,
                     authType: "login",
                     email: response.profileObj?.email,
                     socialId: response.profileObj?.googleId,
-                    deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+                    // deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "google",
                     ...(props.userType && { user_type: props.userType })
                 }
@@ -60,7 +60,8 @@ const SocialAuth = (props: Propstype) => {
                         _id: res.result?._id,
                         user_type: res.result?.user_type,
                     }
-                    firebaseLogInWithEmailPassword(authData, loginRes);
+                    loginAnonymously();
+                    // firebaseLogInWithEmailPassword(authData, loginRes);
                     if (props.showModal) {
                         props.setShowModal(!props.showModal);
                     }
@@ -79,11 +80,11 @@ const SocialAuth = (props: Propstype) => {
         if (resCheckId.success) {
             if (resCheckId.isProfileCompleted) {
                 //in case of existing social account
-                const data: any = {
+                let data: any = {
                     //firstName: profileData.name,
                     authType: "login",
                     email: resSocial.result?.email,
-                    deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+                    // deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
                     accountType: "linkedIn",
                     socialId: resSocial.result?.id,
                     ...(props.userType && { user_type: props.userType })
@@ -102,7 +103,8 @@ const SocialAuth = (props: Propstype) => {
                         _id: resAuth.result?._id,
                         user_type: resAuth.result?.user_type,
                     }
-                    firebaseLogInWithEmailPassword(authData, loginRes);
+                    loginAnonymously();
+                    // firebaseLogInWithEmailPassword(authData, loginRes);
                     if (props.showModal) {
                         props.setShowModal(!props.showModal);
                     }

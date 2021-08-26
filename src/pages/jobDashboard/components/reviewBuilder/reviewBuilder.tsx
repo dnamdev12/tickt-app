@@ -1,8 +1,11 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import moment from 'moment';
 // @ts-ignore
 import ReactStars from "react-rating-stars-component";
-import { reviewBuilder } from '../../../../redux/jobs/actions';
+import {
+    reviewBuilder,
+    getJobDetails,
+} from '../../../../redux/jobs/actions';
 import { setShowToast } from '../../../../redux/common/actions';
 import { renderTime } from '../../../../utils/common';
 
@@ -18,8 +21,24 @@ const ReviewBuilder = (props: Proptypes) => {
         rating: 0,
         review: '',
     });
-    console.log(props, props.history, "props data")
-    const item = props?.location?.state?.item;
+    const [item, setItem] = useState<any>('');
+    const [isParam, setIsParam] = useState<boolean>(false);
+
+    useEffect(() => {
+        const jobId: any = new URLSearchParams(props.location?.search)?.get('jobId');
+        (async () => {
+            if (jobId) {
+                const res = await getJobDetails(jobId);
+                if (res.success) {
+                    setItem(res.data);
+                    setIsParam(true);
+                }
+            } else if (props?.location?.state?.item) {
+                setItem(props?.location?.state?.item);
+            };
+        })();
+    }, []);
+    console.log(props, "props data", item, "item");
 
     const ratingChanged = (newRating: number) => {
         console.log(newRating);
@@ -44,7 +63,7 @@ const ReviewBuilder = (props: Proptypes) => {
         if (reviewBuilderData.rating > 0) {
             let data: any = {
                 jobId: item?.jobId,
-                builderId: item?.builderData?.builderId,
+                builderId: isParam ? item?.postedBy?.builderId : item?.builderData?.builderId,
                 rating: reviewBuilderData.rating,
                 review: reviewBuilderData.review.trim()
             }
@@ -61,7 +80,7 @@ const ReviewBuilder = (props: Proptypes) => {
     }
 
     const builderClicked = () => {
-        props.history.push(`/builder-info?builderId=${item?.builderData?.builderId}`);
+        props.history.push(`/builder-info?builderId=${isParam ? item.postedBy?.builderId : item.builderData?.builderId}`);
     }
 
     return (
@@ -108,10 +127,21 @@ const ReviewBuilder = (props: Proptypes) => {
                     <div className="tradie_card posted_by view_more ">
                         <div className="user_wrap" onClick={() => builderClicked()}>
                             <figure className="u_img">
-                                <img src={item.builderData?.builderImage ? item.builderData?.builderImage : dummy} alt="traide-img" />
+                                <img
+                                    src={isParam ? item.postedBy?.builderImage : item.builderData?.builderImage ? item.builderData?.builderImage : dummy}
+                                    alt="traide-img"
+                                    onError={(e: any) => {
+                                        if (e?.target?.onerror) {
+                                            e.target.onerror = null;
+                                        }
+                                        if (e?.target?.src) {
+                                            e.target.src = dummy;
+                                        }
+                                    }}
+                                />
                             </figure>
                             <div className="details">
-                                <span className="name">{item.builderData?.builderName}</span>
+                                <span className="name">{item.builderData?.builderName || item.postedBy?.builderName}</span>
                                 <span className="prof">{item?.jobName}</span>
                                 <span className="prof">{renderTime(item?.fromDate, item?.toDate)}</span>
                             </div>

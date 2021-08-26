@@ -56,10 +56,12 @@ class OpenJobs extends Component<Props, State> {
     redirectToInfo = ({ jobId, status }: any) => {
         let props: any = this.props;
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType}`)
+            let urlEncode: any = `?jobId=${jobId}&status=${status}&activeType=${props?.activeType}`
             this.props.history.push(`/job-detail?${urlEncode}`);
         } else {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${'open'}&activeType=${props?.activeType}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${'open'}&activeType=${props?.activeType}`)
+            let urlEncode: any = `?jobId=${jobId}&status=${'open'}&activeType=${props?.activeType}`
             this.props.history.push(`/job-detail?${urlEncode}`);
         }
     }
@@ -117,6 +119,14 @@ class OpenJobs extends Component<Props, State> {
                                             <img
                                                 src={tradeSelectedUrl || jobTypePlaceholder}
                                                 alt="traide-img"
+                                                onError={(e: any) => {
+                                                    if (e?.target?.onerror) {
+                                                        e.target.onerror = null;
+                                                    }
+                                                    if (e?.target?.src) {
+                                                        e.target.src = jobTypePlaceholder;
+                                                    }
+                                                }}
                                             />
                                         </figure>
                                         <div className="details">

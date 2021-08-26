@@ -64,11 +64,12 @@ const TradieSearchJobResult = (props: PropsType) => {
                 ...(queryParamsData.min_budget >= 0 && queryParamsData.max_budget > 0 && { min_budget: queryParamsData.min_budget }),
                 ...(queryParamsData.min_budget >= 0 && queryParamsData.max_budget > 0 && { max_budget: queryParamsData.max_budget }),
                 ...(queryParamsData.sortBy && { sortBy: queryParamsData.sortBy }),
-                ...((queryParamsData.address || queryParamsData.sortBy === 2) && {
+                ...((queryParamsData.addres || queryParamsData.sortBy === 2) && {
                     location: {
                         coordinates: [queryParamsData.long ? queryParamsData.long : queryParamsData.defaultLong, queryParamsData.lat ? queryParamsData.lat : queryParamsData.defaultLat]
                     }
                 }),
+                ...(queryParamsData.addres && queryParamsData.address && { address: queryParamsData.address })
             }
             props.postHomeSearchData(data);
         }
@@ -95,6 +96,7 @@ const TradieSearchJobResult = (props: PropsType) => {
             long: Number(params.get('long')),
             defaultLat: Number(params.get('defaultLat')),
             defaultLong: Number(params.get('defaultLong')),
+            addres: params.get('addres'),
             address: params.get('address'),
             from_date: params.get('from_date'),
             to_date: params.get('to_date'),
@@ -216,6 +218,11 @@ const TradieSearchJobResult = (props: PropsType) => {
             delete data.heading;
             delete data.jobResults;
         }
+        if (allFiltersData.max_budget === 0) {
+            delete data.min_budget;
+            delete data.max_budget;
+            delete data.pay_type;
+        }
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length) {
             const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
             const specializationName = specializationList?.find((i: any) => i._id === allFiltersData?.specializationId[0])?.name;
@@ -244,6 +251,7 @@ const TradieSearchJobResult = (props: PropsType) => {
                     coordinates: [data.long ? data.long : data.defaultLong, data.lat ? data.lat : data.defaultLat]
                 }
             }),
+            // ...(data.addres && data.address && { address: data.address })
         }
         Object.keys(data).forEach(key => (data[key] === undefined || data[key] === null || data[key] === 0 || data[key] === "0") && delete data[key]);
         var url = 'search-job-results?';

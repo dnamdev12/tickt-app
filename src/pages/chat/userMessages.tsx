@@ -3,6 +3,7 @@ import { getJobDetails } from '../../redux/jobs/actions';
 import storageService from '../../utils/storageService';
 
 import notFound from '../../assets/images/not-found.png';
+import chatVideoIcon from '../../assets/images/video@3x.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import viewMore from '../../assets/images/icon-direction-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
@@ -53,7 +54,8 @@ const UserMessages = (props: any) => {
             setCurrentJobDetails(null);
             setToggle(false);
         }
-    }, [props.roomId, props.roomData]);
+    }, [props.roomId]);
+    // }, [props.roomId, props.roomData]);
 
     useEffect(() => {
         scrollToBottom();
@@ -77,21 +79,24 @@ const UserMessages = (props: any) => {
         console.log('arrmsg: ', arrmsg);
         setMessages(arrmsg);
         // setInBoxLastMsg(arrmsg[arrmsg.length - 1]);
+        // setIsLoading(false);
+    }
+
+    useEffect(() => {
         let fsSlideObj: any = {};
         let mediaMsgs: any = [];
         let slideCount = 1;
-        if (arrmsg.length) {
-            mediaMsgs = arrmsg.filter((item: any, index: number) => {
+        if (messages.length) {
+            mediaMsgs = messages.filter((item: any, index: number) => {
                 if (item.messageType === 'image' || item.messageType === 'video') {
                     fsSlideObj[`${index}`] = slideCount++;
                     return item;
                 }
             });
+            setItemsMedia(mediaMsgs);
+            setFsSlideListner(fsSlideObj);
         }
-        setItemsMedia(mediaMsgs);
-        setFsSlideListner(fsSlideObj);
-        // setIsLoading(false);
-    }
+    }, [messages]);
     console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
     const setInboxToTopWithLastMsg = (lastMsg: any) => {
@@ -108,7 +113,7 @@ const UserMessages = (props: any) => {
 
     const sendMessage = async () => {
         //setIsLoading(true);
-        if (messageText || messageText.trim() !== "") {
+        if (messageText && messageText.trimLeft() !== "") {
             setMessageText('');
             const lastMsg: any = await sendTextMessage(props.roomId, messageText);
             setInboxToTopWithLastMsg(lastMsg);
@@ -243,6 +248,17 @@ const UserMessages = (props: any) => {
                     <div className={`${messageClass}`}>
                         <figure className="media">
                             <img src={msg.mediaUrl || notFound} alt="media"
+                                async-src={msg.mediaUrl || notFound}
+                                decoding="async"
+                                loading="lazy"
+                                onError={(e: any) => {
+                                    if (e?.target?.onerror) {
+                                        e.target.onerror = null;
+                                    }
+                                    if (e?.target?.src) {
+                                        e.target.src = notFound;
+                                    }
+                                }}
                                 onClick={() => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
@@ -257,6 +273,17 @@ const UserMessages = (props: any) => {
                 <div className={`${messageClass}`}>
                     <figure className="media">
                         <img src={msg.mediaUrl || notFound} alt="media"
+                            async-src={msg.mediaUrl || notFound}
+                            decoding="async"
+                            loading="lazy"
+                            onError={(e: any) => {
+                                if (e?.target?.onerror) {
+                                    e.target.onerror = null;
+                                }
+                                if (e?.target?.src) {
+                                    e.target.src = notFound;
+                                }
+                            }}
                             onClick={() => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
@@ -278,13 +305,13 @@ const UserMessages = (props: any) => {
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
-                        <figure className="media">
+                        <figure className="media media_video">
                             <video src={msg.mediaUrl || notFound}
+                                poster={chatVideoIcon}
                                 onClick={() => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
                                 }}
-                                style={{ height: '84px', width: '84px' }}
                             />
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </figure>
@@ -294,13 +321,13 @@ const UserMessages = (props: any) => {
         } else
             return (
                 <div className={`${messageClass}`}>
-                    <figure className="media">
+                    <figure className="media media_video">
                         <video src={msg.mediaUrl || notFound}
+                            poster={chatVideoIcon}
                             onClick={() => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
                             }}
-                            style={{ height: '84px', width: '84px' }}
                         />
                         <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                     </figure>
@@ -339,7 +366,7 @@ const UserMessages = (props: any) => {
                 key={sources?.length}
                 // disableLocalStorage={true}
                 onClose={() => {
-                    setSelectSlide(0)
+                    setSelectSlide(1)
                 }}
             />
             <div className="detail_col">
@@ -349,7 +376,18 @@ const UserMessages = (props: any) => {
                     <div className={`chat_col ${toggle ? 'active' : ''}`}>
                         <div className="chat_user">
                             <figure className="u_img">
-                                <img src={props.roomData?.oppUserInfo?.image || dummy} alt="user-img" />
+                                <img
+                                    src={props.roomData?.oppUserInfo?.image || dummy}
+                                    alt="user-img"
+                                    onError={(e: any) => {
+                                        if (e?.target?.onerror) {
+                                            e.target.onerror = null;
+                                        }
+                                        if (e?.target?.src) {
+                                            e.target.src = dummy;
+                                        }
+                                    }}
+                                />
                             </figure>
                             <span className="name"
                                 onClick={() => {
@@ -442,9 +480,10 @@ const UserMessages = (props: any) => {
                             <button className="fill_btn full_btn btn-effect"
                                 onClick={() => {
                                     if (storageService.getItem('userType') === 1) {
-                                        props.history.push(`/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs&isActive=on`);
+                                        props.history.push(`/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs`);
                                     } else {
-                                        let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
+                                        // let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
+                                        let urlEncode: any = `?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`
                                         props.history.push(`/job-detail?${urlEncode}`);
                                     }
                                 }}>View Job details</button>

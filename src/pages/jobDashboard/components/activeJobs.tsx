@@ -12,7 +12,7 @@ import noDataFound from "../../../assets/images/no-search-data.png";
 interface Proptypes {
   loading: boolean;
   newJobsCount: number,
-  activeJobList: Array<any>;
+  activeJobList: any;
   getActiveJobList: (page: number) => void;
   resetActiveJobList: () => void;
 }
@@ -21,6 +21,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
   const [jobList, setJobList] = useState<Array<any>>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
+  const [isLoad, setIsLoad] = useState(true);
 
   let totalJobsCount: number = newJobsCount;
   console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
@@ -40,10 +41,11 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
   }
 
   useEffect(() => {
-    if (activeJobList.length) {
+    if (activeJobList?.length || Array.isArray(activeJobList)) {
       const allJobs = [...jobList, ...activeJobList];
       console.log(jobList, "jobList", activeJobList, "props.activeJobList", allJobs, "allJobs");
       setJobList(allJobs);
+      setIsLoad(false);
       setPageNo(pageNo + 1);
       if (activeJobList.length < 10) { setHasMoreItems(false); }
       resetActiveJobList();
@@ -62,7 +64,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
       >
         <span className="sub_title">Active Jobs</span>
         <div className="flex_row tradies_row">
-          {!loading && jobList.length ? jobList.map(
+          {!isLoad && !loading && jobList.length ? jobList.map(
             ({
               jobId,
               tradeId,
@@ -87,7 +89,18 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                   ></NavLink>
                   <div className="user_wrap">
                     <figure className="u_img">
-                      <img src={tradeSelectedUrl || dummy} alt="" />
+                      <img
+                        src={tradeSelectedUrl || dummy}
+                        alt=""
+                        onError={(e: any) => {
+                          if (e?.target?.onerror) {
+                            e.target.onerror = null;
+                          }
+                          if (e?.target?.src) {
+                            e.target.src = dummy;
+                          }
+                        }}
+                      />
                     </figure>
                     <div className="details">
                       <span className="name">{tradeName}</span>
@@ -129,7 +142,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                   </div>
                 </div>
               </div>
-            )) : !loading && (
+            )) : !isLoad && !loading && (
               <div className="no_record  m-t-vh">
                 <figure className="no_img">
                   <img src={noDataFound} alt="data not found" />

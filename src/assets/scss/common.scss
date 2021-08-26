@@ -5459,11 +5459,21 @@ div#light-box div {
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            &.media_video{
+              border-radius: 0px;
+              border: none;
+              background-color: black;
+            }
             img{
               width: 100%;
               height: 100%;
               object-fit: contain;
               border-radius: 3px;
+            }
+            video{
+              width: 100%;
+              height: 100%;
+              padding: 25px;
             }
           }
           p {
@@ -5729,4 +5739,10 @@ div#light-box div {
 
 .visibility-hidden {
   visibility: hidden;
+}
+
+//------------ Added for new-applicant ------ //
+.ptl-tradie-box {
+  padding-bottom: 15px;
+  padding-left: 10px;
 }

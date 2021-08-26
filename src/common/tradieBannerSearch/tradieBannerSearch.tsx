@@ -111,8 +111,8 @@ const TradieBannerSearch = (props: PropsType) => {
                         paramsData?.lat ? paramsData?.lat : paramsData?.defaultLat
                     ]
                 },
-                selectedMapLocation: paramsData?.address ? paramsData?.address : '',
-                isMapLocationSelected: paramsData?.address ? true : false,
+                selectedMapLocation: paramsData?.addres ? paramsData?.addres : '',
+                isMapLocationSelected: paramsData?.addres ? true : false,
                 from_date: paramsData?.from_date ? paramsData?.from_date : '',
                 startDate: '',
                 to_date: paramsData?.to_date ? paramsData?.to_date : '',
@@ -428,19 +428,25 @@ const TradieBannerSearch = (props: PropsType) => {
                 ...(stateData?.from_date && { from_date: stateData?.from_date }),
                 ...(stateData?.to_date && { to_date: stateData?.to_date })
             }
+            console.log('data: ', data, "suggestionSelected", suggestionSelected);
             if (props?.location?.pathname === '/search-job-results') {
                 props.postHomeSearchData(data);
             }
-            delete data.address;
+            // delete data.address;
             const newData = {
                 ...data,
                 lat: stateData.location.coordinates[1],
                 long: stateData.location.coordinates[0],
                 defaultLat: props.currentCoordinates?.coordinates[1] ? props.currentCoordinates?.coordinates[1] : queryParamsData.defaultLat,
                 defaultLong: props.currentCoordinates?.coordinates[0] ? props.currentCoordinates?.coordinates[0] : queryParamsData.defaultLong,
-                ...(stateData.selectedMapLocation && { address: stateData.selectedMapLocation.replaceAll("#", "") }),
+                ...(stateData.selectedMapLocation && { addres: stateData.selectedMapLocation.replaceAll("#", "") }),
                 searchJob: newSearchData?.searchedJob ? newSearchData?.searchedJob.replaceAll("&", "xxx") : stateData?.searchedJob.replaceAll("&", "xxx"),
                 jobResults: null
+            }
+            if (props?.location?.pathname === '/search-job-results' && newData.address) {
+                setTimeout(() => {
+                    props.getRecentLocationList();
+                }, 500);
             }
             delete newData.location;
             delete newData.isFilterOn;

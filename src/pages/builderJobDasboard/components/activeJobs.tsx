@@ -36,7 +36,8 @@ interface Active {
     enableEditMilestone: boolean,
     enableLodgeDispute: boolean,
     enableCancelJob: boolean
-    globalJobId: string
+    globalJobId: string,
+    mathrandom?: any
 }
 
 const ActiveJobs = ({
@@ -48,6 +49,7 @@ const ActiveJobs = ({
     isLoading,
     enableEditMilestone,
     enableLodgeDispute,
+    enableMakMilestone,
     enableCancelJob,
     globalJobId
 }: any) => {
@@ -83,7 +85,7 @@ const ActiveJobs = ({
             setSelectedIndex(filteredItem?.index);
             setLocalState(true);
         }
-    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob,])
+    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob, enableMakMilestone]);
 
     // const redirectToInfo = ({ jobId, status }: any) => {
     //     if (jobId?.length && status?.length) {
@@ -112,8 +114,8 @@ const ActiveJobs = ({
     console.log({ listData, isLoading })
     return (
         <React.Fragment>
-            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs 
-            {/* {listData?.length} */}
+            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs
+                {/* {listData?.length} */}
             </span>
             <div className="flex_row tradies_row">
                 {listData?.length ?
@@ -139,6 +141,7 @@ const ActiveJobs = ({
                         tradieId,
                         tradeSelectedUrl,
                         tradieImage,
+                        mathrandom,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
                             <div className="tradie_card"
@@ -157,6 +160,14 @@ const ActiveJobs = ({
                                     <figure className="u_img">
                                         <img
                                             src={tradeSelectedUrl || jobTypePlaceholder}
+                                            onError={(e: any) => {
+                                                if (e?.target?.onerror) {
+                                                    e.target.onerror = null;
+                                                }
+                                                if (e?.target?.src) {
+                                                    e.target.src = jobTypePlaceholder;
+                                                }
+                                            }}
                                             alt="traide-img" />
                                     </figure>
                                     <div className="details">

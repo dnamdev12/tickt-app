@@ -40,7 +40,18 @@ const ReviewInfoBox = (props: any) => {
                 </div>
                 <div className="pic_shot_dtl">
                     <figure className="u_img">
-                        <img src={item.userImage ? item.userImage : item.reviewSenderImage ? item.reviewSenderImage : dummy} alt="user-img" />
+                        <img
+                            src={item.userImage ? item.userImage : item.reviewSenderImage ? item.reviewSenderImage : dummy}
+                            onError={(e: any) => {
+                                if (e?.target?.onerror) {
+                                    e.target.onerror = null;
+                                }
+                                if (e?.target?.src) {
+                                    e.target.src = dummy;
+                                }
+                            }}
+                            alt="user-img"
+                        />
                     </figure>
                     <div className="name_wrap">
                         <span className="user_name" title="Cheryl">{item.name ? item.name : item.reviewSenderName}</span>

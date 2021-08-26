@@ -137,6 +137,7 @@ export const getSearchParamsData = (location?: any) => {
         long: Number(params.get('long')),
         defaultLat: Number(params.get('defaultLat')),
         defaultLong: Number(params.get('defaultLong')),
+        addres: params.get('addres'),
         address: params.get('address'),
         from_date: params.get('from_date'),
         to_date: params.get('to_date'),
@@ -218,8 +219,10 @@ export const formatNotificationTime = (updatedAt: any, type: string) => {
         date.setHours(0, 0, 0, 0);
         if (JSON.stringify(currentDate) == JSON.stringify(date)) {
             formattedDate = moment(updatedAt).format('HH:mm');
-        } else {
+        } else if (updatedAt) {
             formattedDate = moment(updatedAt).format('M/D/YYYY HH:mm');
+        } else {
+            formattedDate = moment(updatedAt).format('HH:mm');
         }
     }
     // console.log('formattedDate: ', formattedDate);
@@ -277,96 +280,208 @@ export const AsyncImage = (props: any) => {
 //     REVIEW_TRADIE: 7,
 //     REVIEW_BUILDER: 8,
 //     QUESTION: 9,
-//     REVIEW: 10,
+//     OPEN_OPPOSITE_USER_REVIEW_LIST: 10,
 //     TERM_AND_CONDITION: 11,
 //     JOB_DASHBOARD: 12, //With status key
 //     BLOCK_ACCOUNT: 13,
 //     MARK_MILESTONE: 14,
 //     JOB_HOMEPAGE: 15, //tradeid and specialization id
-//     REVIEW_SELF: 16
+//     SELF_REVIEW_LIST_OPEN: 16
+//     TRADIE_RECEIVE_VOUCH: 17
+//     ADMIN_NOTIFICATION: 18
+//     PRIVACY_POLICY: 19
 // }
+//      extra_data => JOB_SATUS=INACTIVE: 
+
+const isJson = (data: any) => {
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
+}
 
 export const onNotificationClick = (notification: any) => {
-    const { notificationType, user_type, extra_data, receiverId, senderId, jobId } = notification;
-    // if (extra_data.charAt(0) === '"' && extra_data.charAt(extra_data.length - 1) === '"') {
-    //     extraData = extra_data.substr(1, extra_data.length - 2);
-    // }
+    const { notificationType, user_type, receiverId, senderId, jobId } = notification;
+    let extra_data = isJson(notification?.extra_data);
+    console.log('extra_data: ', extra_data);
+
     switch (Number(notificationType)) {
         case 1: //TRADIE
             if (user_type == 1) {
-                return `/tradie-info?tradeId=${receiverId}&type=1`;
+                return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 2: //BUILDER
             if (user_type == 1) {
-                return `/builder-info?builderId=${receiverId}`;
+                return `/builder-info?builderId=${senderId}`;
             } else {
-                return `/builder-info?builderId=${receiverId}&type=2`;
+                return `/builder-info?builderId=${receiverId}`;
             }
         case 3: //JOB
             if (user_type == 1) {
-                return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true` // &activeType=active
                 return `/job-detail?${urlEncode}`;
             }
         case 4: //PAYMENT
             return '/payment-history';
         case 5: //DISPUTES
             if (user_type == 1) {
-                return `/job-details-page?jobId=${jobId}&redirect_from=jobs&isActive=on`;
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`
                 return `/job-detail?${urlEncode}`;
             }
-        // case 6: //REVIEW_TRADIE
         case 7: //REVIEW_TRADIE
-            return `/past-jobs`;
+            return `/jobs?active=past&jobId=${jobId}`;
         case 8: //REVIEW_BUILDER
-            return `/jobs?active=past`;
+            return `/review-builder?jobId=${jobId}`;
         case 9: //QUESTION
             if (user_type == 1) {
-                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}&openQList=true`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${jobId}&status=open`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&openQList=true`
                 return `/job-detail?${urlEncode}`;
             }
-        case 10: //REVIEW
-            if (user_type == 1) {
-                return `/builder-info?builderId=${receiverId}`;
+        case 10: //OPEN OPPOSITE USER REVIEW LIST
+            if (user_type == 1) {//tradieId builderId in extra_data
+                return `/builder-info?builderId=${extra_data?.builderId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${extra_data?.tradieId}`;
             }
         case 11: //TERM_AND_CONDITION
             return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
             if (user_type == 1) {
-                return `/active-jobs`;
+                const type = +extra_data?.redirect_status;
+                return type === 1 ? `/past-jobs` : type === 2 ? `/active-jobs` : type === 3 ? '/new-jobs' : '/active-jobs';
             } else {
-                return `/jobs?active=active`;
+                const type = +extra_data?.redirect_status;
+                return `/jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
             return '/';
         case 14: //MARK_MILESTONE
             if (user_type == 1) {
-                return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
+                } else {
+                    return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                }
             } else {
-                return `/jobs?active=active`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=past`
+                    return `/job-detail?${urlEncode}`;
+                } else {
+                    return `/jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                }
             }
         case 15: //JOB_HOMEPAGE
             if (user_type == 1) {
                 return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `/`;
+                return '/';
             }
-        case 16: //TRADIE
+        case 16: //SELF_REVIEW_LIST_OPEN
             if (user_type == 1) {
-                return `/tradie-info?tradeId=${receiverId}&type=1`;
+                return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/builder-info?builderId=${receiverId}`;
             }
+        case 17: //TRADIE_RECEIVE_VOUCH
+            if (user_type == 1) {
+                return `/tradie-vouchers?tradieId=${receiverId}`;
+            } else {
+                return '/'
+            }
+        case 18: //ADMIN_NOTIFICATION_ANNOUNCEMENT
+            return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
+        case 19: //PRIVACY_POLICY
+            return `/update-user-info?menu=pp`;
         default:
             return '/';
     }
 }
+
+
+export const JobCancelReasons = (type: number) => {
+    switch (type) {
+        case 1:
+            return 'Experiencing delays on other projects.';
+
+        case 2:
+            return 'Current project has taken longer than expected.';
+
+        case 3:
+            return 'Staff shortages.';
+
+        case 4:
+            return 'Injury or unwell.';
+
+        case 5:
+            return 'No longer available.';
+
+        default:
+            return ''
+    }
+}
+
+
+export const JobLodgeReasons = (type: number, isBuilder?: boolean) => {
+    switch (type) {
+        case 1:
+            return 'Site has not been prepared for works to be carried out.';
+
+        case 2:
+            return 'Inadequate access.';
+
+        case 3:
+            return 'No access equipment on site as indicated in JD.';
+
+        case 4:
+            if (isBuilder) {
+                return 'Materials had not been delivered and supplied by the builder as part of the JD.';
+            } else {
+                return `Builder's work does not be regulations or comply with the VBA.`;
+            }
+        case 5:
+            if (isBuilder) {
+                return `Tradesperson's work does not be regulations or comply with the VBA.`;
+            } else {
+                return `Builder has not supplied a Certificate of Currency for their work.`;
+            }
+        case 6:
+            if (isBuilder) {
+                return `Tradesperson has not supplied a Certificate of Currency for their work.`;
+            } else {
+                return `Builder's work is not at an acceptable standard.`;
+            }
+        case 7:
+            if (isBuilder) {
+                return `Tradesperson's work is not at an acceptable standard.`;
+            } else {
+                return '';
+            }
+        default:
+            return '';
+    }
+}
+
+// CANCELLATION Reasons:
+// 1.Experiencing delays on other projects.
+// 2. Current project has taken longer than expected.
+// 3. Staff shortages.
+// 4. Injury or unwell.
+// 5. No longer available.
+
+// LODGE Dispute
+// 1. Site has not been prepared for works to be carried out.
+// 2. Inadequate access.
+// 3. No access equipment on site as indicated in JD
+// 4. Materials had not been delivered and supplied by the builder as part of the JD.
+// 5. Tradespersons work does not be regulations or comply with the VBA.
+// 6. Tradesperson has not supplied a Certificate of Currency for their work.
+// 7. Tradespersons work is not at an acceptable standard

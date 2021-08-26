@@ -141,7 +141,12 @@ const Urls = {
     tnc: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}tnc`,
     tncWeb: `tncWeb`,
     privacyPolicyWeb: `privacyPolicyWeb`,
-    getPopularBuilder: `${versions.v1}${ServiceEnum.home}getPopularBuilder`
+    getPopularBuilder: `${versions.v1}${ServiceEnum.home}getPopularBuilder`, //Admin
+    unReadNotification: `${versions.v1}${ServiceEnum.home}unReadNotification`, //Admin
+    getMostViewedJobs: `${versions.v1}${ServiceEnum.home}mostViewedJobs`, //Admin
+    getRecommendedJobs: `${versions.v1}${ServiceEnum.home}recommendedJobs`, //Admin
+    getChatJobList: `${versions.v1}${ServiceEnum.job}jobList`, //Admin
+    getAdminNotificationData: `${versions.v1}${ServiceEnum.home}notification/admin`, //Admin
 }
 
 export const urlFor = (service: String): string => {
