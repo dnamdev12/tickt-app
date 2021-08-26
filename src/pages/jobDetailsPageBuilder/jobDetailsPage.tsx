@@ -542,11 +542,12 @@ const JobDetailsPage = (props: PropsType) => {
         props.history.push(`/jobs?active=${activeType}`)
     }
     console.log({ activeType })
+    // line no 550. "open"  is excluded from array.
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    {["open", 'active'].includes(activeType) ? (
+                    {['active'].includes(activeType) ? (
                         <span className="dot_menu">
                             <img src={editIconBlue} alt="edit" />
                             <div className="edit_menu">
