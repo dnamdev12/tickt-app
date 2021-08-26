@@ -47,7 +47,7 @@ import storageService from '../../../../utils/storageService';
 import { validateABN } from '../../../../utils/common';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
-import { updateChatUserImageAndName } from '../../../../services/firebase';
+import { updateChatUserDetails } from '../../../../services/firebase';
 
 interface Props {
     history: any,
@@ -470,7 +470,7 @@ export class PersonalInformation extends Component<Props, State> {
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
                 this.props.cleanTradieBasicDetails();
-                updateChatUserImageAndName('userName', data.fullName);
+                updateChatUserDetails('userName', data.fullName);
                 basicDetails.qualificationDoc = this.userType === 1 ? data.qualificationDoc : [];
                 this.setState((prevState: any) => ({
                     profileModalClicked: false,
@@ -642,7 +642,7 @@ export class PersonalInformation extends Component<Props, State> {
         const res2 = await tradieUpdateProfileDetails(data);
         if (res2?.success) {
             if (this.state.formData) {
-                updateChatUserImageAndName('userImage', data.userImage);
+                updateChatUserDetails('userImage', data.userImage);
             }
             this.setState({
                 formData: null,

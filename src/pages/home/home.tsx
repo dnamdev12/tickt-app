@@ -5,7 +5,7 @@ import TradieHome from './tradieHome/index';
 import BuilderHome from './builderHome/index';
 import storageService from '../../utils//storageService';
 import { addFCMNotifToken } from '../../redux/auth/actions';
-import { requestPermission } from "../../services/firebase";
+import { requestPermission, updateChatUserDetails } from "../../services/firebase";
 
 const Home = (props: any) => {
     const [userType] = useState(storageService.getItem('userType'))
@@ -28,6 +28,7 @@ const Home = (props: any) => {
                 console.log(data.deviceToken, "---------------diff----------------", storageService.getItem('fcmToken'));
                 if (res.success) {
                     if (storageService.getItem('fcmToken') !== data.deviceToken) {
+                        updateChatUserDetails('deviceToken', data.deviceToken);
                         const res2 = await addFCMNotifToken(data);
                         if (res2.success) {
                             storageService.setItem("fcmToken", data.deviceToken);

@@ -42,7 +42,7 @@ const UserMessages = (props: any) => {
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState<any>(1);
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
-
+    const [oppUserFcmToken, setOppUserFcmToken] = useState<any>('');
 
     useEffect(() => {
         if (props.roomId !== '') {
@@ -116,6 +116,9 @@ const UserMessages = (props: any) => {
         if (messageText && messageText.trimLeft() !== "") {
             setMessageText('');
             const lastMsg: any = await sendTextMessage(props.roomId, messageText);
+            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken) {
+                sendFCMPushNotificationToOppUser(lastMsg);
+            }
             setInboxToTopWithLastMsg(lastMsg);
         }
     }
@@ -130,6 +133,9 @@ const UserMessages = (props: any) => {
         //setIsLoading(true);
         if (url && url !== '') {
             const lastMsg: any = await sendImageVideoMessage(props.roomId, url, msgType);
+            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken) {
+                sendFCMPushNotificationToOppUser(lastMsg);
+            }
             setInboxToTopWithLastMsg(lastMsg);
         }
         setMessageText('');
@@ -174,6 +180,41 @@ const UserMessages = (props: any) => {
         }
 
         return { sources, types };
+    }
+
+    const sendFCMPushNotificationToOppUser = async (msg: any) => {
+        let newData = {
+            // to: "esOTgG9ZQqC5uCgCaM5E65:APA91bE7wvUBgmyTEdoGbw8iznK7YxQ-wV2bsoD4vP9hC5iwyhhSMGNbXXpP9Os4KEScpwh2pW-KxMCZFLWBeAM4nlomochoR7EbC5WPRZ4e2sfxVLXKay3ntByWeywqxFaApLNQ6Slq",
+            to: `${props.roomData?.oppUserInfo?.deviceToken}`,
+            data: {
+                app_icon: "https://appinventiv-development.s3.amazonaws.com/1628513615740ic-logo-yellow.png",
+                title: "Ticket App",
+                // notificationText: `Chat message: ${msg?.messageType === 'image' ? 'Photo' : msg?.messageType === 'video' ? 'Video' : msg?.messageText}`,
+                notificationText: `${storageService.getItem('userInfo')?.userName} send you a message in chat`,
+                jobName: `${props.roomData?.jobName}`,
+                extra_data: {
+                    room_id: msg?.messageRoomId
+                },
+                image: props.roomData?.oppUserInfo?.image,
+                notificationType: 20,
+                sound: "default",
+                badge: 1
+            }
+        };
+        const response: any = await fetch(`https://fcm.googleapis.com/fcm/send`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+                Authorization: 'key=AAAAuTeicwc:APA91bEzBmgYwilKP3WkpZVp31g91YbLojHTftJbk_0Sc80gWZTRMRPaBZXMQZR-dcBJ5IGijVDFX_jFr2lk1fVoXBxsEwQ_h4olbSbyUy_Yg-psRJ51Wn-TnTxfoXg3wJvumbOkAwdH',
+            },
+            body: JSON.stringify(newData)
+        });
+        // const res: any = await response.json();
+        if (response.status === 200) {
+            console.log('Chat push notification send to opposite user: success');
+        } else {
+            console.log('Chat push notification send to opposite user: success');
+        }
     }
 
     const handleUpload = async (e: any) => {
@@ -312,7 +353,7 @@ const UserMessages = (props: any) => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
                                 }}
-                                style={{ height: '84px', width: '84px', padding: '25px' }}
+                            style={{ height: '84px', width: '84px', padding: '25px' }}
                             />
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </figure>

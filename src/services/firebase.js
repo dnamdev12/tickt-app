@@ -34,7 +34,7 @@ const getRegisterToken = () => {
             vapidKey: 'BHtgSVj0gw6YQDd6ByTPx_gyRtBWKlHBVYKFsemnv1t6bTH9efAseLWaoJx2GvTu0NW314ZF4DOj_eJ7tub9kHI'
         }).then((currentToken) => {
             if (currentToken) {
-                console.log("FCM token fetched successsfully", currentToken);
+                console.log("firebase token fetched successsfully", currentToken);
                 resolve({ success: true, deviceToken: currentToken });
             } else {
                 console.log('No registration token available.');
@@ -78,9 +78,9 @@ export const requestPermission = () => {
 
 export const deleteToken = () => {
     messaging.deleteToken().then(() => {
-        console.log('FCM Token deleted.');
+        console.log('firebase Token deleted.');
     }).catch((err) => {
-        console.log('Unable to delete FCM token. ', err);
+        console.log('Unable to delete firebase token. ', err);
     });
 }
 
@@ -171,13 +171,18 @@ export const getLoggedInuserId = () => {
     return storageService.getItem("userInfo")._id;
 }
 
-export const updateChatUserImageAndName = async (updateType, value) => {
+export const updateChatUserDetails = async (updateType, value) => {
     let loggedInuserId = getLoggedInuserId();
-
-    await db.ref(`${FIREBASE_COLLECTION.USERS}/${loggedInuserId}`).update({
-        ...(updateType === 'userImage' && { image: value }),
-        ...(updateType === 'userName' && { name: value }),
-    });
+    try {
+        await db.ref(`${FIREBASE_COLLECTION.USERS}/${loggedInuserId}`).update({
+            ...(updateType === 'userImage' && { image: value }),
+            ...(updateType === 'userName' && { name: value }),
+            ...(updateType === 'deviceToken' && { deviceToken: value }),
+        });
+        console.log(`firebase ${updateType} update success`);
+    } catch (err) {
+        console.log(`firebase ${updateType} update failure: `, { err });
+    }
 }
 
 export const createRoom = async (jobId, tradieId, builderId, jobName) => {

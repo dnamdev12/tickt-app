@@ -22,7 +22,7 @@ const CustomNotification = (props: any) => {
         return () => clearTimeout();
     }, [props.showNotification]);
 
-    return !!props.showNotification ? (
+    return !!props.showNotification && window.location.pathname !== '/chat' ? (
         <div className="body-message active">
             <span className="cross-icon" onClick={() => setShowNotification(false)}>
                 <img src={close} alt="img" />
