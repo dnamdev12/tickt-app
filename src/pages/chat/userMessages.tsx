@@ -346,14 +346,13 @@ const UserMessages = (props: any) => {
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
-                        <figure className="media" style={{ backgroundColor: 'black' }}>
+                        <figure className="media media_video">
                             <video src={msg.mediaUrl || notFound}
                                 poster={chatVideoIcon}
                                 onClick={() => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
                                 }}
-                            style={{ height: '84px', width: '84px', padding: '25px' }}
                             />
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </figure>
@@ -363,14 +362,13 @@ const UserMessages = (props: any) => {
         } else
             return (
                 <div className={`${messageClass}`}>
-                    <figure className="media" style={{ backgroundColor: 'black' }}>
+                    <figure className="media media_video">
                         <video src={msg.mediaUrl || notFound}
                             poster={chatVideoIcon}
                             onClick={() => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
                             }}
-                            style={{ height: '84px', width: '84px', padding: '25px' }}
                         />
                         <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                     </figure>
