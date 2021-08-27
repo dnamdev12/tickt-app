@@ -69,7 +69,7 @@ const BuilderPostedJobs = (props: PropsType) => {
                         <div className="flex_row tradies_row">
                             {(buildersJob?.length > 0 || props.isLoading) ?
                                 buildersJob?.map((jobData: any) => {
-                                    return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
+                                    return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} userType={storageService.getItem('userType')} />
                                 })
                                 :
                                 <div className="no_record">

@@ -61,14 +61,14 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
       >
         <span className="sub_title">Approved Milestones</span>
         <div className="flex_row tradies_row">
-          {!isLoad && !loading && jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status }) => (
+          {!isLoad && !loading && jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status, builderName, builderImage }) => (
             <div key={jobId} className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
                     <img
-                      src={tradeSelectedUrl || dummy}
+                      src={builderImage || dummy}
                       alt=""
                       onError={(e: any) => {
                         if (e?.target?.onerror) {
@@ -81,8 +81,8 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
                     />
                   </figure>
                   <div className="details">
-                    <span className="name">{tradeName}</span>
-                    <span className="prof">{jobName}</span>
+                    <span className="name">{jobName}</span>
+                    <span className="prof">{builderName}</span>
                   </div>
                 </div>
                 <div className="job_info">

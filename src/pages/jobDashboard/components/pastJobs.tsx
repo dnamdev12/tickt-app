@@ -69,7 +69,7 @@ const PastJobs = (props: Proptypes) => {
                 <div className="user_wrap">
                   <figure className="u_img">
                     <img
-                      src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy}
+                      src={item.builderImage || dummy}
                       alt=""
                       onError={(e: any) => {
                         if (e?.target?.onerror) {
@@ -82,8 +82,8 @@ const PastJobs = (props: Proptypes) => {
                     />
                   </figure>
                   <div className="details">
-                    <span className="name">{item.tradeName}</span>
-                    <span className="prof">{item.jobName}</span>
+                    <span className="name">{item.jobName}</span>
+                    <span className="prof">{item.builderName}</span>
                   </div>
                 </div>
                 <div className="job_info">

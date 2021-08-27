@@ -346,7 +346,7 @@ const UserMessages = (props: any) => {
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
-                        <figure className="media media_video">
+                        <figure className="media ">
                             <video src={msg.mediaUrl || notFound}
                                 poster={chatVideoIcon}
                                 onClick={() => {
@@ -362,7 +362,7 @@ const UserMessages = (props: any) => {
         } else
             return (
                 <div className={`${messageClass}`}>
-                    <figure className="media media_video">
+                    <figure className="media ">
                         <video src={msg.mediaUrl || notFound}
                             poster={chatVideoIcon}
                             onClick={() => {

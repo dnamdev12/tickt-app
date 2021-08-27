@@ -80,6 +80,8 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
               milestoneNumber,
               totalMilestones,
               status,
+              builderName,
+              builderImage
             }) => (
               <div key={jobId} className="flex_col_sm_6">
                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
@@ -90,7 +92,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                   <div className="user_wrap">
                     <figure className="u_img">
                       <img
-                        src={tradeSelectedUrl || dummy}
+                        src={builderImage || dummy}
                         alt=""
                         onError={(e: any) => {
                           if (e?.target?.onerror) {
@@ -103,8 +105,8 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                       />
                     </figure>
                     <div className="details">
-                      <span className="name">{tradeName}</span>
-                      <span className="prof">{jobName}</span>
+                      <span className="name">{jobName}</span>
+                      <span className="prof">{builderName}</span>
                     </div>
                   </div>
                   <div className="job_info">

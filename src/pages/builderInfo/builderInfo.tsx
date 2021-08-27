@@ -578,7 +578,7 @@ const BuilderInfo = (props: PropsType) => {
                     {props.isSkeletonLoading ? <Skeleton height={250} /> : <div className="flex_row tradies_row">
                         {(props.isSkeletonLoading || props.isLoading || profileData?.jobPostedData?.length > 0) ?
                             (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} />
+                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} userType={storageService.getItem('userType')} />
                             })) :
                             <div className="no_record">
                                 <figure className="no_data_img">

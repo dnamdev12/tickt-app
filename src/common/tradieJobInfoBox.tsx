@@ -25,8 +25,6 @@ const TradieJobInfoBox = (props: any) => {
                 status,
                 jobStatus: item?.jobStatus
             })
-            // 'P2pvYklkPTYwOGY4Y2VkNjk0OWViMWIwMjM1ZjE2MSZzdGF0dXM9ZXhwaXJlZCZlZGl0PXRydWUmam9iPXBhc3Q=' 
-            // let urlEncode: any = window.btoa(string_item)
             let urlEncode: any = string_item;
             props.history.push(`/job-detail?${urlEncode}`);
         }
@@ -40,7 +38,7 @@ const TradieJobInfoBox = (props: any) => {
                 <div className="user_wrap">
                     <figure className="u_img">
                         <img
-                            src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy}
+                            src={props.userType === 2 ? item.tradeSelectedUrl : (item.builderImage || dummy)}
                             alt=""
                             onError={(e: any) => {
                                 if (e?.target?.onerror) {
@@ -53,8 +51,8 @@ const TradieJobInfoBox = (props: any) => {
                         />
                     </figure>
                     <div className="details">
-                        <span className="name">{item.tradeName}</span>
-                        <span className="prof">{item.jobName}</span>
+                        <span className="name">{props.userType === 2 ? item.tradeName : item.jobName}</span>
+                        <span className="prof">{props.userType === 2 ? item.jobName : item.builderName}</span>
                     </div>
                 </div>
                 <div className="job_info">
