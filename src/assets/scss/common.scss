@@ -5351,6 +5351,9 @@ div#light-box div {
       padding: 0px 10px 20px 20px;
       height: calc(100vh - 150px);
       transition: all ease-in 0.3s;
+      @media(max-width: 1366px){
+        width: 95%;
+      }
       &.active{
         width: 55%;
         @media(max-width: 768px){
@@ -5511,6 +5514,9 @@ div#light-box div {
         width: 100%;
         background: var(--white);
         box-shadow: 0 -2px 40px 0 rgba(174, 174, 174, 0.2);
+        @media(max-width: 1366px){
+          width: 98%;
+        }
         @media(max-width: 768px){
           bottom: 50px;
         }
