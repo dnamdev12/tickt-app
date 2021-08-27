@@ -612,12 +612,12 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}
                                         >Reject</button>
                                     </div>}
-                                    {/* {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && !jobDetailsData?.isCancelJobRequest && jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card mt-sm">
+                                    {jobDetailsData?.jobStatus === 'active' && !jobDetailsData?.isChangeRequest && !jobInviteAction && !jobDetailsData?.isCancelJobRequest && jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancel rejected reason</span>
                                         <p className="commn_para line-2">
                                             <li>{jobDetailsData?.rejectReasonNoteForCancelJobRequest}</li>
                                         </p>
-                                    </div>} */}
+                                    </div>}
                                     {/* Added  && jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
                                     {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' && jobDetailsData?.applyButtonDisplay ? (
                                         <div className="bottom_btn">
