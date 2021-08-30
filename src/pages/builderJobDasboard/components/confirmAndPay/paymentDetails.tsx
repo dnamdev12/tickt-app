@@ -246,7 +246,7 @@ const PaymentDetails = (props: any) => {
                             name="cardholder_name"
                             value={stateData?.cardholderName}
                             onChange={(e: any) => {
-                                setStateData((prev: any) => ({ ...prev, cardholderName: e.target.value }));
+                                setStateData((prev: any) => ({ ...prev, cardholderName: (e.target.value).trimLeft() }));
                                 setErrorsOnChange({ name: 'cardholderName', value: e.target.value });
                                 if (stateData?.fetched) {
                                     if (editItem?.cardholderName !== stateData?.cardholderName) {
@@ -278,7 +278,7 @@ const PaymentDetails = (props: any) => {
                                     name="bsb_number"
                                     value={stateData?.date}
                                     onChange={(e: any) => {
-                                        setStateData((prev: any) => ({ ...prev, date: e.target.value }))
+                                        setStateData((prev: any) => ({ ...prev, date: (e.target.value).trimLeft() }))
                                         setErrorsOnChange({ name: 'date', value: e.target.value });
                                         if (stateData?.fetched) {
                                             if (editItem?.date !== stateData?.date) {

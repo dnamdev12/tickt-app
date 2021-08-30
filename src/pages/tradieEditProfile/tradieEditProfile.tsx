@@ -64,6 +64,29 @@ class TradieEditProfile extends Component<Props, State> {
         }
     }
 
+    componentDidUpdate() {
+        console.log({ props: this.props });
+        let props: any = this.props;
+        let address = `${props?.location?.pathname}${props?.location?.search}`
+        if (address === "/update-user-info?menu=tnc") {
+            if (this.state.activeMenuType !== 'terms-of-use') {
+                this.setState({
+                    activeMenuType: 'terms-of-use'
+                });
+            }
+        }
+
+        if (address === "/update-user-info?menu=pp") {
+            if (this.state.activeMenuType !== 'privacy-policy') {
+                this.setState({
+                    activeMenuType: 'privacy-policy'
+                });
+            }
+        }
+
+        // /update-user-info?menu=tnc
+    }
+
     componentDidMount = async () => {
         let menuType = new URLSearchParams(this.props.history?.location?.search).get('menu');
         if (menuType === 'pp') {
@@ -81,6 +104,7 @@ class TradieEditProfile extends Component<Props, State> {
 
     setSelected = (menuType: string) => {
         const { getTradieProfileView } = this.props;
+        this.props.history.replace('/update-user-info');
         const dataItems = ['personal-information', 'banking-details', 'milestone-templates', 'settings', 'support-chat', 'privacy-policy', 'terms-of-use'];
         if (this.state.activeMenuType !== menuType && dataItems.includes(menuType)) {
             this.setState({ activeMenuType: menuType }, () => {
