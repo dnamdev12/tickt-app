@@ -51,7 +51,7 @@ const MilestoneApprove = (props: any) => {
                 data,
                 data_
             })
-            return
+
             let response: any = await milestoneAcceptOrDecline(data_);
             if (response?.success) {
                 resetStateLocal();
