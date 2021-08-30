@@ -32,6 +32,7 @@ import LodgeSuccess from '../pages/builderJobDasboard/components/lodgeDispute/su
 import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/success';
 
 import ChooseTheJob from '../pages/chooseTheJob/index';
+import ChooseJobToStartChat from '../pages/chooseJobToStartChat/chooseJobToStartChat';
 import ChooseJobSuccess from '../pages/chooseTheJob/success';
 
 import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
@@ -48,11 +49,13 @@ import SupportChat from '../pages/tradieEditProfile/components/supportChat'
 import PaymentHistory from '../pages/paymentHistory';
 
 import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
+import GuestPage from '../pages/home/guestHome';
+import AdminAnnouncementPage from '../pages/adminAnnouncementPage/adminAnnouncementPage';
 
 const routes = [
     {
         name: 'main',
-        path: '/',
+        path: ['/', '/home'],
         component: Home,
         authRoute: false,
         privateRoute: true,
@@ -79,25 +82,37 @@ const routes = [
         authRoute: true,
     },
     {
+        name: 'guest-user',
+        path: '/guest-user',
+        component: GuestPage,
+    },
+    {
         name: 'postnewjob',
         path: '/post-new-job',
         component: PostJob,
-        // authRoute: true,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'recommendedjobs',
         path: '/recommended-jobs',
         component: RecommendedJobs,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'savedjobs',
         path: '/saved-jobs',
         component: SavedJobs,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'template-suceess',
         path: '/template-sucess',
-        component: TemplateSavedSuccess
+        component: TemplateSavedSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'view-all',
@@ -108,36 +123,50 @@ const routes = [
             '/most-viewed-tradespeople'
         ],
         component: CommonViewAll,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'mostviewedjobs',
         path: '/most-viewed-jobs',
         component: MostViewedJobs,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'milestoneRequestSent',
         path: '/milestone-request-sent-success',
         component: MilestoneRequestSentSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'decline-milestone-success',
         path: '/decline-milestone-success',
         component: declineMilestoneSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'requestMonitered',
         path: '/request-monitored/:id',
         component: RequestMonitored,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'changePasswordSuccess',
         path: '/change-password-success',
         component: ChangePasswordSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'popularbuilders',
         path: '/popular-builders',
         component: PopularBuilders,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'searchjobresults',
@@ -171,51 +200,78 @@ const routes = [
         name: 'ratesuccess',
         path: '/rate-success',
         component: RateSuccessTradie,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'lodgesuccess',
         path: '/lodge-success',
         component: LodgeSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'cancelsuccess',
         path: '/cancel-job-success',
         component: CancelJobSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'postJobSuccess',
         path: '/post-job-success',
         component: PostJobSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'builderinfo',
         path: '/builder-info',
         component: BuilderInfo,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'tradieinfo',
         path: '/tradie-info',
         component: TradieInfo,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'tradievouchers',
         path: '/tradie-vouchers',
         component: TradieVouchers,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'chooseTheJob',
         path: ['/choose-the-job', '/cancel-the-job'],
         component: ChooseTheJob,
+        authRoute: false,
+        privateRoute: true
+    },
+    {
+        name: 'chooseJobToStartChat',
+        path: '/choose-job-to-start-chat',
+        component: ChooseJobToStartChat,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'needApprovalSuccess',
         path: '/need-approval-success',
         component: NeedApprovalSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'chooseTheJob',
         path: '/choose-the-job-success',
         component: ChooseJobSuccess,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'jobdashboard',
@@ -268,37 +324,51 @@ const routes = [
     {
         name: 'builder-jobs',
         path: '/jobs',
-        component: builderJobDasboard
+        component: builderJobDasboard,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'recommended-trade-people',
         path: '/recommended-trade-people',
-        component: TradieListData
+        component: TradieListData,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'saved-trade-people',
         path: '/saved-trade-people',
-        component: TradieListData
+        component: TradieListData,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'tradie-details',
         path: '/tradie-details',
-        component: TradieDetails
+        component: TradieDetails,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'chat',
         path: '/chat',
-        component: ChatComponent
+        component: ChatComponent,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'support-chat',
         path: '/support-chat',
-        component: SupportChat
+        component: SupportChat,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'search-builder-result',
         path: '/search-builder-result',
-        component: TradieListData
+        component: TradieListData,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'search-tradie-results',
@@ -315,9 +385,18 @@ const routes = [
         privateRoute: true,
     },
     {
+        name: 'admin-announcement-page',
+        path: '/admin-announcement-page',
+        component: AdminAnnouncementPage,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
         name: 'notFound',
         path: '/404',
-        component: NotFound
+        component: NotFound,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: '404',

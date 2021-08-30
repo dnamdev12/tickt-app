@@ -32,10 +32,20 @@ interface Mile {
     status: any,
     fromDate: any,
     toDate: any,
+    enableEditMilestone: boolean,
+    enableLodgeDispute: boolean,
+    enableCancelJob: boolean
 }
 
 const MarkMilestones = (props: any) => {
-    const { resetStateLocal, listData, selectedIndex } = props;
+
+    let resetStateLocal = props?.resetStateLocal;
+    let listData = props?.listData;
+    let selectedIndex = props?.selectedIndex;
+    let enableEditMilestone = props?.enableEditMilestone;
+    let enableLodgeDispute = props?.enableLodgeDispute;
+    let enableCancelJob = props?.enableCancelJob;
+
     const [enableApprove, setEnableApprove] = useState(false);
     const [itemDetails, setDetails] = useState(null);
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
@@ -52,10 +62,16 @@ const MarkMilestones = (props: any) => {
         setSeeDetails(false);
     }
 
-    const selectedItem: any = listData[selectedIndex];
+    let selectedItem: any = null;
+    if (listData?.length) {
+        selectedItem = listData[selectedIndex];
+
+    }
     useEffect(() => {
         fetchMilestoneDetail();
     }, [selectedMilestoneIndex]);
+
+
 
     const fetchMilestoneDetail = async () => {
         if (selectedMilestoneIndex && Object.keys(selectedMilestoneIndex).length) {
@@ -86,6 +102,26 @@ const MarkMilestones = (props: any) => {
         }
     }, [expandItem]);
 
+    useEffect(() => {
+        if (enableEditMilestone) {
+            setToggleItem({
+                edit: true, cancel: false, lodge: false
+            })
+        }
+
+        if (enableLodgeDispute) {
+            setToggleItem({
+                edit: false, cancel: false, lodge: true
+            })
+        }
+
+        if (enableCancelJob) {
+            setToggleItem({
+                edit: false, cancel: true, lodge: false
+            })
+        }
+    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob])
+
 
     const classChecks = (isActive: any, isPrevDone: any) => {
         if (isActive === 1 && isPrevDone === false) {
@@ -100,7 +136,6 @@ const MarkMilestones = (props: any) => {
             return 'disable'
         }
     }
-
 
     const preFetch = async () => {
         let { jobId } = selectedItem;
@@ -132,7 +167,8 @@ const MarkMilestones = (props: any) => {
     const redirectToInfo = ({ jobId, status, tradieId }: any) => {
         console.log({ jobId });
         let props_: any = props;
-        let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active`)
+        // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active&hide_dipute=${item_detail?.dispute}`)
+        let urlEncode: any = `?jobId=${jobId}&status=${status}&tradieId=${tradieId}&edit=true&activeType=active&hide_dipute=${item_detail?.dispute}`;
         props_.history.push(`/job-detail?${urlEncode}`);
     }
 
@@ -161,14 +197,21 @@ const MarkMilestones = (props: any) => {
         setExpandItem({});
     }
 
+
+
     if (toggleItem?.edit) {
-        return (
-            <EditMilestones
-                details={itemDetails}
-                item={selectedItem}
-                backTab={backTab}
-            />
-        )
+        let details: any = itemDetails;
+        if (details && selectedItem) {
+            if (details && Object.keys(details)?.length && Object.keys(selectedItem).length) {
+                return (
+                    <EditMilestones
+                        details={details}
+                        item={selectedItem}
+                        backTab={backTab}
+                    />
+                )
+            }
+        }
     }
 
     if (toggleItem?.lodge) {
@@ -221,12 +264,13 @@ const MarkMilestones = (props: any) => {
                                     className="icon edit_line">
                                     {'Edit Milestone'}
                                 </li>
-
-                                <li
-                                    onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
-                                    className="icon lodge">
-                                    {'Lodge dispute'}
-                                </li>
+                                {!item_detail?.dispute && (
+                                    <li
+                                        onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
+                                        className="icon lodge">
+                                        {'Lodge dispute'}
+                                    </li>
+                                )}
 
                                 <li
                                     onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
@@ -237,7 +281,9 @@ const MarkMilestones = (props: any) => {
 
 
                 </div>
-                <span className="sub_title">Job Milestones</span>
+                <span className="sub_title">
+                    {'Job Milestones'}
+                </span>
                 <p className="commn_para">
                     {"Your job point of contact has indicated they want to be notified when you reach the following milestones. Tap the milestone and Submit when a milestone is completed"}
                 </p>
@@ -300,9 +346,6 @@ const MarkMilestones = (props: any) => {
                                             {'See Details'}
                                         </button>
                                     ) : null}
-
-
-
                                 </div>
 
                                 {["active"].includes(classChecks(isActive, isPrevDone)) && expandItem[milestoneId] ? (
@@ -320,7 +363,6 @@ const MarkMilestones = (props: any) => {
                                         {'Check and Approve'}
                                     </button>
                                 ) : null}
-
                             </li>
                         );
                     }
@@ -333,7 +375,7 @@ const MarkMilestones = (props: any) => {
                 <div
                     onClick={() => {
                         console.log({ item_details })
-                        props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}&hideInvite=true`);
+                        props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}&hideInvite=true&active=true`);
                     }}
                     className="tradie_card posted_by view_more ">
                     <span
@@ -352,18 +394,35 @@ const MarkMilestones = (props: any) => {
                         className="chat circle" />
                     <div className="user_wrap">
                         <figure className="u_img">
-                            <img src={item_details?.tradie?.tradieImage || dummy} alt="traide-img" />
+                            <img
+                                src={item_details?.tradie?.tradieImage || dummy}
+                                alt="traide-img"
+                                onError={(e: any) => {
+                                    if (e?.target?.onerror) {
+                                        e.target.onerror = null;
+                                    }
+                                    if (e?.target?.src) {
+                                        e.target.src = dummy;
+                                    }
+                                }}
+                            />
                         </figure>
                         <div className="details">
                             <span className="name">{item_details?.tradie?.tradieName || ''}</span>
                             {/* <span className="prof">Project Manager</span> */}
-                            <span className="rating">{item_details?.tradie?.reviews || 0} reviews</span>
+                            {item_details?.tradie && (
+                                <span className="rating">
+                                    {item_details?.tradie?.ratings || 0} , {item_details?.tradie?.reviews || 0} reviews
+                                </span>
+                            )}
                         </div>
                     </div>
                 </div>
 
                 <div className="relate">
-                    <span className="sub_title">Job details</span>
+                    <span className="sub_title">
+                        {'Job details'}
+                    </span>
                     <span
                         className="edit_icon"
                         title="More"

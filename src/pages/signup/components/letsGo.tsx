@@ -4,7 +4,7 @@ import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import templateImage from '../../../assets/images/lets-go-bg.jpg';
 
 import storageService from '../../../utils/storageService';
-
+import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../../services/firebase';
 
 interface Propstype {
     history: any,
@@ -24,11 +24,17 @@ const LetsGo = (props: Propstype) => {
 
     const goToLogin = () => {
         if (storageService.getItem('jwtToken')) {
-            props.history?.push('/')
+            const authData = {
+                email: storageService.getItem('userInfo')?.email,
+                password: '12345678', //'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
+            }
+            loginAnonymously();
+            // firebaseLogInWithEmailPassword(authData, '', true);
+            props.history?.push('/');
         }
         if (props.showModal) {
-            props.setShowModal(!props.showModal)
-            props.modalUpdateSteps(0)
+            props.setShowModal(!props.showModal);
+            props.modalUpdateSteps(0);
             return;
         }
         props.history.push('/login')

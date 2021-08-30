@@ -14,26 +14,38 @@ export const callTradeList = () => ({ type: actionTypes.CALL_TRADE_LIST })
 
 export const postSignup = async (data: any) => {
   console.log(data);
+  var today = new Date();
+  var uniqueToken = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+  data.deviceToken = uniqueToken;
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.signup, data);
   setLoading(false);
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
+    storageService.setItem("userInfo", {
+      "email": response.result?.email,
+      "user_image": response.result?.user_image,
+      "user_type": response.result?.user_type,
+      "userName": response.result?.firstName,
+      "_id": response.result?._id,
+      "accountType": response.result?.accountType,
+      "deviceId": uniqueToken
+    });
     return { success: true, result: response.result };
   }
   setShowToast(true, response.message);
   return { success: false };
 };
 
-export const checkEmailId = async (email: string, hideToast?:boolean) => {
+export const checkEmailId = async (email: string, hideToast?: boolean) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.checkEmailId + `?email=${email}`);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, isProfileCompleted: response.result.isProfileCompleted, message: response.message };
   }
-  if(!hideToast){
+  if (!hideToast) {
     setShowToast(true, response.message);
   }
   return { success: false };
@@ -74,6 +86,9 @@ export const createPassword = async (passwordInfo: object) => {
 
 
 export const callLogin = async (data: any) => {
+  var today = new Date();
+  var uniqueToken = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+  data.deviceToken = uniqueToken;
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.login, data);
   setLoading(false);
@@ -89,9 +104,13 @@ export const callLogin = async (data: any) => {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
     storageService.setItem("userInfo", {
-      "email": response.result.email,
-      "userName": response.result.userName,
-      "_id": response.result._id,
+      "email": response.result?.email,
+      "user_image": response.result?.user_image,
+      "user_type": response.result?.user_type,
+      "userName": response.result?.userName,
+      "_id": response.result?._id,
+      "accountType": response.result?.accountType,
+      "deviceId": uniqueToken
     });
 
     if (response.result.user_type === 1) {
@@ -131,12 +150,23 @@ export const checkSocialId = async (data: any) => {
 
 export const socialSignupLogin = async (data: any) => {
   console.log(data);
+  var today = new Date();
+  var uniqueToken = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
+  data.deviceToken = uniqueToken;
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(Urls.SocialAuth, data);
   setLoading(false);
   if (response.status_code === 200) {
     storageService.setItem("jwtToken", response.result.token);
     storageService.setItem("userType", response.result.user_type);
+    storageService.setItem("userInfo", {
+      "email": response.result?.email,
+      "user_image": response.result?.user_image,
+      "user_type": response.result?.user_type,
+      "userName": response.result?.firstName || 'name',
+      "_id": response.result?._id,
+      "deviceId": uniqueToken
+    });
     return { success: true, successToken: response.result.token, result: response.result };
   }
   setShowToast(true, response.message);
@@ -172,6 +202,14 @@ export const onFileUpload = async (data: any) => {
 
 export const addFCMNotifToken = async (data: object) => {
   const response: FetchResponse = await NetworkOps.putToJson(Urls.addFCMNotifToken, data);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  return { success: false };
+};
+
+export const markNotifAsRead = async (data: any) => {
+  const response: FetchResponse = await NetworkOps.putToJson(Urls.unReadNotification, data);
   if (response.status_code === 200) {
     return { success: true };
   }

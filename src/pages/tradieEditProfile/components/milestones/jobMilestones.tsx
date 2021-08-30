@@ -111,13 +111,15 @@ const JobMilestones = (props: any) => {
         setAddEdit({ toggle: false });
         if (data) {
             let data_: any = data?.data;
-            if (data?.index) {
-                let index = data?.index;
+            let index = data?.index;
+        
+            if(index == undefined){
+                local_mile.push(data_);
+            } else {
                 local_mile[index] = data_;
             }
-            local_mile.push(data_);
+            setLocalMile(local_mile);
         }
-        setLocalMile(local_mile);
     }
 
     if (toggleAddEdit?.toggle) {
@@ -351,7 +353,7 @@ const JobMilestones = (props: any) => {
                                             if (check) {
                                                 handleSubmit();
                                             } else {
-                                                setShowToast(true, "Please arrange milestonea date wise.")
+                                                setShowToast(true, "Please arrange milestone date wise.")
                                             }
                                         }}
                                         className={`fill_btn full_btn btn-effect`}>

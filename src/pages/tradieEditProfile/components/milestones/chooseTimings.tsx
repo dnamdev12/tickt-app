@@ -4,15 +4,15 @@ import React, { useState, useEffect } from 'react';
 // import bell from '../../../assets/images/ic-notification.png';
 // import dummy from '../../../assets/images/u_placeholder.jpg';
 // @ts-ignore
-import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
+// import { DateRangePicker } from 'react-date-range';
+// import 'react-date-range/dist/styles.css'; // main style file
+// import 'react-date-range/dist/theme/default.css'; // theme css file
 
 
 // @ts-ignore
-// import { DateRangePicker } from '../../../../plugins/react-date-range/dist/index';
-// import '../../../../plugins/react-date-range/dist/styles.css';
-// import '../../../../plugins/react-date-range/dist/theme/default.css';
+import { DateRangePicker } from '../../../../plugins/react-date-range/dist/index';
+import '../../../../plugins/react-date-range/dist/styles.css';
+import '../../../../plugins/react-date-range/dist/theme/default.css';
 
 import { randomColors as getRandomColors } from '../../../../utils/common'
 import moment from 'moment';
@@ -69,7 +69,7 @@ const ChooseTimings = ({
         let count_times: any = {};
         let randomColors = getRandomColors();
         let milestones = items;
-      
+
         let filteredItems = milestones.filter((item: any) => {
             let to_date = item?.to_date;
             let from_date = item?.from_date;
@@ -105,22 +105,30 @@ const ChooseTimings = ({
 
                 if (!to_date && from_date) {
                     if (count_times[from_date] > -1) {
-                        count_times[from_date]++;
+                        count_times[from_date] = count_times[from_date] + 1;
                     }
 
-                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    // let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
-                        from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                        let element_from = from_element[0];
+                        if (from_element?.length > 1) {
+                            element_from = from_element[1];
+                        }
+
+                        if (element_from) {
+                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                        }
                     }
                 }
 
                 if (to_date && from_date) {
                     if (count_times[from_date] > -1) {
-                        count_times[from_date]++;
+                        count_times[from_date] = count_times[from_date] + 1;
                     }
 
                     if (count_times[to_date] > -1) {
-                        count_times[to_date]++;
+                        count_times[to_date] = count_times[to_date] + 1;
                     }
 
                     let colorbyIndex = randomColors[index];
@@ -138,7 +146,7 @@ const ChooseTimings = ({
                     }
 
                     let to_element: any = document.getElementsByClassName(`color_${count_times[to_date]}_${to_date}`);
-                    console.log({to_element})
+                    console.log({ to_element })
                     if (to_element) {
                         let element_to = to_element[0];
                         if (to_element?.length > 1) {
@@ -149,6 +157,10 @@ const ChooseTimings = ({
                         }
                     }
                 }
+
+            })
+            console.log({
+                count_times
             })
         }
     }
@@ -160,7 +172,7 @@ const ChooseTimings = ({
 
     useEffect(() => {
         onMountCallable();
-    },[range]);
+    }, [range]);
 
     const handleCheck = (item: any) => {
         let from_date = moment(item.startDate).format(default_format);
@@ -174,11 +186,11 @@ const ChooseTimings = ({
     }
 
 
-    
-    const checkBeforeExist = (time: any, milestones_?:any) => {
+
+    const checkBeforeExist = (time: any, milestones_?: any) => {
         let count_times: any = {};
         let catch_boolean: boolean = true;
-        let milestoneItems:any = items;
+        let milestoneItems: any = items;
 
         milestoneItems.forEach((mile: any) => {
 
@@ -253,7 +265,7 @@ const ChooseTimings = ({
         // }
 
         let isChecked = checkBeforeExist(timings);
-        if(isChecked){
+        if (isChecked) {
             toggleCalenderTime(range);
         }
     }
@@ -282,11 +294,11 @@ const ChooseTimings = ({
                                 style={{ zIndex: 999 }}
                                 className="back">
                             </button>
-                            <span 
-                            onClick={() => {
-                                onMountCallable();
-                            }}
-                            className="title">
+                            <span
+                                onClick={() => {
+                                    onMountCallable();
+                                }}
+                                className="title">
                                 {'Timing'}
                             </span>
                         </div>
@@ -312,6 +324,7 @@ const ChooseTimings = ({
                             showSelectionPreview={true}
                             showPreview={true}
                             fixedHeight={true}
+                            minDate={new Date()}
                         />
                     </div>
                     <span className="error_msg mtb-15">{error}</span>

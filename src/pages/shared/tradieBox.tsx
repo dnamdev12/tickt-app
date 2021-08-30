@@ -70,7 +70,7 @@ class TradieBox extends Component<PropsType, State> {
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img
-                                src={item?.tradieImage}
+                                src={item?.tradieImage || item?.tradie_details?.user_image || dummy}
                                 onError={(e) => {
                                     let event: any = e;
                                     event.target.src = dummy;
@@ -78,8 +78,9 @@ class TradieBox extends Component<PropsType, State> {
                                 alt="traide-img" />
                         </figure>
                         <div className="details">
-                            <span className="name">{item?.tradieName}</span>
-                            <span className="rating">{item?.ratings} , {item?.reviews} reviews </span>
+                            <span className="name">{item?.tradieName || item?.tradie_details?.firstName}</span>
+                            {/* {item?.tradieId} */}
+                            <span className="rating">{(item?.ratings) || (item?.tradie_details?.rating)?.toFixed(1) || 0} , {item?.reviews || (item?.tradie_details?.review) || 0} reviews </span>
                             {/* <span className="rating">{item?.ratings || randomRating} , {item?.reviews || randomReview} reviews </span> */}
                         </div>
                     </div>
@@ -87,13 +88,23 @@ class TradieBox extends Component<PropsType, State> {
                     <div className="tags_wrap">
                         <ul>
                             {item?.tradeData?.length ?
-                                item?.tradeData?.map((item_trade: any) => (
-                                    <li className="main">
+                                item?.tradeData?.map((item_trade: any, index: any) => (
+                                    <li key={index}
+                                        className="main">
                                         <img src={item_trade?.tradeSelectedUrl} alt="icon" />
                                         {item_trade?.tradeName}
                                     </li>
                                 ))
                                 : null}
+
+                            {item?.tradie_details?.trade?.length ?
+                                item?.tradie_details?.trade.map((item_: any) => (
+                                    <li key={index}
+                                        className="main">
+                                        <img src={item_?.selected_url} alt="icon" />
+                                        {item_?.trade_name}
+                                    </li>
+                                )) : null}
                         </ul>
                     </div>
                     {item?.specializationData?.length ? (
@@ -101,11 +112,11 @@ class TradieBox extends Component<PropsType, State> {
                             <ul>
                                 {isItemSpec[index] ?
                                     item?.specializationData?.map((item_spec: any, index_spec: any) => (
-                                        <li>{item_spec?.specializationName}</li>
+                                        <li key={index_spec}>{item_spec?.specializationName}</li>
                                     ))
                                     :
                                     item?.specializationData?.slice(0, 4)?.map((item_spec: any, index_spec: any) => (
-                                        <li>{item_spec?.specializationName}</li>
+                                        <li key={index_spec}>{item_spec?.specializationName}</li>
                                     ))}
                                 {item?.specializationData?.length > 4 ? (
                                     <li>{'More'}</li>
@@ -116,6 +127,20 @@ class TradieBox extends Component<PropsType, State> {
                             </ul>
                         </div>
                     ) : null}
+                    {console.log({
+                        specializations:item?.tradie_details?.specializations[0]
+                    })}
+                    {item?.tradie_details?.specializations[0]?.length ?
+                        <div className="tags_wrap">
+                            <ul>
+                                {item?.tradie_details?.specializations[0]?.slice(0, 4)?.map((item_: any) => (
+                                    <li key={index}>
+                                        {item_?.name}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
+                        : null}
                 </div>
             </div>
         )

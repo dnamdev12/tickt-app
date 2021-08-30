@@ -65,21 +65,16 @@ class TradieEditProfile extends Component<Props, State> {
     }
 
     componentDidMount = async () => {
-        // this.props.getTradieProfileView();
-        await this.prefetchItems();
-    }
-
-    prefetchItems = async () => {
-        let result: any = await getTnc();
-        let result_: any = await getPrivacyPolicy();
-        console.log({
-            result,
-            result_
-        },'---url')
-        this.setState({
-            privacyPolicy_url: result_?.data?.privacyPolicy_url,
-            tnc: result?.data?.privacyPolicy_url
-        })
+        let menuType = new URLSearchParams(this.props.history?.location?.search).get('menu');
+        if (menuType === 'pp') {
+            menuType = 'privacy-policy';
+        } else if (menuType === 'tnc') {
+            menuType = 'terms-of-use';
+        }
+        this.setState((prevState: any) => ({
+            ...prevState,
+            ...(menuType && { activeMenuType: menuType })
+        }));
     }
 
     toggleSidebar = () => this.setState({ isToggleSidebar: !this.state.isToggleSidebar });
@@ -205,16 +200,12 @@ class TradieEditProfile extends Component<Props, State> {
                                 <SupportChatComponent
                                     {...props}
                                 />)}
+
                             {activeMenuType === 'privacy-policy' && (
-                                <PrivacyPolicyComponent
-                                    {...props}
-                                    privacyPolicy_url={this.state.privacyPolicy_url}
-                                />)}
+                                <PrivacyPolicyComponent />)}
+
                             {activeMenuType === 'terms-of-use' && (
-                                <TermsOfUseComponent
-                                    {...props}
-                                    privacyPolicy_url={this.state.tnc}
-                                />)}
+                                <TermsOfUseComponent />)}
                         </div>
 
                     </div>

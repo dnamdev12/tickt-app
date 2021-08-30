@@ -39,7 +39,7 @@ import menu from '../../assets/images/menu-line-blue.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
-
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 import AddVoucherComponent from './addVoucher';
@@ -56,7 +56,12 @@ import Button from '@material-ui/core/Button';
 //@ts-ignore
 import ReactStars from "react-rating-stars-component";
 
-const USER_TYPE = storageService.getItem('userType');
+import Rating from 'react-rating';
+
+
+
+import InfiniteScroll from "react-infinite-scroll-component";
+
 interface Props {
     tradieInfo: any,
     tradieId: any,
@@ -103,9 +108,15 @@ interface State {
         isTrue: boolean
     },
     toggleAddVoucher: boolean,
-    toggleSpecialisation: boolean
+    toggleSpecialisation: boolean,
+    hasMore: boolean,
+    currentReviewPage: number
 }
 
+
+const empty_star_rating_below = (<span className="" data-index="4" data-forhalf="★" style={{ position: "relative", overflow: "hidden", cursor: "pointer", display: "block", float: "left", color: "rgb(223, 229, 239)", fontSize: "24px" }}>★</span>);
+
+const full_star_rating_below = (<span className="" data-index="0" data-forhalf="★" style={{ position: "relative", overflow: "hidden", cursor: "pointer", display: "block", float: "left", color: "rgb(255, 215, 0)", fontSize: "24px" }}>★</span>);
 class TradieInfo extends Component<Props, State> {
     state = {
         toggleSpecialisation: true,
@@ -141,7 +152,9 @@ class TradieInfo extends Component<Props, State> {
         },
         tradieReviewList: [],
         toggleVoucher: { item: '', isTrue: false },
-        toggleAddVoucher: false
+        toggleAddVoucher: false,
+        hasMore: true,
+        currentReviewPage: 1
     };
 
 
@@ -186,8 +199,9 @@ class TradieInfo extends Component<Props, State> {
         let jobId = urlParams.get('jobId')
         let specializationId = urlParams.get('specializationId')
         let tradeId = urlParams.get('tradeId')
-        let user_type = urlParams.get('type')
-        return { jobId, specializationId, tradeId, user_type };
+        let user_type = storageService.getItem('userType');
+        let is_active = urlParams.get('active')
+        return { jobId, specializationId, tradeId, user_type, is_active };
     }
 
     componentDidMount() {
@@ -206,7 +220,7 @@ class TradieInfo extends Component<Props, State> {
     componentDidUpdate() {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
-        console.log({ tradeStatus })
+
         if (tradeStatus) {
             props.history.push('/jobs');
         }
@@ -289,10 +303,6 @@ class TradieInfo extends Component<Props, State> {
             }
 
             this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: item_ } }));
-
-            // let reviewsData = this.state.reviewsData;
-            // const newData = [...reviewsData.replyShownHideList].filter(id => id !== replyId);
-            // this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
         } else if (type === 'showReviewClicked') {
             let item_: any = {};
             let reply_id: any = replyId;
@@ -304,10 +314,6 @@ class TradieInfo extends Component<Props, State> {
             }
 
             this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: item_ } }));
-            // let reviewsData = this.state.reviewsData;
-            // const newData: any = [...reviewsData.replyShownHideList];
-            // newData.push(replyId);
-            // this.setState((prevData: any) => ({ reviewsData: { ...prevData.reviewsData, replyShownHideList: newData } }));
         } else if (type === 'editBuilderReview') {
             this.setState((prevData: any) => ({
 
@@ -387,12 +393,21 @@ class TradieInfo extends Component<Props, State> {
 
             if (type === "updateBuilderReview") {
                 const { reviewData: { review, reviewId, rating } } = reviewsData;
-                response = await updateReviewTradie({
-                    review, reviewId, rating
-                })
+                let data = {
+                    review,
+                    reviewId,
+                    rating
+                };
+
+                if (!data?.review?.length) {
+                    delete data.review;
+                }
+
+                response = await updateReviewTradie(data)
             }
 
             if (response?.success) {
+                this.forceUpdate();
                 this.setItems();
             }
 
@@ -419,7 +434,7 @@ class TradieInfo extends Component<Props, State> {
         const { jobId, tradeId, user_type } = this.getItemsFromLocation();
 
         if (user_type == '1' || this.props.userType == 1) {
-            console.log(USER_TYPE, "USER_TYPE", user_type, "user_type", this.props.userType, "this.props.userType");
+            console.log(user_type, "user_type", this.props.userType, "this.props.userType");
             this.props.getTradieProfileView();
         } else if (jobId) {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
@@ -438,7 +453,8 @@ class TradieInfo extends Component<Props, State> {
         let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: 1 });
         console.log({ res_trade })
         if (res_trade?.success) {
-            this.setState({ tradieReviews: res_trade.data })
+            let data_ = res_trade?.data?.list || res_trade?.data;
+            this.setState({ tradieReviews: data_ })
         }
     }
 
@@ -513,13 +529,19 @@ class TradieInfo extends Component<Props, State> {
     }
 
     render() {
+
+        const SVGIcon = (props: any) =>
+            <svg className={props.className} pointerEvents="none">
+                <use xlinkHref={props.href} />
+            </svg>;
+
         let props: any = this.props;
         console.log({
             props,
             path: props.location.pathname + props.location.search
         })
         // let tradieInfo: any = props.tradieInfo;
-        const { user_type } = this.getItemsFromLocation();
+        const { user_type, is_active } = this.getItemsFromLocation();
         let { portfolioData, toggleVoucher } = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
@@ -527,7 +549,7 @@ class TradieInfo extends Component<Props, State> {
         let tradieReviews: any = this.state.tradieReviews;
         let isSkeletonLoading: boolean = props.isSkeletonLoading;
 
-        console.log(tradieInfo, "tradieInfo", userType, "userType");
+        console.log(tradieInfo, "tradieInfo", userType, "userType", is_active, "is_active");
 
         let profileData: any = tradieInfo;
         let { portfolioImageHandler, modalCloseHandler, reviewHandler, submitReviewHandler, handleChange, submitAcceptDeclineRequest } = this;
@@ -573,6 +595,10 @@ class TradieInfo extends Component<Props, State> {
                                             onLoad={() => this.setState({
                                                 profilePictureLoading: false,
                                             })}
+                                            onError={(e: any) => {
+                                                let e_: any = e;
+                                                e_.target.src = profilePlaceholder;
+                                            }}
                                             hidden={this.state.profilePictureLoading}
                                         />}
                                     </figure>
@@ -593,6 +619,22 @@ class TradieInfo extends Component<Props, State> {
                                                         <span className="review_count"> jobs completed</span>
                                                     </li>
                                                 </ul>
+
+                                                {userType !== 1 && is_active == "true" ? (
+                                                    <button className="fill_btn full_btn btn-effect"
+                                                        onClick={() => {
+                                                            const tradieId = new URLSearchParams(props.history?.location?.search).get('tradeId');
+                                                            props.history.push({
+                                                                pathname: `/choose-job-to-start-chat`,
+                                                                state: {
+                                                                    tradieId: tradieId ? tradieId : '',
+                                                                }
+                                                            })
+                                                        }}>
+                                                        {'Write a message'}
+                                                    </button>
+                                                ) : ''}
+
 
                                                 {userType === 1 ? (
                                                     <button
@@ -675,7 +717,7 @@ class TradieInfo extends Component<Props, State> {
                                                             </div>
                                                         )}
                                                     </div>
-                                                ) : haveJobId ? (
+                                                ) : haveJobId && tradieInfo?.isRequested ? (
                                                     <>
                                                         <div className="form_field">
                                                             <button
@@ -700,12 +742,7 @@ class TradieInfo extends Component<Props, State> {
                                             <span className="sub_title">About</span>
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
-                                    ) :
-                                        // <div>
-                                        //     <span className="sub_title">About</span>
-                                        //     <p className="commn_para">You have not added your information yet, Please go to edit and add.</p>
-                                        // </div>
-                                        null}
+                                    ) : null}
                                 </div>
                                 <div className="flex_col_sm_4">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
@@ -729,7 +766,6 @@ class TradieInfo extends Component<Props, State> {
                                                     onClick={(e: any) => {
                                                         e.preventDefault();
                                                         this.setState({ toggleSpecialisation: !this.state.toggleSpecialisation })
-                                                        // setShowSpecs(!showSpecs);
                                                     }}>
                                                     {toggleSpecialisation ? 'Show more' : 'Show less'}
                                                 </span>
@@ -841,18 +877,19 @@ class TradieInfo extends Component<Props, State> {
                 <div className="section_wrapper">
                     <div className="custom_container">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Reviews'}</span>
-                        {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
-                            {tradieInfo?.reviewData?.length > 0 ?
-                                (tradieInfo?.reviewData?.slice(0, 8)?.map((jobData: any) => {
-                                    return <ReviewInfoBox item={jobData} {...props} />
-                                })) :
-                                <div className="no_record">
-                                    <figure className="no_data_img">
-                                        <img src={noData} alt="data not found" />
-                                    </figure>
-                                    <span>No Data Found</span>
-                                </div>}
-                        </div>}
+                        {props.isSkeletonLoading ? <Skeleton height={200} /> :
+                            <div className="flex_row review_parent">
+                                {tradieInfo?.reviewData?.length > 0 ?
+                                    (tradieInfo?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                        return <ReviewInfoBox item={jobData} {...props} />
+                                    })) :
+                                    <div className="no_record">
+                                        <figure className="no_data_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                        <span>No Data Found</span>
+                                    </div>}
+                            </div>}
                         {props.isSkeletonLoading ? <Skeleton height={25} /> : <button
                             className="fill_grey_btn full_btn view_more"
                             onClick={() => {
@@ -872,12 +909,23 @@ class TradieInfo extends Component<Props, State> {
                             <span className="sub_title">Vouches</span>
                             <div className="flex_row">
 
-                                {tradieInfo?.vouchesData.map((item: any) => (
+                                {tradieInfo?.vouchesData.slice(0, 8).map((item: any) => (
                                     <div className="flex_col_sm_3">
                                         <div className="review_card vouchers">
                                             <div className="pic_shot_dtl">
                                                 <figure className="u_img">
-                                                    <img src={item?.builderImage || dummy} alt="user-img" />
+                                                    <img
+                                                        src={item?.builderImage || dummy}
+                                                        onError={(e: any) => {
+                                                            if(e?.target?.onerror){
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                        alt="user-img"
+                                                    />
                                                 </figure>
                                                 <div className="name_wrap">
                                                     <span className="user_name" title={item?.builderName || ''}>
@@ -914,7 +962,6 @@ class TradieInfo extends Component<Props, State> {
                                     </div>
                                 ))}
                             </div>
-                            {console.log({ tradieInfo })}
                             <button
                                 className="fill_grey_btn full_btn view_more"
                                 onClick={() => {
@@ -958,7 +1005,6 @@ class TradieInfo extends Component<Props, State> {
                         </div> : null
                     )}
 
-                {console.log({ toggleAddVoucher: this.state.toggleAddVoucher })}
                 {storageService.getItem('userType') === 2 && <AddVoucherComponent
                     toggleProps={this.state.toggleAddVoucher}
                     id={tradieInfo?.tradieId}
@@ -983,150 +1029,182 @@ class TradieInfo extends Component<Props, State> {
                                     <img src={cancel} alt="cancel" />
                                 </button>
                             </div>
-                            <div className="inner_wrap">
-                                {tradieReviews?.map((item: any) => {
-                                    let reviewData: any = item.reviewData;
-                                    let replyData: any = reviewData.replyData;
-                                    let replyId: any = replyData.replyId;
-                                    return (
-                                        <>
-                                            <div className="question_ans_card" key={reviewData.reviewId}>
-                                                <div className="user_detail">
-                                                    <figure className="user_img">
-                                                        <img src={reviewData?.userImage || dummy} alt="user-img" />
-                                                    </figure>
-
-                                                    <div className="details">
-                                                        <span className="user_name">{reviewData?.userName}</span>
-                                                        <span className="date">{reviewData?.date}</span>
-                                                        <span className="item-star">
-                                                            <ReactStars
-                                                                classNames="review-stars"
-                                                                value={reviewData?.rating}
-                                                                count={5}
-                                                                edit={false}
-                                                                size={30}
-                                                                activeColor="#ffd700"
-                                                            />
-                                                        </span>
-                                                    </div>
-                                                </div>
-                                                <p>{reviewData?.review}</p>
-                                           
-                                                {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
-                                                    <span
-                                                        onClick={() => {
-                                                            reviewHandler(
-                                                                'editBuilderReview',
-                                                                reviewData?.reviewId,
-                                                                '',
-                                                                reviewData
-                                                            );
-                                                        }}
-                                                        className="action link">
-                                                        {'Edit '}
-                                                    </span>
-                                                ) : null}
-                                                {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
-                                                    <span
-                                                        onClick={() => {
-                                                            this.setState({
-                                                                delete: {
-                                                                    isToggle: true,
-                                                                    deleteId: reviewData?.reviewId
-                                                                }
-                                                            })
-                                                        }}
-                                                        className="action link">
-                                                        {'Delete '}
-                                                    </span>
-                                                ) : null}
-                                                <br />
-                                                <br />
-                                                {Object.keys(reviewsData.replyShownHideList).length &&
-                                                    reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
-                                                    <span
-                                                        className="action link"
-                                                        onClick={() => {
-                                                            reviewHandler('hideReviewClicked', '', item?.reviewData?.reviewId)
-                                                        }}>
-                                                        {'Hide Review'}
-                                                    </span>
-                                                ) : Object.keys(item?.reviewData?.replyData).length ? (
-                                                    <span
-                                                        className="show_hide_ans link"
-                                                        onClick={() => { reviewHandler('showReviewClicked', '', item?.reviewData?.reviewId) }}>
-                                                        {'Show review'}
-                                                    </span>
-                                                ) : (
-                                                    storageService.getItem('userType') === 1 ?
-                                                        (<span
-                                                            className="action link"
-                                                            onClick={() => {
-                                                                reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
-                                                            }}>
-                                                            {'Reply'}
-                                                        </span>)
-                                                        : ''
-                                                )}
-                                                {/* {Object.keys(replyData).length > 0 &&
-                                                    !(reviewsData?.replyShownHideList.includes(replyId) ||
-                                                        reviewsData.replyShownHideList.includes(replyId)) &&
-                                                    <span
-                                                        className="show_hide_ans link"
-                                                        onClick={() => { reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId) }}>
-                                                        {'Show review'}
-                                                    </span>}
-                                                {reviewData?.isModifiable && Object.keys(item?.reviewData?.replyData).length ? (
-                                                    <span
-                                                        className="action link"
-                                                        onClick={() => {
-                                                            reviewHandler('reviewReplyClicked', reviewData.reviewId)
-                                                        }}>
-                                                        {'Reply'}
-                                                    </span>) : null} */}
-                                            </div>
-                                            {/* {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) && */}
-                                            {Object.keys(reviewsData.replyShownHideList).length &&
-                                                reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
-                                                <div className="question_ans_card answer">
+                            <div id="divScrollable" className="inner_wrap">
+                                <InfiniteScroll
+                                    dataLength={tradieReviews?.length}
+                                    next={async () => {
+                                        const { tradeId } = this.getItemsFromLocation();
+                                        let cp = this.state.currentReviewPage + 1;
+                                        let prevValues = tradieReviews;
+                                        this.setState({ currentReviewPage: this.state.currentReviewPage + 1 });
+                                        let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: cp });
+                                        if (res_trade?.success) {
+                                            let data_ = res_trade?.data?.list || res_trade?.data;
+                                            if (data_?.length) {
+                                                this.setState({ tradieReviews: [...prevValues, ...data_] });
+                                            } else {
+                                                this.setState({ hasMore: false });
+                                            }
+                                        }
+                                    }}
+                                    hasMore={this.state.hasMore}
+                                    loader={<></>}
+                                    scrollableTarget="divScrollable">
+                                    {tradieReviews?.map((item: any) => {
+                                        let reviewData: any = item.reviewData;
+                                        let replyData: any = reviewData.replyData;
+                                        let replyId: any = replyData.replyId;
+                                        return (
+                                            <>
+                                                <div className="question_ans_card" key={reviewData.reviewId}>
                                                     <div className="user_detail">
                                                         <figure className="user_img">
-                                                            <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
+                                                            <img src={reviewData?.userImage || dummy} alt="user-img" />
                                                         </figure>
+
                                                         <div className="details">
-                                                            <span className="user_name">{reviewData?.replyData?.userName}</span>
-                                                            <span className="date">{reviewData?.replyData?.date}</span>
+                                                            <span className="user_name">{reviewData?.name}</span>
+                                                            <span className="date">{reviewData?.date}</span>
+                                                            <span className="item-star">
+                                                                {/* <ReactStars
+                                                                    classNames="review-stars"
+                                                                    value={reviewData?.rating}
+                                                                    count={5}
+                                                                    edit={false}
+                                                                    size={30}
+                                                                    activeColor="#ffd700"
+                                                                    color='#DFE5EF'
+                                                                /> */}
+
+
+                                                                <Rating
+                                                                    fractions={2}
+                                                                    emptySymbol={empty_star_rating_below}
+                                                                    fullSymbol={full_star_rating_below}
+                                                                    initialRating={reviewData?.rating}
+                                                                    readonly={true}
+                                                                />
+
+                                                            </span>
                                                         </div>
                                                     </div>
-                                                    <p>{reviewData?.replyData?.reply}</p>
-                                                    {reviewData?.replyData?.isModifiable && (
+                                                    <p>{reviewData?.review}</p>
+
+                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
                                                         <span
-                                                            className="action link"
                                                             onClick={() => {
                                                                 reviewHandler(
-                                                                    'updateReviewReply',
-                                                                    item?.reviewData?.reviewId,
-                                                                    item?.reviewData?.replyData?.replyId,
-                                                                    reviewData?.replyData?.reply
-                                                                )
-                                                            }}>
-                                                            {'Edit'}
-                                                        </span>)}
-                                                    {reviewData?.replyData?.isModifiable &&
+                                                                    'editBuilderReview',
+                                                                    reviewData?.reviewId,
+                                                                    '',
+                                                                    reviewData
+                                                                );
+                                                            }}
+                                                            className="action link">
+                                                            {'Edit '}
+                                                        </span>
+                                                    ) : null}
+                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                        <span
+                                                            onClick={() => {
+                                                                this.setState({
+                                                                    delete: {
+                                                                        isToggle: true,
+                                                                        deleteId: reviewData?.reviewId
+                                                                    }
+                                                                })
+                                                            }}
+                                                            className="action link">
+                                                            {'Delete '}
+                                                        </span>
+                                                    ) : null}
+                                                    <br />
+                                                    <br />
+                                                    {Object.keys(reviewsData.replyShownHideList).length &&
+                                                        reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                         <span
                                                             className="action link"
                                                             onClick={() => {
-                                                                reviewHandler('removeReviewReply', item?.reviewData?.reviewId, item?.reviewData?.replyData?.replyId)
+                                                                reviewHandler('hideReviewClicked', '', item?.reviewData?.reviewId)
                                                             }}>
-                                                            {'Delete'}
-                                                        </span>}
+                                                            {'Hide Review'}
+                                                        </span>
+                                                    ) : Object.keys(item?.reviewData?.replyData).length ? (
+                                                        <span
+                                                            className="show_hide_ans link"
+                                                            onClick={() => { reviewHandler('showReviewClicked', '', item?.reviewData?.reviewId) }}>
+                                                            {'Show review'}
+                                                        </span>
+                                                    ) : (
+                                                        storageService.getItem('userType') === 1 ?
+                                                            (<span
+                                                                className="action link"
+                                                                onClick={() => {
+                                                                    reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
+                                                                }}>
+                                                                {'Reply'}
+                                                            </span>)
+                                                            : ''
+                                                    )}
+                                                    {/* {Object.keys(replyData).length > 0 &&
+                                                !(reviewsData?.replyShownHideList.includes(replyId) ||
+                                                    reviewsData.replyShownHideList.includes(replyId)) &&
+                                                <span
+                                                    className="show_hide_ans link"
+                                                    onClick={() => { reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId) }}>
+                                                    {'Show review'}
+                                                </span>}
+                                            {reviewData?.isModifiable && Object.keys(item?.reviewData?.replyData).length ? (
+                                                <span
+                                                    className="action link"
+                                                    onClick={() => {
+                                                        reviewHandler('reviewReplyClicked', reviewData.reviewId)
+                                                    }}>
+                                                    {'Reply'}
+                                                </span>) : null} */}
                                                 </div>
+                                                {/* {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) && */}
+                                                {Object.keys(reviewsData.replyShownHideList).length &&
+                                                    reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
+                                                    <div className="question_ans_card answer">
+                                                        <div className="user_detail">
+                                                            <figure className="user_img">
+                                                                <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
+                                                            </figure>
+                                                            <div className="details">
+                                                                <span className="user_name">{reviewData?.replyData?.userName}</span>
+                                                                <span className="date">{reviewData?.replyData?.date}</span>
+                                                            </div>
+                                                        </div>
+                                                        <p>{reviewData?.replyData?.reply}</p>
+                                                        {reviewData?.replyData?.isModifiable && (
+                                                            <span
+                                                                className="action link"
+                                                                onClick={() => {
+                                                                    reviewHandler(
+                                                                        'updateReviewReply',
+                                                                        item?.reviewData?.reviewId,
+                                                                        item?.reviewData?.replyData?.replyId,
+                                                                        reviewData?.replyData?.reply
+                                                                    )
+                                                                }}>
+                                                                {'Edit'}
+                                                            </span>)}
+                                                        {reviewData?.replyData?.isModifiable &&
+                                                            <span
+                                                                className="action link"
+                                                                onClick={() => {
+                                                                    reviewHandler('removeReviewReply', item?.reviewData?.reviewId, item?.reviewData?.replyData?.replyId)
+                                                                }}>
+                                                                {'Delete'}
+                                                            </span>}
+                                                    </div>
 
-                                            ) : null}
-                                        </>
-                                    )
-                                })}
+                                                ) : null}
+                                            </>
+                                        )
+                                    })}
+                                </InfiniteScroll>
                             </div>
                         </div>
                     </Modal>
@@ -1253,6 +1331,7 @@ class TradieInfo extends Component<Props, State> {
                                         }}
                                         size={40}
                                         activeColor="#ffd700"
+                                        color='#DFE5EF'
                                     />
                                     <div className="text_field">
                                         <textarea

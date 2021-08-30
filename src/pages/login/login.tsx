@@ -8,7 +8,7 @@ import AuthParent from '../../common/auth/authParent';
 import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
-import { firebaseLogInWithEmailPassword } from '../../services/firebase';
+import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../services/firebase';
 interface Propstype {
     history: any,
     showModal?: boolean,
@@ -60,23 +60,19 @@ const LoginPage = (props: Propstype) => {
         if (!loginData.password) {
             newErrors.password = Constants.errorStrings.password;
         }
-        //  else {
-        //     const passwordRegex = new RegExp(regex.password);
-        //     if (!passwordRegex.test(loginData.password.trim())) {
-        //         newErrors.password = Constants.errorStrings.passwordInvalid;
-        //     }
-        // }
 
         setErrors(newErrors);
         return !Object.keys(newErrors).length;
     }
 
     const onNewAccount = (profileData: any, socialType: string) => {
+        console.log('profileData: ', profileData);
         const newProfileData = {
             firstName: profileData.name,
             authType: "signup",
             email: profileData.email,
             accountType: socialType,
+            user_image: profileData?.imageUrl,
             ...(socialType === 'google' && { socialId: profileData.googleId }),
             ...(socialType === 'linkedIn' && { socialId: profileData.socialId })
         }
@@ -114,22 +110,20 @@ const LoginPage = (props: Propstype) => {
 
     const onSubmit = async (e: any) => {
         e.preventDefault();
-        const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
+        let newData = { email: loginData.email, password: loginData.password };
+        // const newData = { email: loginData.email, password: loginData.password, deviceToken: "323245356tergdfgrtuy68u566452354dfwe" };
         if (validateForm()) {
             const res: any = await callLogin(newData);
             if (res.success) {
                 const authData = {
                     email: newData.email,
-                    password: 'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
+                    password: '12345678', //'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
                 }
-                firebaseLogInWithEmailPassword(authData, res?.data);
+                loginAnonymously();
+                // firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {
-                    window.location.reload();
-                    // props.setShowModal(!props.showModal);
-                    return;
-                }
-                if (res?.data) {
-                    localStorage.setItem('email', res.data.email);
+                    // window.location.reload();
+                    props.setShowModal(!props.showModal);
                 }
                 props?.history?.push('/');
             }

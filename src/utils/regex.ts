@@ -11,7 +11,7 @@ const regex = {
         numeric: /^\d+$/,
         // max_budget: "[0-9]+(\.[0-9][0-9]?)?",
         alphaNumeric: /^[a-zA-Z0-9]*$/,
-        fullname: /^[a-zA-Z ]{3,50}$/,
+        fullname: /^[a-zA-Z' ]{3,50}$/,
 };
 
 export default regex;

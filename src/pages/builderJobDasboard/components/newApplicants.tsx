@@ -1,4 +1,4 @@
-import React, { ReactElement } from 'react'
+import React, { useEffect, useState } from 'react'
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import { withRouter } from 'react-router';
@@ -25,29 +25,37 @@ interface Applicant {
     specializationId: any,
     tradeName: any,
     tradieId: any,
-    isLoading?:any,
+    isLoading?: any,
     tradeSelectedUrl: any,
-    activeType?:any
+    activeType?: any
 }
 
 const NewApplicants = (props: any) => {
     const { dataItems, jobType, setJobLabel, isLoading } = props;
     let listData: any = dataItems;
-    console.log({ dataItems, isLoading })
+
+    const [isRender, setRender] = useState(false);
+
 
 
     const redirectToInfo = ({ jobId }: any) => {
         console.log({ jobId });
         const props_: any = props;
-        console.log({props_})
+        console.log({ props_ })
         if (jobId?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
+            let urlEncode: any = `?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`
             props_.history.push(`/job-detail?${urlEncode}`);
         }
     }
 
+    useEffect(() => {
+        if (isLoading == false) {
+            setRender(true);
+        }
+    }, [isLoading])
 
-    if (isLoading || listData == undefined) {
+    if (!isRender) {
         return null;
     }
 
@@ -85,7 +93,18 @@ const NewApplicants = (props: any) => {
                                 </span>
                                 <div className="user_wrap">
                                     <figure className="u_img">
-                                        <img src={tradeSelectedUrl || dummy} alt="traide-img" />
+                                        <img
+                                            src={tradeSelectedUrl || dummy}
+                                            alt="traide-img"
+                                            onError={(e: any) => {
+                                                if (e?.target?.onerror) {
+                                                    e.target.onerror = null;
+                                                }
+                                                if (e?.target?.src) {
+                                                    e.target.src = dummy;
+                                                }
+                                            }}
+                                        />
                                     </figure>
                                     <div className="details">
                                         <span className="name">{tradeName}</span>

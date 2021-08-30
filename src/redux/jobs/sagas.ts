@@ -1,8 +1,9 @@
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { call, put, takeLatest, select } from 'redux-saga/effects';
 import NetworkOps, { FetchResponse } from "../../network/NetworkOps";
 import Urls from "../../network/Urls";
 import * as actionTypes from './constants';
 import { setShowToast, setLoading } from '../common/actions';
+import * as selectors from './selectors';
 
 function* setHomeBuilder(action: any) {
   const { data } = action;
@@ -20,15 +21,12 @@ function* setLocalChanges(action: any) {
   yield put({ type: actionTypes.SET_LOCAL_CHANGES, payload: action });
 }
 
-// activeJobList
 function* getActiveJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.activeJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_ACTIVE_JOBS_END,
@@ -39,15 +37,12 @@ function* getActiveJobList({ page }: any) {
   }
 }
 
-// appliedJobList
 function* getAppliedJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.appliedJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_APPLIED_JOBS_END,
@@ -58,15 +53,12 @@ function* getAppliedJobList({ page }: any) {
   }
 }
 
-// pastJobList
 function* getPastJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.pastJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_PAST_JOBS_END,
@@ -79,15 +71,21 @@ function* getPastJobList({ page }: any) {
 
 
 function* resetActiveJobList() {
-  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [] } });
+  const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
+  const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
+  yield put({ type: actionTypes.GET_ACTIVE_JOBS_END, payload: { active: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetAppliedJobList() {
-  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [] } });
+  const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
+  const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
+  yield put({ type: actionTypes.GET_APPLIED_JOBS_END, payload: { applied: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetPastJobList() {
-  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [] } });
+  const milestonesCount: selectors.FetchResponse = yield select(selectors.milestonesCount);
+  const newJobsCount: selectors.FetchResponse = yield select(selectors.newJobsCount);
+  yield put({ type: actionTypes.GET_PAST_JOBS_END, payload: { completed: [], milestonesCount: milestonesCount, newJobsCount: newJobsCount } });
 }
 
 function* resetNewJobList() {
@@ -98,15 +96,12 @@ function* resetApprovedMilestoneList() {
   yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
 }
 
-// newJobList
 function* getNewJobList({ page }: any) {
-  yield put({ type: actionTypes.GET_NEW_JOBS_END, payload: [] });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.newJobList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_NEW_JOBS_END,
@@ -117,15 +112,12 @@ function* getNewJobList({ page }: any) {
   }
 }
 
-// approvedMilestoneList
 function* getApprovedMilestoneList({ page }: any) {
-  yield put({ type: actionTypes.GET_APPROVED_MILESTONE_END, payload: [] });
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(
     `${Urls.approvedMilestoneList}?page=${page}`
   );
-  setLoading(false);
-
+  if (page === 1) { setLoading(false); }
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_APPROVED_MILESTONE_END,
@@ -171,10 +163,14 @@ function* markMilestoneComplete({ data, callback }: any) {
 }
 
 function* getActiveJobsBuilder({ page }: any) {
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.activeJobListBuilder}?page=${page}`);
-  setLoading(false);
   if (response.status_code === 200) {
+    if (response?.result?.active && Array.isArray(response?.result?.active) && response?.result?.active?.length) {
+      response.result.active[0]['page'] = page;
+      response.result.active[0]['mathrandom'] = Math.random();
+    }
+    if (page === 1) { setLoading(false); }
     yield put({
       type: actionTypes.SET_BUILDER_ACTIVE_JOBS,
       payload: response.result,
@@ -182,13 +178,17 @@ function* getActiveJobsBuilder({ page }: any) {
 
     return;
   }
+  if (page === 1) { setLoading(false); }
 }
 
 function* getPastJobsBuilder({ page }: any) {
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.pastJobListBuilder}?page=${page}`);
-  setLoading(false);
   if (response.status_code === 200) {
+    if (response?.result?.past && Array.isArray(response?.result?.past) && response?.result?.past?.length) {
+      response.result.past[0]['page'] = page;
+    }
+    if (page === 1) { setLoading(false); }
     yield put({
       type: actionTypes.SET_BUILDER_PAST_JOBS,
       payload: response.result,
@@ -196,50 +196,60 @@ function* getPastJobsBuilder({ page }: any) {
 
     return;
   }
+  if (page === 1) { setLoading(false); }
+
 }
 
 function* getOpenJobsBuilder({ page }: any) {
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.OpenJobLisBuilder}?page=${page}`);
-  setLoading(false);
+
   if (response.status_code === 200) {
+    if (response?.result?.open && Array.isArray(response?.result?.open) && response?.result?.open?.length) {
+      response.result.open[0]['page'] = page;
+    }
+    if (page === 1) { setLoading(false); }
     yield put({
       type: actionTypes.SET_BUILDER_OPEN_JOBS,
       payload: response.result,
     });
-
     return;
   }
+  if (page === 1) { setLoading(false); }
 }
 
 function* getBuilderNewApplicants({ page }: any) {
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.newApplicantsBuilder}?page=${page}`);
-  setLoading(false);
+
   if (response.status_code === 200) {
+    if (response?.result && Array.isArray(response?.result) && response?.result?.length) {
+      response.result[0]['page'] = page;
+    }
+    if (page === 1) { setLoading(false); }
     yield put({
       type: actionTypes.SET_BUILDER_NEW_APPLICANTS,
       payload: response.result,
     });
-
     return;
   }
+  if (page === 1) { setLoading(false); }
 }
 
 function* getnewJobApplicationListBuilder({ item }: any) {
-  console.log({ item }, '--------------->')
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.postToJson(Urls.newJobApplicationListBuilder, item);
   // const response: FetchResponse = yield NetworkOps.get(`${Urls.newJobApplicationListBuilder}?page=${page}`);
-  setLoading(false);
+
   if (response.status_code === 200) {
+    setLoading(false);
     yield put({
       type: actionTypes.SET_BUILDER_NEW_APPLICANTS_LIST,
       payload: response.result,
     });
-
     return;
   }
+  setLoading(false);
 }
 
 // function* getTradieReviewList({ data }: any) {
@@ -251,8 +261,6 @@ function* getnewJobApplicationListBuilder({ item }: any) {
 //     yield put({ type: actionTypes.SET_TRADIE_REVIEW_LIST, payload: [] });
 //   }
 // }
-
-
 
 function* getTradieReviewListOnBuilder({ data }: any) {
   const response: FetchResponse = yield NetworkOps.get(Urls.reviewList + `?tradieId=${data.tradieId}&page=${data.page}`);
@@ -274,14 +282,23 @@ function* getAcceptDeclineTradie({ data }: any) {
 }
 
 function* getNewApprovalList({ page }: any) {
-  setLoading(true);
+  if (page === 1) { setLoading(true); }
   const response: FetchResponse = yield NetworkOps.get(`${Urls.needApproval}?page=${page}`);
-  setLoading(false);
+
   if (response.status_code === 200) {
+    if (response?.result && Array.isArray(response?.result) && response?.result?.length) {
+      response.result[0]['page'] = page;
+    }
+    if (page === 1) { setLoading(false); }
     yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: response.result });
   } else {
+    if (page === 1) { setLoading(false); }
     yield put({ type: actionTypes.SET_BUILDER_NEW_APPROVAL_LIST, payload: false });
   }
+}
+
+function* getClearJobs() {
+  yield put({ type: actionTypes.SET_CLEAR_JOBS, payload: true });
 }
 
 function* postJobWatcher() {
@@ -300,7 +317,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.RESET_ACTIVE_JOBS_START, resetActiveJobList);
     yield takeLatest(actionTypes.RESET_APPLIED_JOBS_START, resetAppliedJobList);
     yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetNewJobList);
-    yield takeLatest(actionTypes.RESET_NEW_JOBS_START, resetApprovedMilestoneList);
+    yield takeLatest(actionTypes.RESET_APPROVED_MILESTONE_START, resetApprovedMilestoneList);
 
     yield takeLatest(actionTypes.GET_BUILDER_ACTIVE_JOBS, getActiveJobsBuilder);
     yield takeLatest(actionTypes.GET_BUILDER_PAST_JOBS, getPastJobsBuilder);
@@ -312,6 +329,7 @@ function* postJobWatcher() {
     yield takeLatest(actionTypes.GET_ACCEPT_DECLINE_TRADIE_REQUEST, getAcceptDeclineTradie)
 
     yield takeLatest(actionTypes.GET_BUILDER_NEW_APPROVAL_LIST, getNewApprovalList);
+    yield takeLatest(actionTypes.GET_CLEAR_JOBS, getClearJobs);
 
   } catch (e) {
     console.log(e);

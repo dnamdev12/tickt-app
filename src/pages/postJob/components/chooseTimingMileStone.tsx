@@ -4,16 +4,15 @@ import React, { useState, useEffect } from 'react';
 // import bell from '../../../assets/images/ic-notification.png';
 // import dummy from '../../../assets/images/u_placeholder.jpg';
 // @ts-ignore
-import { DateRangePicker } from 'react-date-range';
-import 'react-date-range/dist/styles.css'; // main style file
-import 'react-date-range/dist/theme/default.css'; // theme css file
-
-
+// import { DateRangePicker } from 'react-date-range';
+// import 'react-date-range/dist/styles.css'; // main style file
+// import 'react-date-range/dist/theme/default.css'; // theme css file
 
 // @ts-ignore
-// import { DateRangePicker } from '../../../plugins/react-date-range/dist/index';
-// import '../../../plugins/react-date-range/dist/styles.css';
-// import '../../../plugins/react-date-range/dist/theme/default.css';
+import { DateRangePicker } from '../../../plugins/react-date-range/dist/index';
+import '../../../plugins/react-date-range/dist/styles.css';
+import '../../../plugins/react-date-range/dist/theme/default.css';
+
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 
@@ -94,9 +93,17 @@ const ChooseTimingMileStone = ({
                         count_times[from_date]++;
                     }
 
-                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    // let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
+                    let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
-                        from_element.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                        let element_from = from_element[0];
+                        if (from_element?.length > 1) {
+                            element_from = from_element[1];
+                        }
+
+                        if (element_from) {
+                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                        }
                     }
                 }
 
@@ -160,12 +167,12 @@ const ChooseTimingMileStone = ({
         }
     }
 
-    const checkBeforeExist = (time: any, milestones_?:any) => {
+    const checkBeforeExist = (time: any, milestones_?: any) => {
         let count_times: any = {};
         let catch_boolean: boolean = true;
-        let milestoneItems:any = milestones;
-        
-        if(milestones_){
+        let milestoneItems: any = milestones;
+
+        if (milestones_) {
             milestoneItems = milestones_;
         }
 

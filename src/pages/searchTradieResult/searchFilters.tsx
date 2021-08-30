@@ -126,7 +126,7 @@ const SearchFilter = (props: any) => {
     const setSameOnClick = () => {
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
         sortBySortingClose();
-        updateOnChange();
+        updateOnChange(0);
     }
 
     const filterChangeHandler = (id: any, name: string) => {
@@ -197,7 +197,7 @@ const SearchFilter = (props: any) => {
             </li>
             <li>
                 <a className={sortBySorting.sortBy > 0 ? 'active' : ''} onClick={sortBySortingClick}>
-                    {'Sorting'}
+                    {`Sorting`}
                     {/* 
                     {sortBySorting.sortBy === 0 && 'Sort by'}
                     {sortBySorting.sortBy === 1 && 'Highest rated'}
@@ -211,7 +211,7 @@ const SearchFilter = (props: any) => {
 
     const showResultSearch = () => {
         if (!sortByFilter?.tradeId?.length) {
-            updateOnChange();
+            updateOnChange(sortBySorting.sortBy);
             sortByFilterClose();
             setFilterEnable(false);
             return
@@ -222,14 +222,16 @@ const SearchFilter = (props: any) => {
         //     return;
         // }
 
-        updateOnChange();
+        updateOnChange(sortBySorting.sortBy);
         sortByFilterClose();
         setFilterEnable(true);
     }
 
     const updateOnChange = (sort?: any) => {
         let local_info: any = props.localInfo;
-        console.log({sort, local_info},'-------------------------->><<-------------- item_coord');
+        let sort_: any = sort;
+
+        console.log({ sort_, local_info }, '-------------------------->><<-------------- item_coord');
         const tradeInfo = props.tradeListData.find((item: any) => item._id === sortByFilter.tradeId[0]);
         const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
         const { specializationId, tradeId } = sortByFilter;
@@ -257,8 +259,8 @@ const SearchFilter = (props: any) => {
             isFiltered: true
         }
 
-        if (sort) {
-            data['sortBy'] = sort;
+        if (sort_) {
+            data['sortBy'] = sort_;
         }
 
         if ((Array.isArray(tradeId) && tradeId?.length) || (!Array.isArray(tradeId) && tradeId?.length)) {
@@ -270,9 +272,8 @@ const SearchFilter = (props: any) => {
         }
 
         let get_position: any = localStorage.getItem('position');
-        if (sort === 2) {
-            let item_coord: any = local_info?.location?.coordinates?.length ? JSON.parse(get_position).reverse() : local_info?.location?.coordinates;
-            console.log({item_coord},'item_coord')
+        if (sort_ === 2) {
+            let item_coord: any = !local_info?.location?.coordinates?.length ? JSON.parse(get_position).reverse() : local_info?.location?.coordinates;
             if (item_coord?.length) {
                 data['location'] = {
                     "coordinates": item_coord,
@@ -281,8 +282,9 @@ const SearchFilter = (props: any) => {
         } else {
             if (local_info?.location) {
                 data['location'] = local_info?.location;
+            } else {
+                delete data.location;
             }
-            delete data.location;
         }
 
         if (local_info?.from_date) {
@@ -293,14 +295,27 @@ const SearchFilter = (props: any) => {
             data['to_date'] = local_info?.to_date;
         }
 
-        console.log({
-            data,
-            sort
-        },'item_coord')
+
+        if (local_info?.suggestionSelected) {
+            data['address'] = JSON.stringify(local_info?.suggestionSelected);
+            if (data?.address === '{}') {
+                delete data.address;
+            }
+        }
+
+        if (!data?.address || !data?.address?.length) {
+            delete data?.address;
+        }
 
         props.postHomeSearchData(data)
+        let trade_name: any = tradeInfo?.trade_name;
+        let local_info_name: any = local_info?.name;
+        let local_info_count: any = local_info?.count;
+        let case_1 = name ? name : trade_name
+        let case_2 = `${local_info_name} ${local_info_count > 1 ? `+${local_info_count - 1}` : ''}`
+        let name_: any = case_1 ? trade_name : local_info_name ? case_2 : '';;
         props.getTitleInfo({
-            name: name ? name : tradeInfo?.trade_name ? tradeInfo?.trade_name : '',
+            name: name_,
             isTradeName: tradeInfo?.trade_name ? true : false,
             count: specializationId?.length || 0,
             tradeId: data.tradeId,

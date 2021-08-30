@@ -2,28 +2,41 @@ import { setShowToast } from '../../../../redux/common/actions';
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 
 const PopularBuilders = (props: any) => {
+    console.log('props: ', props);
 
     const viewAllBuilders = () => {
-        setShowToast(true, 'Under development');
-        // props.history.push('popular-builders')
+        // setShowToast(true, 'Under development');
+        // return;
+        props.history.push({
+            pathname: 'popular-builders',
+            state: { coordinates: props.coordinates }
+        });
     }
 
     const popularBuildersData = props.jobDataWithJobTypeLatLong?.popular_builders?.slice(0, 6);
 
     return (
         <>
-            { popularBuildersData?.length > 0 && <div className="section_wrapper">
+            {popularBuildersData?.length > 0 && <div className="section_wrapper">
                 <div className="custom_container">
                     <span className="title">Popular builders</span>
                     <ul className="popular_tradies">
                         {popularBuildersData?.length ? popularBuildersData?.map((item: any, index: number) => {
                             return (
-                                <li key={`${item.userName}item${index}`} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000">
+                                <li key={item._id} data-aos="flip-right" data-aos-delay="200" data-aos-duration="1000"
+                                    onClick={() => props.history?.push(`/builder-info?builderId=${item?._id}`)}>
                                     <figure className="tradies_img">
-                                        <img src={item.userImage ? item.userImage : dummy} alt="tradies-img" />
+                                        <img
+                                            src={item.user_image ? item.user_image : dummy}
+                                            alt="tradies-img"
+                                            onError={(e: any) => {
+                                                let e_: any = e;
+                                                e_.target.src = dummy;
+                                            }}
+                                        />
                                     </figure>
-                                    <span className="name">{item.userName}</span>
-                                    <span className="post">{item.trade}</span>
+                                    <span className="name">{item.firstName}</span>
+                                    <span className="post">{item.trade[0]?.trade_name}</span>
                                 </li>)
                         }) : <span>No Data Found</span>}
                     </ul>

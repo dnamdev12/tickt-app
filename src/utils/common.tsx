@@ -137,6 +137,7 @@ export const getSearchParamsData = (location?: any) => {
         long: Number(params.get('long')),
         defaultLat: Number(params.get('defaultLat')),
         defaultLong: Number(params.get('defaultLong')),
+        addres: params.get('addres'),
         address: params.get('address'),
         from_date: params.get('from_date'),
         to_date: params.get('to_date'),
@@ -144,6 +145,7 @@ export const getSearchParamsData = (location?: any) => {
         heading: params.get('heading'),
         jobTypes: jobTypesArray,
         searchJob: params.get('searchJob')?.replaceAll("xxx", "&"),
+        min_budget: Number(params.get('min_budget')),
         max_budget: Number(params.get('max_budget')),
         pay_type: params.get('pay_type'),
         sortBy: Number(params.get('sortBy'))
@@ -208,6 +210,25 @@ export const formatDateTime = (seconds: any, type: string) => {
     return formattedDate;
 }
 
+export const formatNotificationTime = (updatedAt: any, type: string) => {
+    let formattedDate: any = '';
+    const date = new Date(updatedAt);
+    if (type === 'day') {
+        let currentDate = new Date();
+        currentDate.setHours(0, 0, 0, 0);
+        date.setHours(0, 0, 0, 0);
+        if (JSON.stringify(currentDate) == JSON.stringify(date)) {
+            formattedDate = moment(updatedAt).format('HH:mm');
+        } else if (updatedAt) {
+            formattedDate = moment(updatedAt).format('M/D/YYYY HH:mm');
+        } else {
+            formattedDate = moment(updatedAt).format('HH:mm');
+        }
+    }
+    // console.log('formattedDate: ', formattedDate);
+    return formattedDate;
+}
+
 export const AsyncImage = (props: any) => {
     const [loadedSrc, setLoadedSrc] = React.useState(null);
     React.useEffect(() => {
@@ -232,6 +253,24 @@ export const AsyncImage = (props: any) => {
     return null;
 };
 
+// const JOB_STATUS = {
+//     OPEN: 1,
+//     ACTIVE: 2,
+//     CANCELLED: 3,
+//     EXPIRED: 4, 
+//     COMPLETED: 5, 
+//     NEED_APPROVAL: 6, 
+//     APPROVED: 7,
+//     PENDING_CANCELATION: 9,
+//     PENDING_DISPUTE: 10,
+//     PENDIND_CHANGE_REQUEST: 11,
+//     CHANGE_REQUEST_ACCEPTED: 12,
+//     CHANGED_REQUEST_DENIED:13,
+//     APPROVED_CANCELLATION: 14,
+//     APPROVED_CHANGE_REQUEST: 15, 
+//     DISPUTE_RESOLVED: 16
+// }
+
 // const NOTIFICATION_TYPE = {
 //     TRADIE: 1,
 //     BUILDER: 2,
@@ -241,85 +280,127 @@ export const AsyncImage = (props: any) => {
 //     REVIEW_TRADIE: 7,
 //     REVIEW_BUILDER: 8,
 //     QUESTION: 9,
-//     REVIEW: 10,
+//     OPEN_OPPOSITE_USER_REVIEW_LIST: 10,
 //     TERM_AND_CONDITION: 11,
 //     JOB_DASHBOARD: 12, //With status key
 //     BLOCK_ACCOUNT: 13,
 //     MARK_MILESTONE: 14,
 //     JOB_HOMEPAGE: 15, //tradeid and specialization id
+//     SELF_REVIEW_LIST_OPEN: 16
+//     TRADIE_RECEIVE_VOUCH: 17
+//     ADMIN_NOTIFICATION: 18
+//     PRIVACY_POLICY: 19
 // }
+//      extra_data => JOB_SATUS=INACTIVE: 
+
+const isJson = (data: any) => {
+    try {
+        return JSON.parse(data);
+    } catch (e) {
+        return data;
+    }
+}
 
 export const onNotificationClick = (notification: any) => {
-    const { notificationType, user_type, extra_data, receiverId, senderId } = notification;
-    switch (notificationType) {
+    const { notificationType, user_type, receiverId, senderId, jobId } = notification;
+    let extra_data = isJson(notification?.extra_data);
+    console.log('extra_data: ', extra_data);
+
+    switch (Number(notificationType)) {
         case 1: //TRADIE
-            if (user_type === 1) {
-                return `/tradie-info?tradeId=${receiverId}&type=1`;
+            if (user_type == 1) {
+                return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
             }
         case 2: //BUILDER
-            if (user_type === 1) {
-                return `/builder-info?builderId=${receiverId}`;
+            if (user_type == 1) {
+                return `/builder-info?builderId=${senderId}`;
             } else {
-                return `/builder-info?builderId=${receiverId}&type=2`;
+                return `/builder-info?builderId=${receiverId}`;
             }
         case 3: //JOB
-            if (user_type === 1) {
-                return `/job-details-page?jobId=${extra_data?.jobId}&redirect_from=jobs&isActive=on`;
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${extra_data?.jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true` // &activeType=active
                 return `/job-detail?${urlEncode}`;
             }
         case 4: //PAYMENT
             return '/payment-history';
         case 5: //DISPUTES
-            if (user_type === 1) {
-                return `/job-details-page?jobId=${extra_data?.jobId}&redirect_from=jobs&isActive=on`;
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${extra_data?.jobId}&status=${extra_data?.status}&tradieId=${senderId}&edit=true&activeType=active`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`
                 return `/job-detail?${urlEncode}`;
             }
-        // case 6: //REVIEW_TRADIE
         case 7: //REVIEW_TRADIE
-            return `/jobs?active=past`;
+            return `/jobs?active=past&jobId=${jobId}`;
         case 8: //REVIEW_BUILDER
-            return `/past-jobs`;
+            return `/review-builder?jobId=${jobId}`;
         case 9: //QUESTION
-            if (user_type === 1) {
-                return `/job-details-page?jobId=${extra_data?.jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}&openQList=true`;
             } else {
-                let urlEncode: any = window.btoa(`?jobId=${extra_data?.jobId}&status=open`)
+                let urlEncode: any = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&openQList=true`
                 return `/job-detail?${urlEncode}`;
             }
-        case 10: //REVIEW
-            if (user_type === 1) {
-                return `/builder-info?builderId=${receiverId}`;
+        case 10: //OPEN OPPOSITE USER REVIEW LIST
+            if (user_type == 1) {//tradieId builderId in extra_data
+                return `/builder-info?builderId=${extra_data?.builderId}`;
             } else {
-                return `/tradie-info?tradeId=${receiverId}&hideInvite=true`;
+                return `/tradie-info?tradeId=${extra_data?.tradieId}`;
             }
         case 11: //TERM_AND_CONDITION
-                return `/update-user-info`;
+            return `/update-user-info?menu=tnc`;
         case 12: //JOB_DASHBOARD
-            if (user_type === 1) {
-                return `/active-jobs`;
+            if (user_type == 1) {
+                const type = +extra_data?.redirect_status;
+                return type === 1 ? `/past-jobs` : type === 2 ? `/active-jobs` : type === 3 ? '/new-jobs' : '/active-jobs';
             } else {
-                return `/jobs?active=active`;
+                const type = +extra_data?.redirect_status;
+                return `/jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
             return '/';
         case 14: //MARK_MILESTONE
-            if (user_type === 1) {
-                return `/mark-milestone?jobId=${extra_data?.jobId}&redirect_from=jobs`;
+            if (user_type == 1) {
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
+                } else {
+                    return `/mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                }
             } else {
-                return `/jobs?active=active`;
+                if (extra_data?.jobStatusText === 'COMPLETED') {
+                    let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=past`
+                    return `/job-detail?${urlEncode}`;
+                } else {
+                    return `/jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                }
             }
         case 15: //JOB_HOMEPAGE
-            if (user_type === 1) {
-                return `/job-details-page?jobId=${extra_data?.jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `/`;
+                return '/';
             }
+        case 16: //SELF_REVIEW_LIST_OPEN
+            if (user_type == 1) {
+                return `/tradie-info?tradeId=${receiverId}`;
+            } else {
+                return `/builder-info?builderId=${receiverId}`;
+            }
+        case 17: //TRADIE_RECEIVE_VOUCH
+            if (user_type == 1) {
+                return `/tradie-vouchers?tradieId=${receiverId}`;
+            } else {
+                return '/'
+            }
+        case 18: //ADMIN_NOTIFICATION_ANNOUNCEMENT
+            return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
+        case 19: //PRIVACY_POLICY
+            return `/update-user-info?menu=pp`;
         default:
             return '/';
     }

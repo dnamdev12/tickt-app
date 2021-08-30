@@ -6,6 +6,8 @@ import UploadMedia from '../../postJob/components/uploadMedia';
 import { renderTime } from '../../../utils/common';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob'
+
+//@ts-ignore
 import FsLightbox from 'fslightbox-react';
 
 import dummy from '../../../assets/images/u_placeholder.jpg';
@@ -176,7 +178,7 @@ const MarkMilestone = ({
       case 'account_number':
         return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 6 ? 'Minimum 6 digits are required' : '';
       case 'bsb_number':
-        return !/^\d{3}-\d{3}$/.test(value) ? 'Please enter valid BSB Number like XYZ-ZZZ' : '';
+        return !/^\d{3}-\d{3}$/.test(value) ? 'Please enter valid BSB Number like 123-444' : '';
     }
 
     return '';
@@ -205,7 +207,7 @@ const MarkMilestone = ({
 
 
   const { jobId, jobName, milestones, postedBy } = milestoneList || {};
-  const { builderId, builderImage, builderName, reviews } = postedBy || {};
+  const { builderId, builderImage, builderName, reviews, ratings } = postedBy || {};
 
   const hoursMinutes = data.actualHours.split(':').map((key: string) => parseInt(key));
   const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
@@ -337,9 +339,10 @@ const MarkMilestone = ({
                     },
                     index
                   ) => {
+                    // As discussed now we take this status 4 as status 0 bacause after the decline on the change-request the status becomes 4.
                     const prevMilestoneStatus = milestones[index - 1]?.status;
                     const isActive =
-                      status === 0 &&
+                      (status === 0 || status === 4 || status === 5) && // here changes done for status 4 
                       // completed or approved
                       ([1, 2].includes(prevMilestoneStatus) ||
                         prevMilestoneStatus === undefined);
@@ -349,7 +352,7 @@ const MarkMilestone = ({
                       <li
                         key={milestoneId}
                         className={
-                          [1, 2].includes(status)
+                          [1, 2,].includes(status)
                             ? `check`
                             : isActive
                               ? 'active'
@@ -474,12 +477,23 @@ const MarkMilestone = ({
                   } />
                 <div className="user_wrap" onClick={() => history.push(`/builder-info?builderId=${builderId}`)}>
                   <figure className="u_img">
-                    <img src={builderImage || dummy} alt="traide-img" />
+                    <img
+                      src={builderImage || dummy}
+                      alt="traide-img"
+                      onError={(e: any) => {
+                        if (e?.target?.onerror) {
+                          e.target.onerror = null;
+                        }
+                        if (e?.target?.src) {
+                          e.target.src = dummy;
+                        }
+                      }}
+                    />
                   </figure>
                   <div className="details">
                     <span className="name">{builderName}</span>
                     {/* <span className="prof">Project Manager</span> */}
-                    <span className="rating">{reviews} reviews</span>
+                    <span className="rating">{ratings} , {reviews} reviews</span>
                   </div>
                 </div>
               </div>
@@ -490,7 +504,7 @@ const MarkMilestone = ({
                   title="More"
                   onClick={() =>
                     history.push(
-                      `/job-details-page?jobId=${params.jobId}&redirect_from=jobs&isActive=on`
+                      `/job-details-page?jobId=${params.jobId}&redirect_from=jobs`
                     )
                   }
                 >
@@ -665,7 +679,7 @@ const MarkMilestone = ({
                 <div className="text_field">
                   <input
                     type="text"
-                    placeholder="Enter Account name"
+                    placeholder="Enter Account Name"
                     name="account_name"
                     value={data.account_name}
                     onChange={handleChange}
@@ -680,7 +694,7 @@ const MarkMilestone = ({
                 <div className="text_field">
                   <input
                     type="number"
-                    placeholder="Enter Account number"
+                    placeholder="Enter Account Number"
                     name="account_number"
                     value={data.account_number}
                     onChange={handleChange}
@@ -696,7 +710,7 @@ const MarkMilestone = ({
                 <div className="text_field">
                   <input
                     type="text"
-                    placeholder="Enter BSB number"
+                    placeholder="Enter BSB Number"
                     name="bsb_number"
                     value={data.bsb_number}
                     onChange={handleChange}

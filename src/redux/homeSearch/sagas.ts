@@ -47,7 +47,7 @@ function* getJobTypeList() {
 function* getViewNearByJob(action: any) {
     const { data } = action;
     setLoading(true);
-    const response: FetchResponse = yield NetworkOps.get(Urls.viewNearByJob + `?lat=${data.lat}&long=${data.long}&page=${1}`)
+    const response: FetchResponse = yield NetworkOps.get(Urls.viewNearByJob + `?lat=${data.lat}&long=${data.long}&page=${data.page}`);
     setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_VIEW_NEARBY_JOBS, payload: response.result });
@@ -91,6 +91,10 @@ function* postHomeSearchData(action: any) {
     const response: FetchResponse = yield NetworkOps.postToJson(Urls.homeSearch, action.jobData)
     setLoading(false);
     if (response.status_code === 200) {
+        let page = action?.jobData?.page;
+        if(Array.isArray(response?.result) && response?.result?.length){
+            response.result[0]['page'] = page;
+        }
         yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: response.result });
     } else {
         yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
@@ -101,16 +105,6 @@ function* resetHomeSearchJobData() {
     yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
 }
 
-function* getNotificationList({ page }: any) {
-    const response: FetchResponse = yield NetworkOps.get(Urls.notification + `?page=${page}`)
-    if (response.status_code === 200) {
-        yield put({ type: actionTypes.SET_NOTIFICATION_LIST, payload: response.result });
-    } else {
-        yield put({ type: actionTypes.SET_NOTIFICATION_LIST, payload: '' });
-    }
-}
-
-
 function* authWatcher() {
     // yield takeLatest(actionTypes.GET_JOB_TYPE, getJobType);
     yield takeLatest(actionTypes.GET_SEARCH_JOB_LIST, getSearchJobList);
@@ -120,7 +114,6 @@ function* authWatcher() {
     yield takeLatest(actionTypes.GET_VIEW_NEARBY_JOBS, getViewNearByJob);
     yield takeLatest(actionTypes.GET_JOB_WITH_JOB_TYPE_AND_LATLONG, getJobWithJobTypeLatLong);
     yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
-    yield takeLatest(actionTypes.GET_NOTIFICATION_LIST, getNotificationList);
     yield takeLatest(actionTypes.RESET_HOME_SEARCH_DATA, resetHomeSearchJobData);
     yield takeLatest(actionTypes.RESET_VIEW_NEARBY_JOBS, resetViewNearByJobData);
 }

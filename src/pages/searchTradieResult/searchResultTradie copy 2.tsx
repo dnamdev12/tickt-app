@@ -11,20 +11,18 @@ import SearchFilters from './searchFilters';
 import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
 
-import InfiniteScroll from 'react-infinite-scroll-component';
-
-
 // import BannerSearch from '../shared/bannerSearch'
 import BannerSearchProps from '../shared/bannerSearchProps'
 import TradieBox from '../shared/tradieBox'
-import moment, { localeData } from 'moment';
-import { searchTradies } from '../../redux/homeSearch/actions'
-
+import moment from 'moment';
 // name
 // tradeId
 // specializations
 // location
 // calender
+
+import InfiniteScroll from "react-infinite-scroll-component";
+import { addListener } from 'process';
 
 const SearchResultTradie = (props: any) => {
     const location: any = useLocation();
@@ -36,14 +34,16 @@ const SearchResultTradie = (props: any) => {
     const [currentPage, setCurrentPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
 
+    const { homeSearchJobData } = props; // props here.
 
-    const prefetchItems = async (page?: number) => {
+    useEffect(() => {
         props.getRecentSearchList();
 
         let data: any = {
-            page: page ? page : 1,
+            page: 1,
             isFiltered: false,
         }
+
         if (stateData?.tradeId) {
             data['tradeId'] = stateData?.tradeId
         }
@@ -53,11 +53,17 @@ const SearchResultTradie = (props: any) => {
         }
         // tradeId: stateData?.tradeId,
         // specializationId: stateData?.specializations,
-
+        console.log({
+            location: stateData?.location
+        })
         if (stateData?.location) {
-
             data['location'] = stateData?.location;
         }
+
+        if (props?.location?.state?.suggestionSelected) {
+            data['address'] = JSON.stringify(props?.location?.state?.suggestionSelected);
+        }
+
         if (stateData?.calender?.startDate) {
             data['from_date'] = moment(stateData?.calender?.startDate).format('YYYY-MM-DD')
         }
@@ -65,60 +71,153 @@ const SearchResultTradie = (props: any) => {
             data['to_date'] = moment(stateData?.calender?.endDate).format('YYYY-MM-DD')
         }
         let spec_count: any = stateData?.specializations?.length;
+
+        if (!data?.address || !data?.address?.length) {
+            delete data?.address;
+        }
+
+        // console.log({
+        //     stateData,
+        //     suggestionSelected: props?.location?.state?.suggestionSelected?.mainText,
+        //     address: props?.location?.state?.address
+        // })
+
         setLocalInfo({
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
             tradeId: data.tradeId,
             specializationId: data.specializationId,
+            location: data.location,
             doingLocalChanges: false,
-        })
+            suggestionSelected: stateData?.suggestionSelected
+        });
 
-        let response = await searchTradies(data);
-        if (response?.success) {
-            let isHaveData: any = response?.data?.length ? true : false;
-            if (isHaveData) {
-                setLocalData((prev: any) => ([...prev, ...response?.data]));
-            }
-            if (!isHaveData) {
-                setHasMore(false)
-            }
+        if (data?.address) {
+            return
         }
-        // props.postHomeSearchData(data);
-    }
 
-    // useEffect(() => {
-    //     // prefetchItems();
-    // }, []);
+        console.log({
+            data
+        }, '----------------->><<---------------')
+
+        // if (!stateData?.suggestionSelected || (data?.location?.coordinates && Array.isArray(data?.location?.coordinates) && data?.location?.coordinates?.length)) {
+        props.postHomeSearchData(data);
+        // }
+
+    }, []);
 
     const getTitleInfo = (info: any) => {
         setLocalInfo(info)
     }
 
-    // useEffect(() => {
-    //     let data: any = props.homeSearchJobData;
-    //     let home: any = props.homeSearchJobData?.length ? true : false;
-    //     let itemsShouldBe = currentPage * 10;
-
-    //     if (home && localeData?.length !== itemsShouldBe) {
-    //         setLocalData((prev: any) => ([...prev, ...data]));
-    //     }
-
-    //     if (!home) {
-    //         setHasMore(false)
-    //     }
-    // }, [props])
-
+    /*
+    useEffect(() => {
+        let home: any = props.homeSearchJobData?.length ? true : false;
+        if (home) {
+            setLocalData(props.homeSearchJobData)
+        } else {
+            setLocalData([])
+        }
+    }, [props])
+    */
 
     useEffect(() => {
-        prefetchItems(currentPage);
-    }, [currentPage])
+        let newProps = homeSearchJobData;
+        let propsPage = 0;
+        let propsTradeId = '';
+        let localTradeId = '';
+        let local_info: any = localInfo;
+        let local_info_tradeId = '';
+        if (local_info?.tradeId && Array.isArray(local_info?.tradeId) && local_info?.tradeId?.length) {
+            local_info_tradeId = local_info?.tradeId[0];
+        }
+
+        if (!hasMore) {
+            setHasMore((prev: any) => !prev);
+        }
+
+        if (homeSearchJobData && Array.isArray(homeSearchJobData) && homeSearchJobData?.length) {
+            propsTradeId = homeSearchJobData[0]?.tradeData[0]?.tradeId;
+            propsPage = homeSearchJobData[0]?.page;
+        }
+
+        if (localData && Array.isArray(localData) && localData?.length) {
+            localTradeId = localData[0]?.tradeData[0]?.tradeId;
+        }
+
+        let cp = currentPage * 10;
+        console.log({
+            local_info,
+            propsTradeId,
+            localTradeId,
+            propsPage,
+            homeSearchJobData,
+            currentPage,
+            localData
+        }, 'local_info')
+        if (local_info_tradeId) { // case if view more with no any trade-id
+            if (homeSearchJobData?.length && localData?.length && propsTradeId !== localTradeId) {
+                // alert('1')
+                setLocalData(newProps);
+                setCurrentPage(propsPage);
+                return
+            }
+
+            if (homeSearchJobData?.length && localData?.length && propsTradeId == localTradeId && currentPage > 1 && propsPage == 1) {
+                // alert(`1.1`)
+                setLocalData(newProps);
+                setCurrentPage(propsPage);
+                return
+            }
+        }
+
+        if (!propsPage) {
+            if (!homeSearchJobData?.length && !propsPage) {
+
+                // if (localData?.length && !local_info?.doingLocalChanges) {
+
+                //     alert(`2 ${local_info?.doingLocalChanges}-${JSON.stringify({ propsTradeId, localTradeId })}`)
+
+                //     if (local_info_tradeId?.length && local_info_tradeId !== localTradeId) {
+                //         setLocalData([]);
+                //         setCurrentPage(1);
+                //     } else {
+                //         setHasMore(false);
+                //     }
+                //     return
+                // }
+
+                // alert(`2.1`)
+                setLocalData([]);
+                setCurrentPage(1);
+                setHasMore(false);
+            } else {
+                if (hasMore) {
+                    // alert('3')
+                    setHasMore(false);
+                }
+            }
+            return;
+        } else {
+            if (currentPage == propsPage && localData?.length < cp) {
+                if (currentPage == 1) {
+                    // alert('4')
+                    setLocalData(newProps);
+                } else {
+                    // alert('5')
+                    setLocalData((prev: any) => [...prev, ...newProps]);
+                }
+            }
+        }
+
+    }, [homeSearchJobData]);
 
     const handleChangeToggle = (value: any) => { setToggleSearch(value) }
 
-    let homeSearchJobData: any = props.homeSearchJobData;
+    // let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
     let isLoading: any = props.isLoading;
-    console.log({ homeSearchJobData, currentPage, localData }, 'callable')
+    console.log({ localData, homeSearchJobData })
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
@@ -135,11 +234,7 @@ const SearchResultTradie = (props: any) => {
                         <div className="flex_row mob_srch_option">
                             <div className="flex_col_sm_6"></div>
                             <div className="flex_col_sm_6 text-right">
-                                <button
-                                    onClick={() => { setToggleSearch(true) }}
-                                    className="fill_grey_btn btn-effect">
-                                    {'Modify Search'}
-                                </button>
+                                <button onClick={() => { setToggleSearch(true) }} className="fill_grey_btn btn-effect">Modify Search</button>
                             </div>
                         </div>
 
@@ -149,7 +244,8 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
-                                            {`${localData?.length} results`}
+                                            {localData && localData[0] && localData[0]?.tradieName ? localData[0]?.tradieName : '--'} <br/>
+                                            {`${localData?.length} result(s)`}
                                         </span>
                                     </span>
                                     <SearchFilters
@@ -160,47 +256,83 @@ const SearchResultTradie = (props: any) => {
                                 </div>
                             </div>
                         </div>
-                        <div
-                            // style={{ backgroundColor: 'red' }}
-                            className="tradies_row"
-                        >
-                            <InfiniteScroll
-                                dataLength={localData.length} //This is important field to render the next data
-                                className="flex_row"
-                                next={() => {
-                                    setCurrentPage(currentPage + 1);
-                                }}
-                                hasMore={hasMore}
-                                loader={
-                                    <div
-                                        style={{
-                                            padding: '15px',
-                                            textAlign: 'center',
-                                            display: (!hasMore || !localData?.length) ? 'none' : ''
-                                        }}>
-                                        {'Loading...'}
-                                    </div>
-                                }
-                            >
-                                {localData?.length ?
-                                    localData.map((item: any, index: number) => (
-                                        <TradieBox
-                                            item={item}
-                                            index={index}
-                                            hideAos={true}
-                                        />
-                                    ))
-                                    :
-                                    !isLoading && !localData?.length ?
-                                        <div className="no_record">
-                                            <figure className="no_img">
-                                                <img src={noData} alt="data not found" />
-                                            </figure>
-                                            <span>{'No Data Found'}</span>
-                                        </div> : null}
 
-                            </InfiniteScroll>
-                        </div>
+                        <InfiniteScroll
+                            dataLength={localData?.length}
+                            next={() => {
+                                console.log('callable');
+                                if (localData?.length < currentPage * 10) {
+                                    setHasMore(false);
+                                } else {
+                                    let cp = currentPage + 1;
+                                    setCurrentPage((prev: any) => prev + 1);
+                                    let local_info: any = localInfo;
+                                    console.log({local_info});
+                                    let data: any = {
+                                        page: cp,
+                                        isFiltered: false,
+                                    }
+
+                                    if (local_info?.location) {
+                                        data['location'] = local_info?.location;
+                                    }
+
+                                    if (local_info?.tradeId?.length) {
+                                        data['tradeId'] = local_info?.tradeId
+                                    }
+
+                                    if (local_info?.specializationId?.length) {
+                                        data['specializationId'] = local_info?.specializationId;
+                                    }
+
+                                    if (props?.location?.state?.suggestionSelected && props?.location?.state?.suggestionSelected !== "{}") {
+                                        data['address'] = JSON.stringify(props?.location?.state?.suggestionSelected);
+                                    }
+
+                                    if (local_info?.from_date) {
+                                        data['from_date'] = local_info?.from_date;
+                                    }
+
+                                    if (local_info?.to_date) {
+                                        data['to_date'] = local_info?.to_date;
+                                    }
+
+                                    if (local_info?.sortBy > 0) {
+                                        data['sortBy'] = local_info?.sortBy;
+                                    }
+
+                                    // if (!data?.hasOwnProperty('tradeId') && !data?.hasOwnProperty('specializationId') && !data?.hasOwnProperty('location')) {
+                                    //     data['location'] = { coordinates: [144.9631, -37.8136] }
+                                    // }
+
+                                    if (!data?.hasOwnProperty('specializationId')) {
+                                        data['isFiltered'] = true;
+                                    }
+
+                                    console.log({
+                                        local_info,
+                                        data,
+                                        cp
+                                    });
+                                    props.postHomeSearchData(data);
+                                }
+                            }}
+                            hasMore={hasMore}
+                            loader={<></>}
+                            className="flex_row tradies_row">
+                            {localData?.length ?
+                                localData.map((item: any, index: number) => (
+                                    <TradieBox item={item} index={index} />
+                                ))
+                                :
+                                !isLoading && !localData?.length ?
+                                    <div className="no_record">
+                                        <figure className="no_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                        <span>{'No Data Found'}</span>
+                                    </div> : null}
+                        </InfiniteScroll>
 
                     </div>
                 </div>

@@ -7,8 +7,7 @@ import storageService from '../../utils//storageService';
 import { addFCMNotifToken } from '../../redux/auth/actions';
 import { requestPermission } from "../../services/firebase";
 
-
-const Home = () => {
+const Home = (props: any) => {
     const [userType] = useState(storageService.getItem('userType'))
     const location: any = useLocation();
     const history: any = useHistory();
@@ -18,36 +17,36 @@ const Home = () => {
     }
 
     useEffect(() => {
-        (async ()=> {
-            if(userType === 1 || userType === 2){
+        (async () => {
+            if (userType === 1 || userType === 2) {
                 const res: any = await requestPermission();
                 const data: any = {
-                    deviceToken: res.deviceToken,
-                    deviceId: "dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz",
+                    deviceToken: res.deviceToken, //fcm device token
+                    deviceId: `${storageService.getItem('userInfo')?.deviceId}`,
                     deviceType: 1
                 }
-                console.log(res,"getRegisterToken", data, "addFCMNotifToken");
-                if(res.success){
-                    const res2 = await addFCMNotifToken(data);
-                    if(res2.success){
-                        setTokenSentToServer(true);
-                    } else {
-                        setTokenSentToServer(false);
+                console.log(data.deviceToken, "---------------diff----------------", storageService.getItem('fcmToken'));
+                if (res.success) {
+                    if (storageService.getItem('fcmToken') !== data.deviceToken) {
+                        const res2 = await addFCMNotifToken(data);
+                        if (res2.success) {
+                            storageService.setItem("fcmToken", data.deviceToken);
+                            setTokenSentToServer(true);
+                        } else {
+                            setTokenSentToServer(false);
+                        }
                     }
                 }
             }
         })();
+        props.history.replace('/');
     }, []);
 
-    if (userType === 0) {
-        return <GuestHome />
-    }
-    else if (userType === 1) {
+    if (userType === 1) {
         return <TradieHome history={history} />
     } else if (userType === 2) {
         return <BuilderHome history={history} />
-    }
-    else {
+    } else {
         return <GuestHome />
     }
 }

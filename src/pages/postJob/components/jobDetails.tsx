@@ -138,16 +138,20 @@ const JobDetails = ({
         let data_clone: any = data;
         if (data_clone?.urls?.length) {
             let format_items = data_clone?.urls?.map((item: any) => {
-                let split_item_format = item.link.split('.');
+                let split_item_format = item?.link?.split('.');
                 let get_split_fromat = split_item_format[split_item_format.length - 1];
 
                 if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
-                    return { url: item.link, format: get_split_fromat };
+                    return {
+                        url: item?.link,
+                        format: get_split_fromat,
+                        posture: item?.base64 || ''
+                    };
                 }
             }).filter((item: any) => item! !== undefined);
 
             let filterItems: any = [];
-
+            console.log({ format_items })
             if (format_items?.length) {
                 format_items.forEach((item: any, index: number) => {
                     let render_item: any = null;
@@ -170,6 +174,8 @@ const JobDetails = ({
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(index + 1);
                                 }}
+                                poster={item?.posture}
+                                preload="metadata"
                                 src={item?.url}
                             />)
                     }
@@ -223,7 +229,8 @@ const JobDetails = ({
                 if (!item?.from_date?.length || item?.from_date === "Invalid date") {
                     delete item?.from_date;
                 }
-        
+
+
                 item['order'] = index + 1;
                 return item;
             }
@@ -243,6 +250,18 @@ const JobDetails = ({
 
         if (!data_clone?.urls?.length) {
             delete data_clone?.urls
+        } else {
+            let urls_: any = data_clone?.urls;
+            let filteredItems: any = [];
+            if (urls_ && Array.isArray(urls_) && urls_?.length) {
+                filteredItems = urls_.map((item_dt: any) => {
+                    if (item_dt?.base64) {
+                        delete item_dt?.base64;
+                    }
+                    return item_dt;
+                });
+                data_clone['urls'] = filteredItems;
+            }
         }
 
         if (jobId) {
@@ -488,7 +507,18 @@ const JobDetails = ({
                                         <span className="chat circle"></span>
                                         <div className="user_wrap">
                                             <figure className="u_img">
-                                                <img src={builderProfile?.userImage || dummy} alt="traide-img" />
+                                                <img
+                                                    src={builderProfile?.userImage || dummy}
+                                                    alt="traide-img"
+                                                    onError={(e: any) => {
+                                                        if (e?.target?.onerror) {
+                                                            e.target.onerror = null;
+                                                        }
+                                                        if (e?.target?.src) {
+                                                            e.target.src = dummy;
+                                                        }
+                                                    }}
+                                                />
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{builderProfile?.userName}</span>

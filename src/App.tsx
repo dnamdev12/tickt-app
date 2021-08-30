@@ -15,6 +15,8 @@ import { useClearCache } from "react-clear-cache";
 import AOS from "aos";
 import "aos/dist/aos.css";
 
+
+
 declare global {
   interface Window {
     __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
@@ -32,6 +34,7 @@ const store = createStore(rootReducer, composeEnhancers(
 
 //run the saga
 sagaMiddleware.run(rootSaga);
+
 
 const App = () => {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();

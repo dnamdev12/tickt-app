@@ -86,12 +86,14 @@ const TradieBannerSearch = (props: PropsType) => {
     const locationRef = useDetectClickOutside({ onTriggered: handleOnOutsideLocation });
     const calenderRef = useDetectClickOutside({ onTriggered: handleOnOutsideCalender });
 
+    const [suggestionSelected, setSuggestion] = useState<any>('');
+
     console.log(inputFocus1, inputFocus2, inputFocus3, "inputfocus---------");
 
     useEffect(() => {
         props.getRecentSearchList();
         props.getRecentLocationList();
-        getRecentLocationData();
+        // getRecentLocationData();
     }, []);
 
     useEffect(() => {
@@ -100,7 +102,7 @@ const TradieBannerSearch = (props: PropsType) => {
                 page: paramsData?.page ? paramsData?.page : 1,
                 searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
                 isFiltered: paramsData?.isFiltered ? paramsData?.isFiltered : false,
-                isSearchedJobSelected: paramsData?.searchJob ? true : false,
+                isSearchedJobSelected: paramsData?.specializationId?.length > 1 ? false : true,
                 tradeId: paramsData?.tradeId ? paramsData?.tradeId : [],
                 specializationId: paramsData?.specializationId ? paramsData?.specializationId : [],
                 location: {
@@ -109,8 +111,8 @@ const TradieBannerSearch = (props: PropsType) => {
                         paramsData?.lat ? paramsData?.lat : paramsData?.defaultLat
                     ]
                 },
-                selectedMapLocation: paramsData?.address ? paramsData?.address : '',
-                isMapLocationSelected: paramsData?.address ? true : false,
+                selectedMapLocation: paramsData?.addres ? paramsData?.addres : '',
+                isMapLocationSelected: paramsData?.addres ? true : false,
                 from_date: paramsData?.from_date ? paramsData?.from_date : '',
                 startDate: '',
                 to_date: paramsData?.to_date ? paramsData?.to_date : '',
@@ -194,9 +196,9 @@ const TradieBannerSearch = (props: PropsType) => {
     }
 
     useEffect(() => {
-        if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
-            getRecentLocationData();
-        }
+        // if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
+        //     getRecentLocationData();
+        // }
     }, [props.recentLocationData, recentLocation]);
 
     const handleCalenderRange = (item: any) => {
@@ -300,6 +302,7 @@ const TradieBannerSearch = (props: PropsType) => {
 
     const locationSelectedHandler = (address: string, placeId?: any, suggestion?: any) => {
         console.log(address, "address", placeId, "placeId", suggestion, "suggestion");
+        setSuggestion(suggestion?.formattedSuggestion)
         geocodeByAddress(address)
             .then((results: any) => getLatLng(results[0]))
             .then(({ lat, lng }: any) => {
@@ -308,10 +311,9 @@ const TradieBannerSearch = (props: PropsType) => {
                         coordinates: [lng, lat]
                     }
                 }
-                setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: suggestion?.formattedSuggestion?.mainText, isMapLocationSelected: true }))
+                setStateData((prevData: any) => ({ ...prevData, ...locationNew, selectedMapLocation: suggestion?.formattedSuggestion?.mainText, isMapLocationSelected: true }));
                 setInputFocus2(false);
-            }
-            );
+            });
     }
 
     const filterFromAddress = (results: any) => {
@@ -342,7 +344,7 @@ const TradieBannerSearch = (props: PropsType) => {
             var latlng = new google.maps.LatLng(lat, long);
             var geocoder = new google.maps.Geocoder();
             geocoder.geocode({ location: latlng }, function (results, status) {
-                
+
                 if (status !== google.maps.GeocoderStatus.OK) {
                     alert(status);
                 }
@@ -418,6 +420,7 @@ const TradieBannerSearch = (props: PropsType) => {
             const data = {
                 page: stateData.page,
                 isFiltered: false,
+                ...(suggestionSelected && { address: JSON.stringify(suggestionSelected) }),
                 tradeId: newSearchData?.tradeId ? newSearchData?.tradeId : stateData?.tradeId,
                 ...(stateData.isMapLocationSelected && { location: stateData?.location }),
                 // location: stateData?.location,
@@ -425,18 +428,25 @@ const TradieBannerSearch = (props: PropsType) => {
                 ...(stateData?.from_date && { from_date: stateData?.from_date }),
                 ...(stateData?.to_date && { to_date: stateData?.to_date })
             }
+            console.log('data: ', data, "suggestionSelected", suggestionSelected);
             if (props?.location?.pathname === '/search-job-results') {
                 props.postHomeSearchData(data);
             }
+            // delete data.address;
             const newData = {
                 ...data,
                 lat: stateData.location.coordinates[1],
                 long: stateData.location.coordinates[0],
                 defaultLat: props.currentCoordinates?.coordinates[1] ? props.currentCoordinates?.coordinates[1] : queryParamsData.defaultLat,
                 defaultLong: props.currentCoordinates?.coordinates[0] ? props.currentCoordinates?.coordinates[0] : queryParamsData.defaultLong,
-                ...(stateData.selectedMapLocation && { address: stateData.selectedMapLocation.replaceAll("#", "") }),
+                ...(stateData.selectedMapLocation && { addres: stateData.selectedMapLocation.replaceAll("#", "") }),
                 searchJob: newSearchData?.searchedJob ? newSearchData?.searchedJob.replaceAll("&", "xxx") : stateData?.searchedJob.replaceAll("&", "xxx"),
                 jobResults: null
+            }
+            if (props?.location?.pathname === '/search-job-results' && newData.address) {
+                setTimeout(() => {
+                    props.getRecentLocationList();
+                }, 500);
             }
             delete newData.location;
             delete newData.isFilterOn;
@@ -444,7 +454,7 @@ const TradieBannerSearch = (props: PropsType) => {
                 delete newData.heading;
                 delete newData.jobResults;
             }
-            Object.keys(newData).forEach(key => (newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0') && delete newData[key]);
+            Object.keys(newData).forEach(key => (newData[key] === '' || newData[key] === undefined || newData[key] === null || newData[key] === 0 || newData[key] == '0') && delete newData[key]);
             var url = 'search-job-results?';
             for (let [key, value] of Object.entries(newData)) {
                 url += `${key}=${value}&`
@@ -478,7 +488,10 @@ const TradieBannerSearch = (props: PropsType) => {
                     <img src={Location} alt="location" />
                 </span>
                 {stateData?.selectedMapLocation && inputFocus2 && <span className="detect_icon" >
-                    <img src={cross} alt="cross" onClick={() => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '', isMapLocationSelected: false }))} />
+                    <img src={cross} alt="cross" onClick={() => {
+                        setSuggestion('');
+                        setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: '', isMapLocationSelected: false }));
+                    }} />
                 </span>}
                 {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
             </div>
@@ -562,8 +575,9 @@ const TradieBannerSearch = (props: PropsType) => {
                     {stateData?.searchedJob?.length >= 1 && inputFocus1 && !inputFocus2 && renderJobResult()}
                     <li ref={locationRef} className="loc_box">
                         <div id="location-text-field-div">
+
                             <PlacesAutocomplete
-                                value={stateData?.selectedMapLocation}
+                                value={stateData?.selectedMapLocation !== "{}" ? stateData?.selectedMapLocation : ''}
                                 onChange={(city: string) => setStateData((prevData: any) => ({ ...prevData, selectedMapLocation: city, isMapLocationSelected: false }))}
                                 shouldFetchSuggestions={true}
                                 onSelect={locationSelectedHandler}
@@ -578,7 +592,7 @@ const TradieBannerSearch = (props: PropsType) => {
                                 {renderPlacesData}
                             </PlacesAutocomplete>
                         </div>
-                        {!stateData?.selectedMapLocation && inputFocus2 &&
+                        {(!stateData?.selectedMapLocation || stateData?.selectedMapLocation === "{}") && inputFocus2 &&
                             <div className="custom_autosuggestion location" id="current-location-search-div">
                                 <a className="location-btn" onClick={getCurrentLocation}>
                                     <span className="gps_icon">
@@ -589,11 +603,14 @@ const TradieBannerSearch = (props: PropsType) => {
                                     You have blocked your location.
                                     To use this, change your location settings in browser.
                                 </span>}
-                                <div className="flex_row recent_search auto_loc">
-                                    {recentLocation?.length ?
+                                <div className="recent_search auto_loc">
+                                    {console.log({
+                                        recent: props?.recentLocationData
+                                    })}
+                                    {props?.recentLocationData?.length > 0 ?
                                         <span className="sub_title">Recent searches</span>
                                         : null}
-                                    {recentLocation?.map((item: any) => {
+                                    {/* {recentLocation?.map((item: any) => {
                                         return (
                                             <div className="flex_col_sm_4"
                                                 onClick={() => setStateData((prevData: any) => ({ ...prevData, location: item.location, selectedMapLocation: item.allText?.mainText, isMapLocationSelected: true }))}>
@@ -602,7 +619,34 @@ const TradieBannerSearch = (props: PropsType) => {
                                                     <span className="name">{item.allText?.secondaryText}</span>
                                                 </div>
                                             </div>)
-                                    })}
+                                    })} */}
+                                    <div className="flex_row">
+                                        {props?.recentLocationData?.map((item: any) => {
+                                            return item?.address?.length > 0 && (
+                                                <div className="flex_col_sm_4"
+                                                    onClick={() => {
+                                                        setStateData((prevData: any) => ({
+                                                            ...prevData,
+                                                            location: item.location,
+                                                            selectedMapLocation: JSON.parse(item?.address)?.mainText, //item.allText?.mainText,
+                                                            isMapLocationSelected: true
+                                                        }));
+                                                        setSuggestion(JSON.parse(item?.address));
+
+                                                        // let location_coordinates: any = item.location.coordinates
+                                                        // setAddressText(item.formatted_address);
+                                                        // setSelectedAddress({
+                                                        //     lat: location_coordinates[1],
+                                                        //     lng: location_coordinates[0]
+                                                        // });
+                                                    }}>
+                                                    <div className="autosuggestion_icon card loc name">
+                                                        <span>{JSON.parse(item?.address)?.mainText}</span>
+                                                        <span className="name">{JSON.parse(item?.address)?.secondaryText}</span>
+                                                    </div>
+                                                </div>)
+                                        })}
+                                    </div>
                                 </div>
                             </div>
                         }

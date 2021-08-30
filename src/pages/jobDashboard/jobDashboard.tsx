@@ -166,7 +166,8 @@ const JobDashboard = ({
               <span className="title">Job Dashboard</span>
               <ul className="dashboard_menu">
                 <li>
-                  <NavLink className="icon star" to="/active-jobs" isActive={() => ['/active-jobs', '/mark-milestone'].includes(pathname)}>
+                  <NavLink className="icon star" to="/active-jobs"
+                    isActive={() => ['/active-jobs', '/mark-milestone'].includes(pathname)}>
                     <span className="menu_txt">Active</span>
                   </NavLink>
                 </li>
@@ -191,7 +192,6 @@ const JobDashboard = ({
                       )}
                     </span>
 
-
                   </NavLink>
                 </li>
                 <li>
@@ -215,12 +215,13 @@ const JobDashboard = ({
                 path="/active-jobs"
                 render={(props) => (
                   <ActiveJobsPage
+                    {...props}
+                    key={props.location.key}
                     loading={loading}
                     newJobsCount={newJobsCount}
                     getActiveJobList={getActiveJobList}
                     resetActiveJobList={resetActiveJobList}
                     activeJobList={activeJobList}
-                    {...props}
                   />
                 )}
               />
@@ -229,6 +230,7 @@ const JobDashboard = ({
                 render={(props) => (
                   <AppliedJobsPage
                     {...props}
+                    key={props.location.key}
                     loading={loading}
                     newJobsCount={newJobsCount}
                     appliedJobList={appliedJobList}
@@ -242,6 +244,7 @@ const JobDashboard = ({
                 render={(props) => (
                   <PastJobsPage
                     {...props}
+                    key={props.location.key}
                     loading={loading}
                     newJobsCount={newJobsCount}
                     pastJobList={pastJobList}
@@ -255,6 +258,7 @@ const JobDashboard = ({
                 render={(props) => (
                   <NewJobsPage
                     {...props}
+                    key={props.location.key}
                     loading={loading}
                     newJobsCount={newJobsCount}
                     newJobList={newJobList}
@@ -268,6 +272,7 @@ const JobDashboard = ({
                 render={(props) => (
                   <ApprovedMilestonesPage
                     {...props}
+                    key={props.location.key}
                     loading={loading}
                     newJobsCount={newJobsCount}
                     approvedMilestoneList={approvedMilestoneList}

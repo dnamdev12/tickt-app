@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { NavLink } from 'react-router-dom';
 import { renderTime } from '../../../utils/common';
+//@ts-ignore
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import dummy from '../../../assets/images/u_placeholder.jpg';
@@ -31,10 +32,10 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
   }, []);
 
   const callJobList = async () => {
-    if (newJobsCount && jobList.length >= totalJobsCount) {
-      setHasMoreItems(false);
-      return;
-    }
+    // if (newJobsCount && jobList.length >= totalJobsCount) {
+    //   setHasMoreItems(false);
+    //   return;
+    // }
     getActiveJobList(pageNo);
   }
 
@@ -45,20 +46,23 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
       setJobList(allJobs);
       setPageNo(pageNo + 1);
       if (activeJobList.length < 10) { setHasMoreItems(false); }
+      resetActiveJobList();
     }
   }, [activeJobList]);
 
   return (
-    <InfiniteScroll
-      dataLength={jobList.length}
-      next={callJobList}
-      hasMore={hasMoreItems}
-      loader={<h4></h4>}
-    >
-      <div className="detail_col">
+    <div className="detail_col">
+      <InfiniteScroll
+        dataLength={jobList.length}
+        next={callJobList}
+        style={{ overflowX: 'hidden' }}
+        // height={600}
+        hasMore={hasMoreItems}
+        loader={<></>}
+      >
         <span className="sub_title">Active Jobs</span>
         <div className="flex_row tradies_row">
-          {jobList.length ? jobList.map(
+          {!loading && jobList.length ? jobList.map(
             ({
               jobId,
               tradeId,
@@ -83,7 +87,18 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                   ></NavLink>
                   <div className="user_wrap">
                     <figure className="u_img">
-                      <img src={tradeSelectedUrl || dummy} alt="" />
+                      <img
+                        src={tradeSelectedUrl || dummy}
+                        alt=""
+                        onError={(e: any) => {
+                          if (e?.target?.onerror) {
+                            e.target.onerror = null;
+                          }
+                          if (e?.target?.src) {
+                            e.target.src = dummy;
+                          }
+                        }}
+                      />
                     </figure>
                     <div className="details">
                       <span className="name">{tradeName}</span>
@@ -134,8 +149,8 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
               </div>
             )}
         </div>
-      </div>
-    </InfiniteScroll>
+      </InfiniteScroll>
+    </div>
   );
 };
 

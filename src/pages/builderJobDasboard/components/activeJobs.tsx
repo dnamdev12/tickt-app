@@ -9,9 +9,6 @@ import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob';
 import { renderTime } from '../../../utils/common';
-
-
-
 interface Active {
     amount: any,
     durations: any,
@@ -35,11 +32,27 @@ interface Active {
     tradieImage: any,
     tradeSelectedUrl: any,
     activeType: any,
-    setJobLabel: (item: any) => void
+    setJobLabel: (item: any) => void,
+    enableEditMilestone: boolean,
+    enableLodgeDispute: boolean,
+    enableCancelJob: boolean
+    globalJobId: string,
+    mathrandom?: any
 }
 
-
-const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLoading }: any) => {
+const ActiveJobs = ({
+    setJobLabel,
+    activeType,
+    history,
+    dataItems,
+    jobType,
+    isLoading,
+    enableEditMilestone,
+    enableLodgeDispute,
+    enableMakMilestone,
+    enableCancelJob,
+    globalJobId
+}: any) => {
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
     const [localState, setLocalState] = useState(false);
@@ -54,7 +67,25 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
 
     useEffect(() => {
         console.log('here!')
-    }, [jobType])
+    }, [jobType]);
+
+
+    useEffect(() => {
+        let filteredItem: any = {};
+        listData.forEach((item_: any, index: any) => {
+            if (item_.jobId === globalJobId) {
+                filteredItem = {
+                    ...item_,
+                    index
+                }
+            }
+        })
+
+        if (Object.keys(filteredItem)?.length) {
+            setSelectedIndex(filteredItem?.index);
+            setLocalState(true);
+        }
+    }, [enableEditMilestone, enableLodgeDispute, enableCancelJob, enableMakMilestone]);
 
     // const redirectToInfo = ({ jobId, status }: any) => {
     //     if (jobId?.length && status?.length) {
@@ -64,22 +95,28 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
     // }
 
     if (localState && selectedIndex !== null) {
+        console.log({ localState, selectedIndex, listData })
         return (
             <MarkMilestones
                 resetStateLocal={resetStateLocal}
                 selectedIndex={selectedIndex}
                 listData={listData}
+                enableEditMilestone={enableEditMilestone}
+                enableLodgeDispute={enableLodgeDispute}
+                enableCancelJob={enableCancelJob}
             />)
     }
 
-    if(isLoading || listData == undefined){
+    if (isLoading || listData == undefined) {
         return null;
     }
 
-    console.log({ listData , isLoading})
+    console.log({ listData, isLoading })
     return (
         <React.Fragment>
-            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
+            <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs
+                {/* {listData?.length} */}
+            </span>
             <div className="flex_row tradies_row">
                 {listData?.length ?
                     listData.map(({
@@ -104,9 +141,14 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                         tradieId,
                         tradeSelectedUrl,
                         tradieImage,
+                        mathrandom,
                     }: Active, index: number) => (
                         <div className="flex_col_sm_6">
-                            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
+                            <div className="tradie_card"
+                                data-aos="fade-in"
+                                data-aos-delay="250"
+                                data-aos-duration="1000"
+                            >
                                 <span className="more_detail circle"
                                     onClick={() => {
                                         setLocalState(true);
@@ -118,6 +160,14 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                     <figure className="u_img">
                                         <img
                                             src={tradeSelectedUrl || jobTypePlaceholder}
+                                            onError={(e: any) => {
+                                                if (e?.target?.onerror) {
+                                                    e.target.onerror = null;
+                                                }
+                                                if (e?.target?.src) {
+                                                    e.target.src = jobTypePlaceholder;
+                                                }
+                                            }}
                                             alt="traide-img" />
                                     </figure>
                                     <div className="details">
@@ -156,7 +206,9 @@ const ActiveJobs = ({ setJobLabel, activeType, history, dataItems, jobType, isLo
                                         </span>
                                         <span className="approval_info">
                                             {(status).toUpperCase() === "APPROVED" && <img src={approved} alt="icon" />}
-                                            {((status).toUpperCase() === "NEEDS APPROVAL" || (status).toUpperCase() === "NEED APPROVAL") && <img src={waiting} alt="icon" />}
+                                            {((status).toUpperCase() === "NEEDS APPROVAL" || (status).toUpperCase() === "NEED APPROVAL") && (
+                                                <img src={waiting} alt="icon" />
+                                            )}
                                             {status}
                                             {/* {(status).toUpperCase() === "ACCEPTED CHANGE REQUEST"
                                                 ? "ACCEPTED C.R "

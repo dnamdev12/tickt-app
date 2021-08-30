@@ -60,7 +60,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
               Receive messages from users, including messages about new jobs
             </span>
           </div>
-          <div className="f_spacebw form_field">
+          {/* <div className="f_spacebw form_field">
             <span className="form_label">Email</span>
             <div className="toggle_btn">
               <Switch
@@ -70,7 +70,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
             </div>
-          </div>
+          </div> */}
           <div className="f_spacebw form_field">
             <span className="form_label">Push-notifications</span>
             <div className="toggle_btn">
@@ -82,7 +82,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
               />
             </div>
           </div>
-          <div className="f_spacebw form_field">
+          {/* <div className="f_spacebw form_field">
             <span className="form_label">SMS messages</span>
             <div className="toggle_btn">
               <Switch
@@ -92,7 +92,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
             </div>
-          </div>
+          </div> */}
 
           <div className="form_field">
             <span className="inner_title">Reminders</span>
@@ -101,7 +101,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
               your activity on the Tickt
             </span>
           </div>
-          <div className="f_spacebw form_field">
+          {/* <div className="f_spacebw form_field">
             <span className="form_label">Email</span>
             <div className="toggle_btn">
               <Switch
@@ -111,7 +111,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
             </div>
-          </div>
+          </div> */}
           <div className="f_spacebw form_field">
             <span className="form_label">Push-notifications</span>
             <div className="toggle_btn">
@@ -123,7 +123,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
               />
             </div>
           </div>
-          <div className="f_spacebw form_field">
+          {/* <div className="f_spacebw form_field">
             <span className="form_label">SMS messages</span>
             <div className="toggle_btn">
               <Switch
@@ -133,7 +133,7 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
                 inputProps={{ 'aria-label': 'secondary checkbox' }}
               />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>

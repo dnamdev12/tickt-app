@@ -18,6 +18,7 @@ const ServiceEnum = {
 const Urls = {
     signup: `${versions.v1}${ServiceEnum.auth}signup`,
     login: `${versions.v1}${ServiceEnum.auth}login`,
+    logout: `${versions.v1}${ServiceEnum.auth}logout`,
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
@@ -138,6 +139,14 @@ const Urls = {
     builderUpdateSettings: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}settings`,
     privacyPolicy: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}privacyPolicy`,
     tnc: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}tnc`,
+    tncWeb: `tncWeb`,
+    privacyPolicyWeb: `privacyPolicyWeb`,
+    getPopularBuilder: `${versions.v1}${ServiceEnum.home}getPopularBuilder`, //Admin
+    unReadNotification: `${versions.v1}${ServiceEnum.home}unReadNotification`, //Admin
+    getMostViewedJobs: `${versions.v1}${ServiceEnum.home}mostViewedJobs`, //Admin
+    getRecommendedJobs: `${versions.v1}${ServiceEnum.home}recommendedJobs`, //Admin
+    getChatJobList: `${versions.v1}${ServiceEnum.job}jobList`, //Admin
+    getAdminNotificationData: `${versions.v1}${ServiceEnum.home}notification/admin`, //Admin
 }
 
 export const urlFor = (service: String): string => {

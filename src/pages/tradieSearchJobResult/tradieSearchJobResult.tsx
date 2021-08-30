@@ -60,14 +60,16 @@ const TradieSearchJobResult = (props: PropsType) => {
                 ...(queryParamsData.specializationId?.length && { specializationId: queryParamsData.specializationId }),
                 ...(queryParamsData.from_date && { from_date: queryParamsData.from_date }),
                 ...(queryParamsData.to_date && { to_date: queryParamsData.to_date }),
-                ...(queryParamsData.max_budget && { pay_type: queryParamsData.pay_type }),
-                ...(queryParamsData.max_budget && { max_budget: queryParamsData.max_budget }),
+                ...(queryParamsData.min_budget >= 0 && queryParamsData.max_budget > 0 && { pay_type: queryParamsData.pay_type }),
+                ...(queryParamsData.min_budget >= 0 && queryParamsData.max_budget > 0 && { min_budget: queryParamsData.min_budget }),
+                ...(queryParamsData.min_budget >= 0 && queryParamsData.max_budget > 0 && { max_budget: queryParamsData.max_budget }),
                 ...(queryParamsData.sortBy && { sortBy: queryParamsData.sortBy }),
-                ...((queryParamsData.address || queryParamsData.sortBy === 2) && {
+                ...((queryParamsData.addres || queryParamsData.sortBy === 2) && {
                     location: {
                         coordinates: [queryParamsData.long ? queryParamsData.long : queryParamsData.defaultLong, queryParamsData.lat ? queryParamsData.lat : queryParamsData.defaultLat]
                     }
                 }),
+                ...(queryParamsData.addres && queryParamsData.address && { address: queryParamsData.address })
             }
             props.postHomeSearchData(data);
         }
@@ -94,6 +96,7 @@ const TradieSearchJobResult = (props: PropsType) => {
             long: Number(params.get('long')),
             defaultLat: Number(params.get('defaultLat')),
             defaultLong: Number(params.get('defaultLong')),
+            addres: params.get('addres'),
             address: params.get('address'),
             from_date: params.get('from_date'),
             to_date: params.get('to_date'),
@@ -101,6 +104,7 @@ const TradieSearchJobResult = (props: PropsType) => {
             heading: params.get('heading'),
             jobTypes: jobTypesArray,
             searchJob: params.get('searchJob')?.replaceAll("xxx", "&"),
+            min_budget: Number(params.get('min_budget')),
             max_budget: Number(params.get('max_budget')),
             pay_type: params.get('pay_type'),
             sortBy: Number(params.get('sortBy'))
@@ -154,22 +158,6 @@ const TradieSearchJobResult = (props: PropsType) => {
         }
     }, [props.homeSearchJobData, props.viewNearByJobData]);
 
-    // const renderJobsData = () => {
-    //     var jobsData: any;
-    //     const jobResultsParam = new URLSearchParams(location?.search).get('jobResults');
-    //     if (searchResultData.searchByFilter) {
-    //         jobsData = props.homeSearchJobData;
-    //         return jobsData;
-    //     }
-    //     if (jobResultsParam === 'viewNearByJob') {
-    //         jobsData = props.viewNearByJobData;
-    //         return jobsData;
-    //     } else {
-    //         jobsData = props.homeSearchJobData;
-    //         return jobsData;
-    //     }
-    // }
-
     const searchByFilter = (allFiltersData: any) => {
         const newParamsData = getQueryParamsData();
         if (allFiltersData === "callViewNearByJobApi") {
@@ -217,8 +205,9 @@ const TradieSearchJobResult = (props: PropsType) => {
             ...((allFiltersData.tradeId?.length && !allFiltersData.specializationId?.length) && { jobResults: 'jobTypeList' }),
             ...((allFiltersData.tradeId?.length && !allFiltersData.specializationId?.length) && { heading: headingType }),
             ...(allFiltersData.specializationId?.length && { specializationId: allFiltersData.specializationId }),
-            ...(allFiltersData.max_budget > 0 && { pay_type: allFiltersData.pay_type }),
-            ...(allFiltersData.max_budget > 0 && { max_budget: allFiltersData.max_budget }),
+            ...(allFiltersData.min_budget >= 0 && allFiltersData.max_budget > 0 && { pay_type: allFiltersData.pay_type }),
+            ...(allFiltersData.min_budget >= 0 && allFiltersData.max_budget > 0 && { min_budget: allFiltersData.min_budget }),
+            ...(allFiltersData.min_budget >= 0 && allFiltersData.max_budget > 0 && { max_budget: allFiltersData.max_budget }),
             ...([1, 2, 3].includes(allFiltersData.sortBy) && { sortBy: allFiltersData.sortBy })
         }
 
@@ -228,6 +217,11 @@ const TradieSearchJobResult = (props: PropsType) => {
         if (data.searchJob) {
             delete data.heading;
             delete data.jobResults;
+        }
+        if (allFiltersData.max_budget === 0) {
+            delete data.min_budget;
+            delete data.max_budget;
+            delete data.pay_type;
         }
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length) {
             const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
@@ -249,13 +243,15 @@ const TradieSearchJobResult = (props: PropsType) => {
             ...(data.from_date && { from_date: data.from_date }),
             ...(data.to_date && { to_date: data.to_date }),
             ...(data.jobTypes && { jobTypes: data.jobTypes }),
-            ...(data.max_budget > 0 && { pay_type: data.pay_type }),
-            ...(data.max_budget > 0 && { max_budget: data.max_budget }),
+            ...(data.min_budget >= 0 && data.max_budget > 0 && { pay_type: data.pay_type }),
+            ...(data.min_budget >= 0 && data.max_budget > 0 && { min_budget: data.min_budget }),
+            ...(data.min_budget >= 0 && data.max_budget > 0 && { max_budget: data.max_budget }),
             ...((data.address || allFiltersData.sortBy === 2) && {
                 location: {
                     coordinates: [data.long ? data.long : data.defaultLong, data.lat ? data.lat : data.defaultLat]
                 }
             }),
+            // ...(data.addres && data.address && { address: data.address })
         }
         Object.keys(data).forEach(key => (data[key] === undefined || data[key] === null || data[key] === 0 || data[key] === "0") && delete data[key]);
         var url = 'search-job-results?';
@@ -321,7 +317,7 @@ const TradieSearchJobResult = (props: PropsType) => {
                                     <div className="flex_col_sm_8">
                                         {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
                                         <span className="title">{paramsData.jobResults === 'viewNearByJob' ? 'All around me' : paramsData.jobResults === 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
-                                            <span className="count">{`${jobListData.length ? `${jobListData.length === 1 ? '1 result' : `${jobListData.length} result(s)`}` : ''}`}</span>
+                                            <span className="count">{`${jobListData.length} result(s)`}</span>
                                         </span>
                                         <SearchResultFilters
                                             searchByFilter={searchByFilter}
@@ -346,8 +342,8 @@ const TradieSearchJobResult = (props: PropsType) => {
                                         <div className="no_record">
                                             <figure className="no_img">
                                                 <img src={noData} alt="data not found" />
-                                                <span>No Data Found</span>
                                             </figure>
+                                            <span>No Data Found</span>
                                         </div>}
                                 </div> : (jobListData.length > 0 || props.isLoading) ?
                                     (jobListData.map((jobData: any) => {

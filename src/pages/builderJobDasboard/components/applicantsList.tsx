@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import TradieBox from '../../shared/tradieBox';
 import Menu from '@material-ui/core/Menu';
 import cancel from "../../../assets/images/ic-cancel.png";
@@ -15,6 +15,7 @@ interface Props {
 
 const ApplicantsList = (props: Props) => {
     const { items, jobid, specializationId, setJobLabel, isLoading, activeType } = props;
+    const [isRender, setRender] = useState(false);
     const [sortBySorting, setSortBySorting] = useState<any>({
         sortBySorting: false,
         sortBy: 1
@@ -39,12 +40,15 @@ const ApplicantsList = (props: Props) => {
         setJobLabel('applicantList', jobid, num)
     }
 
-    if(props?.isLoading || isLoading){
-        return (
-            <>
-            {''}
-            </>
-        )
+    useEffect(() => {
+        if (isLoading === false) {
+            setRender(true);
+        }
+    }, [isLoading]);
+
+
+    if (!isRender) {
+        return null;
     }
 
     return (
@@ -133,7 +137,7 @@ const ApplicantsList = (props: Props) => {
                             index={index}
                             specializationId={specializationId}
                             jobId={jobid}
-                            hideInvite={false}
+                            hideInvite={item.status === 'CANCELLED JOB'}
                             showStatus
                         />
                     ))

@@ -36,6 +36,7 @@ const SearchResultTradie = (props: any) => {
             page: 1,
             isFiltered: false,
         }
+
         if (stateData?.tradeId) {
             data['tradeId'] = stateData?.tradeId
         }
@@ -45,11 +46,17 @@ const SearchResultTradie = (props: any) => {
         }
         // tradeId: stateData?.tradeId,
         // specializationId: stateData?.specializations,
-
+        console.log({
+            location: stateData?.location
+        })
         if (stateData?.location) {
-    
             data['location'] = stateData?.location;
         }
+
+        if (props?.location?.state?.suggestionSelected) {
+            data['address'] = JSON.stringify(props?.location?.state?.suggestionSelected);
+        }
+
         if (stateData?.calender?.startDate) {
             data['from_date'] = moment(stateData?.calender?.startDate).format('YYYY-MM-DD')
         }
@@ -57,15 +64,39 @@ const SearchResultTradie = (props: any) => {
             data['to_date'] = moment(stateData?.calender?.endDate).format('YYYY-MM-DD')
         }
         let spec_count: any = stateData?.specializations?.length;
+
+        if (!data?.address || !data?.address?.length) {
+            delete data?.address;
+        }
+
+        // console.log({
+        //     stateData,
+        //     suggestionSelected: props?.location?.state?.suggestionSelected?.mainText,
+        //     address: props?.location?.state?.address
+        // })
+
         setLocalInfo({
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
             tradeId: data.tradeId,
             specializationId: data.specializationId,
-            doingLocalChanges:false,
+            location: data.location,
+            doingLocalChanges: false,
+            suggestionSelected: stateData?.suggestionSelected
+        });
 
-        })
-        props.postHomeSearchData(data);
+        if(data?.address){
+            return
+        }
+
+        console.log({
+            data
+        }, '----------------->><<---------------')
+
+        // if (!stateData?.suggestionSelected || (data?.location?.coordinates && Array.isArray(data?.location?.coordinates) && data?.location?.coordinates?.length)) {
+            props.postHomeSearchData(data);
+        // }
+
     }, []);
 
     const getTitleInfo = (info: any) => {
@@ -86,7 +117,7 @@ const SearchResultTradie = (props: any) => {
     let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
     let isLoading: any = props.isLoading;
-    
+
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
@@ -113,7 +144,7 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
-                                            {`${homeSearchJobData?.length} results`}
+                                            {`${homeSearchJobData?.length} result(s)`}
                                         </span>
                                     </span>
                                     <SearchFilters

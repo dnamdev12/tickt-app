@@ -4,6 +4,8 @@ import * as actionTypes from './constants';
 import { setShowToast, setLoading, setSkeletonLoading } from '../common/actions';
 import storageService from '../../utils/storageService';
 
+export const getClearJobs = () => ({ type: actionTypes.GET_CLEAR_JOBS });
+
 //jobTypeList
 export const callCategories = async () => {
   const response: FetchResponse = await NetworkOps.get(Urls.jobTypeList);
@@ -109,7 +111,7 @@ export const isHandleChanges = (data: any) => ({ type: actionTypes.GET_LOCAL_CHA
 export const getTradieQuestionList = async (data: any) => {
   const response: FetchResponse = await NetworkOps.get(Urls.tradieQuestionList + `?jobId=${data.jobId}&page=${data.page}`);
   if (response.status_code === 200) {
-    return { success: true, data: response.result };
+    return { success: true, data: response.result?.list };
   }
   setShowToast(true, response.message);
   return { success: false };
@@ -328,10 +330,11 @@ export const answerQuestion = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.answerQuestion, data)
   setLoading(false);
-
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+
   return { success: false, data: response.result };
 }
 
@@ -340,6 +343,7 @@ export const updateAnswer = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putToJson(Urls.updateAnswer, data)
   setLoading(false);
 
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -351,6 +355,7 @@ export const deleteAnswer = async (data: any) => {
   const response: FetchResponse = await NetworkOps.delete(`${Urls.deleteAnswer}?questionId=${data.questionId}&answerId=${data.answerId}`)
   setLoading(false);
 
+  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -414,10 +419,10 @@ export const getTradeProfile = async (data: any) => {
 
 export const ratingTradieProfile = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.reviewTradie, data);
-  setShowToast(true, response.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false, data: response.result };
 }
 
@@ -438,9 +443,9 @@ export const lodgeDispute = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}lodgeDispute`, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message);
   return { success: false };
 }
 
@@ -460,9 +465,9 @@ export const CancelJob = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.jobBuilder}canceljob`, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message)
   return { success: false };
 }
 
@@ -504,9 +509,9 @@ export const changeRequest = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}changeRequest`, data);
   setLoading(false);
   if (response.status_code === 200) {
-    setShowToast(true, response.message)
     return { success: true, data: response.result };
   }
+  setShowToast(true, response.message)
   return { success: false };
 }
 
@@ -583,9 +588,9 @@ export const ChooseJob = async (data: any) => {
 }
 
 export const getVouchers = async (data: any) => {
-  setLoading(true);
+  if (data.page === 1) { setLoading(true) }
   const response: FetchResponse = await NetworkOps.get(storageService.getItem('userType') === 1 ? `${Urls.tradieProfileVoucher}?tradieId=${data.tradieId}&page=${data.page}` : `${Urls.jobBuilder}getVoucher?tradieId=${data.tradieId}&page=${data.page}`);
-  setLoading(false);
+  if (data.page === 1) { setLoading(false) }
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -621,7 +626,7 @@ export const handleCancelReply = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.postToJson(`${Urls.jobBuilder}replyCancellation`, data);
   setLoading(false);
-  setShowToast(true, response?.message);
+  // setShowToast(true, response?.message);
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
@@ -718,11 +723,10 @@ export const lastUsedCard = async () => {
   if (response.status_code === 200) {
     return { success: true, data: response.result };
   }
-  setShowToast(true, response.message);
   return { success: false };
 }
 
-export const fetchVouchesJobs = async (data:any) => {
+export const fetchVouchesJobs = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.get(`${Urls.job}builder/vouchesJob?page=${data.page}&tradieId=${data.tradieId}`);
   setLoading(false);
@@ -734,7 +738,7 @@ export const fetchVouchesJobs = async (data:any) => {
 }
 
 
-export const updateTemplate = async (data:any) => {
+export const updateTemplate = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}editTemplate`, data);
   setLoading(false);
@@ -746,7 +750,7 @@ export const updateTemplate = async (data:any) => {
 }
 
 // builder can update reviews on tradie profile
-export const updateReviewTradie = async (data:any) => {
+export const updateReviewTradie = async (data: any) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}builder/updateReviewTradie`, data);
   setLoading(false);
@@ -759,7 +763,7 @@ export const updateReviewTradie = async (data:any) => {
 
 
 // builder can delete review on tradie profile
-export const deleteReviewTradie = async (data:any) => {
+export const deleteReviewTradie = async (data: any) => {
   setLoading(true)
   const response: FetchResponse = await NetworkOps.delete(`${Urls.job}builder/removeReviewTradie?reviewId=${data?.reviewId}`);
   setLoading(false);
@@ -770,3 +774,58 @@ export const deleteReviewTradie = async (data:any) => {
   return { success: false };
 }
 
+
+// builder can delete an open job
+export const deleteOpenJob = async (data: any) => {
+  setLoading(true)
+  const response: FetchResponse = await NetworkOps.delete(`${Urls.job}remove?jobId=${data.jobId}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
+export const getJobsBWTradieBuilder = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.getChatJobList}?userId=${data?.oppUserId}&page=${data.page}&perPage=${data.perPage}&user_type=${data.user_type}`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, result: response.result };
+  }
+  return { success: false };
+}
+
+
+export const getPopularTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}getPopularTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const getRecommendedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}recommendedTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+export const getMostViewedTradies = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.get(`${Urls.home}mostViewedTradie?long=${data?.long}&lat=${data?.lat}&page=${data?.page}&perPage=10`);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  return { success: false };
+}
+
+// https://ticktdevapi.appskeeper.in/v1/home/getPopularTradie?long=144.9631&lat=-37.8136&page=1&perPage=10

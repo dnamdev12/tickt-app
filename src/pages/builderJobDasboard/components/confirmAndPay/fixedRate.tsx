@@ -9,11 +9,13 @@ const FixedRate = (props: any) => {
     const selectedItems: any = milestones[indexMile];
     const [toggle, setToggle] = useState(false);
     const [lastCard, setLastCard] = useState<any>({});
+    const [toggleDetails, setToggleDetails] = useState<any>({ toggle: false, data: null })
 
     const backToScreen = () => {
         setToggle(false);
+        setToggleDetails({ toggle: false, data: null });
+        fetchLastCard();
     }
-
 
     const fetchLastCard = async () => {
         let response = await lastUsedCard();
@@ -32,6 +34,7 @@ const FixedRate = (props: any) => {
     if (toggle) {
         return (
             <ConfirmPay
+                toggleDetails={toggleDetails}
                 jobName={props?.jobName}
                 backToScreen={backToScreen}
                 total={selectedItems?.total}
@@ -58,7 +61,6 @@ const FixedRate = (props: any) => {
         return null;
     }
 
-    console.log({ selectedItems });
     return (
         <div className="flex_row">
             <div className="flex_col_sm_8">
@@ -79,7 +81,6 @@ const FixedRate = (props: any) => {
                 </div>
                 <div className="payment_details">
                     <span className="inner_title">Milestone payment details</span>
-
 
                     {renderItem({
                         title: 'Hours worked',
@@ -119,10 +120,16 @@ const FixedRate = (props: any) => {
                     </React.Fragment>
                 ) : (
                     <div
-                        onClick={() => { setToggle(true); }}
+                        onClick={() => {
+                            setToggle(true);
+                            setToggleDetails({
+                                toggle: true,
+                                data: lastCard
+                            })
+                        }}
                         style={{ cursor: 'pointer' }}
                         className="bank_detail view_more">
-                        <span className="xs_head">{`${lastCard?.funding} Card`}</span>
+                        <span className="xs_head">{`${lastCard?.funding} card`}</span>
                         <span className="show_label">{`xxxx ${lastCard?.last4}`}</span>
 
                     </div>

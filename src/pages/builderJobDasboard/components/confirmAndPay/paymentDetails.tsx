@@ -54,8 +54,6 @@ const PaymentDetails = (props: any) => {
         return false;
     }
 
-
-
     const handleContinue = async () => {
         let splitItem: any = [];
         if (stateData?.date?.length) {
@@ -268,7 +266,7 @@ const PaymentDetails = (props: any) => {
                 </div>
 
                 <div className="flex_row">
-                    <div className="flex_col_sm_4">
+                    <div className="flex_col_sm_6">
                         <div className="form_field">
                             <label className="form_label">
                                 {'Expiration Date'}
@@ -299,7 +297,7 @@ const PaymentDetails = (props: any) => {
                             </span>
                         </div>
                     </div>
-                    <div className="flex_col_sm_4">
+                    <div className="flex_col_sm_6">
                         <div className="form_field">
                             <label className="form_label">
                                 {'CVV/CVC'}

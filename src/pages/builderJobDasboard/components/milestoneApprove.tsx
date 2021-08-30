@@ -7,6 +7,7 @@ import FixedRate from './confirmAndPay/fixedRate';
 import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 
@@ -19,12 +20,20 @@ const MilestoneApprove = (props: any) => {
     const [loadingTrue, setLoadingTrue] = useState(false);
 
     if (data) {
-        let {
-            selectedMilestoneIndex: { index },
-            itemDetails: { milestones },
-            selectedMile: { description, hoursWorked, images },
-            selectedItem: { jobName, jobId }
-        } = data;
+        let jobName:any = data?.selectedItem?.jobName;
+        let jobId:any = data?.selectedItem?.jobId;
+        let description:any = data?.selectedMile?.description;
+        let hoursWorked:any = data?.selectedMile?.hoursWorked;
+        let images:any = data?.selectedMile?.images;
+        let milestones:any = data?.itemDetails?.milestones;
+        let index:any = data?.selectedMilestoneIndex?.index;
+
+        // let {
+        //     selectedMilestoneIndex: { index },
+        //     itemDetails: { milestones },
+        //     selectedMile: { description, hoursWorked, images },
+        //     selectedItem: { jobName, jobId }
+        // } = data;
 
         let item: any = milestones[index];
 
@@ -132,6 +141,9 @@ const MilestoneApprove = (props: any) => {
                                         <img
                                             style={{ cursor: 'pointer' }}
                                             onClick={() => { setItemToggle(index) }}
+                                            async-src={media_item?.link}
+                                            decoding="async"
+                                            loading="lazy"
                                             src={media_item?.link} alt="media" />
                                     ) : media_item?.mediaType == 2 ? (
                                         <video
@@ -147,6 +159,9 @@ const MilestoneApprove = (props: any) => {
                                                     setLoadingTrue(true)
                                                 }}
                                                 src={media_item}
+                                                async-src={media_item}
+                                                decoding="async"
+                                                loading="lazy"
                                                 alt="media" />
                                         </>
                                     )}

@@ -31,10 +31,10 @@ const PastJobs = (props: Proptypes) => {
   }, []);
 
   const callJobList = async () => {
-    if (props.newJobsCount && jobList.length >= totalJobsCount) {
-      setHasMoreItems(false);
-      return;
-    }
+    // if (props.newJobsCount && jobList.length >= totalJobsCount) {
+    //   setHasMoreItems(false);
+    //   return;
+    // }
     props.getPastJobList(pageNo);
   }
 
@@ -45,26 +45,39 @@ const PastJobs = (props: Proptypes) => {
       setJobList(allJobs);
       setPageNo(pageNo + 1);
       if (props.pastJobList.length < 10) { setHasMoreItems(false); }
+      props.resetPastJobList();
     }
   }, [props.pastJobList]);
 
   return (
-    <InfiniteScroll
-      dataLength={jobList.length}
-      next={callJobList}
-      hasMore={hasMoreItems}
-      loader={<h4></h4>}
-    >
-      <div className="detail_col">
+    <div className="detail_col">
+      <InfiniteScroll
+        dataLength={jobList.length}
+        next={callJobList}
+        style={{ overflowX: 'hidden' }}
+        hasMore={hasMoreItems}
+        loader={<></>}
+      >
         <span className="sub_title">Past Jobs</span>
         <div className="flex_row tradies_row">
-          {jobList.length ? jobList.map((item: any) => (
+          {!props.loading && jobList.length ? jobList.map((item: any) => (
             <div className="flex_col_sm_6" key={item.jobId}>
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${item.jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
                 <div className="user_wrap">
                   <figure className="u_img">
-                    <img src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy} alt="" />
+                    <img
+                      src={item.tradeSelectedUrl ? item.tradeSelectedUrl : dummy}
+                      alt=""
+                      onError={(e: any) => {
+                        if (e?.target?.onerror) {
+                          e.target.onerror = null;
+                        }
+                        if (e?.target?.src) {
+                          e.target.src = dummy;
+                        }
+                      }}
+                    />
                   </figure>
                   <div className="details">
                     <span className="name">{item.tradeName}</span>
@@ -106,7 +119,7 @@ const PastJobs = (props: Proptypes) => {
                 }}
                 >
                   <button className="fill_grey_btn full_btn">
-                    <img src={rateStar} alt="rating-star" /> Rate this job
+                    <img src={rateStar} alt="rating-star" /> Rate this builder
                   </button>
                 </NavLink>}
               </div>
@@ -120,8 +133,8 @@ const PastJobs = (props: Proptypes) => {
             </div>
           )}
         </div >
-      </div>
-    </InfiniteScroll>
+      </InfiniteScroll>
+    </div>
   );
 };
 

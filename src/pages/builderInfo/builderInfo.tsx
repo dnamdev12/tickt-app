@@ -24,7 +24,7 @@ import menu from '../../assets/images/menu-line-blue.png';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import storageService from '../../utils/storageService';
-
+//@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 
 interface PropsType {
@@ -106,26 +106,10 @@ const BuilderInfo = (props: PropsType) => {
         replyShownHideList: []
     })
     const [showSpecs, setShowSpecs] = useState<boolean>(false);
-    console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo");
+    console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo", props.history, "history");
 
     useEffect(() => {
         setItems();
-        // props.callTradeList();
-        // (async () => {
-        //     const builderId: any = new URLSearchParams(props.location?.search).get('builderId');
-        //     const res1 = await getBuilderProfile(builderId);
-        //     if (res1?.success) {
-        //         setProfileData(res1.data);
-        //         const data = {
-        //             builderId: res1.data?.builderId,
-        //             page: 1
-        //         }
-        //         const res2 = await getTradieReviewList(data);
-        //         if (res2.success) {
-        //             setReviewList(res2.data);
-        //         }
-        //     }
-        // })();
     }, []);
 
     useEffect(() => {
@@ -139,7 +123,8 @@ const BuilderInfo = (props: PropsType) => {
         // let jobId = urlParams.get('jobId')
         // let specializationId = urlParams.get('specializationId')
         let builderId: any = urlParams.get('builderId');
-        let user_type = urlParams.get('type');
+        // let user_type = urlParams.get('type');
+        let user_type = storageService.getItem('userType');
         return { builderId, user_type };
     }
 
@@ -162,7 +147,9 @@ const BuilderInfo = (props: PropsType) => {
         }
         const res2 = await getTradieReviewList(data);
         if (res2.success) {
-            setReviewList(res2.data);
+            let data_ = res2?.data?.list || res2?.data;
+            console.log({ data_ })
+            setReviewList(data_);
         }
     }
 
@@ -188,7 +175,8 @@ const BuilderInfo = (props: PropsType) => {
         }
         const res = await getTradieReviewList(data);
         if (res.success) {
-            setReviewList((prevData: any) => ([...prevData, ...res.data]));
+            let data_ = res?.data?.list;
+            setReviewList((prevData: any) => ([...prevData, ...data_]));
             setReviewListPageNo(data.page);
         }
     }
@@ -251,7 +239,8 @@ const BuilderInfo = (props: PropsType) => {
                     page: 1
                 }
                 const res = await getTradieReviewList(listData);
-                setReviewList(res.data);
+                let data_ = res?.data?.list;
+                setReviewList(data_);
                 // newData = [...reviewsData.replyShownHideList].filter(id => id !== reviewsData.replyId);
                 setReviewListPageNo(1);
             }
@@ -379,7 +368,16 @@ const BuilderInfo = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <figure className="vid_img_thumb">
                                     {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
-                                    {!props.isSkeletonLoading && <img src={profileData?.builderImage || profilePlaceholder} alt="profile-pic" onLoad={() => setProfilePictureLoading(false)} hidden={profilePictureLoading} />}
+                                    {!props.isSkeletonLoading &&
+                                        <img
+                                            src={profileData?.builderImage || profilePlaceholder}
+                                            alt="profile-pic"
+                                            onLoad={() => setProfilePictureLoading(false)}
+                                            // onError={(e: any) => {
+                                            //     let e_: any = e;
+                                            //     e_.target.src = dummy;
+                                            // }}
+                                            hidden={profilePictureLoading} />}
                                 </figure>
                             </div>
                             <div className="flex_col_sm_4 relative">
@@ -409,7 +407,16 @@ const BuilderInfo = (props: PropsType) => {
                                                     {"Edit"}
                                                 </button>
                                                 :
-                                                <button className="fill_btn full_btn btn-effect">
+                                                <button className="fill_btn full_btn btn-effect"
+                                                    onClick={() => {
+                                                        const builderId = new URLSearchParams(props.history?.location?.search).get('builderId');
+                                                        props.history.push({
+                                                            pathname: `/choose-job-to-start-chat`,
+                                                            state: {
+                                                                builderId: builderId ? builderId : '',
+                                                            }
+                                                        })
+                                                    }}>
                                                     {"Write a message"}
                                                 </button>}
                                         </>}
@@ -428,7 +435,8 @@ const BuilderInfo = (props: PropsType) => {
                                 <div className="tags_wrap">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
                                         // Add active class when click on show more
-                                        <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
+                                        <ul className={`${!showSpecs ? 'more_tags active' : ''}`}>
+                                            {/* <ul className={`more_tags ${showSpecs ? 'active' : ''}`}> */}
                                             {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
                                               <Fragment key={_id}>
                                                 <li className="main">
@@ -439,28 +447,52 @@ const BuilderInfo = (props: PropsType) => {
                                                 })}
                                               </Fragment>
                                             ))} */}
-                                            {profileData?.areasOfSpecialization?.tradeData?.map(({ tradeId, tradeSelectedUrl, tradeName }: { tradeId: string, tradeSelectedUrl: string, tradeName: string }) => (
+                                            {console.log({
+                                                areasOfSpecialization: profileData?.areasOfSpecialization
+                                            })}
+                                            {profileData?.areasOfSpecialization?.tradeData?.map(({
+                                                tradeId,
+                                                tradeSelectedUrl,
+                                                tradeName }: {
+                                                    tradeId: string,
+                                                    tradeSelectedUrl: string,
+                                                    tradeName: string
+                                                }) => (
                                                 <li key={tradeId} className="main">
                                                     <img src={tradeSelectedUrl || menu} alt="" />{tradeName || ''}
                                                 </li>
                                             ))}
                                             {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
-                                                return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                return (
+                                                    <li key={item.specializationId}>
+                                                        {item.specializationName || ''}
+                                                    </li>
+                                                )
                                             })}
                                         </ul>) : (
                                         <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
-                                            {profileData?.tradeName && <li className="main">
-                                                <img src={profileData?.tradeSelectedUrl || menu} alt="" />{profileData?.tradeName || ''}
-                                            </li>}
+                                            {profileData?.tradeName &&
+                                                <li className="main">
+                                                    <img src={profileData?.tradeSelectedUrl || menu} alt="" />
+                                                    {profileData?.tradeName || ''}
+                                                </li>}
                                             {profileData?.areasOfjobs?.map((item: any) => {
-                                                return <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                return (
+                                                    <li key={item.specializationId}>
+                                                        {item.specializationName || ''}
+                                                    </li>
+                                                )
                                             })}
                                         </ul>)}
-                                    {(profileData?.areasOfjobs?.length > 6 || (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) && <a href="javascript:void(0)" className="link show_more"
-                                        onClick={(e: any) => {
-                                            e.preventDefault();
-                                            setShowSpecs(!showSpecs);
-                                        }}>{showSpecs ? 'Show less' : 'Show more'}</a>}
+                                    {(profileData?.areasOfjobs?.length > 6 ||
+                                        (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) &&
+                                        <span className="link show_more"
+                                            onClick={(e: any) => {
+                                                e.preventDefault();
+                                                setShowSpecs(!showSpecs);
+                                            }}>
+                                            {showSpecs ? 'Show less' : 'Show more'}
+                                        </span>}
                                 </div>
 
                             </div>
@@ -533,9 +565,6 @@ const BuilderInfo = (props: PropsType) => {
                         <div className="flex_col_sm_6">
                             <span className="xs_sub_title">Job Description</span>
                             <div className="job_content">
-                                {/* <p>Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.
-                                    Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. Current sparky away due to illness so need a quick replacement, walls are all prepped and just need lights wired. Can also provide free lunch on site and a bit of witty banter on request.</p> */}
                                 <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
                             </div>
                         </div>
@@ -572,9 +601,9 @@ const BuilderInfo = (props: PropsType) => {
                 <div className="custom_container">
                     <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Reviews'}</span>
                     {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
-                        {(props.isSkeletonLoading || props.isLoading || profileData?.reviewData?.length > 0) ?
-                            (profileData?.reviewData?.slice(0, 8)?.map((jobData: any) => {
-                                return <ReviewInfoBox item={jobData} {...props} />
+                        {(props.isSkeletonLoading || props.isLoading || reviewList.length > 0) ?
+                            (reviewList.slice(0, 8)?.map((item: any) => {
+                                return <ReviewInfoBox item={item.reviewData} />
                             })) :
                             <div className="no_record">
                                 <figure className="no_data_img">
@@ -621,20 +650,21 @@ const BuilderInfo = (props: PropsType) => {
                                                     <img src={reviewData?.userImage || dummy} alt="user-img" />
                                                 </figure>
                                                 <div className="details">
-                                                    <span className="user_name">{reviewData?.userName || ''}</span>
+                                                    <span className="user_name">{reviewData?.name || ''}</span>
                                                     <span className="date">{reviewData?.date || ''}</span>
                                                 </div>
                                                 <div className="rating_star">
                                                     <ReactStars
                                                         count={5}
                                                         value={reviewData.rating}
-                                                        size={20}
+                                                        size={30}
                                                         edit={false}
                                                         isHalf={true}
                                                         emptyIcon={<i className="far fa-star"></i>}
                                                         halfIcon={<i className="fa fa-star-half-alt"></i>}
                                                         fullIcon={<i className="fa fa-star"></i>}
                                                         activeColor="#ffd700"
+                                                        color='#DFE5EF'
                                                     />
                                                 </div>
                                             </div>
@@ -654,7 +684,7 @@ const BuilderInfo = (props: PropsType) => {
                                                         <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
                                                     </figure>
                                                     <div className="details">
-                                                        <span className="user_name">{reviewData?.replyData?.userName || ''}</span>
+                                                        <span className="user_name">{reviewData?.replyData?.name || ''}</span>
                                                         <span className="date">{reviewData?.replyData?.date || ''}</span>
                                                     </div>
                                                 </div>
@@ -682,13 +712,25 @@ const BuilderInfo = (props: PropsType) => {
             >
                 <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                     <div className="heading">
-                        <span className="sub_title">{`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
+                        <span className="sub_title">
+                            {`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
                         <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
                             <img src={cancel} alt="cancel" />
                         </button>
                     </div>
                     <div className="form_field">
                         <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
+                        {reviewsData.updateParentReviews && (
+                            <ReactStars
+                                value={reviewsData.rating || 0}
+                                count={5}
+                                isHalf={true}
+                                onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
+                                size={40}
+                                activeColor="#ffd700"
+                                color='#DFE5EF'
+                            />
+                        )}
                         <div className="text_field">
                             <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
                             <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>

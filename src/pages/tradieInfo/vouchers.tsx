@@ -13,17 +13,31 @@ import storageService from '../../utils/storageService';
 import AddVoucherModal from './addVoucher';
 import VoucherDetailModal from './voucherDetail';
 
+import InfiniteScroll from "react-infinite-scroll-component";
+
+import { useLocation } from "react-router-dom";
+
 const Vouchers = (props: any) => {
     const [stateData, setStateData] = useState<any>([]);
     const [errors, setErrors] = useState({});
     const [toggleRecommendation, setToggleRecommendation] = useState({ isTrue: false, item: {} });
-
     const [jobsList, setJobsList] = useState([]);
     const [toggle, setToggle] = useState(false);
     const [selectedItem, setSelectedItem] = useState({});
+    const [currentPage, setCurrentPage] = useState(1);
+    const [hasMore, setHasMore] = useState(true);
 
-    const { id, path } = props?.location?.state;
+    let id = props?.location?.state?.id;
+    let path = props?.location?.state?.path;
+    let search: any = props?.location?.search || '';
 
+    if (search?.length) {
+        const urlParams = new URLSearchParams(search);
+        let tradieId: any = urlParams.get('tradieId');
+        if (tradieId?.length) {
+            id = tradieId;
+        }
+    }
     const closeToggle = (isRecall?: string) => {
         setToggleRecommendation({ isTrue: false, item: {} });
         setSelectedItem({});
@@ -33,6 +47,8 @@ const Vouchers = (props: any) => {
         }
     }
 
+
+
     useEffect(() => {
         prefetch();
     }, [id, path])
@@ -40,34 +56,13 @@ const Vouchers = (props: any) => {
 
     const prefetch = async () => {
         let res_profile: any = await getVouchers({ tradieId: id, page: 1 })
-        // let res_profile: any = await HomeTradieProfile({ tradieId: id });
         if (res_profile.success) {
-
-            let completeItems = res_profile?.data?.vouchesData; //[]
-            // console.log({ res_profile })
-            // if (res_profile?.data?.vouchesData?.length) {
-
-            //     completeItems = res_profile?.data?.vouchesData?.concat([
-            //         {
-            //             "builderId": "608917d4905fe43acf9f3209",
-            //             "builderName": "Test Builder",
-            //             "builderImage": "https://cdn.pixabay.com/photo/2015/03/04/22/35/head-659652_960_720.png",
-            //             "date": "June 2021",
-            //             "voucherId": "60cb63996ae55b1209e30b4c",
-            //             "jobId": "60ca1193ebe3c60a92de499d",
-            //             "jobName": "Test CT",
-            //             "tradieId": "60b9d9e297d08d1ac8d0f57d",
-            //             "tradieName": "Test Trade",
-            //             "vouchDescription": "lorem ipsum simple dummy text",
-            //             "recommendation": "https://appinventiv-development.s3.amazonaws.com/1623941933784file-sample_100kB.doc"
-            //         }
-            //     ])
-            // }
-            setStateData(res_profile.data);
+            let completeItems = res_profile?.data?.voucher || res_profile?.data;  //[]
+            setStateData(completeItems);
         }
     }
 
-    console.log({ selectedItem, toggle });
+
     let state_data: any = stateData;
 
     return (
@@ -94,7 +89,11 @@ const Vouchers = (props: any) => {
                                 <button
                                     onClick={() => {
                                         // let path: any = props.location.state.path;
-                                        props.history.push(`tradie-info${path}`);
+                                        if (!path) {
+                                            props.history.push('/');
+                                        } else {
+                                            props.history.push(`tradie-info${path}`);
+                                        }
                                     }}
                                     className="back"></button>
                                 <span className="title">
@@ -114,14 +113,46 @@ const Vouchers = (props: any) => {
                     {state_data?.length ?
                         <div className="section_wrapper">
                             <div className="custom_container">
-                                <span className="sub_title">Vouches</span>
-                                <div className="flex_row">
+                                <span className="sub_title">
+                                    {'Vouches'}
+                                </span>
+
+                                <InfiniteScroll
+                                    dataLength={state_data?.length}
+                                    next={async () => {
+                                        console.log('Here!!!');
+                                        let cp: any = currentPage + 1;
+                                        setCurrentPage((prev: any) => prev + 1);
+                                        let response = await getVouchers({ tradieId: id, page: cp });
+                                        if (response.success) {
+                                            let completeItems = response?.data?.voucher || response?.data;  //[]
+                                            if (completeItems?.length) {
+                                                setStateData((prev: any) => ([...prev, ...completeItems]));
+                                            } else {
+                                                setHasMore(false);
+                                            }
+                                        }
+                                    }}
+                                    hasMore={hasMore}
+                                    loader={<></>}
+                                    className="flex_row">
                                     {state_data.map((item: any) => (
                                         <div className="flex_col_sm_3">
                                             <div className="review_card vouchers">
                                                 <div className="pic_shot_dtl">
                                                     <figure className="u_img">
-                                                        <img src={item?.builderImage || dummy} alt="user-img" />
+                                                        <img
+                                                            src={item?.builderImage || dummy}
+                                                            alt="user-img"
+                                                            onError={(e: any) => {
+                                                                if (e?.target?.onerror) {
+                                                                    e.target.onerror = null;
+                                                                }
+                                                                if (e?.target?.src) {
+                                                                    e.target.src = dummy;
+                                                                }
+                                                            }}
+                                                        />
                                                     </figure>
                                                     <div className="name_wrap">
                                                         <span className="user_name" title={item?.builderName || ''}>
@@ -156,7 +187,8 @@ const Vouchers = (props: any) => {
                                             </div>
                                         </div>
                                     ))}
-                                </div>
+                                </InfiniteScroll>
+
                             </div>
                         </div>
                         : null}

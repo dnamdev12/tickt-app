@@ -39,6 +39,7 @@ interface State {
     isToggleApplicants: boolean,
     selectedIndex: any,
     localState: any,
+    isRender: boolean
 }
 
 interface Props {
@@ -57,14 +58,26 @@ class NeedApproval extends Component<Props, State> {
         this.state = {
             isToggleApplicants: false,
             selectedIndex: '',
-            localState: ''
+            localState: '',
+            isRender: false
+        }
+    }
+
+    componentDidUpdate() {
+        let nextProps = this.props;
+        let isRender = this.state.isRender;
+        if (nextProps?.isLoading === false) {
+            if (!isRender) {
+                this.setState({ isRender: true });
+            }
         }
     }
 
     redirectToInfo = ({ jobId, status }: any) => {
-        let props:any = this.props;
+        let props: any = this.props;
         if (jobId?.length && status?.length) {
-            let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`)
+            // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`)
+            let urlEncode: any = `?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`
             this.props.history.push(`/job-detail?${urlEncode}`);
         }
     }
@@ -83,7 +96,7 @@ class NeedApproval extends Component<Props, State> {
     render() {
         const { setJobLabel, dataItems, applicantsList, jobType, isLoading } = this.props;
         let listData: any = dataItems
-        let { isToggleApplicants, localState, selectedIndex } = this.state;
+        let { isToggleApplicants, localState, selectedIndex, isRender } = this.state;
         console.log({ applicantsList, isToggleApplicants })
 
         if (localState && selectedIndex !== null) {
@@ -95,7 +108,8 @@ class NeedApproval extends Component<Props, State> {
                 />)
         }
 
-        if (isLoading || listData == undefined) {
+
+        if (!isRender) {
             return null;
         }
 
@@ -144,6 +158,14 @@ class NeedApproval extends Component<Props, State> {
                                             <img
                                                 src={tradeSelectedUrl || jobTypePlaceholder}
                                                 alt="traide-img"
+                                                onError={(e: any) => {
+                                                    if (e?.target?.onerror) {
+                                                        e.target.onerror = null;
+                                                    }
+                                                    if (e?.target?.src) {
+                                                        e.target.src = jobTypePlaceholder;
+                                                    }
+                                                }}
                                             />
                                         </figure>
                                         <div className="details">

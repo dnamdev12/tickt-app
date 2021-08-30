@@ -109,9 +109,9 @@ const JobDetailsPage = (props: PropsType) => {
 
     useEffect(() => {
         const params = new URLSearchParams(props.location?.search);
-        const isTradieWorking: any = params.get('isActive');
+        // const isTradieWorking: any = params.get('isActive');
         const jobInviteAction: any = params.get('jobAction');
-        setIsTradieWorking(isTradieWorking);
+        // setIsTradieWorking(isTradieWorking);
         setJobInviteAction(jobInviteAction);
         (async () => {
             const redirectFrom: any = params.get('redirect_from');
@@ -122,7 +122,6 @@ const JobDetailsPage = (props: PropsType) => {
             if (redirectFrom) {
                 data.jobId = params.get('jobId');
                 res1 = await getJobDetails(data.jobId);
-
             } else {
                 data.jobId = params.get('jobId');
                 data.tradeId = params.get('tradeId');
@@ -138,6 +137,9 @@ const JobDetailsPage = (props: PropsType) => {
             }
             const res2 = await getTradieQuestionList(questionData);
             if (res2.success) {
+                if (params.get('openQList') === 'true') {
+                    setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }));
+                }
                 setQuestionList(res2.data);
             }
         })();
@@ -208,6 +210,7 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const submitQuestionHandler = async (type: string) => {
+        console.log('type: ', type);
         if (['askQuestion', 'deleteQuestion', 'updateQuestion'].includes(type)) {
             if (!validateForm(type)) {
                 return;
@@ -363,7 +366,11 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await replyCancellation(data);
         if (res.success) {
-            props.history.push('/request-monitored/cr');
+            if (type === 'acceptJobCancelRequest') {
+                props.history.push('/request-monitored/ccr');
+            } else {
+                props.history.push('/request-monitored/cc');
+            }
             setJobActionState((prevData: any) => ({
                 ...prevData,
                 isCancelRequestAcceptedClicked: false,
@@ -381,7 +388,11 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await replyChangeRequest(data);
         if (res.success) {
-            props.history.push('/request-monitored/cr');
+            if (type === 'acceptChangeRequest') {
+                props.history.push('/request-monitored/cr');
+            } else {
+                props.history.push('/request-monitored/cc');
+            }
             setJobActionState((prevData: any) => ({
                 ...prevData,
                 isChangeRequestAcceptedClicked: false,
@@ -477,6 +488,7 @@ const JobDetailsPage = (props: PropsType) => {
         itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -494,7 +506,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
-                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && isTradieWorking && (
+                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && jobDetailsData.jobStatus === 'active' && (
                                 <div className="flex_col_sm_4 text-right">
                                     <span className="dot_menu">
                                         <img src={editIconBlue} alt="edit" />
@@ -540,13 +552,15 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {jobDetailsData?.jobStatus === 'cancelled' && <div className="chang_req_card mb-sm">
-                                        <span className="sub_title">Job cancelled</span>
-                                        <p className="commn_para line-2">
-                                            {'Sparky wanted for a quick job to hook up two floodlights on the exterior of an apartment building to the main electrical grid. '}
-                                        </p>
-                                    </div>}
-                                    {jobDetailsData?.jobStatus !== 'cancelled' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
+                                    {jobDetailsData?.jobStatus === 'cancelled' &&
+                                        jobDetailsData?.reasonForCancelJobRequest > 0 && <div className="chang_req_card mb-sm">
+                                            <span className="sub_title">Job cancelled</span>
+                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                            <p className="commn_para line-2">
+                                                {jobDetailsData?.reasonNoteForCancelJobRequest}
+                                            </p>
+                                        </div>}
+                                    {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
                                             {jobDetailsData?.reasonForChangeRequest}
@@ -555,17 +569,21 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestAcceptedClicked: true }))}>Accept</button>
                                         <button className="fill_grey_btn btn-effect" onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestRejectedClicked: true }))}>Reject</button>
                                     </div>}
+
                                     <span className="title line-1" title={jobDetailsData?.jobName}>{props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.jobName ? jobDetailsData?.jobName : ''}</span>
                                     <span className="tagg">{props.isSkeletonLoading ? <Skeleton /> : 'Job details'}</span>
                                     <div className="job_info">
                                         {props.isSkeletonLoading ? <Skeleton count={2} /> : <ul>
-                                            <li className="icon clock">{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
+                                            <li className={`icon ${['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? 'calendar' : 'clock'}`}>{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
                                             <li className="icon dollar">{jobDetailsData?.amount || ''}</li>
                                             <li className="icon location line-1" title={jobDetailsData?.locationName}>{jobDetailsData?.locationName || ''}</li>
-                                            {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? null : <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
+                                            {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ?
+                                                (<li> <span className="job_status">{jobDetailsData?.jobStatus?.toUpperCase()}</span></li>)
+                                                :
+                                                <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
                                         </ul>}
                                     </div>
-                                    {jobDetailsData?.jobStatus !== 'cancelled' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
+                                    {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
                                             <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li>
@@ -578,19 +596,26 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}
                                         >Reject</button>
                                     </div>}
-                                    {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus ? (
+                                    {/* Added  && jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
+                                    {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' && jobDetailsData?.applyButtonDisplay ? (
                                         <div className="bottom_btn">
                                             <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
-                                            <button className={`fill_btn full_btn btn-effect${['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) ? ' disable_btn' : ''}`} disabled={['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())} onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                            <button className="fill_btn full_btn btn-effect" onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
                                         </div>
-                                    ) : paramStatus ? (
-                                        <button
-                                            className="fill_btn full_btn btn-effect"
-                                            onClick={applyJobClicked}>
-                                            {paramStatus}
-                                        </button>
-                                    ) : null}
-                                    {props.isSkeletonLoading ? <Skeleton /> : jobInviteAction === 'invite' &&
+                                    ) : (!jobDetailsData?.applyButtonDisplay && ['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())) ?
+                                        <div className="bottom_btn">
+                                            <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span>
+                                            <button className="fill_btn full_btn btn-effect disable_btn" >{jobDetailsData?.appliedStatus?.toUpperCase()}</button>
+                                        </div>
+                                        : (paramStatus) ? (
+                                            <button
+                                                className="fill_btn full_btn btn-effect"
+                                                onClick={applyJobClicked}>
+                                                {paramStatus}
+                                            </button>
+                                        ) : null}
+                                    {/* Added  || jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
+                                    {props.isSkeletonLoading ? <Skeleton /> : (jobInviteAction === 'invite' || jobDetailsData?.isInvited) &&
                                         <>
                                             <div className="form_field">
                                                 <button
@@ -705,7 +730,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     {!!errors.replyCancelReason && <span className="error_msg">{errors.replyCancelReason}</span>}
                                 </div>
                                 <div className="bottom_btn custom_btn">
-                                    {jobActionState.isCancelRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyCancellationHandler('RejectJobCancelRequest')}>Send</button>}
+                                    {jobActionState.isCancelRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyCancellationHandler('rejectJobCancelRequest')}>Send</button>}
                                     {jobActionState.isChangeRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyChangeRequestHandler('rejectChangeRequest')}>Send</button>}
                                     <button className="fill_grey_btn btn-effect" onClick={() => closeJobActionConfirmationModal('isCancelRequestRejectedClicked')}>Cancel</button>
                                 </div>
@@ -923,7 +948,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
                                     {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
-                                        {isTradieWorking && <a href="javascript:void(0)" className="chat circle"
+                                        {jobDetailsData.jobStatus === 'active' && <a href="javascript:void(0)" className="chat circle"
                                             onClick={(e) => {
                                                 e.preventDefault();
                                                 props.history.push({
@@ -946,7 +971,18 @@ const JobDetailsPage = (props: PropsType) => {
                                             }}>
                                             <figure className="u_img">
                                                 {jobDetailsData?.postedBy?.builderImage ? (
-                                                    <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
+                                                    <img
+                                                        src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy}
+                                                        alt="traide-img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
                                                 ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
                                             </figure>
                                             <div className="details">

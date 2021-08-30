@@ -4,6 +4,8 @@ import { setShowToast } from '../../redux/common/actions';
 import { getSearchParamsData } from '../../utils/common';
 import Menu from '@material-ui/core/Menu';
 import Modal from '@material-ui/core/Modal';
+import Typography from '@material-ui/core/Typography';
+import Slider from '@material-ui/core/Slider';
 import NumberFormat from 'react-number-format';
 
 import filterUnselected from '../../assets/images/ic-filter-unselected.png';
@@ -32,9 +34,11 @@ const SearchResultFilters = (props: any) => {
     const [sortByPrice, setSortByPrice] = useState<any>({
         priceFilterClicked: false,
         payTypeClicked: false,
-        pay_type: "Fixed price",
-        max_budget: null,
-        maxBudgetView: null,
+        pay_type: 'Per hour',
+        budget: [2100, 5100],
+        showBudgetPerHour: [2100, 5100],
+        showBudgetFixed: [210000, 510000],
+        showResultClicked: false
     });
 
     const [sortBySorting, setSortBySorting] = useState<any>({
@@ -57,8 +61,9 @@ const SearchResultFilters = (props: any) => {
                     showResultsButtonClicked: true
                 }));
             }
-            if (paramsList.max_budget && paramsList.pay_type) {
-                setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsList.pay_type, max_budget: paramsList.max_budget }));
+            if (paramsList.min_budget && paramsList.max_budget && paramsList.pay_type) {
+                const newBudget = [paramsList.min_budget, paramsList.max_budget];
+                setSortByPrice((prevData: any) => ({ ...prevData, pay_type: paramsList.pay_type, budget: newBudget, showResultClicked: true }));
             }
             if (paramsList.sortBy) {
                 setSortBySorting((prevData: any) => ({ ...prevData, sortBy: paramsList.sortBy }));
@@ -70,7 +75,7 @@ const SearchResultFilters = (props: any) => {
     useEffect(() => {
         if (props.cleanFiltersData) {
             setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], jobTypes: [], specializationId: [], allSpecializationClicked: false, showResultsButtonClicked: false, sortByFilterClicked: false }));
-            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Fixed price', max_budget: null, payTypeClicked: false }));
+            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Per hour', showResultClicked: false }));
             setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
         }
     }, [props.cleanFiltersData]);
@@ -104,31 +109,7 @@ const SearchResultFilters = (props: any) => {
         setSortBySorting((prevData: any) => ({ ...prevData, sortBySorting: false }))
     };
 
-    const maxBudgetHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputVal = e.target.value;
-        const val = inputVal.split('.');
-        if (val.length > 2) return;
-        if (inputVal.includes('.') && val[1].length > 2) return;
-        const key = inputVal.charCodeAt(inputVal.length - 1);
-        if ((key == NaN || inputVal == "") && sortByPrice.max_budget?.length === 1) {
-            setSortByPrice((prevData: any) => ({ ...prevData, max_budget: null }))
-            return;
-        }
-        if ((key > 47 && key < 58) || (key === 8 || key === 46)) {
-            setSortByPrice((prevData: any) => ({ ...prevData, max_budget: e.target.value }))
-        }
-    }
-
-    const validateForm = () => {
-        const newErrors: any = {};
-        if (!sortByPrice.max_budget) {
-            newErrors.maxBudget = Constants.errorStrings.maxBudgetEmpty;
-        }
-        setErrors(newErrors);
-        return !Object.keys(newErrors).length;
-    }
-
-    const showResultsByAllFilter = (item?: any) => {
+    const showResultsByAllFilter = (item?: any, isPriceFilterClicked?: boolean) => {
         if (item === "callViewNearByJobApi") {
             props.searchByFilter("callViewNearByJobApi");
             return;
@@ -137,9 +118,13 @@ const SearchResultFilters = (props: any) => {
             ...(sortByFilter.tradeId?.length && { tradeId: sortByFilter.tradeId }),
             ...(sortByFilter.jobTypes?.length && { jobTypes: sortByFilter.jobTypes }),
             ...(sortByFilter.specializationId?.length && { specializationId: sortByFilter.specializationId }),
-            ...(sortByPrice.max_budget && { pay_type: sortByPrice.pay_type }),
-            ...(sortByPrice.max_budget && { max_budget: Number(sortByPrice.max_budget) }),
+            ...((sortByPrice.showResultClicked || isPriceFilterClicked) && sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] >= 0 && { pay_type: sortByPrice.pay_type }),
+            ...((sortByPrice.showResultClicked || isPriceFilterClicked) && sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] >= 0 && { min_budget: Number(sortByPrice.budget[0]) }),
+            ...((sortByPrice.showResultClicked || isPriceFilterClicked) && sortByPrice.budget[0] >= 0 && sortByPrice.budget[1] >= 0 && { max_budget: Number(sortByPrice.budget[1]) }),
             ...(item?.sortBy && { sortBy: Number(item?.sortBy) }),
+        }
+        if (sortByPrice.budget[1] === 0) {
+            setSortByPrice((prevData: any) => ({ ...prevData, showResultClicked: false }));
         }
         props.searchByFilter(data);
     }
@@ -153,7 +138,7 @@ const SearchResultFilters = (props: any) => {
             // setShowToast(true, "Please select atleast one field");
             sortByFilterClose();
             setSortByFilter((prevData: any) => ({ ...prevData, tradeId: [], jobTypes: [], specializationId: [], allSpecializationClicked: false, showResultsButtonClicked: false, sortByFilterClicked: false }));
-            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Fixed price', max_budget: null, payTypeClicked: false }));
+            setSortByPrice((prevData: any) => ({ ...prevData, pay_type: 'Fixed price' }));
             setSortBySorting((prevData: any) => ({ ...prevData, sortBy: 0 }));
             showResultsByAllFilter("callViewNearByJobApi");
         }
@@ -161,10 +146,9 @@ const SearchResultFilters = (props: any) => {
 
     const showResultsByBudget = (e: any) => {
         e.preventDefault();
-        if (validateForm()) {
-            sortByPriceClose();
-            showResultsByAllFilter();
-        }
+        setSortByPrice((prevData: any) => ({ ...prevData, showResultClicked: true }));
+        sortByPriceClose();
+        showResultsByAllFilter('', true);
     }
 
     const sortByButtonClicked = (num: number) => {
@@ -194,6 +178,15 @@ const SearchResultFilters = (props: any) => {
     const sortOnChange = (num: number) => {
         if (sortBySorting.sortBy !== num) {
             sortByButtonClicked(num);
+        }
+    }
+
+    const handleSliderChange = (event: any, newValue: any) => {
+        console.log('newValue: ', newValue);
+        if (sortByPrice.pay_type === 'Per hour') {
+            setSortByPrice((prevData: any) => ({ ...prevData, budget: newValue, showBudgetPerHour: newValue }));
+        } else {
+            setSortByPrice((prevData: any) => ({ ...prevData, budget: newValue, showBudgetFixed: newValue }));
         }
     }
 
@@ -247,7 +240,7 @@ const SearchResultFilters = (props: any) => {
     useEffect(() => {
         if (specializationList?.length) {
             const newSpecialization = specializationList.map(({ _id }: { _id: string }) => {
-                return _id
+                return _id;
             })
             setSortByFilter((prevData: any) => ({ ...prevData, specializationId: newSpecialization, allSpecializationClicked: true }));
         }
@@ -263,7 +256,7 @@ const SearchResultFilters = (props: any) => {
                     </a>
                 </li>
                 <li>
-                    <a className={sortByPrice.max_budget ? "active" : ''} onClick={sortByPriceClick}>Price</a>
+                    <a className={sortByPrice.showResultClicked ? "active" : ''} onClick={sortByPriceClick}>Price</a>
                 </li>
                 <li>
                     <a className={sortBySorting.sortBy ? "active" : ''} onClick={sortBySortingClick}>Sorting</a>
@@ -359,46 +352,51 @@ const SearchResultFilters = (props: any) => {
                         <img src={cancel} alt="cancel" />
                     </span>
                     <span className="sub_title">Maximum budget</span>
-
                     <div className="form_field">
-                        <div className="text_field">
-                            {/* <input type="text" placeholder="0" value={sortByPrice.max_budget} onChange={maxBudgetHandler} maxLength={9} className="detect_input_ltr" /> */}
-                            <NumberFormat
-                                value={sortByPrice.maxBudgetView}
-                                displayType={'input'}
-                                type={'text'}
-                                placeholder="0"
-                                className="detect_input_ltr"
-                                thousandSeparator={true}
-                                thousandsGroupStyle="lakh"
-                                decimalScale={2}
-                                maxLength={11}
-                                onValueChange={(values) => {
-                                    const { formattedValue, value } = values;
-                                    setSortByPrice((prevData: any) => ({ ...prevData, maxBudgetView: formattedValue, max_budget: value }));
-                                }}
+                        <div className="radio_wrap agree_check">
+                            <input className="filter-type filled-in" name="pay_type" type="radio" id="perHour" checked={sortByPrice.pay_type === 'Per hour' ? true : false}
+                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Per hour", budget: [2100, 5100], showBudgetPerHour: [2100, 5100] }))}
                             />
-                            <span className="detect_icon_ltr">$</span>
+                            <label htmlFor="perHour">Per hour</label>
                         </div>
-                        {!!errors.maxBudget && <span className="error_msg">{errors.maxBudget}</span>}
+                        <div className="radio_wrap agree_check">
+                            <input className="filter-type filled-in" name="pay_type" type="radio" id="fixed" checked={sortByPrice.pay_type === 'Fixed price' ? true : false}
+                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", budget: [210000, 510000], showBudgetFixed: [210000, 510000] }))}
+                            />
+                            <label htmlFor="fixed">Fixed price</label>
+                        </div>
                     </div>
-
-                    <div className="f_spacebw">
-                        <span className={sortByPrice.payTypeClicked ? "price up" : 'price down'} onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, payTypeClicked: !prevData.payTypeClicked }))}>
-                            {sortByPrice.pay_type == "Fixed price" ? "Fixed price" : sortByPrice.pay_type == "Per hour" ? "Per hour" : ""}
+                    <div className="form_field">
+                        {/* <span className="per_day">{`$${sortByPrice.budget[0]} - $${sortByPrice.budget[1]}`}</span> */}
+                        <span className="per_day">
+                            <NumberFormat
+                                value={sortByPrice.budget[0]}
+                                className="foo"
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                prefix={'$'}
+                            />
+                            <NumberFormat
+                                value={sortByPrice.budget[1]}
+                                className="foo"
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                prefix={' - $'}
+                            />
                         </span>
+                        <Typography id="range-slider" gutterBottom></Typography>
+                        <Slider
+                            min={0}
+                            max={sortByPrice.pay_type === 'Per hour' ? 10000 : 999999}
+                            step={sortByPrice.pay_type === 'Per hour' ? 100 : 10000}
+                            value={sortByPrice.pay_type === 'Per hour' ? sortByPrice.showBudgetPerHour : sortByPrice.showBudgetFixed}
+                            onChange={handleSliderChange}
+                            aria-labelledby="range-slider"
+                        />
+                    </div>
+                    <div className="f_spacebw">
                         <a className="link" onClick={showResultsByBudget}>Show results</a>
                     </div>
-                    {sortByPrice.payTypeClicked &&
-                        <div>
-                            <div onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Per hour", payTypeClicked: !prevData.payTypeClicked }))}>
-                                <span className="per_day">Per hour</span>
-                            </div>
-                            <div onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", payTypeClicked: !prevData.payTypeClicked }))}>
-                                <span className="per_day">Fixed price</span>
-                            </div>
-                        </div>
-                    }
 
                 </Menu>}
             {/* sorting filter box */}

@@ -45,7 +45,7 @@ const InitialSignupPage = (props: Propstype) => {
         var date = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
         storageService.setItem("guestToken", date)
         storageService.setItem("userType", 0)
-        props.history.push('/')
+        props.history.push('/guest-user');
     }
 
     const phoneViewHandler = (e: any) => {

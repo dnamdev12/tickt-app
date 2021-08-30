@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import Constants from '../../utils/constants';
 import {
     getHomeJobDetails,
@@ -35,6 +35,17 @@ import { renderTime } from '../../utils/common';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
+
+import editIconBlue from '../../assets/images/ic-edit-blue.png';
+
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+
+import { deleteOpenJob } from '../../redux/jobs/actions';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
@@ -97,8 +108,12 @@ const JobDetailsPage = (props: PropsType) => {
     const [selectedSlide, setSelectSlide] = useState(1);
     const [tradieId, setTradieId] = useState<string>('');
 
+    const [toggleDelete, setToggleDelete] = useState(false);
 
-    // console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo');
+    const [jobAcceptModal, setJobAcceptModal] = useState(false);
+    const [jobRejectModal, setJobRejectModal] = useState(false);
+    const [jobData, setJobData] = useState({});
+    const [replyText, setReplyText] = useState('');
 
     useEffect(() => {
         (async () => {
@@ -106,9 +121,8 @@ const JobDetailsPage = (props: PropsType) => {
         })();
     }, [])
 
-
     const preFetch = async () => {
-        let location_search = window.atob((props.history?.location?.search).substring(1))
+        let location_search = (props?.history?.location?.search).substring(1) //window.atob()
         const params = new URLSearchParams(location_search);
 
         if (params.get('edit')) {
@@ -142,7 +156,7 @@ const JobDetailsPage = (props: PropsType) => {
 
 
     const fetchQuestionsList = async (isTrue?: boolean) => {
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1); //window.atob()
         const params = new URLSearchParams(location_search);
         const questionData: any = {
             jobId: params.get('jobId'),
@@ -150,7 +164,12 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res2 = await getQuestionsList(questionData);
         if (res2.success) {
-            setQuestionList(res2.data);
+            if (params.get('openQList') === "true") {
+                setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }));
+            }
+            console.log({ res2 }, 'question-list')
+            let data_elements = res2?.data?.list || res2?.data;
+            setQuestionList(data_elements);
         }
 
         if (isTrue) {
@@ -203,7 +222,7 @@ const JobDetailsPage = (props: PropsType) => {
 
     const loadMoreQuestionHandler = async () => {
         // will handle the pagination later
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1);// window.atob()
         const params = new URLSearchParams(location_search);
         const data: any = {
             jobId: params.get('jobId'),
@@ -211,7 +230,9 @@ const JobDetailsPage = (props: PropsType) => {
         }
         const res = await getQuestionsList(data);
         if (res.success) {
-            setQuestionList((prevData: any) => ([...prevData, ...res.data]));
+            console.log({ res }, 'question-list')
+            let data_elements = res?.data?.list || res?.data;
+            setQuestionList((prevData: any) => ([...prevData, ...data_elements]));
             setQuestionListPageNo(data.page);
         }
     }
@@ -388,8 +409,9 @@ const JobDetailsPage = (props: PropsType) => {
     let paramJobId: any = '';
     let activeType: any = '';
     let isPastJob: boolean = false;
+    let hideDispute: any = null;
     if (props.location?.search) {
-        let location_search = window.atob((props.location?.search).substring(1))
+        let location_search = (props?.location?.search).substring(1); //window.atob()
         const params = new URLSearchParams(location_search);
         if (params.get('status')) {
             paramStatus = params.get('status');
@@ -403,8 +425,12 @@ const JobDetailsPage = (props: PropsType) => {
         if (params.get('activeType')) {
             activeType = params.get('activeType');
         }
+
+        if (params.get('hide_dipute')) {
+            hideDispute = params.get('hide_dipute');
+        }
     }
-    console.log({ activeType })
+    console.log({ activeType, hideDispute })
 
     console.log({ paramStatus })
     const renderByStatus = ({ status }: any) => {
@@ -429,16 +455,51 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     const handleCancelJob = async (type: any, job_detail: any) => {
-        let data = {
+        if (type == 1) {
+            setJobAcceptModal(true);
+            setJobRejectModal(false);
+        } else {
+            setJobAcceptModal(false);
+            setJobRejectModal(true);
+        }
+
+        setJobData({
             "jobId": job_detail?.jobId,
             "status": type,
             "note": type === 1 ? "this is accepted" : "this is rejected"
+        });
+        // let data = {
+        //     "jobId": job_detail?.jobId,
+        //     "status": type,
+        //     "note": type === 1 ? "this is accepted" : "this is rejected"
+        // }
+        // let response = await handleCancelReply(data);
+        // if (response?.success) {
+        //     await preFetch();
+        // }
+    }
+
+    const operationCancelJob = async () => {
+        let data: any = jobData;
+        if (data?.status) {
+            data['note'] = replyText;
         }
+
+        // if (!data?.note) {
+        //     delete data?.note;
+        // }
+
         let response = await handleCancelReply(data);
         if (response?.success) {
-            await preFetch();
+            if (data?.status === 1) {
+                props.history.push('/request-monitored/ccr');
+            } else {
+                props.history.push('/request-monitored/cc/bb');
+            }
+            // await preFetch();
         }
     }
+
 
     const renderFilteredItems = (itemsMedia: any) => {
         let sources: any = [];
@@ -464,10 +525,96 @@ const JobDetailsPage = (props: PropsType) => {
         itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
+
+
+    const deleteJob = async (jobId: any) => {
+        await deleteOpenJob({ jobId });
+        props.history.push(`/jobs?active=${activeType}`)
+    }
+    console.log({ activeType })
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+                    {["open", 'active'].includes(activeType) ? (
+                        <span className="dot_menu">
+                            <img src={editIconBlue} alt="edit" />
+                            <div className="edit_menu">
+                                <ul>
+                                    {/* {activeType == "open" && (
+                                        <React.Fragment>
+                                            <li
+                                                onClick={() => {
+                                                    setShowToast(true, 'Under Development');
+                                                    // props.history.push(`/post-new-job?update=true&jobId=${paramJobId}`)
+                                                }}
+                                                className="icon edit_line">Edit</li>
+                                            <li
+                                                onClick={() => {
+                                                    setToggleDelete((prev: any) => !prev);
+                                                }}
+                                                className="icon delete">Delete</li>
+                                        </React.Fragment>
+                                    )} */}
+                                    {activeType == "active" && (
+                                        <React.Fragment>
+                                            <li
+                                                onClick={() => {
+                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&editMilestone=true`)
+                                                }}
+                                                className="icon edit_line">
+                                                {'Edit Milestone'}
+                                            </li>
+                                            {hideDispute === "false" && (
+                                                <li
+                                                    onClick={() => {
+                                                        props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&lodgeDispute=true`)
+                                                    }}
+                                                    className="icon lodge">
+                                                    {'Lodge dispute'}
+                                                </li>
+                                            )}
+                                            <li
+                                                onClick={() => {
+                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&cancelJob=true`)
+                                                }}
+                                                className="icon delete">
+                                                {'Cancel job'}
+                                            </li>
+                                        </React.Fragment>
+                                    )}
+                                </ul>
+                            </div>
+                        </span>
+                    ) : null}
+                    <Dialog
+                        open={toggleDelete}
+                        onClose={() => {
+                            setToggleDelete((prev: any) => !prev);
+                        }}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description">
+                        <DialogTitle id="alert-dialog-title">
+                            {"Are you sure you want to delete the job ?"}
+                        </DialogTitle>
+                        <DialogActions>
+                            <Button
+                                onClick={() => {
+                                    deleteJob(paramJobId);
+                                }}
+                                color="primary"
+                                autoFocus>
+                                {'Yes'}
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setToggleDelete((prev: any) => !prev);
+                                }}
+                                color="primary">
+                                {'No'}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
 
                     <FsLightbox
                         toggler={toggler}
@@ -524,11 +671,24 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
+                                    {console.log({ jobDetailsData, paramStatus })}
+                                    {paramStatus === 'CANCELLED' &&
+                                        jobDetailsData?.reasonForCancelJobRequest > 0 &&
+                                        <div className="chang_req_card mb-sm">
+                                            <span className="sub_title">Job cancelled</span>
+                                            <p className="commn_para line-2">
+                                                {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                            </p>
+                                            <p className="commn_para line-2">
+                                                {jobDetailsData?.reasonNoteForCancelJobRequest}
+                                            </p>
+                                        </div>}
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         {!isPastJob ? (
                                             <ul>
+
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
@@ -544,7 +704,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             </ul>
                                         ) : (
                                             <ul>
-                                                <li className="icon clock">
+                                                <li className="icon calendar">
                                                     {jobDetailsData?.time ?
                                                         jobDetailsData.time :
                                                         renderTime(
@@ -560,13 +720,104 @@ const JobDetailsPage = (props: PropsType) => {
                                             </ul>
                                         )}
                                     </div>
-                                    {(paramStatus === 'EXPIRED' || paramStatus === 'expired') && (
+                                    {((paramStatus === 'EXPIRED' || paramStatus === 'expired') && !jobDetailsData?.isPublishedAgain) && (
                                         <button
-                                            className="fill_btn full_btn btn-effect"
+                                            className="fill_btn full_btn btn-effect mt-sm"
                                             onClick={() => props.history.push(`/post-new-job?jobId=${paramJobId}`)}>
                                             Publish again
                                         </button>
                                     )}
+
+                                    <Modal
+                                        className="custom_modal"
+                                        open={jobRejectModal}
+                                        onClose={() => {
+                                            setJobRejectModal(false)
+                                        }}
+                                        aria-labelledby="simple-modal-title"
+                                        aria-describedby="simple-modal-description"
+                                    >
+                                        <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                            <div className="heading">
+                                                <span className="sub_title">{`Your reply to job cancellation`}</span>
+                                                <button
+                                                    className="close_btn"
+                                                    onClick={() => {
+                                                        setJobRejectModal(false)
+                                                    }}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <div className="form_field">
+                                                <label className="form_label">{`Let the tradie and Tickt know if you accept or reject cancelling for this job.`}</label>
+                                                <div className="text_field">
+                                                    <textarea
+                                                        placeholder={`I disagree with this cancelling`}
+                                                        maxLength={250}
+                                                        value={replyText}
+                                                        onChange={(e: any) => { setReplyText(e.target.value) }}
+                                                    />
+                                                    <span className="char_count">{`${replyText?.length}/250`}</span>
+                                                </div>
+                                                {replyText?.length > 250 && <span className="error_msg">{errors.replyCancelReason}</span>}
+                                            </div>
+                                            <div className="bottom_btn custom_btn">
+                                                <button
+                                                    className="fill_btn full_btn btn-effect"
+                                                    onClick={() => {
+                                                        operationCancelJob();
+                                                    }}>
+                                                    {'Send'}
+                                                </button>
+                                                <button
+                                                    className="fill_grey_btn btn-effect"
+                                                    onClick={() => {
+                                                        setJobRejectModal(false);
+                                                        setJobData({});
+                                                    }}>
+                                                    {'Cancel'}
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </Modal>
+
+                                    <Modal
+                                        className="custom_modal"
+                                        open={jobAcceptModal}
+                                        onClose={() => {
+                                            setJobAcceptModal(false);
+                                        }}
+                                        aria-labelledby="simple-modal-title"
+                                        aria-describedby="simple-modal-description"
+                                    >
+                                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                            <div className="heading">
+                                                <span className="xs_sub_title">{`Accept Job Cancellation Request`}</span>
+                                                <button
+                                                    className="close_btn"
+                                                    onClick={() => {
+                                                        setJobAcceptModal(false);
+                                                    }}>
+                                                    <img src={cancel} alt="cancel" />
+                                                </button>
+                                            </div>
+                                            <div className="modal_message">
+                                                <p>Are you sure you still want to proceed?</p>
+                                            </div>
+                                            <div className="dialog_actions">
+                                                <button
+                                                    className="fill_btn btn-effect"
+                                                    onClick={() => {
+                                                        operationCancelJob();
+                                                    }}>Yes</button>
+                                                <button className="fill_grey_btn btn-effect"
+                                                    onClick={() => {
+                                                        setJobAcceptModal(false);
+                                                        setJobData({});
+                                                    }}>No</button>
+                                            </div>
+                                        </div>
+                                    </Modal>
 
                                     {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
@@ -881,8 +1132,9 @@ const JobDetailsPage = (props: PropsType) => {
                             <span className="sub_title">Posted by</span>
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
-                                    <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}>
-                                        {activeType == "active" && (
+                                    <div className={`tradie_card posted_by`}>
+                                        {/* <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}> */}
+                                        {/* {activeType == "active" && (
                                             <span
                                                 className="chat circle"
                                                 onClick={(e) => {
@@ -898,14 +1150,25 @@ const JobDetailsPage = (props: PropsType) => {
                                                     })
                                                 }}>
                                             </span>
-                                        )}
+                                        )} */}
                                         <div className="user_wrap">
-                                            <figure className={`${activeType !== "active" ? 'u_img cursor-pointer' : 'u_img'}`}>
+                                            <figure className={`u_img`}>
                                                 {jobDetailsData?.postedBy?.builderImage ? (
-                                                    <img src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy} alt="traide-img" />
+                                                    <img
+                                                        src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy}
+                                                        alt="traide-img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
                                                 ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
                                             </figure>
-                                            <div className={`${activeType !== "active" ? 'details cursor-pointer' : 'details'}`}>
+                                            <div className='details'>
                                                 <span
                                                     className="name"
                                                     onClick={() => {

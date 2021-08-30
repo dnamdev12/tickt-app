@@ -2,13 +2,11 @@ import firebase from "firebase/app";
 import "firebase/messaging";
 import 'firebase/auth';
 import 'firebase/database';
-import 'firebase/firestore';
-
 import storageService from "../utils/storageService";
-import { devFirebaseConfig, qaStgFirebaseConfig } from '../utils/globalConfig';
+import { qaStgFirebaseConfig } from '../utils/globalConfig';
+import moment from 'moment';
 
 if (!firebase.apps.length) {
-    // firebase.initializeApp(process.env.NODE !== 'development' ? devFirebaseConfig : qaStgFirebaseConfig);
     firebase.initializeApp(qaStgFirebaseConfig);
 }
 export const auth = firebase.auth();
@@ -33,14 +31,10 @@ let inboxListner;
 const getRegisterToken = () => {
     return new Promise((resolve, reject) => {
         messaging.getToken({
-            //stg key
             vapidKey: 'BHtgSVj0gw6YQDd6ByTPx_gyRtBWKlHBVYKFsemnv1t6bTH9efAseLWaoJx2GvTu0NW314ZF4DOj_eJ7tub9kHI'
-            //dev key
-            // vapidKey: 'BIbDXMIQtgqMHxUUEMxqWwWecGohuxao1TWNzhtWA321cHQRYcX0O9uNL0C2CWmGzzxzwBA8wjsUof2QI6S22wo'
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("FCM token fetched successsfully", currentToken);
-                sessionStorage.setItem("FCM token", currentToken);
                 resolve({ success: true, deviceToken: currentToken });
             } else {
                 console.log('No registration token available.');
@@ -48,7 +42,7 @@ const getRegisterToken = () => {
                 resolve({ success: false });
             }
         }).catch((err) => {
-            console.log('An error occurred while retrieving token. ', err);
+            console.log('An error occurred while retrieving  from firebase. ', err);
             setTokenSentToServer(false);
             reject({ success: false });
         });
@@ -57,39 +51,44 @@ const getRegisterToken = () => {
 
 const setTokenSentToServer = (sent) => {
     storageService.setItem('sentToServer', sent ? '1' : '0');
+    storageService.setItem('fcmToken', '');
 }
 
 const isTokenSentToServer = () => {
     return storageService.getItem('sentToServer') === '1';
 }
 
-export function requestPermission() {
+export const requestPermission = () => {
     return new Promise((resolve, reject) => {
         Notification.requestPermission().then((permission) => {
-            if (permission === 'granted' && isTokenSentToServer()) {
-                getRegisterToken();
-                console.log('Token Already sent');
-                resolve({ success: false });
-            }
-            // else if (permission === 'granted' && !isTokenSentToServer()) {
-            else {
-                const data = getRegisterToken();
-                resolve(data);
-            }
+            const data = getRegisterToken();
+            resolve(data);
+            // if (permission === 'granted' && isTokenSentToServer()) {
+            //     const data = getRegisterToken();
+            //     console.log('Token Already sent');
+            //     resolve(data);
+            // }
         })
             .catch((err) => {
-                console.log('Unable to get permission to show notification : ', err);
+                console.log('Unable to get permission to show notification browser : ', err);
                 reject({ success: false });
             });
     })
 }
 
-export function deleteToken() {
+export const deleteToken = () => {
     messaging.deleteToken().then(() => {
-        console.log('Token deleted.');
-        // ...
+        console.log('FCM Token deleted.');
     }).catch((err) => {
-        console.log('Unable to delete token. ', err);
+        console.log('Unable to delete FCM token. ', err);
+    });
+}
+
+export const signOut = () => {
+    auth.signOut().then(() => {
+        console.log('Firebase signout successful.');
+    }).catch((err) => {
+        console.log('Firebase sign out error.', err);
     });
 }
 
@@ -119,11 +118,13 @@ export const firebaseSignUpWithEmailPassword = async ({ email, password, id, ful
     }
 };
 
-export const firebaseLogInWithEmailPassword = async (authData, loginRes) => {
+export const firebaseLogInWithEmailPassword = async (authData, loginRes, isSignup) => {
+    console.log('authData: ', authData);
     try {
         let response = await auth.signInWithEmailAndPassword(authData.email, authData.password);
         if (response) {
             console.log('firebase auth login success: ');
+            if (isSignup) return;
             await db.ref(`${FIREBASE_COLLECTION.USERS}/${loginRes?._id}`).set({
                 email: loginRes?.email,
                 image: loginRes?.user_image,
@@ -140,35 +141,47 @@ export const firebaseLogInWithEmailPassword = async (authData, loginRes) => {
 
 ////////////////////////  firebase chat
 
-export const loginAnonymously = () => {
-    // debugger;
-    auth.signInAnonymously()
-        .then(() => alert("anonymous signed in success"))
-        .catch(function (error) {
-            // Handle Errors here.
-            var errorCode = error.code;
-            var errorMessage = error.message;
-            if (errorCode === 'auth/operation-not-allowed') {
-                alert('You must enable Anonymous auth in the Firebase Console.');
-            } else {
-                console.error(error);
-            }
-        });
+export const loginAnonymously = async () => {
+    let userInfo = storageService.getItem("userInfo");
+    try {
+        let response = await auth.signInAnonymously();
+        if (response) {
+            console.log('firebase anonymous auth login success: ');
+            await db.ref(`${FIREBASE_COLLECTION.USERS}/${userInfo?._id}`).set({
+                email: userInfo?.email,
+                image: userInfo?.user_image,
+                name: userInfo?.userName,
+                userId: userInfo?._id,
+                onlineStatus: true,
+                userType: userInfo?.user_type,
+            });
+        }
+    } catch (error) {
+        console.log('firebase anonymous auth login failure: ');
+        var errorCode = error.code;
+        if (errorCode === 'auth/operation-not-allowed') {
+            alert('You must enable Anonymous auth in the Firebase Console.');
+        } else {
+            console.error(error);
+        }
+    }
 }
 
 export const getLoggedInuserId = () => {
-    if (!loggedInuserId) {
-        let userInfo = storageService.getItem("userInfo");
-        if (userInfo) {
-            loggedInuserId = userInfo._id;
-        } else {
-            loggedInuserId = '';
-        }
-    }
-    return loggedInuserId;
+    return storageService.getItem("userInfo")._id;
+}
+
+export const updateChatUserImageAndName = async (updateType, value) => {
+    let loggedInuserId = getLoggedInuserId();
+
+    await db.ref(`${FIREBASE_COLLECTION.USERS}/${loggedInuserId}`).update({
+        ...(updateType === 'userImage' && { image: value }),
+        ...(updateType === 'userName' && { name: value }),
+    });
 }
 
 export const createRoom = async (jobId, tradieId, builderId, jobName) => {
+    let loggedInuserId = getLoggedInuserId();
 
     const roomID = `${jobId}_${tradieId}_${builderId}`;
 
@@ -200,13 +213,12 @@ export const createRoom = async (jobId, tradieId, builderId, jobName) => {
     roomInfoObj.chatRoomMembers = chatRoomMembers;
     roomInfoObj.chatLastUpdates = chatLastUpdates;
 
-    console.log(roomInfoObj, 'roomINfoObj', `${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`, "TESTTTTTTTTTTTTTTT");
     await db.ref(`${FIREBASE_COLLECTION.ROOM_INFO}/${roomID}/`).set(roomInfoObj);
     // debugger;
     // await createItem(itemInfo);
     //loggedin user inbox
     await createInbox(tradieId, roomID, jobId, builderId, jobName);
-    // supplier user inbox
+    // opposite user inbox
     await createInbox(builderId, roomID, jobId, tradieId, jobName);
     return roomInfoObj;
 }
@@ -231,7 +243,6 @@ export const createInbox = async (userid, roomId, jobId, oppuserid, jobName) => 
 }
 
 export const getFirebaseInboxData = async (listner) => {
-    console.log(listner, "listner firebaseInboxData")
     // debugger;
     let userId = getLoggedInuserId();
     if (!userId) {
@@ -329,7 +340,7 @@ export const getMessagesOfRoom = async (roomId, listner) => {
     //     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).off('value', msgListnerObj);
     // }
 
-    msgListnerObj = db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).orderByChild('messageTimestamp').on("value", (snapshot) => {
+    msgListnerObj = db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}`).orderByChild('messageTimestamp').limitToLast(500).on("value", (snapshot) => {
         let itemlist = [];
         snapshot.forEach((snap) => {
             itemlist.push(snap.val());
@@ -385,11 +396,13 @@ export const sendTextMessage = async (roomId, message) => {
     };
     await db.ref(`${FIREBASE_COLLECTION.LAST_MESSAGES}/${roomId}/chatLastMessage`).set(msgData);
     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}/${messageID}`).set(msgData);
+    msgData.messageTimestamp = moment().toDate().getTime();
 
     //TODO Implement Update Message Counter
     //https://stackoverflow.com/questions/42276881/increment-firebase-value-from-javascript-subject-to-constraint
     let inboxId = `${senderId}_${jobId}`;
     await db.ref(`${FIREBASE_COLLECTION.INBOX}/${receiverId}/${inboxId}`).child('unreadMessages').set(firebase.database.ServerValue.increment(1));
+    return msgData;
 }
 
 export const sendImageVideoMessage = async (roomId, url, type) => {
@@ -430,11 +443,13 @@ export const sendImageVideoMessage = async (roomId, url, type) => {
     };
     await db.ref(`${FIREBASE_COLLECTION.LAST_MESSAGES}/${roomId}/chatLastMessage`).set(msgData);
     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}/${messageID}`).set(msgData);
+    msgData.messageTimestamp = moment().toDate().getTime();
 
     //TODO Implement Update Message Counter
     //https://stackoverflow.com/questions/42276881/increment-firebase-value-from-javascript-subject-to-constraint
     let inboxId = `${senderId}_${jobId}`;
     await db.ref(`${FIREBASE_COLLECTION.INBOX}/${receiverId}/${inboxId}`).child('unreadMessages').set(firebase.database.ServerValue.increment(1));
+    return msgData;
 }
 
 export const resetUnreadCounter = async (roomId) => {

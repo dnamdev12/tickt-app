@@ -1,10 +1,13 @@
 import id from 'date-fns/esm/locale/id/index.js';
 import { isError } from 'lodash';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import Constants from '../../../utils/constants';
 import { useHistory, useLocation } from "react-router-dom";
+//@ts-ignore
+import _ from 'lodash';
 interface Proptypes {
   data: any,
+  jobUpdateParam?: any,
   editDetailPage: any,
   stepCompleted: Boolean,
   handleStepComplete: (data: any) => void,
@@ -14,6 +17,7 @@ interface Proptypes {
 
 const PostNewJob = ({
   data,
+  jobUpdateParam,
   editDetailPage,
   stepCompleted,
   handleStepJustUpdate,
@@ -25,7 +29,7 @@ const PostNewJob = ({
   const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>({ jobName: '', job_description: '' });
   const [errors, setErrors] = useState({ jobName: '', job_description: '' });
   const [continueClicked, setContinueClicked] = useState(false);
-
+  const { jobName, job_description } = basicDetails;
 
   let location = useLocation();
   let jobId: any = null;
@@ -43,6 +47,7 @@ const PostNewJob = ({
       });
     }
   }, [stepCompleted, data]);
+
 
   // for error messages
   const label: { [index: string]: string } = {
@@ -62,11 +67,18 @@ const PostNewJob = ({
   }
   // return isEmpty(name, value);
 
+
+  const capitalize = (str: any) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
   const handleChange = ({ target: { value, name } }: { target: { value: string, name: string } }) => {
     let valueElem: any = (value).trimLeft()
-    if (name === "jobName") {
-      valueElem = valueElem.replace(/[^a-zA-Z|0-9 ]/g, "");
-      valueElem = valueElem.charAt(0).toUpperCase() + valueElem.substring(1);
+    if (name === "jobName" || name === "job_description") {
+      if(name === "jobName"){
+        valueElem = valueElem.replace(/[^a-zA-Z|0-9 ]/g, "");
+      }
+      valueElem = capitalize(valueElem) //.charAt(0).toUpperCase() + valueElem.substring(1);
     }
 
     // if (stepCompleted || continueClicked) {
@@ -120,8 +132,8 @@ const PostNewJob = ({
     return true;
   }
 
-  const { jobName, job_description } = basicDetails;
 
+  console.log({ jobUpdateParam, jobId })
   return (
     <div className="app_wrapper">
       <div className="section_wrapper">
@@ -134,7 +146,7 @@ const PostNewJob = ({
                     <div className="relate">
                       <button className="back" onClick={() => { handleStepForward(14) }}></button>
                       <span className="title">
-                        {jobId ? 'Republish a job' : 'Post new job'}
+                        {!jobUpdateParam && jobId ? 'Republish a job' : 'Post new job'}
                       </span>
                     </div>
                     <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
@@ -142,7 +154,7 @@ const PostNewJob = ({
                   : (
                     <React.Fragment>
                       <span className="title">
-                        {jobId ? 'Republish a job' : 'Post new job'}
+                        {!jobUpdateParam && jobId ? 'Republish a job' : 'Post new job'}
                       </span>
                       <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
                     </React.Fragment>
@@ -166,7 +178,41 @@ const PostNewJob = ({
               <div className="form_field">
                 <label className="form_label">Job Details</label>
                 <div className="text_field">
-                  <textarea placeholder="This Job..." name="job_description" value={job_description} onChange={handleChange} />
+                   <textarea
+                    placeholder="This Job..."
+                    name="job_description"
+                    value={job_description}
+                    onChange={handleChange}
+                    onBlur={() => {
+                      if (job_description?.length) {
+                        let stringItem = job_description.split('.').map(capitalize).join('.');
+                        setBasicDetails((prev: any) => ({
+                          ...prev,
+                          job_description: stringItem
+                        }))
+                      }
+                    }}
+                  /> 
+
+                  {/* <CKEditor
+                    editor={ClassicEditor}
+                    data="<p>Hello from CKEditor 5!  xxx</p>"
+                    onReady={(editor: any) => {
+                      // You can store the "editor" and use when it is needed.
+                      console.log('Editor is ready to use!', editor);
+                    }}
+                    onChange={(event: any, editor: any) => {
+                      const data = editor.getData();
+                      console.log({ event, editor, data });
+                    }}
+                    onBlur={(event: any, editor: any) => {
+                      console.log('Blur.', editor);
+                    }}
+                    onFocus={(event: any, editor: any) => {
+                      console.log('Focus.', editor);
+                    }}
+                  /> */}
+
                   {job_description.length ?
                     <span className="char_count">
                       {`character length : ${job_description.length} / 250`}

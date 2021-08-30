@@ -1,30 +1,21 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setShowNotification } from '../redux/common/actions';
+import { formatNotificationTime } from '../utils/common';
+import { onNotificationClick } from '../utils/common';
+import { markNotifAsRead } from '../redux/auth/actions';
 
 import dummy from '../assets/images/u_placeholder.jpg';
 import close from '../assets/images/icon-close-1.png';
 
-import { onNotificationClick } from '../utils/common';
-
-
-const NOTIFICATION_TIMEOUT = 5000;
-
+const NOTIFICATION_TIMEOUT = 3750;
 
 const CustomNotification = (props: any) => {
-    const notification = props.notificationData?.notification;
-
-    // const title: string = payload.notification.title;
-    // const options: any = {
-    //     body: payload.notification.body,
-    //     data: {
-    //         time: new Date(Date.now()).toString(),
-    //         click_action: payload.data.click_action
-    //     }
-    // };
+    const notification = props.notificationData?.data;
+    console.log('notification: ', notification);
 
     useEffect(() => {
-        if (props.showNotification) {
+        if (props?.showNotification) {
             setTimeout(() => setShowNotification(false), NOTIFICATION_TIMEOUT);
         }
 
@@ -37,19 +28,22 @@ const CustomNotification = (props: any) => {
                 <img src={close} alt="img" />
             </span>
             <div className="wrapppr" onClick={() => {
+                markNotifAsRead({ notificationId: notification?._id });
                 setShowNotification(false);
-                // window.open('http://localhost:3000/active-jobs', '_self');
-                window.open(onNotificationClick(notification), '_self');
+                setTimeout(() => {
+                    window.open(onNotificationClick(notification), '_self');
+                }, 100);
             }}>
                 <div className="notif">
                     <figure className="not_img">
-                        <img src={dummy} alt="img" />
+                        <img src={notification?.image || dummy} alt="img" />
                     </figure>
                     <div className="info">
-                        <span className="who line-1">{notification.title}</span>
-                        <span className="line-1">{notification.body}</span>
+                        <span className="who line-1">{notification?.title}</span>
+                        <span className="line-1">{notification?.notificationText}</span>
                     </div>
-                    <span className="time">St 12:30 AM</span>
+                    {/* <span className="time">{formatNotificationTime(notification?.updatedAt, 'day')}</span> */}
+                    <span className="time">{'just now'}</span>
                 </div>
             </div>
         </div>

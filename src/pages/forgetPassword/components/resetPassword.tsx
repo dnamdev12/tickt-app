@@ -2,32 +2,76 @@ import React, { useState, useEffect } from 'react';
 import { callForgotPassword } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex'
-import { checkEmailId } from '../../../redux/auth/actions';
-import { setShowToast } from '../../../redux/common/actions';
 interface Propstype {
     updateSteps: (num: number, data: any) => void
     step: number
     history?: any
-    emailAddress?: any,
+    mobileNumber: any,
 }
 
 const ResetPassword = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
-    const [email, setEmail] = useState<any>('')
+    const [mobileNumb, setMobileNumb] = useState<any>(props.mobileNumber)
 
     const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
         let inputVal = e.target.value.replaceAll(' ', '');
-        setEmail(inputVal)
+        console.log(inputVal, inputVal.length, mobileNumb, "okok")
+
+        if (regex.numeric.test(inputVal) || !inputVal) {
+            if (inputVal.length === 3) {
+                if (inputVal.length == mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 2);
+                    setMobileNumb(inputVal);
+                    return;
+                } else if (inputVal.length < mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 3);
+                    setMobileNumb(inputVal);
+                    return;
+                }
+            }
+
+            if (inputVal.length >= 3 && inputVal.length < 6) {
+                inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, inputVal.length);
+                setMobileNumb(inputVal);
+                return;
+            }
+
+            if (inputVal.length === 6) {
+                console.log("OK")
+                if (inputVal.length == mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 5);
+                } else if (inputVal.length < mobileNumb.replaceAll(' ', '').length) {
+                    inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 6);
+                } else {
+                    inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 6) + " ";
+                }
+                setMobileNumb(inputVal);
+                return;
+            }
+            if (inputVal.length > 6) {
+                inputVal = inputVal.slice(0, 3) + " " + inputVal.slice(3, 6) + " " + inputVal.slice(6, inputVal.length);
+            }
+            setMobileNumb(inputVal)
+        }
+        // const key = inputVal.charCodeAt(inputVal.length - 1)
+        // if ((key == NaN || inputVal == "") && mobileNumber.length === 1) {
+        //     setMobileNumber('');
+        //     return;
+        // }
+        // if ((key > 47 && key < 58) || key === 8) {
+        //     e.preventDefault();
+        //     setMobileNumber(e.target.value)
+        // }
     }
 
     const validateForm = () => {
         const newErrors: any = {};
-        if (!email) {
-            newErrors.email = Constants.errorStrings.emailEmpty;
+        if (!mobileNumb) {
+            newErrors.mobileNumber = Constants.errorStrings.phoneNumberEmpty;
         } else {
-            const nameRegex = new RegExp(regex.email);
-            if (!nameRegex.test(email.replaceAll(' ', ''))) {
-                newErrors.email = Constants.errorStrings.emailErr
+            const nameRegex = new RegExp(regex.mobile);
+            if (!nameRegex.test(mobileNumb.replaceAll(' ', ''))) {
+                newErrors.mobileNumber = Constants.errorStrings.phoneNumberErr
             }
         }
         setErrors(newErrors);
@@ -38,17 +82,13 @@ const ResetPassword = (props: Propstype) => {
         e.preventDefault();
         if (validateForm()) {
             const data: any = {
-                email: email.replaceAll(' ', '')
+                mobileNumber: mobileNumb.replaceAll(' ', '')
             }
-            const checkIfExist = await checkEmailId(data.email, true);
-            if (checkIfExist?.success) {
-                const res: any = await callForgotPassword(data)
-                if (res.success) {
-                    const email_ = email.replaceAll(' ', '');
-                    props.updateSteps(props.step + 1, { email: email_ })
-                }
-            } else {
-                setShowToast(true, 'Email not exist.')
+            console.log(data.mobileNumber, data.mobileNumber.length)
+            const res: any = await callForgotPassword(data)
+            if (res.success) {
+                const mobileNumber = mobileNumb.replaceAll(' ', '');
+                props.updateSteps(props.step + 1, { mobileNumber })
             }
         }
     }
@@ -57,24 +97,16 @@ const ResetPassword = (props: Propstype) => {
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
                 <div className="form_field">
-                    <label className="form_label">Email</label>
+                    <label className="form_label">Phone Number</label>
                     <div className="text_field">
-                        <input
-                            className="detect_input"
-                            name="email"
-                            placeholder="Enter Email"
-                            value={email}
-                            onChange={changeHandler}
-                        />
-                        {/* <span className="detect_icon_ltr">+61</span> */}
+                        <input type="text" className="detect_input_ltr" placeholder="400 123 456" value={mobileNumb} onChange={changeHandler} maxLength={11} />
+                        <span className="detect_icon_ltr">+61</span>
                     </div>
-                    {!!errors.email && <span className="error_msg">{errors.email}</span>}
+                    {!!errors.mobileNumber && <span className="error_msg">{errors.mobileNumber}</span>}
                 </div>
 
                 <div className="form_field">
-                    <span className="show_label">
-                        Enter the email associated with your account and we will send a code to reset your password.
-                    </span>
+                    <span className="show_label">Enter the number associated with your account and we will send a code to reset your password.</span>
                 </div>
                 <div className="form_field">
                     <button className="fill_btn btn-effect">Next</button>

@@ -3,6 +3,7 @@ import { getJobDetails } from '../../redux/jobs/actions';
 import storageService from '../../utils/storageService';
 
 import notFound from '../../assets/images/not-found.png';
+import chatVideoIcon from '../../assets/images/video@3x.png';
 import dummy from '../../assets/images/u_placeholder.jpg';
 import viewMore from '../../assets/images/icon-direction-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
@@ -39,7 +40,7 @@ const UserMessages = (props: any) => {
 
     const [itemsMedia, setItemsMedia] = useState([]);
     const [toggler, setToggler] = useState(false);
-    const [selectedSlide, setSelectSlide] = useState<any>(0);
+    const [selectedSlide, setSelectSlide] = useState<any>(1);
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
 
@@ -53,7 +54,8 @@ const UserMessages = (props: any) => {
             setCurrentJobDetails(null);
             setToggle(false);
         }
-    }, [props.roomId, props.roomData]);
+    }, [props.roomId]);
+    // }, [props.roomId, props.roomData]);
 
     useEffect(() => {
         scrollToBottom();
@@ -61,7 +63,6 @@ const UserMessages = (props: any) => {
 
     const scrollToBottom = () => {
         if (null !== divRref?.current) {
-            console.log("divRref.current", divRref.current)
             const scroll =
                 divRref.current.scrollHeight -
                 divRref.current.clientHeight;
@@ -77,43 +78,60 @@ const UserMessages = (props: any) => {
     const onReceiveOfNewMsg = (arrmsg: any) => {
         console.log('arrmsg: ', arrmsg);
         setMessages(arrmsg);
+        // setInBoxLastMsg(arrmsg[arrmsg.length - 1]);
+        // setIsLoading(false);
+    }
+
+    useEffect(() => {
         let fsSlideObj: any = {};
         let mediaMsgs: any = [];
         let slideCount = 1;
-        if (arrmsg.length) {
-            mediaMsgs = arrmsg.filter((item: any, index: number) => {
+        if (messages.length) {
+            mediaMsgs = messages.filter((item: any, index: number) => {
                 if (item.messageType === 'image' || item.messageType === 'video') {
                     fsSlideObj[`${index}`] = slideCount++;
                     return item;
                 }
             });
+            setItemsMedia(mediaMsgs);
+            setFsSlideListner(fsSlideObj);
         }
-        setItemsMedia(mediaMsgs);
-        setFsSlideListner(fsSlideObj);
-        // setIsLoading(false);
-    }
+    }, [messages]);
     console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
+
+    const setInboxToTopWithLastMsg = (lastMsg: any) => {
+        const newInboxData = [...props.inBoxData];
+        const currentIndex = newInboxData.findIndex(i => i.roomId === props.roomId);
+        newInboxData[currentIndex].lastMsg = lastMsg;
+        newInboxData.splice(currentIndex, 1);
+        newInboxData.unshift(props.inBoxData[currentIndex]);
+        props.setInBoxData(newInboxData);
+        console.log('lastMsg: ', lastMsg);
+        console.log('currentIndex: ', currentIndex);
+        console.log('newInboxData: ', newInboxData);
+    }
 
     const sendMessage = async () => {
         //setIsLoading(true);
-        if (messageText || messageText.trim() !== "") {
-            sendTextMessage(props.roomId, messageText);
+        if (messageText && messageText.trimLeft() !== "") {
             setMessageText('');
-            // await sendTextMessage(props.roomId, messageText); 
+            const lastMsg: any = await sendTextMessage(props.roomId, messageText);
+            setInboxToTopWithLastMsg(lastMsg);
         }
     }
 
     const handleKeyDown = (event: any) => {
         if (event.key === 'Enter') {
-            console.log('do validate');
             sendMessage();
         }
     }
 
     const sendImageVideoMsg = async (url: string, msgType: string) => {
         //setIsLoading(true);
-        if (url && url !== '')
-            await sendImageVideoMessage(props.roomId, url, msgType);
+        if (url && url !== '') {
+            const lastMsg: any = await sendImageVideoMessage(props.roomId, url, msgType);
+            setInboxToTopWithLastMsg(lastMsg);
+        }
         setMessageText('');
     }
 
@@ -138,20 +156,6 @@ const UserMessages = (props: any) => {
         }
     }
 
-    const singleMessage = (data: any) => {
-        if (data.senderId == userId) {
-            return (<div className="sender_message" key={data.messageId}>
-                <p>{data.messageText}</p>
-            </div>)
-        } else {
-            return (
-                <div className="recive_message" key={data.messageId}>
-                    <p>{data.messageText}</p>
-                </div>
-            )
-        }
-    }
-
     const renderMediaItems = (itemsMedia: any) => {
         let sources: any = [];
         let types: any = [];
@@ -173,14 +177,16 @@ const UserMessages = (props: any) => {
     }
 
     const handleUpload = async (e: any) => {
+        let maxFileSize: number = 10;
         const formData = new FormData();
         const newFile = e.target.files[0];
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
-        console.log('fileType: ', fileType);
 
-        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
-
-        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mb
+        if (["mp4", "wmv", "avi"].includes(fileType)) {
+            maxFileSize = 20;
+        }
+        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > maxFileSize)) {
             setShowToast(true, "The file must be in proper format or size.")
             return;
         }
@@ -203,7 +209,6 @@ const UserMessages = (props: any) => {
     }
 
     const renderTextMsg = (msg: any) => {
-        // let curDate = moment(data.messageTimestamp).format('dd-mm-yyyy');
         let curDate = formatDateTime(msg.messageTimestamp, 'day');
         const messageClass = msg.senderId === userId ? 'message' : 'message recive_msg';
         if (lastDate === '' || lastDate !== curDate) {
@@ -211,7 +216,6 @@ const UserMessages = (props: any) => {
             return (
                 <>
                     <div className="date_time">
-                        {/* <span>Today</span> */}
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
@@ -244,6 +248,17 @@ const UserMessages = (props: any) => {
                     <div className={`${messageClass}`}>
                         <figure className="media">
                             <img src={msg.mediaUrl || notFound} alt="media"
+                                async-src={msg.mediaUrl || notFound}
+                                decoding="async"
+                                loading="lazy"
+                                onError={(e: any) => {
+                                    if (e?.target?.onerror) {
+                                        e.target.onerror = null;
+                                    }
+                                    if (e?.target?.src) {
+                                        e.target.src = notFound;
+                                    }
+                                }}
                                 onClick={() => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
@@ -258,6 +273,17 @@ const UserMessages = (props: any) => {
                 <div className={`${messageClass}`}>
                     <figure className="media">
                         <img src={msg.mediaUrl || notFound} alt="media"
+                            async-src={msg.mediaUrl || notFound}
+                            decoding="async"
+                            loading="lazy"
+                            onError={(e: any) => {
+                                if (e?.target?.onerror) {
+                                    e.target.onerror = null;
+                                }
+                                if (e?.target?.src) {
+                                    e.target.src = notFound;
+                                }
+                            }}
                             onClick={() => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
@@ -279,13 +305,14 @@ const UserMessages = (props: any) => {
                         <span>{curDate}</span>
                     </div>
                     <div className={`${messageClass}`}>
-                        <figure className="media">
+                        <figure className="media" style={{ backgroundColor: 'black' }}>
                             <video src={msg.mediaUrl || notFound}
+                                poster={chatVideoIcon}
                                 onClick={() => {
                                     setToggler((prev: any) => !prev);
                                     setSelectSlide(fsSlideListner[`${index}`]);
                                 }}
-                                style={{ height: '84px', width: '84px' }}
+                                style={{ height: '84px', width: '84px', padding: '25px' }}
                             />
                             <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                         </figure>
@@ -295,13 +322,14 @@ const UserMessages = (props: any) => {
         } else
             return (
                 <div className={`${messageClass}`}>
-                    <figure className="media">
+                    <figure className="media" style={{ backgroundColor: 'black' }}>
                         <video src={msg.mediaUrl || notFound}
+                            poster={chatVideoIcon}
                             onClick={() => {
                                 setToggler((prev: any) => !prev);
                                 setSelectSlide(fsSlideListner[`${index}`]);
                             }}
-                            style={{ height: '84px', width: '84px' }}
+                            style={{ height: '84px', width: '84px', padding: '25px' }}
                         />
                         <span className="time">{formatDateTime(msg.messageTimestamp, "time")}</span>
                     </figure>
@@ -310,6 +338,7 @@ const UserMessages = (props: any) => {
     }
 
     const displayMessages = (msg: any, index: number) => {
+        if (index === 0) lastDate = '';
         switch (msg.messageType) {
             case "text":
                 return renderTextMsg(msg);
@@ -320,15 +349,8 @@ const UserMessages = (props: any) => {
         }
     }
 
-
-    console.log(props.roomData, "props.roomData");
-
     const { sources, types } = renderMediaItems(itemsMedia);
-    console.log({
-        sources, types,
-        selectedSlide,
-        toggler
-    })
+
     return (props.isNoRecords ? (
         <div className="detail_col">
             <div className="flex_row">
@@ -346,7 +368,7 @@ const UserMessages = (props: any) => {
                 key={sources?.length}
                 // disableLocalStorage={true}
                 onClose={() => {
-                    setSelectSlide(0)
+                    setSelectSlide(1)
                 }}
             />
             <div className="detail_col">
@@ -356,14 +378,25 @@ const UserMessages = (props: any) => {
                     <div className={`chat_col ${toggle ? 'active' : ''}`}>
                         <div className="chat_user">
                             <figure className="u_img">
-                                <img src={props.roomData?.oppUserInfo?.image || dummy} alt="user-img" />
+                                <img
+                                    src={props.roomData?.oppUserInfo?.image || dummy}
+                                    alt="user-img"
+                                    onError={(e: any) => {
+                                        if (e?.target?.onerror) {
+                                            e.target.onerror = null;
+                                        }
+                                        if (e?.target?.src) {
+                                            e.target.src = dummy;
+                                        }
+                                    }}
+                                />
                             </figure>
                             <span className="name"
                                 onClick={() => {
                                     if (storageService.getItem('userType') === 2) {
-                                        props.history.push(`/tradie-info?tradeId=${props.roomData?.oppUserInfo?.userId}&type=1`)
+                                        props.history.push(`/tradie-info?tradeId=${props.roomData?.oppUserInfo?.userId}&hideInvite=true`);
                                     } else {
-                                        props.history.push(`/builder-info?builderId=${props.roomData?.oppUserInfo?.userId}&type=2`)
+                                        props.history.push(`/builder-info?builderId=${props.roomData?.oppUserInfo?.userId}`);
                                     }
                                 }}>{props.roomData?.oppUserInfo?.name}</span>
                             {!toggle && <span
@@ -449,9 +482,10 @@ const UserMessages = (props: any) => {
                             <button className="fill_btn full_btn btn-effect"
                                 onClick={() => {
                                     if (storageService.getItem('userType') === 1) {
-                                        props.history.push(`/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs&isActive=on`);
+                                        props.history.push(`/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs`);
                                     } else {
-                                        let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
+                                        // let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
+                                        let urlEncode: any = `?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`
                                         props.history.push(`/job-detail?${urlEncode}`);
                                     }
                                 }}>View Job details</button>
