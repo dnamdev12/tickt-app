@@ -248,22 +248,33 @@ var DayCell =
           style: {
             color: this.props.color
           }
-        }), this.renderSelectionPlaceholders(), this.renderPreviewPlaceholder(), _react["default"].createElement("span", {
-          className: this.props.styles.dayNumber
-        }, _react["default"].createElement("span", null, (0, _dateFns.format)(this.props.day, this.props.dayDisplayFormat))
-          , _react["default"].createElement("span", {
-            className: `color_1_${_moment(this.props.day).format('MM-DD-YYYY')}`
-          }),
+        }),
+          this.renderSelectionPlaceholders(),
+          this.renderPreviewPlaceholder(),
           _react["default"].createElement("span", {
-            className: `color_2_${_moment(this.props.day).format('MM-DD-YYYY')}`
-          }),
-          _react["default"].createElement("span", {
-            className: `color_3_${_moment(this.props.day).format('MM-DD-YYYY')}`
-          }),
-          _react["default"].createElement("span", {
-            className: `color_4_${_moment(this.props.day).format('MM-DD-YYYY')}`
-          })
-        ));
+            className: this.props.styles.dayNumber
+          }, _react["default"].createElement("span", null, (0, _dateFns.format)(this.props.day, this.props.dayDisplayFormat))
+            , _react["default"].createElement("span", {
+              className: `color_1_${_moment(this.props.day).format('MM-DD-YYYY')} color_element_1`,
+              // id: `color1${_moment(this.props.day).format('MMDDYYYY')}`,
+              // className:'color_element_1'
+            }),
+            _react["default"].createElement("span", {
+              className: `color_2_${_moment(this.props.day).format('MM-DD-YYYY')} color_element_2`,
+              // id: `color2${_moment(this.props.day).format('MMDDYYYY')}`,
+              // className:'color_element_2'
+            }),
+            _react["default"].createElement("span", {
+              className: `color_3_${_moment(this.props.day).format('MM-DD-YYYY')} color_element_3`,
+              // id: `color3${_moment(this.props.day).format('MMDDYYYY')}`,
+              // className:'color_element_3'
+            }),
+            _react["default"].createElement("span", {
+              className: `color_4_${_moment(this.props.day).format('MM-DD-YYYY')} color_element_4`,
+              // id: `color4${_moment(this.props.day).format('MMDDYYYY')}`,
+              // className:'color_element_4'
+            })
+          ));
       }
     }]);
 

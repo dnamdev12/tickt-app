@@ -19,7 +19,7 @@ var _default = {
   days: 'rdrDays',
   day: 'rdrDay',
   dayNumber: 'rdrDayNumber',
-  dayPassive: 'rdrDayPassive hide',
+  dayPassive: 'rdrDayPassive', // hide
   dayToday: 'rdrDayToday',
   dayStartOfWeek: 'rdrDayStartOfWeek',
   dayEndOfWeek: 'rdrDayEndOfWeek',
