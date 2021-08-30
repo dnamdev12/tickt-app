@@ -52,6 +52,10 @@ import FsLightbox from 'fslightbox-react';
 import { setShowToast } from '../../redux/common/actions';
 
 import { JobCancelReasons } from '../../utils/common';
+
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
 interface PropsType {
     history: any,
     location: any,
@@ -680,7 +684,75 @@ const JobDetailsPage = (props: PropsType) => {
                                     </OwlCarousel>
                                 </figure>
                             </div>
+
+
+
                             <div className="flex_col_sm_4 relative">
+
+                                {/* <div style={{
+                                    zIndex: 9999,
+                                    position: 'absolute',
+                                    background: '#ccc',
+                                    width:'100%'
+                                }}>
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                        >
+                                            Job cancellation request
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="chang_req_card mt-sm">   
+                                                <p className="commn_para">
+                                                    {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                                </p>
+                                                {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
+                                                <button
+                                                    onClick={() => {
+                                                        handleCancelJob(1, jobDetailsData)
+                                                    }}
+                                                    className="fill_btn btn-effect">
+                                                    {'Accept'}
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        handleCancelJob(2, jobDetailsData)
+                                                    }}
+                                                    className="fill_grey_btn btn-effect">
+                                                    {'Reject'}
+                                                </button>
+                                            </div>
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                        >
+                                            Change request  reason
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                                            sit amet blandit leo lobortis eget.
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                        >
+                                            Job cancelled reason
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                          {jobDetailsData?.reasonForCancelJobRequest}
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </div> */}
+
+
                                 <div className="detail_card">
                                     {console.log({ jobDetailsData, paramStatus })}
                                     {paramStatus === 'CANCELLED' &&
@@ -695,6 +767,18 @@ const JobDetailsPage = (props: PropsType) => {
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
                                         </div>}
+
+                                    {/* {paramStatus === 'Pending dispute' &&
+                                        jobDetailsData?.changeRequestDeclineReason?.length > 0 &&
+                                        <div className="chang_req_card mb-sm">
+                                            <span className="sub_title">Job cancelled reason</span>
+                                            <p className="commn_para line-2">
+                                                {jobDetailsData?.changeRequestDeclineReason}
+                                            </p>
+                                        </div>} */}
+
+
+
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">

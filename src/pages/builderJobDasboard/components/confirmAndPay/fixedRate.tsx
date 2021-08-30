@@ -36,6 +36,7 @@ const FixedRate = (props: any) => {
             <ConfirmPay
                 toggleDetails={toggleDetails}
                 jobName={props?.jobName}
+                dataItem={props?.data}
                 backToScreen={backToScreen}
                 total={selectedItems?.total}
                 onSubmitAccept={props.onSubmitAccept}
