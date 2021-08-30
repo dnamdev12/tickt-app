@@ -3,12 +3,14 @@ import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-d
 import PrivateRoute from './privateRoute';
 import Header from '../common/header/index';
 import ScrollToTop from '../common/scrollToTop';
+import CustomNotification from "../common/customNotification";
 
 const Routes = () => {
   return (
     <Router>
       <ScrollToTop />
       <Header />
+      <CustomNotification />
       <Switch>
         {routes.map((route: any) => {
           if (route.redirectTO) {
