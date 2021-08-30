@@ -30,7 +30,7 @@ const label: { [index: string]: string } = {
 }
 
 const pattern = "^([0-9][0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
-
+const STRING_ERROR = 'Selected data is fully engage';
 const AddEditMile = (props: any) => {
     const { resetItems, item } = props;
     const [isToggle, setToggle] = useState(false);
@@ -109,7 +109,7 @@ const AddEditMile = (props: any) => {
 
     const onMountCallable = () => {
         let count_times: any = {};
-        let randomColors = getRandomColors();
+        // let randomColors = getRandomColors();
         let milestones = props.milestones;
         let filteredItems = milestones.filter((item: any) => {
             let toDate = item?.toDate;
@@ -138,14 +138,18 @@ const AddEditMile = (props: any) => {
             filteredItems.forEach((item: any, index: any) => {
                 let to_date = item?.to_date;
                 let from_date = item?.from_date;
-                let leftSpace: any = '0px';
+                let color_index = index;
+                if (index > 500) {
+                    // make random index from the limit 0 to 500.
+                    // if the index is greater than 500.
+                    color_index = Math.floor((Math.random() * 500) + 1);
+                }
 
                 if (!to_date && from_date) {
                     if (count_times[from_date] > -1) {
                         count_times[from_date]++;
                     }
 
-                    // let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
                     let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
                         let element_from = from_element[0];
@@ -154,7 +158,7 @@ const AddEditMile = (props: any) => {
                         }
 
                         if (element_from) {
-                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                            element_from.classList.add(`color_${color_index}`);
                         }
                     }
                 }
@@ -168,34 +172,44 @@ const AddEditMile = (props: any) => {
                         count_times[to_date]++;
                     }
 
-                    let colorbyIndex = randomColors[index];
-                    // console.log({ count_times },'----->',{class:`color_${count_times[from_date]}_${from_date}`})
+                    // let colorbyIndex = randomColors[index];
                     let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
-                    // console.log({ from_element, length:from_element?.length, })
                     if (from_element) {
-                        let element_from = from_element[0];
+                        let element_from = null;
+
                         if (from_element?.length > 1) {
-                            element_from = from_element[1];
+                            if (!from_element[0].parentElement.parentElement.classList.contains('rdrDayPassive')) {
+                                element_from = from_element[0];
+                            } else {
+                                element_from = from_element[1];
+                            }
+                        } else {
+                            element_from = from_element[0];
                         }
-                        console.log({ element_from })
+
                         if (element_from) {
-                            element_from.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'}; from:${from_date}`);
+                            element_from.classList.add(`color_${color_index}`)
                         }
                     }
 
                     let to_element: any = document.getElementsByClassName(`color_${count_times[to_date]}_${to_date}`);
-                    
                     if (to_element) {
-                        let element_to = to_element[0];
+                        let element_to = null;
                         if (to_element?.length > 1) {
-                            element_to = to_element[1];
+                            if (!to_element[0].parentElement.parentElement.classList.contains('rdrDayPassive')) {
+                                element_to = to_element[0];
+                            } else {
+                                element_to = to_element[1];
+                            }
+                        } else {
+                            element_to = to_element[0];
                         }
-                        console.log({ element_to })
                         if (element_to) {
-                            element_to.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[to_date] == 1 ? '10px' : count_times[to_date] == 2 ? '20px' : count_times[to_date] == 3 ? '30px' : '40px'}; to:${to_date}`);
+                            element_to.classList.add(`color_${color_index}`);
                         }
                     }
                 }
+
             })
         }
     }
@@ -222,20 +236,17 @@ const AddEditMile = (props: any) => {
                 })
             }
         }
+
+        const interval = setInterval(() => {
+            onMountCallable();
+        }, 2000);
+
+        return () => {
+            console.log(`clearing interval`);
+            clearInterval(interval);
+        };
         // onMountCallable();
     }, []);
-
-
-    useEffect(() => {
-        console.log({ toggleCalender });
-        onMountCallable();
-
-        setTimeout(() => {
-            console.log('Callable------>')
-            onMountCallable();
-        }, 1000);
-    }, [toggleCalender])
-
 
     const checkIfChange = () => {
         let renderDuration: any = renderTimeWithCustomFormat(
@@ -280,24 +291,24 @@ const AddEditMile = (props: any) => {
 
             if (count_times[mile_start] === 4) {
                 if (mile_start == time_start || mile_start == time_end) {
-                    setShowToast(true, 'Selected start data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             } else {
                 if (count_times[time_start] === 4) {
-                    setShowToast(true, 'Selected start data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             }
 
             if (count_times[mile_end] === 4) {
                 if (mile_end == time_start || mile_end == time_end) {
-                    setShowToast(true, 'Selected end data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             } else {
                 if (count_times[time_end] === 4) {
-                    setShowToast(true, 'Selected start data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             }
@@ -415,9 +426,9 @@ const AddEditMile = (props: any) => {
     if (!moment(calenderItems?.startDate).isValid()) {
         ItemCal = { startDate: new Date(), endDate: '', key: 'selection' }
     }
-    
-    let min_date:any = moment(item?.fromDate).isValid() ? moment(item?.fromDate).toDate() : new Date();
-    let max_date:any = moment(item?.toDate).isValid() && !moment(item?.fromDate).isSame(item?.toDate) ? moment(item?.toDate).toDate() : moment().add(2, 'years').toDate();
+
+    let min_date: any = moment(item?.fromDate).isValid() ? moment(item?.fromDate).toDate() : new Date();
+    let max_date: any = moment(item?.toDate).isValid() && !moment(item?.fromDate).isSame(item?.toDate) ? moment(item?.toDate).toDate() : moment().add(2, 'years').toDate();
     return (
         <div className="flex_row">
             <div className="flex_col_sm_12">
@@ -463,7 +474,7 @@ const AddEditMile = (props: any) => {
                             padding: '12px 20px 0px'
                         }}
                         className="item-modal-ctm custom_wh portfolio_preview ">
-                            {console.log({jobDetail:props.jobDetail})}
+                        {console.log({ jobDetail: props.jobDetail })}
                         <DateRangePicker
                             ranges={[ItemCal]}
                             onChange={(date: any) => {
@@ -506,9 +517,9 @@ const AddEditMile = (props: any) => {
                             <p className="sub_title">
                                 {`${props.editMile === '' ? '' : 'Edit '}`}
                                 {`${props.editMile === '' && props?.isSame ? `Milestones ${props?.milestones?.length + 1}` :
-                                 props.editMile !== '' && props.editMile > -1 && props?.isSame ? `Milestones ${props.editMile + 1}` : 
-                                 props.editMile !== '' && props.editMile > -1 && !props?.isSame ? `Milestone ${props.editMile + 1}` : 
-                                 props.editMile === '' && !props?.isSame ? `Milestone ${props?.milestones?.length + 1}` : null}`}
+                                    props.editMile !== '' && props.editMile > -1 && props?.isSame ? `Milestones ${props.editMile + 1}` :
+                                        props.editMile !== '' && props.editMile > -1 && !props?.isSame ? `Milestone ${props.editMile + 1}` :
+                                            props.editMile === '' && !props?.isSame ? `Milestone ${props?.milestones?.length + 1}` : null}`}
                                 {/* {`${!props?.isSame && props.editMile ? ' Mileston-e ' + props.editMile : props?.isSame && props.editMile > -1 ? ' Milesto-ne ' + (props.editMile + 1) : props?.milestones?.length + 1}`}
                                 {console.log({ props })} */}
                                 {/* {console.log({ props })} */}

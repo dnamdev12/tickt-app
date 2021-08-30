@@ -304,8 +304,10 @@ const Header = (props: any) => {
 
     const chatClicked = () => {
         setToggleMenu(false);
-        setActiveLink('chat');
-        history.push('/chat')
+        if (userType === 1 || userType === 2) {
+            setActiveLink('chat');
+            history.push('/chat');
+        }
     }
 
     const jobClick = () => {
@@ -463,6 +465,9 @@ const Header = (props: any) => {
                             <figure>
                                 <img
                                     onClick={() => {
+                                        if (userType === 0) {
+                                            return;
+                                        }
                                         if (pathname === '/') {
                                             window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
                                             return;
@@ -479,8 +484,12 @@ const Header = (props: any) => {
                             <li className="tour-discover">
                                 <a
                                     onClick={() => {
-                                        setActiveLink('discover');
-                                        history.push('/');
+                                        if (userType === 1 || userType === 2) {
+                                            setActiveLink('discover');
+                                            history.push('/');
+                                        } else {
+                                            return;
+                                        }
                                     }}
                                     className={startTour ? activeTarget === '.tour-discover a' ? 'active' : '' : activeLink === 'discover' ? 'active' : ''}>
                                     {'Discover'}
@@ -646,8 +655,13 @@ const Header = (props: any) => {
 
                                         {notificationData.list?.length > 0 &&
                                             notificationData.list.map((item: any) =>
-                                                <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={() => {
-                                                    markNotifAsRead({ notificationId: item?._id });
+                                                <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={async () => {
+                                                    if (item?.read === 0) {
+                                                        const res: any = await markNotifAsRead({ notificationId: item?._id });
+                                                        if (item?.notificationType === 13 && res?.success) {
+                                                            callNotificationList(true, true);
+                                                        }
+                                                    }
                                                     handleClose('notification');
                                                     props.history.push(onNotificationClick(item));
                                                 }}

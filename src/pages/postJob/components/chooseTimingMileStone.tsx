@@ -32,6 +32,7 @@ interface Proptypes {
 }
 
 const default_format = 'YYYY-MM-DD';
+const STRING_ERROR = 'Selected data is fully engage';
 const ChooseTimingMileStone = ({
     data,
     stepCompleted,
@@ -53,8 +54,13 @@ const ChooseTimingMileStone = ({
     const [error, setError] = useState('');
     const [localChanges, setLocalChanges] = useState(false);
 
+    const [isToggle, setIsToggle] = useState(false);
+
+    const [force, forceUpdate] = useState<any>([]);
+
     const onMountCallable = () => {
         let count_times: any = {};
+        // console.log({ randomColors })
         let filteredItems = milestones.filter((item: any) => {
             let to_date = item?.to_date;
             let from_date = item?.from_date;
@@ -85,15 +91,18 @@ const ChooseTimingMileStone = ({
             filteredItems.forEach((item: any, index: any) => {
                 let to_date = item?.to_date;
                 let from_date = item?.from_date;
-
-                let leftSpace: any = '0px';
+                let color_index = index;
+                if(index > 500){
+                    // make random index from the limit 0 to 500.
+                    // if the index is greater than 500.
+                    color_index = Math.floor((Math.random()*500) + 1); 
+                }
 
                 if (!to_date && from_date) {
                     if (count_times[from_date] > -1) {
                         count_times[from_date]++;
                     }
 
-                    // let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`)[1];
                     let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
                         let element_from = from_element[0];
@@ -102,7 +111,7 @@ const ChooseTimingMileStone = ({
                         }
 
                         if (element_from) {
-                            element_from.setAttribute("style", `background-color: ${randomColors[index]}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'};`);
+                            element_from.classList.add(`color_${color_index}`);
                         }
                     }
                 }
@@ -116,44 +125,62 @@ const ChooseTimingMileStone = ({
                         count_times[to_date]++;
                     }
 
-                    let colorbyIndex = randomColors[index];
-
+                    // let colorbyIndex = randomColors[index];
                     let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
-                        let element_from = from_element[0];
+                        let element_from = null;
+
                         if (from_element?.length > 1) {
-                            element_from = from_element[1];
+                            if (!from_element[0].parentElement.parentElement.classList.contains('rdrDayPassive')) {
+                                element_from = from_element[0];
+                            } else {
+                                element_from = from_element[1];
+                            }
+                        } else {
+                            element_from = from_element[0];
                         }
 
                         if (element_from) {
-                            element_from.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[from_date] == 1 ? '10px' : count_times[from_date] == 2 ? '20px' : count_times[from_date] == 3 ? '30px' : '40px'}; from:${from_date}`);
+                            element_from.classList.add(`color_${color_index}`)
                         }
                     }
 
                     let to_element: any = document.getElementsByClassName(`color_${count_times[to_date]}_${to_date}`);
                     if (to_element) {
-                        let element_to = to_element[0];
+                        let element_to = null;
                         if (to_element?.length > 1) {
-                            element_to = to_element[1];
+                            if (!to_element[0].parentElement.parentElement.classList.contains('rdrDayPassive')) {
+                                element_to = to_element[0];
+                            } else {
+                                element_to = to_element[1];
+                            }
+                        } else {
+                            element_to = to_element[0];
                         }
                         if (element_to) {
-                            element_to.setAttribute("style", `background-color: ${colorbyIndex}; padding: 5px; position: absolute; bottom: 0; border-radius: 5px; left: ${count_times[to_date] == 1 ? '10px' : count_times[to_date] == 2 ? '20px' : count_times[to_date] == 3 ? '30px' : '40px'}; to:${to_date}`);
+                            element_to.classList.add(`color_${color_index}`);
                         }
                     }
                 }
-            })
+            });
         }
     }
 
     useEffect(() => {
-        onMountCallable()
-    }, [])
+        const interval = setInterval(() => {
+             onMountCallable();
+          }, 1500);
 
+          return () => {
+            console.log(`clearing interval`);
+            clearInterval(interval);
+          };
+    }, []);
 
     const handleChange = (item: any) => {
         setRange(item.selection);
         handleCheck(item.selection);
-        onMountCallable()
+        onMountCallable();
     };
 
     const handleCheck = (item: any) => {
@@ -200,24 +227,24 @@ const ChooseTimingMileStone = ({
 
             if (count_times[mile_start] === 4) {
                 if (mile_start == time_start || mile_start == time_end) {
-                    setShowToast(true, 'Selected start data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             } else {
                 if (count_times[time_start] === 4) {
-                    setShowToast(true, 'Selected start data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             }
 
             if (count_times[mile_end] === 4) {
                 if (mile_end == time_start || mile_end == time_end) {
-                    setShowToast(true, 'Selected end data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             } else {
                 if (count_times[time_end] === 4) {
-                    setShowToast(true, 'Selected start data is fully engage');
+                    setShowToast(true, STRING_ERROR);
                     catch_boolean = false;
                 }
             }
@@ -271,7 +298,12 @@ const ChooseTimingMileStone = ({
                             <div className="flex_col_sm_5">
                                 <div className="relate">
                                     <button className="back" onClick={handleStepBack}></button>
-                                    <span className="title">Timing</span>
+                                    <span
+                                        onClick={() => {
+                                            onMountCallable();
+                                            console.table({ randomColors })
+                                        }}
+                                        className="title">Timing</span>
                                 </div>
                                 <p className="commn_para">
                                     {'Select a start and end date, or a due date.'}

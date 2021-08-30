@@ -35,6 +35,9 @@ import 'owl.carousel/dist/assets/owl.theme.default.css';
 import FsLightbox from 'fslightbox-react';
 import Skeleton from 'react-loading-skeleton';
 import storageService from '../../utils/storageService';
+
+import { JobCancelReasons } from '../../utils/common';
+
 interface PropsType {
     history: any,
     location: any,
@@ -437,7 +440,15 @@ const JobDetailsPage = (props: PropsType) => {
             if (postedBy && Array.isArray(postedBy) && postedBy[0] && postedBy[0].builderImage) {
                 return (
                     <img
-                        src={postedBy[0].builderImage}
+                        src={postedBy[0]?.builderImage || dummy}
+                        onError={(e: any) => {
+                            if (e?.target?.onerror) {
+                                e.target.onerror = null;
+                            }
+                            if (e?.target?.src) {
+                                e.target.src = dummy;
+                            }
+                        }}
                         alt="traide-img"
                     />
                 )
@@ -555,7 +566,8 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.jobStatus === 'cancelled' &&
                                         jobDetailsData?.reasonForCancelJobRequest > 0 && <div className="chang_req_card mb-sm">
                                             <span className="sub_title">Job cancelled</span>
-                                            {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}
+                                            {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'} */}
+                                            {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
@@ -586,7 +598,11 @@ const JobDetailsPage = (props: PropsType) => {
                                     {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
-                                            <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li>
+                                            {/* <li>{jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'}</li> */}
+                                            <li>
+                                                {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                            </li>
+
                                             <li>{jobDetailsData?.reasonNoteForCancelJobRequest}</li>
                                         </p>
                                         <button className="fill_btn btn-effect"
@@ -596,6 +612,12 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}
                                         >Reject</button>
                                     </div>}
+                                    {/* {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && !jobDetailsData?.isCancelJobRequest && jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card mt-sm">
+                                        <span className="sub_title">Job cancel rejected reason</span>
+                                        <p className="commn_para line-2">
+                                            <li>{jobDetailsData?.rejectReasonNoteForCancelJobRequest}</li>
+                                        </p>
+                                    </div>} */}
                                     {/* Added  && jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
                                     {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' && jobDetailsData?.applyButtonDisplay ? (
                                         <div className="bottom_btn">
@@ -948,21 +970,22 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
                                     {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
-                                        {jobDetailsData.jobStatus === 'active' && <a href="javascript:void(0)" className="chat circle"
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                props.history.push({
-                                                    pathname: `/chat`,
-                                                    state: {
-                                                        tradieId: storageService.getItem('userInfo')?._id,
-                                                        builderId: jobDetailsData?.postedBy?.builderId,
-                                                        jobId: jobDetailsData?.jobId,
-                                                        jobName: jobDetailsData?.jobName
-                                                    }
-                                                })
-                                            }
-                                            }
-                                        />}
+                                        {jobDetailsData.jobStatus === 'active' &&
+                                            <span className="chat circle"
+                                                onClick={(e) => {
+                                                    e.preventDefault();
+                                                    props.history.push({
+                                                        pathname: `/chat`,
+                                                        state: {
+                                                            tradieId: storageService.getItem('userInfo')?._id,
+                                                            builderId: jobDetailsData?.postedBy?.builderId,
+                                                            jobId: jobDetailsData?.jobId,
+                                                            jobName: jobDetailsData?.jobName
+                                                        }
+                                                    })
+                                                }
+                                                }
+                                            />}
                                         <div className="user_wrap"
                                             onClick={() => {
                                                 if (jobDetailsData?.postedBy?.builderName) {
@@ -970,9 +993,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                 }
                                             }}>
                                             <figure className="u_img">
-                                                {jobDetailsData?.postedBy?.builderImage ? (
+                                                {console.log({
+                                                    image: jobDetailsData?.postedBy?.builderImage
+                                                })}
+                                                {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
                                                     <img
-                                                        src={jobDetailsData?.postedBy?.builderImage ? jobDetailsData?.postedBy?.builderImage : dummy}
+                                                        src={jobDetailsData?.postedBy?.builderImage || dummy}
                                                         alt="traide-img"
                                                         onError={(e: any) => {
                                                             if (e?.target?.onerror) {
@@ -983,7 +1009,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                             }
                                                         }}
                                                     />
-                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : null}
+                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
+                                                    <img
+                                                        src={dummy}
+                                                        alt="traide-img"
+                                                    />
+                                                )}
                                             </figure>
                                             <div className="details">
                                                 <span className="name">

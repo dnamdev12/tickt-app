@@ -34,7 +34,7 @@ const ConfirmAndPay = (props: any) => {
             setToggle(true);
             let data = props?.toggleDetails?.data;
             let exp_date = (data?.exp_month).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
-            let data_:any = {
+            let data_: any = {
                 cardId: data?.cardId,
                 number: `${data?.last4}`,
                 cardholderName: data?.name,
@@ -155,6 +155,7 @@ const ConfirmAndPay = (props: any) => {
                                 onClick={() => {
                                     setDeleteToggle((prev: any) => !prev)
                                 }}
+
                                 color="primary">
                                 {'No'}
                             </Button>
@@ -266,9 +267,17 @@ const ConfirmAndPay = (props: any) => {
                         <button
                             onClick={() => {
                                 // this will submit the accept request.
+                                let index = props?.dataItem?.selectedMilestoneIndex?.index;
+                                let milestoneAmount = props?.dataItem?.itemDetails.milestones[index]?.milestoneAmount;
+                                console.log({
+                                    props,
+                                    milestoneAmount,
+                                    index
+                                }, '-------->');
                                 props.onSubmitAccept({
                                     total: props.total,
-                                    cardId: paymentDetail[selected]?.cardId
+                                    cardId: paymentDetail[selected]?.cardId,
+                                    milestoneAmount
                                 });
                             }}
                             className={`fill_btn full_btn btn-effect ${!paymentDetail?.length ? 'disable_btn' : ''}`}>

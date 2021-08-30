@@ -1486,6 +1486,9 @@ body {
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
+        @media(max-width: 1366px){
+          max-width: 110px;
+        }
       }
       .date {
         font-size: 12px;
@@ -5348,6 +5351,9 @@ div#light-box div {
       padding: 0px 10px 20px 20px;
       height: calc(100vh - 150px);
       transition: all ease-in 0.3s;
+      @media(max-width: 1366px){
+        width: 95%;
+      }
       &.active{
         width: 55%;
         @media(max-width: 768px){
@@ -5456,6 +5462,18 @@ div#light-box div {
             position: relative;
             overflow: hidden;
             cursor: pointer;
+            &.media_video{
+              background-color: var(--blue);
+              position: relative;
+              video{
+                width: 30px;
+                height: 30px;
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+              }
+            }
             img{
               width: 100%;
               height: 100%;
@@ -5496,6 +5514,9 @@ div#light-box div {
         width: 100%;
         background: var(--white);
         box-shadow: 0 -2px 40px 0 rgba(174, 174, 174, 0.2);
+        @media(max-width: 1366px){
+          width: 98%;
+        }
         @media(max-width: 768px){
           bottom: 50px;
         }
@@ -5726,4 +5747,10 @@ div#light-box div {
 
 .visibility-hidden {
   visibility: hidden;
+}
+
+//------------ Added for new-applicant ------ //
+.ptl-tradie-box {
+  padding-bottom: 15px;
+  padding-left: 10px;
 }

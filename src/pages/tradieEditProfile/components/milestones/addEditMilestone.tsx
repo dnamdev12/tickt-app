@@ -361,10 +361,11 @@ class AddEditMilestone extends Component<Props, State> {
     }
 
     toggleCalenderTime = (data?: any) => {
+        console.log({data},'----------------------------------------------------------------------->')
         this.setState({
             toggleAddTimings: false,
-            from_date: moment(data?.startDate).isValid() ? moment(data?.startDate).format('MM-DD-YYYY') : '',
-            to_date: moment(data?.endDate).isValid() ? moment(data?.endDate).format('MM-DD-YYYY') : '',
+            from_date: data && moment(data?.startDate).isValid() ? moment(data?.startDate).format('MM-DD-YYYY') : '',
+            to_date: data && moment(data?.endDate).isValid() ? moment(data?.endDate).format('MM-DD-YYYY') : '',
         })
     }
 

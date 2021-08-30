@@ -11,7 +11,7 @@ interface Proptypes {
   history: any
   loading: boolean;
   newJobsCount: number,
-  pastJobList: Array<any>,
+  pastJobList: any,
   getPastJobList: (page: number) => void,
   resetPastJobList: () => void,
 };
@@ -20,6 +20,7 @@ const PastJobs = (props: Proptypes) => {
   const [jobList, setJobList] = useState<Array<any>>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
+  const [isLoad, setIsLoad] = useState(true);
 
   let totalJobsCount: number = props.newJobsCount;
   console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
@@ -39,10 +40,11 @@ const PastJobs = (props: Proptypes) => {
   }
 
   useEffect(() => {
-    if (props.pastJobList.length) {
+    if (props.pastJobList?.length || Array.isArray(props.pastJobList)) {
       const allJobs = [...jobList, ...props.pastJobList];
       console.log(jobList, "jobList", props.pastJobList, "props.pastJobList", allJobs, "allJobs");
       setJobList(allJobs);
+      setIsLoad(false);
       setPageNo(pageNo + 1);
       if (props.pastJobList.length < 10) { setHasMoreItems(false); }
       props.resetPastJobList();
@@ -60,7 +62,7 @@ const PastJobs = (props: Proptypes) => {
       >
         <span className="sub_title">Past Jobs</span>
         <div className="flex_row tradies_row">
-          {!props.loading && jobList.length ? jobList.map((item: any) => (
+          {!isLoad && !props.loading && jobList.length ? jobList.map((item: any) => (
             <div className="flex_col_sm_6" key={item.jobId}>
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${item.jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
@@ -124,7 +126,7 @@ const PastJobs = (props: Proptypes) => {
                 </NavLink>}
               </div>
             </div>
-          )) : !props.loading && (
+          )) : !isLoad && !props.loading && (
             <div className="no_record  m-t-vh">
               <figure className="no_img">
                 <img src={noDataFound} alt="data not found" />

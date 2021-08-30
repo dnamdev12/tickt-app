@@ -8,8 +8,9 @@ import FsLightbox from 'fslightbox-react';
 import addMedia from "../../../../assets/images/add-image.png";
 import close from '../../../../assets/images/icon-close-1.png';
 
-const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
+import { JobLodgeReasons } from '../../../../utils/common';
 
+const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 interface PropTypes {
     item: any,
     history: any,
@@ -140,6 +141,21 @@ const LodgeDispute = (props: PropTypes) => {
         }
     }
 
+    const commonRenderValues = ({ id }: any) => {
+        return (
+            <div className="checkbox_wrap agree_check">
+                <input
+                    value={reason}
+                    onClick={() => { setStateData((prev: any) => ({ ...prev, reason: id })) }}
+                    checked={reason === id}
+                    name="Reason" className="filter-type filled-in" type="checkbox" id={`reason${id}`} />
+                <label htmlFor={`reason${id}`}>
+                    {JobLodgeReasons(id)}
+                </label>
+            </div>
+        )
+    }
+
     const renderFilteredItems = () => {
         let sources: any = [];
         let types: any = [];
@@ -181,28 +197,19 @@ const LodgeDispute = (props: PropTypes) => {
 
                     <div className="reason_wrap">
                         <div className="f_spacebw">
-                            <div className="checkbox_wrap agree_check">
-                                <input
-                                    value={reason}
-                                    onClick={() => { setStateData((prev: any) => ({ ...prev, reason: prev.reason === 1 ? 0 : 1 })) }}
-                                    checked={reason === 1}
-                                    name="Reason" className="filter-type filled-in" type="checkbox" id="reason1" />
-                                <label htmlFor="reason1">
-                                    {'I got a better job'}
-                                </label>
-                            </div>
-                            <div className="checkbox_wrap agree_check">
-                                <input
-                                    value={reason}
-                                    onClick={() => { setStateData((prev: any) => ({ ...prev, reason: prev.reason === 2 ? 0 : 2 })) }}
-                                    checked={reason === 2}
-                                    name="Reason" className="filter-type filled-in" type="checkbox" id="reason2" />
-                                <label htmlFor="reason2">
-                                    {'I am not the right fit for the job'}
-                                </label>
-                            </div>
+                            {commonRenderValues({ id: 1 })}
+                            {commonRenderValues({ id: 2 })}
                         </div>
 
+                        <div className="f_spacebw">
+                            {commonRenderValues({ id: 3 })}
+                            {commonRenderValues({ id: 4 })}
+                        </div>
+
+                        <div className="f_spacebw">
+                            {commonRenderValues({ id: 5 })}
+                            {commonRenderValues({ id: 6 })}
+                        </div>
                     </div>
 
                 </div>

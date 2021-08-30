@@ -20,13 +20,13 @@ const MilestoneApprove = (props: any) => {
     const [loadingTrue, setLoadingTrue] = useState(false);
 
     if (data) {
-        let jobName:any = data?.selectedItem?.jobName;
-        let jobId:any = data?.selectedItem?.jobId;
-        let description:any = data?.selectedMile?.description;
-        let hoursWorked:any = data?.selectedMile?.hoursWorked;
-        let images:any = data?.selectedMile?.images;
-        let milestones:any = data?.itemDetails?.milestones;
-        let index:any = data?.selectedMilestoneIndex?.index;
+        let jobName: any = data?.selectedItem?.jobName;
+        let jobId: any = data?.selectedItem?.jobId;
+        let description: any = data?.selectedMile?.description;
+        let hoursWorked: any = data?.selectedMile?.hoursWorked;
+        let images: any = data?.selectedMile?.images;
+        let milestones: any = data?.itemDetails?.milestones;
+        let index: any = data?.selectedMilestoneIndex?.index;
 
         // let {
         //     selectedMilestoneIndex: { index },
@@ -44,9 +44,14 @@ const MilestoneApprove = (props: any) => {
                 "jobId": jobId,
                 "milestoneId": item?.milestoneId,
                 "paymentMethodId": data?.cardId,
+                "milestoneAmount": data?.milestoneAmount,
                 "amount": total.replace("$", "")
             }
-            
+            console.log({
+                data,
+                data_
+            })
+            return
             let response: any = await milestoneAcceptOrDecline(data_);
             if (response?.success) {
                 resetStateLocal();
