@@ -45,6 +45,8 @@ const onNotificationClick = (notification) => {
     // const url = 'https://ticktreactdev.appskeeper.in/';
     if (notification?.notificationType === '25') {
         return `${url}chat`;
+    } else if (notification?.notificationType === '13') {
+        return `${url}`;
     }
     const { notificationType, user_type, receiverId, senderId, jobId } = notification;
     let extra_data = JSON.parse(notification?.extra_data);
@@ -105,7 +107,7 @@ const onNotificationClick = (notification) => {
                 return `${url}jobs?active=${type === 1 ? `past` : type === 2 ? `active` : type === 3 ? 'applicant' : 'active'}`;
             }
         case 13: //BLOCK_ACCOUNT
-            return `${url}home`;
+            return `${url}`;
         case 14: //MARK_MILESTONE
             if (user_type == 1) {
                 if (extra_data?.jobStatusText === 'COMPLETED') {
@@ -125,7 +127,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}job-details-page?jobId=${jobId}&tradeId=${extra_data?.tradeId}&specializationId=${extra_data?.specializationId}`;
             } else {
-                return `${url}home`;
+                return `${url}`;
             }
         case 16: //SELF_REVIEW_LIST_OPEN
             if (user_type == 1) {
@@ -137,7 +139,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}tradie-vouchers?tradieId=${receiverId}`;
             } else {
-                return `${url}home`;
+                return `${url}`;
             }
         case 18: //ADMIN_NOTIFICATION
             return `${url}admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
@@ -146,7 +148,7 @@ const onNotificationClick = (notification) => {
         case 25: //CHAT_NOTIFICATION
             return `${url}chat`;
         default:
-            return `${url}home`;
+            return `${url}`;
     }
 }
 

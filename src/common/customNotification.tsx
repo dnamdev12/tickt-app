@@ -4,13 +4,14 @@ import { setShowNotification } from '../redux/common/actions';
 import { formatNotificationTime } from '../utils/common';
 import { onNotificationClick } from '../utils/common';
 import { markNotifAsRead } from '../redux/auth/actions';
-
+import { useHistory } from 'react-router-dom';
 import dummy from '../assets/images/u_placeholder.jpg';
 import close from '../assets/images/icon-close-1.png';
 
 const NOTIFICATION_TIMEOUT = 3750;
 
 const CustomNotification = (props: any) => {
+    const history: any = useHistory();
     const notification = props.notificationData?.data;
     console.log('notification: ', notification);
 
@@ -44,9 +45,7 @@ const CustomNotification = (props: any) => {
             <div className="wrapppr" onClick={() => {
                 markNotifAsRead({ notificationId: notification?._id });
                 setShowNotification(false);
-                setTimeout(() => {
-                    window.open(onNotificationClick(notification), '_self');
-                }, 100);
+                history.push(onNotificationClick(notification));
             }}>
                 <div className="notif">
                     <figure className="not_img">

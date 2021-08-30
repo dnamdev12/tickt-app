@@ -40,7 +40,6 @@ const Home = (props: any) => {
                 }
             }
         })();
-        props.history.replace('/');
     }, []);
 
     if (userType === 1) {

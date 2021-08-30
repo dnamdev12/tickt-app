@@ -657,8 +657,13 @@ const Header = (props: any) => {
 
                                         {notificationData.list?.length > 0 &&
                                             notificationData.list.map((item: any) =>
-                                                <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={() => {
-                                                    markNotifAsRead({ notificationId: item?._id });
+                                                <MenuItem className={`${item.read ? '' : 'unread'}`} onClick={async () => {
+                                                    if (item?.read === 0) {
+                                                        const res: any = await markNotifAsRead({ notificationId: item?._id });
+                                                        if (item?.notificationType === 13 && res?.success) {
+                                                            callNotificationList(true, true);
+                                                        }
+                                                    }
                                                     handleClose('notification');
                                                     props.history.push(onNotificationClick(item));
                                                 }}
