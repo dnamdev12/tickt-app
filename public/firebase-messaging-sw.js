@@ -43,6 +43,9 @@ const onNotificationClick = (notification) => {
     // const url = 'http://localhost:3000/';
     const url = 'https://ticktreactqa.appskeeper.in/';
     // const url = 'https://ticktreactdev.appskeeper.in/';
+    if (notification?.notificationType === '25') {
+        return `${url}chat`;
+    }
     const { notificationType, user_type, receiverId, senderId, jobId } = notification;
     let extra_data = JSON.parse(notification?.extra_data);
     switch (Number(notificationType)) {
@@ -140,6 +143,8 @@ const onNotificationClick = (notification) => {
             return `${url}admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
         case 19: //PRIVACY_POLICY
             return `${url}update-user-info?menu=pp`;
+        case 25: //CHAT_NOTIFICATION
+            return `${url}chat`;
         default:
             return `${url}home`;
     }
@@ -149,8 +154,10 @@ self.addEventListener("notificationclick", (event) => {
     console.log("notificationclick made service worker");
     let url = onNotificationClick(event.notification?.data);
     let dot = url.includes('?') ? '&' : '?';
-    url = url + `${dot}pushNotifId=${event.notification?.data?._id}`;
-    console.log('url: ', url);
+    if (event.notification?.data?.notificationType !== '25') {
+        url = url + `${dot}pushNotifId=${event.notification?.data?._id}`;
+    }
+    console.log('url ', url);
     event.waitUntil(
         self.clients.openWindow(`${url}`)
     )

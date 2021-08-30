@@ -22,7 +22,21 @@ const CustomNotification = (props: any) => {
         return () => clearTimeout();
     }, [props.showNotification]);
 
-    return !!props.showNotification && window.location.pathname !== '/chat' ? (
+    const displayNotifText = () => {
+        if (notification?.notificationType == 25) {
+            if (notification?.messageType === 'text') {
+                return notification?.messageText;
+            } else if (notification?.messageType === 'image') {
+                return `Send you a Photo`;
+            } else if (notification?.messageType === 'video') {
+                return `Send you a Video`;
+            }
+        } else {
+            return notification?.notificationText;
+        }
+    }
+
+    return !!props.showNotification && !(notification?.notificationType == 25 && window.location.pathname === '/chat') ? (
         <div className="body-message active">
             <span className="cross-icon" onClick={() => setShowNotification(false)}>
                 <img src={close} alt="img" />
@@ -39,8 +53,8 @@ const CustomNotification = (props: any) => {
                         <img src={notification?.image || dummy} alt="img" />
                     </figure>
                     <div className="info">
-                        <span className="who line-1">{notification?.title}</span>
-                        <span className="line-1">{notification?.notificationText}</span>
+                        <span className="who line-1">{notification?.notificationType == 25 ? notification?.senderName : notification?.title}</span>
+                        <span className="line-1">{displayNotifText()}</span>
                     </div>
                     {/* <span className="time">{formatNotificationTime(notification?.updatedAt, 'day')}</span> */}
                     <span className="time">{'just now'}</span>

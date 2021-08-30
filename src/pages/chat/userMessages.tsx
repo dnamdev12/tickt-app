@@ -116,7 +116,7 @@ const UserMessages = (props: any) => {
         if (messageText && messageText.trimLeft() !== "") {
             setMessageText('');
             const lastMsg: any = await sendTextMessage(props.roomId, messageText);
-            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken) {
+            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken && props.roomData?.oppUserInfo?.deviceType) {
                 sendFCMPushNotificationToOppUser(lastMsg);
             }
             setInboxToTopWithLastMsg(lastMsg);
@@ -133,7 +133,7 @@ const UserMessages = (props: any) => {
         //setIsLoading(true);
         if (url && url !== '') {
             const lastMsg: any = await sendImageVideoMessage(props.roomId, url, msgType);
-            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken) {
+            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken && props.roomData?.oppUserInfo?.deviceType) {
                 sendFCMPushNotificationToOppUser(lastMsg);
             }
             setInboxToTopWithLastMsg(lastMsg);
@@ -182,24 +182,51 @@ const UserMessages = (props: any) => {
         return { sources, types };
     }
 
+    const setResDeviceType = (deviceType: number, msg: any) => {
+        switch (deviceType) {
+            case 1:
+                return {
+                    app_icon: "https://appinventiv-development.s3.amazonaws.com/1628513615740ic-logo-yellow.png",
+                    title: "Ticket App",
+                    notificationText: `${storageService.getItem('userInfo')?.userName} send you a message`,
+                    senderName: `${storageService.getItem('userInfo')?.userName}`,
+                    messageType: `${msg?.messageType}`,
+                    messageText: `${msg?.messageType === 'text' ? msg?.messageText : ''}`,
+                    room_id: msg?.messageRoomId,
+                    image: storageService.getItem('userInfo')?.user_image,
+                    notificationType: 25,
+                    sound: "default",
+                }
+            case 2:
+                return {
+                    messageId:msg?.messageId,
+                    messageText: msg?.messageText,
+                    roomId: msg?.messageRoomId,
+                    roomName: '',
+                    roomType: 'single',
+                    type: 'chat',
+                    sound: 'default',
+                    badge: '',
+                    device_type: 2,
+                    sender: '',
+                }
+            case 3:
+                return {
+                    messageId: msg?.messageId,
+                    roomId: msg?.messageRoomId,
+                    notification_type: 25,
+                    name: '',
+                    titile: '',
+                }
+            default:
+                return;
+        }
+    }
     const sendFCMPushNotificationToOppUser = async (msg: any) => {
+        let data = setResDeviceType(props.roomData?.oppUserInfo?.deviceType, msg);
         let newData = {
-            // to: "esOTgG9ZQqC5uCgCaM5E65:APA91bE7wvUBgmyTEdoGbw8iznK7YxQ-wV2bsoD4vP9hC5iwyhhSMGNbXXpP9Os4KEScpwh2pW-KxMCZFLWBeAM4nlomochoR7EbC5WPRZ4e2sfxVLXKay3ntByWeywqxFaApLNQ6Slq",
             to: `${props.roomData?.oppUserInfo?.deviceToken}`,
-            data: {
-                app_icon: "https://appinventiv-development.s3.amazonaws.com/1628513615740ic-logo-yellow.png",
-                title: "Ticket App",
-                // notificationText: `Chat message: ${msg?.messageType === 'image' ? 'Photo' : msg?.messageType === 'video' ? 'Video' : msg?.messageText}`,
-                notificationText: `${storageService.getItem('userInfo')?.userName} send you a message in chat`,
-                jobName: `${props.roomData?.jobName}`,
-                extra_data: {
-                    room_id: msg?.messageRoomId
-                },
-                image: props.roomData?.oppUserInfo?.image,
-                notificationType: 20,
-                sound: "default",
-                badge: 1
-            }
+            data: data
         };
         const response: any = await fetch(`https://fcm.googleapis.com/fcm/send`, {
             method: "POST",
@@ -213,7 +240,7 @@ const UserMessages = (props: any) => {
         if (response.status === 200) {
             console.log('Chat push notification send to opposite user: success');
         } else {
-            console.log('Chat push notification send to opposite user: success');
+            console.log('Chat push notification send to opposite user: failure');
         }
     }
 

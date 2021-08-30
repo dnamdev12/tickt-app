@@ -154,6 +154,7 @@ export const loginAnonymously = async () => {
                 userId: userInfo?._id,
                 onlineStatus: true,
                 userType: userInfo?.user_type,
+                deviceType: 1
             });
         }
     } catch (error) {

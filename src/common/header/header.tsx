@@ -92,16 +92,18 @@ const Header = (props: any) => {
             // }
 
             setShowNotification(true, payload);
-            setNotificationData((prevData: any) => {
-                let newPushList = [...prevData.list];
-                newPushList.unshift(payload.data);
-                console.log('newPushList: ', newPushList);
-                return {
-                    ...prevData,
-                    unreadCount: prevData.unreadCount + 1,
-                    list: newPushList
-                }
-            });
+            if (payload.data?.notificationType !== "25") {
+                setNotificationData((prevData: any) => {
+                    let newPushList = [...prevData.list];
+                    newPushList.unshift(payload.data);
+                    console.log('newPushList: ', newPushList);
+                    return {
+                        ...prevData,
+                        unreadCount: prevData.unreadCount + 1,
+                        list: newPushList
+                    }
+                });
+            }
         })
     }
 

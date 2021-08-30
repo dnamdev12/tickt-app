@@ -401,6 +401,8 @@ export const onNotificationClick = (notification: any) => {
             return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
         case 19: //PRIVACY_POLICY
             return `/update-user-info?menu=pp`;
+        case 25: //CHAT_NOTIFICATION
+            return `/chat`;
         default:
             return '/';
     }
