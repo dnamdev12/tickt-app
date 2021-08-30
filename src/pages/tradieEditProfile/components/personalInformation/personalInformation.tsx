@@ -885,7 +885,13 @@ export class PersonalInformation extends Component<Props, State> {
                                 <div className="form_field">
                                     <label className="form_label">Mobile Number</label>
                                     <div className="text_field">
-                                        {basicDetailsData?.mobileNumber}
+                                        <NumberFormat
+                                            value={basicDetailsData?.mobileNumber}
+                                            className="foo"
+                                            displayType={'text'}
+                                            prefix={'+61 '}
+                                            format="+61 ### ### ###"
+                                        />
                                         {/* <input type="number" placeholder="Enter Mobile Number" value={basicDetailsData?.mobileNumber} /> */}
                                         {/* <NumberFormat
                                             value={basicDetailsData?.mobileNumber}

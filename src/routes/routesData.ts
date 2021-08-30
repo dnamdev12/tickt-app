@@ -55,7 +55,7 @@ import AdminAnnouncementPage from '../pages/adminAnnouncementPage/adminAnnouncem
 const routes = [
     {
         name: 'main',
-        path: ['/', '/home'],
+        path: '/',
         component: Home,
         authRoute: false,
         privateRoute: true,
