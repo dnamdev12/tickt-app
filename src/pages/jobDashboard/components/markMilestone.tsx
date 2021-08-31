@@ -17,6 +17,7 @@ import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
+import deleteQuote from '../../../assets/images/ic-delete.png';
 
 import storageService from '../../../utils/storageService';
 
@@ -457,6 +458,86 @@ const MarkMilestone = ({
                   }
                 )}
               </ul>
+
+              {/* Quote */}
+              {/* <div className="relate form_field">
+                <button
+                  className="back"></button>
+              </div>
+              <span className="sub_title">Quote for this job</span>
+              <div className="change_req">
+                <div className="edit_delete">
+                  <span className="editdark"></span>
+                </div>
+                <div className="flex_row">
+                  <div className="flex_col_sm_2">
+                    <label className="form_label">Item</label>
+                  </div>
+                  <div className="flex_col_sm_6">
+                    <label className="form_label">Description</label>
+                  </div>
+                  <div className="flex_col_sm_4">
+                    <label className="form_label">Price</label>
+                  </div>
+                  <div className="flex_col_sm_2">
+                    <span className="show_label">1</span>
+                  </div>
+                  <div className="flex_col_sm_6">
+                    <span className="show_label line-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur quasi ducimus minus earum? Fugiat ducimus nam ea ullam laboriosam eos. Aperiam quos optio eveniet quia harum quasi, similique enim debitis.</span>
+                  </div>
+                  <div className="flex_col_sm_4">
+                    <span className="show_label">$1,000</span>
+                  </div>
+                </div>
+              </div>
+              <div className="change_req">
+                <span className="delete_quote">Delete
+                  <img src={deleteQuote} alt="delete" />
+                </span>
+                <span className="inner_title">Add Item</span>
+                <div className="form_field">
+                  <label className="form_label">Item Number</label>
+                  <div className="text_field">
+                    <input type="number" />
+                  </div>
+                </div>
+                <div className="form_field">
+                  <label className="form_label">Description</label>
+                  <div className="text_field">
+                    <textarea></textarea>
+                  </div>
+                </div>
+                <div className="form_field">
+                  <div className="flex_row">
+                    <div className="flex_col_sm_5">
+                      <label className="form_label">Price</label>
+                      <div className="text_field">
+                        <input type="number" />
+                      </div>
+                    </div>
+                    <div className="flex_col_sm_2">
+                      <label className="form_label">Qty</label>
+                      <div className="text_field">
+                        <input type="number" />
+                      </div>
+                    </div>
+                    <div className="flex_col_sm_5">
+                      <label className="form_label">Total</label>
+                      <div className="text_field">
+                        <input type="number" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button className="fill_btn w100per">Add Item</button>
+              </div>
+              <div className="total_quote">
+                <span className="fill_grey_btn">Total Quote: $1,000</span>
+              </div>
+              <button className="fill_grey_btn quote_btn">Submit Quote</button> */}
+              {/* Quote close */}
+
+
             </div>
             <div className="flex_col_sm_6 col_ruler">
               <span className="sub_title">Posted by</span>
