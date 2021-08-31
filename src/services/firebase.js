@@ -147,7 +147,7 @@ export const loginAnonymously = async () => {
         let response = await auth.signInAnonymously();
         if (response) {
             console.log('firebase anonymous auth login success: ');
-            await db.ref(`${FIREBASE_COLLECTION.USERS}/${userInfo?._id}`).set({
+            await db.ref(`${FIREBASE_COLLECTION.USERS}/${userInfo?._id}`).update({
                 email: userInfo?.email,
                 image: userInfo?.user_image,
                 name: userInfo?.userName,

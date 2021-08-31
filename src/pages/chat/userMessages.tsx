@@ -199,7 +199,7 @@ const UserMessages = (props: any) => {
                 }
             case 2:
                 return {
-                    messageId:msg?.messageId,
+                    messageId: msg?.messageId,
                     messageText: msg?.messageText,
                     roomId: msg?.messageRoomId,
                     roomName: '',
@@ -481,13 +481,13 @@ const UserMessages = (props: any) => {
                                     displayMessages(msg, index)
                                 )
                             })}
+                            <div className="date_time">
+                                {props.roomData?.oppUserInfo?.isBlock && < i style={{ color: '#929292' }}>{'You can no longer chat with the user'}</i>}
+                            </div>
                         </div>
 
-                        <div className="send_msg">
+                        {!props.roomData?.oppUserInfo?.isBlock && <div className="send_msg">
                             <div className="text_field">
-                                {/* <span className="detect_icon_ltr">
-                            <img src={sendMedia} alt="media" />
-                        </span> */}
                                 <label className="upload_item" htmlFor="upload_item">
                                     <span className="detect_icon_ltr">
                                         <img src={sendMedia} alt="media" />
@@ -508,7 +508,7 @@ const UserMessages = (props: any) => {
                                     <img src={sendBtn} alt="send" onClick={sendMessage} />
                                 </span>
                             </div>
-                        </div>
+                        </div>}
                     </div>
 
                     {(toggle && jobDetailLoader) ? (
