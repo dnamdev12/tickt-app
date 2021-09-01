@@ -580,7 +580,7 @@ class JobDashboard extends Component<Props, State> {
                                             <span
                                                 onClick={() => { setSelected('applicant') }}
                                                 className="menu_txt">
-                                                {'New Applicants'}
+                                                {'New applicants'}
                                                 {!!applicantCount && (
                                                     <span className="badge_count">
                                                         {applicantCount > 9 ? '9+' : applicantCount}
@@ -597,7 +597,7 @@ class JobDashboard extends Component<Props, State> {
                                                     setSelected('approval')
                                                 }}
                                                 className="menu_txt">
-                                                {'Need Approval'}
+                                                {'Need approval'}
                                                 {!!approveCount && (
                                                     <span className="badge_count">
                                                         {approveCount > 9 ? '9+' : approveCount}
