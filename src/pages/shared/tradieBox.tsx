@@ -84,7 +84,7 @@ class TradieBox extends Component<PropsType, State> {
                             {/* <span className="rating">{item?.ratings || randomRating} , {item?.reviews || randomReview} reviews </span> */}
                         </div>
                     </div>
-                    {showStatus && item?.status && <div className="job_status ptl-tradie-box" >{item?.status}</div>}
+                    {showStatus && item?.status && <div className="form_field"><div className="job_status" >{item?.status}</div></div>}
                     <div className="tags_wrap">
                         <ul>
                             {item?.tradeData?.length ?
