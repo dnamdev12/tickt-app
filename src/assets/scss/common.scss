@@ -3346,6 +3346,9 @@ body {
       }
     }
   }
+  &.quote_card{
+    min-height: 187px;
+  }
 }
 
 .job_info {
@@ -3672,6 +3675,10 @@ body {
   }
   .edit {
     background: url("../images/ic-edit-blue.png") center no-repeat;
+    background-size: contain;
+  }
+  .editdark {
+    background: url("../images/ic-edit.png") center no-repeat;
     background-size: contain;
   }
   .delete {
@@ -4881,13 +4888,14 @@ body {
   }
 }
 
-.decline_reason{
+.decline_reason, .change_req{
   background-color: #f6f7f9;
   margin: 15px 0;
-  padding: 30px 10px 33px 15px;
+  padding: 30px 10px 30px 15px;
   max-width: 327px;
-  .form_label{
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
+  position: relative;
+  .show_label{
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
   }
   .decline_media{
     li{
@@ -4921,6 +4929,30 @@ body {
       margin: 0;
     }
   }
+  input,textarea{
+    background-color: transparent;
+  }
+  .delete_quote {
+    color: #ed1c24;
+    position: absolute;
+    right: 10px;
+    top: 20px;
+    display: flex;
+    flex-flow: column-reverse;
+    align-items: center;
+    font-size: 13px;
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    cursor: pointer;
+    img{
+      margin-bottom: 5px;
+    }
+  }
+  .edit_delete{
+    top: 20px;
+  }
+}
+.total_quote{
+  margin: 0 0 55px 150px;
 }
 
 .reason_wrap{

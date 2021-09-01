@@ -227,6 +227,17 @@ a.fill_grey_btn {
   padding: 12px 15px;
 }
 
+.quote_btn{
+  width: 327px;
+  @media (max-width: 650px) {
+    width: 100%;
+  }
+}
+
+.w100per{
+  width: 100%;
+}
+
 .w85per{
   @media (max-width: 650px) {
     width: 85% !important;
