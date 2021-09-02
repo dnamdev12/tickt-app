@@ -352,7 +352,6 @@ const MarkMilestones = (props: any) => {
                                     <button
                                         className="fill_btn full_btn btn-effect"
                                         onClick={() => {
-
                                             setMilestoneIndex({
                                                 index,
                                                 milestoneId,

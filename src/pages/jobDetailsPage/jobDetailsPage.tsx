@@ -502,6 +502,10 @@ const JobDetailsPage = (props: PropsType) => {
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
 
+    // let CASE_1 = jobDetailsData?.reasonForCancelJobRequest;
+    // let CASE_2 = jobDetailsData?.isChangeRequest;
+    // let CASE_3 = jobDetailsData?.isCancelJobRequest;
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -565,15 +569,15 @@ const JobDetailsPage = (props: PropsType) => {
                             </div>
                             <div className="flex_col_sm_4 relative">
                                 <div className="detail_card">
-                                    {jobDetailsData?.jobStatus === 'cancelled' &&
+                                    {/* {jobDetailsData?.jobStatus === 'cancelled' &&
                                         jobDetailsData?.reasonForCancelJobRequest > 0 && <div className="chang_req_card mb-sm">
                                             <span className="sub_title">Job cancelled</span>
                                             {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
-                                        </div>}
-                                    {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
+                                        </div>} */}
+                                    {/* {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isChangeRequest && !jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mb-sm">
                                         <span className="sub_title">Change request details</span>
                                         <p className="commn_para line-2">
                                             {jobDetailsData?.reasonForChangeRequest}
@@ -581,7 +585,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         <button className="fill_btn btn-effect"
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestAcceptedClicked: true }))}>Accept</button>
                                         <button className="fill_grey_btn btn-effect" onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isChangeRequestRejectedClicked: true }))}>Reject</button>
-                                    </div>}
+                                    </div>} */}
 
                                     <span className="title line-1" title={jobDetailsData?.jobName}>{props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.jobName ? jobDetailsData?.jobName : ''}</span>
                                     <span className="tagg">{props.isSkeletonLoading ? <Skeleton /> : 'Job details'}</span>
@@ -596,7 +600,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
                                         </ul>}
                                     </div>
-                                    {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
+                                    {/* {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>
                                         <p className="commn_para line-2">
                                             <li>{JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}</li>
@@ -608,13 +612,13 @@ const JobDetailsPage = (props: PropsType) => {
                                         <button className="fill_grey_btn btn-effect"
                                             onClick={() => setJobActionState((prevData: any) => ({ ...prevData, isCancelRequestRejectedClicked: true }))}
                                         >Reject</button>
-                                    </div>}
-                                    {jobDetailsData?.jobStatus === 'active' && !jobDetailsData?.isChangeRequest && !jobInviteAction && !jobDetailsData?.isCancelJobRequest && jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card mt-sm">
+                                    </div>} */}
+                                    {/* {jobDetailsData?.jobStatus === 'active' && !jobDetailsData?.isChangeRequest && !jobInviteAction && !jobDetailsData?.isCancelJobRequest && jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancel rejected reason</span>
                                         <p className="commn_para line-2">
                                             <li>{jobDetailsData?.rejectReasonNoteForCancelJobRequest}</li>
                                         </p>
-                                    </div>}
+                                    </div>} */}
                                     {/* Added  && jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
                                     {props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' && jobDetailsData?.applyButtonDisplay ? (
                                         <div className="bottom_btn">
@@ -648,19 +652,19 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                         </>
                                     }
-                                    {/* {!jobInviteAction
+                                    {!jobInviteAction
                                         && jobDetailsData?.jobStatus === 'active'
                                         && (jobDetailsData?.isCancelJobRequest || jobDetailsData?.isChangeRequest || jobDetailsData?.rejectReasonNoteForCancelJobRequest)
                                         && !['APPLY', 'APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) &&
                                         <div className="declined_info hvr-ripple-out" onClick={() => setPendingRequestClicked(true)}>
                                             <span>{`${getPendingRequestCount()} pending request(s)`}</span>
-                                        </div>} */}
+                                        </div>}
                                 </div>
                             </div>
                         </div>
 
                         {/* view pending request modal */}
-                        {/* <Modal
+                        <Modal
                             className="ques_ans_modal"
                             open={pendingRequestClicked}
                             onClose={() => setPendingRequestClicked(false)}
@@ -713,7 +717,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </p>
                                 </div>}
                             </div>
-                        </Modal> */}
+                        </Modal>
 
                         <Modal
                             className="custom_modal"

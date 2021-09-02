@@ -90,12 +90,16 @@ function* postHomeSearchData(action: any) {
     setLoading(true);
     const response: FetchResponse = yield NetworkOps.postToJson(Urls.homeSearch, action.jobData)
     setLoading(false);
+    let dataValues = response?.result?.data;
+    console.log({
+        response: dataValues
+    })
     if (response.status_code === 200) {
         let page = action?.jobData?.page;
-        if(Array.isArray(response?.result) && response?.result?.length){
-            response.result[0]['page'] = page;
+        if (Array.isArray(dataValues) && dataValues?.length) {
+            dataValues[0]['page'] = page;
         }
-        yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: response.result });
+        yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: dataValues });
     } else {
         yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
     }
