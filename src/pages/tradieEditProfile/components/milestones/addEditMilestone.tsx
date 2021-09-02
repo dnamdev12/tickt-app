@@ -361,7 +361,7 @@ class AddEditMilestone extends Component<Props, State> {
     }
 
     toggleCalenderTime = (data?: any) => {
-        console.log({data},'----------------------------------------------------------------------->')
+        console.log({ data }, '----------------------------------------------------------------------->')
         this.setState({
             toggleAddTimings: false,
             from_date: data && moment(data?.startDate).isValid() ? moment(data?.startDate).format('MM-DD-YYYY') : '',
@@ -435,7 +435,9 @@ class AddEditMilestone extends Component<Props, State> {
                                     type="checkbox"
                                     id="milestone1" />
                                 <label htmlFor="milestone1">
-                                    {'Photo evidence required'}
+                                    <b>
+                                        {'Photo evidence required'}
+                                    </b>
                                 </label>
                             </div>
                         </div>

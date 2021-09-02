@@ -135,6 +135,32 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         Array.isArray(update) ? forceUpdate([]) : forceUpdate({});
     }
 
+
+    const checkIfVideoExist = () => {
+        let videoItems = [];
+        let ImageItems = [];
+        filesUrl.forEach((element: any) => {
+            let split_items = element.link.split('.');
+            let format_split_items = split_items[split_items?.length - 1];
+            if (videoFormats.includes(format_split_items)) {
+                videoItems.push(format_split_items);
+            }
+
+            if(imageFormats.includes(format_split_items)){
+                ImageItems.push(format_split_items);
+            }
+        });
+
+        if(ImageItems?.length === 6){
+            return "video/mp4, video/wmv, video/avi";
+        }
+
+        if (videoItems?.length == 2) {
+            return "image/png,image/jpg,image/jpeg,.pdf, .doc";
+        }
+        return "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi";
+    }
+
     const onFileChange = async (e: any) => {
         const formData = new FormData();
         const newFile = e.target.files[0];
@@ -145,7 +171,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             return;
         }
 
-        if (filesUrl?.length === 6) {
+        if (filesUrl?.length === 8) {
             setShowToast(true, "Max files upload limit is 6.")
             return;
         }
@@ -262,6 +288,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     image_render = (
                         <video
                             id={`media_${index}`}
+                            title={get_split_name}
                             crossOrigin="anonymous"
                             src={item}
                             poster={base64}
@@ -279,6 +306,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         <video id={`media_${index}`} crossOrigin="anonymous"
                             src={item}
                             controls={false}
+                            title={get_split_name}
                             onLoadedData={() => {
                                 console.log('Loaded!')
                                 setLoadItems((prev: any) => ({
@@ -364,11 +392,11 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
     }
 
-    if(IsRenderValues === false){
+    if (IsRenderValues === false) {
         setLoading(true);
     }
 
-    if(IsRenderValues === true){
+    if (IsRenderValues === true) {
         setLoading(false);
     }
 
@@ -424,18 +452,30 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item?.link, index, item?.base64)))
                                     : null}
 
-                                {filesUrl?.length < 6 ? (
+                                {filesUrl?.length < 8 ? (
                                     <React.Fragment>
                                         <label className="upload_media" htmlFor="upload_img_video">
                                             <img src={addMedia} alt="" />
                                         </label>
-                                        <input
-                                            onChange={onFileChange}
-                                            type="file"
-                                            accept={hasDescription ? "image/png,image/jpg,image/jpeg" : "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"}
-                                            style={{ display: "none" }}
-                                            id="upload_img_video"
-                                        />
+                                        {!hasDescription ? (
+                                            <input
+                                                onChange={onFileChange}
+                                                onClick={checkIfVideoExist}
+                                                type="file"
+                                                accept={checkIfVideoExist()}
+                                                style={{ display: "none" }}
+                                                id="upload_img_video"
+                                            />
+                                        ) : (
+                                            <input
+                                                onChange={onFileChange}
+                                                type="file"
+                                                accept={hasDescription ? "image/png,image/jpg,image/jpeg" : "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"}
+                                                style={{ display: "none" }}
+                                                id="upload_img_video"
+                                            />
+                                        )}
+
                                     </React.Fragment>
                                 ) : null}
                             </div>

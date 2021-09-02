@@ -559,7 +559,9 @@ const AddEditMile = (props: any) => {
                                     type="checkbox"
                                     id="milestone1" />
                                 <label htmlFor="milestone1">
-                                    {'Photo evidence required'}
+                                    <b>
+                                        {'Photo evidence required'}
+                                    </b>
                                 </label>
                             </div>
                         </div>

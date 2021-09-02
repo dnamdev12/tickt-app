@@ -44,13 +44,9 @@ const MilestoneApprove = (props: any) => {
                 "jobId": jobId,
                 "milestoneId": item?.milestoneId,
                 "paymentMethodId": data?.cardId,
-                "milestoneAmount": data?.milestoneAmount,
+                "milestoneAmount": data?.milestoneAmount.replace("$", ""),
                 "amount": total.replace("$", "")
             }
-            console.log({
-                data,
-                data_
-            })
 
             let response: any = await milestoneAcceptOrDecline(data_);
             if (response?.success) {

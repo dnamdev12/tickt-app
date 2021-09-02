@@ -13,6 +13,7 @@ import AddABN from './components/addABN';
 import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
 import AuthParent from '../../common/auth/authParent';
 import { firebaseSignUpWithEmailPassword } from '../../services/firebase';
+import VerifyEmail from './components/EmailVerification'
 
 interface Propstype {
     history?: any,
@@ -27,6 +28,7 @@ interface Propstype {
 const DATA = [
     { title: 'Welcome to Tickt', subTitle: 'A new marketplace for builders and tradies' },
     { title: 'Create account' },
+    { title: 'Verify your email' },
     { title: 'Phone number' },
     { title: 'Verify your number' },
     { title: 'Create password' },
@@ -36,6 +38,7 @@ const DATA = [
     // { title: 'Add ABN' }
     { title: 'Almost done' }
 ]
+// { title: 'Add ABN' }
 
 const Signup = (props: Propstype) => {
     const [steps, setSteps] = useState<number>(0);
@@ -91,17 +94,17 @@ const Signup = (props: Propstype) => {
     const backButtonHandler = () => {
         let minStep = 1;
         let stateStepsValue = steps;
-        if (stateStepsValue === 4) {
-            minStep = 2;
-        }
-        if (stateStepsValue === 2 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
-            minStep = 2;
-        }
-        if (stateStepsValue === 7 && signupData.user_type === 2) {
-            stateStepsValue = 5;
-        }
-        if (stateStepsValue === 5 && signupData.socialId) {
+        if (stateStepsValue === 5) {
             minStep = 3;
+        }
+        if (stateStepsValue === 3 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
+            minStep = 3;
+        }
+        if (stateStepsValue === 8 && signupData.user_type === 2) {
+            stateStepsValue = 6;
+        }
+        if (stateStepsValue === 6 && signupData.socialId) {
+            minStep = 4;
         }
         setSteps(stateStepsValue - minStep);
     }
@@ -122,10 +125,10 @@ const Signup = (props: Propstype) => {
         if (newStep === 1 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
             newStep += 1;
         }
-        if (newStep === 4 && signupData.socialId) {
+        if (newStep === 5 && signupData.socialId) {
             newStep += 1;
         }
-        if (newStep === 5 && signupData.user_type === 2) {
+        if (newStep === 6 && signupData.user_type === 2) {
             newStep += 2;
         }
         setSteps(newStep);
@@ -152,12 +155,12 @@ const Signup = (props: Propstype) => {
     const onSubmitSignup = async (lastStepFields: any) => {
         var res: any;
         const newData = { ...signupData, ...lastStepFields };
-        let data = {
+        const data = {
             ...newData,
             //company_name: newData.companyName,
             trade: [newData.trade],
             user_type: signupData.user_type,
-            // deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
+            deviceToken: "323245356tergdfgrtuy68u566452354dfwe",
         }
         //delete data.companyName;
         if (data.user_type === 2) {
@@ -182,9 +185,9 @@ const Signup = (props: Propstype) => {
             //     user_type: res.result?.user_type
             // });
             if (signupData.user_type === 2) {
-                setSteps(8);
+                setSteps(9);
             } else {
-                setSteps(9)
+                setSteps(10)
             }
         }
     }
@@ -198,28 +201,30 @@ const Signup = (props: Propstype) => {
             case 1:
                 return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:
-                return <PhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
+                return <VerifyEmail updateSteps={updateSteps} step={steps} email={signupData.email} />
             case 3:
-                return <VerifyPhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
+                return <PhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
             case 4:
-                return <CreatePassword updateSteps={updateSteps} step={steps} password={signupData.password} />
+                return <VerifyPhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
             case 5:
-                return <SelectYourSphere updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} />
+                return <CreatePassword updateSteps={updateSteps} step={steps} password={signupData.password} />
             case 6:
-                return <Specialization updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} specialization={signupData.specialization} />
+                return <SelectYourSphere updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} />
             case 7:
+                return <Specialization updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} specialization={signupData.specialization} />
+            case 8:
                 if (signupData.user_type === 2) {
                     return <AlmostDone onSubmitSignup={onSubmitSignup} />
                 } else {
                     return <AddQualification updateSteps={updateSteps} step={steps} tradeListData={props.tradeListData} trade={signupData.trade} qualification={signupData.qualification} />
                 }
-            case 8:
+            case 9:
                 if (signupData.user_type === 2) {
                     return <LetsGo history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
                 } else {
                     return <AddABN onSubmitSignup={onSubmitSignup} />
                 }
-            case 9:
+            case 10:
                 return <LetsGo history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             default:
                 return null
@@ -227,7 +232,7 @@ const Signup = (props: Propstype) => {
     }
 
     const header = DATA[steps];
-    const isSuccess = signupData.user_type === 2 ? steps === 8 : steps === 9;
+    const isSuccess = signupData.user_type === 2 ? steps === 9 : steps === 10;
 
     return !isSuccess ? (
         <AuthParent sliderType='login' backButtonHandler={backButtonHandler} header={header} userType={signupData.user_type} steps={steps} history={props.history} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} socialId={signupData.socialId} >{renderPages()}</AuthParent>
