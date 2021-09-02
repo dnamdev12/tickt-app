@@ -206,7 +206,7 @@ const SearchResultTradie = (props: any) => {
     // let homeSearchJobData: any = props.homeSearchJobData;
     let local_info: any = localInfo;
     let isLoading: any = props.isLoading;
-    console.log({ localData, homeSearchJobData })
+    console.log({ localData, homeSearchJobData, props })
     return (
         <div className="app_wrapper" >
             <div className={`top_search ${isToggle ? 'active' : ''}`}>
@@ -233,7 +233,7 @@ const SearchResultTradie = (props: any) => {
                                     <span className="title">
                                         {`${local_info?.name || ''} ${local_info?.count > 1 ? `+${local_info?.count - 1}` : ''}`}
                                         <span className="count">
-                                            {`${localData?.length} result(s)`}
+                                            {`${localData?.length || 0} result(s)`}
                                         </span>
                                     </span>
                                     <SearchFilters
