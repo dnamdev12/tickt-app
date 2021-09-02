@@ -53,7 +53,9 @@ const CreatePassword = (props: Propstype) => {
                     </div>
                     {!!errors.password && <span className="error_msg">{errors.password}</span>}
                 </div>
-
+                <div className="form_field">
+                    <span className="show_label">Please ensure your password is at least 8 characters long and contains a special character &amp; an uppercase letter or number.</span>
+                </div>
                 <div className="form_field">
                     <button className="fill_btn btn-effect">Next</button>
                 </div>

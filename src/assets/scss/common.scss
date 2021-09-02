@@ -231,7 +231,7 @@ body {
 .show_more{
   margin: 0 0 0 10px;
 }
-.tags_wrap {
+ .tags_wrap {
   &.form_wrapper {
     width: 100%;
     max-width: 655px;
@@ -269,7 +269,8 @@ body {
       color: var(--blue);
       cursor: pointer;
       &.active {
-        background-color: #161d4a33;
+        background-color: var(--blue-two);
+        color: var(--white);
       }
       &.no_data {
         background-color: transparent;
