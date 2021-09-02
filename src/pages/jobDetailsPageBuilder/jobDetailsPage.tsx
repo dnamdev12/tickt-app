@@ -803,7 +803,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             data-aos-duration="1000">
                                             <div className="heading">
                                                 <span className="sub_title">
-                                                    {`Pending Request(s)`}
+                                                    {CASE_1 && `Pending Request(s)`}
                                                 </span>
                                                 <button
                                                     className="close_btn"
@@ -812,7 +812,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </button>
                                             </div>
                                             {CASE_1 &&
-                                                <div className="chang_req_card mt-sm">
+                                                <div className="chang_req_card mt-sm" style={{paddingTop:'10px', paddingBottom:'20px'}}>
                                                     <span className="sub_title">Job cancellation request</span>
                                                     <p className="commn_para line-2">
                                                         <li>
@@ -846,7 +846,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             {CASE_2 &&
                                                 <div className="chang_req_card mb-sm">
                                                     <span className="sub_title">
-                                                        {`Job cancelled ${CASE_2 === 3 ? 'reject' : ''} reason`}
+                                                        {`Job cancelled reason`}
                                                     </span>
                                                     <p className="commn_para line-2">
                                                         {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
@@ -858,7 +858,7 @@ const JobDetailsPage = (props: PropsType) => {
 
                                             {CASE_3 &&
                                                 <div className="chang_req_card mb-sm">
-                                                    <span className="sub_title">Job cancelled reason</span>
+                                                    <span className="sub_title"> {`Job cancelled decline reason`}</span>
                                                     <p className="commn_para line-2">
                                                         {jobDetailsData?.changeRequestDeclineReason}
                                                     </p>

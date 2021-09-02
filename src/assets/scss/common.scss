@@ -261,7 +261,7 @@ body {
     li {
       display: flex;
       align-items: center;
-      margin: 0 8px 12px;
+      margin: 0 12px 12px 0;
       padding: 8px;
       @include border-radius(6px);
       background-color: #f6f7f9;
@@ -5745,13 +5745,3 @@ div#light-box div {
 }
 
 //----------Tour Guide close-------------//
-
-.visibility-hidden {
-  visibility: hidden;
-}
-
-//------------ Added for new-applicant ------ //
-.ptl-tradie-box {
-  padding-bottom: 15px;
-  padding-left: 10px;
-}
