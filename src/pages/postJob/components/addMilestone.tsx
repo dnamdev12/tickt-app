@@ -368,7 +368,9 @@ export default class AddMilestone extends Component<Props, State> {
                                             type="checkbox"
                                             id="milestone1" />
                                         <label htmlFor="milestone1">
+                                            <b>
                                             {'Photo evidence required'}
+                                            </b>
                                         </label>
                                     </div>
                                 </div>
