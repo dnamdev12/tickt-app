@@ -651,6 +651,13 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                         </>
                                     }
+                                   {/* {!jobInviteAction
+                                        && jobDetailsData?.jobStatus === 'active'
+                                        && (jobDetailsData?.isCancelJobRequest || jobDetailsData?.isChangeRequest || jobDetailsData?.rejectReasonNoteForCancelJobRequest)
+                                        && !['APPLY', 'APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) &&
+                                        <div className="declined_info hvr-ripple-out" onClick={() => setPendingRequestClicked(true)}>
+                                            <span>{`${getPendingRequestCount()} pending request(s)`}</span>
+                                        </div>} */}
                                 </div>
                             </div>
                         </div>

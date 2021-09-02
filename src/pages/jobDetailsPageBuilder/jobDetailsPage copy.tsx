@@ -118,9 +118,6 @@ const JobDetailsPage = (props: PropsType) => {
 
     const [jobAcceptModal, setJobAcceptModal] = useState(false);
     const [jobRejectModal, setJobRejectModal] = useState(false);
-
-    const [pendingRequestClicked, setPendingRequestClicked] = useState(false);
-
     const [jobData, setJobData] = useState({});
     const [replyText, setReplyText] = useState('');
 
@@ -485,6 +482,15 @@ const JobDetailsPage = (props: PropsType) => {
             "status": type,
             "note": type === 1 ? "this is accepted" : "this is rejected"
         });
+        // let data = {
+        //     "jobId": job_detail?.jobId,
+        //     "status": type,
+        //     "note": type === 1 ? "this is accepted" : "this is rejected"
+        // }
+        // let response = await handleCancelReply(data);
+        // if (response?.success) {
+        //     await preFetch();
+        // }
     }
 
     const operationCancelJob = async () => {
@@ -539,21 +545,7 @@ const JobDetailsPage = (props: PropsType) => {
         await deleteOpenJob({ jobId });
         props.history.push(`/jobs?active=${activeType}`)
     }
-
-    // let CASE_1 = jobDetailsData?.isCancelJobRequest;
-    // let CASE_2 = paramStatus === 'CANCELLED' &&
-    //     jobDetailsData?.reasonForCancelJobRequest > 0;
-    // let CASE_3 = paramStatus === 'Pending dispute' &&
-    //     jobDetailsData?.changeRequestDeclineReason?.length > 0;
-
-    let CASE_1 = jobDetailsData?.isCancelJobRequest;
-    let CASE_2 = jobDetailsData?.reasonForCancelJobRequest ? jobDetailsData?.reasonForCancelJobRequest : false;
-    let CASE_3 = jobDetailsData?.changeRequestDeclineReason?.length ? jobDetailsData?.changeRequestDeclineReason : false;
-
-
-    console.log({ paramStatus,
-     }, 'paramStatus')
-
+    console.log({ activeType })
     // line no 550. "open"  is excluded from array.
     return (
         <div className="app_wrapper">
@@ -697,19 +689,84 @@ const JobDetailsPage = (props: PropsType) => {
 
                             <div className="flex_col_sm_4 relative">
 
+                                {/* <div style={{
+                                    zIndex: 9999,
+                                    position: 'absolute',
+                                    background: '#ccc',
+                                    width:'100%'
+                                }}>
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                        >
+                                            Job cancellation request
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            <div className="chang_req_card mt-sm">   
+                                                <p className="commn_para">
+                                                    {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                                </p>
+                                                {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
+                                                <button
+                                                    onClick={() => {
+                                                        handleCancelJob(1, jobDetailsData)
+                                                    }}
+                                                    className="fill_btn btn-effect">
+                                                    {'Accept'}
+                                                </button>
+                                                <button
+                                                    onClick={() => {
+                                                        handleCancelJob(2, jobDetailsData)
+                                                    }}
+                                                    className="fill_grey_btn btn-effect">
+                                                    {'Reject'}
+                                                </button>
+                                            </div>
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                        >
+                                            Change request  reason
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse malesuada lacus ex,
+                                            sit amet blandit leo lobortis eget.
+                                        </AccordionDetails>
+                                    </Accordion>
+
+                                    <Accordion>
+                                        <AccordionSummary
+                                            aria-controls="panel1a-content"
+                                            id="panel1a-header"
+                                        >
+                                            Job cancelled reason
+                                        </AccordionSummary>
+                                        <AccordionDetails>
+                                          {jobDetailsData?.reasonForCancelJobRequest}
+                                        </AccordionDetails>
+                                    </Accordion>
+                                </div> */}
+
+
                                 <div className="detail_card">
                                     {console.log({ jobDetailsData, paramStatus })}
-                                    {/* {paramStatus === 'CANCELLED' &&
+                                    {paramStatus === 'CANCELLED' &&
                                         jobDetailsData?.reasonForCancelJobRequest > 0 &&
                                         <div className="chang_req_card mb-sm">
                                             <span className="sub_title">Job cancelled</span>
                                             <p className="commn_para line-2">
                                                 {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                                {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ? 'I got a better job' : 'I am not the right fit for the job'} */}
                                             </p>
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.reasonNoteForCancelJobRequest}
                                             </p>
-                                        </div>} */}
+                                        </div>}
 
                                     {/* {paramStatus === 'Pending dispute' &&
                                         jobDetailsData?.changeRequestDeclineReason?.length > 0 &&
@@ -718,8 +775,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <p className="commn_para line-2">
                                                 {jobDetailsData?.changeRequestDeclineReason}
                                             </p>
-                                         </div>} */}
-
+                                        </div>} */}
 
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
@@ -758,115 +814,6 @@ const JobDetailsPage = (props: PropsType) => {
                                             </ul>
                                         )}
                                     </div>
-                                    {console.log({
-                                        changeRequestDeclineReason: jobDetailsData.changeRequestDeclineReason,
-                                        isCancelJobRequest: jobDetailsData.isCancelJobRequest,
-                                        isChangeRequest: jobDetailsData.isChangeRequest,
-                                        isPublishedAgain: jobDetailsData.isPublishedAgain,
-                                        reasonForCancelJobRequest: jobDetailsData.reasonForCancelJobRequest,
-                                        reasonNoteForCancelJobRequestjob: jobDetailsData.reasonNoteForCancelJobRequest,
-                                        rejectReasonNoteForCancelJobRequest: jobDetailsData.rejectReasonNoteForCancelJobRequest
-                                    })}
-
-                                    {(CASE_1 || CASE_2 || CASE_3) && (
-                                        <div
-                                            className="declined_info hvr-ripple-out"
-                                            onClick={() => {
-                                                setPendingRequestClicked(true)
-                                            }}>
-
-                                            {(CASE_1 || CASE_2 || CASE_3) && (
-                                                <span>{`1 pending request(s)`}</span>
-                                            )}
-
-                                            {/* {CASE_2 && (
-                                                <span>{`2 pending request(s)`}</span>
-                                            )}
-
-                                            {CASE_3 && (
-                                                <span>{`3 pending request(s)`}</span>
-                                            )} */}
-                                        </div>
-                                    )}
-
-                                    <Modal
-                                        className="ques_ans_modal"
-                                        open={pendingRequestClicked}
-                                        onClose={() => setPendingRequestClicked(false)}
-                                        aria-labelledby="simple-modal-title"
-                                        aria-describedby="simple-modal-description"
-                                    >
-                                        <div
-                                            className="custom_wh"
-                                            data-aos="zoom-in"
-                                            data-aos-delay="30"
-                                            data-aos-duration="1000">
-                                            <div className="heading">
-                                                <span className="sub_title">
-                                                    {`Pending Request(s)`}
-                                                </span>
-                                                <button
-                                                    className="close_btn"
-                                                    onClick={() => setPendingRequestClicked(false)}>
-                                                    <img src={cancel} alt="cancel" />
-                                                </button>
-                                            </div>
-                                            {CASE_1 &&
-                                                <div className="chang_req_card mt-sm">
-                                                    <span className="sub_title">Job cancellation request</span>
-                                                    <p className="commn_para line-2">
-                                                        <li>
-                                                            {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
-                                                        </li>
-                                                        <li>
-                                                            {jobDetailsData?.reasonNoteForCancelJobRequest}
-                                                        </li>
-                                                    </p>
-                                                    <button
-                                                        className="fill_btn btn-effect"
-                                                        onClick={() => {
-                                                            handleCancelJob(1, jobDetailsData)
-                                                        }}>
-                                                        {'Accept'}
-                                                    </button>
-                                                    <button className="fill_grey_btn btn-effect"
-                                                        onClick={() => {
-                                                            handleCancelJob(2, jobDetailsData)
-                                                        }}>
-                                                        {'Reject'}
-                                                    </button>
-                                                </div>}
-
-                                            {(CASE_2 || CASE_3) && (
-                                                <span className="sub_title">
-                                                    {'Reason(s)'}
-                                                </span>
-                                            )}
-
-                                            {CASE_2 &&
-                                                <div className="chang_req_card mb-sm">
-                                                    <span className="sub_title">
-                                                        {`Job cancelled ${CASE_2 === 3 ? 'reject' : ''} reason`}
-                                                    </span>
-                                                    <p className="commn_para line-2">
-                                                        {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
-                                                    </p>
-                                                    <p className="commn_para line-2">
-                                                        {jobDetailsData?.reasonNoteForCancelJobRequest}
-                                                    </p>
-                                                </div>}
-
-                                            {CASE_3 &&
-                                                <div className="chang_req_card mb-sm">
-                                                    <span className="sub_title">Job cancelled reason</span>
-                                                    <p className="commn_para line-2">
-                                                        {jobDetailsData?.changeRequestDeclineReason}
-                                                    </p>
-                                                </div>}
-
-                                        </div>
-                                    </Modal>
-
                                     {((paramStatus === 'EXPIRED' || paramStatus === 'expired') && !jobDetailsData?.isPublishedAgain) && (
                                         <button
                                             className="fill_btn full_btn btn-effect mt-sm"
@@ -921,7 +868,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                     onClick={() => {
                                                         setJobRejectModal(false);
                                                         setJobData({});
-                                                        setPendingRequestClicked(true);
                                                     }}>
                                                     {'Cancel'}
                                                 </button>
@@ -945,7 +891,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                     className="close_btn"
                                                     onClick={() => {
                                                         setJobAcceptModal(false);
-                                                        setPendingRequestClicked(false)
                                                     }}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
@@ -963,34 +908,47 @@ const JobDetailsPage = (props: PropsType) => {
                                                     onClick={() => {
                                                         setJobAcceptModal(false);
                                                         setJobData({});
-                                                        setPendingRequestClicked(true)
                                                     }}>No</button>
                                             </div>
                                         </div>
                                     </Modal>
 
-                                    {/* {jobDetailsData?.isCancelJobRequest &&
-                                        <div className="chang_req_card mt-sm">
-                                            <span className="sub_title">Job cancellation request</span>
-                                            <p className="commn_para">
-                                                {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
-                                            </p>
-                                            {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
-                                            <button
-                                                onClick={() => {
-                                                    handleCancelJob(1, jobDetailsData)
-                                                }}
-                                                className="fill_btn btn-effect">
-                                                {'Accept'}
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    handleCancelJob(2, jobDetailsData)
-                                                }}
-                                                className="fill_grey_btn btn-effect">
-                                                {'Reject'}
-                                            </button>
-                                        </div>} */}
+                                    {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
+                                        <span className="sub_title">Job cancellation request</span>
+                                        <p className="commn_para">
+                                            {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
+                                            {/* {jobDetailsData?.reasonForCancelJobRequest === 1 ?
+                                                'I got a better job' :
+                                                'I am not the right fit for the job'} */}
+                                        </p>
+                                        {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
+                                        <button
+                                            onClick={() => {
+                                                handleCancelJob(1, jobDetailsData)
+                                            }}
+                                            className="fill_btn btn-effect">
+                                            {'Accept'}
+                                        </button>
+                                        <button
+                                            onClick={() => {
+                                                handleCancelJob(2, jobDetailsData)
+                                            }}
+                                            className="fill_grey_btn btn-effect">
+                                            {'Reject'}
+                                        </button>
+                                    </div>}
+
+                                    {/* {paramStatus ? (
+                                        <button
+                                            className="fill_btn full_btn btn-effect">
+                                            {paramStatus}
+                                        </button>
+                                    ) : jobDetailsData?.status ? (
+                                        <button
+                                            className="fill_btn full_btn btn-effect">
+                                            {jobDetailsData?.status}
+                                        </button>
+                                    ) : null} */}
                                 </div>
                             </div>
                         </div>
