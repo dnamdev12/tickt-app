@@ -53,7 +53,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
     const [isItemsLoad, setLoadItems] = useState({});
-
+    const [countMedia, setCountMedia] = useState({ photos: 0, video: 0 });
     const [renderAsyncLoad, setAsyncLoad] = useState<any>(null);
 
     useEffect(() => {
@@ -146,19 +146,43 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 videoItems.push(format_split_items);
             }
 
-            if(imageFormats.includes(format_split_items)){
+            if (imageFormats.includes(format_split_items)) {
                 ImageItems.push(format_split_items);
             }
         });
 
-        if(ImageItems?.length === 6){
-            return "video/mp4, video/wmv, video/avi";
+        if (ImageItems?.length === 6) {
+            return ".mp4, .wmv, .avi";
         }
 
         if (videoItems?.length == 2) {
-            return "image/png,image/jpg,image/jpeg,.pdf, .doc";
+            return ".png,.jpg,.jpeg,.pdf,.doc";
         }
-        return "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi";
+
+        return ".png,.jpg,.jpeg,.pdf,.doc,.mp4,.wmv,.avi";
+    }
+
+    const checkIfVideoExist_ = () => {
+        let videoItems = [];
+        let ImageItems = [];
+        filesUrl.forEach((element: any) => {
+            let split_items = element.link.split('.');
+            let format_split_items = split_items[split_items?.length - 1];
+            if (videoFormats.includes(format_split_items)) {
+                videoItems.push(format_split_items);
+            }
+
+            if (imageFormats.includes(format_split_items)) {
+                ImageItems.push(format_split_items);
+            }
+        });
+
+
+        return {
+            videoCount: videoItems.length,
+            imageCount: ImageItems.length
+        }
+
     }
 
     const onFileChange = async (e: any) => {
@@ -174,6 +198,20 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         if (filesUrl?.length === 8) {
             setShowToast(true, "Max files upload limit is 6.")
             return;
+        }
+
+        let checkCounts: any = checkIfVideoExist_();
+
+        if (checkCounts?.videoCount === 2) {
+            if (videoFormats.includes(fileType)) {
+                return
+            }
+        }
+
+        if (checkCounts?.imageCount === 6) {
+            if (imageFormats.includes(fileType)) {
+                return
+            }
         }
 
         let filesUrlClone: any = filesUrl;
@@ -460,7 +498,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                         {!hasDescription ? (
                                             <input
                                                 onChange={onFileChange}
-                                                onClick={checkIfVideoExist}
                                                 type="file"
                                                 accept={checkIfVideoExist()}
                                                 style={{ display: "none" }}

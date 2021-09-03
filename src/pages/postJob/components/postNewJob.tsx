@@ -5,6 +5,10 @@ import Constants from '../../../utils/constants';
 import { useHistory, useLocation } from "react-router-dom";
 //@ts-ignore
 import _ from 'lodash';
+//@ts-ignore
+import { useQuill } from 'react-quilljs';
+import 'quill/dist/quill.snow.css'; // Add css for snow theme
+
 interface Proptypes {
   data: any,
   jobUpdateParam?: any,
@@ -29,6 +33,24 @@ const PostNewJob = ({
   const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>({ jobName: '', job_description: '' });
   const [errors, setErrors] = useState({ jobName: '', job_description: '' });
   const [continueClicked, setContinueClicked] = useState(false);
+  // const { quill, quillRef } = useQuill({placeholder:'this job...'});
+
+  const theme = 'snow';
+  // const theme = 'bubble';
+
+  const modules = {
+    toolbar: [
+      ['bold', 'italic', 'underline', 'strike'],
+    ],
+  };
+
+  const placeholder = 'This Job...';
+
+  const formats: any = [];
+
+  const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
+
+
   const { jobName, job_description } = basicDetails;
 
   let location = useLocation();
@@ -38,6 +60,36 @@ const PostNewJob = ({
     let urlParams = new URLSearchParams(location.search);
     jobId = urlParams.get('jobId');
   }
+
+  React.useEffect(() => {
+    if (quill) {
+      quill.on('text-change', (delta, oldDelta, source) => {
+        console.log('Text change!');
+        let text = quill.getText().replace(/\n/g, "").trimLeft();
+        handleChange({
+          target: {
+            name: 'job_description',
+            value: text
+          }
+        });
+        console.log({ text: text }); // Get text only
+        // let IdElement: any = document.getElementById('ref-quill');
+        // if (IdElement) {
+        //   let IdElementChild: any = IdElement?.childNodes[0];
+        //   if (IdElementChild) {
+        //     let IdElementFurtherChild: any = IdElementChild.childNodes[0];
+        //     if (IdElementFurtherChild) {
+        //       IdElementFurtherChild.innerText = (IdElementFurtherChild.innerText).trimLeft();
+        //       console.log({
+        //         innerHTML: IdElementFurtherChild.innerHTML,
+        //         innerText: IdElementFurtherChild.innerText,
+        //       })
+        //     }
+        //   }
+        // }
+      });
+    }
+  }, [quill]);
 
   useEffect(() => {
     if (stepCompleted) {
@@ -75,7 +127,7 @@ const PostNewJob = ({
   const handleChange = ({ target: { value, name } }: { target: { value: string, name: string } }) => {
     let valueElem: any = (value).trimLeft()
     if (name === "jobName" || name === "job_description") {
-      if(name === "jobName"){
+      if (name === "jobName") {
         valueElem = valueElem.replace(/[^a-zA-Z|0-9 ]/g, "");
       }
       valueElem = capitalize(valueElem) //.charAt(0).toUpperCase() + valueElem.substring(1);
@@ -178,7 +230,7 @@ const PostNewJob = ({
               <div className="form_field">
                 <label className="form_label">Job Details</label>
                 <div className="text_field">
-                   <textarea
+                  {/* <textarea
                     placeholder="This Job..."
                     name="job_description"
                     value={job_description}
@@ -192,7 +244,11 @@ const PostNewJob = ({
                         }))
                       }
                     }}
-                  /> 
+                  />  */}
+
+                  <div className="editor-job-description">
+                    <div id="ref-quill" ref={quillRef} />
+                  </div>
 
                   {/* <CKEditor
                     editor={ClassicEditor}

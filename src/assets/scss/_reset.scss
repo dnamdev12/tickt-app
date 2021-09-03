@@ -833,12 +833,34 @@ table {
 }
 
 @mixin color_random_classes {
-    @for $i from 0 through $colors {
-      .color_#{$i} {
-        @include random-bgr();
-      }
+  @for $i from 0 through $colors {
+    .color_#{$i} {
+      @include random-bgr();
     }
+  }
 }
-  
+
 @include color_random_classes;
-  
+
+.ql-toolbar {
+  display: none;
+}
+
+.ql-container {
+  border-top: 1px solid #ccc !important;
+}
+
+.ql-font-roboto {
+  font-family: 'Roboto', sans-serif;
+}
+
+.editor-job-description {
+  width: 490px;
+  height: 220px;
+  padding: 5px;
+}
+
+// hide alt tag while image is loading.
+img:-moz-loading {
+  visibility: hidden;
+}
