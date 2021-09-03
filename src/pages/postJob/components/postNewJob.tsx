@@ -33,32 +33,25 @@ const PostNewJob = ({
   const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>({ jobName: '', job_description: '' });
   const [errors, setErrors] = useState({ jobName: '', job_description: '' });
   const [continueClicked, setContinueClicked] = useState(false);
-  // const { quill, quillRef } = useQuill({placeholder:'this job...'});
-
-  const theme = 'snow';
-  // const theme = 'bubble';
-
-  const modules = {
-    toolbar: [
-      ['bold', 'italic', 'underline', 'strike'],
-    ],
-  };
-
-  const placeholder = 'This Job...';
-
-  const formats: any = [];
-
-  const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
-
-
   const { jobName, job_description } = basicDetails;
+  const theme = 'snow';
+  const modules = {
+    toolbar: [['bold', 'italic', 'underline', 'strike']],
+    clipboard: {
+      matchVisual: false
+    }
+  };
+  const placeholder = 'This Job...';
+  const formats: any = [];
+  const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
 
   let location = useLocation();
   let jobId: any = null;
-
+  let update: any = null;
   if (location.search) {
     let urlParams = new URLSearchParams(location.search);
     jobId = urlParams.get('jobId');
+    update = urlParams.get('update');
   }
 
   React.useEffect(() => {
@@ -73,20 +66,6 @@ const PostNewJob = ({
           }
         });
         console.log({ text: text }); // Get text only
-        // let IdElement: any = document.getElementById('ref-quill');
-        // if (IdElement) {
-        //   let IdElementChild: any = IdElement?.childNodes[0];
-        //   if (IdElementChild) {
-        //     let IdElementFurtherChild: any = IdElementChild.childNodes[0];
-        //     if (IdElementFurtherChild) {
-        //       IdElementFurtherChild.innerText = (IdElementFurtherChild.innerText).trimLeft();
-        //       console.log({
-        //         innerHTML: IdElementFurtherChild.innerHTML,
-        //         innerText: IdElementFurtherChild.innerText,
-        //       })
-        //     }
-        //   }
-        // }
       });
     }
   }, [quill]);
@@ -97,9 +76,9 @@ const PostNewJob = ({
         jobName: data?.jobName,
         job_description: data?.job_description
       });
+      quill?.clipboard?.dangerouslyPasteHTML(`<p>${data?.job_description}</p>`);
     }
-  }, [stepCompleted, data]);
-
+  }, [stepCompleted, data, quill]);
 
   // for error messages
   const label: { [index: string]: string } = {
@@ -108,7 +87,6 @@ const PostNewJob = ({
   }
 
   // const isEmpty = (name: string, value: string) => !value ? errorStrings.pleaseEnter + label[name] : '';
-
   const isInvalid = (name: string, value: string) => {
     switch (name) {
       case 'jobName':
@@ -118,8 +96,6 @@ const PostNewJob = ({
     }
   }
   // return isEmpty(name, value);
-
-
   const capitalize = (str: any) => {
     return str.charAt(0).toUpperCase() + str.slice(1);
   }
@@ -184,7 +160,6 @@ const PostNewJob = ({
     return true;
   }
 
-
   console.log({ jobUpdateParam, jobId })
   return (
     <div className="app_wrapper">
@@ -198,7 +173,7 @@ const PostNewJob = ({
                     <div className="relate">
                       <button className="back" onClick={() => { handleStepForward(14) }}></button>
                       <span className="title">
-                        {!jobUpdateParam && jobId ? 'Republish a job' : 'Post new job'}
+                        {!jobUpdateParam && jobId ? 'Republish a job' : update ? 'Update job' : 'Post new job'}
                       </span>
                     </div>
                     <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
@@ -206,7 +181,7 @@ const PostNewJob = ({
                   : (
                     <React.Fragment>
                       <span className="title">
-                        {!jobUpdateParam && jobId ? 'Republish a job' : 'Post new job'}
+                        {!jobUpdateParam && jobId ? 'Republish a job' : update ? 'Update job' : 'Post new job'}
                       </span>
                       <p className="commn_para">Write the job name and try to describe all details for better comprehension.</p>
                     </React.Fragment>

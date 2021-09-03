@@ -192,6 +192,7 @@ function* getOpenJobsBuilder({ page }: any) {
   if (response.status_code === 200) {
     if (response?.result?.open && Array.isArray(response?.result?.open) && response?.result?.open?.length) {
       response.result.open[0]['page'] = page;
+      response.result.open[0]['mathrandom'] = Math.random();
     }
     if (page === 1) { setLoading(false); }
     yield put({

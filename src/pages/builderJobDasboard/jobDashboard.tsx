@@ -286,12 +286,41 @@ class JobDashboard extends Component<Props, State> {
                         this.setState({ hasLoad: false });
                     }
                 } else if (hasLoad && open?.length && page_get === currentPage) {
+                    // let result = [];
+                    // if (JSON.stringify(prevValues) === JSON.stringify(open) && page_get === currentPage) {
+                    //     // same data items here!
+                    // } else {
+                    //     result = page_get > 0 && page_get === currentPage ? [...prevValues, ...open] : open;
+                    // }
+                    // console.log({
+                    //     prevValues,
+                    //     open
+                    // })
+
                     let result = [];
                     if (JSON.stringify(prevValues) === JSON.stringify(open) && page_get === currentPage) {
                         // same data items here!
+                        alert('Ok!')
                     } else {
-                        result = page_get > 0 && page_get === currentPage ? [...prevValues, ...open] : open;
+                        let concatedItems: any = prevValues;
+                        let firstItem: any = null;
+
+                        if (Array.isArray(open) && open?.length) {
+                            firstItem = open[0];
+                        }
+
+                        if (firstItem?.jobId) {
+                            let ifMatch = prevValues.find((item: any) => item.jobId === firstItem?.jobId);
+                            if (!ifMatch) {
+                                concatedItems = [...prevValues, ...open]
+                            }
+                        }
+
+                        result = page_get > 0 && page_get === currentPage ?
+                            page_get == 1 && currentPage == 1 ? open : concatedItems
+                            : open;
                     }
+
                     this.setState({
                         openJobs: result,
                         count: {
@@ -300,6 +329,7 @@ class JobDashboard extends Component<Props, State> {
                         },
                         actualLoad: true
                     });
+
                 } else {
                     this.checkAndUpdateCount({
                         needApprovalCount,

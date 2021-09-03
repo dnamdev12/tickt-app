@@ -536,7 +536,8 @@ const JobDetailsPage = (props: PropsType) => {
 
 
     const deleteJob = async (jobId: any) => {
-        await deleteOpenJob({ jobId });
+        let response:any = await deleteOpenJob({ jobId });
+        console.log({response});
         props.history.push(`/jobs?active=${activeType}`)
     }
 
@@ -546,39 +547,59 @@ const JobDetailsPage = (props: PropsType) => {
     // let CASE_3 = paramStatus === 'Pending dispute' &&
     //     jobDetailsData?.changeRequestDeclineReason?.length > 0;
 
+    // let CASE_1 = jobDetailsData?.isCancelJobRequest;
+    // let CASE_2 = jobDetailsData?.reasonForCancelJobRequest ? jobDetailsData?.reasonForCancelJobRequest : false;
+    // let CASE_3 = jobDetailsData?.changeRequestDeclineReason?.length ? jobDetailsData?.changeRequestDeclineReason : false;
+
     let CASE_1 = jobDetailsData?.isCancelJobRequest;
     let CASE_2 = jobDetailsData?.reasonForCancelJobRequest ? jobDetailsData?.reasonForCancelJobRequest : false;
     let CASE_3 = jobDetailsData?.changeRequestDeclineReason?.length ? jobDetailsData?.changeRequestDeclineReason : false;
 
 
-    console.log({ paramStatus,
-     }, 'paramStatus')
+    const checkTrueCase = () => {
+        let C1 = CASE_1 ? 1 : 0;
+        let C2 = CASE_2 ? 1 : 0;
+        let C3 = CASE_3 ? 1 : 0;
 
-    // line no 550. "open"  is excluded from array.
+        let Count = C1 + C2 + C3;
+
+        if (Count == 1) {
+            return '1'
+        }
+
+        if (Count == 2) {
+            return '2'
+        }
+
+        if (Count == 3) {
+            return '3'
+        }
+    }
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
-                    {['active'].includes(activeType) ? (
+                    {['active', 'open'].includes(activeType) ? (
                         <span className="dot_menu">
                             <img src={editIconBlue} alt="edit" />
                             <div className="edit_menu">
                                 <ul>
-                                    {/* {activeType == "open" && (
+                                    {activeType == "open" && (
                                         <React.Fragment>
                                             <li
                                                 onClick={() => {
-                                                    setShowToast(true, 'Under Development');
-                                                    // props.history.push(`/post-new-job?update=true&jobId=${paramJobId}`)
+                                                    // setShowToast(true, 'Under Development');
+                                                    props.history.push(`/post-new-job?update=true&jobId=${paramJobId}`)
                                                 }}
-                                                className="icon edit_line">Edit</li>
+                                                className="icon edit_line">{'Edit'}</li>
                                             <li
                                                 onClick={() => {
                                                     setToggleDelete((prev: any) => !prev);
                                                 }}
-                                                className="icon delete">Delete</li>
+                                                className="icon delete">{'Delete'}</li>
                                         </React.Fragment>
-                                    )} */}
+                                    )}
                                     {activeType == "active" && (
                                         <React.Fragment>
                                             <li
@@ -776,16 +797,8 @@ const JobDetailsPage = (props: PropsType) => {
                                             }}>
 
                                             {(CASE_1 || CASE_2 || CASE_3) && (
-                                                <span>{`1 pending request(s)`}</span>
+                                                <span>{`${checkTrueCase()} pending request(s)`}</span>
                                             )}
-
-                                            {/* {CASE_2 && (
-                                                <span>{`2 pending request(s)`}</span>
-                                            )}
-
-                                            {CASE_3 && (
-                                                <span>{`3 pending request(s)`}</span>
-                                            )} */}
                                         </div>
                                     )}
 
@@ -812,7 +825,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </button>
                                             </div>
                                             {CASE_1 &&
-                                                <div className="chang_req_card mt-sm" style={{paddingTop:'10px', paddingBottom:'20px'}}>
+                                                <div className="chang_req_card mt-sm" style={{ paddingTop: '10px', paddingBottom: '20px' }}>
                                                     <span className="sub_title">Job cancellation request</span>
                                                     <p className="commn_para line-2">
                                                         <li>
@@ -858,7 +871,7 @@ const JobDetailsPage = (props: PropsType) => {
 
                                             {CASE_3 &&
                                                 <div className="chang_req_card mb-sm">
-                                                    <span className="sub_title"> {`Job cancelled decline reason`}</span>
+                                                    <span className="sub_title"> {`Job cancelled rejected reason`}</span>
                                                     <p className="commn_para line-2">
                                                         {jobDetailsData?.changeRequestDeclineReason}
                                                     </p>

@@ -6,7 +6,7 @@ import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
-import { createPostJob, publishJobAgain } from '../../../redux/jobs/actions';
+import { createPostJob, publishJobAgain , publishOpenJobAgain} from '../../../redux/jobs/actions';
 import moment from 'moment';
 import jobDummyImage from '../../../assets/images/ic-placeholder-detail.png';
 import OwlCarousel from 'react-owl-carousel';
@@ -220,6 +220,8 @@ const JobDetails = ({
         e.preventDefault();
         let data_clone: any = data;
         let milestones_clone: any = milestones;
+        const params = new URLSearchParams(history.location?.search);
+        const update: any = params.get('update') || '';
         let filter_milestones = milestones_clone.filter((item: any, index: any) => {
             if (Object.keys(item).length) {
                 if (!item?.to_date?.length) {
@@ -270,7 +272,13 @@ const JobDetails = ({
 
         const createJob = jobId ? publishJobAgain : createPostJob;
 
-        let response: any = await createJob(data_clone);
+        let response: any = null;
+
+        if (update) {
+            response = await publishOpenJobAgain(data_clone);
+        } else {
+            response = await createJob(data_clone);
+        }
         if (response?.success) {
             clearParentStates();
             handleStepForward(12);

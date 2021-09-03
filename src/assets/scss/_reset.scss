@@ -847,11 +847,12 @@ table {
 }
 
 .ql-container {
-  border-top: 1px solid #ccc !important;
+  border-top: 1px solid #dfe5ef !important;
+  border-radius: 4px;
 }
 
 .ql-font-roboto {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 .editor-job-description {
@@ -863,4 +864,20 @@ table {
 // hide alt tag while image is loading.
 img:-moz-loading {
   visibility: hidden;
+}
+span.save_bookmark {
+  position: absolute;
+  cursor: pointer;
+  padding: 20px;
+  border-radius: 50%;
+  background: var(--yellow) url("../images/bookmark.png") center no-repeat;
+  background-size: auto;
+  &.active {
+    background: var(--yellow) url("../images/bookmarked.png") center no-repeat;
+    background-size: auto;
+  }
+}
+
+.pt-10 {
+  padding-top: 10px;
 }

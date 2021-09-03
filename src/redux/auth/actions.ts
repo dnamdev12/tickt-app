@@ -73,6 +73,19 @@ export const verifyOtp = async (data: object) => {
   return { success: false }
 };
 
+
+export const verifyMobileOtp = async (data: object) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.verifyOTP, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, message: response.message };
+  }
+  setShowToast(true, response.message);
+  return { success: false }
+};
+
+
 export const createPassword = async (passwordInfo: object) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.createPassword, passwordInfo);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { checkMobileNumber, verifyOtp } from '../../../redux/auth/actions';
+import { checkMobileNumber, verifyOtp, verifyMobileOtp } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import OtpInput from "react-otp-input";
@@ -43,9 +43,11 @@ const VerifyPhoneNumber = (props: Propstype) => {
         e.preventDefault();
         if (validateForm()) {
             const data = {
-                otp: otp
+                otp: otp,
+                mobileNumber: props.mobileNumber
             }
-            const res: any = await verifyOtp(data)
+            // const res: any = await verifyOtp(data)
+            const res: any = await verifyMobileOtp(data);
             if (res.success) {
                 props.updateSteps(props.step + 1)
             }
@@ -83,7 +85,7 @@ const VerifyPhoneNumber = (props: Propstype) => {
                 </div>
                 <div className="form_field">
                     <span className="show_label">We have sent a verification code to your phone.
-                          Please check SMS and enter the 5-digit code here.</span>
+                        Please check SMS and enter the 5-digit code here.</span>
                 </div>
                 {counter === 0 && <div className="form_field text-center">
                     <span className="show_label">Don’t you receive any codes?</span>

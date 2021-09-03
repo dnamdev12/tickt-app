@@ -14,7 +14,7 @@ import UploadMedia from './components/uploadMedia';
 import MileStoneTemplates from './components/milestoneTemplates';
 import JobDetails from './components/jobDetails';
 import EditMilestone from './components/editMileStone';
-import { callCategories, republishJob } from '../../redux/jobs/actions';
+import { callCategories, republishJob, getOpenJobDetails } from '../../redux/jobs/actions';
 import moment from 'moment';
 import { setShowToast } from '../../redux/common/actions';
 import { useHistory } from 'react-router-dom';
@@ -76,8 +76,15 @@ const PostJob = (props: Proptypes) => {
         callTradeList();
     }, [getCategories, callTradeList, milestones]);
 
-    const getJobDetails = useCallback(async (jobId: string) => {
-        let res = await republishJob(jobId);
+    const getJobDetails = useCallback(async (jobId: string, updateOpen?: boolean) => {
+        let res = null;
+
+        if (updateOpen) {
+            res = await getOpenJobDetails(jobId);
+        } else {
+            res = await republishJob(jobId);
+        }
+
         if (res.success) {
             setData({
                 ...res.data,
@@ -99,18 +106,21 @@ const PostJob = (props: Proptypes) => {
 
     useEffect(() => {
         const params = new URLSearchParams(history.location?.search);
-        const jobId:any = params.get('jobId') || '';
-        const update:any = params.get('update') || '';
-        
-        // if (jobId && update !== "true") {
-            if(jobId){
+        const jobId: any = params.get('jobId') || '';
+        // this param is missing in the case of re-publish.
+        const update: any = params.get('update') || '';
+
+        if (jobId && update !== "true") {
+            if (jobId) {
                 setJobId(jobId);
                 getJobDetails(jobId);
             }
-        // } else {
-            // setJobUpdateParam(true);
-            // getJobDetails(jobId);
-        // }
+        } else {
+            if(update == "true"){
+                setJobUpdateParam(true);
+                getJobDetails(jobId, true);
+            }
+        }
     }, [getJobDetails, history.location]);
 
     const clearParentStates = () => {
@@ -197,22 +207,22 @@ const PostJob = (props: Proptypes) => {
                     } else {
                         count_times[mile_end] = count_times[mile_end] + 1;
                     }
-                
+
                     if (count_times[mile_start] === 4) {
-                        console.log('Inside ---',{
-                            ms:mile_start == time_start
+                        console.log('Inside ---', {
+                            ms: mile_start == time_start
                         })
                         if (mile_start == time_start || mile_start == time_end) {
                             console.log('Inside - 1 ---')
                             setShowToast(true, 'Selected start data is fully engage');
-                            return 
+                            return
                         }
                     }
 
                     if (count_times[mile_end] === 4) {
                         if (mile_end == time_start || mile_end == time_end) {
                             setShowToast(true, 'Selected end data is fully engage');
-                            return 
+                            return
                         }
                     }
 
