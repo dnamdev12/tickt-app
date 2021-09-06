@@ -868,7 +868,9 @@ img:-moz-loading {
 span.save_bookmark {
   position: absolute;
   cursor: pointer;
+  top:-35px; // value in minus added to keep it align.
   padding: 20px;
+  margin-left: 10px;
   border-radius: 50%;
   background: var(--yellow) url("../images/bookmark.png") center no-repeat;
   background-size: auto;

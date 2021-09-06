@@ -526,7 +526,12 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_8">
                                 <button className="back" onClick={() => props.history?.goBack()}></button>
                             </div>
-                            {!jobInviteAction && !jobDetailsData?.isCancelJobRequest && !jobDetailsData?.isChangeRequest && !jobDetailsData?.appliedStatus && !props.isSkeletonLoading && jobDetailsData.jobStatus === 'active' && (
+                            {!jobInviteAction &&
+                                !jobDetailsData?.isCancelJobRequest &&
+                                !jobDetailsData?.isChangeRequest &&
+                                !jobDetailsData?.appliedStatus &&
+                                !props.isSkeletonLoading &&
+                                jobDetailsData.jobStatus === 'active' ? (
                                 <div className="flex_col_sm_4 text-right">
                                     <span className="dot_menu">
                                         <img src={editIconBlue} alt="edit" />
@@ -537,14 +542,28 @@ const JobDetailsPage = (props: PropsType) => {
                                             </ul>
                                         </div>
                                     </span>
-                                </div>)}
-
-                            {CASE_1_SAVE_JOB || CASE_2_SAVE_JOB && (
+                                    <span
+                                        className={`save_bookmark ${jobDetailsData?.isSaved ? 'active' : ''}`}
+                                        onClick={saveJobClicked}>
+                                    </span>
+                                </div>
+                            ) : (
                                 <div className="flex_col_sm_4 text-right">
-                                    <span className={`save_bookmark ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}>
+                                    <span
+                                        className={`save_bookmark ${jobDetailsData?.isSaved ? 'active' : ''}`}
+                                        onClick={saveJobClicked}>
                                     </span>
                                 </div>
                             )}
+
+                            {/* {CASE_1_SAVE_JOB || CASE_2_SAVE_JOB && ( */}
+                            {/* <div className="flex_col_sm_4 text-right">
+                                <span
+                                    className={`save_bookmark ${jobDetailsData?.isSaved ? 'active' : ''}`}
+                                    onClick={saveJobClicked}>
+                                </span>
+                            </div> */}
+                            {/* )} */}
 
                         </div>
                         <div className="flex_row">
@@ -634,30 +653,30 @@ const JobDetailsPage = (props: PropsType) => {
                                     </div>} */}
                                     {/* Added  && jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
                                     {props.isSkeletonLoading ? <Skeleton /> :
-                                     jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' && 
-                                     jobDetailsData?.applyButtonDisplay ? (
-                                        <div className="pt-10">
-                                            {/* {'bottom_btn'} */}
-                                            {/* <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span> */}
-                                            <button className="fill_btn full_btn btn-effect" onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
-                                        </div>
-                                    ) : (
-                                        !jobDetailsData?.applyButtonDisplay &&
-                                         ['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())
-                                         && (jobInviteAction === 'invite' || !jobDetailsData?.isInvited)
-                                         ) ?
-                                        <div className="pt-10">
-                                            {/* {'bottom_btn'} */}
-                                            {/* <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span> */}
-                                            <button className="fill_btn full_btn btn-effect disable_btn" >{jobDetailsData?.appliedStatus?.toUpperCase()}</button>
-                                        </div>
-                                        : (paramStatus) ? (
-                                            <button
-                                                className="fill_btn full_btn btn-effect"
-                                                onClick={applyJobClicked}>
-                                                {paramStatus}
-                                            </button>
-                                        ) : null}
+                                        jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' &&
+                                            jobDetailsData?.applyButtonDisplay ? (
+                                            <div className="pt-10">
+                                                {/* {'bottom_btn'} */}
+                                                {/* <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span> */}
+                                                <button className="fill_btn full_btn btn-effect" onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                            </div>
+                                        ) : (
+                                            !jobDetailsData?.applyButtonDisplay &&
+                                            ['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase())
+                                            && (jobInviteAction === 'invite' || !jobDetailsData?.isInvited)
+                                        ) ?
+                                            <div className="pt-10">
+                                                {/* {'bottom_btn'} */}
+                                                {/* <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span> */}
+                                                <button className="fill_btn full_btn btn-effect disable_btn" >{jobDetailsData?.appliedStatus?.toUpperCase()}</button>
+                                            </div>
+                                            : (paramStatus) ? (
+                                                <button
+                                                    className="fill_btn full_btn btn-effect"
+                                                    onClick={applyJobClicked}>
+                                                    {paramStatus}
+                                                </button>
+                                            ) : null}
                                     {/* Added  || jobDetailsData?.isInvited condition here as Ticket requirement 2069 */}
                                     {props.isSkeletonLoading ? <Skeleton /> : (jobInviteAction === 'invite' || jobDetailsData?.isInvited) &&
                                         <>

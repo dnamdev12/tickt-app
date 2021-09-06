@@ -585,6 +585,7 @@ class TradieInfo extends Component<Props, State> {
                                     }}></button>
                                 </div>
                             </div>
+
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     <figure className="vid_img_thumb">
@@ -604,6 +605,15 @@ class TradieInfo extends Component<Props, State> {
                                     </figure>
                                 </div>
                                 <div className="flex_col_sm_4 relative">
+                                    <div className="text-right">
+                                        <span
+                                            className={`save_bookmark ${tradieInfo?.isSaved ? 'active' : ''}`}
+                                            onClick={() => {
+                                                this.savedTradie({ tradieInfo })
+                                            }}>
+                                        </span>
+                                    </div>
+
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
@@ -645,12 +655,13 @@ class TradieInfo extends Component<Props, State> {
                                                 ) : (!tradieInfo?.isRequested && !hideInvite ? (
                                                     <div className="form_field">
                                                         {tradieInfo?.isInvited ? (
-                                                            <div className="bottom_btn">
-                                                                <span
+                                                            <div className="pt-10">
+                                                                {/* bottom_btn */}
+                                                                {/* <span
                                                                     onClick={() => {
                                                                         this.savedTradie({ tradieInfo })
                                                                     }}
-                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span>
+                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}></span> */}
                                                                 {haveJobId ?
                                                                     <button
                                                                         onClick={() => {
@@ -693,13 +704,14 @@ class TradieInfo extends Component<Props, State> {
                                                                 }
                                                             </div>
                                                         ) : (
-                                                            <div className="bottom_btn">
-                                                                <span
+                                                            <div className="pt-10">
+                                                                {/* bottom_btn */}
+                                                                {/* <span
                                                                     onClick={() => {
                                                                         this.savedTradie({ tradieInfo })
                                                                     }}
-                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}>
-                                                                </span>
+                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}> 
+                                                                </span>*/}
                                                                 <button
                                                                     onClick={() => {
                                                                         console.log({ tradieInfo }, 'tradieInfo --><--')
@@ -917,7 +929,7 @@ class TradieInfo extends Component<Props, State> {
                                                     <img
                                                         src={item?.builderImage || dummy}
                                                         onError={(e: any) => {
-                                                            if(e?.target?.onerror){
+                                                            if (e?.target?.onerror) {
                                                                 e.target.onerror = null;
                                                             }
                                                             if (e?.target?.src) {
