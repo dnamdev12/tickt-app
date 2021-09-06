@@ -868,7 +868,7 @@ img:-moz-loading {
 span.save_bookmark {
   position: absolute;
   cursor: pointer;
-  top:-35px; // value in minus added to keep it align.
+  top: -35px; // value in minus added to keep it align.
   padding: 20px;
   margin-left: 10px;
   border-radius: 50%;
@@ -882,4 +882,14 @@ span.save_bookmark {
 
 .pt-10 {
   padding-top: 10px;
+}
+
+.quote-text {
+  display: flex;
+  align-items: center;
+  color: var(--blue-two);
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 20px;
+  justify-content: center;
 }

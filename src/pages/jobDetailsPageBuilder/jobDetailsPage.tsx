@@ -552,7 +552,7 @@ const JobDetailsPage = (props: PropsType) => {
     // let CASE_3 = jobDetailsData?.changeRequestDeclineReason?.length ? jobDetailsData?.changeRequestDeclineReason : false;
 
     let CASE_1 = jobDetailsData?.isCancelJobRequest;
-    let CASE_2 = jobDetailsData?.reasonForCancelJobRequest ? jobDetailsData?.reasonForCancelJobRequest : false;
+    let CASE_2 = paramStatus === 'CANCELLED' && jobDetailsData?.reasonForCancelJobRequest > 0 ? jobDetailsData?.reasonForCancelJobRequest : false;
     let CASE_3 = jobDetailsData?.changeRequestDeclineReason?.length ? jobDetailsData?.changeRequestDeclineReason : false;
 
 

@@ -7,8 +7,6 @@ import { renderTime } from '../../../utils/common';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob'
 
-import QuoteMark from './quoteJobs/quoteMark';
-
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 
@@ -116,7 +114,6 @@ const MarkMilestone = ({
   const [milestoneIndex, setMilestoneIndex] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
   const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
-  const [isQuoteScreen, setQuoteScreen] = useState(false);
   const [milestoneDeclineData, setMilestoneDeclineData] = useState<any>({
     multipleDeclineListCount: 0,
     prevMilestoneDeclineId: '',
@@ -296,152 +293,130 @@ const MarkMilestone = ({
       case 1:
         return page = (
           <div className="flex_row">
-            {isQuoteScreen ? (
-              <QuoteMark />
-            ) : (
-              <div className="flex_col_sm_6">
-                <div className="relate">
-                  <button
-                    className="back"
-                    onClick={() => history.push('/active-jobs')}
-                  ></button>
-                  <span className="xs_sub_title">{jobName}</span>
-                  <span className="dot_menu">
-                    <img src={editIconBlue} alt="edit" />
-                    <div className="edit_menu">
-                      <ul>
-                        <li
-                          onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
-                          className="icon lodge">Lodge dispute</li>
-                        <li
-                          onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
-                          className="icon delete">Cancel job</li>
-                      </ul>
-                    </div>
-                  </span>
-                </div>
+            <div className="flex_col_sm_6">
+              <div className="relate">
+                <button
+                  className="back"
+                  onClick={() => history.push('/active-jobs')}
+                ></button>
+                <span className="xs_sub_title">{jobName}</span>
+                <span className="dot_menu">
+                  <img src={editIconBlue} alt="edit" />
+                  <div className="edit_menu">
+                    <ul>
+                      <li
+                        onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
+                        className="icon lodge">Lodge dispute</li>
+                      <li
+                        onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
+                        className="icon delete">Cancel job</li>
+                    </ul>
+                  </div>
+                </span>
+              </div>
+              {/* <span className="sub_title">Job Milestones</span> */}
+              <p className="commn_para">
+                Your job point of contact has indicated they want to be notified
+                when you reach the following milestones. Tap the milestone and
+                Submit when a milestone is completed
+              </p>
 
-                <p className="commn_para">
-                  Your job point of contact has indicated they want to be notified
-                  when you reach the following milestones. Tap the milestone and
-                  Submit when a milestone is completed
-                </p>
+              {milestoneDeclineData.multipleDeclineListCount > 1 && <div className="declined_info hvr-ripple-out">
+                <span>{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
+              </div>}
 
-                {milestoneDeclineData.multipleDeclineListCount > 1 && <div className="declined_info hvr-ripple-out">
-                  <span>{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
-                </div>}
+              <ul className="milestones_check">
+                {milestones?.sort(({ order: prevOrder }, { order }) => prevOrder - order)?.map(
+                  (
+                    {
+                      milestoneId,
+                      milestoneName,
+                      isPhotoevidence,
+                      status,
+                      fromDate,
+                      toDate,
+                      declinedReason,
+                      declinedCount,
+                    },
+                    index
+                  ) => {
+                    // As discussed now we take this status 4 as status 0 bacause after the decline on the change-request the status becomes 4.
+                    const prevMilestoneStatus = milestones[index - 1]?.status;
+                    const isActive =
+                      (status === 0 || status === 4 || status === 5) && // here changes done for status 4 
+                      // completed or approved
+                      ([1, 2].includes(prevMilestoneStatus) ||
+                        prevMilestoneStatus === undefined);
+                    const isDeclined = status === 3;
 
-                <ul className="milestones_check">
-                  {milestones?.sort(({ order: prevOrder }, { order }) => prevOrder - order)?.map(
-                    (
-                      {
-                        milestoneId,
-                        milestoneName,
-                        isPhotoevidence,
-                        status,
-                        fromDate,
-                        toDate,
-                        declinedReason,
-                        declinedCount,
-                      },
-                      index
-                    ) => {
-                      // As discussed now we take this status 4 as status 0 bacause after the decline on the change-request the status becomes 4.
-                      const prevMilestoneStatus = milestones[index - 1]?.status;
-                      const isActive =
-                        (status === 0 || status === 4 || status === 5) && // here changes done for status 4 
-                        // completed or approved
-                        ([1, 2].includes(prevMilestoneStatus) ||
-                          prevMilestoneStatus === undefined);
-                      const isDeclined = status === 3;
-
-                      return (
-                        <li
-                          key={milestoneId}
-                          className={
-                            [1, 2,].includes(status)
-                              ? `check`
-                              : isActive
-                                ? 'active'
-                                : status === 3
-                                  ? 'declined'
-                                  : 'disabled'
-                          }
-                        >
-                          <div className="circle_stepper" onClick={() => {
-                            setMediaList(declinedReason?.url);
-                            setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))
-                          }}>
-                            <span></span>
-                          </div>
-                          <div className="info">
-                            <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
-                            {isPhotoevidence && (
-                              <span>Photo evidence required</span>
-                            )}
-                            <span>
-                              {renderTime(fromDate, toDate)}
-                            </span>
-                          </div>
-
-
-                          {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
-                            <>
-                              {Object.keys(declinedReason)?.length > 0 && <div className="decline_reason">
-                                <FsLightbox
-                                  toggler={toggler}
-                                  slide={selectedSlide}
-                                  sources={sources}
-                                  types={types}
-                                />
-                                <label className="form_label">Decline reason:</label>
-                                <div className="text_field">
-                                  <p className="commn_para">{declinedReason?.reason}</p>
-                                </div>
-
-                                {declinedReason?.url?.length > 0 &&
-                                  <Carousel
-                                    className="decline_media"
-                                    responsive={declinedImages}
-                                    showDots={false}
-                                    arrows={true}
-                                  >
-                                    {declinedReason?.url?.map((image: string, index: number) => {
-                                      return (
-                                        <div className="upload_img_video">
-                                          <figure className="img_video">
-                                            <img src={image} alt="image" onClick={() => setItemToggle(index)} />
-                                          </figure>
-                                        </div>)
-                                    })}
-                                  </Carousel>
-                                }
-                              </div>}
-                              <button
-                                onClick={() => {
-                                  if (declinedCount >= 5) {
-                                    setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
-                                    return;
-                                  }
-                                  setMilestoneIndex(index);
-
-                                  if (index === milestones?.length - 1) {
-                                    setIsLastMilestone(true);
-                                  }
-
-                                  if (isPhotoevidence) {
-                                    setStep(2);
-                                  } else {
-                                    setStep(3);
-                                  }
-                                }}
-                                className={`fill_btn full_btn btn-effect ${milestoneDeclineData.prevMilestoneDeclineId !== milestoneId ? 'disable_btn' : ''}`} >Remark as Complete</button>
-                            </>
+                    return (
+                      <li
+                        key={milestoneId}
+                        className={
+                          [1, 2,].includes(status)
+                            ? `check`
+                            : isActive
+                              ? 'active'
+                              : status === 3
+                                ? 'declined'
+                                : 'disabled'
+                        }
+                      >
+                        <div className="circle_stepper" onClick={() => {
+                          setMediaList(declinedReason?.url);
+                          setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))
+                        }}>
+                          <span></span>
+                        </div>
+                        <div className="info">
+                          <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
+                          {isPhotoevidence && (
+                            <span>Photo evidence required</span>
                           )}
-                          {isActive && (
+                          <span>
+                            {renderTime(fromDate, toDate)}
+                          </span>
+                        </div>
+
+
+                        {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
+                          <>
+                            {Object.keys(declinedReason)?.length > 0 && <div className="decline_reason">
+                              <FsLightbox
+                                toggler={toggler}
+                                slide={selectedSlide}
+                                sources={sources}
+                                types={types}
+                              />
+                              <label className="form_label">Decline reason:</label>
+                              <div className="text_field">
+                                <p className="commn_para">{declinedReason?.reason}</p>
+                              </div>
+
+                              {declinedReason?.url?.length > 0 &&
+                                <Carousel
+                                  className="decline_media"
+                                  responsive={declinedImages}
+                                  showDots={false}
+                                  arrows={true}
+                                >
+                                  {declinedReason?.url?.map((image: string, index: number) => {
+                                    return (
+                                      <div className="upload_img_video">
+                                        <figure className="img_video">
+                                          <img src={image} alt="image" onClick={() => setItemToggle(index)} />
+                                        </figure>
+                                      </div>)
+                                  })}
+                                </Carousel>
+                              }
+                            </div>}
                             <button
-                              className="fill_btn full_btn btn-effect"
                               onClick={() => {
+                                if (declinedCount >= 5) {
+                                  setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
+                                  return;
+                                }
                                 setMilestoneIndex(index);
 
                                 if (index === milestones?.length - 1) {
@@ -454,20 +429,115 @@ const MarkMilestone = ({
                                   setStep(3);
                                 }
                               }}
-                            >
-                              Done
-                            </button>
-                          )}
+                              className={`fill_btn full_btn btn-effect ${milestoneDeclineData.prevMilestoneDeclineId !== milestoneId ? 'disable_btn' : ''}`} >Remark as Complete</button>
+                          </>
+                        )}
+                        {isActive && (
+                          <button
+                            className="fill_btn full_btn btn-effect"
+                            onClick={() => {
+                              setMilestoneIndex(index);
 
-                        </li>
-                      );
-                    }
-                  )}
-                </ul>
+                              if (index === milestones?.length - 1) {
+                                setIsLastMilestone(true);
+                              }
 
+                              if (isPhotoevidence) {
+                                setStep(2);
+                              } else {
+                                setStep(3);
+                              }
+                            }}
+                          >
+                            Done
+                          </button>
+                        )}
 
+                      </li>
+                    );
+                  }
+                )}
+              </ul>
+
+              {/* Quote */}
+              <div className="relate form_field">
+                <button
+                  className="back"></button>
               </div>
-            )}
+              <span className="sub_title">Quote for this job</span>
+              <div className="change_req">
+                <div className="edit_delete">
+                  <span className="editdark"></span>
+                </div>
+                <div className="flex_row">
+                  <div className="flex_col_sm_2">
+                    <label className="form_label">Item</label>
+                  </div>
+                  <div className="flex_col_sm_6">
+                    <label className="form_label">Description</label>
+                  </div>
+                  <div className="flex_col_sm_4">
+                    <label className="form_label">Price</label>
+                  </div>
+                  <div className="flex_col_sm_2">
+                    <span className="show_label">1</span>
+                  </div>
+                  <div className="flex_col_sm_6">
+                    <span className="show_label line-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. Aspernatur quasi ducimus minus earum? Fugiat ducimus nam ea ullam laboriosam eos. Aperiam quos optio eveniet quia harum quasi, similique enim debitis.</span>
+                  </div>
+                  <div className="flex_col_sm_4">
+                    <span className="show_label">$1,000</span>
+                  </div>
+                </div>
+              </div>
+              <div className="change_req">
+                <span className="delete_quote">Delete
+                  <img src={deleteQuote} alt="delete" />
+                </span>
+                <span className="inner_title">Add Item</span>
+                <div className="form_field">
+                  <label className="form_label">Item Number</label>
+                  <div className="text_field">
+                    <input type="number" />
+                  </div>
+                </div>
+                <div className="form_field">
+                  <label className="form_label">Description</label>
+                  <div className="text_field">
+                    <textarea></textarea>
+                  </div>
+                </div>
+                <div className="form_field">
+                  <div className="flex_row">
+                    <div className="flex_col_sm_5">
+                      <label className="form_label">Price</label>
+                      <div className="text_field">
+                        <input type="number" />
+                      </div>
+                    </div>
+                    <div className="flex_col_sm_2">
+                      <label className="form_label">Qty</label>
+                      <div className="text_field">
+                        <input type="number" />
+                      </div>
+                    </div>
+                    <div className="flex_col_sm_5">
+                      <label className="form_label">Total</label>
+                      <div className="text_field">
+                        <input type="number" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <button className="fill_btn w100per">Add Item</button>
+              </div>
+              <div className="total_quote">
+                <span className="fill_grey_btn">Total Quote: $1,000</span>
+              </div>
+              <button className="fill_grey_btn quote_btn">Submit Quote</button>
+              {/* Quote close */}
+
+            </div>
             <div className="flex_col_sm_6 col_ruler">
               <span className="sub_title">Posted by</span>
               <div className="tradie_card posted_by view_more ">

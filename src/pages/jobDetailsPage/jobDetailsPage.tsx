@@ -509,6 +509,9 @@ const JobDetailsPage = (props: PropsType) => {
     let CASE_1_SAVE_JOB = jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' && jobDetailsData?.applyButtonDisplay;
     let CASE_2_SAVE_JOB = !jobDetailsData?.applyButtonDisplay && ['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase());
 
+
+    let isEnableQuoting = false; //'for quoting';
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -622,15 +625,34 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="title line-1" title={jobDetailsData?.jobName}>{props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.jobName ? jobDetailsData?.jobName : ''}</span>
                                     <span className="tagg">{props.isSkeletonLoading ? <Skeleton /> : 'Job details'}</span>
                                     <div className="job_info">
-                                        {props.isSkeletonLoading ? <Skeleton count={2} /> : <ul>
-                                            <li className={`icon ${['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? 'calendar' : 'clock'}`}>{`${redirectFrom === 'jobs' ? renderTime(jobDetailsData?.fromDate, jobDetailsData?.toDate) : (jobDetailsData?.time || '')}`}</li>
-                                            <li className="icon dollar">{jobDetailsData?.amount || ''}</li>
-                                            <li className="icon location line-1" title={jobDetailsData?.locationName}>{jobDetailsData?.locationName || ''}</li>
-                                            {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ?
-                                                (<li> <span className="job_status">{jobDetailsData?.jobStatus?.toUpperCase()}</span></li>)
-                                                :
-                                                <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
-                                        </ul>}
+                                        {props.isSkeletonLoading ?
+                                            <Skeleton count={2} />
+                                            : <ul>
+                                                <li
+                                                    className={`icon ${['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ? 'calendar' : 'clock'}`}>
+                                                    {`${redirectFrom === 'jobs' ?
+                                                        renderTime(
+                                                            jobDetailsData?.fromDate,
+                                                            jobDetailsData?.toDate
+                                                        ) :
+                                                        (jobDetailsData?.time || '')}`}
+                                                </li>
+                                                <li className="icon dollar">
+                                                    {isEnableQuoting ? isEnableQuoting : jobDetailsData?.amount || ''}
+                                                    { }
+                                                </li>
+                                                <li className="icon location line-1" title={jobDetailsData?.locationName}>
+                                                    {jobDetailsData?.locationName || ''}
+                                                </li>
+                                                {['completed', 'cancelled', 'expired'].includes(jobDetailsData?.jobStatus?.toLowerCase()) ?
+                                                    (<li>
+                                                        <span className="job_status">
+                                                            {jobDetailsData?.jobStatus?.toUpperCase()}
+                                                        </span>
+                                                    </li>)
+                                                    :
+                                                    <li className="icon calendar">{jobDetailsData?.duration || ''}</li>}
+                                            </ul>}
                                     </div>
                                     {/* {jobDetailsData?.jobStatus === 'active' && !jobInviteAction && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
                                         <span className="sub_title">Job cancellation request</span>

@@ -108,6 +108,11 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
                     </span>
                   </div>
                 </div>
+                {/* {Quest sent start} */}
+                 {/* <div className="quote-text">
+                  {'Quote sent'}
+                </div>  */}
+                {/* {Quest sent end} */}
               </div>
             </div>
           )) : !isLoad && !loading && (

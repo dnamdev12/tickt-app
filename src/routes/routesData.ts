@@ -52,6 +52,8 @@ import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSuces
 import GuestPage from '../pages/home/guestHome';
 import AdminAnnouncementPage from '../pages/adminAnnouncementPage/adminAnnouncementPage';
 
+import QuoteSuccess from '../pages/jobDashboard/components/quoteJobs/success';
+
 const routes = [
     {
         name: 'main',
@@ -172,6 +174,13 @@ const routes = [
         name: 'searchjobresults',
         path: '/search-job-results',
         component: TradieSearchJobResult,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'quoteJobSuccess',
+        path: '/quote-job-success',
+        component: QuoteSuccess,
         authRoute: false,
         privateRoute: true,
     },
