@@ -251,7 +251,7 @@ const PaymentHistory = ({
                       <th><span className="form_label">Job</span></th>
                       <th><span className="form_label">Status</span></th>
                       <th> <span className="form_label">Hired {userType === 1 ? 'by' : 'tradie'}</span></th>
-                      <th><span className="form_label">Date</span></th>
+                      <th><span className="form_label">Start Date</span></th>
                       <th> <span className="form_label">Price</span></th>
                     </tr>
                   </thead>
