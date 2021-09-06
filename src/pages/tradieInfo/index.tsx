@@ -607,7 +607,7 @@ class TradieInfo extends Component<Props, State> {
                                 <div className="flex_col_sm_4 relative">
                                     <div className="text-right">
                                         <span
-                                            className={`save_bookmark ${tradieInfo?.isSaved ? 'active' : ''}`}
+                                            className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}
                                             onClick={() => {
                                                 this.savedTradie({ tradieInfo })
                                             }}>
@@ -655,7 +655,7 @@ class TradieInfo extends Component<Props, State> {
                                                 ) : (!tradieInfo?.isRequested && !hideInvite ? (
                                                     <div className="form_field">
                                                         {tradieInfo?.isInvited ? (
-                                                            <div className="pt-10">
+                                                            <>
                                                                 {/* bottom_btn */}
                                                                 {/* <span
                                                                     onClick={() => {
@@ -702,31 +702,23 @@ class TradieInfo extends Component<Props, State> {
                                                                         {'Invite for job'}
                                                                     </button>
                                                                 }
-                                                            </div>
+                                                            </>
                                                         ) : (
-                                                            <div className="pt-10">
-                                                                {/* bottom_btn */}
-                                                                {/* <span
-                                                                    onClick={() => {
-                                                                        this.savedTradie({ tradieInfo })
-                                                                    }}
-                                                                    className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}> 
-                                                                </span>*/}
-                                                                <button
-                                                                    onClick={() => {
-                                                                        console.log({ tradieInfo }, 'tradieInfo --><--')
-                                                                        props.history.push({
-                                                                            pathname: '/choose-the-job',
-                                                                            state: {
-                                                                                tradieId: tradieInfo?._id || tradieInfo?.tradieId,
-                                                                                path: props.location.search,
-                                                                            }
-                                                                        })
-                                                                    }}
-                                                                    className="fill_btn full_btn btn-effect">
-                                                                    {'Invite for job'}
-                                                                </button>
-                                                            </div>
+
+                                                            <button
+                                                                onClick={() => {
+                                                                    console.log({ tradieInfo }, 'tradieInfo --><--')
+                                                                    props.history.push({
+                                                                        pathname: '/choose-the-job',
+                                                                        state: {
+                                                                            tradieId: tradieInfo?._id || tradieInfo?.tradieId,
+                                                                            path: props.location.search,
+                                                                        }
+                                                                    })
+                                                                }}
+                                                                className="fill_btn full_btn btn-effect">
+                                                                {'Invite for job'}
+                                                            </button>
                                                         )}
                                                     </div>
                                                 ) : haveJobId && tradieInfo?.isRequested ? (

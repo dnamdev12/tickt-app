@@ -18,6 +18,7 @@ import check from '../../../assets/images/checked-2.png';
 import Carousel from 'react-multi-carousel';
 import "react-multi-carousel/lib/styles.css";
 import deleteQuote from '../../../assets/images/ic-delete.png';
+import pendingIcon from '../../../assets/images/exclamation-icon.png'
 
 import storageService from '../../../utils/storageService';
 
@@ -321,9 +322,9 @@ const MarkMilestone = ({
                 Submit when a milestone is completed
               </p>
 
-              {milestoneDeclineData.multipleDeclineListCount > 1 && <div className="declined_info hvr-ripple-out">
-                <span>{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
-              </div>}
+              {milestoneDeclineData.multipleDeclineListCount > 1 && <button className="fill_grey_btn full_btn pending_info">
+                <span><img src={pendingIcon} alt="icon" />{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
+              </button>}
 
               <ul className="milestones_check">
                 {milestones?.sort(({ order: prevOrder }, { order }) => prevOrder - order)?.map(

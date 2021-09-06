@@ -26,6 +26,8 @@ import jobDummyImage from '../../assets/images/ic-placeholder-detail.png';
 import question from '../../assets/images/ic-question.png';
 import leftIcon from '../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../assets/images/ic-next-arrow-line.png'
+import pendingIcon from '../../assets/images/exclamation-icon.png'
+
 import moment from 'moment';
 import approved from '../../assets/images/approved.png';
 import waiting from '../../assets/images/exclamation.png';
@@ -581,7 +583,7 @@ const JobDetailsPage = (props: PropsType) => {
             <div className="section_wrapper">
                 <div className="custom_container">
                     {['active', 'open'].includes(activeType) ? (
-                        <span className="dot_menu">
+                        <span className="dot_menu r0">
                             <img src={editIconBlue} alt="edit" />
                             <div className="edit_menu">
                                 <ul>
@@ -706,7 +708,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                             setSelectSlide(index + 1);
                                                         }}
                                                         src={image?.link}
-                                                        style={{ height: '410px', width: '800px' }}
+                                                        style={{ height: '400px', width: '800px' }}
                                                     />
                                                 )
                                             }) : <img alt="" src={jobDummyImage} />}
@@ -790,16 +792,16 @@ const JobDetailsPage = (props: PropsType) => {
                                     })}
 
                                     {(CASE_1 || CASE_2 || CASE_3) && (
-                                        <div
-                                            className="declined_info hvr-ripple-out"
+                                        <button
+                                            className="fill_grey_btn full_btn pending_info"
                                             onClick={() => {
                                                 setPendingRequestClicked(true)
                                             }}>
 
                                             {(CASE_1 || CASE_2 || CASE_3) && (
-                                                <span>{`${checkTrueCase()} pending request(s)`}</span>
+                                                <span><img src={pendingIcon} alt="icon" />{`${checkTrueCase()} pending request(s)`}</span>
                                             )}
-                                        </div>
+                                        </button>
                                     )}
 
                                     <Modal
@@ -825,8 +827,8 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </button>
                                             </div>
                                             {CASE_1 &&
-                                                <div className="chang_req_card mt-sm" style={{ paddingTop: '10px', paddingBottom: '20px' }}>
-                                                    <span className="sub_title">Job cancellation request</span>
+                                                <div className="chang_req_card">
+                                                    <span className="xs_sub_title">Job cancellation request</span>
                                                     <p className="commn_para line-2">
                                                         <li>
                                                             {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
@@ -857,8 +859,8 @@ const JobDetailsPage = (props: PropsType) => {
                                             )}
 
                                             {CASE_2 &&
-                                                <div className="chang_req_card mb-sm">
-                                                    <span className="sub_title">
+                                                <div className="chang_req_card">
+                                                    <span className="xs_sub_title">
                                                         {`Job cancelled reason`}
                                                     </span>
                                                     <p className="commn_para line-2">
@@ -870,8 +872,8 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </div>}
 
                                             {CASE_3 &&
-                                                <div className="chang_req_card mb-sm">
-                                                    <span className="sub_title"> {`Job cancelled rejected reason`}</span>
+                                                <div className="chang_req_card">
+                                                    <span className="xs_sub_title"> {`Job cancelled rejected reason`}</span>
                                                     <p className="commn_para line-2">
                                                         {jobDetailsData?.changeRequestDeclineReason}
                                                     </p>

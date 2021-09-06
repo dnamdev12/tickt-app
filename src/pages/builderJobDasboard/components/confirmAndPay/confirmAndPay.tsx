@@ -123,7 +123,7 @@ const ConfirmAndPay = (props: any) => {
                             }}
                             className="back"></button>
                     ) : null}
-                    <span className={!props.hideExtra ? `xs_sub_title` : 'xs_sub_title mb-0'}>
+                    <span className={!props.hideExtra ? `xs_sub_title` : 'xs_sub_title mb0'}>
                         {props?.jobName}
                     </span>
 

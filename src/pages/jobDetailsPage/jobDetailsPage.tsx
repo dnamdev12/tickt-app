@@ -26,6 +26,7 @@ import leftIcon from '../../assets/images/ic-back-arrow-line.png';
 import rightIcon from '../../assets/images/ic-next-arrow-line.png';
 import noDataFound from "../../assets/images/no-search-data.png";
 import editIconBlue from '../../assets/images/ic-edit-blue.png';
+import pendingIcon from '../../assets/images/exclamation-icon.png'
 
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
@@ -543,17 +544,15 @@ const JobDetailsPage = (props: PropsType) => {
                                         </div>
                                     </span>
                                     <span
-                                        className={`save_bookmark ${jobDetailsData?.isSaved ? 'active' : ''}`}
+                                        className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`}
                                         onClick={saveJobClicked}>
                                     </span>
                                 </div>
                             ) : (
-                                <div className="flex_col_sm_4 text-right">
-                                    <span
-                                        className={`save_bookmark ${jobDetailsData?.isSaved ? 'active' : ''}`}
-                                        onClick={saveJobClicked}>
-                                    </span>
-                                </div>
+                                <span
+                                    className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`}
+                                    onClick={saveJobClicked}>
+                                </span>
                             )}
 
                             {/* {CASE_1_SAVE_JOB || CASE_2_SAVE_JOB && ( */}
@@ -590,7 +589,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                             setSelectSlide(index + 1);
                                                         }}
                                                         src={image?.link}
-                                                        style={{ height: '410px', width: '800px' }}
+                                                        style={{ height: '400px', width: '800px' }}
                                                     />
                                                 )
                                             }) : <img alt=" " src={jobDummyImage} />}
@@ -696,9 +695,9 @@ const JobDetailsPage = (props: PropsType) => {
                                         && jobDetailsData?.jobStatus === 'active'
                                         && (jobDetailsData?.isCancelJobRequest || jobDetailsData?.isChangeRequest || jobDetailsData?.rejectReasonNoteForCancelJobRequest)
                                         && !['APPLY', 'APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) &&
-                                        <div className="declined_info hvr-ripple-out" onClick={() => setPendingRequestClicked(true)}>
-                                            <span>{`${getPendingRequestCount()} pending request(s)`}</span>
-                                        </div>}
+                                        <button className="fill_grey_btn full_btn pending_info" onClick={() => setPendingRequestClicked(true)}>
+                                            <span><img src={pendingIcon} alt="icon" />{`${getPendingRequestCount()} pending request(s)`}</span>
+                                        </button>}
                                 </div>
                             </div>
                         </div>
@@ -718,8 +717,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         <img src={cancel} alt="cancel" />
                                     </button>
                                 </div>
-                                {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card mt-sm">
-                                    <span className="sub_title">Job cancellation request</span>
+                                {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card">
+                                    <span className="xs_sub_title">Job cancellation request</span>
                                     <p className="commn_para line-2">
                                         <li>{JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}</li>
                                         <li>{jobDetailsData?.reasonNoteForCancelJobRequest}</li>
@@ -732,8 +731,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         }}
                                     >Reject</button>
                                 </div>}
-                                {jobDetailsData?.isChangeRequest && <div className="chang_req_card mb-sm">
-                                    <span className="sub_title">Change request details</span>
+                                {jobDetailsData?.isChangeRequest && <div className="chang_req_card">
+                                    <span className="xs_sub_title">Change request details</span>
                                     <p className="commn_para line-2">
                                         {jobDetailsData?.reasonForChangeRequest}
                                     </p>
@@ -750,8 +749,8 @@ const JobDetailsPage = (props: PropsType) => {
                                         }}
                                     >Reject</button>
                                 </div>}
-                                {jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card mt-sm">
-                                    <span className="sub_title">Job cancel rejected reason</span>
+                                {jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card">
+                                    <span className="xs_sub_title">Job cancel rejected reason</span>
                                     <p className="commn_para line-2">
                                         <li>{jobDetailsData?.rejectReasonNoteForCancelJobRequest}</li>
                                     </p>
