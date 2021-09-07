@@ -713,18 +713,33 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                         </>
                                     }
-                                    {!jobInviteAction
+                                    {/* {!jobInviteAction
                                         && jobDetailsData?.jobStatus === 'active'
                                         && (jobDetailsData?.isCancelJobRequest || jobDetailsData?.isChangeRequest || jobDetailsData?.rejectReasonNoteForCancelJobRequest)
                                         && !['APPLY', 'APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) &&
-                                        <button 
-                                        className="fill_grey_btn full_btn pending_info" 
-                                        onClick={() => setPendingRequestClicked(true)}>
+                                        <button
+                                            className="fill_grey_btn full_btn pending_info"
+                                            onClick={() => setPendingRequestClicked(true)}>
                                             <span>
                                                 <img src={pendingIcon} alt="icon" />
-                                                {/* {`${getPendingRequestCount()} pending request(s)`} */}
                                                 {`View all request(s)`}
-                                                </span>
+                                            </span>
+                                        </button>} */}
+                                    {/* {`${getPendingRequestCount()} pending request(s)`} */}
+
+                                    {!jobInviteAction && (
+                                        jobDetailsData?.isCancelJobRequest ||
+                                        jobDetailsData?.isChangeRequest ||
+                                        jobDetailsData?.reasonNoteForCancelJobRequest?.length ||
+                                        (jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active')
+                                    ) && !['APPLY', 'APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) &&
+                                        <button
+                                            className="fill_grey_btn full_btn pending_info"
+                                            onClick={() => setPendingRequestClicked(true)}>
+                                            <span>
+                                                <img src={pendingIcon} alt="icon" />
+                                                {`View all request(s)`}
+                                            </span>
                                         </button>}
                                 </div>
                             </div>
@@ -740,7 +755,11 @@ const JobDetailsPage = (props: PropsType) => {
                         >
                             <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                 <div className="heading">
-                                    <span className="sub_title">{`Pending Request(s)`}</span>
+                                    {(jobDetailsData?.isCancelJobRequest || jobDetailsData?.isChangeRequest) && (
+                                        <span className="sub_title">
+                                            {`Pending Request(s)`}
+                                        </span>
+                                    )}
                                     <button className="close_btn" onClick={() => setPendingRequestClicked(false)}>
                                         <img src={cancel} alt="cancel" />
                                     </button>
@@ -777,12 +796,27 @@ const JobDetailsPage = (props: PropsType) => {
                                         }}
                                     >Reject</button>
                                 </div>}
-                                {jobDetailsData?.rejectReasonNoteForCancelJobRequest && <div className="chang_req_card">
-                                    <span className="xs_sub_title">Job cancel rejected reason</span>
-                                    <p className="commn_para line-2">
-                                        <li>{jobDetailsData?.rejectReasonNoteForCancelJobRequest}</li>
-                                    </p>
-                                </div>}
+                                {((jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active') || jobDetailsData?.reasonNoteForCancelJobRequest?.length) && (
+                                    <span className="sub_title">
+                                        {'Reason(s)'}
+                                    </span>
+                                )}
+
+                                {(jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active') &&
+                                    <div className="chang_req_card">
+                                        <span className="xs_sub_title">Job cancel rejected reason</span>
+                                        <p className="commn_para line-2">
+                                            <li>{jobDetailsData?.rejectReasonNoteForCancelJobRequest}</li>
+                                        </p>
+                                    </div>}
+
+                                {jobDetailsData?.reasonNoteForCancelJobRequest?.length &&
+                                    <div className="chang_req_card">
+                                        <span className="xs_sub_title">Job cancel reason</span>
+                                        <p className="commn_para line-2">
+                                            <li>{jobDetailsData?.reasonNoteForCancelJobRequest}</li>
+                                        </p>
+                                    </div>}
                             </div>
                         </Modal>
 
