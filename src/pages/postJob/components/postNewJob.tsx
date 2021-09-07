@@ -34,16 +34,16 @@ const PostNewJob = ({
   const [errors, setErrors] = useState({ jobName: '', job_description: '' });
   const [continueClicked, setContinueClicked] = useState(false);
   const { jobName, job_description } = basicDetails;
-  const theme = 'snow';
-  const modules = {
-    toolbar: [['bold', 'italic', 'underline', 'strike']],
-    clipboard: {
-      matchVisual: false
-    }
-  };
-  const placeholder = 'This Job...';
-  const formats: any = [];
-  const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
+  // const theme = 'snow';
+  // const modules = {
+  //   toolbar: [['bold', 'italic', 'underline', 'strike']],
+  //   clipboard: {
+  //     matchVisual: false
+  //   }
+  // };
+  // const placeholder = 'This Job...';
+  // const formats: any = [];
+  // const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
 
   let location = useLocation();
   let jobId: any = null;
@@ -54,21 +54,21 @@ const PostNewJob = ({
     update = urlParams.get('update');
   }
 
-  React.useEffect(() => {
-    if (quill) {
-      quill.on('text-change', (delta, oldDelta, source) => {
-        console.log('Text change!');
-        let text = quill.getText().replace(/\n/g, "").trimLeft();
-        handleChange({
-          target: {
-            name: 'job_description',
-            value: text
-          }
-        });
-        console.log({ text: text }); // Get text only
-      });
-    }
-  }, [quill]);
+  // React.useEffect(() => {
+  //   if (quill) {
+  //     quill.on('text-change', (delta, oldDelta, source) => {
+  //       console.log('Text change!');
+  //       let text = quill.getText().replace(/\n/g, "").trimLeft();
+  //       handleChange({
+  //         target: {
+  //           name: 'job_description',
+  //           value: text
+  //         }
+  //       });
+  //       console.log({ text: text }); // Get text only
+  //     });
+  //   }
+  // }, [quill]);
 
   useEffect(() => {
     if (stepCompleted) {
@@ -76,9 +76,10 @@ const PostNewJob = ({
         jobName: data?.jobName,
         job_description: data?.job_description
       });
-      quill?.clipboard?.dangerouslyPasteHTML(`<p>${data?.job_description}</p>`);
+      // quill?.clipboard?.dangerouslyPasteHTML(`<p>${data?.job_description}</p>`);
     }
-  }, [stepCompleted, data, quill]);
+  }, [stepCompleted, data]);
+  // }, [stepCompleted, data, quill]);
 
   // for error messages
   const label: { [index: string]: string } = {
@@ -205,25 +206,29 @@ const PostNewJob = ({
               <div className="form_field">
                 <label className="form_label">Job Details</label>
                 <div className="text_field">
-                  {/* <textarea
+                   <textarea
                     placeholder="This Job..."
                     name="job_description"
                     value={job_description}
                     onChange={handleChange}
                     onBlur={() => {
                       if (job_description?.length) {
-                        let stringItem = job_description.split('.').map(capitalize).join('.');
+                        let stringItem = job_description;
+                        if(job_description){
+                          stringItem = job_description.split('. ').join('.');
+                        }
+                        stringItem = stringItem.split('.').map(capitalize).join('.');
                         setBasicDetails((prev: any) => ({
                           ...prev,
                           job_description: stringItem
                         }))
                       }
                     }}
-                  />  */}
+                  /> 
 
-                  <div className="editor-job-description">
+                  {/* <div className="editor-job-description">
                     <div id="ref-quill" ref={quillRef} />
-                  </div>
+                  </div> */}
 
                   {/* <CKEditor
                     editor={ClassicEditor}

@@ -386,7 +386,8 @@ export default class AddMilestone extends Component<Props, State> {
                                                 from_date_format,
                                                 to_date_format,
                                                 'MM-DD-YYYY',
-                                                ['MMM DD', 'MMM DD YYYY']
+                                                ['DD MMM', 'DD MM YYYY']
+                                                // ['MMM DD', 'MMM DD YYYY'] // to keep the date format stable on front-end (TIC-2467)
                                             )}
                                         </button>
                                     </div>

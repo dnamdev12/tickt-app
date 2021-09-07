@@ -1,10 +1,11 @@
 import React from 'react'
 
 const DocViewer = ({ src, width, height }) => {
+    // https://docs.google.com/viewer?url=
     return (
         <div>
             <iframe
-                src={'https://docs.google.com/viewer?url=' + src + '&embedded=true'}
+                src={'https://docs.google.com/gview?url=' + src + '&embedded=true'}
                 sandbox='allow-forms allow-pointer-lock allow-popups allow-same-origin allow-scripts allow-top-navigation'
                 allow="fullscreen"
                 allowFullScreen="allow" 

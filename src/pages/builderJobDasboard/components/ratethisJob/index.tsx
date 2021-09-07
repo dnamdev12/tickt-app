@@ -41,7 +41,7 @@ const RateThisJob = (props: any) => {
 
     const submitReviewClicked = async () => {
         if (reviewBuilderData.rating === 0) {
-            setShowToast(true, 'Star rating is required');
+            setShowToast(true, 'Star Rating is required');
             return;
         }
         if (reviewBuilderData.review.trim().length < 1) {

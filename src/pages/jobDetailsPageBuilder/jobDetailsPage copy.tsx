@@ -677,7 +677,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                             setSelectSlide(index + 1);
                                                         }}
                                                         src={image?.link}
-                                                        style={{ height: '410px', width: '800px' }}
+                                                        style={{ height: '400px', width: '800px' }}
                                                     />
                                                 )
                                             }) : <img alt="" src={jobDummyImage} />}

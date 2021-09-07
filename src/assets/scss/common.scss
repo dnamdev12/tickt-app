@@ -617,20 +617,25 @@ body {
 }
 
 .bookmark_icon {
-  width: 58px;
-  height: 58px;
-  padding: 14px;
-  border-radius: 3px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  z-index: 9;
   cursor: pointer;
-  margin-right: 10px;
-  box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.09);
-  background: var(--grey) url('../images/bookmark.png') center no-repeat;
+  background: url('../images/save.png') center no-repeat;
   background-size: auto;
+  @include position(absolute, 0, 0, auto, auto);
+  @media (max-width: 768px) {
+    top: -40px;
+    width: 30px;
+    height: 30px;
+  }
+  @media(max-width: 650px){
+    top: -35px;
+    right: 10px;
+  }
   &.active{
-    background: var(--grey) url('../images/bookmarked.png') center no-repeat;
+    background: url('../images/saved.png') center no-repeat;
     background-size: auto;
   }
 }
@@ -1149,40 +1154,6 @@ body {
       position: initial;
       width: 100%;
     }
-    .chang_req_card{
-      min-height: 150px;
-      padding: 14px 10px 14px 14px;
-      box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.19);
-      background-color: var(--white);
-      &.mt-sm{
-        @media (max-width: 768px){
-          margin: 0;
-        }
-      }
-      &.mb-sm{
-        margin-bottom: 15px;
-        @media (max-width: 768px){
-          margin: 0;
-        }
-      }
-      @media (max-width: 768px){
-        margin-bottom: 30px;
-      }
-      .sub_title{
-        margin-bottom: 12px;
-      }
-      button{
-        width: 140px;
-        padding: 15px 10px;
-        &:last-child{
-          margin-left: 15px;
-        }
-        @media(max-width: 1024px){
-          width: 110px;
-          padding: 12px 10px;
-        }
-      }
-    }
     .full_btn{
       width: 100%;
       @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
@@ -1428,6 +1399,26 @@ body {
       
   }
 }
+
+.chang_req_card{
+  min-height: 140px;
+  padding: 14px 10px 14px 14px;
+  box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.19);
+  background-color: var(--white);
+  margin-bottom: 16px;
+  button{
+    width: 140px;
+    padding: 15px 10px;
+    &:last-child{
+      margin-left: 15px;
+    }
+    @media(max-width: 1024px){
+      width: 110px;
+      padding: 12px 10px;
+    }
+  }
+}
+
 //----------------------Item/Profile Detail close---------------------------//
 
 //-------------------Review Rating card-----------------------//
@@ -2361,6 +2352,15 @@ body {
       opacity: 1;
       visibility: visible;
       right: 0;
+    }
+  }
+  &.r0{
+    right: 0;
+    @media(max-width: 768px){
+      top: -20px;
+    }
+    @media(max-width: 650px){
+      top: -8px;
     }
   }
 }
@@ -3700,6 +3700,14 @@ body {
     position: relative;
     padding: 11px 8px;
     margin-bottom: 16px;
+    &::before {
+      @include position(absolute, 38px, auto, auto, 20px);
+      border: 1px dashed var(--grey);
+      height: 45%;
+      width: 0px;
+      z-index: -1;
+      content: "";
+    }
     &:hover {
       box-shadow: 0 5px 30px 0 rgba(79, 79, 118, 0.15);
     }
@@ -4733,33 +4741,14 @@ body {
     font-family: "Neue Haas Grotesk Text Pro Medium";    
   }
 }
-
-.declined_info{
-  cursor:pointer;
-  min-height: 77px;
+.pending_info{
   margin-top:15px;
-  // margin-bottom: 23px;
-  padding: 10px;
-  border-radius: 6px;
-  background-color: #dfe5ef;
-  display: flex;
-  align-items: center;
-  &::before{
-    border-radius: 6px;
-  }
   span{
-    font: 18px/1.11 "Neue Haas Grotesk Text Pro Bold";
-    color: #123f95;
-    padding-left: 55px;
-    position: relative;
-    &::before{
-      @include position(absolute, 50%, auto, auto, 5px);
-      transform: translateY(-50%);
-      width: 35px;
-      height: 35px;
-      content: "";
-      background: url('../images/exclamation-icon.png') center no-repeat;
-      background-size: contain;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    img{
+      margin-right: 10px;
     }
   }
 }

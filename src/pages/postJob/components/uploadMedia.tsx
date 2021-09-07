@@ -137,8 +137,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
 
     const checkIfVideoExist = () => {
-        let videoItems = [];
-        let ImageItems = [];
+        let videoItems:any = [];
+        let ImageItems:any = [];
+        let concatFormat = [...imageFormats, ...docformats];
         filesUrl.forEach((element: any) => {
             let split_items = element.link.split('.');
             let format_split_items = split_items[split_items?.length - 1];
@@ -146,11 +147,15 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 videoItems.push(format_split_items);
             }
 
-            if (imageFormats.includes(format_split_items)) {
+            if (concatFormat.includes(format_split_items)) {
                 ImageItems.push(format_split_items);
             }
         });
-
+        console.log({
+            concatFormat,
+            ImageItems,
+            videoItems
+        })
         if (ImageItems?.length === 6) {
             return ".mp4, .wmv, .avi";
         }
@@ -172,7 +177,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 videoItems.push(format_split_items);
             }
 
-            if (imageFormats.includes(format_split_items)) {
+            if ([...imageFormats, ...docformats].includes(format_split_items)) {
                 ImageItems.push(format_split_items);
             }
         });
@@ -208,8 +213,9 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
         }
 
-        if (checkCounts?.imageCount === 6) {
-            if (imageFormats.includes(fileType)) {
+        if (checkCounts?.imageCount >= 6) {
+            let concatFormats = [...imageFormats,...docformats];
+            if (concatFormats.includes(fileType)) {
                 return
             }
         }

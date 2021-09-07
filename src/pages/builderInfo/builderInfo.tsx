@@ -671,8 +671,8 @@ const BuilderInfo = (props: PropsType) => {
                                             <p>{reviewData?.review || ''}</p>
                                             {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
                                                 <span className="show_hide_ans link"
-                                                    onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show review</span>}
-                                            {reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) && <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide review</span>}
+                                                    onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
+                                            {reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) && <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>}
                                             {!reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
                                             {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('updateReviewBuilder', reviewData?.reviewId, '', reviewData?.review, reviewData?.rating)}>Edit</span>}
                                             {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('removeReviewBuilder', reviewData?.reviewId)}>Delete</span>}

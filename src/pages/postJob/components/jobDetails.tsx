@@ -6,13 +6,15 @@ import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
-import { createPostJob, publishJobAgain , publishOpenJobAgain} from '../../../redux/jobs/actions';
+import { createPostJob, publishJobAgain, publishOpenJobAgain } from '../../../redux/jobs/actions';
 import moment from 'moment';
 import jobDummyImage from '../../../assets/images/ic-placeholder-detail.png';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
 import { setShowToast } from '../../../redux/common/actions';
+
+import docThumbnail from '../../../assets/images/add-document.png'
 
 import { renderTime, renderTimeWithFormat } from '../../../utils/common';
 import { useHistory } from "react-router-dom";
@@ -59,6 +61,7 @@ const options = {
 
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
+const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
 const JobDetails = ({
     data,
@@ -136,16 +139,30 @@ const JobDetails = ({
 
     const renderByFileFormat = (data: any) => {
         let data_clone: any = data;
+        console.log({ data_clone })
         if (data_clone?.urls?.length) {
             let format_items = data_clone?.urls?.map((item: any) => {
                 let split_item_format = item?.link?.split('.');
                 let get_split_fromat = split_item_format[split_item_format.length - 1];
-
+                console.log({
+                    split_item_format,
+                    get_split_fromat,
+                    docformats
+                })
                 if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
                     return {
                         url: item?.link,
                         format: get_split_fromat,
                         posture: item?.base64 || ''
+                    };
+                }
+
+                if (docformats.includes(get_split_fromat)) {
+                    return {
+                        url: item?.link,
+                        format: get_split_fromat,
+                        posture: docThumbnail,
+                        isPdf: get_split_fromat == "pdf" ? true : false
                     };
                 }
             }).filter((item: any) => item! !== undefined);
@@ -177,6 +194,27 @@ const JobDetails = ({
                                 poster={item?.posture}
                                 preload="metadata"
                                 src={item?.url}
+                            />)
+                    }
+
+                    console.log({
+                        format: docformats.includes(item?.format),
+                        item: item.format
+                    })
+                    if (docformats.includes(item?.format)) {
+                        render_item = (
+                            <img
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    // setToggler((prev: any) => !prev);
+                                    // setSelectSlide(index + 1);
+                                    // https://docs.google.com/viewer?url=https://appinventiv-development.s3.amazonaws.com/1631009256441file-sample_100kB.doc
+                                    //item?.isPdf ? item.url : 
+                                    let url = `https://docs.google.com/gview?url=${item.url}&embedded=true`;
+                                    window.open(url, '_blank');
+                                }}
+                                alt=""
+                                src={item?.posture}
                             />)
                     }
 
