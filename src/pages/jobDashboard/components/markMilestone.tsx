@@ -298,7 +298,9 @@ const MarkMilestone = ({
         return page = (
           <div className="flex_row">
             {isQuoteScreen ? (
-              <QuoteMark />
+              <QuoteMark
+                jobId={jobId}
+              />
             ) : (
               <div className="flex_col_sm_6">
                 <div className="relate">
@@ -328,56 +330,56 @@ const MarkMilestone = ({
                   Submit when a milestone is completed
                 </p>
                 {milestoneDeclineData.multipleDeclineListCount > 1 && <button className="fill_grey_btn full_btn pending_info">
-                <span><img src={pendingIcon} alt="icon" />{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
-              </button>}
+                  <span><img src={pendingIcon} alt="icon" />{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
+                </button>}
 
-              <ul className="milestones_check">
-                {milestones?.sort(({ order: prevOrder }, { order }) => prevOrder - order)?.map(
-                  (
-                    {
-                      milestoneId,
-                      milestoneName,
-                      isPhotoevidence,
-                      status,
-                      fromDate,
-                      toDate,
-                      declinedReason,
-                      declinedCount,
-                    },
-                    index
-                  ) => {
-                    // As discussed now we take this status 4 as status 0 bacause after the decline on the change-request the status becomes 4.
-                    const prevMilestoneStatus = milestones[index - 1]?.status;
-                    const isActive =
-                      (status === 0 || status === 4 || status === 5) && // here changes done for status 4 
-                      // completed or approved
-                      ([1, 2].includes(prevMilestoneStatus) ||
-                        prevMilestoneStatus === undefined);
-                    const isDeclined = status === 3;
+                <ul className="milestones_check">
+                  {milestones?.sort(({ order: prevOrder }, { order }) => prevOrder - order)?.map(
+                    (
+                      {
+                        milestoneId,
+                        milestoneName,
+                        isPhotoevidence,
+                        status,
+                        fromDate,
+                        toDate,
+                        declinedReason,
+                        declinedCount,
+                      },
+                      index
+                    ) => {
+                      // As discussed now we take this status 4 as status 0 bacause after the decline on the change-request the status becomes 4.
+                      const prevMilestoneStatus = milestones[index - 1]?.status;
+                      const isActive =
+                        (status === 0 || status === 4 || status === 5) && // here changes done for status 4 
+                        // completed or approved
+                        ([1, 2].includes(prevMilestoneStatus) ||
+                          prevMilestoneStatus === undefined);
+                      const isDeclined = status === 3;
 
-                    return (
-                      <li
-                        key={milestoneId}
-                        className={
-                          [1, 2,].includes(status)
-                            ? `check`
-                            : isActive
-                              ? 'active'
-                              : status === 3
-                                ? 'declined'
-                                : 'disabled'
-                        }
-                      >
-                        <div className="circle_stepper" onClick={() => {
-                          setMediaList(declinedReason?.url);
-                          setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))
-                        }}>
-                          <span></span>
-                        </div>
-                        <div className="info">
-                          <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
-                          {isPhotoevidence && (
-                            <span>Photo evidence required</span>
+                      return (
+                        <li
+                          key={milestoneId}
+                          className={
+                            [1, 2,].includes(status)
+                              ? `check`
+                              : isActive
+                                ? 'active'
+                                : status === 3
+                                  ? 'declined'
+                                  : 'disabled'
+                          }
+                        >
+                          <div className="circle_stepper" onClick={() => {
+                            setMediaList(declinedReason?.url);
+                            setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))
+                          }}>
+                            <span></span>
+                          </div>
+                          <div className="info">
+                            <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
+                            {isPhotoevidence && (
+                              <span>Photo evidence required</span>
                             )}
                             <span>
                               {renderTime(fromDate, toDate)}

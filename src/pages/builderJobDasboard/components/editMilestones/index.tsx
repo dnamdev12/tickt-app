@@ -266,9 +266,10 @@ const EditMilestone = (props: any) => {
             })
 
             resetItems();
-            if (Items?.length) {
+            // removed length check to update the items.
+            // if (Items?.length) {
                 setItems(Items)
-            }
+            // }
         }
     }
 
@@ -372,7 +373,7 @@ const EditMilestone = (props: any) => {
         };
 
         console.log({ data })
-        
+
         let response: any = await changeRequest(data);
         if (response?.success) {
             props.history.push('/milestone-request-sent-success');
@@ -482,6 +483,8 @@ const EditMilestone = (props: any) => {
     console.log({
         stateItems
     }, '------>><<-----')
+
+    const stateItemsEdit = stateItems.filter((item: any) => item?.isDeleteRequest == false);
     return (
         <React.Fragment>
 
@@ -564,7 +567,7 @@ const EditMilestone = (props: any) => {
                     </p>
                 </div>
             </div>
-
+            {console.log({ stateItems, stateItemsEdit })}
             <div className="flex_row">
                 <div className="flex_col_sm_7">
                     <DragDropContext onDragEnd={onDragEnd}>
@@ -662,7 +665,6 @@ const EditMilestone = (props: any) => {
                             </div>
                         </React.Fragment>
                     )}
-
                 </div>
             </div>
         </React.Fragment >

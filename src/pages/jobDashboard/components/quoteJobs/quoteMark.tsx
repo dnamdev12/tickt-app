@@ -1,27 +1,27 @@
 import React, { useState, useEffect } from 'react';
 import deleteQuote from '../../../../assets/images/ic-delete.png';
+import { addQuote, deleteItem, quoteByJobId } from '../../../../redux/quotes/actions';
 
 const QuoteMark = (props: any) => {
     const [Items, setItems] = useState<any>([]);
-    const [isEdit, setEdit] = useState<any>(1);
+    const [isEdit, setEdit] = useState<any>(null);
+
+    // const preFetch = async () => {
+    //     let response = await quoteByJobId({ jobId: props.jobId });
+    //     if (response?.success) {
+    //         setItems(response?.data?.resultData);
+    //     }
+    // }
+
+    // const addNewQuote = async () => {
+    //     let response = await addQuote({ jobId: props.jobId });
+    //     if (response?.success) {
+    //         setItems(response?.data?.resultData);
+    //     }
+    // }
 
     useEffect(() => {
-        setItems([
-            {
-                id: 1,
-                description: 'Lorem ipsum',
-                price: 300,
-                quantity: 5,
-                total: 1500
-            },
-            {
-                id: 2,
-                description: 'Lorem ipsum',
-                price: 300,
-                quantity: 1,
-                total: 1500
-            }
-        ])
+        // preFetch();
     }, []);
 
     const handleSubmit = () => {
@@ -147,12 +147,6 @@ const QuoteMark = (props: any) => {
                     className="fill_btn w100per">
                     {`${isEditTrue ? 'Edit' : 'Add'} Item`}
                 </button>
-                <div className="pt-10">
-                    <button
-                        className="fill_grey_btn quote_btn w100per">
-                        {'Cancel'}
-                    </button>
-                </div>
             </div>
             <div className="total_quote">
                 <span className="fill_grey_btn">Total Quote: $1,000</span>

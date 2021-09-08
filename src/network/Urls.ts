@@ -13,6 +13,7 @@ const ServiceEnum = {
     builder: 'builder/',
     tradie: 'tradie/',
     payment: 'payment/',
+    quote:'quote/'
 }
 
 const Urls = {
@@ -115,6 +116,7 @@ const Urls = {
     tradieCancelJob: `${versions.v1}${ServiceEnum.job}${ServiceEnum.tradie}cancelJob`,
     jobHome: `${versions.v1}${ServiceEnum.home}`,
     job: `${versions.v1}${ServiceEnum.job}`,
+    quote: `${versions.v1}${ServiceEnum.quote}`,
     profile: `${versions.v1}${ServiceEnum.profile}`,
     builder: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}`,
     builderProfileView: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}view`,
