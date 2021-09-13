@@ -210,7 +210,8 @@ const JobDetails = ({
                                     // setSelectSlide(index + 1);
                                     // https://docs.google.com/viewer?url=https://appinventiv-development.s3.amazonaws.com/1631009256441file-sample_100kB.doc
                                     //item?.isPdf ? item.url : 
-                                    let url = `https://docs.google.com/gview?url=${item.url}&embedded=true`;
+                                    // let url = `https://docs.google.com/gview?url=${item.url}&embedded=true`;
+                                    let url = `/doc-view?url=${item.url}`//
                                     window.open(url, '_blank');
                                 }}
                                 alt=""

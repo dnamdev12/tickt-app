@@ -7,6 +7,9 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 import moment from 'moment';
 import { renderTime } from '../../../utils/common';
+import OpenQuoteJobs from './quoteJobs/openQuoteJobs';
+import ViewQuote from './quoteJobs/viewQuote';
+
 interface Active {
     amount: any,
     durations: any,
@@ -77,12 +80,13 @@ class OpenJobs extends Component<Props, State> {
         if (isLoading) {
             return null;
         }
+        let isForQuoting = false;
 
         return (
             <React.Fragment>
                 <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs
-                 {/* {listData?.length} */}
-                 </span>
+                    {/* {listData?.length} */}
+                </span>
                 <div className="flex_row tradies_row">
                     {listData?.length ?
                         listData.map(({
@@ -130,33 +134,44 @@ class OpenJobs extends Component<Props, State> {
                                             />
                                         </figure>
                                         <div className="details">
-                                            <span className="name">{tradeName}</span>
+                                            <span className="name">{tradeName || '0'}</span>
                                             <p className="commn_para">{jobName}</p>
                                         </div>
                                     </div>
                                     <div className="job_info">
-                                        <ul>
-                                            <li className="icon dollar">{amount}</li>
-                                            <li className="">
-                                                <span>
-                                                    {total}
-                                                </span>
-                                            </li>
-                                            <li className="icon calendar">
-                                                {renderTime(fromDate, toDate)}
-                                            </li>
-                                            <li>
-                                                <span>
-                                                    {timeLeft}
-                                                </span>
-                                            </li>
-                                            {/* <li className="icon clock">
-                                                
-                                            </li>
-                                            <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{location}</li>
-                                            <li className="icon calendar">{durations}</li> */}
-                                        </ul>
+                                        {isForQuoting ? (
+                                            <ul>
+                                                <li className="icon dollar">{'for quoting'}</li>
+                                                <li className="">
+                                                </li>
+                                                <li className="icon calendar">
+                                                    {renderTime(fromDate, toDate)}
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        {timeLeft}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        ) : (
+                                            <ul>
+                                                <li className="icon dollar">{amount}</li>
+                                                <li className="">
+                                                    <span>
+                                                        {total}
+                                                    </span>
+                                                </li>
+                                                <li className="icon calendar">
+                                                    {renderTime(fromDate, toDate)}
+                                                </li>
+                                                <li>
+                                                    <span>
+                                                        {timeLeft}
+                                                    </span>
+                                                </li>
+                                            </ul>
+                                        )}
+
                                     </div>
                                     <div className="job_progress_wrap" id="scroll-progress-bar">
                                         <div className="progress_wrapper">
@@ -177,7 +192,18 @@ class OpenJobs extends Component<Props, State> {
                                                 />
                                             </span>
                                         </div>
-                                        {tradieId?.length ? (
+
+                                        {isForQuoting ? (
+                                            <button
+                                                onClick={() => {
+                                                    this.setToggle();
+                                                    setJobLabel('applicantList', jobId, 1, specializationId);
+                                                }}
+                                                className="fill_grey_btn full_btn btn-effect">
+                                                {'2 Quotes'}
+                                            </button>
+                                        ) : null}
+                                        {!isForQuoting && tradieId?.length ? (
                                             <button
                                                 onClick={() => {
                                                     this.setToggle();

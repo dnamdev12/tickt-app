@@ -30,7 +30,11 @@ const LetsGo = (props: Propstype) => {
             }
             loginAnonymously();
             // firebaseLogInWithEmailPassword(authData, '', true);
-            props.history?.push('/');
+            props.history?.push({
+                pathname: '/',
+                state: { path: props?.history.location?.pathname }
+            });
+            return
         }
         if (props.showModal) {
             props.setShowModal(!props.showModal);

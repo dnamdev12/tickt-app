@@ -58,6 +58,8 @@ import { JobCancelReasons } from '../../utils/common';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
+
+import docThumbnail from '../../assets/images/add-document.png'
 interface PropsType {
     history: any,
     location: any,
@@ -532,7 +534,8 @@ const JobDetailsPage = (props: PropsType) => {
     }
     let itemsMedia: any = [];
     if (jobDetailsData?.photos?.length) {
-        itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
+        itemsMedia = jobDetailsData.photos;
+        // itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
 
@@ -575,6 +578,13 @@ const JobDetailsPage = (props: PropsType) => {
 
         if (Count == 3) {
             return '3'
+        }
+    }
+
+    const filterFileName = (link: any) => {
+        if (link?.length) {
+            let arrItems = link.split('/');
+            return arrItems[arrItems?.length - 1];
         }
     }
 
@@ -698,25 +708,35 @@ const JobDetailsPage = (props: PropsType) => {
                                                             setToggler((prev: any) => !prev);
                                                             setSelectSlide(index + 1);
                                                         }}
+                                                        title={filterFileName(image.link)}
                                                         alt=""
                                                         src={image?.link ? image?.link : jobDummyImage}
-                                                    />) : (
-                                                    <video
+                                                    />) : image?.mediaType === 2 ? (
+                                                        <video
+                                                            key={`${image}${index}`}
+                                                            onClick={() => {
+                                                                setToggler((prev: any) => !prev);
+                                                                setSelectSlide(index + 1);
+                                                            }}
+                                                            title={filterFileName(image.link)}
+                                                            src={image?.link}
+                                                            style={{ height: '400px', width: '800px' }}
+                                                        />
+                                                    ) : (
+                                                    <img
                                                         key={`${image}${index}`}
                                                         onClick={() => {
-                                                            setToggler((prev: any) => !prev);
-                                                            setSelectSlide(index + 1);
+                                                            let url = `/doc-view?url=${image.link}`//
+                                                            window.open(url, '_blank');
                                                         }}
-                                                        src={image?.link}
-                                                        style={{ height: '400px', width: '800px' }}
-                                                    />
-                                                )
+                                                        title={filterFileName(image.link)}
+                                                        alt=""
+                                                        src={docThumbnail}
+                                                    />)
                                             }) : <img alt="" src={jobDummyImage} />}
                                     </OwlCarousel>
                                 </figure>
                             </div>
-
-
 
                             <div className="flex_col_sm_4 relative">
 

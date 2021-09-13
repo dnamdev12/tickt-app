@@ -27,8 +27,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   const [localChanges, setLocationChanges] = useState(false);
   const [reactSelect, setReactSelect] = useState({ value: "Per hour", label: "Per Hour" });
 
-  const [checkType, setCheckType] = useState('1');
-
   useEffect(() => {
     if (stepCompleted && !localChanges) {
       setPaymentDetails({
@@ -36,15 +34,10 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         amount: data.amount
       });
 
-      if (data.quoteJob == '0') {
-        if (data.pay_type === 'Per hour') {
-          setReactSelect({ value: 'Per hour', label: 'Per Hour' });
-        } else {
-          setReactSelect({ value: 'Fixed price', label: 'Fixed Price' });
-        }
-        setCheckType('0')
+      if (data.pay_type === 'Per hour') {
+        setReactSelect({ value: 'Per hour', label: 'Per Hour' });
       } else {
-        setCheckType('1')
+        setReactSelect({ value: 'Fixed price', label: 'Fixed Price' });
       }
 
       setLocationChanges(true);
@@ -110,15 +103,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
 
     if (!continueClicked) {
       setContinueClicked(true);
-
-
-      if (checkType == '2') {
-        handleStepComplete({
-          quoteJob: '1'
-        });
-        return
-      }
-
       hasErrors = Object.keys(paymentDetails).reduce((prevError, name) => {
         const hasError = !!isInvalid(name, paymentDetails[name]);
         setErrors((prevErrors) => ({
@@ -130,23 +114,13 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     }
 
     if (!hasErrors) {
-      let paymentdt = {
-        ...paymentDetails,
-        quoteJob: '0'
-      };
-      console.log({ paymentdt })
       handleStepComplete(paymentDetails);
-
     } else {
       setContinueClicked(false);
     }
   };
 
   const checkErrors = () => {
-
-    if (checkType == '2') {
-      return false;
-    }
     let value_1 = paymentDetails['pay_type'];
     let value_2 = paymentDetails['amount'];
     if (value_1 && value_2) {
@@ -176,17 +150,14 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
               <div className="flex_col_sm_5">
                 <div className="relate">
                   <button className="back" onClick={handleStepBack}></button>
-                  {/* <span className="title">Payment</span> */}
-                  {/* {'CR Change'} */}
-                  <span className="title">Job type</span>
-
+                  <span className="title">Payment</span>
                 </div>
-                {/* <p className="commn_para">How much will you pay for a job</p> */}
+                <p className="commn_para">How much will you pay for a job</p>
               </div>
             </div>
           </div>
-          {/* 
-          <div className="flex_row">
+
+          {/* <div className="flex_row">
             <div className="flex_col_sm_6">
               <div className="flex_row">
                 <div className="flex_col_sm_7">
@@ -225,14 +196,14 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                 </div>
               </div>
             </div>
-          </div>  */}
+          </div> */}
 
-          {/* {'CR Change'} */}
+
           <div className="form_field">
             <div className="checkbox_wrap agree_check">
               <input
-                onChange={() => { checkType !== '1' ? setCheckType('1') : setCheckType('0') }}
-                checked={checkType === '1' ? true : false}
+                onChange={() => { }}
+                checked={true}
                 className="filter-type filled-in"
                 type="checkbox"
                 id="milestone1" />
@@ -247,7 +218,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
             </div>
           </div>
 
-          <div className="flex_row" style={{ paddingLeft: '35px' }}>
+          <div className="flex_row" style={{paddingLeft:'35px'}}>
             <div className="flex_col_sm_5">
               <div className="flex_row">
                 <div className="flex_col_sm_5">
@@ -262,7 +233,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         step=".01"
                         required
                         value={amount}
-                        readOnly={checkType === '2' ? true : false}
                         onChange={({ target: { value } }) => handleChange(value, 'amount')}
                       />
                       <span className="detect_icon_ltr dollar">$</span>
@@ -277,7 +247,6 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         className="select_menu"
                         value={reactSelect}
                         options={priceOptions}
-                        isDisabled={checkType === '2' ? true : false}
                         onChange={(item: any) => {
                           setReactSelect(item);
                           handleChange(item?.value, 'pay_type')
@@ -290,22 +259,16 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
             </div>
           </div>
 
+
           <div className="form_field">
             <div className="checkbox_wrap agree_check">
               <input
-                onChange={() => {
-                  if (checkType !== '2') {
-                    setCheckType('2')
-                  } else {
-                    setCheckType('0')
-                  }
-                  setErrors({ pay_type: '', amount: '' });
-                }}
-                checked={checkType === '2' ? true : false}
+                onChange={() => { }}
+                checked={true}
                 className="filter-type filled-in"
                 type="checkbox"
-                id="milestone2" />
-              <label htmlFor="milestone2">
+                id="milestone1" />
+              <label htmlFor="milestone1">
                 <b>
                   {'I need a quote'}
                 </b>

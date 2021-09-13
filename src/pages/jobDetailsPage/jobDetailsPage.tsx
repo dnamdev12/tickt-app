@@ -38,6 +38,7 @@ import Skeleton from 'react-loading-skeleton';
 import storageService from '../../utils/storageService';
 
 import { JobCancelReasons } from '../../utils/common';
+import docThumbnail from '../../assets/images/add-document.png'
 
 interface PropsType {
     history: any,
@@ -499,7 +500,8 @@ const JobDetailsPage = (props: PropsType) => {
 
     let itemsMedia: any = [];
     if (jobDetailsData?.photos?.length) {
-        itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
+        itemsMedia = jobDetailsData.photos;
+        // itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
 
@@ -510,6 +512,12 @@ const JobDetailsPage = (props: PropsType) => {
     let CASE_1_SAVE_JOB = jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' && jobDetailsData?.applyButtonDisplay;
     let CASE_2_SAVE_JOB = !jobDetailsData?.applyButtonDisplay && ['APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase());
 
+    const filterFileName = (link: any) => {
+        if (link?.length) {
+            let arrItems = link.split('/');
+            return arrItems[arrItems?.length - 1];
+        }
+    }
 
     let isEnableQuoting = false; //'for quoting';
 
@@ -575,6 +583,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     {props.isSkeletonLoading ? <Skeleton style={{ lineHeight: 2, height: 400 }} /> : <OwlCarousel className='owl-theme' {...options}>
                                         {itemsMedia.length ?
                                             itemsMedia.map((image: any, index: number) => {
+                                                console.log({ image }, '---?')
                                                 return image?.mediaType === 1 ? (
                                                     <img
                                                         key={`${image}${index}`}
@@ -582,20 +591,32 @@ const JobDetailsPage = (props: PropsType) => {
                                                             setToggler((prev: any) => !prev);
                                                             setSelectSlide(index + 1);
                                                         }}
+                                                        title={filterFileName(image.link)}
                                                         alt=""
                                                         src={image?.link ? image?.link : jobDummyImage}
-                                                    />) : (
-                                                    <video
+                                                    />) : image?.mediaType === 2 ? (
+                                                        <video
+                                                            key={`${image}${index}`}
+                                                            onClick={() => {
+                                                                setToggler((prev: any) => !prev);
+                                                                setSelectSlide(index + 1);
+                                                            }}
+                                                            title={filterFileName(image.link)}
+                                                            src={image?.link}
+                                                            style={{ height: '400px', width: '800px' }}
+                                                        />
+                                                    ) : (
+                                                    <img
                                                         key={`${image}${index}`}
                                                         onClick={() => {
-                                                            setToggler((prev: any) => !prev);
-                                                            setSelectSlide(index + 1);
+                                                            let url = `/doc-view?url=${image.link}`//
+                                                            window.open(url, '_blank');
                                                         }}
-                                                        src={image?.link}
-                                                        style={{ height: '400px', width: '800px' }}
-                                                    />
-                                                )
-                                            }) : <img alt=" " src={jobDummyImage} />}
+                                                        title={filterFileName(image.link)}
+                                                        alt=""
+                                                        src={docThumbnail}
+                                                    />)
+                                            }) : <img alt="" src={jobDummyImage} />}
                                     </OwlCarousel>}
                                 </figure>
                             </div>
@@ -1062,8 +1083,10 @@ const JobDetailsPage = (props: PropsType) => {
                                         </div>}
                                     </div>
 
-                                    {jobDetailsData?.jobStatus &&
-                                        !(jobDetailsData.jobStatus).includes('cancelled', 'expired', 'completed') &&
+                                    {jobDetailsData?.jobStatus?.length &&
+                                        jobDetailsData.jobStatus !== 'cancelled' &&
+                                        jobDetailsData.jobStatus !== 'expired' &&
+                                        jobDetailsData.jobStatus !== 'completed' &&
                                         (
                                             <div className="bottom_btn custom_btn">
                                                 <button className="fill_grey_btn full_btn btn-effect" onClick={() => questionHandler('askQuestion')}>

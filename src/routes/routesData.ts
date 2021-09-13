@@ -54,6 +54,8 @@ import AdminAnnouncementPage from '../pages/adminAnnouncementPage/adminAnnouncem
 
 import QuoteSuccess from '../pages/jobDashboard/components/quoteJobs/success';
 
+import DocViewerComponent from '../pages/shared/DocViewer';
+
 const routes = [
     {
         name: 'main',
@@ -399,6 +401,13 @@ const routes = [
         component: AdminAnnouncementPage,
         authRoute: false,
         privateRoute: true,
+    },
+    {
+        name: 'doc-view',
+        path: '/doc-view',
+        component: DocViewerComponent,
+        authRoute: false,
+        privateRoute: true
     },
     {
         name: 'notFound',

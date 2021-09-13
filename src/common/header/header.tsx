@@ -225,6 +225,12 @@ const Header = (props: any) => {
         if (pathname === '/') {
             setActiveLink('discover');
             setHidden();
+            console.log({props},'---');
+            
+            if(props?.location?.state?.path === '/signup'){
+                // here will add condition to enable tour-guide
+                props.history.replace('/');
+            }
         }
         if ([
             '/jobs',
