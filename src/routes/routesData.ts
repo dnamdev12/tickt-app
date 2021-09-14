@@ -291,6 +291,7 @@ const routes = [
             '/applied-jobs',
             '/past-jobs',
             '/new-jobs',
+            '/quote-job',
             '/approved-milestones',
             '/mark-milestone',
             '/review-builder',

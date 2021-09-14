@@ -701,7 +701,28 @@ const JobDetailsPage = (props: PropsType) => {
                                             <div className="pt-10">
                                                 {/* {'bottom_btn'} */}
                                                 {/* <span className={`bookmark_icon ${jobDetailsData?.isSaved ? 'active' : ''}`} onClick={saveJobClicked}></span> */}
-                                                <button className="fill_btn full_btn btn-effect" onClick={applyJobClicked}>{jobDetailsData?.appliedStatus}</button>
+                                                {jobDetailsData?.quoteJob ? (
+                                                    <button
+                                                        className="fill_btn full_btn btn-effect"
+                                                        onClick={() => {
+                                                            props.history.push({
+                                                                pathname: `/quote-job`,
+                                                                search: '?jobId=613f2f6b53a9d65a1b0f57d3&tradeId=605c8bccb777553e6b057b8a&specializationId=6066fca0cc682b18cd57a4c2',
+                                                                state: {
+                                                                    data: jobDetailsData
+                                                                }
+                                                            })
+                                                        }}>
+                                                        {'Quote'}
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        className="fill_btn full_btn btn-effect"
+                                                        onClick={applyJobClicked}>
+                                                        {jobDetailsData?.appliedStatus}
+                                                    </button>
+                                                )}
+
                                             </div>
                                         ) : (
                                             !jobDetailsData?.applyButtonDisplay &&

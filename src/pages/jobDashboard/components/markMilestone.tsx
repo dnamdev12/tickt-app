@@ -297,11 +297,11 @@ const MarkMilestone = ({
       case 1:
         return page = (
           <div className="flex_row">
-            {isQuoteScreen ? (
+            {/* {isQuoteScreen ? (
               <QuoteMark
                 jobId={jobId}
               />
-            ) : (
+            ) : ( */}
               <div className="flex_col_sm_6">
                 <div className="relate">
                   <button
@@ -467,9 +467,8 @@ const MarkMilestone = ({
                   )}
                 </ul>
 
-
               </div>
-            )}
+            {/* )} */}
             <div className="flex_col_sm_6 col_ruler">
               <span className="sub_title">Posted by</span>
               <div className="tradie_card posted_by view_more ">

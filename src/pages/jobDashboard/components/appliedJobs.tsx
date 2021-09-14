@@ -5,6 +5,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import noDataFound from "../../../assets/images/no-search-data.png";
 
+
+
 interface Proptypes {
   loading: boolean;
   newJobsCount: number,
@@ -47,6 +49,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
       resetAppliedJobList();
     }
   }, [appliedJobList]);
+
 
   return (
     <div className="detail_col">
