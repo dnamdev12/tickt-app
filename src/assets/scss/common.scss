@@ -5489,6 +5489,7 @@ div#light-box div {
             &.media_video{
               background-color: var(--blue);
               position: relative;
+              border-radius: 0px;
               video{
                 width: 30px;
                 height: 30px;
