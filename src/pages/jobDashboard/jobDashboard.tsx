@@ -13,6 +13,8 @@ import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import templateImage from '../../assets/images/job-complete-bg.png';
 
+import QuoteOuter from './components/quoteJobs/quoteOuter';
+
 interface Proptypes {
   loading: boolean,
   getActiveJobList: (page: number) => void;
@@ -172,7 +174,8 @@ const JobDashboard = ({
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="icon applied" to="/applied-jobs">
+                  <NavLink className="icon applied" to="/applied-jobs"
+                    isActive={() => ['/applied-jobs', '/quote-job'].includes(pathname)}>
                     <span className="menu_txt">Applied</span>
                   </NavLink>
                 </li>
@@ -295,6 +298,14 @@ const JobDashboard = ({
                     removeBankDetails={removeBankDetails}
                     markMilestoneComplete={markMilestoneComplete}
                     bankDetails={bankDetails}
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/quote-job"
+                render={(props) => (
+                  <QuoteOuter
                     {...props}
                   />
                 )}
