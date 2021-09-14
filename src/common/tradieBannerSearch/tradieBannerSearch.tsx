@@ -403,11 +403,11 @@ const TradieBannerSearch = (props: PropsType) => {
         const newErrors = validateForm(newSearchData?.isRecentSearchesClicked ? newSearchData?.isRecentSearchesClicked : 'showErrorToast');
         if (!!newErrors.searchedJob || !!newErrors.selectedMapLocation) {
             if (!!newErrors.searchedJob) {
-                setShowToast(true, 'Please select job type from the list');
+                setShowToast(true, 'Please Select Job Type From The List');
                 return;
             }
             if (!!newErrors.selectedMapLocation) {
-                setShowToast(true, 'Please select location from the list');
+                setShowToast(true, 'Please Select Location From The List');
                 return;
             }
         }

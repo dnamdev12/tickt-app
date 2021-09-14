@@ -371,7 +371,7 @@ const BannerSearch = (props: PropsType) => {
         let props_trade: any = selected_item?.selectedTrade;
 
         if (!stateData?._id && !props_trade?._id) {
-            setShowToast(true, 'please enter the valid search text.');
+            setShowToast(true, 'Please Enter The Valid Search Text.');
             return;
         }
 
