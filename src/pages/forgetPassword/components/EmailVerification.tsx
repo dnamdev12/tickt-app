@@ -53,7 +53,7 @@ const PhoneNumber = (props: Propstype) => {
     return (
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
-                <div className="form_field">
+                {/* <div className="form_field">
                     <label className="form_label">
                         {'We have sent a mail with varification link. '}
                     </label>
@@ -61,7 +61,7 @@ const PhoneNumber = (props: Propstype) => {
                         {'Please check your email. Tap the link to verify your account and to get started!'}
                     </label>
                 </div>
-
+ */}
 
                 <div className="form_field">
                     <div className="otp_input_wrapper">
@@ -79,14 +79,21 @@ const PhoneNumber = (props: Propstype) => {
 
                 <div className="form_field">
                     <span className="show_label">
-                        We have sent a verification code to your email. Please check email and enter the 5-digit code here.
+                        {'We have sent a verification code to your email. Please check the messages and enter the 5-digit code here.'}
+                        {/* We have sent a verification code to your email. Please check email and enter the 5-digit code here. */}
                     </span>
                 </div>
 
                 <div className="form_field  text-center">
-                    <span className="eg">  {'Didn’t receive a mail with link?'} </span>
+                    <span className="eg">
+                        {'Don’t you receive any codes?'}
+                        {/* {'Didn’t receive a mail with link?'}  */}
+                    </span>
                     <br />
-                    <span className="link"> {'Re-send a mail'}</span>
+                    <span className="link">
+                        {'Re-send code'}
+                        {/* {'Re-send a mail'} */}
+                    </span>
                 </div>
 
                 <div className="form_field">
