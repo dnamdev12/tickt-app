@@ -486,7 +486,7 @@ const BannerSearch = (props: PropsType) => {
         }
 
         if (!stateData?._id && !props_trade?._id) {
-            setShowToast(true, 'please enter the valid search text.');
+            setShowToast(true, 'Please Enter The Valid Search Text');
             return;
         }
 
@@ -499,7 +499,7 @@ const BannerSearch = (props: PropsType) => {
             }
 
             if (!tradeId?.length) {
-                setShowToast(true, 'please enter the valid search text.');
+                setShowToast(true, 'Please Enter The Valid Search Text');
                 return;
             }
 

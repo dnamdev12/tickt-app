@@ -798,7 +798,7 @@ const JobDetailsPage = (props: PropsType) => {
                         >
                             <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                 <div className="heading">
-                                    {(jobDetailsData?.isCancelJobRequest || jobDetailsData?.isChangeRequest) && (
+                                    {jobDetailsData?.jobStatus === 'active' && (jobDetailsData?.isCancelJobRequest || jobDetailsData?.isChangeRequest) && (
                                         <span className="sub_title">
                                             {`Pending Request(s)`}
                                         </span>
@@ -807,7 +807,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         <img src={cancel} alt="cancel" />
                                     </button>
                                 </div>
-                                {jobDetailsData?.isCancelJobRequest && <div className="chang_req_card">
+                                {jobDetailsData?.jobStatus === 'active' && jobDetailsData?.isCancelJobRequest && <div className="chang_req_card">
                                     <span className="xs_sub_title">Job cancellation request</span>
                                     <p className="commn_para line-2">
                                         <li>{JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}</li>
@@ -821,7 +821,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         }}
                                     >Reject</button>
                                 </div>}
-                                {jobDetailsData?.isChangeRequest && <div className="chang_req_card">
+                                {jobDetailsData?.jobStatus === 'active' && jobDetailsData?.isChangeRequest && <div className="chang_req_card">
                                     <span className="xs_sub_title">Change request details</span>
                                     <p className="commn_para line-2">
                                         {jobDetailsData?.reasonForChangeRequest}
