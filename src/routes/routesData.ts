@@ -305,6 +305,7 @@ const routes = [
         name: 'jobdashboard',
         path: [
             '/active-jobs',
+            '/active-quote-job',
             '/applied-jobs',
             '/past-jobs',
             '/new-jobs',

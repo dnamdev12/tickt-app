@@ -1,52 +1,41 @@
 import { useEffect, useState } from 'react';
-import QuoteMark from '../quoteJobs/quoteMark';
-import {
-    getHomeJobDetails
-} from '../../../../redux/homeSearch/actions';
+import ActiveQuoteMark from '../activeQuoteJob/activeQuoteMark';
+import { getHomeJobDetails } from '../../../../redux/homeSearch/actions';
 
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 import more from '../../../../assets/images/icon-direction-right.png';
 import noDataFound from "../../../../assets/images/no-search-data.png";
 
-const QuoteOuter = (props: any) => {
+const ActiveQuoteOuter = (props: any) => {
     const [dataItems, setDataItems] = useState<any>({});
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
     const [isLoad, setIsLoad] = useState(true);
 
-    var data = props.location?.state?.data
-    const params = new URLSearchParams(props.location?.search);
-    let jobId = params.get('jobId');
-    let tradeId = params.get('tradeId');
-    let specializationId = params.get('specializationId');
     useEffect(() => {
-        if (!data) {
-            preFetch();
-        }
-    }, [data]);
+        preFetch();
+    }, []);
+
+    let jobId = props.location?.state?.jobData?.jobId;
+    let tradeId = props.location?.state?.jobData?.tradeId;
+    let specializationId = props.location?.state?.jobData?.specializationId;
 
     const preFetch = async () => {
         let data: any = {};
-        if(!isLoad){
-            setIsLoad(true);
-        }
-        data.jobId = jobId ? jobId : props.location?.state?.res?.jobId;
-        data.tradeId = tradeId ? tradeId : props.location?.state?.res?.tradeId;
-        data.specializationId = specializationId ? specializationId : props.location?.state?.res?.specializationId;
+        data.jobId = jobId;
+        data.tradeId = tradeId;
+        data.specializationId = specializationId;
         let result: any = await getHomeJobDetails(data);
         if (result.success) {
             setDataItems(result?.data);
         }
-        setIsLoad(false);
     }
 
     const dataFetched = (val: boolean) => {
         setIsDataFetched(val);
-        if (data) {
-            setIsLoad(false);
-        }
+        setIsLoad(false);
     }
 
-    const postedBy: any = dataItems?.postedBy || data?.postedBy || {}
+    const postedBy: any = dataItems?.postedBy || {};
     const {
         builderId,
         builderImage,
@@ -59,11 +48,10 @@ const QuoteOuter = (props: any) => {
     return (
         <div className="detail_col">
             <div className="flex_row">
-                <QuoteMark
+                <ActiveQuoteMark
                     {...props}
                     jobId={jobId}
                     dataFetched={dataFetched}
-                    isDataFetched={isDataFetched}
                 />
                 {isDataFetched ? (<div className="flex_col_sm_6 col_ruler">
                     <span className="sub_title">Posted by</span>
@@ -101,7 +89,7 @@ const QuoteOuter = (props: any) => {
                             className="edit_icon"
                             title="More"
                             onClick={() =>
-                                props.history.push(`/job-details-page?jobId=${jobId ? jobId : props.location?.state?.res?.jobId}&redirect_from=jobs`)}>
+                                props.history.push(`/job-details-page?jobId=${jobId}&redirect_from=jobs`)}>
                             <img src={more} alt="more" />
                         </span>
                     </div>
@@ -118,4 +106,4 @@ const QuoteOuter = (props: any) => {
     )
 };
 
-export default QuoteOuter;
+export default ActiveQuoteOuter;
