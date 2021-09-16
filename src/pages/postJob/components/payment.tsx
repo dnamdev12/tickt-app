@@ -292,7 +292,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
             </div>
           </div>
 
-          <div className="form_field">
+          {/* <div className="form_field">
             <div className="checkbox_wrap agree_check">
               <input
                 onChange={() => {
@@ -317,7 +317,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                 </div>
               </label>
             </div>
-          </div>
+          </div> */}
 
           <div className="form_field">
             <button
