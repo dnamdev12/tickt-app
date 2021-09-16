@@ -186,7 +186,7 @@ const SavedJobs = (props: any) => {
                                 {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
                             </span>
                         </div>
-                        {!props?.location?.state?.popular ? (
+                        {/* {!props?.location?.state?.popular ? ( */}
 
                             <div className="flex_row tradies_row">
                                 {stateData?.length > 0 ?
@@ -203,7 +203,7 @@ const SavedJobs = (props: any) => {
                                         <span>No Data Found</span>
                                     </div>}
                             </div>
-                        ) : (
+                        {/* ) : (
                             <ul className="popular_tradies">
                                 {stateData?.length > 0 ?
                                     (stateData?.map((item: any, index: any) => {
@@ -241,9 +241,9 @@ const SavedJobs = (props: any) => {
                                             </figure>
                                             <span>No Data Found</span>
                                         </div>
-                                    )}
+                                    )} 
                             </ul>
-                        )}
+                        )}*/}
                     </div>
                 </div>
             </InfiniteScroll>

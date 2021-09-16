@@ -560,6 +560,8 @@ const JobDetailsPage = (props: PropsType) => {
     let CASE_2 = paramStatus === 'CANCELLED' && jobDetailsData?.reasonForCancelJobRequest > 0 ? jobDetailsData?.reasonForCancelJobRequest : false;
     let CASE_3 = jobDetailsData?.changeRequestDeclineReason?.length ? jobDetailsData?.changeRequestDeclineReason : false;
 
+    let CASE_4 = activeType === "active" && jobDetailsData?.rejectReasonNoteForCancelJobRequest?.length ? jobDetailsData?.rejectReasonNoteForCancelJobRequest : false;
+
 
     const checkTrueCase = () => {
         let C1 = CASE_1 ? 1 : 0;
@@ -767,7 +769,22 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
-                                        {!isPastJob ? (
+                                        {jobDetailsData?.quoteCount?.length ? (
+                                            <ul>
+                                                <li className="icon dollar">{jobDetailsData.amount}</li>
+                                                <li className=""></li>
+                                                <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
+                                                <li className="icon calendar">
+                                                    {jobDetailsData?.time ?
+                                                        jobDetailsData.time :
+                                                        renderTime(
+                                                            jobDetailsData.fromDate,
+                                                            jobDetailsData?.toDate
+                                                        )
+                                                    }
+                                                </li>
+                                            </ul>
+                                        ) : !isPastJob ? (
                                             <ul>
 
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
@@ -811,14 +828,14 @@ const JobDetailsPage = (props: PropsType) => {
                                         rejectReasonNoteForCancelJobRequest: jobDetailsData.rejectReasonNoteForCancelJobRequest
                                     })}
 
-                                    {(CASE_1 || CASE_2 || CASE_3) && (
+                                    {(CASE_1 || CASE_2 || CASE_3 || CASE_4) && (
                                         <button
                                             className="fill_grey_btn full_btn pending_info"
                                             onClick={() => {
                                                 setPendingRequestClicked(true)
                                             }}>
 
-                                            {(CASE_1 || CASE_2 || CASE_3) && (
+                                            {(CASE_1 || CASE_2 || CASE_3 || CASE_4) && (
                                                 <span>
                                                     <img src={pendingIcon} alt="icon" />
                                                     {/* {`${checkTrueCase()} pending request(s)`} */}
@@ -891,17 +908,33 @@ const JobDetailsPage = (props: PropsType) => {
                                                         {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
                                                     </p>
                                                     <p className="commn_para line-2">
-                                                        {jobDetailsData?.reasonNoteForCancelJobRequest}
+                                                        {jobDetailsData?.reasonNoteForCancelJobRequest?.length ?
+                                                            jobDetailsData?.reasonNoteForCancelJobRequest :
+                                                            jobDetailsData?.rejectReasonNoteForCancelJobRequest}
                                                     </p>
                                                 </div>}
 
                                             {CASE_3 &&
                                                 <div className="chang_req_card">
-                                                    <span className="xs_sub_title"> {`Job cancelled rejected reason`}</span>
+                                                    <span className="xs_sub_title">
+                                                        {'Change request reject reason'}
+                                                    </span>
                                                     <p className="commn_para line-2">
                                                         {jobDetailsData?.changeRequestDeclineReason}
                                                     </p>
                                                 </div>}
+
+                                            {CASE_4 &&
+                                                <div className="chang_req_card">
+                                                    <span className="xs_sub_title">
+                                                        {`Job cancelled rejected reason`}
+                                                    </span>
+                                                    <p className="commn_para line-2">
+                                                        {jobDetailsData?.rejectReasonNoteForCancelJobRequest}
+                                                    </p>
+                                                </div>}
+
+                                            {/* {} */}
 
                                         </div>
                                     </Modal>
@@ -911,6 +944,16 @@ const JobDetailsPage = (props: PropsType) => {
                                             className="fill_btn full_btn btn-effect mt-sm"
                                             onClick={() => props.history.push(`/post-new-job?jobId=${paramJobId}`)}>
                                             Publish again
+                                        </button>
+                                    )}
+
+                                    {jobDetailsData?.quoteCount?.length > 0 && (
+                                        <button
+                                            className="fill_grey_btn full_btn btn-effect mt-sm"
+                                            onClick={() => {
+                                                props.history.push(`/jobs?active=open&quotes=true&jobId=${jobDetailsData?.jobId}`);
+                                            }}>
+                                            {activeType == "active" ? 'View quote' : `${jobDetailsData?.quoteCount?.length} Quote${jobDetailsData?.quoteCount?.length > 1 ? 's' : ''}`}
                                         </button>
                                     )}
 

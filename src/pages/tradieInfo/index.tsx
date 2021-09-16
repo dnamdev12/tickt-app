@@ -217,9 +217,15 @@ class TradieInfo extends Component<Props, State> {
         return null;
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps:any) {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
+        let prevPath = `${prevProps?.location?.pathname}${prevProps?.location?.search}`;
+        let currentPath = `${props?.location?.pathname}${props?.location?.search}`;
+
+        if(prevPath !== currentPath){
+            this.setItems();
+        }
 
         if (tradeStatus) {
             props.history.push('/jobs');

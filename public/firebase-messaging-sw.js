@@ -55,7 +55,7 @@ const onNotificationClick = (notification) => {
             if (user_type == 1) {
                 return `${url}tradie-info?tradeId=${receiverId}`;
             } else {
-                return `${url}tradie-info?tradeId=${senderId}&hideInvite=true`;
+                return `${url}tradie-info?jobId=${jobId}&tradeId=${senderId}&hideInvite=false`;
             }
         case 2: //BUILDER
             if (user_type == 1) {

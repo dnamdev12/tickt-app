@@ -215,9 +215,10 @@ const PostNewJob = ({
                       if (job_description?.length) {
                         let stringItem = job_description;
                         if(job_description){
-                          stringItem = job_description.split('. ').join('.');
+                          stringItem = job_description.split('. ').join('. ');
                         }
                         stringItem = stringItem.split('.').map(capitalize).join('.');
+                        stringItem = stringItem.split('. ').map(capitalize).join('. ');
                         setBasicDetails((prev: any) => ({
                           ...prev,
                           job_description: stringItem

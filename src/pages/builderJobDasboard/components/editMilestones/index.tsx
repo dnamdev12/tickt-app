@@ -268,7 +268,7 @@ const EditMilestone = (props: any) => {
             resetItems();
             // removed length check to update the items.
             // if (Items?.length) {
-                setItems(Items)
+            setItems(Items)
             // }
         }
     }
@@ -401,12 +401,12 @@ const EditMilestone = (props: any) => {
                 key={`${index}-${milestoneName}`}
                 draggableId={`${milestoneName}-${index}`}
                 index={index}
-                isDragDisabled={![0, 4, -1].includes(status) ? true : false}
+                isDragDisabled={![0, 1, 4, -1].includes(status) ? true : false}
             >
                 {(provided: any, snapshot: any) => (
                     <li
                         key={index}
-                        className={![0, 4, -1].includes(status) ? 'disable_milstone' : ''}
+                        className={![0, 1, 4, -1].includes(status) ? 'disable_milstone' : ''}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -444,7 +444,7 @@ const EditMilestone = (props: any) => {
                             <input
                                 checked={editItem[index]}
                                 onClick={(e: any) => {
-                                    if ([0, 4, -1].includes(status)) {
+                                    if ([0, 1, 4, -1].includes(status)) {
                                         checkOnClick(e, index)
                                     } else {
                                         e.preventDefault();

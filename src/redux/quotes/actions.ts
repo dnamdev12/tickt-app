@@ -7,7 +7,8 @@ import storageService from '../../utils/storageService';
 
 export const quoteByJobId = async (data: any) => {
     setLoading(true);
-    const response: FetchResponse = await NetworkOps.get(`${Urls.quote}quoteByJobId?jobId=${data.jobId}&tradieId=${data.tradieId}`);
+    const url = storageService.getItem('userType') === 1 ? `${Urls.quote}quoteByJobId?jobId=${data.jobId}&tradieId=${data.tradieId}` : `${Urls.quote}quoteByJobId?jobId=${data.jobId}&sort=${data.sortBy}`;
+    const response: FetchResponse = await NetworkOps.get(url);
     setLoading(false);
     if (response.status_code === 200) {
         return { success: true, data: response?.result };
@@ -55,6 +56,16 @@ export const updateItem = async (data: any) => {
     setLoading(true);
     const response: FetchResponse = await NetworkOps.putToJson(`${Urls.quote}updateItem`, data);
     setLoading(false);
+    if (response.status_code === 200) {
+        setShowToast(true, response.message);
+        return { success: true };
+    }
+    setShowToast(true, response.message);
+    return { success: false };
+}
+
+export const getAcceptDeclineTradie = async (data: any) => {
+    const response: FetchResponse = await NetworkOps.putToJson(Urls.acceptDeclineRequest, data);
     if (response.status_code === 200) {
         setShowToast(true, response.message);
         return { success: true, data: response?.result };

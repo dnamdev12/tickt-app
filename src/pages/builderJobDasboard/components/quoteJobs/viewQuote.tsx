@@ -5,7 +5,38 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import moment from 'moment';
 import { renderTime } from '../../../../utils/common';
 
-class ViewQuote extends Component {
+import {
+    getAcceptDeclineTradie
+} from '../../../../redux/quotes/actions';
+
+type State = {
+    toggle: boolean
+}
+
+type Props = {
+    quotes_param: any,
+    history: any,
+    quotesData: any
+}
+
+class ViewQuote extends Component<Props, State> {
+    state: State = {
+        toggle: false,
+    };
+
+    handleSubmit = async (item: any, status: number) => {
+        const { jobId, userId } = item;
+        let data = {
+            "jobId": jobId,
+            "tradieId": userId,
+            "status": status
+        };
+        let response = await getAcceptDeclineTradie(data);
+        if (response.success) {
+            this.props.history.push('/quote-job-accepted');
+        }
+    }
+
     render() {
         const styleItem = {
             listStyle: 'none',
@@ -15,12 +46,27 @@ class ViewQuote extends Component {
             textAlign: 'center',
             paddingTop: '20px'
         }
+
+        const props: any = this.props;
+        const quotesData = props?.quotesData || [];
+        const params = new URLSearchParams(props?.history?.location?.search);
+        const jobId = params.get('jobId');
+        const id = params.get('id');
+
+        let item: any = {};
+        if (quotesData && Array.isArray(quotesData) && quotesData?.length) {
+            item = quotesData.find((item: any) => item._id === id);
+        }
         return (
             <React.Fragment>
                 <div className="flex_row">
                     <div className="flex_col_sm_5">
                         <div className="relate">
-                            <button className="back"></button>
+                            <button
+                                onClick={() => {
+                                    this.props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`)
+                                }}
+                                className="back"></button>
                             <span className="title">Quotes</span>
                         </div>
                     </div>
@@ -37,20 +83,37 @@ class ViewQuote extends Component {
                             {/* <span className="more_detail circle"></span> */}
                             <div className="user_wrap">
                                 <figure className="u_img">
-                                    <img src="https://appinventiv-development.s3.amazonaws.com/1629085877591.png"
-                                        alt="traide-img" />
+                                    <img src={item?.tradieImage || dummy}
+                                        alt="traide-img"
+                                        onError={(e: any) => {
+                                            if (e?.target?.onerror) {
+                                                e.target.onerror = null;
+                                            }
+                                            if (e?.target?.src) {
+                                                e.target.src = dummy;
+                                            }
+                                        }}
+                                    />
                                 </figure>
                                 <div className="details">
-                                    <span className="name">Electrician </span>
-                                    <p className="commn_para">to wire up circuit box</p>
+                                    <span className="name">{item?.trade_name} </span>
+                                    <p className="commn_para">{item?.jobName}</p>
                                 </div>
                             </div>
                             <div className="job_info">
                                 <ul>
-                                    <li className="icon dollar">$12 p/h</li>
-                                    <li className=""><span>total $132</span></li>
-                                    <li className="icon calendar">08 Sep - 31 Oct</li>
-                                    <li className=""><span>In progress</span></li>
+                                    <li className="icon clock">
+                                        <span>
+                                            {renderTime(item?.from_date, item?.to_date)}
+                                        </span>
+                                    </li>
+                                    <li className="icon dollar">{'for quoting'}</li>
+                                    <li className="icon location">
+                                        <span>
+                                            {item?.location_name}
+                                        </span>
+                                    </li>
+                                    <li className="icon calendar">{item?.duration}</li>
                                 </ul>
                             </div>
 
@@ -70,7 +133,7 @@ class ViewQuote extends Component {
                             <div className="user_wrap">
                                 <figure className="u_img">
                                     <img
-                                        src={dummy}
+                                        src={item?.tradieImage || dummy}
                                         alt="traide-img"
                                         onError={(e: any) => {
                                             if (e?.target?.onerror) {
@@ -83,48 +146,58 @@ class ViewQuote extends Component {
                                     />
                                 </figure>
                                 <div className="details">
-                                    <span className="name">{'John Oldman'}</span>
+                                    <span className="name">{item?.trade_name}</span>
                                     <p className="commn_para">
-                                        <span className="rating">4.5 , 36 reviews</span>
+                                        <span className="rating">{item?.rating} , {item?.reviewCount} reviews</span>
                                     </p>
                                 </div>
                             </div>
 
 
-                            <div
-                                style={{
-                                    width: '100%',
-                                    border: '1px solid #000',
-                                    margin: '0 auto'
-                                }}
-                                className="example">
-                                <ul style={{
-                                    display: 'flex',
-                                    flexDirection: 'row',
-                                    flexWrap: 'wrap',
-                                    width: '100%',
-                                    paddingLeft: '0',
-                                }}>
-                                    
-                                </ul>
-                            </div>
+                            <div className="example">
 
-                            <button
-                                className="fill_grey_btn full_btn btn-effect">
-                                {'Total quote: $2,000'}
-                            </button>
+                                {item?.quote_item?.length ?
+                                    item?.quote_item.map((quote_item: any) => (
+                                        <table style={{ marginTop: '20px' }}>
+                                            <tr>
+                                                <th>Item</th>
+                                                <th>Description</th>
+                                                <th>Price</th>
+                                            </tr>
+                                            <tr>
+                                                <td>{quote_item?.item_number}</td>
+                                                <td>{quote_item?.description}</td>
+                                                <td>{`$ ${quote_item?.price}`}</td>
+                                            </tr>
+                                        </table>
+                                    ))
+                                    : null}
+                            </div>
                         </div>
 
                         <div style={{ textAlign: 'right', marginBottom: '20px' }}>
-                            <span className="fill_grey_btn">Total Quote: $1,000</span>
+                            <span className="fill_grey_btn">
+                                {`Total Quote: $${item?.amount}`}
+                            </span>
                         </div>
 
-
-                        <div style={{ textAlign: 'center', marginBottom: '20px' }}>
-                            <button
-                                className="fill_grey_btn quote_btn">
-                                {'Submit Quote'}
-                            </button>
+                        <div className="flex_row">
+                            <div className="flex_col_sm_8">
+                                <div className="form_field">
+                                    <button
+                                        onClick={() => { this.handleSubmit(item, 1) }}
+                                        className="fill_btn full_btn btn-effect">
+                                        {'Accept Quote'}
+                                    </button>
+                                </div>
+                                <div className="form_field">
+                                    <button
+                                        onClick={() => { this.handleSubmit(item, 2) }}
+                                        className="fill_grey_btn full_btn btn-effect">
+                                        {'Decline Quote'}
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
 

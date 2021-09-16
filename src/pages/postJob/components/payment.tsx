@@ -35,16 +35,18 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         pay_type: data.pay_type || 'Fixed price',
         amount: data.amount
       });
-
+      console.log({
+        quoteJob: data.quoteJob
+      })
       if (data.quoteJob == '0') {
         if (data.pay_type === 'Per hour') {
           setReactSelect({ value: 'Per hour', label: 'Per Hour' });
         } else {
           setReactSelect({ value: 'Fixed price', label: 'Fixed Price' });
         }
-        setCheckType('0')
-      } else {
         setCheckType('1')
+      } else {
+        setCheckType('2')
       }
 
       setLocationChanges(true);
@@ -135,7 +137,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         quoteJob: '0'
       };
       console.log({ paymentdt })
-      handleStepComplete(paymentDetails);
+      handleStepComplete(paymentdt);
 
     } else {
       setContinueClicked(false);
@@ -299,6 +301,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                   } else {
                     setCheckType('0')
                   }
+                  setPaymentDetails({ pay_type: 'Per hour', amount: '' })
                   setErrors({ pay_type: '', amount: '' });
                 }}
                 checked={checkType === '2' ? true : false}

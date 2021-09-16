@@ -321,14 +321,25 @@ class JobDashboard extends Component<Props, State> {
                             : open;
                     }
 
-                    this.setState({
-                        openJobs: result,
-                        count: {
-                            approveCount: needApprovalCount,
-                            applicantCount: newApplicantsCount
-                        },
-                        actualLoad: true
-                    });
+                    let randomState = this.state.openJobs && Array.isArray(this.state.openJobs) && this.state.openJobs[0] && this.state.openJobs[0].mathrandom ? this.state.openJobs[0].mathrandom : ''
+
+                    let randomResult = result && Array.isArray(result) && result[0] && result[0].mathrandom ? result[0].mathrandom : '';
+
+
+                    if (this.state.count.approveCount !== needApprovalCount ||
+                        this.state.count.applicantCount !== newApplicantsCount ||
+                        this.state.openJobs?.length !== result?.length ||
+                        randomState !== randomResult
+                    ) {
+                        this.setState({
+                            openJobs: result,
+                            count: {
+                                approveCount: needApprovalCount,
+                                applicantCount: newApplicantsCount
+                            },
+                            actualLoad: true
+                        });
+                    }
 
                 } else {
                     this.checkAndUpdateCount({
@@ -640,7 +651,6 @@ class JobDashboard extends Component<Props, State> {
                             </div>
                         </div>
 
-
                         <InfiniteScroll
                             dataLength={totalCount}
                             next={() => {
@@ -677,7 +687,6 @@ class JobDashboard extends Component<Props, State> {
                             loader={<></>}
                             style={{ overflowX: 'hidden' }}
                             className={`detail_col element-side-scroll hide_scroll`}>
-                            {/* // className={`detail_col element-side-scroll hide_scroll`}> */}
                             {jobtype === 'past' && (
                                 <PastJobsComponent
                                     isLoading={isLoading}

@@ -311,7 +311,7 @@ export const onNotificationClick = (notification: any) => {
             if (user_type == 1) {
                 return `/tradie-info?tradeId=${receiverId}`;
             } else {
-                return `/tradie-info?tradeId=${senderId}&hideInvite=true`;
+                return `/tradie-info?jobId=${jobId}&tradeId=${senderId}&hideInvite=false`;
             }
         case 2: //BUILDER
             if (user_type == 1) {

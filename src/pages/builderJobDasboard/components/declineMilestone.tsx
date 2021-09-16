@@ -57,7 +57,7 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
         const newFile = e.target.files[0];
 
         if (filesUrl?.length === 6) {
-            setShowToast(true, "Max files upload limit is 3.")
+            setShowToast(true, "Max files upload limit is 6.")
             return;
         }
 
@@ -148,7 +148,7 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
                             <div className="text_field">
                                 <textarea
                                     value={reason}
-                                    onChange={(e: any) => { setReason(e.target.value) }}
+                                    onChange={(e: any) => { setReason((e.target.value).trimLeft()) }}
                                     placeholder="Your reason..."
                                 ></textarea>
                             <span className="char_count">{'character length: '}{reason?.length + ' / 250'}</span>
@@ -159,12 +159,12 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
                             </div>
                     </div>
                 </div>
-                <div className="upload_img_video">
+                <div className="upload_img_video pt-10">
                     {filesUrl?.length ?
                         filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
                         : null}
 
-                    {filesUrl?.length < 3 ? (
+                    {filesUrl?.length < 6 ? (
                         <React.Fragment>
                             <label className="upload_media" htmlFor="upload_img_video">
                                 <img src={addMedia} alt="" />

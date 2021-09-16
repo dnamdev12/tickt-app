@@ -314,8 +314,10 @@ const JobDetails = ({
         let response: any = null;
 
         if (update) {
+            console.log({data_clone})
             response = await publishOpenJobAgain(data_clone);
         } else {
+            console.log({data_clone})
             response = await createJob(data_clone);
         }
         if (response?.success) {

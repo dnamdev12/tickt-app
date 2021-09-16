@@ -53,8 +53,11 @@ import GuestPage from '../pages/home/guestHome';
 import AdminAnnouncementPage from '../pages/adminAnnouncementPage/adminAnnouncementPage';
 
 import QuoteSuccess from '../pages/jobDashboard/components/quoteJobs/success';
+import QuoteSuccessBuilder from '../pages/builderJobDasboard/components/quoteJobs/quoteSuccess';
+import QuoteJobCancel from '../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel';
 
 import DocViewerComponent from '../pages/shared/DocViewer';
+import quoteJobCancel from '../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel';
 
 const routes = [
     {
@@ -183,6 +186,20 @@ const routes = [
         name: 'quoteJobSuccess',
         path: '/quote-job-success',
         component: QuoteSuccess,
+        authRoute: false,
+        privateRoute: true,
+    }, 
+    {
+        name: 'quoteJobSuccess',
+        path: '/quote-job-accepted',
+        component: QuoteSuccessBuilder,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'quoteJobCancel',
+        path: '/quote-job-cancel',
+        component: quoteJobCancel,
         authRoute: false,
         privateRoute: true,
     },
