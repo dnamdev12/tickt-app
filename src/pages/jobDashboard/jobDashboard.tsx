@@ -8,13 +8,12 @@ import NewJobsPage from './components/newJobs';
 import ApprovedMilestonesPage from './components/approvedMilestones';
 import MarkMilestonePage from './components/markMilestone';
 import ReviewBuilder from './components/reviewBuilder/reviewBuilder';
+import QuoteOuter from './components/quoteJobs/quoteOuter';
+import ActiveQuoteOuter from './components/activeQuoteJob/activeQuoteOuter';
 
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import templateImage from '../../assets/images/job-complete-bg.png';
-
-import QuoteOuter from './components/quoteJobs/quoteOuter';
-
 interface Proptypes {
   loading: boolean,
   getActiveJobList: (page: number) => void;
@@ -306,6 +305,14 @@ const JobDashboard = ({
                 path="/quote-job"
                 render={(props) => (
                   <QuoteOuter
+                    {...props}
+                  />
+                )}
+              />
+              <Route
+                path="/active-quote-job"
+                render={(props) => (
+                  <ActiveQuoteOuter
                     {...props}
                   />
                 )}

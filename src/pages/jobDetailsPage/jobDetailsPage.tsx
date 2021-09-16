@@ -707,9 +707,9 @@ const JobDetailsPage = (props: PropsType) => {
                                                         onClick={() => {
                                                             props.history.push({
                                                                 pathname: `/quote-job`,
-                                                                search: '?jobId=613f2f6b53a9d65a1b0f57d3&tradeId=605c8bccb777553e6b057b8a&specializationId=6066fca0cc682b18cd57a4c2',
                                                                 state: {
-                                                                    data: jobDetailsData
+                                                                    data: jobDetailsData,
+                                                                    redirect_from: 'jobDetailPage'
                                                                 }
                                                             })
                                                         }}>

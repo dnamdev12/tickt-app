@@ -1,11 +1,9 @@
 import { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import InfiniteScroll from 'react-infinite-scroll-component';
 
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import noDataFound from "../../../assets/images/no-search-data.png";
-
-
 
 interface Proptypes {
   loading: boolean;
@@ -20,7 +18,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
   const [isLoad, setIsLoad] = useState(true);
-
+  const history: any = useHistory();
   let totalJobsCount: number = newJobsCount;
   console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
 
@@ -62,7 +60,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
       >
         <span className="sub_title">Applied Jobs</span>
         <div className="flex_row tradies_row">
-          {!isLoad && !loading && jobList.length ? jobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status, builderName, builderImage }) => (
+          {!isLoad && !loading && jobList.length ? jobList.map(({ jobId, tradeSelectedUrl, tradeId, specializationId, jobName, tradeName, time, amount, locationName, durations, milestoneNumber, totalMilestones, status, builderName, builderImage, quoteJob, quoteSent }) => (
             <div className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
@@ -111,11 +109,22 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
                     </span>
                   </div>
                 </div>
-                {/* {Quest sent start} */}
-                 {/* <div className="quote-text">
+                {quoteJob && <div className="quote-text"
+                  onClick={() => {
+                    history.push({
+                      pathname: `/quote-job`,
+                      state: {
+                        res: {
+                          jobId: jobId,
+                          tradeId: tradeId,
+                          specializationId: specializationId
+                        },
+                        redirect_from: 'appliedJobs'
+                      }
+                    })
+                  }}>
                   {'Quote sent'}
-                </div>  */}
-                {/* {Quest sent end} */}
+                </div>}
               </div>
             </div>
           )) : !isLoad && !loading && (

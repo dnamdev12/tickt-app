@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useHistory } from 'react-router-dom';
 import { renderTime } from '../../../utils/common';
 //@ts-ignore
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -22,6 +22,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
   const [isLoad, setIsLoad] = useState(true);
+  const history: any = useHistory();
 
   let totalJobsCount: number = newJobsCount;
   console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
@@ -81,7 +82,8 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
               totalMilestones,
               status,
               builderName,
-              builderImage
+              builderImage,
+              quoteJob
             }) => (
               <div key={jobId} className="flex_col_sm_6">
                 <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
@@ -142,6 +144,21 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                       </span>
                     </div>
                   </div>
+                  {quoteJob && <div className="quote-text"
+                    onClick={() => {
+                      history.push({
+                        pathname: `/active-quote-job`,
+                        state: {
+                          jobData: {
+                            jobId: jobId,
+                            tradeId: tradeId,
+                            specializationId: specializationId
+                          }
+                        }
+                      })
+                    }}>
+                    {'View your quote'}
+                  </div>}
                 </div>
               </div>
             )) : !isLoad && !loading && (
