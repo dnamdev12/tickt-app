@@ -114,7 +114,7 @@ const AppliedJobs = ({ loading, getAppliedJobList, appliedJobList, newJobsCount,
                     history.push({
                       pathname: `/quote-job`,
                       state: {
-                        res: {
+                        jobData: {
                           jobId: jobId,
                           tradeId: tradeId,
                           specializationId: specializationId

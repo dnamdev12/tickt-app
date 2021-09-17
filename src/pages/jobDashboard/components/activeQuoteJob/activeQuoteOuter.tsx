@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import ActiveQuoteMark from '../activeQuoteJob/activeQuoteMark';
 import { getHomeJobDetails } from '../../../../redux/homeSearch/actions';
+import storageService from '../../../../utils/storageService';
 
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 import more from '../../../../assets/images/icon-direction-right.png';
@@ -56,8 +57,20 @@ const ActiveQuoteOuter = (props: any) => {
                 {isDataFetched ? (<div className="flex_col_sm_6 col_ruler">
                     <span className="sub_title">Posted by</span>
                     <div className="tradie_card posted_by ">
-                        <div
-                            className="user_wrap"
+                        <a href="javascript:void(0)" className="chat circle"
+                            onClick={(e) => {
+                                e.preventDefault();
+                                props.history.push({
+                                    pathname: `/chat`,
+                                    state: {
+                                        tradieId: storageService.getItem('userInfo')?._id,
+                                        builderId: builderId,
+                                        jobId: jobId,
+                                        jobName: jobName
+                                    }
+                                })
+                            }} />
+                        <div className="user_wrap"
                             onClick={() => {
                                 props.history.push(`/builder-info?builderId=${builderId}`)
                             }}>
