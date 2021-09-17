@@ -13,25 +13,25 @@ const QuoteOuter = (props: any) => {
     const [isDataFetched, setIsDataFetched] = useState<boolean>(false);
     const [isLoad, setIsLoad] = useState(true);
 
-    var data = props.location?.state?.data
+    var jobData = props.location?.state?.jobData;
     const params = new URLSearchParams(props.location?.search);
     let jobId = params.get('jobId');
     let tradeId = params.get('tradeId');
     let specializationId = params.get('specializationId');
     useEffect(() => {
-        if (!data) {
+        if (!jobData?.postedBy) {
             preFetch();
         }
-    }, [data]);
+    }, [jobData]);
 
     const preFetch = async () => {
         let data: any = {};
-        if(!isLoad){
+        if (!isLoad) {
             setIsLoad(true);
         }
-        data.jobId = jobId ? jobId : props.location?.state?.res?.jobId;
-        data.tradeId = tradeId ? tradeId : props.location?.state?.res?.tradeId;
-        data.specializationId = specializationId ? specializationId : props.location?.state?.res?.specializationId;
+        data.jobId = jobId ? jobId : jobData?.jobId;
+        data.tradeId = tradeId ? tradeId : jobData?.tradeId;
+        data.specializationId = specializationId ? specializationId : jobData?.specializationId;
         let result: any = await getHomeJobDetails(data);
         if (result.success) {
             setDataItems(result?.data);
@@ -41,12 +41,12 @@ const QuoteOuter = (props: any) => {
 
     const dataFetched = (val: boolean) => {
         setIsDataFetched(val);
-        if (data) {
+        if (jobData) {
             setIsLoad(false);
         }
     }
 
-    const postedBy: any = dataItems?.postedBy || data?.postedBy || {}
+    const postedBy: any = dataItems?.postedBy || jobData?.postedBy || {}
     const {
         builderId,
         builderImage,
@@ -101,7 +101,7 @@ const QuoteOuter = (props: any) => {
                             className="edit_icon"
                             title="More"
                             onClick={() =>
-                                props.history.push(`/job-details-page?jobId=${jobId ? jobId : props.location?.state?.res?.jobId}&redirect_from=jobs`)}>
+                                props.history.push(`/job-details-page?jobId=${jobId ? jobId : jobData?.jobId}&redirect_from=jobs`)}>
                             <img src={more} alt="more" />
                         </span>
                     </div>
