@@ -30,7 +30,7 @@ export const addQuote = async (data: any) => {
 
 export const addItem = async (data: any) => {
     setLoading(true);
-    const response: FetchResponse = await NetworkOps.putToJson(`${Urls.quote}addItem`, data);
+    const response: FetchResponse = await NetworkOps.postToJson(`${Urls.quote}addItem`, data);
     setLoading(false);
     if (response.status_code === 200) {
         setShowToast(true, response.message);

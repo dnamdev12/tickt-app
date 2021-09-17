@@ -7,48 +7,54 @@ import {
     deleteItem,
     quoteByJobId
 } from '../../../../redux/quotes/actions';
+import { acceptDeclineJobInvitation } from '../../../../redux/jobs/actions';
 import NumberFormat from 'react-number-format';
+import Modal from '@material-ui/core/Modal';
+import storageService from '../../../../utils/storageService';
 
 import deleteQuote from '../../../../assets/images/ic-delete.png';
-import storageService from '../../../../utils/storageService';
+import cancel from "../../../../assets/images/ic-cancel.png";
 
 const QuoteMark = (props: any) => {
     const [Items, setItems] = useState<Array<any>>([]);
     const [isEdit, setEdit] = useState<any>(null);
     const [totalItemsAmt, setTotalItemsAmt] = useState<number>(0);
     const [quoteId, setQuoteId] = useState<string>('');
-    const [localQuote, setLocalQuote] = useState({
+    const [deleteItemModal, setDeleteItemModal] = useState<boolean>(false);
+    const [localQuote, setLocalQuote] = useState<any>({
         item_number: 1,
         description: '',
         price: 0,
         quantity: 0,
         totalAmount: 0
     });
+    console.log('localQuote: ', localQuote);
 
     useEffect(() => {
         preFetch();
     }, []);
 
-    console.log('props: ', props);
     console.log('Items: ', Items);
     const preFetch = async () => {
         const isItemsEditable = props.location?.state?.redirect_from === 'appliedJobs' ? true : false;
         if (isItemsEditable) {
             const data: any = {
-                jobId: props.location?.state?.res?.jobId,
+                jobId: props.location?.state?.jobData?.jobId,
                 tradieId: storageService.getItem('userInfo')?._id
             }
             const res = await quoteByJobId(data);
             if (res.success && res.data?.resultData[0]?.quote_item?.length) {
-                console.log('resultData: ', res.data?.resultData);
-                setItems(res.data?.resultData[0]?.quote_item);
+                const items_ = res.data?.resultData[0]?.quote_item;
+                setItems(items_);
                 setQuoteId(res.data?.resultData[0]?._id);
+                let item_no = items_[items_?.length - 1]?.item_number ? items_[items_?.length - 1]?.item_number + 1 : 1;
+                setLocalQuote((prev: any) => ({ ...prev, item_number: item_no }));
                 props.dataFetched(true);
             } else {
                 props.dataFetched(false);
             }
         } else {
-            props.dataFetched(false);
+            props.dataFetched(true);
         }
     }
 
@@ -59,17 +65,33 @@ const QuoteMark = (props: any) => {
         }
         const res = await deleteItem(data);
         if (res.success) {
-            console.log("update item res", res.data);
+            return true;
+        } else {
+            return false;
         }
     }
 
     const addItem_ = async (item: any) => {
+        let items_ = Items;
         const data = {
-            itemId: item?._id,
+            quoteId: quoteId,
+            item_number: item?.item_number,
+            description: item?.description,
+            price: item?.price,
+            quantity: item?.quantity,
+            totalAmount: item?.totalAmount,
         }
         const res = await addItem(data);
-        if (res.success) {
-            console.log("update item res", res.data);
+        if (res.success && res.data?.resultData) {
+            items_.push(res.data?.resultData);
+            setItems(items_);
+            setLocalQuote({
+                item_number: items_[items_?.length - 1]?.item_number ? items_[items_?.length - 1]?.item_number + 1 : 1,
+                description: '',
+                price: 0,
+                quantity: 0,
+                totalAmount: 0
+            });
         }
     }
 
@@ -95,8 +117,7 @@ const QuoteMark = (props: any) => {
     }
 
     const applyJobClicked = async () => {
-        const jobDetailsData: any = props.location?.state?.data;
-
+        const jobDetailsData: any = props.location?.state?.jobData;
         const data = {
             jobId: jobDetailsData?.jobId,
             builderId: jobDetailsData?.postedBy?.builderId,
@@ -109,11 +130,21 @@ const QuoteMark = (props: any) => {
         }
     }
 
+    const inviteJobActionHandler = async () => {
+        const jobDetailsData: any = props.location?.state?.jobData;
+        let data = {
+            jobId: jobDetailsData?.jobId,
+            builderId: jobDetailsData?.postedBy?.builderId,
+            isAccept: true
+        };
+        const res: any = await acceptDeclineJobInvitation(data);
+        if (res.success) {
+            props.history.push('/quote-job-success');
+        }
+    }
+
     const handleSubmit = async () => {
-        console.log('Items: ', Items);
-        // add Quote (api call);
-        const jobId: string = props.location?.state?.data?.jobId;
-        // const jobId: string = new URLSearchParams(props.location.search)?.get('jobId') || '';
+        const jobId: string = props.location?.state?.jobData?.jobId;
         const data: any = {
             jobId: jobId,
             userId: storageService.getItem('userInfo')?._id,
@@ -122,7 +153,11 @@ const QuoteMark = (props: any) => {
         }
         const res: any = await addQuote(data);
         if (res.success) {
-            applyJobClicked();
+            if (props.location?.state?.base_redirect === 'newJobs') {
+                inviteJobActionHandler();
+            } else {
+                applyJobClicked();
+            }
         }
     }
 
@@ -168,12 +203,42 @@ const QuoteMark = (props: any) => {
     let total = total_cal === 0 ? '' : total_cal;
     let isEditTrue = isEdit !== null && isEdit > -1 ? true : false;
 
+    const callItemNo = () => {
+        if (localQuote?._id) {
+            return localQuote?.item_number;
+        }
+        return Items[Items?.length - 1]?.item_number ? Items[Items?.length - 1]?.item_number + 1 : 1;
+    }
 
     const quoteValidate = () => {
         if (description?.length === 0 || qty === 0 || price === 0) {
             return true
         }
         return false;
+    }
+
+    const deleteItemHandler = async () => {
+        let index = isEdit;
+        let items_ = Items;
+        let filtered = items_.filter((item: any, index: any) => index !== isEdit);
+        setItems(filtered);
+        setEdit(null);
+        let length = filtered[filtered?.length - 1]?.item_number;
+        let id = length > 0 ? length + 1 : 1;
+        let res: any = true;
+        if (quoteId) {
+            res = await deleteItem_(items_[index]);
+        }
+        if (res) {
+            setLocalQuote({
+                item_number: id,
+                description: '',
+                price: 0,
+                quantity: 0,
+                totalAmount: 0
+            });
+        }
+        setDeleteItemModal(false);
     }
 
     return (
@@ -184,20 +249,22 @@ const QuoteMark = (props: any) => {
                         if (isEditTrue) {
                             setEdit(null);
                             setLocalQuote({
-                                item_number: Items?.length + 1,
+                                item_number: Items[Items?.length - 1]?.item_number ? Items[Items?.length - 1]?.item_number + 1 : 1,
                                 description: '',
                                 price: 0,
                                 quantity: 0,
                                 totalAmount: 0
                             });
                         } else {
-                            if (props.location?.state?.redirect_from === 'jobDetailPage') {
-                                const jobDetailsData: any = props.location?.state?.data;
-                                props.history.push(`/job-details-page?jobId=${jobDetailsData?.jobId}&tradeId=${jobDetailsData?.tradeId}&specializationId=${jobDetailsData?.specializationId}`);
-                            }
-                            if (props.location?.state?.redirect_from === 'appliedJobs') {
-                                props.history.push('applied-jobs');
-                            }
+                            // if (props.location?.state?.base_redirect === 'jobDetailPage') {
+                            //     const jobDetailsData: any = props.location?.state?.jobData;
+                            //     props.history.push(`/job-details-page?jobId=${jobDetailsData?.jobId}&tradeId=${jobDetailsData?.tradeId}&specializationId=${jobDetailsData?.specializationId}`);
+                            //     return;
+                            // }
+                            // if (props.location?.state?.redirect_from === 'appliedJobs') {
+                            //     props.history.push('applied-jobs');
+                            // }
+                            props.history.goBack();
                         }
                     }}
                     className="back">
@@ -258,26 +325,7 @@ const QuoteMark = (props: any) => {
             {props.isDataFetched && <div className="change_req">
                 {isEditTrue && (
                     <span
-                        onClick={() => {
-                            let index = isEdit;
-                            let items_ = Items;
-                            let filtered = items_.filter((item: any, index: any) => index !== isEdit);
-                            setItems(filtered);
-                            setEdit(null);
-                            let length = filtered[filtered?.length - 1]?.item_number;
-                            let id = length > 0 ? length + 1 : 1;
-                            setLocalQuote({
-                                item_number: id,
-                                description: '',
-                                price: 0,
-                                quantity: 0,
-                                totalAmount: 0
-                            });
-                            if (quoteId) {
-                                alert('are you sure');
-                                deleteItem_(items_[index]);
-                            }
-                        }}
+                        onClick={() => setDeleteItemModal(true)}
                         className="delete_quote">
                         {'Delete'}
                         <img src={deleteQuote} alt="delete" />
@@ -291,7 +339,8 @@ const QuoteMark = (props: any) => {
                     <div className="text_field">
                         <input
                             type="number"
-                            value={Items[Items?.length - 1]?.item_number + 1}
+                            value={callItemNo()}
+                        // value={Items[Items?.length - 1]?.item_number ? Items[Items?.length - 1]?.item_number + 1 : 1}
                         // onChange={(e) => handleChange('item_number', e.target.value)}
                         />
                     </div>
@@ -376,7 +425,7 @@ const QuoteMark = (props: any) => {
                                 setItems(items_);
                                 setEdit(null);
                                 setLocalQuote({
-                                    item_number: Items?.length + 1,
+                                    item_number: Items[Items?.length - 1]?.item_number,
                                     description: '',
                                     price: 0,
                                     quantity: 0,
@@ -384,29 +433,55 @@ const QuoteMark = (props: any) => {
                                 });
                             }
                             return;
-                        } else if (props.location?.state?.redirect_from === 'appliedJobs') {
-                            // call add new item api
-                            // addItem_();
                         } else {
                             let items_ = Items;
                             let item: any = localQuote;
                             item['totalAmount'] = (+item.quantity * +item.price);
-                            items_.push(item)
-
-                            setItems(items_);
-                            setLocalQuote({
-                                item_number: Items?.length + 1,
-                                description: '',
-                                price: 0,
-                                quantity: 0,
-                                totalAmount: 0
-                            });
+                            if (props.location?.state?.redirect_from === 'appliedJobs') {
+                                await addItem_(item);
+                            } else {
+                                items_.push(item);
+                                setItems(items_);
+                                setLocalQuote({
+                                    item_number: items_[items_?.length - 1]?.item_number ? items_[items_?.length - 1]?.item_number + 1 : 1,
+                                    description: '',
+                                    price: 0,
+                                    quantity: 0,
+                                    totalAmount: 0
+                                });
+                            }
                         }
-                    }}
+                    }
+                    }
                     className={`fill_btn w100per ${quoteValidate() ? 'disable_btn' : ''}`}>
                     {`${isEditTrue ? 'Save' : 'Add'} Item`}
                 </button>
             </div>}
+
+            <Modal
+                className="custom_modal"
+                open={deleteItemModal}
+                onClose={() => setDeleteItemModal(false)}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                    <div className="heading">
+                        <span className="xs_sub_title">{`Delete item confirmation`}</span>
+                        <button className="close_btn" onClick={() => setDeleteItemModal(false)}>
+                            <img src={cancel} alt="cancel" />
+                        </button>
+                    </div>
+                    <div className="modal_message">
+                        <p>Are you sure you still want to delete item?</p>
+                    </div>
+                    <div className="dialog_actions">
+                        <button className="fill_btn btn-effect" onClick={deleteItemHandler}>Yes</button>
+                        <button className="fill_grey_btn btn-effect"
+                            onClick={() => setDeleteItemModal(false)}>No</button>
+                    </div>
+                </div>
+            </Modal>
 
             {(Items?.length > 0 && !isEditTrue) && (
                 <div className="total_quote">
