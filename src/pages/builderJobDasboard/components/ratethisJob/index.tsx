@@ -168,7 +168,7 @@ const RateThisJob = (props: any) => {
                             <img src={more} alt="more" />
                         </span>
                     </div>
-                    <div className="tradie_card posted_by view_more ">
+                    <div className="tradie_card posted_by ">
                         <div className="user_wrap">
                             <figure className="u_img">
                                 <img
@@ -219,7 +219,7 @@ const RateThisJob = (props: any) => {
                             <img src={more} alt="more" />
                         </span>
                     </div>
-                    <div className="tradie_card posted_by view_more ">
+                    <div className="tradie_card posted_by ">
                         <div className="user_wrap">
                             <figure className="u_img">
                                 <img 
