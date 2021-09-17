@@ -7,7 +7,7 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../assets/images/job-type-placeholder.png';
 import moment from 'moment';
 import { renderTime } from '../../../utils/common';
-import OpenQuoteJobs from './quoteJobs/openQuoteJobs';
+import ListQuotes from './quoteJobs/ListQuotes';
 import ViewQuote from './quoteJobs/viewQuote';
 
 import { quoteByJobId } from '../../../redux/quotes/actions';
@@ -31,6 +31,7 @@ interface Active {
     totalMilestones: any,
     tradieListData: any,
     quoteCount: number,
+    quoteJob: any,
     tradeName: any,
     tradieId: any,
     tradeSelectedUrl: any,
@@ -76,44 +77,44 @@ class OpenJobs extends Component<Props, State> {
     }
 
     componentDidMount() {
-        this.preFetchForQuotes();
+        // this.preFetchForQuotes();
     }
 
-    preFetchForQuotes = () => {
-        const props: any = this.props;
-        const params = new URLSearchParams(props?.history?.location?.search);
-        const quotes_param: any = params.get('quotes');
-        const viewQuotesParam: any = params.get('viewQuotes');
-        const jobId: any = params.get('jobId');
+    // preFetchForQuotes = () => {
+    //     const props: any = this.props;
+    //     const params = new URLSearchParams(props?.history?.location?.search);
+    //     const quotes_param: any = params.get('quotes');
+    //     const viewQuotesParam: any = params.get('viewQuotes');
+    //     const jobId: any = params.get('jobId');
 
-        const { toggleQuoteSort } = this.state;
-        if (jobId?.length) {
-            if (quotes_param === "true") {
-                this.fetchQuotesById(jobId, 1)
-            } else {
-                this.fetchQuotesById(jobId, 1)
-            }
-        }
-    }
+    //     const { toggleQuoteSort } = this.state;
+    //     if (jobId?.length) {
+    //         if (quotes_param === "true") {
+    //             this.fetchQuotesById(jobId, 1)
+    //         } else {
+    //             this.fetchQuotesById(jobId, 1)
+    //         }
+    //     }
+    // }
 
-    fetchQuotesById = async (jobId: String, sortBy: Number) => {
-        let result = await quoteByJobId({ jobId, sortBy });
-        console.log({ result });
-        if (result?.success) {
-            let data = result?.data?.resultData;
-            if (data) {
-                this.setState({ quotesData: data })
-            }
-        }
-    }
+    // fetchQuotesById = async (jobId: String, sortBy: Number) => {
+    //     let result = await quoteByJobId({ jobId, sortBy });
+    //     console.log({ result });
+    //     if (result?.success) {
+    //         let data = result?.data?.resultData;
+    //         if (data) {
+    //             this.setState({ quotesData: data })
+    //         }
+    //     }
+    // }
 
     setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants });
 
-    setToggleSort = () => {
-        this.setState({
-            toggleQuoteSort: !this.state.toggleQuoteSort
-        });
-    }
+    // setToggleSort = () => {
+    //     this.setState({
+    //         toggleQuoteSort: !this.state.toggleQuoteSort
+    //     });
+    // }
 
     render() {
         // props defined & render by params
@@ -132,30 +133,30 @@ class OpenJobs extends Component<Props, State> {
             return null;
         }
 
-        if (quotes_param === 'true') {
-            return (
-                <OpenQuoteJobs
-                    {...this.props}
-                    jobId={jobId}
-                    history={this.props.history}
-                    quotes_param={quotes_param}
-                    quotesData={quotesData}
-                    setToggleSort={this.setToggleSort}
-                    toggleQuoteSort={toggleQuoteSort}
-                />
-            )
-        }
+        // if (quotes_param === 'true') {
+        //     return (
+        //         <ListQuotes
+        //             {...this.props}
+        //             jobId={jobId}
+        //             history={this.props.history}
+        //             quotes_param={quotes_param}
+        //             // quotesData={quotesData}
+        //             // setToggleSort={this.setToggleSort}
+        //             // toggleQuoteSort={toggleQuoteSort}
+        //         />
+        //     )
+        // }
 
-        if (viewQuotesParam === 'true') {
-            return (
-                <ViewQuote
-                    {...this.props}
-                    history={this.props.history}
-                    quotes_param={viewQuotesParam}
-                    quotesData={quotesData}
-                />
-            )
-        }
+        // if (viewQuotesParam === 'true') {
+        //     return (
+        //         <ViewQuote
+        //             {...this.props}
+        //             history={this.props.history}
+        //             // quotes_param={viewQuotesParam}
+        //             // quotesData={quotesData}
+        //         />
+        //     )
+        // }
 
         return (
             <React.Fragment>
@@ -183,6 +184,7 @@ class OpenJobs extends Component<Props, State> {
                             tradieListData,
                             tradeName,
                             quoteCount,
+                            quoteJob,
                             tradieId,
                             location,
                             tradeSelectedUrl,
@@ -217,7 +219,7 @@ class OpenJobs extends Component<Props, State> {
                                         </div>
                                     </div>
                                     <div className="job_info">
-                                        {quoteCount ? (
+                                        {quoteJob ? (
                                             <ul>
                                                 <li className="icon dollar">{'for quoting'}</li>
                                                 <li className="">
@@ -271,16 +273,16 @@ class OpenJobs extends Component<Props, State> {
                                             </span>
                                         </div>
 
-                                        {quoteCount ? (
+                                        {quoteJob ? (
                                             <button
                                                 onClick={() => {
-                                                    this.redirectToInfo({ jobId, status })
+                                                    this.props.setJobLabel('listQuote');
                                                 }}
                                                 className="fill_grey_btn full_btn btn-effect">
                                                 {`${quoteCount} Quotes`}
                                             </button>
                                         ) : null}
-                                        {!quoteCount && tradieId?.length ? (
+                                        {!quoteJob && tradieId?.length ? (
                                             <button
                                                 onClick={() => {
                                                     this.setToggle();

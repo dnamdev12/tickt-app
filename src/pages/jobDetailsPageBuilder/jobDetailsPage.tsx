@@ -953,7 +953,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             onClick={() => {
                                                 props.history.push(`/jobs?active=open&quotes=true&jobId=${jobDetailsData?.jobId}`);
                                             }}>
-                                            {activeType == "active" ? 'View quote' : `${jobDetailsData?.quoteCount?.length} Quote${jobDetailsData?.quoteCount?.length > 1 ? 's' : ''}`}
+                                            {activeType == "active" ? 'View quote' : `${jobDetailsData?.quoteCount?.length} Quotes`}
                                         </button>
                                     )}
 

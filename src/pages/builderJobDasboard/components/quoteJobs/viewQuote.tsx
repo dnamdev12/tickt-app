@@ -6,22 +6,25 @@ import moment from 'moment';
 import { renderTime } from '../../../../utils/common';
 
 import {
-    getAcceptDeclineTradie
+    getAcceptDeclineTradie,
+    quoteByJobId
 } from '../../../../redux/quotes/actions';
 
 type State = {
-    toggle: boolean
+    toggle: boolean,
+    dataItems:any
 }
 
 type Props = {
-    quotes_param: any,
+    // quotes_param: any,
     history: any,
-    quotesData: any
+    // quotesData: any
 }
 
 class ViewQuote extends Component<Props, State> {
     state: State = {
         toggle: false,
+        dataItems: []
     };
 
     handleSubmit = async (item: any, status: number) => {
@@ -36,6 +39,37 @@ class ViewQuote extends Component<Props, State> {
             this.props.history.push('/quote-job-accepted');
         }
     }
+
+    componentDidMount(){
+        // this.preFetchForQuotes();
+    }
+
+    preFetchForQuotes = () => {
+        const props: any = this.props;
+        const params = new URLSearchParams(props?.history?.location?.search);
+        const quotes_param: any = params.get('quotes');
+        const viewQuotesParam: any = params.get('viewQuotes');
+        const jobId: any = params.get('jobId');
+        if (jobId?.length) {
+            if (quotes_param === "true") {
+                this.fetchQuotesById(jobId, 1)
+            } else {
+                this.fetchQuotesById(jobId, 1)
+            }
+        }
+    }
+
+    fetchQuotesById = async (jobId: String, sortBy: Number) => {
+        let result = await quoteByJobId({ jobId, sortBy });
+        console.log({ result });
+        if (result?.success) {
+            let data = result?.data?.resultData;
+            if (data) {
+                this.setState({ dataItems: data })
+            }
+        }
+    }
+
 
     render() {
         const styleItem = {
@@ -64,7 +98,8 @@ class ViewQuote extends Component<Props, State> {
                         <div className="relate">
                             <button
                                 onClick={() => {
-                                    this.props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`)
+                                    this.props.history.goBack();
+                                    // this.props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`)
                                 }}
                                 className="back"></button>
                             <span className="title">Quotes</span>

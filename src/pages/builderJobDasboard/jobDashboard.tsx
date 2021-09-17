@@ -10,6 +10,11 @@ import NeedApproval from './components/needApproval';
 import ApplicantsList from './components/applicantsList';
 //@ts-ignore
 import InfiniteScroll from "react-infinite-scroll-component";
+
+
+import ViewQuote from './components/quoteJobs/viewQuote';
+import ListQuotes from './components/quoteJobs/openQuoteJobs';
+
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -747,73 +752,20 @@ class JobDashboard extends Component<Props, State> {
                                     activeType={activeType}
                                     history={props.history}
                                 />)}
-
-                        </InfiniteScroll>
-
-
-
-                        {/* <div className="detail_col element-side-scroll">
-
-                            {jobtype === 'past' && (
-                                <PastJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={pastJobs}
-                                    jobType={jobtype}
-                                    activeType={activeType}
-                                    history={props.history}
-                                    getPastJobsBuilder={props?.getPastJobsBuilder}
-                                />)}
-                            {jobtype === 'active' && (
-                                <ActiveJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={activeJobs}
-                                    jobType={jobtype}
-                                    activeType={activeType}
+                            {jobtype === 'listQuote' && (
+                                <ListQuotes
+                                    {...props}
                                     setJobLabel={setSelected}
-                                    history={props.history}
-                                    globalJobId={globalJobId}
-                                    enableEditMilestone={enableEditMilestone}
-                                    enableLodgeDispute={enableLodgeDispute}
-                                    enableCancelJob={enableCancelJob}
-                                />)}
-                            {jobtype === 'open' && (
-                                <OpenJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={openJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
-                                />)}
-                            {jobtype === 'applicant' && (
-                                <NewApplicantComponent
-                                    isLoading={isLoading}
-                                    dataItems={applicantJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    history={props.history}
-                                />)}
-                            {jobtype === 'approval' && (
-                                <NeedApproval
-                                    isLoading={isLoading}
-                                    dataItems={approvalJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
                                 />
                             )}
-                            {jobtype === 'applicantList' && (
-                                <ApplicantsList
-                                    isLoading={isLoading}
-                                    items={applicantsListJobs}
-                                    jobid={jobid}
-                                    specializationId={specializationId}
+                            {jobtype === 'quotes' && (
+                                <ViewQuote
+                                    {...props}
                                     setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
-                                />)}
-                        </div> */}
+                                />
+                            )}
+
+                        </InfiniteScroll>
                     </div>
                 </div>
             </div >
