@@ -2217,7 +2217,7 @@ body {
 	}
 	&.range {
 		.MuiMenu-paper{
-			width: 376px;
+			width: 480px;
 			padding: 25px 32px 20px;
 			border-radius: 3px;
   		box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.14);
@@ -4636,6 +4636,31 @@ body {
         font-family: 'Neue Haas Grotesk Text Pro Medium';
       }
     }
+  }
+}
+
+.id_info{
+  position: relative;
+  padding-left: 30px;
+  margin-bottom: 30px;
+  max-width: 280px;
+  cursor: pointer;
+  &::before{
+    content: '';
+    @include position(absolute, 2px, auto, auto, 0);
+    width: 22px;
+    height: 22px;
+    background: url('../images/information-line.svg') center no-repeat;
+    background-size: contain;
+  }
+}
+
+.id_verified{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  img{
+    margin-right: 12px;
   }
 }
 

@@ -376,7 +376,7 @@ const MarkMilestones = (props: any) => {
                         console.log({ item_details })
                         props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}&hideInvite=true&active=true`);
                     }}
-                    className="tradie_card posted_by view_more ">
+                    className="tradie_card posted_by">
                     <span
                         onClick={(e) => {
                             e.stopPropagation();

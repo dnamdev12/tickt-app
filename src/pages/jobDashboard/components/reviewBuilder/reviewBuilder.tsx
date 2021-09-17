@@ -125,7 +125,7 @@ const ReviewBuilder = (props: Proptypes) => {
                             <img src={more} alt="more" />
                         </span>
                     </div>
-                    <div className="tradie_card posted_by view_more ">
+                    <div className="tradie_card posted_by ">
                         <div className="user_wrap" onClick={() => builderClicked()}>
                             <figure className="u_img">
                                 <img

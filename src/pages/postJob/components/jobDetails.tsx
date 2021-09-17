@@ -554,7 +554,7 @@ const JobDetails = ({
                                         onClick={() => {
                                             history.push(`/builder-info?builderId=${builderProfile?.userId}`);
                                         }}
-                                        className="tradie_card posted_by view_more ">
+                                        className="tradie_card posted_by ">
                                         <span className="chat circle"></span>
                                         <div className="user_wrap">
                                             <figure className="u_img">

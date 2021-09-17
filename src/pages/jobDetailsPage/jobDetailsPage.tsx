@@ -1207,7 +1207,7 @@ const JobDetailsPage = (props: PropsType) => {
                             <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Posted by'}</span>
                             <div className="flex_row">
                                 <div className="flex_col_sm_3">
-                                    {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by view_more ">
+                                    {props.isSkeletonLoading ? <Skeleton /> : <div className="tradie_card posted_by ">
                                         {jobDetailsData.jobStatus === 'active' &&
                                             <span className="chat circle"
                                                 onClick={(e) => {

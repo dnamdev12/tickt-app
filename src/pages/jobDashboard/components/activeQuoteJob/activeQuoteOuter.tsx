@@ -55,7 +55,7 @@ const ActiveQuoteOuter = (props: any) => {
                 />
                 {isDataFetched ? (<div className="flex_col_sm_6 col_ruler">
                     <span className="sub_title">Posted by</span>
-                    <div className="tradie_card posted_by view_more ">
+                    <div className="tradie_card posted_by ">
                         <div
                             className="user_wrap"
                             onClick={() => {
