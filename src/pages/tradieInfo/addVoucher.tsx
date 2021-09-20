@@ -17,7 +17,7 @@ import { ChooseJob } from '../../redux/jobs/actions'
 import { AddVoucher, fetchVouchesJobs } from '../../redux/jobs/actions';
 import docThumbnail from '../../assets/images/add-document.png'
 
-import Select from 'react-select';
+import Select, { components }  from 'react-select';
 const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
 const AddVoucherComponent = (props: any) => {
@@ -164,15 +164,23 @@ const AddVoucherComponent = (props: any) => {
             await prefetch();
         }
     }
-    console.log({
-        toggleProps,
-        toggle
-    })
+    
     let JobSelectOptions: any = [];
     if (jobsList?.length) {
         JobSelectOptions = jobsList.map((item: any) => ({ label: item?.jobName, value: item?.jobId }));
         JobSelectOptions.unshift({ label: 'Please select a job', value: '' });
     } 
+
+    const NoOptionsMessage = (props:any) => {
+        return (
+          <components.NoOptionsMessage {...props}>
+            <span className="custom-css-class">
+                {'No completed jobs with this tradesperson'}
+                </span> 
+          </components.NoOptionsMessage>
+        );
+      };
+
     return (
         <Modal
             className="custom_modal"
@@ -210,6 +218,8 @@ const AddVoucherComponent = (props: any) => {
                                     className="select_menu"
                                     value={reactSelect}
                                     options={JobSelectOptions}
+                                    components={{ NoOptionsMessage }}
+                                    // options={jobsList.map((item: any) => ({ label: item?.jobName, value: item?.jobId }))}
                                     onChange={(item: any) => {
                                         setReactSelect(item);
                                         setErrorData((prev: any) => ({ ...prev, name: '' }));
@@ -221,7 +231,6 @@ const AddVoucherComponent = (props: any) => {
                             </span>
                         </div>
                         <div className="form_field">
-
                             <label className="form_label">
                                 {'Job Description'}
                             </label>

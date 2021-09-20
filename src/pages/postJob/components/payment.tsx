@@ -36,7 +36,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         amount: data.amount
       });
       console.log({
-        quoteJob: data.quoteJob
+        quoteJob: data
       })
       if (data.quoteJob == '0') {
         if (data.pay_type === 'Per hour') {
@@ -61,10 +61,12 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
 
   const checkDecimal = (name: string, value: string) => {
     let split_values = value.split('.');
+    console.log({
+      split_values
+    })
     if (split_values.length) {
       let first: any = split_values[0];
       let last: any = split_values[1];
-
 
       if (last && last?.length > 2) {
         return 'Price field must have maximum 2 digits after decimal';
@@ -74,10 +76,14 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         return 'Price field must have 6 or less digits before decimal';
       }
 
+      let value_: number = +value;
+      if (value_ !== 0 && value_ < 10) {
+        return 'Minimum amount value is 10.'
+      }
       return ''
 
     } else {
-      return ''
+      return '';
     }
   }
   const isInvalid = (name: string, value: string) => {
@@ -90,7 +96,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   }
 
   const handleChange = (value: string, name: string) => {
-    setErrors((prevErrors) => ({
+
+    setErrors((prevErrors: any) => ({
       ...prevErrors,
       [name]: isInvalid(name, value),
     }));
@@ -260,7 +267,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         placeholder="Price"
                         name="Price"
                         className="detect_input_ltr"
-                        min="1"
+                        min="10"
+                        // min="1"
                         step=".01"
                         required
                         value={amount}
@@ -317,8 +325,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                 </div>
               </label>
             </div>
-          </div> 
-
+          </div>
           <div className="form_field">
             <button
               className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}

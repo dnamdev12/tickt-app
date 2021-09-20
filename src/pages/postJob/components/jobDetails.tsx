@@ -315,9 +315,11 @@ const JobDetails = ({
 
         if (update) {
             console.log({data_clone})
+            // delete data_clone?.quoteJob;
             response = await publishOpenJobAgain(data_clone);
         } else {
             console.log({data_clone})
+            // delete data_clone?.quoteJob;
             response = await createJob(data_clone);
         }
         if (response?.success) {
