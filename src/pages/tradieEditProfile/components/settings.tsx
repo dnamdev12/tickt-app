@@ -1,142 +1,107 @@
 import { useEffect, useState } from 'react';
 import Switch from '@material-ui/core/Switch';
-
+import storageService from '../../../utils/storageService';
 interface Setting {
-  messages: {
-    email: boolean,
-    pushNotification: boolean,
-    smsMessages: boolean,
-  },
-  reminders: {
-    email: boolean,
-    pushNotification: boolean,
-    smsMessages: boolean,
-  },
+  pushNotificationCategory: []
 }
 
 interface Props {
   getSettings: () => void;
-  updateSettings: (settings: any, newSettings: any) => void;
+  updateSettings: (settings: any) => void;
   settings: Setting;
 }
 
+const NOTIFICATION_CATEGORY = { //for api reference
+  CHAT: 1,
+  PAYMENT: 2,
+  ADMIN_UPDATE: 3,
+  MILESTONE_UPDATE: 4,
+  REVIEW: 5,
+  VOUCH: 6,
+  CHANGE_REQUEST: 7,
+  CANCELATION: 8,
+  DISPUTE: 9,
+  QUESTION: 10
+}
+
+const USER_TRADIE_NOTIF = [
+  { value: 'Chat', number: 1 },
+  { value: 'Payment', number: 2 },
+  { value: 'New updates from admin', number: 3 },
+  { value: 'Milestone updates', number: 4 },
+  { value: 'Job review updates', number: 5 },
+  { value: 'Vouches updates', number: 6 },
+  { value: 'Change request updates', number: 7 },
+  { value: 'Cancelation updates', number: 8 },
+  { value: 'Dispute updates', number: 9 },
+  { value: 'Job answers updates', number: 10 }
+];
+const USER_BUILDER_NOTIF = [
+  { value: 'Chat', number: 1 },
+  { value: 'Payment', number: 2 },
+  { value: 'New updates from admin', number: 3 },
+  { value: 'Milestone updates', number: 4 },
+  { value: 'Job review updates', number: 5 },
+  { value: 'Change request updates', number: 7 },
+  { value: 'Cancelation updates', number: 8 },
+  { value: 'Dispute updates', number: 9 },
+  { value: 'Job queries updates', number: 10 }
+];
+
 const Settings = ({ getSettings, updateSettings, settings }: Props) => {
-  const [updatedSettings, setUpdatedSettings] = useState<any>({
-    messages: { email: true, pushNotification: true, smsMessages: true },
-    reminders: { email: true, pushNotification: true, smsMessages: true }
-  });
+  const [pushCategory, setPushCategory] = useState<Array<number>>([]);
 
   useEffect(() => {
     getSettings();
   }, [getSettings]);
 
   useEffect(() => {
-    setUpdatedSettings(settings);
+    if (Array.isArray(settings?.pushNotificationCategory)) {
+      setPushCategory(settings?.pushNotificationCategory);
+    }
   }, [settings]);
 
-  const handleChange = (name: 'email' | 'pushNotification' | 'smsMessages', type: 'messages' | 'reminders') => {
-    const settings = { messages: { ...updatedSettings.messages }, reminders: { ...updatedSettings.reminders } };
-
-    settings[type][name] = !settings[type][name];
-    updateSettings({
-        [type]: {
-          [name]: !updatedSettings[type][name]
-        },
-      },
-      settings,
-    );
+  const handleChange = (val: number, isValExist: boolean) => {
+    let updatedPushNotif: any;
+    if (isValExist) {
+      updatedPushNotif = [...pushCategory].filter(i => i !== val);
+    } else {
+      const category = [...pushCategory];
+      category.push(val);
+      updatedPushNotif = category;
+    }
+    updateSettings({ pushNotificationCategory: updatedPushNotif });
   };
 
-  const { messages = {}, reminders = {} } = updatedSettings;
+  const PUSH_NOTIF_ARRAY = storageService.getItem('userType') === 1 ? USER_TRADIE_NOTIF : USER_BUILDER_NOTIF;
 
   return (
-    <>
-      <div className="flex_row p_settings">
-        <div className="flex_col_sm_7">
-          <span className="sub_title mb50">Settings</span>
-          <div className="form_field">
-            <span className="inner_title">Messages</span>
-            <span className="info_note">
-              Receive messages from users, including messages about new jobs
-            </span>
-          </div>
-          {/* <div className="f_spacebw form_field">
-            <span className="form_label">Email</span>
-            <div className="toggle_btn">
-              <Switch
-                checked={messages.email}
-                onClick={() => { handleChange('email', 'messages'); }}
-                name="email"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div> */}
-          <div className="f_spacebw form_field">
-            <span className="form_label">Push-notifications</span>
-            <div className="toggle_btn">
-              <Switch
-                checked={messages.pushNotification}
-                onClick={() => { handleChange('pushNotification', 'messages'); }}
-                name="pushNotification"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div>
-          {/* <div className="f_spacebw form_field">
-            <span className="form_label">SMS messages</span>
-            <div className="toggle_btn">
-              <Switch
-                checked={messages.smsMessages}
-                onClick={() => { handleChange('smsMessages', 'messages'); }}
-                name="smsMessages"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div> */}
-
-          <div className="form_field">
-            <span className="inner_title">Reminders</span>
-            <span className="info_note">
-              Receive reminders about new jobs, reviews and others related to
-              your activity on the Tickt
-            </span>
-          </div>
-          {/* <div className="f_spacebw form_field">
-            <span className="form_label">Email</span>
-            <div className="toggle_btn">
-              <Switch
-                checked={reminders.email}
-                onClick={() => { handleChange('email', 'reminders'); }}
-                name="email"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div> */}
-          <div className="f_spacebw form_field">
-            <span className="form_label">Push-notifications</span>
-            <div className="toggle_btn">
-              <Switch
-                checked={reminders.pushNotification}
-                onClick={() => { handleChange('pushNotification', 'reminders'); }}
-                name="pushNotification"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div>
-          {/* <div className="f_spacebw form_field">
-            <span className="form_label">SMS messages</span>
-            <div className="toggle_btn">
-              <Switch
-                checked={reminders.smsMessages}
-                onClick={() => { handleChange('smsMessages', 'reminders'); }}
-                name="smsMessages"
-                inputProps={{ 'aria-label': 'secondary checkbox' }}
-              />
-            </div>
-          </div> */}
+    <div className="flex_row p_settings">
+      <div className="flex_col_sm_7">
+        <span className="sub_title mb50">Settings</span>
+        <div className="form_field">
+          <span className="inner_title">Push Notifications</span>
+          <span className="info_note">
+            Receive notifications from users, including notifications about new jobs
+          </span>
         </div>
+        {PUSH_NOTIF_ARRAY.map(({ value, number }: { value: string, number: number }) => {
+          const isValExist = pushCategory?.includes(number);
+          return (
+            < div className="f_spacebw form_field">
+              <span className="form_label">{value}</span>
+              <div className="toggle_btn">
+                <Switch
+                  checked={isValExist}
+                  onClick={() => handleChange(number, isValExist)}
+                  inputProps={{ 'aria-label': 'secondary checkbox' }}
+                />
+              </div>
+            </div>
+          )
+        })}
       </div>
-    </>
+    </div>
   );
 };
 

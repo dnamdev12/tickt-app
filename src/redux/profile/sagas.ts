@@ -194,21 +194,20 @@ function* getSettings() {
   const response: FetchResponse = yield NetworkOps.get(userType === 1 ? Urls.tradieSettings : Urls.builderSettings);
   setLoading(false);
   if (response.status_code === 200) {
-    yield put({ type: actionTypes.SET_SETTINGS, payload: response.result });
+    yield put({ type: actionTypes.SET_SETTINGS, payload: response.result?.pushNotificationCategory });
   } else {
     yield put({ type: actionTypes.SET_SETTINGS, payload: {} });
   }
 }
 
-function* updateSettings({ settings, newSettings }: any) {
+function* updateSettings({ settings }: any) {
   const userType = storageService.getItem('userType');
-
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.putToJson(userType === 1 ? Urls.tradieUpdateSettings : Urls.builderUpdateSettings, settings);
   setLoading(false);
   setShowToast(true, response.message);
   if (response.status_code === 200) {
-    yield put({ type: actionTypes.SET_SETTINGS, payload: newSettings });
+    yield put({ type: actionTypes.SET_SETTINGS, payload: settings?.pushNotificationCategory });
   } else {
     yield put({ type: actionTypes.SET_SETTINGS, payload: {} });
   }
