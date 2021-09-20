@@ -12,12 +12,13 @@ import {
 
 type State = {
     toggle: boolean,
-    dataItems:any
+    dataItems: any
 }
 
 type Props = {
     // quotes_param: any,
     history: any,
+    setJobLabel: any
     // quotesData: any
 }
 
@@ -40,8 +41,8 @@ class ViewQuote extends Component<Props, State> {
         }
     }
 
-    componentDidMount(){
-        // this.preFetchForQuotes();
+    componentDidMount() {
+        this.preFetchForQuotes();
     }
 
     preFetchForQuotes = () => {
@@ -80,17 +81,20 @@ class ViewQuote extends Component<Props, State> {
             textAlign: 'center',
             paddingTop: '20px'
         }
-
+        let { dataItems } = this.state;
         const props: any = this.props;
-        const quotesData = props?.quotesData || [];
+        const quotesData = dataItems || [];
         const params = new URLSearchParams(props?.history?.location?.search);
-        const jobId = params.get('jobId');
         const id = params.get('id');
+        const jobId = params.get('jobId');
+        const activeType: any = params.get('active');
 
         let item: any = {};
         if (quotesData && Array.isArray(quotesData) && quotesData?.length) {
             item = quotesData.find((item: any) => item._id === id);
         }
+
+        let CASE_1 = ['open', 'applicant'].includes(activeType);
         return (
             <React.Fragment>
                 <div className="flex_row">
@@ -98,8 +102,14 @@ class ViewQuote extends Component<Props, State> {
                         <div className="relate">
                             <button
                                 onClick={() => {
-                                    this.props.history.goBack();
-                                    // this.props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`)
+                                    if (CASE_1) {
+                                        this.props.setJobLabel('listQuote');
+                                        props.history.replace(`/jobs?active=${activeType}&quote=true&jobId=${jobId}`)
+                                    }
+
+                                    if (activeType == "active") {
+                                        this.props.history.goBack();
+                                    }
                                 }}
                                 className="back"></button>
                             <span className="title">Quotes</span>
@@ -216,24 +226,27 @@ class ViewQuote extends Component<Props, State> {
                             </span>
                         </div>
 
-                        <div className="flex_row">
-                            <div className="flex_col_sm_8">
-                                <div className="form_field">
-                                    <button
-                                        onClick={() => { this.handleSubmit(item, 1) }}
-                                        className="fill_btn full_btn btn-effect">
-                                        {'Accept Quote'}
-                                    </button>
-                                </div>
-                                <div className="form_field">
-                                    <button
-                                        onClick={() => { this.handleSubmit(item, 2) }}
-                                        className="fill_grey_btn full_btn btn-effect">
-                                        {'Decline Quote'}
-                                    </button>
+                        {CASE_1 && (
+                            <div className="flex_row">
+                                <div className="flex_col_sm_8">
+                                    <div className="form_field">
+                                        <button
+                                            onClick={() => { this.handleSubmit(item, 1) }}
+                                            className="fill_btn full_btn btn-effect">
+                                            {'Accept Quote'}
+                                        </button>
+                                    </div>
+                                    <div className="form_field">
+                                        <button
+                                            onClick={() => { this.handleSubmit(item, 2) }}
+                                            className="fill_grey_btn full_btn btn-effect">
+                                            {'Decline Quote'}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
+
                     </div>
 
                     {/* <div className="no_record  m-t-vh">

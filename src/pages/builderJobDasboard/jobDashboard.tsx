@@ -13,7 +13,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 
 import ViewQuote from './components/quoteJobs/viewQuote';
-import ListQuotes from './components/quoteJobs/openQuoteJobs';
+import ListQuotes from './components/quoteJobs/ListQuotes';
 
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
@@ -85,25 +85,37 @@ class JobDashboard extends Component<Props, State> {
 
             let urlParams = new URLSearchParams(nextProps?.location?.search);
             let activeType_ = urlParams.get('active');
-            let jobId_ = urlParams.get('jobId');
-            let editMilestone_ = urlParams.get('editMilestone');
-            let lodgeDispute_ = urlParams.get('lodgeDispute');
-            let cancelJob_ = urlParams.get('cancelJob');
-            let markMilestone_ = urlParams.get('markMilestone');
+            let ListQuote = urlParams.get('quotes');
+            let viewQuotes = urlParams.get('viewQuotes');
+            // let jobId_ = urlParams.get('jobId');
+            // let editMilestone_ = urlParams.get('editMilestone');
+            // let lodgeDispute_ = urlParams.get('lodgeDispute');
+            // let cancelJob_ = urlParams.get('cancelJob');
+            // let markMilestone_ = urlParams.get('markMilestone');
 
-            if (activeType_) {
-                if (activeType_ !== activeType) {
+
+            let activeTypeByUrl: any = activeType_;
+            if (ListQuote === "true") {
+                activeTypeByUrl = 'listQuote'
+            }
+
+            if (viewQuotes === "true") {
+                activeTypeByUrl = 'quotes'
+            }
+
+            if (activeTypeByUrl) {
+                if (activeTypeByUrl !== activeType) {
                     this.setState({
-                        activeType: activeType_,
+                        activeType: activeTypeByUrl,
                         selectedItem: {
-                            jobtype: activeType_,
+                            jobtype: activeTypeByUrl,
                             jobid: null,
                             sortby: 1,
                             specializationId: '',
                         },
                     }, () => {
                         this.setAfterItems({
-                            jobtype: activeType_,
+                            jobtype: activeTypeByUrl,
                             currentPage: 1,
                             dataItemsAddons: { page: 1, jobId: null, sortBy: 1 }
                         })
@@ -383,19 +395,42 @@ class JobDashboard extends Component<Props, State> {
                     }
                 } else if (hasLoad && past?.length && page_get === currentPage) {
                     let result = [];
-                    if (JSON.stringify(prevValues) === JSON.stringify(past) && page_get === currentPage) {
-                        // same data items here!
-                    } else {
-                        result = page_get > 0 && page_get === currentPage ? [...prevValues, ...past] : past;
+                    let concatedItems: any = prevValues;
+                    let firstItem: any = null;
+                    
+                    if (Array.isArray(past) && past?.length) {
+                        firstItem = past[0];
                     }
-                    this.setState({
-                        pastJobs: result,
-                        count: {
-                            approveCount: needApprovalCount,
-                            applicantCount: newApplicantsCount
-                        },
-                        actualLoad: true
-                    });
+
+                    if (firstItem?.jobId) {
+                        let ifMatch = prevValues.find((item: any) => item.jobId === firstItem?.jobId);
+                        if (!ifMatch) {
+                            concatedItems = [...prevValues, ...past]
+                        }
+                    }
+
+                    result = page_get > 0 && page_get === currentPage ?
+                        page_get == 1 && currentPage == 1 ? past : concatedItems
+                        : past;
+
+                    let randomState = this.state.pastJobs && Array.isArray(this.state.pastJobs) && this.state.pastJobs[0] && this.state.pastJobs[0].mathrandom ? this.state.pastJobs[0].mathrandom : ''
+                    let randomResult = result && Array.isArray(result) && result[0] && result[0].mathrandom ? result[0].mathrandom : '';
+
+
+                    if (this.state.count.approveCount !== needApprovalCount ||
+                        this.state.count.applicantCount !== newApplicantsCount ||
+                        this.state.pastJobs?.length !== result?.length ||
+                        randomState !== randomResult
+                    ) {
+                        this.setState({
+                            pastJobs: result,
+                            count: {
+                                approveCount: needApprovalCount,
+                                applicantCount: newApplicantsCount
+                            },
+                            actualLoad: true
+                        });
+                    }
                 } else {
                     this.checkAndUpdateCount({
                         needApprovalCount,

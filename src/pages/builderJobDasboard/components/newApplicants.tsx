@@ -138,8 +138,12 @@ const NewApplicants = (props: any) => {
                                 {quoteJob ? (
                                     <button
                                         onClick={() => {
-                                            // setJobLabel('applicantList', jobId, 1, specializationId)
-                                            props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`);
+                                            if (quoteCount?.length || quoteCount) {
+                                                // setJobLabel('applicantList', jobId, 1, specializationId)
+                                                // props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`);
+                                                setJobLabel('listQuote');
+                                                props.history.replace(`/jobs?active=applicant&quote=true&jobId=${jobId}`)
+                                            }
                                         }}
                                         className="fill_grey_btn full_btn btn-effect">
                                         {`${quoteCount?.length || quoteCount} Quotes`}

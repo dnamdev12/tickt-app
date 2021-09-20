@@ -18,23 +18,19 @@ type State = {
 type Props = {
     quotes_param: any,
     history: any,
-    // quotesData: any,
-    // setToggleSort: () => void,
-    // toggleQuoteSort: boolean,
+    setJobLabel: any,
     jobId: String
 }
 
 class ListQuotes extends Component<Props, State> {
     state: State = {
-        toggle: false,
+        toggle: true,
         dataItems: []
     };
 
+
     componentDidMount() {
-        let {dataItems} = this.state;
-        if(!dataItems?.length){
-            this.preFetchForQuotes();
-        }
+        this.preFetchForQuotes();
     }
 
     preFetchForQuotes = () => {
@@ -65,8 +61,11 @@ class ListQuotes extends Component<Props, State> {
 
 
     render() {
-        const { jobId } = this.props;
-        let { dataItems } = this.state;
+        const props: any = this.props;
+        const params = new URLSearchParams(props?.history?.location?.search);
+        const activeType = params.get('active');
+        const jobId = params.get('jobId');
+        let { dataItems, toggle } = this.state;
         return (
             <React.Fragment>
                 <div className="flex_row">
@@ -74,8 +73,15 @@ class ListQuotes extends Component<Props, State> {
                         <div className="relate">
                             <button
                                 onClick={() => {
-                                    // this.props.history.push(`/job-detail??jobId=${jobId}&status=open&activeType=open`)
-                                    this.props.history.goBack();
+                                    if (activeType === "open") {
+                                        this.props.history.replace(`/jobs?active=open`);
+                                        this.props.setJobLabel('open');
+                                    }
+
+                                    if (activeType === "applicant") {
+                                        this.props.history.replace(`/jobs?active=applicant`);
+                                        this.props.setJobLabel('applicant');
+                                    }
                                 }}
                                 className="back"></button>
                             <span className="title">Quotes</span>
@@ -86,10 +92,12 @@ class ListQuotes extends Component<Props, State> {
                 <span className="sub_title">
                     <button
                         onClick={() => {
-                            
+                            this.setState({ toggle: !this.state.toggle }, () => {
+                                this.preFetchForQuotes();
+                            })
                         }}
                         className="fill_grey_btn sort_btn">
-                        {`${false ? 'Highest' : 'Lowest'} quote`}
+                        {`${toggle ? 'Highest' : 'Lowest'} quote`}
                     </button>
                 </span>
 
@@ -105,7 +113,8 @@ class ListQuotes extends Component<Props, State> {
                             >
                                 <span
                                     onClick={() => {
-                                        this.props.history.push(`/jobs?active=open&viewQuotes=true&jobId=${item?.jobId}&id=${item?._id}`)
+                                        this.props.history.replace(`/jobs?active=${activeType}&viewQuotes=true&jobId=${jobId}&id=${item?._id}`);
+                                        this.props.setJobLabel('quotes');
                                     }}
                                     className="more_detail circle">
                                 </span>

@@ -30,7 +30,7 @@ interface Active {
     locationName: any,
     totalMilestones: any,
     tradieListData: any,
-    quoteCount: number,
+    quoteCount: any,
     quoteJob: any,
     tradeName: any,
     tradieId: any,
@@ -276,7 +276,10 @@ class OpenJobs extends Component<Props, State> {
                                         {quoteJob ? (
                                             <button
                                                 onClick={() => {
-                                                    this.props.setJobLabel('listQuote');
+                                                    if (quoteCount?.length || quoteCount) {
+                                                        this.props.setJobLabel('listQuote');
+                                                        this.props.history.replace(`/jobs?active=open&quote=true&jobId=${jobId}`)
+                                                    }
                                                 }}
                                                 className="fill_grey_btn full_btn btn-effect">
                                                 {`${quoteCount} Quotes`}

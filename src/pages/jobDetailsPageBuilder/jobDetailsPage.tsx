@@ -769,7 +769,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
-                                        {jobDetailsData?.quoteCount?.length ? (
+                                        {jobDetailsData?.quoteCount?.length && jobDetailsData?.quoteJob ? ( // temporary check
                                             <ul>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className=""></li>
@@ -786,7 +786,6 @@ const JobDetailsPage = (props: PropsType) => {
                                             </ul>
                                         ) : !isPastJob ? (
                                             <ul>
-
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
@@ -947,13 +946,23 @@ const JobDetailsPage = (props: PropsType) => {
                                         </button>
                                     )}
 
-                                    {jobDetailsData?.quoteCount?.length > 0 && (
+                                    {(jobDetailsData?.quote?.length > 0 && ['active', 'open'].includes(activeType)) && jobDetailsData.quoteJob && (
                                         <button
                                             className="fill_grey_btn full_btn btn-effect mt-sm"
                                             onClick={() => {
-                                                props.history.push(`/jobs?active=open&quotes=true&jobId=${jobDetailsData?.jobId}`);
+                                                if (activeType == "active") {
+                                                    let quoteId = null;
+                                                    if (jobDetailsData?.quote && Array.isArray(jobDetailsData?.quote) && jobDetailsData?.quote[0]?.quote && Array.isArray(jobDetailsData?.quote[0]?.quote) && jobDetailsData?.quote[0]?.quote[0]?._id) {
+                                                        quoteId = jobDetailsData?.quote[0]?.quote[0]?._id;
+                                                    }
+                                                    if (quoteId) {
+                                                        props.history.push(`/jobs?active=${activeType}&viewQuotes=true&jobId=${jobDetailsData?.jobId}&id=${quoteId}`);
+                                                    }
+                                                } else {
+                                                    props.history.push(`/jobs?active=${activeType}&quotes=true&jobId=${jobDetailsData?.jobId}`);
+                                                }
                                             }}>
-                                            {activeType == "active" ? 'View quote' : `${jobDetailsData?.quoteCount?.length} Quotes`}
+                                            {activeType == "active" ? 'View quote' : `${jobDetailsData?.quote?.length} Quotes`}
                                         </button>
                                     )}
 

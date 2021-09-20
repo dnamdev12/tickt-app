@@ -636,10 +636,10 @@ const BannerSearch = (props: PropsType) => {
     const checkPlaceholder = (calenderRange1: any) => {
         let fromDate: any = calenderRange1?.startDate;
         let toDate: any = calenderRange1?.endDate;
-        let result = renderTimeWithCustomFormat(fromDate, toDate, '', ['DD MMM', 'DD MMM YYYY'], 'When ?');
+        let result = renderTimeWithCustomFormat(fromDate, toDate, '', ['DD MMM', 'DD MMM YYYY'], 'When?');
 
         if (!result) {
-            return 'When ?'
+            return 'When?'
         }
 
         return result;
