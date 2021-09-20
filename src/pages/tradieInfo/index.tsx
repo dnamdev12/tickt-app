@@ -900,8 +900,9 @@ class TradieInfo extends Component<Props, State> {
                                         <span>No Data Found</span>
                                     </div>}
                             </div>}
-                        {props.isSkeletonLoading ? <Skeleton height={25} /> : <button
-                            className="fill_grey_btn full_btn view_more"
+                        {props.isSkeletonLoading ? <Skeleton height={25} /> : 
+                        <button    
+                        className={`fill_grey_btn full_btn view_more ${ !tradieInfo?.reviewsCount ? 'disable_btn' : ''}`}
                             onClick={() => {
                                 this.setState((prevData: any) => ({
                                     reviewsData: {
@@ -909,7 +910,7 @@ class TradieInfo extends Component<Props, State> {
                                     }
                                 }))
                             }}>
-                            {`View all ${tradieInfo?.reviewsCount || 0} ${tradieInfo?.reviewsCount === 1 ? 'review' : 'reviews'} `}</button>}
+                            {`View all ${tradieInfo?.reviewsCount || 0} ${!!tradieInfo?.reviewsCount ? 'review' : 'reviews'} `}</button>}
                     </div>
                 </div>
 
@@ -973,7 +974,7 @@ class TradieInfo extends Component<Props, State> {
                                 ))}
                             </div>
                             <button
-                                className="fill_grey_btn full_btn view_more"
+                                className={`fill_grey_btn full_btn view_more ${ !tradieInfo?.vouchesData?.length ? 'disable_btn' : ''}`}
                                 onClick={() => {
                                     props.history.push({
                                         pathname: '/tradie-vouchers',
@@ -983,7 +984,7 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}
+                                {`View all ${tradieInfo?.vouchesData?.length} vouche${tradieInfo?.vouchesData?.length ? 's' : ''}`}
                             </button>
                         </div>
                     </div>

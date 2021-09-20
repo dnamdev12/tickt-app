@@ -17,7 +17,7 @@ import { ChooseJob } from '../../redux/jobs/actions'
 import { AddVoucher, fetchVouchesJobs } from '../../redux/jobs/actions';
 import docThumbnail from '../../assets/images/add-document.png'
 
-import Select from 'react-select';
+import Select, { components }  from 'react-select';
 const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
 const AddVoucherComponent = (props: any) => {
@@ -167,6 +167,17 @@ const AddVoucherComponent = (props: any) => {
         toggleProps,
         toggle
     })
+
+    const NoOptionsMessage = (props:any) => {
+        return (
+          <components.NoOptionsMessage {...props}>
+            <span className="custom-css-class">
+                {'No completed jobs with this tradesperson'}
+                </span> 
+          </components.NoOptionsMessage>
+        );
+      };
+
     return (
         <Modal
             className="custom_modal"
@@ -203,6 +214,7 @@ const AddVoucherComponent = (props: any) => {
                                 <Select
                                     className="select_menu"
                                     value={reactSelect}
+                                    components={{ NoOptionsMessage }}
                                     options={jobsList.map((item: any) => ({ label: item?.jobName, value: item?.jobId }))}
                                     onChange={(item: any) => {
                                         setReactSelect(item);

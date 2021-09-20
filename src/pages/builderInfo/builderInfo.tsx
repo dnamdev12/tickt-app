@@ -612,12 +612,13 @@ const BuilderInfo = (props: PropsType) => {
                                 <span>No Data Found</span>
                             </div>}
                     </div>}
-                    {props.isSkeletonLoading ? <Skeleton /> : <button
+                    {props.isSkeletonLoading ? <Skeleton /> : 
+                    <button
                         className={`fill_grey_btn full_btn view_more ${profileData?.reviewsCount === 0 ? 'disable_btn' : ''}`}
                         disabled={profileData?.reviewsCount === 0}
                         onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
                     >
-                        {`View ${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `all ${profileData?.reviewsCount} reviews`}` : ''}`}
+                        {`View all ${profileData?.reviewsCount || 0} review${profileData?.reviewsCount ? 's' : ''}`}
                     </button>}
                 </div>
             </div>

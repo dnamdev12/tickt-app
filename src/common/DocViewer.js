@@ -2,6 +2,7 @@ import React from 'react'
 
 const DocViewer = ({ src, width, height }) => {
     // https://docs.google.com/viewer?url=
+    console.log({src, width, height})
     return (
         <div>
             <iframe
