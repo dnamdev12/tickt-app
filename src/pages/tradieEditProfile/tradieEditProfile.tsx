@@ -5,14 +5,12 @@ import SettingsComponent from './components/settings';
 import SupportChatComponent from './components/supportChat';
 import PrivacyPolicyComponent from './components/privacyPolicy';
 import TermsOfUseComponent from './components/termsOfUse';
-
-import menu from '../../assets/images/menu-line-blue.png';
-import close from '../../assets/images/ic-cancel-blue.png';
 import storageService from '../../utils/storageService';
 import CardDetails from './components/cardDetails';
 import MilestoneTemplates from './components/milestones/milestoneTemplates';
-import { getTnc } from '../../redux/profile/actions';
-import { getPrivacyPolicy } from '../../redux/profile/actions';
+
+import menu from '../../assets/images/menu-line-blue.png';
+import close from '../../assets/images/ic-cancel-blue.png';
 interface BankDetails {
     userId: string;
     account_name: string;
@@ -116,7 +114,6 @@ class TradieEditProfile extends Component<Props, State> {
 
     render() {
         let props: any = this.props;
-        console.log(this.state, "state--------------", props, "props------------");
         let {
             activeMenuType,
             isToggleSidebar,

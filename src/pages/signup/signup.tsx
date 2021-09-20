@@ -26,7 +26,7 @@ interface Propstype {
 }
 
 const DATA = [
-    { title: 'Welcome to Tickt', subTitle: 'A new marketplace for builders and tradies' },
+    { title: 'Welcome to Tickt', subTitle: 'A new marketplace for builders and tradepeople' },
     { title: 'Create account' },
     { title: 'Verify your email' },
     { title: 'Phone number' },

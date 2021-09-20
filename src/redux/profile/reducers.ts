@@ -11,7 +11,7 @@ const initialState = {
   tradieInfo: [],
   builderProfile: {},
   savedJobs: [],
-  settings: { messages: {}, reminders: {} },
+  settings: {},
   searching: false,
   paymentHistory: {},
   paymentDetails: {},
@@ -87,7 +87,7 @@ const reducer = (state = initialState, action: any) => {
     case actionTypes.SET_SETTINGS:
       return {
         ...state,
-        settings: action.payload,
+        settings: { pushNotificationCategory: action.payload },
       };
 
     case actionTypes.SET_SEARCHING:
