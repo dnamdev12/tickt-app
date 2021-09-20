@@ -660,7 +660,7 @@ const EditMilestone = (props: any) => {
                                     }}
                                     // className={`fill_btn full_btn btn-effect`}>
                                     className={`fill_btn full_btn btn-effect ${checkIfChange() ? 'disable_btn' : ''}`}>
-                                    {'Send to tradie'}
+                                    {'Send to tradeperson'}
                                 </button>
                             </div>
                         </React.Fragment>
