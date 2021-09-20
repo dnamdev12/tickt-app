@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import storageService from '../../../utils/storageService';
+import Modal from '@material-ui/core/Modal';
+import DigitalIdVerification from './digitalIdVerification';
+import cancel from "../../../assets/images/ic-cancel.png";
 import verifiedIcon from '../../../assets/images/checked-2.png';
-
 
 interface BankDetails {
   userId: string;
@@ -17,18 +19,31 @@ interface Props {
   bankDetails: BankDetails,
 }
 
+const digitalInfoPoints: Array<string> = [
+  'Passport',
+  'Driver Licence (Driver\'s license) - scans of front and back are required',
+  'Photo Card - scans of front and back are required',
+  'New South Wales Driving Instructor Licence - scans of front and back are required',
+  'Tasmanian Government Personal Information Card - scans of front and back are required',
+  'ImmiCard - scans of front and back are required',
+  'Proof of Age card - scans of front and back are required',
+  'Australian Defence Force (ADF) identification card (Military ID) - scans of front and back are required'
+]
+
 const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, bankDetails }: Props) => {
   const [data, setData] = useState<any>({
     account_name: '',
     account_number: '',
     bsb_number: '',
   });
-  const [submitClicked, setSubmitClicked] = useState(false);
   const [errors, setErrors] = useState({
     account_name: '',
     account_number: '',
     bsb_number: '',
   });
+  const [submitClicked, setSubmitClicked] = useState<boolean>(false);
+  const [digitalIdInfo, setDigitalIdInfo] = useState<boolean>(false);
+  const [idVerifClicked, setIdVerifClicked] = useState<boolean>(true);
 
   const errorLabel = {
     'account_number': 'Account Number',
@@ -111,7 +126,11 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
   const updated = data.account_name?.trim() !== bankDetails.account_name?.trim() || data.account_number !== bankDetails.account_number || data.bsb_number !== bankDetails.bsb_number;
 
   return (
-    <div className="flex_row">
+    idVerifClicked ? (
+      <DigitalIdVerification
+        setIdVerifClicked={setIdVerifClicked}
+      />
+    ) : (<div className="flex_row">
       <div className="flex_col_sm_8">
         <span className="sub_title">Payment details</span>
         <span className="info_note">{userType === 1 ? 'Enter your Bank account details' : 'Enter your card details'}</span>
@@ -159,17 +178,49 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
           <span className="error_msg">{errors.bsb_number}</span>
         </div>
 
-        {/* <div className="form_field">
-          <button className="fill_grey_btn full_btn btn-effect id_verified">
-            <img src={verifiedIcon} alt="verified" />
+        <div className="form_field">
+          <button className="fill_grey_btn full_btn btn-effect id_verified"
+            onClick={() => setIdVerifClicked(true)}>
+            {false && <img src={verifiedIcon} alt="verified" />}
             Add ID Verification
           </button>
         </div>
-        <span className="show_label id_info">ID verification is required as part of Stripe ID verification process.</span> */}
+        <span className="show_label id_info" onClick={() => setDigitalIdInfo(true)}>ID verification is required as part of Stripe ID verification process.</span>
 
         <button className={`fill_btn full_btn btn-effect${!updated ? ' disabled' : ''}`} onClick={handleSave}>Save changes</button>
       </div>
-    </div>
+
+      <Modal
+        className="custom_modal"
+        open={digitalIdInfo}
+        onClose={() => setDigitalIdInfo(false)}
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+      >
+        <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+          <div className="heading">
+            <span className="sub_title">ID verification</span>
+            <button className="close_btn" onClick={() => setDigitalIdInfo(false)}>
+              <img src={cancel} alt="cancel" />
+            </button>
+          </div>
+          <div className="inner_wrap">
+            <li>ID verification is required as part of Stripe ID verification process.</li>
+            <li>Below is a listing of documents that can accept as proof of identity, address, and entity.</li>
+            <ul>
+              {digitalInfoPoints.map((info, index) => <li key={index}>{info}</li>)}
+            </ul>
+            <div className="bottom_btn custom_btn">
+              <button
+                className={`fill_btn full_btn centre btn-effect`}
+                onClick={() => setDigitalIdInfo(false)}
+              >Ok</button>
+            </div>
+          </div>
+        </div>
+      </Modal>
+
+    </div>)
   );
 }
 
