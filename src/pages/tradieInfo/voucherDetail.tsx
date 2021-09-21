@@ -59,7 +59,7 @@ const VoucherDetail = (props: any) => {
                         <DocViewer
                             src={item?.recommendation}
                             width="100%"
-                            height="1800px"
+                            height="1200px"
                         />
 
                     </div>
