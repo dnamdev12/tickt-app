@@ -149,7 +149,8 @@ class TradieEditProfile extends Component<Props, State> {
                                     {USER_TYPE === 2 ? (
                                         <li onClick={() => { this.setSelected('banking-details') }}>
                                             <span className={`icon wallet ${activeMenuType === 'banking-details' ? 'active' : ''}`}>
-                                                <span className="menu_txt"> Payment Details</span>
+                                                <span className="menu_txt">Payment Details</span>
+                                                {/* {'removed space issues '} */}
                                             </span>
                                         </li>
                                     ) : (

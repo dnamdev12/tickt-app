@@ -15,6 +15,8 @@ interface Applicant {
     jobName: any,
     jobDescription: any,
     jobId: any,
+    quoteCount: any,
+    quoteJob: any,
     specializationName: any,
     timeLeft: any,
     toDate: any,
@@ -73,6 +75,8 @@ const NewApplicants = (props: any) => {
                         jobName,
                         jobDescription,
                         jobId,
+                        quoteCount,
+                        quoteJob,
                         location,
                         location_name,
                         specializationName,
@@ -128,21 +132,32 @@ const NewApplicants = (props: any) => {
                                                 {timeLeft}
                                             </span>
                                         </li>
-                                        {/* <li className="icon clock">{renderTime({fromDate,toDate})}</li>
-                                        <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{location_name }</li>
-                                        <li className="icon calendar">{`${durations}`}</li> */}
                                     </ul>
                                 </div>
-                                {/* {tradieId?.length ? ( */}
-                                <button
-                                    onClick={() => {
-                                        setJobLabel('applicantList', jobId, 1, specializationId)
-                                    }}
-                                    className="fill_grey_btn full_btn btn-effect">
-                                    {'Applications'}
-                                </button>
-                                {/* ) : null} */}
+
+                                {quoteJob ? (
+                                    <button
+                                        onClick={() => {
+                                            if (quoteCount?.length || quoteCount) {
+                                                // setJobLabel('applicantList', jobId, 1, specializationId)
+                                                // props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`);
+                                                setJobLabel('listQuote');
+                                                props.history.replace(`/jobs?active=applicant&quote=true&jobId=${jobId}`)
+                                            }
+                                        }}
+                                        className="fill_grey_btn full_btn btn-effect">
+                                        {`${quoteCount?.length || quoteCount} Quotes`}
+                                    </button>
+                                ) : (
+                                    <button
+                                        onClick={() => {
+                                            setJobLabel('applicantList', jobId, 1, specializationId)
+                                        }}
+                                        className="fill_grey_btn full_btn btn-effect">
+                                        {'Applications'}
+                                    </button>
+                                )}
+
                             </div>
                         </div>
                     )) :

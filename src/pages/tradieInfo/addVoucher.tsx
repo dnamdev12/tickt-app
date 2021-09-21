@@ -17,7 +17,7 @@ import { ChooseJob } from '../../redux/jobs/actions'
 import { AddVoucher, fetchVouchesJobs } from '../../redux/jobs/actions';
 import docThumbnail from '../../assets/images/add-document.png'
 
-import Select from 'react-select';
+import Select, { components }  from 'react-select';
 const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
 const AddVoucherComponent = (props: any) => {
@@ -27,7 +27,7 @@ const AddVoucherComponent = (props: any) => {
     const [reactSelect, setReactSelect] = useState({ label: '', value: '' });
     const [jobDescription, setJobDesciption] = useState('');
 
-    const [errorData, setErrorData] = useState({ detail: '', upload: '' });
+    const [errorData, setErrorData] = useState({ name: '', detail: '', upload: '' });
     const [filesUrl, setFilesUrl] = useState([] as any);
     const [localFiles, setLocalFiles] = useState({});
 
@@ -61,7 +61,7 @@ const AddVoucherComponent = (props: any) => {
             setReactSelect((prev: any) => ({ ...prev, label: '', value: '' }));
             setJobDesciption("");
             setFilesUrl([]);
-            setErrorData((prev: any) => ({ ...prev, detail: '', upload: '' }))
+            setErrorData((prev: any) => ({ ...prev, name:'', detail: '', upload: '' }))
         } else {
             prefetch();
         }
@@ -73,8 +73,9 @@ const AddVoucherComponent = (props: any) => {
             if (res_jobs?.success) {
                 let list_data: any = res_jobs.data;
                 if (list_data?.length) {
-                    let item = list_data[0];
-                    setReactSelect({ label: item.jobName, value: item?.jobId })
+                    // let item = list_data[0];
+                    // item?.jobId 
+                    setReactSelect({ label: 'Please select  a job', value: '' })
                 }
                 setJobsList(list_data)
             }
@@ -163,10 +164,23 @@ const AddVoucherComponent = (props: any) => {
             await prefetch();
         }
     }
-    console.log({
-        toggleProps,
-        toggle
-    })
+    
+    let JobSelectOptions: any = [];
+    if (jobsList?.length) {
+        JobSelectOptions = jobsList.map((item: any) => ({ label: item?.jobName, value: item?.jobId }));
+        JobSelectOptions.unshift({ label: 'Please select a job', value: '' });
+    } 
+
+    const NoOptionsMessage = (props:any) => {
+        return (
+          <components.NoOptionsMessage {...props}>
+            <span className="custom-css-class">
+                {'No completed jobs with this tradesperson'}
+                </span> 
+          </components.NoOptionsMessage>
+        );
+      };
+
     return (
         <Modal
             className="custom_modal"
@@ -203,15 +217,20 @@ const AddVoucherComponent = (props: any) => {
                                 <Select
                                     className="select_menu"
                                     value={reactSelect}
-                                    options={jobsList.map((item: any) => ({ label: item?.jobName, value: item?.jobId }))}
+                                    options={JobSelectOptions}
+                                    components={{ NoOptionsMessage }}
+                                    // options={jobsList.map((item: any) => ({ label: item?.jobName, value: item?.jobId }))}
                                     onChange={(item: any) => {
                                         setReactSelect(item);
+                                        setErrorData((prev: any) => ({ ...prev, name: '' }));
                                     }}
                                 />
                             </div>
+                            <span className="error_msg">
+                                {errorData?.name}
+                            </span>
                         </div>
                         <div className="form_field">
-
                             <label className="form_label">
                                 {'Job Description'}
                             </label>
@@ -268,6 +287,11 @@ const AddVoucherComponent = (props: any) => {
                                 if (!jobDescription?.length) {
                                     setErrorData((prev: any) => ({ ...prev, detail: 'Job Description is required' }));
                                 }
+                                
+                                if (!reactSelect?.value?.length) {
+                                    setErrorData((prev: any) => ({ ...prev, name: 'Job Name is required' }));
+                                }
+
                             } else {
                                 handleSubmit();
                             }

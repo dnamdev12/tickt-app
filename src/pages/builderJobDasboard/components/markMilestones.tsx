@@ -259,11 +259,14 @@ const MarkMilestones = (props: any) => {
                         <div className="edit_menu">
                             <ul>
                                 {/* {item_status && ( )} */}
-                                <li
-                                    onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
-                                    className="icon edit_line">
-                                    {'Edit Milestone'}
-                                </li>
+                                {item_detail?.quoteJob !== '1' && (
+                                    <li
+                                        onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
+                                        className="icon edit_line">
+                                        {'Edit Milestone'}
+                                    </li>
+                                )}
+
                                 {!item_detail?.dispute && (
                                     <li
                                         onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
