@@ -650,10 +650,25 @@ const JobDetailsPage = (props: PropsType) => {
                                                 : null
                                     }
 
+                                    {!jobInviteAction && (
+                                        jobDetailsData?.isCancelJobRequest ||
+                                        jobDetailsData?.isChangeRequest ||
+                                        jobDetailsData?.reasonNoteForCancelJobRequest?.length && jobDetailsData?.jobStatus !== 'active' ||
+                                        (jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active')
+                                    ) && !['apply', 'applied', 'accepted'].includes(jobDetailsData?.appliedStatus?.toLowerCase()) &&
+                                        <button
+                                            className="fill_grey_btn full_btn pending_info"
+                                            onClick={() => setPendingRequestClicked(true)}>
+                                            <span>
+                                                <img src={pendingIcon} alt="icon" />
+                                                {`View all request(s)`}
+                                            </span>
+                                        </button>}
+
                                     {props?.isSkeletonLoading ? <Skeleton /> :
                                         !(jobInviteAction === 'invite') && jobDetailsData?.quoteJob && ['', 'active', 'applied'].includes(jobDetailsData?.jobStatus?.toLowerCase()) && (
                                             <button
-                                                className={`${jobDetailsData?.jobStatus === '' ? 'fill_btn' : 'fill_grey_btn'} full_btn btn-effect`}
+                                                className={`${jobDetailsData?.jobStatus === '' ? 'fill_btn' : 'fill_grey_btn'} full_btn btn-effect mt-sm`}
                                                 onClick={() => {
                                                     const path = jobDetailsData?.jobStatus === '' ? `/quote-job` : jobDetailsData?.jobStatus === 'applied' ? `/quote-job` : jobDetailsData?.jobStatus === 'active' ? `/active-quote-job` : '';
                                                     const redirectFrom = jobDetailsData?.jobStatus === '' ? 'jobDetailPage' : jobDetailsData?.jobStatus === 'applied' ? 'appliedJobs' : '';
@@ -700,21 +715,6 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                         </>
                                     }
-
-                                    {!jobInviteAction && (
-                                        jobDetailsData?.isCancelJobRequest ||
-                                        jobDetailsData?.isChangeRequest ||
-                                        jobDetailsData?.reasonNoteForCancelJobRequest?.length && jobDetailsData?.jobStatus !== 'active' ||
-                                        (jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active')
-                                    ) && !['apply', 'applied', 'accepted'].includes(jobDetailsData?.appliedStatus?.toLowerCase()) &&
-                                        <button
-                                            className="fill_grey_btn full_btn pending_info"
-                                            onClick={() => setPendingRequestClicked(true)}>
-                                            <span>
-                                                <img src={pendingIcon} alt="icon" />
-                                                {`View all request(s)`}
-                                            </span>
-                                        </button>}
                                 </div>
                             </div>
                         </div>
