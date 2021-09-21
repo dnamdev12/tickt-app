@@ -4972,6 +4972,16 @@ body {
   margin: 0 0 55px 150px;
 }
 
+.view_quote {
+  display: inline-block;
+  color: var(--blue-two);
+  font: 13px 'Neue Haas Grotesk Text Pro Medium';
+  background-color: #dfe5ef;
+  padding: 5px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
 .reason_wrap{
   margin-bottom: 40px;
   .f_spacebw{
