@@ -618,13 +618,16 @@ const JobDetailsPage = (props: PropsType) => {
                                     )}
                                     {activeType == "active" && (
                                         <React.Fragment>
-                                            <li
-                                                onClick={() => {
-                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&editMilestone=true`)
-                                                }}
-                                                className="icon edit_line">
-                                                {'Edit Milestone'}
-                                            </li>
+                                            {!jobDetailsData?.quoteJob && (
+                                                <li
+                                                    onClick={() => {
+                                                        props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&editMilestone=true`)
+                                                    }}
+                                                    className="icon edit_line">
+                                                    {'Edit Milestone'}
+                                                </li>
+                                            )}
+
                                             {hideDispute === "false" && (
                                                 <li
                                                     onClick={() => {
@@ -894,7 +897,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     </button>
                                                 </div>}
 
-                                            {(CASE_2 || CASE_3) && (
+                                            {(CASE_2 || CASE_3 || CASE_4) && (
                                                 <span className="sub_title">
                                                     {'Reason(s)'}
                                                 </span>
@@ -995,7 +998,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         placeholder={`I disagree with this cancelling`}
                                                         maxLength={250}
                                                         value={replyText}
-                                                        onChange={(e: any) => { setReplyText(e.target.value) }}
+                                                        onChange={(e: any) => { setReplyText((e.target.value).trimLeft()) }}
                                                     />
                                                     <span className="char_count">{`${replyText?.length}/250`}</span>
                                                 </div>

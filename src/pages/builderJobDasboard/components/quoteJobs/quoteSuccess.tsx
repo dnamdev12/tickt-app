@@ -1,10 +1,12 @@
 import React from 'react';
 import templateImage from '../../../.././assets/images/job-posted-bg.jpg';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useLocation  } from 'react-router-dom';
 
 
 const quoteAccept = (props: any) => {
-  return (
+  const location = props.location;
+  console.log({location});
+  return (  
     <div className="img_text_wrap">
       <figure className="full_image">
         <img src={templateImage} alt="template-item" loading="eager" />

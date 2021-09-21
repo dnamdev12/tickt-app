@@ -23,6 +23,7 @@ interface Active {
     timeLeft: any,
     locationName: any,
     total: any,
+    quote: any,
     totalmem: any,
     totalMilestones: any,
     tradieListData: any,
@@ -134,6 +135,7 @@ const ActiveJobs = ({
                         location,
                         locationName,
                         total,
+                        quote,
                         totalmem,
                         totalMilestones,
                         tradieListData,
@@ -190,7 +192,12 @@ const ActiveJobs = ({
                                                     cursor: 'pointer'
                                                 }}
                                                     onClick={() => {
-                                                        
+                                                        let quoteId = null;
+                                                        if(quote && quote[0] && quote[0]._id){
+                                                            quoteId = quote[0]._id;
+                                                            history.push(`/jobs?active=active&viewQuotes=true&jobId=${jobId}&id=${quoteId}`);
+                                                            setJobLabel('quotes');
+                                                        }
                                                     }}>
                                                     {total}
                                                 </span>

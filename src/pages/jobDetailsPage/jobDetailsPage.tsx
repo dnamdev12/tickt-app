@@ -786,7 +786,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </div>
                                 ) : null}
 
-                                {jobDetailsData?.reasonNoteForCancelJobRequest?.length && jobDetailsData?.jobStatus !== 'active' ? (
+                                {jobDetailsData?.reasonForCancelJobRequest && jobDetailsData?.jobStatus !== 'active' ? (
 
                                     <div className="chang_req_card">
                                         <span className="xs_sub_title">Job cancel reason</span>
@@ -794,7 +794,10 @@ const JobDetailsPage = (props: PropsType) => {
                                             {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
                                         </p>
                                         <p className="commn_para line-2">
-                                            <li>{jobDetailsData?.reasonNoteForCancelJobRequest}</li>
+                                            <li>{!jobDetailsData?.reasonNoteForCancelJobRequest?.length ?
+                                                jobDetailsData?.rejectReasonNoteForCancelJobRequest :
+                                                jobDetailsData?.reasonNoteForCancelJobRequest
+                                            }</li>
                                         </p>
                                     </div>
                                 ) : null}

@@ -37,7 +37,14 @@ class ViewQuote extends Component<Props, State> {
         };
         let response = await getAcceptDeclineTradie(data);
         if (response.success) {
-            this.props.history.push('/quote-job-accepted');
+            if (status == 1) {
+                this.props.history.push('/quote-job-accepted');
+            } 
+
+            if (status == 2) {
+                this.props.setJobLabel('open');
+                this.props.history.push('/jobs?active=open');
+            }
         }
     }
 
@@ -108,6 +115,7 @@ class ViewQuote extends Component<Props, State> {
                                     }
 
                                     if (activeType == "active") {
+                                        this.props.setJobLabel('active');
                                         this.props.history.goBack();
                                     }
                                 }}
@@ -173,7 +181,11 @@ class ViewQuote extends Component<Props, State> {
                         <div
                             style={{ minHeight: '180px' }}
                             className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                            <span className="more_detail circle">
+                            <span
+                                onClick={() => {
+                                    props.history.push(`/tradie-info?tradeId=${item?.userId}&hideInvite=true&active=true`)
+                                }}
+                                className="more_detail circle">
                             </span>
                             <div className="user_wrap">
                                 <figure className="u_img">
@@ -193,14 +205,13 @@ class ViewQuote extends Component<Props, State> {
                                 <div className="details">
                                     <span className="name">{item?.trade_name}</span>
                                     <p className="commn_para">
-                                        <span className="rating">{item?.rating} , {item?.reviewCount} reviews</span>
+                                        <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : ''} , {item?.reviewCount} reviews</span>
                                     </p>
                                 </div>
                             </div>
 
 
                             <div className="example">
-
                                 {item?.quote_item?.length ?
                                     item?.quote_item.map((quote_item: any) => (
                                         <table style={{ marginTop: '20px' }}>
