@@ -179,9 +179,26 @@ const ActiveJobs = ({
                                     <ul>
                                         <li className="icon dollar">{amount}</li>
                                         <li className="">
-                                            <span>
-                                                {total}
-                                            </span>
+                                            {total.toUpperCase() == "VIEW QUOTE" ? (
+                                                <span style={{
+                                                    background: '#DFE5EF',
+                                                    color: '#123F95',
+                                                    fontSize: '14px',
+                                                    fontWeight: 600,
+                                                    padding: '8px',
+                                                    borderRadius: '10px',
+                                                    cursor: 'pointer'
+                                                }}
+                                                    onClick={() => {
+                                                        
+                                                    }}>
+                                                    {total}
+                                                </span>
+                                            ) : (
+                                                <span>
+                                                    {total}
+                                                </span>
+                                            )}
                                         </li>
                                         <li className="icon calendar">
                                             {/* {durations} */}

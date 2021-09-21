@@ -5,35 +5,85 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import moment from 'moment';
 import { renderTime } from '../../../../utils/common';
 
+import {
+    getAcceptDeclineTradie,
+    quoteByJobId
+} from '../../../../redux/quotes/actions';
+
 type State = {
-    toggle: boolean
+    toggle: boolean,
+    dataItems: any
 }
 
 type Props = {
     quotes_param: any,
     history: any,
-    quotesData: any,
-    setToggleSort: () => void,
-    toggleQuoteSort: boolean,
-    jobId:String
+    setJobLabel: any,
+    jobId: String
 }
 
-class OpenQuoteJobs extends Component<Props, State> {
+class ListQuotes extends Component<Props, State> {
     state: State = {
-        toggle: false,
+        toggle: true,
+        dataItems: []
     };
+
+
+    componentDidMount() {
+        this.preFetchForQuotes();
+    }
+
+    preFetchForQuotes = () => {
+        const props: any = this.props;
+        const params = new URLSearchParams(props?.history?.location?.search);
+        const quotes_param: any = params.get('quotes');
+        const viewQuotesParam: any = params.get('viewQuotes');
+        const jobId: any = params.get('jobId');
+        if (jobId?.length) {
+            if (quotes_param === "true") {
+                this.fetchQuotesById(jobId, 1)
+            } else {
+                this.fetchQuotesById(jobId, 1)
+            }
+        }
+    }
+
+    fetchQuotesById = async (jobId: String, sortBy: Number) => {
+        let result = await quoteByJobId({ jobId, sortBy });
+        console.log({ result });
+        if (result?.success) {
+            let data = result?.data?.resultData;
+            if (data) {
+                this.setState({ dataItems: data })
+            }
+        }
+    }
+
+
     render() {
-        const { toggleQuoteSort, quotesData, jobId } = this.props;
+        const props: any = this.props;
+        const params = new URLSearchParams(props?.history?.location?.search);
+        const activeType = params.get('active');
+        const jobId = params.get('jobId');
+        let { dataItems, toggle } = this.state;
         return (
             <React.Fragment>
                 <div className="flex_row">
                     <div className="flex_col_sm_5">
                         <div className="relate">
-                            <button 
-                            onClick={() => {
-                                this.props.history.push(`/job-detail??jobId=${jobId}&status=open&activeType=open`)
-                            }}
-                            className="back"></button>
+                            <button
+                                onClick={() => {
+                                    if (activeType === "open") {
+                                        this.props.history.replace(`/jobs?active=open`);
+                                        this.props.setJobLabel('open');
+                                    }
+
+                                    if (activeType === "applicant") {
+                                        this.props.history.replace(`/jobs?active=applicant`);
+                                        this.props.setJobLabel('applicant');
+                                    }
+                                }}
+                                className="back"></button>
                             <span className="title">Quotes</span>
                         </div>
                     </div>
@@ -42,15 +92,17 @@ class OpenQuoteJobs extends Component<Props, State> {
                 <span className="sub_title">
                     <button
                         onClick={() => {
-                            this.props.setToggleSort();
+                            this.setState({ toggle: !this.state.toggle }, () => {
+                                this.preFetchForQuotes();
+                            })
                         }}
                         className="fill_grey_btn sort_btn">
-                        {`${toggleQuoteSort ? 'Highest' : 'Lowest'} quote`}
+                        {`${toggle ? 'Highest' : 'Lowest'} quote`}
                     </button>
                 </span>
 
                 <div className="flex_row tradies_row">
-                    {quotesData.map((item: any) => (
+                    {dataItems.map((item: any) => (
                         <div className="flex_col_sm_6">
                             <div
                                 style={{ minHeight: '180px' }}
@@ -61,7 +113,8 @@ class OpenQuoteJobs extends Component<Props, State> {
                             >
                                 <span
                                     onClick={() => {
-                                        this.props.history.push(`/jobs?active=open&viewQuotes=true&jobId=${item?.jobId}&id=${item?._id}`)
+                                        this.props.history.replace(`/jobs?active=${activeType}&viewQuotes=true&jobId=${jobId}&id=${item?._id}`);
+                                        this.props.setJobLabel('quotes');
                                     }}
                                     className="more_detail circle">
                                 </span>
@@ -110,4 +163,4 @@ class OpenQuoteJobs extends Component<Props, State> {
 }
 
 
-export default OpenQuoteJobs;
+export default ListQuotes;
