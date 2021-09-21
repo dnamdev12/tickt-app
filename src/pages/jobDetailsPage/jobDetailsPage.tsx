@@ -770,7 +770,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         }}
                                     >Reject</button>
                                 </div>}
-                                {((jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active') || jobDetailsData?.reasonNoteForCancelJobRequest?.length) ? (
+                                {(jobDetailsData?.rejectReasonNoteForCancelJobRequest) ? (
                                     <span className="sub_title">
                                         {'Reason(s)'}
                                     </span>
@@ -904,14 +904,14 @@ const JobDetailsPage = (props: PropsType) => {
                                             placeholder={`I disagree with this ${jobActionState.isCancelRequestRejectedClicked ? 'cancelling' : 'change request'}`}
                                             maxLength={250}
                                             value={jobActionState.replyCancelReason}
-                                            onChange={({ target: { value } }: { target: { value: string } }) => setJobActionState((prevData: any) => ({ ...prevData, replyCancelReason: value }))} />
+                                            onChange={({ target: { value } }: { target: { value: string } }) => setJobActionState((prevData: any) => ({ ...prevData, replyCancelReason: value?.trimLeft() }))} />
                                         <span className="char_count">{`${jobActionState.replyCancelReason?.length}/250`}</span>
                                     </div>
                                     {!!errors.replyCancelReason && <span className="error_msg">{errors.replyCancelReason}</span>}
                                 </div>
                                 <div className="bottom_btn custom_btn">
-                                    {jobActionState.isCancelRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyCancellationHandler('rejectJobCancelRequest')}>Send</button>}
-                                    {jobActionState.isChangeRequestRejectedClicked && <button className="fill_btn full_btn btn-effect" onClick={() => replyChangeRequestHandler('rejectChangeRequest')}>Send</button>}
+                                    {jobActionState.isCancelRequestRejectedClicked && <button className={`fill_btn full_btn btn-effect ${jobActionState.replyCancelReason?.length > 0 ? '' : 'disable_btn'}`} onClick={() => replyCancellationHandler('rejectJobCancelRequest')}>Send</button>}
+                                    {jobActionState.isChangeRequestRejectedClicked && <button className={`fill_btn full_btn btn-effect ${jobActionState.replyCancelReason?.length > 0 ? '' : 'disable_btn'}`} onClick={() => replyChangeRequestHandler('rejectChangeRequest')}>Send</button>}
                                     <button className="fill_grey_btn btn-effect"
                                         onClick={() => {
                                             closeJobActionConfirmationModal('isCancelRequestRejectedClicked');

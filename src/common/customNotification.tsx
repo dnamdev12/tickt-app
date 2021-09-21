@@ -13,7 +13,7 @@ const NOTIFICATION_TIMEOUT = 3750;
 const CustomNotification = (props: any) => {
     const history: any = useHistory();
     const notification = props.notificationData?.data;
-    console.log('notification: ', notification);
+    console.log('notification: ', notification, history);
 
     useEffect(() => {
         if (props?.showNotification) {
@@ -43,9 +43,15 @@ const CustomNotification = (props: any) => {
                 <img src={close} alt="img" />
             </span>
             <div className="wrapppr" onClick={() => {
+                const url1: string = onNotificationClick(notification);
+                const url2: string = history.location?.pathname + history.location?.search;
                 markNotifAsRead({ notificationId: notification?._id });
                 setShowNotification(false);
-                history.push(onNotificationClick(notification));
+                if (url1 === url2) {
+                    window.location?.reload();
+                    return;
+                }
+                history.push(url1);
             }}>
                 <div className="notif">
                     <figure className="not_img">
