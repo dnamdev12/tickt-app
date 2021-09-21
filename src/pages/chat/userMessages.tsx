@@ -56,6 +56,7 @@ const UserMessages = (props: any) => {
         }
     }, [props.roomId]);
     // }, [props.roomId, props.roomData]);
+    console.log('props.roomData: ', props.roomData);
 
     useEffect(() => {
         scrollToBottom();
@@ -116,7 +117,11 @@ const UserMessages = (props: any) => {
         if (messageText && messageText.trimLeft() !== "") {
             setMessageText('');
             const lastMsg: any = await sendTextMessage(props.roomId, messageText);
-            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken && props.roomData?.oppUserInfo?.deviceType) {
+            if (lastMsg &&
+                props.roomData?.oppUserInfo?.deviceToken
+                && props.roomData?.oppUserInfo?.deviceType
+                && (props.roomData?.oppUserInfo?.hasOwnProperty('isNotification') ? props.roomData?.oppUserInfo?.isNotification : true)
+            ) {
                 sendFCMPushNotificationToOppUser(lastMsg);
             }
             setInboxToTopWithLastMsg(lastMsg);
@@ -133,7 +138,11 @@ const UserMessages = (props: any) => {
         //setIsLoading(true);
         if (url && url !== '') {
             const lastMsg: any = await sendImageVideoMessage(props.roomId, url, msgType);
-            if (lastMsg && props.roomData?.oppUserInfo?.deviceToken && props.roomData?.oppUserInfo?.deviceType) {
+            if (lastMsg
+                && props.roomData?.oppUserInfo?.deviceToken
+                && props.roomData?.oppUserInfo?.deviceType
+                && (props.roomData?.oppUserInfo?.hasOwnProperty('isNotification') ? props.roomData?.oppUserInfo?.isNotification : true)
+            ) {
                 sendFCMPushNotificationToOppUser(lastMsg);
             }
             setInboxToTopWithLastMsg(lastMsg);
