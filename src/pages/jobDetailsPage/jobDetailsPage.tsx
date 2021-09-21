@@ -629,7 +629,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </div>
                                     {props?.isSkeletonLoading ? <Skeleton /> :
                                         jobDetailsData?.quoteJob ? null :
-                                            (jobDetailsData?.jobStatus?.includes('cancelled', 'expired', 'completed') || jobDetailsData?.jobStatus === '') &&
+                                            (['cancelled', 'expired', 'completed'].includes(jobDetailsData?.jobStatus?.toLowerCase()) || jobDetailsData?.jobStatus === '') &&
                                                 jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' &&
                                                 jobDetailsData?.applyButtonDisplay ? (
                                                 <div className="pt-10">
@@ -651,7 +651,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     }
 
                                     {props?.isSkeletonLoading ? <Skeleton /> :
-                                        !(jobInviteAction === 'invite') && jobDetailsData?.quoteJob && !jobDetailsData?.jobStatus?.includes('cancelled', 'expired', 'completed') && (
+                                        !(jobInviteAction === 'invite') && jobDetailsData?.quoteJob && ['', 'active', 'applied'].includes(jobDetailsData?.jobStatus?.toLowerCase()) && (
                                             <button
                                                 className={`${jobDetailsData?.jobStatus === '' ? 'fill_btn' : 'fill_grey_btn'} full_btn btn-effect`}
                                                 onClick={() => {
@@ -668,12 +668,12 @@ const JobDetailsPage = (props: PropsType) => {
                                                         });
                                                     }
                                                 }}>
-                                                {jobDetailsData?.jobStatus === '' ? 'Quote' : jobDetailsData?.jobStatus === 'applied' ? 'Quote sent' : jobDetailsData?.jobStatus === 'active' ? 'View your quote' : 'Quote'}
+                                                {jobDetailsData?.jobStatus === '' ? 'Quote' : jobDetailsData?.jobStatus === 'applied' ? 'Quote sent' : jobDetailsData?.jobStatus === 'active' ? 'View your quote' : ''}
                                             </button>
                                         )}
 
                                     {props.isSkeletonLoading ? <Skeleton /> : (jobInviteAction === 'invite' || jobDetailsData?.isInvited) &&
-                                    !jobDetailsData?.jobStatus?.includes('active', 'applied', 'accepted', 'cancelled', 'expired', 'completed') &&
+                                        !['active', 'applied', 'accepted', 'cancelled', 'expired', 'completed'].includes(jobDetailsData?.jobStatus?.toLowerCase()) &&
                                         <>
                                             <div className="form_field pt-10">
                                                 <button
@@ -701,12 +701,12 @@ const JobDetailsPage = (props: PropsType) => {
                                         </>
                                     }
 
-                                    {!jobInviteAction && !jobDetailsData?.quoteJob && (
+                                    {!jobInviteAction && (
                                         jobDetailsData?.isCancelJobRequest ||
                                         jobDetailsData?.isChangeRequest ||
                                         jobDetailsData?.reasonNoteForCancelJobRequest?.length && jobDetailsData?.jobStatus !== 'active' ||
                                         (jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active')
-                                    ) && !['APPLY', 'APPLIED', 'ACCEPTED'].includes(jobDetailsData?.appliedStatus?.toUpperCase()) &&
+                                    ) && !['apply', 'applied', 'accepted'].includes(jobDetailsData?.appliedStatus?.toLowerCase()) &&
                                         <button
                                             className="fill_grey_btn full_btn pending_info"
                                             onClick={() => setPendingRequestClicked(true)}>

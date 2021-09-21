@@ -978,7 +978,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </button>
                                             </div>
                                             <div className="form_field">
-                                                <label className="form_label">{`Let the tradie and Tickt know if you accept or reject cancelling for this job.`}</label>
+                                                <label className="form_label">{`Let the tradeperson and Tickt know if you accept or reject cancelling for this job.`}</label>
                                                 <div className="text_field">
                                                     <textarea
                                                         placeholder={`I disagree with this cancelling`}

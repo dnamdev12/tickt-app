@@ -118,7 +118,7 @@ const RateThisJob = (props: any) => {
                     </span>
                 </div> */}
                 <span className="inner_title">
-                    {'Rate this tradie'}
+                    {'Rate this trdeperson'}
                 </span>
                 <div className="form_field">
                     <ReactStars
@@ -205,7 +205,7 @@ const RateThisJob = (props: any) => {
                 <>
                     <div className="relate">
                         <span className="sub_title">
-                            {'Tradie'}
+                            {'Tradeperson'}
                         </span>
                         <span
                             className="edit_icon"
