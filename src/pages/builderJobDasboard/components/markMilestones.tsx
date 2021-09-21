@@ -238,7 +238,7 @@ const MarkMilestones = (props: any) => {
     if (item_details?.milestones?.length) {
         dataItems = item_details?.milestones;
     }
-
+    console.log({selectedItem})
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">
@@ -259,11 +259,14 @@ const MarkMilestones = (props: any) => {
                         <div className="edit_menu">
                             <ul>
                                 {/* {item_status && ( )} */}
-                                <li
-                                    onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
-                                    className="icon edit_line">
-                                    {'Edit Milestone'}
-                                </li>
+                                {!selectedItem?.quoteJob && (
+                                    <li
+                                        onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
+                                        className="icon edit_line">
+                                        {'Edit Milestone'}
+                                    </li>
+                                )}
+
                                 {!item_detail?.dispute && (
                                     <li
                                         onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}

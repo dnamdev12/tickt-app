@@ -534,11 +534,12 @@ export const replyChangeRequest = async (data: any) => {
   }
   return { success: false };
 }
-export const acceptDeclineJobInvitation = async (data: any) => {
+export const acceptDeclineJobInvitation = async (data: any, isDisable?: boolean) => {
   setLoading(true);
   const response: FetchResponse = await NetworkOps.putToJson(Urls.acceptDeclineJobInvitation, data);
   setLoading(false);
   if (response.status_code === 200) {
+    if (isDisable) return { success: true };
     setShowToast(true, response.message);
     return { success: true };
   }

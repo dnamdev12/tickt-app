@@ -21,6 +21,7 @@ import { useHistory } from "react-router-dom";
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+const isDevelopment = process.env.NODE_ENV == "development" ? true : false;
 interface Proptypes {
     data: any;
     milestones: any;
@@ -314,12 +315,14 @@ const JobDetails = ({
         let response: any = null;
 
         if (update) {
-            console.log({data_clone})
-            delete data_clone?.quoteJob;
+            if(!isDevelopment){
+                delete data_clone?.quoteJob;
+            }
             response = await publishOpenJobAgain(data_clone);
         } else {
-            console.log({data_clone})
-            delete data_clone?.quoteJob;
+            if(!isDevelopment){
+                delete data_clone?.quoteJob;
+            }
             response = await createJob(data_clone);
         }
         if (response?.success) {
@@ -478,7 +481,6 @@ const JobDetails = ({
                                     </span>
                                 </span>
                                 <ul className="job_milestone">
-                                    {console.log({ milestones })}
                                     {milestones?.length ?
                                         milestones.map((item: any, index: any) => item?.milestone_name && (
                                             <li>

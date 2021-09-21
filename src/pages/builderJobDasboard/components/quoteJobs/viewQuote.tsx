@@ -6,22 +6,26 @@ import moment from 'moment';
 import { renderTime } from '../../../../utils/common';
 
 import {
-    getAcceptDeclineTradie
+    getAcceptDeclineTradie,
+    quoteByJobId
 } from '../../../../redux/quotes/actions';
 
 type State = {
-    toggle: boolean
+    toggle: boolean,
+    dataItems: any
 }
 
 type Props = {
-    quotes_param: any,
+    // quotes_param: any,
     history: any,
-    quotesData: any
+    setJobLabel: any
+    // quotesData: any
 }
 
 class ViewQuote extends Component<Props, State> {
     state: State = {
         toggle: false,
+        dataItems: []
     };
 
     handleSubmit = async (item: any, status: number) => {
@@ -33,9 +37,47 @@ class ViewQuote extends Component<Props, State> {
         };
         let response = await getAcceptDeclineTradie(data);
         if (response.success) {
-            this.props.history.push('/quote-job-accepted');
+            if (status == 1) {
+                this.props.history.push('/quote-job-accepted');
+            } 
+
+            if (status == 2) {
+                this.props.setJobLabel('open');
+                this.props.history.push('/jobs?active=open');
+            }
         }
     }
+
+    componentDidMount() {
+        this.preFetchForQuotes();
+    }
+
+    preFetchForQuotes = () => {
+        const props: any = this.props;
+        const params = new URLSearchParams(props?.history?.location?.search);
+        const quotes_param: any = params.get('quotes');
+        const viewQuotesParam: any = params.get('viewQuotes');
+        const jobId: any = params.get('jobId');
+        if (jobId?.length) {
+            if (quotes_param === "true") {
+                this.fetchQuotesById(jobId, 1)
+            } else {
+                this.fetchQuotesById(jobId, 1)
+            }
+        }
+    }
+
+    fetchQuotesById = async (jobId: String, sortBy: Number) => {
+        let result = await quoteByJobId({ jobId, sortBy });
+        console.log({ result });
+        if (result?.success) {
+            let data = result?.data?.resultData;
+            if (data) {
+                this.setState({ dataItems: data })
+            }
+        }
+    }
+
 
     render() {
         const styleItem = {
@@ -46,17 +88,20 @@ class ViewQuote extends Component<Props, State> {
             textAlign: 'center',
             paddingTop: '20px'
         }
-
+        let { dataItems } = this.state;
         const props: any = this.props;
-        const quotesData = props?.quotesData || [];
+        const quotesData = dataItems || [];
         const params = new URLSearchParams(props?.history?.location?.search);
-        const jobId = params.get('jobId');
         const id = params.get('id');
+        const jobId = params.get('jobId');
+        const activeType: any = params.get('active');
 
         let item: any = {};
         if (quotesData && Array.isArray(quotesData) && quotesData?.length) {
             item = quotesData.find((item: any) => item._id === id);
         }
+
+        let CASE_1 = ['open', 'applicant'].includes(activeType);
         return (
             <React.Fragment>
                 <div className="flex_row">
@@ -64,7 +109,15 @@ class ViewQuote extends Component<Props, State> {
                         <div className="relate">
                             <button
                                 onClick={() => {
-                                    this.props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`)
+                                    if (CASE_1) {
+                                        this.props.setJobLabel('listQuote');
+                                        props.history.replace(`/jobs?active=${activeType}&quote=true&jobId=${jobId}`)
+                                    }
+
+                                    if (activeType == "active") {
+                                        this.props.setJobLabel('active');
+                                        this.props.history.goBack();
+                                    }
                                 }}
                                 className="back"></button>
                             <span className="title">Quotes</span>
@@ -128,7 +181,11 @@ class ViewQuote extends Component<Props, State> {
                         <div
                             style={{ minHeight: '180px' }}
                             className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                            <span className="more_detail circle">
+                            <span
+                                onClick={() => {
+                                    props.history.push(`/tradie-info?tradeId=${item?.userId}&hideInvite=true&active=true`)
+                                }}
+                                className="more_detail circle">
                             </span>
                             <div className="user_wrap">
                                 <figure className="u_img">
@@ -148,14 +205,13 @@ class ViewQuote extends Component<Props, State> {
                                 <div className="details">
                                     <span className="name">{item?.trade_name}</span>
                                     <p className="commn_para">
-                                        <span className="rating">{item?.rating} , {item?.reviewCount} reviews</span>
+                                        <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : ''} , {item?.reviewCount} reviews</span>
                                     </p>
                                 </div>
                             </div>
 
 
                             <div className="example">
-
                                 {item?.quote_item?.length ?
                                     item?.quote_item.map((quote_item: any) => (
                                         <table style={{ marginTop: '20px' }}>
@@ -181,24 +237,27 @@ class ViewQuote extends Component<Props, State> {
                             </span>
                         </div>
 
-                        <div className="flex_row">
-                            <div className="flex_col_sm_8">
-                                <div className="form_field">
-                                    <button
-                                        onClick={() => { this.handleSubmit(item, 1) }}
-                                        className="fill_btn full_btn btn-effect">
-                                        {'Accept Quote'}
-                                    </button>
-                                </div>
-                                <div className="form_field">
-                                    <button
-                                        onClick={() => { this.handleSubmit(item, 2) }}
-                                        className="fill_grey_btn full_btn btn-effect">
-                                        {'Decline Quote'}
-                                    </button>
+                        {CASE_1 && (
+                            <div className="flex_row">
+                                <div className="flex_col_sm_8">
+                                    <div className="form_field">
+                                        <button
+                                            onClick={() => { this.handleSubmit(item, 1) }}
+                                            className="fill_btn full_btn btn-effect">
+                                            {'Accept Quote'}
+                                        </button>
+                                    </div>
+                                    <div className="form_field">
+                                        <button
+                                            onClick={() => { this.handleSubmit(item, 2) }}
+                                            className="fill_grey_btn full_btn btn-effect">
+                                            {'Decline Quote'}
+                                        </button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
+
                     </div>
 
                     {/* <div className="no_record  m-t-vh">

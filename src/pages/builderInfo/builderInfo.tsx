@@ -354,6 +354,34 @@ const BuilderInfo = (props: PropsType) => {
     //   addedTradeData[index].specialisations = specialisations.filter(({ _id }: { _id: string }) => addedSpecializationList.includes(_id));
     // });
 
+
+    /* return (
+     <div className="app_wrapper">
+         <div className="section_wrapper">
+             <div className="custom_container">
+
+                 <div className="vid_img_wrapper pt-20">
+                     <div className="flex_row">
+                         <div className="flex_col_sm_8 relative">
+                             <button className="back" onClick={() => {
+                                 props.history.goBack();
+                             }}></button>
+                         </div>
+                     </div>
+                 </div>
+
+                 <div className="no_record  m-t-vh">
+                     <figure className="no_img">
+                         <img src={noDataFound} alt="data not found" />
+                     </figure>
+                     <span>{'This tradie is no longer available'}</span>
+                 </div>
+             </div>
+         </div>
+     </div>)
+     */
+
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -612,13 +640,14 @@ const BuilderInfo = (props: PropsType) => {
                                 <span>No Data Found</span>
                             </div>}
                     </div>}
-                    {props.isSkeletonLoading ? <Skeleton /> : <button
-                        className={`fill_grey_btn full_btn view_more ${profileData?.reviewsCount === 0 ? 'disable_btn' : ''}`}
-                        disabled={profileData?.reviewsCount === 0}
-                        onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
-                    >
-                        {`View ${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `all ${profileData?.reviewsCount} reviews`}` : ''}`}
-                    </button>}
+                    {props.isSkeletonLoading ? <Skeleton /> :
+                        <button
+                            className={`fill_grey_btn full_btn view_more ${profileData?.reviewsCount === 0 ? 'disable_btn' : ''}`}
+                            disabled={profileData?.reviewsCount === 0}
+                            onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
+                        >
+                            {`View all ${profileData?.reviewsCount || 0} review${profileData?.reviewsCount ? 's' : ''}`}
+                        </button>}
                 </div>
             </div>
 

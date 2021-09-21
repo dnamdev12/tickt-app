@@ -34,6 +34,7 @@ const EditMilestone = (props: any) => {
     const [toggleItem, setToggleItem] = useState(false);
 
     const [description, setDescription] = useState<any>([]);
+  
 
     useEffect(() => {
         if (!stateData?.length) {
@@ -353,7 +354,7 @@ const EditMilestone = (props: any) => {
             return data;
         }).filter((item: any) => {
 
-            if (![1, 2].includes(item?.status)) {
+            if (![1, 2, 3].includes(item?.status)) {
                 delete item?.status;
 
                 if (item?.description?.length) {
@@ -401,12 +402,12 @@ const EditMilestone = (props: any) => {
                 key={`${index}-${milestoneName}`}
                 draggableId={`${milestoneName}-${index}`}
                 index={index}
-                isDragDisabled={![0, 1, 4, -1].includes(status) ? true : false}
+                isDragDisabled={![0, 4, -1].includes(status) ? true : false}
             >
                 {(provided: any, snapshot: any) => (
                     <li
                         key={index}
-                        className={![0, 1, 4, -1].includes(status) ? 'disable_milstone' : ''}
+                        className={![0, 4, -1].includes(status) ? 'disable_milstone' : ''}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -444,7 +445,7 @@ const EditMilestone = (props: any) => {
                             <input
                                 checked={editItem[index]}
                                 onClick={(e: any) => {
-                                    if ([0, 1, 4, -1].includes(status)) {
+                                    if ([0, 4, -1].includes(status)) {
                                         checkOnClick(e, index)
                                     } else {
                                         e.preventDefault();

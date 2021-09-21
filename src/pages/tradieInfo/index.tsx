@@ -53,6 +53,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Button from '@material-ui/core/Button';
 
+import noDataFound from '../../assets/images/no-search-data.png';
+
 //@ts-ignore
 import ReactStars from "react-rating-stars-component";
 
@@ -217,13 +219,13 @@ class TradieInfo extends Component<Props, State> {
         return null;
     }
 
-    componentDidUpdate(prevProps:any) {
+    componentDidUpdate(prevProps: any) {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
         let prevPath = `${prevProps?.location?.pathname}${prevProps?.location?.search}`;
         let currentPath = `${props?.location?.pathname}${props?.location?.search}`;
 
-        if(prevPath !== currentPath){
+        if (prevPath !== currentPath) {
             this.setItems();
         }
 
@@ -570,6 +572,35 @@ class TradieInfo extends Component<Props, State> {
 
         haveJobId = urlParams.get('jobId') == null ? false : true;
         let toggleSpecialisation = this.state.toggleSpecialisation;
+
+        /*
+        return (
+            <div className="app_wrapper">
+                <div className="section_wrapper">
+                    <div className="custom_container">
+
+                        <div className="vid_img_wrapper pt-20">
+                            <div className="flex_row">
+                                <div className="flex_col_sm_8 relative">
+                                    <button className="back" onClick={() => {
+                                        props.history.goBack();
+                                    }}></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="no_record  m-t-vh">
+                            <figure className="no_img">
+                                <img src={noDataFound} alt="data not found" />
+                            </figure>
+                            <span>{'This tradie is no longer available'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+        */
+
         return (
             <div className="app_wrapper">
                 <div className="section_wrapper">
@@ -900,16 +931,17 @@ class TradieInfo extends Component<Props, State> {
                                         <span>No Data Found</span>
                                     </div>}
                             </div>}
-                        {props.isSkeletonLoading ? <Skeleton height={25} /> : <button
-                            className="fill_grey_btn full_btn view_more"
-                            onClick={() => {
-                                this.setState((prevData: any) => ({
-                                    reviewsData: {
-                                        ...prevData.reviewsData, showAllReviewsClicked: true
-                                    }
-                                }))
-                            }}>
-                            {`View all ${tradieInfo?.reviewsCount || 0} ${tradieInfo?.reviewsCount === 1 ? 'review' : 'reviews'} `}</button>}
+                        {props.isSkeletonLoading ? <Skeleton height={25} /> :
+                            <button
+                                className={`fill_grey_btn full_btn view_more ${!tradieInfo?.reviewsCount ? 'disable_btn' : ''}`}
+                                onClick={() => {
+                                    this.setState((prevData: any) => ({
+                                        reviewsData: {
+                                            ...prevData.reviewsData, showAllReviewsClicked: true
+                                        }
+                                    }))
+                                }}>
+                                {`View all ${tradieInfo?.reviewsCount || 0} ${!!tradieInfo?.reviewsCount ? 'review' : 'reviews'} `}</button>}
                     </div>
                 </div>
 
@@ -973,7 +1005,7 @@ class TradieInfo extends Component<Props, State> {
                                 ))}
                             </div>
                             <button
-                                className="fill_grey_btn full_btn view_more"
+                                className={`fill_grey_btn full_btn view_more ${!tradieInfo?.vouchesData?.length ? 'disable_btn' : ''}`}
                                 onClick={() => {
                                     props.history.push({
                                         pathname: '/tradie-vouchers',
@@ -983,7 +1015,7 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}
+                                {`View all ${tradieInfo?.vouchesData?.length} vouche${tradieInfo?.vouchesData?.length ? 's' : ''}`}
                             </button>
                         </div>
                     </div>

@@ -137,9 +137,9 @@ const QuoteMark = (props: any) => {
             builderId: jobDetailsData?.postedBy?.builderId,
             isAccept: true
         };
-        const res: any = await acceptDeclineJobInvitation(data);
+        const res: any = await acceptDeclineJobInvitation(data, true);
         if (res.success) {
-            props.history.push('/quote-job-success');
+            props.history.push('/quote-job-success/invite');
         }
     }
 
@@ -205,8 +205,10 @@ const QuoteMark = (props: any) => {
 
     const callItemNo = () => {
         if (localQuote?._id) {
+            console.log('xxx localQuote?._id-----------if');
             return localQuote?.item_number;
         }
+        console.log('xxx Items---------else');
         return Items[Items?.length - 1]?.item_number ? Items[Items?.length - 1]?.item_number + 1 : 1;
     }
 
@@ -420,12 +422,15 @@ const QuoteMark = (props: any) => {
                             let item: any = localQuote;
                             item['totalAmount'] = (+item.quantity * +item.price);
                             items_[isEdit] = (item);
-                            const isSuccess = await updateItem_(index, items_);
+                            let isSuccess: boolean = true;
+                            if (quoteId) {
+                                isSuccess = await updateItem_(index, items_);
+                            }
                             if (isSuccess) {
                                 setItems(items_);
                                 setEdit(null);
                                 setLocalQuote({
-                                    item_number: Items[Items?.length - 1]?.item_number,
+                                    item_number: items_[items_?.length - 1]?.item_number + 1,
                                     description: '',
                                     price: 0,
                                     quantity: 0,

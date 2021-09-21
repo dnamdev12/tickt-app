@@ -28,6 +28,8 @@ import leftIcon from '../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../assets/images/ic-next-arrow-line.png'
 import pendingIcon from '../../assets/images/exclamation-icon.png'
 
+import noDataFound from '../../assets/images/no-search-data.png';
+
 import moment from 'moment';
 import approved from '../../assets/images/approved.png';
 import waiting from '../../assets/images/exclamation.png';
@@ -616,13 +618,16 @@ const JobDetailsPage = (props: PropsType) => {
                                     )}
                                     {activeType == "active" && (
                                         <React.Fragment>
-                                            <li
-                                                onClick={() => {
-                                                    props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&editMilestone=true`)
-                                                }}
-                                                className="icon edit_line">
-                                                {'Edit Milestone'}
-                                            </li>
+                                            {!jobDetailsData?.quoteJob && (
+                                                <li
+                                                    onClick={() => {
+                                                        props.history.push(`/jobs?active=${activeType}&jobId=${paramJobId}&editMilestone=true`)
+                                                    }}
+                                                    className="icon edit_line">
+                                                    {'Edit Milestone'}
+                                                </li>
+                                            )}
+
                                             {hideDispute === "false" && (
                                                 <li
                                                     onClick={() => {
@@ -769,7 +774,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
-                                        {jobDetailsData?.quoteCount?.length ? (
+                                        {jobDetailsData?.quoteCount?.length && jobDetailsData?.quoteJob ? ( // temporary check
                                             <ul>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className=""></li>
@@ -786,7 +791,6 @@ const JobDetailsPage = (props: PropsType) => {
                                             </ul>
                                         ) : !isPastJob ? (
                                             <ul>
-
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
                                                 <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
@@ -893,7 +897,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     </button>
                                                 </div>}
 
-                                            {(CASE_2 || CASE_3) && (
+                                            {(CASE_2 || CASE_3 || CASE_4) && (
                                                 <span className="sub_title">
                                                     {'Reason(s)'}
                                                 </span>
@@ -947,13 +951,23 @@ const JobDetailsPage = (props: PropsType) => {
                                         </button>
                                     )}
 
-                                    {jobDetailsData?.quoteCount?.length > 0 && (
+                                    {(jobDetailsData?.quote?.length > 0 && ['active', 'open'].includes(activeType)) && jobDetailsData.quoteJob && (
                                         <button
                                             className="fill_grey_btn full_btn btn-effect mt-sm"
                                             onClick={() => {
-                                                props.history.push(`/jobs?active=open&quotes=true&jobId=${jobDetailsData?.jobId}`);
+                                                if (activeType == "active") {
+                                                    let quoteId = null;
+                                                    if (jobDetailsData?.quote && Array.isArray(jobDetailsData?.quote) && jobDetailsData?.quote[0]?.quote && Array.isArray(jobDetailsData?.quote[0]?.quote) && jobDetailsData?.quote[0]?.quote[0]?._id) {
+                                                        quoteId = jobDetailsData?.quote[0]?.quote[0]?._id;
+                                                    }
+                                                    if (quoteId) {
+                                                        props.history.push(`/jobs?active=${activeType}&viewQuotes=true&jobId=${jobDetailsData?.jobId}&id=${quoteId}`);
+                                                    }
+                                                } else {
+                                                    props.history.push(`/jobs?active=${activeType}&quotes=true&jobId=${jobDetailsData?.jobId}`);
+                                                }
                                             }}>
-                                            {activeType == "active" ? 'View quote' : `${jobDetailsData?.quoteCount?.length} Quote${jobDetailsData?.quoteCount?.length > 1 ? 's' : ''}`}
+                                            {activeType == "active" ? 'View quote' : `${jobDetailsData?.quote?.length} Quotes`}
                                         </button>
                                     )}
 
@@ -984,7 +998,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         placeholder={`I disagree with this cancelling`}
                                                         maxLength={250}
                                                         value={replyText}
-                                                        onChange={(e: any) => { setReplyText(e.target.value) }}
+                                                        onChange={(e: any) => { setReplyText((e.target.value).trimLeft()) }}
                                                     />
                                                     <span className="char_count">{`${replyText?.length}/250`}</span>
                                                 </div>
@@ -1145,30 +1159,31 @@ const JobDetailsPage = (props: PropsType) => {
                                             <div className="heading">
                                                 <span
                                                     className="sub_title">
-                                                    {`${jobDetailsData?.questionsCount || 0} ${jobDetailsData?.questionsCount === 1 ? 'question' : 'questions'}`}
+                                                    {jobDetailsData?.questionsCount ? `${jobDetailsData?.questionsCount} ${jobDetailsData?.questionsCount === 1 ? 'question' : 'questions'}` : ''}
                                                 </span>
                                                 <button className="close_btn" onClick={() => modalCloseHandler('showAllQuestionsClicked')}>
                                                     <img src={cancel} alt="cancel" />
                                                 </button>
                                             </div>
                                             <div className="inner_wrap">
-                                                {questionList?.map((item: any, index: number) => {
-                                                    const { questionData } = item;
-                                                    return (
-                                                        <div key={questionData?.questionId}>
-                                                            <div className="question_ans_card">
-                                                                <div className="user_detail">
-                                                                    <figure className="user_img">
-                                                                        <img src={questionData?.userImage || dummy} alt="user-img" />
-                                                                    </figure>
-                                                                    <div className="details">
-                                                                        <span className="user_name">{questionData?.userName}</span>
-                                                                        <span className="date">{questionData?.date}</span>
+                                                {questionList?.length ?
+                                                    questionList?.map((item: any, index: number) => {
+                                                        const { questionData } = item;
+                                                        return (
+                                                            <div key={questionData?.questionId}>
+                                                                <div className="question_ans_card">
+                                                                    <div className="user_detail">
+                                                                        <figure className="user_img">
+                                                                            <img src={questionData?.userImage || dummy} alt="user-img" />
+                                                                        </figure>
+                                                                        <div className="details">
+                                                                            <span className="user_name">{questionData?.userName}</span>
+                                                                            <span className="date">{questionData?.date}</span>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <p>{questionData?.question}</p>
-                                                                {console.log({ questionList })}
-                                                                {/* {Object.keys(questionData?.answerData).length > 0 &&
+                                                                    <p>{questionData?.question}</p>
+                                                                    {console.log({ questionList })}
+                                                                    {/* {Object.keys(questionData?.answerData).length > 0 &&
                                                                     !(questionsData.answerShownHideList.includes(questionData?.questionId)) ?
                                                                     <span
                                                                         className="show_hide_ans link"
@@ -1180,7 +1195,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                                             {'Answer'}
                                                                         </span>
                                                                     )} */}
-                                                                {/* {questionData?.isModifiable &&
+                                                                    {/* {questionData?.isModifiable &&
                                                                     <span
                                                                         className="action link"
                                                                         onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>
@@ -1192,54 +1207,61 @@ const JobDetailsPage = (props: PropsType) => {
                                                                         onClick={() => questionHandler('deleteQuestion', questionData?.questionId, '', index)}>
                                                                         {'Delete'}
                                                                     </span>} */}
+                                                                    {Object.keys(questionsData?.showHideAnswer).length &&
+                                                                        questionsData?.showHideAnswer[questionData?.questionId] ? (
+                                                                        <span
+                                                                            onClick={() => questionHandler('showAnswerClicked', item?.questionData?.questionId)}
+                                                                            className="show_hide_ans link">
+                                                                            {'Hide answer'}
+                                                                        </span>
+                                                                    ) : Object.keys(item?.questionData?.answerData).length ? (
+                                                                        <span
+                                                                            onClick={() => questionHandler('hideAnswerClicked', item?.questionData?.questionId)}
+                                                                            className="show_hide_ans link">
+                                                                            {'Show answer'}
+                                                                        </span>
+                                                                    ) : (
+                                                                        <span
+                                                                            onClick={() => questionHandler('askQuestion', item?.questionData?.questionId)}
+                                                                            className="show_hide_ans link">
+                                                                            {'Answer'}
+                                                                        </span>
+                                                                    )}
+                                                                </div>
                                                                 {Object.keys(questionsData?.showHideAnswer).length &&
-                                                                    questionsData?.showHideAnswer[questionData?.questionId] ? (
-                                                                    <span
-                                                                        onClick={() => questionHandler('showAnswerClicked', item?.questionData?.questionId)}
-                                                                        className="show_hide_ans link">
-                                                                        {'Hide answer'}
-                                                                    </span>
-                                                                ) : Object.keys(item?.questionData?.answerData).length ? (
-                                                                    <span
-                                                                        onClick={() => questionHandler('hideAnswerClicked', item?.questionData?.questionId)}
-                                                                        className="show_hide_ans link">
-                                                                        {'Show answer'}
-                                                                    </span>
-                                                                ) : (
-                                                                    <span
-                                                                        onClick={() => questionHandler('askQuestion', item?.questionData?.questionId)}
-                                                                        className="show_hide_ans link">
-                                                                        {'Answer'}
-                                                                    </span>
-                                                                )}
-                                                            </div>
-                                                            {Object.keys(questionsData?.showHideAnswer).length &&
-                                                                questionsData?.showHideAnswer[questionData?.questionId] &&
-                                                                Object.keys(item?.questionData?.answerData).length ?
-                                                                <div className="question_ans_card answer">
-                                                                    <div className="user_detail">
-                                                                        <figure className="user_img">
-                                                                            <img
-                                                                                src={questionData?.answerData?.userImage || dummy}
-                                                                                alt="user-img"
-                                                                            />
-                                                                        </figure>
-                                                                        <div className="details">
-                                                                            <span className="user_name">{questionData?.answerData?.userName}</span>
-                                                                            <span className="date">{questionData?.answerData?.date}</span>
+                                                                    questionsData?.showHideAnswer[questionData?.questionId] &&
+                                                                    Object.keys(item?.questionData?.answerData).length ?
+                                                                    <div className="question_ans_card answer">
+                                                                        <div className="user_detail">
+                                                                            <figure className="user_img">
+                                                                                <img
+                                                                                    src={questionData?.answerData?.userImage || dummy}
+                                                                                    alt="user-img"
+                                                                                />
+                                                                            </figure>
+                                                                            <div className="details">
+                                                                                <span className="user_name">{questionData?.answerData?.userName}</span>
+                                                                                <span className="date">{questionData?.answerData?.date}</span>
+                                                                            </div>
                                                                         </div>
-                                                                    </div>
-                                                                    <p>{questionData?.answerData?.answer}</p>
-                                                                    <span
-                                                                        onClick={() => questionHandler('updateQuestion', item?.questionData?.questionId, item?.questionData?.answerData?.answer, null, item?.questionData?.answerData?.answerId)}
-                                                                        className="show_hide_ans link">Edit</span>
-                                                                    <span
-                                                                        onClick={() => questionHandler('deleteQuestion', item?.questionData?.questionId, '', index, item?.questionData?.answerData?.answerId)}
-                                                                        className="show_hide_ans link">Delete</span>
-                                                                </div> : ''}
+                                                                        <p>{questionData?.answerData?.answer}</p>
+                                                                        <span
+                                                                            onClick={() => questionHandler('updateQuestion', item?.questionData?.questionId, item?.questionData?.answerData?.answer, null, item?.questionData?.answerData?.answerId)}
+                                                                            className="show_hide_ans link">Edit</span>
+                                                                        <span
+                                                                            onClick={() => questionHandler('deleteQuestion', item?.questionData?.questionId, '', index, item?.questionData?.answerData?.answerId)}
+                                                                            className="show_hide_ans link">Delete</span>
+                                                                    </div> : ''}
+                                                            </div>
+                                                        )
+                                                    }) : (
+                                                        <div className="no_record  m-t-vh">
+                                                            <figure className="no_img">
+                                                                <img src={noDataFound} alt="data not found" />
+                                                            </figure>
+                                                            <span>No Questions Found</span>
                                                         </div>
-                                                    )
-                                                })}
+                                                    )}
                                                 {jobDetailsData?.questionsCount > questionList.length && <div className="text-center">
                                                     <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>View more</button>
                                                 </div>}

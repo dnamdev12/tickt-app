@@ -2234,6 +2234,12 @@ body {
 			padding: 0;
 			display: block;
 		}
+    .MuiSlider-thumb{
+      border: 3px solid var(--yellow);
+    }
+    .MuiSlider-rail,.MuiSlider-track{
+      height: 3px;
+    }
 		.per_day {
 			font: 16px/1.33 'Neue Haas Grotesk Text Pro Medium';
 			color: var(--blue);

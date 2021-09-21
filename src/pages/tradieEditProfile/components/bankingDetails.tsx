@@ -43,7 +43,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
   });
   const [submitClicked, setSubmitClicked] = useState<boolean>(false);
   const [digitalIdInfo, setDigitalIdInfo] = useState<boolean>(false);
-  const [idVerifClicked, setIdVerifClicked] = useState<boolean>(true);
+  const [idVerifClicked, setIdVerifClicked] = useState<boolean>(false);
 
   const errorLabel = {
     'account_number': 'Account Number',
@@ -178,14 +178,14 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
           <span className="error_msg">{errors.bsb_number}</span>
         </div>
 
-        <div className="form_field">
+        {/* <div className="form_field">
           <button className="fill_grey_btn full_btn btn-effect id_verified"
             onClick={() => setIdVerifClicked(true)}>
             {false && <img src={verifiedIcon} alt="verified" />}
             Add ID Verification
           </button>
         </div>
-        <span className="show_label id_info" onClick={() => setDigitalIdInfo(true)}>ID verification is required as part of Stripe ID verification process.</span>
+        <span className="show_label id_info" onClick={() => setDigitalIdInfo(true)}>ID verification is required as part of Stripe ID verification process.</span> */}
 
         <button className={`fill_btn full_btn btn-effect${!updated ? ' disabled' : ''}`} onClick={handleSave}>Save changes</button>
       </div>

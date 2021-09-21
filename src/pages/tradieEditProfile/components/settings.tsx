@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import Switch from '@material-ui/core/Switch';
 import storageService from '../../../utils/storageService';
+import { updateChatUserDetails } from '../../../services/firebase';
 interface Setting {
   pushNotificationCategory: []
 }
@@ -50,6 +51,7 @@ const USER_BUILDER_NOTIF = [
 
 const Settings = ({ getSettings, updateSettings, settings }: Props) => {
   const [pushCategory, setPushCategory] = useState<Array<number>>([]);
+  const [updatedSettingNo, setUpdatedSettingNo] = useState<number>(0);
 
   useEffect(() => {
     getSettings();
@@ -61,7 +63,16 @@ const Settings = ({ getSettings, updateSettings, settings }: Props) => {
     }
   }, [settings]);
 
+  useEffect(() => {
+    if (pushCategory.length > 0 && updatedSettingNo) {
+      const val: boolean = pushCategory.includes(1) ? true : false;
+      updateChatUserDetails('isNotification', val);
+      setUpdatedSettingNo(0);
+    }
+  }, [pushCategory]);
+
   const handleChange = (val: number, isValExist: boolean) => {
+    if (val === 1) setUpdatedSettingNo(val);
     let updatedPushNotif: any;
     if (isValExist) {
       updatedPushNotif = [...pushCategory].filter(i => i !== val);

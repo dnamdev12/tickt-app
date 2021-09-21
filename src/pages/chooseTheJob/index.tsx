@@ -122,6 +122,8 @@ const ChooseTheJob = (props: any) => {
                                                             ['DD MMM', 'DD MMM YY']
                                                         )}
                                                     </span>
+                                                    <span>
+                                                        {`${item?.jobDescription.substring(0, 120)} ${item?.jobDescription?.length > 120 ? '...' : ''}`}</span>
                                                 </div>
                                             </div>
                                         </li>

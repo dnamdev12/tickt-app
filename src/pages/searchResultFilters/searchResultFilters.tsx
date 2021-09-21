@@ -37,7 +37,7 @@ const SearchResultFilters = (props: any) => {
         pay_type: 'Per hour',
         budget: [2100, 5100],
         showBudgetPerHour: [2100, 5100],
-        showBudgetFixed: [210000, 510000],
+        showBudgetFixed: [2100, 5100],
         showResultClicked: false
     });
 
@@ -361,7 +361,7 @@ const SearchResultFilters = (props: any) => {
                         </div>
                         <div className="radio_wrap agree_check">
                             <input className="filter-type filled-in" name="pay_type" type="radio" id="fixed" checked={sortByPrice.pay_type === 'Fixed price' ? true : false}
-                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", budget: [210000, 510000], showBudgetFixed: [210000, 510000] }))}
+                                onClick={() => setSortByPrice((prevData: any) => ({ ...prevData, pay_type: "Fixed price", budget: [2100, 5100], showBudgetFixed: [2100, 5100] }))}
                             />
                             <label htmlFor="fixed">Fixed price</label>
                         </div>
@@ -382,13 +382,14 @@ const SearchResultFilters = (props: any) => {
                                 displayType={'text'}
                                 thousandSeparator={true}
                                 prefix={' - $'}
+                                suffix={sortByPrice.budget[1] === 10000 ? '+' : ''}
                             />
                         </span>
                         <Typography id="range-slider" gutterBottom></Typography>
                         <Slider
                             min={0}
-                            max={sortByPrice.pay_type === 'Per hour' ? 10000 : 999999}
-                            step={sortByPrice.pay_type === 'Per hour' ? 100 : 10000}
+                            max={sortByPrice.pay_type === 'Per hour' ? 10000 : 10000}
+                            step={sortByPrice.pay_type === 'Per hour' ? 100 : 100}
                             value={sortByPrice.pay_type === 'Per hour' ? sortByPrice.showBudgetPerHour : sortByPrice.showBudgetFixed}
                             onChange={handleSliderChange}
                             aria-labelledby="range-slider"

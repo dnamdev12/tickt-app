@@ -17,7 +17,7 @@ interface Propstype {
 
 const DATA = [
     { title: 'Reset Password' },
-    { title: 'Verify your number' },
+    { title: 'Verify your email' },
     { title: 'Create password' },
 ]
 

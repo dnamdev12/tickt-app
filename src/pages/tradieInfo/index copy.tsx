@@ -959,7 +959,7 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouchesData?.length} vouches`}
+                                {`View all ${tradieInfo?.vouchesData?.length} vouche${tradieInfo?.vouchesData?.length ? 's' : ''}`}
                             </button>
                         </div>
                     </div>

@@ -18,6 +18,7 @@ interface Proptypes {
   handleStepBack: () => void;
 }
 // "Per hour" and "Fixed price"
+const isDevelopment = process.env.NODE_ENV == "development" ? true : false;
 const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 
@@ -28,6 +29,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   const [reactSelect, setReactSelect] = useState({ value: "Per hour", label: "Per Hour" });
 
   const [checkType, setCheckType] = useState('1');
+  const [canDisable, setCanDisable] = useState('0');
 
   useEffect(() => {
     if (stepCompleted && !localChanges) {
@@ -35,18 +37,17 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         pay_type: data.pay_type || 'Fixed price',
         amount: data.amount
       });
-      console.log({
-        quoteJob: data.quoteJob
-      })
+
       if (data.quoteJob == '0') {
         if (data.pay_type === 'Per hour') {
           setReactSelect({ value: 'Per hour', label: 'Per Hour' });
         } else {
           setReactSelect({ value: 'Fixed price', label: 'Fixed Price' });
         }
-        setCheckType('1')
+        setCheckType('1');
       } else {
-        setCheckType('2')
+        setCheckType('2');
+        setCanDisable('1');
       }
 
       setLocationChanges(true);
@@ -61,10 +62,12 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
 
   const checkDecimal = (name: string, value: string) => {
     let split_values = value.split('.');
+    console.log({
+      split_values
+    })
     if (split_values.length) {
       let first: any = split_values[0];
       let last: any = split_values[1];
-
 
       if (last && last?.length > 2) {
         return 'Price field must have maximum 2 digits after decimal';
@@ -74,10 +77,14 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         return 'Price field must have 6 or less digits before decimal';
       }
 
+      let value_: number = +value;
+      if (value_ !== 0 && value_ < 10) {
+        return 'Minimum amount value is 10.'
+      }
       return ''
 
     } else {
-      return ''
+      return '';
     }
   }
   const isInvalid = (name: string, value: string) => {
@@ -90,7 +97,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
   }
 
   const handleChange = (value: string, name: string) => {
-    setErrors((prevErrors) => ({
+
+    setErrors((prevErrors: any) => ({
       ...prevErrors,
       [name]: isInvalid(name, value),
     }));
@@ -233,7 +241,11 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
           <div className="form_field">
             <div className="checkbox_wrap agree_check">
               <input
-                onChange={() => { checkType !== '1' ? setCheckType('1') : setCheckType('0') }}
+                onChange={() => {
+                  if (canDisable !== '1') {
+                    checkType !== '1' ? setCheckType('1') : setCheckType('0')
+                  }
+                }}
                 checked={checkType === '1' ? true : false}
                 className="filter-type filled-in"
                 type="checkbox"
@@ -260,7 +272,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         placeholder="Price"
                         name="Price"
                         className="detect_input_ltr"
-                        min="1"
+                        min="10"
+                        // min="1"
                         step=".01"
                         required
                         value={amount}
@@ -291,40 +304,40 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
               </div>
             </div>
           </div>
-
-          {/* <div className="form_field">
-            <div className="checkbox_wrap agree_check">
-              <input
-                onChange={() => {
-                  if (checkType !== '2') {
-                    setCheckType('2')
-                  } else {
-                    setCheckType('0')
-                  }
-                  setPaymentDetails({ pay_type: 'Per hour', amount: '' })
-                  setErrors({ pay_type: '', amount: '' });
-                }}
-                checked={checkType === '2' ? true : false}
-                className="filter-type filled-in"
-                type="checkbox"
-                id="milestone2" />
-              <label htmlFor="milestone2">
-                <b>
-                  {'I need a quote'}
-                </b>
-                <div className="sub-title">
-                  Find a quote that suits your budget
-                </div>
-              </label>
+          {isDevelopment && (
+            <div className="form_field">
+              <div className="checkbox_wrap agree_check">
+                <input
+                  onChange={() => {
+                    if (checkType !== '2') {
+                      setCheckType('2')
+                    } else {
+                      setCheckType('0')
+                    }
+                    setPaymentDetails({ pay_type: 'Per hour', amount: '' })
+                    setErrors({ pay_type: '', amount: '' });
+                  }}
+                  checked={checkType === '2' ? true : false}
+                  className="filter-type filled-in"
+                  type="checkbox"
+                  id="milestone2" />
+                <label htmlFor="milestone2">
+                  <b>
+                    {'I need a quote'}
+                  </b>
+                  <div className="sub-title">
+                    Find a quote that suits your budget
+                  </div>
+                </label>
+              </div>
             </div>
-          </div> */}
+          )}
 
           <div className="form_field">
             <button
               className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
               onClick={handleContinue}>Continue</button>
           </div>
-
 
           {/* <div className="flex_row">
                         <div className="flex_col_sm_5">

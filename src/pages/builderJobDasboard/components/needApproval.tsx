@@ -113,9 +113,11 @@ class NeedApproval extends Component<Props, State> {
             return null;
         }
 
+        let titleText = jobType.charAt(0).toUpperCase() + jobType.slice(1);
         return (
             <React.Fragment>
-                <span className="sub_title">{jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs</span>
+                <span className="sub_title">{titleText == 'Approval' ? 'Need Approval' : ''}</span>
+                {/* {'Jobs'} */}
                 <div className="flex_row tradies_row">
                     {listData?.length ?
                         listData.map(({

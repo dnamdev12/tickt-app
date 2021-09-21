@@ -59,6 +59,9 @@ import QuoteJobCancel from '../pages/builderJobDasboard/components/quoteJobs/quo
 import DocViewerComponent from '../pages/shared/DocViewer';
 import quoteJobCancel from '../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel';
 
+import AllQuotes from '../pages/builderJobDasboard/components/quoteJobs/ListQuotes';
+import ViewQuote from '../pages/builderJobDasboard/components/quoteJobs/viewQuote';
+ 
 const routes = [
     {
         name: 'main',

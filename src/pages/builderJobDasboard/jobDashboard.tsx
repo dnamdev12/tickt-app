@@ -10,6 +10,11 @@ import NeedApproval from './components/needApproval';
 import ApplicantsList from './components/applicantsList';
 //@ts-ignore
 import InfiniteScroll from "react-infinite-scroll-component";
+
+
+import ViewQuote from './components/quoteJobs/viewQuote';
+import ListQuotes from './components/quoteJobs/ListQuotes';
+
 interface Props {
     getActiveJobsBuilder: (page: number) => void,
     getPastJobsBuilder: (page: number) => void,
@@ -80,25 +85,37 @@ class JobDashboard extends Component<Props, State> {
 
             let urlParams = new URLSearchParams(nextProps?.location?.search);
             let activeType_ = urlParams.get('active');
-            let jobId_ = urlParams.get('jobId');
-            let editMilestone_ = urlParams.get('editMilestone');
-            let lodgeDispute_ = urlParams.get('lodgeDispute');
-            let cancelJob_ = urlParams.get('cancelJob');
-            let markMilestone_ = urlParams.get('markMilestone');
+            let ListQuote = urlParams.get('quotes');
+            let viewQuotes = urlParams.get('viewQuotes');
+            // let jobId_ = urlParams.get('jobId');
+            // let editMilestone_ = urlParams.get('editMilestone');
+            // let lodgeDispute_ = urlParams.get('lodgeDispute');
+            // let cancelJob_ = urlParams.get('cancelJob');
+            // let markMilestone_ = urlParams.get('markMilestone');
 
-            if (activeType_) {
-                if (activeType_ !== activeType) {
+
+            let activeTypeByUrl: any = activeType_;
+            if (ListQuote === "true") {
+                activeTypeByUrl = 'listQuote'
+            }
+
+            if (viewQuotes === "true") {
+                activeTypeByUrl = 'quotes'
+            }
+
+            if (activeTypeByUrl) {
+                if (activeTypeByUrl !== activeType) {
                     this.setState({
-                        activeType: activeType_,
+                        activeType: activeTypeByUrl,
                         selectedItem: {
-                            jobtype: activeType_,
+                            jobtype: activeTypeByUrl,
                             jobid: null,
                             sortby: 1,
                             specializationId: '',
                         },
                     }, () => {
                         this.setAfterItems({
-                            jobtype: activeType_,
+                            jobtype: activeTypeByUrl,
                             currentPage: 1,
                             dataItemsAddons: { page: 1, jobId: null, sortBy: 1 }
                         })
@@ -378,19 +395,42 @@ class JobDashboard extends Component<Props, State> {
                     }
                 } else if (hasLoad && past?.length && page_get === currentPage) {
                     let result = [];
-                    if (JSON.stringify(prevValues) === JSON.stringify(past) && page_get === currentPage) {
-                        // same data items here!
-                    } else {
-                        result = page_get > 0 && page_get === currentPage ? [...prevValues, ...past] : past;
+                    let concatedItems: any = prevValues;
+                    let firstItem: any = null;
+                    
+                    if (Array.isArray(past) && past?.length) {
+                        firstItem = past[0];
                     }
-                    this.setState({
-                        pastJobs: result,
-                        count: {
-                            approveCount: needApprovalCount,
-                            applicantCount: newApplicantsCount
-                        },
-                        actualLoad: true
-                    });
+
+                    if (firstItem?.jobId) {
+                        let ifMatch = prevValues.find((item: any) => item.jobId === firstItem?.jobId);
+                        if (!ifMatch) {
+                            concatedItems = [...prevValues, ...past]
+                        }
+                    }
+
+                    result = page_get > 0 && page_get === currentPage ?
+                        page_get == 1 && currentPage == 1 ? past : concatedItems
+                        : past;
+
+                    let randomState = this.state.pastJobs && Array.isArray(this.state.pastJobs) && this.state.pastJobs[0] && this.state.pastJobs[0].mathrandom ? this.state.pastJobs[0].mathrandom : ''
+                    let randomResult = result && Array.isArray(result) && result[0] && result[0].mathrandom ? result[0].mathrandom : '';
+
+
+                    if (this.state.count.approveCount !== needApprovalCount ||
+                        this.state.count.applicantCount !== newApplicantsCount ||
+                        this.state.pastJobs?.length !== result?.length ||
+                        randomState !== randomResult
+                    ) {
+                        this.setState({
+                            pastJobs: result,
+                            count: {
+                                approveCount: needApprovalCount,
+                                applicantCount: newApplicantsCount
+                            },
+                            actualLoad: true
+                        });
+                    }
                 } else {
                     this.checkAndUpdateCount({
                         needApprovalCount,
@@ -747,73 +787,20 @@ class JobDashboard extends Component<Props, State> {
                                     activeType={activeType}
                                     history={props.history}
                                 />)}
-
-                        </InfiniteScroll>
-
-
-
-                        {/* <div className="detail_col element-side-scroll">
-
-                            {jobtype === 'past' && (
-                                <PastJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={pastJobs}
-                                    jobType={jobtype}
-                                    activeType={activeType}
-                                    history={props.history}
-                                    getPastJobsBuilder={props?.getPastJobsBuilder}
-                                />)}
-                            {jobtype === 'active' && (
-                                <ActiveJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={activeJobs}
-                                    jobType={jobtype}
-                                    activeType={activeType}
+                            {jobtype === 'listQuote' && (
+                                <ListQuotes
+                                    {...props}
                                     setJobLabel={setSelected}
-                                    history={props.history}
-                                    globalJobId={globalJobId}
-                                    enableEditMilestone={enableEditMilestone}
-                                    enableLodgeDispute={enableLodgeDispute}
-                                    enableCancelJob={enableCancelJob}
-                                />)}
-                            {jobtype === 'open' && (
-                                <OpenJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={openJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
-                                />)}
-                            {jobtype === 'applicant' && (
-                                <NewApplicantComponent
-                                    isLoading={isLoading}
-                                    dataItems={applicantJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    history={props.history}
-                                />)}
-                            {jobtype === 'approval' && (
-                                <NeedApproval
-                                    isLoading={isLoading}
-                                    dataItems={approvalJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
                                 />
                             )}
-                            {jobtype === 'applicantList' && (
-                                <ApplicantsList
-                                    isLoading={isLoading}
-                                    items={applicantsListJobs}
-                                    jobid={jobid}
-                                    specializationId={specializationId}
+                            {jobtype === 'quotes' && (
+                                <ViewQuote
+                                    {...props}
                                     setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
-                                />)}
-                        </div> */}
+                                />
+                            )}
+
+                        </InfiniteScroll>
                     </div>
                 </div>
             </div >
