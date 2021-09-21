@@ -86,7 +86,7 @@ export const verifyEmailOtp = async (data: object) => {
 
 export const tradieDeletePortfolioJob = async (portfolioId: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.delete((storageService.getItem('userType') === 1 ? Urls.tradieDeletePortfolioJob : Urls.builderDeletePortfolioJob) +  `?portfolioId=${portfolioId}`);
+  const response: FetchResponse = await NetworkOps.delete((storageService.getItem('userType') === 1 ? Urls.tradieDeletePortfolioJob : Urls.builderDeletePortfolioJob) + `?portfolioId=${portfolioId}`);
   setLoading(false);
   if (response.status_code === 200) {
     setShowToast(true, response.message);
@@ -118,10 +118,9 @@ export const getSettings = () => ({
   type: actionTypes.GET_SETTINGS,
 });
 
-export const updateSettings = (settings: any, newSettings: any) => ({
+export const updateSettings = (settings: any) => ({
   type: actionTypes.UPDATE_SETTINGS,
   settings,
-  newSettings,
 });
 
 export const getTradieProfile = (data: any) => ({ type: actionTypes.GET_TRADIE_PROFILE, data });

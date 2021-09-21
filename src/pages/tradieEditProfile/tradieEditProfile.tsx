@@ -40,7 +40,7 @@ interface Props {
     updateBankDetails: (data: any) => void,
     bankDetails: BankDetails,
     getSettings: () => void;
-    updateSettings: (settings: any, newSettings: any) => void;
+    updateSettings: (settings: any) => void;
     settings: Settings,
 }
 

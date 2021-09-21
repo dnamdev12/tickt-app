@@ -1,8 +1,13 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+
 import templateImage from '../../../../assets/images/thanks-bg.jpg';
 
 const QuoteSuccess = (props: any) => {
+  const { pathname }: any = useLocation();
+  let isQuoteInvited: boolean = pathname === '/quote-job-success/invite' ? true : false;
+  
   return (
     <div className="img_text_wrap">
       <figure className="full_image">
@@ -13,7 +18,7 @@ const QuoteSuccess = (props: any) => {
               {'Nice!'}
             </h1>
             <span className="show_label">
-              {`You have submitted your bid. You can view your bid in your applied jobs tab.`}
+              {`You have submitted your bid. You can view your bid in your ${isQuoteInvited ? 'active' : 'applied'} jobs tab.`}
             </span>
             <div className="btn_wrapr">
               <button

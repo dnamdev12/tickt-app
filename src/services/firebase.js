@@ -179,6 +179,7 @@ export const updateChatUserDetails = async (updateType, value) => {
             ...(updateType === 'userImage' && { image: value }),
             ...(updateType === 'userName' && { name: value }),
             ...(updateType === 'deviceToken' && { deviceToken: value }),
+            ...(updateType === 'isNotification' && { isNotification: value }),
         });
         console.log(`firebase ${updateType} update success`);
     } catch (err) {

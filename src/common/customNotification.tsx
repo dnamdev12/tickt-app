@@ -43,9 +43,9 @@ const CustomNotification = (props: any) => {
                 <img src={close} alt="img" />
             </span>
             <div className="wrapppr" onClick={() => {
+                markNotifAsRead({ notificationId: notification?._id });
                 const url1: string = onNotificationClick(notification);
                 const url2: string = history.location?.pathname + history.location?.search;
-                markNotifAsRead({ notificationId: notification?._id });
                 setShowNotification(false);
                 if (url1 === url2) {
                     window.location?.reload();
