@@ -144,7 +144,8 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                       </span>
                     </div>
                   </div>
-                  {quoteJob && <div className="quote-text"
+                  {quoteJob && <div className="text-center mt-sm">
+                    <div className="view_quote"
                     onClick={() => {
                       history.push({
                         pathname: `/active-quote-job`,
@@ -158,6 +159,7 @@ const ActiveJobs = ({ loading, getActiveJobList, activeJobList, newJobsCount, re
                       })
                     }}>
                     {'View your quote'}
+                  </div>
                   </div>}
                 </div>
               </div>
