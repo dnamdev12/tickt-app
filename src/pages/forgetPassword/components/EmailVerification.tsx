@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { checkMobileNumber, verifyOtp } from '../../../redux/auth/actions';
+import { checkMobileNumber, verifyOtp, resendOtp } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import { setShowToast } from '../../../redux/common/actions';
@@ -20,6 +20,11 @@ const PhoneNumber = (props: Propstype) => {
     const changeHandler = (newOtp: any) => {
         setOTP(newOtp)
     }
+
+    useEffect(() => {
+        const timer: any = counter > 0 && setInterval(() => setCounter(counter - 1), 1000);
+        return () => clearInterval(timer);
+    }, [counter]);
 
     const validateForm = () => {
         const newErrors: any = {};
@@ -50,10 +55,23 @@ const PhoneNumber = (props: Propstype) => {
         }
     }
 
+    const resendHandler = async () => {
+        let data = {
+            "email": '',//props.email,
+            "user_type": ''//props.userType
+        };
+        let response = await resendOtp(data);
+        if (response.success) {
+            setShowToast(true, 'We have resent the verification code on your email. Please check your email.');
+            setCounter(Constants.OTP_TIMER);
+        }
+    }
+
     return (
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
-                {/* <div className="form_field">
+                {/* 
+                <div className="form_field">
                     <label className="form_label">
                         {'We have sent a mail with varification link. '}
                     </label>
@@ -61,7 +79,7 @@ const PhoneNumber = (props: Propstype) => {
                         {'Please check your email. Tap the link to verify your account and to get started!'}
                     </label>
                 </div>
- */}
+                */}
 
                 <div className="form_field">
                     <div className="otp_input_wrapper">
@@ -90,7 +108,7 @@ const PhoneNumber = (props: Propstype) => {
                         {/* {'Didn’t receive a mail with link?'}  */}
                     </span>
                     <br />
-                    <span className="link">
+                    <span onClick={resendHandler} className="link">
                         {'Re-send code'}
                         {/* {'Re-send a mail'} */}
                     </span>

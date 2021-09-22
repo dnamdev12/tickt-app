@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { checkMobileNumber, verifyOtp, verifyMobileOtp } from '../../../redux/auth/actions';
+import { checkMobileNumber, verifyOtp, verifyMobileOtp , resendOtp} from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import OtpInput from "react-otp-input";
@@ -8,7 +8,8 @@ interface Propstype {
     updateSteps: (num: number) => void
     step: number
     history?: any
-    mobileNumber: string
+    mobileNumber: string,
+    userType?: any
 }
 
 const VerifyPhoneNumber = (props: Propstype) => {
@@ -55,9 +56,14 @@ const VerifyPhoneNumber = (props: Propstype) => {
     }
 
     const resendHandler = async (e: any) => {
-        e.preventDefault()
-        const res: any = await checkMobileNumber(props.mobileNumber)
-        if (res.success) {
+        e.preventDefault();
+        let data = {
+            "mobileNumber": props.mobileNumber,
+            "user_type": props.userType
+        };
+        let response = await resendOtp(data);
+        if (response.success) {
+        // const res: any = await checkMobileNumber(props.mobileNumber)
             setCounter(Constants.OTP_TIMER)
         }
     }

@@ -201,11 +201,11 @@ const Signup = (props: Propstype) => {
             case 1:
                 return <CreateAccount updateSteps={updateSteps} history={props.history} step={steps} data={signupData} onNewAccount={onNewAccount} showModal={props.showModal} setShowModal={props.setShowModal} modalUpdateSteps={props.modalUpdateSteps} />
             case 2:
-                return <VerifyEmail updateSteps={updateSteps} step={steps} email={signupData.email} />
+                return <VerifyEmail updateSteps={updateSteps} step={steps} userType={signupData.user_type} email={signupData.email} />
             case 3:
                 return <PhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
             case 4:
-                return <VerifyPhoneNumber updateSteps={updateSteps} step={steps} mobileNumber={signupData.mobileNumber} />
+                return <VerifyPhoneNumber updateSteps={updateSteps} step={steps} userType={signupData.user_type} mobileNumber={signupData.mobileNumber} />
             case 5:
                 return <CreatePassword updateSteps={updateSteps} step={steps} password={signupData.password} />
             case 6:

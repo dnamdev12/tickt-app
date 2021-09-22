@@ -13,13 +13,14 @@ const ServiceEnum = {
     builder: 'builder/',
     tradie: 'tradie/',
     payment: 'payment/',
-    quote:'quote/'
+    quote: 'quote/'
 }
 
 const Urls = {
     signup: `${versions.v1}${ServiceEnum.auth}signup`,
     login: `${versions.v1}${ServiceEnum.auth}login`,
     logout: `${versions.v1}${ServiceEnum.auth}logout`,
+    resendOtp: `${versions.v1}${ServiceEnum.auth}resendEmailOtp`,
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,

@@ -59,7 +59,7 @@ const ForgetPassword = (props: Propstype) => {
             setSteps(4);
         }
     }
-
+    console.log({loginData})
     const renderPages = () => {
         switch (steps) {
             // case 1:

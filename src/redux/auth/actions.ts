@@ -228,3 +228,12 @@ export const markNotifAsRead = async (data: any) => {
   }
   return { success: false };
 };
+
+export const resendOtp = async (data: any) => {
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.resendOtp, data);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+};
