@@ -3,6 +3,7 @@ import { checkMobileNumber } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import { setShowToast } from '../../../redux/common/actions';
+import NumberFormat from "react-number-format";
 interface Propstype {
     updateSteps: (num: number, data: any) => void
     step: number
@@ -97,7 +98,17 @@ const PhoneNumber = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Phone Number</label>
                     <div className="text_field">
-                        <input type="text" className="detect_input_ltr" placeholder="400 123 456" value={mobileNumb} onChange={changeHandler} maxLength={11} />
+                        {/* <input type="text" className="detect_input_ltr" placeholder="400 123 456" value={mobileNumb} onChange={changeHandler} maxLength={11} /> */}
+                        <NumberFormat
+                            type="text"
+                            className="detect_input_ltr"
+                            placeholder="400 123 456"
+                            value={mobileNumb}
+                            onValueChange={({ value }) => {
+                                setMobileNumb(value);
+                            }}
+                            format="### ### ###"
+                        />
                         <span className="detect_icon_ltr">+61</span>
                     </div>
                     {!!errors.mobileNumber && <span className="error_msg">{errors.mobileNumber}</span>}

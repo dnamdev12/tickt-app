@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import { validateABN } from '../../../utils/common';
+import NumberFormat from "react-number-format";
 
 interface Propstype {
     onSubmitSignup: (data: any) => void,
@@ -118,7 +119,16 @@ const AddABN = (props: Propstype) => {
                     <label className="form_label">Australian Business Number</label>
                     <div className="text_field">
                         {/* <input type="number" placeholder="Enter Australian business number" value={abn} name="abn" onChange={changeHandler} /> */}
-                        <input type="text" placeholder="51 824 753 556" value={ABN} onChange={changeHandler} maxLength={14} />
+                        {/* <input type="text" placeholder="51 824 753 556" value={ABN} onChange={changeHandler} maxLength={14} /> */}
+                        <NumberFormat
+                            type="text"
+                            placeholder="51 824 753 556"
+                            value={ABN}
+                            onValueChange={({ value }) => {
+                                setAbn(value);
+                            }}
+                            format="## ### ### ###"
+                        />
                     </div>
                     {!!errors.abn && <span className="error_msg">{errors.abn}</span>}
                 </div>
@@ -131,4 +141,4 @@ const AddABN = (props: Propstype) => {
     )
 }
 
-export default AddABN
+export default AddABN;
