@@ -265,7 +265,7 @@ body {
       padding: 8px;
       @include border-radius(6px);
       background-color: #f6f7f9;
-      font: 12px/1.3 'Neue Haas Grotesk Text Pro Bold';
+      font: 12px/1.3 'Neue Haas Grotesk Text Pro Medium';
       color: var(--blue);
       cursor: pointer;
       &.active {
@@ -1120,7 +1120,7 @@ body {
 	}
   }
   .description {
-    margin: 45px 0 20px;
+    margin: 45px -10px 20px;
     .sub_title {
       margin-bottom: 18px;
       @media (max-width: 650px){
@@ -3313,6 +3313,7 @@ body {
     min-height: 40px !important;
     background-color: transparent;
     box-shadow: none;
+    padding: 10px 0;
     .chat {
       @include position(absolute, 16px, 16px, auto, auto);
       width: 40px;
@@ -4976,6 +4977,16 @@ body {
 }
 .total_quote{
   margin: 0 0 55px 150px;
+}
+
+.view_quote {
+  display: inline-block;
+  color: var(--blue-two);
+  font: 13px 'Neue Haas Grotesk Text Pro Medium';
+  background-color: #dfe5ef;
+  padding: 5px;
+  border-radius: 6px;
+  cursor: pointer;
 }
 
 .reason_wrap{
