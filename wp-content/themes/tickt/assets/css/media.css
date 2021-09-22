@@ -1,0 +1,224 @@
+/*-----------------------1400-------------------------------*/
+
+@media(max-width:1300px){
+    footer p {
+        font-size: 12px;
+        width: 100%;
+    }
+    #OnboardModal .modal-dialog{
+        min-height: 550px;
+    }
+    #OnboardModal .modal-content{
+        min-height: 550px;
+        height: 550px;
+        max-height: 550px;
+    }
+}
+
+/*-----------------------1400-------------------------------*/
+
+
+/*-----------------------1300-------------------------------*/
+
+
+@media(max-width:1300px){
+    footer p {
+        font-size: 12px;
+        width: 100%;
+    }
+}
+
+
+/*-----------------------1300-------------------------------*/
+
+/*-----------------------1024-------------------------------*/
+@media(max-width:1024px){
+footer p {
+    font-size: 12px;
+    width: 100%;
+}
+.job_card {
+    width: 363px;
+    margin: 0 auto 20px;
+}
+.banner_txt h1 {
+    font: 28px/1.4 'Neue Haas Grotesk Text Pro Bold';
+}
+}
+
+/*-----------------------950-------------------------------*/
+
+@media(max-width:950px){
+    
+.auth_btn {
+    margin: 0 0 0 0;
+}
+.auth_btn li {
+    margin: 0px 0 0 20px;
+}
+}
+/*-----------------------950-------------------------------*/
+
+
+
+/*-----------------------800-------------------------------*/
+@media(max-width:800px){
+.app_wrapper{
+    padding: 77px 0 230px 0;
+}
+
+header{
+    position: fixed;
+}
+.banner_txt h1 {
+    font: 26px/1.4 'Neue Haas Grotesk Text Pro Bold';
+}
+
+#OnboardModal .modal-dialog{
+    width: 100%;
+    max-width: 100%;
+}
+#OnboardModal .left_col{
+    display: none;
+}
+#OnboardModal .right_col{
+    padding: 40px 0 20px 50px;
+}
+.onboarding_head {
+    width: 340px;
+    margin: 30px auto;
+}
+.form_wrapper{
+    margin: auto;
+}
+footer p {
+    font-size: 12px;
+    width: 100%;
+}
+.side_nav li {
+    margin: 0 15px;
+    position: relative;
+}
+
+.about_block {
+    padding: 35px 0;
+}
+.tailord_block .container{
+    padding: 30px 0;
+}
+.sphers_block .sphere {
+    width: 123px;
+    margin: 0 auto;
+}
+.about_block .flex_col_sm_6 {
+    width: 50%;
+}
+.about_block .content {
+    padding: 20px;
+}
+}
+/*-----------------------800 close-------------------------------*/
+
+
+
+/*-----------------------700-------------------------------*/
+
+@media(max-width:700px){
+    .app_wrapper{
+        padding-top: 68px;
+        padding-bottom: 300px;
+    }
+    .about_block .flex_col_sm_6 {
+        width: 100%;
+    }
+    .flex_mob {
+        flex-flow: column-reverse;
+    }
+
+    #OnboardModal .modal-dialog{
+        width: 95%;
+    }
+
+    #OnboardModal .right_col{
+        padding: 20px 0 20px 10px;
+        width: 100%;
+    }
+
+    .onboarding_head .back_btn{
+        top: 0;
+    }
+   
+    .flex_headrow {
+        align-items: baseline;
+    }
+    header .fill_btn, a.fill_btn {
+        font-size: 12px;
+        width: 0;
+        min-width: 139px;
+        padding: 6px;
+    }
+    .auth_btn li {
+        margin: 0 6px;
+    }
+    header .fill_grey_btn, a.fill_grey_btn{
+        padding: 6px;
+    }
+    .mob_menu_btn{
+        display: block;
+    }
+  
+    .banner_txt h1 {
+        margin-bottom: 4px;
+        font-size: 16px;
+    }
+    .banner_txt p{
+        margin-bottom: 15px;
+        font-size: 13px;
+    }
+    .tailord_block ul li {
+        display: inline-block;
+        width: 50%;
+    }
+  
+  
+    .about_block .content {
+        max-width: 420px;
+        margin: 31px auto;
+    }
+    
+    .mission_block {
+        padding: 73px 0px 31px;
+    }
+
+    .features_block{
+        padding: 40px 0;
+    }
+    .features_block .feature_wrap{
+        margin: 12px auto;
+    }
+    .features_block figure {
+        width: 50px;
+        height: 50px;
+        margin: 0 0 23px;
+    }
+
+    .footer_banner_block .title{
+        margin-bottom: 5px;
+    }
+    
+    .foot_row {
+       padding: 25px 0px;
+        flex-flow: wrap;
+    }
+    .logo_col {
+        width: 100%;
+    }
+    .links_col {
+        width: 100%;
+        margin: 21px 0;
+    }
+    .social_col {
+        width: 100%;
+        justify-content: space-between;
+    }
+}

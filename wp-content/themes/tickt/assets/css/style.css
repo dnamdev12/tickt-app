@@ -1,0 +1,1612 @@
+/*************Reset ************/
+* {
+    border: 0 none;
+    outline: 0;
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    -webkit-appearance: value;
+    -moz-appearance: value;
+    appearance: value;
+    word-break: break-word;
+}
+html, body, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, font, img, ins, kbd, q, s, samp, small, span, strike, strong, sub, sup, tt, var, b, u, i, center, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, fieldset {
+    margin: 0px;
+    padding: 0px;
+    border: 0;
+    outline: 0;
+    font-size: 100%;
+}
+a, img a {
+    text-decoration: none;
+    border: 0;
+    outline: 0 !important;
+    transition: all ease-in 0.3s;
+    -moz-transition: all ease-in 0.3s;
+    -ms-transition: all ease-in 0.3s;
+    -o-transition: all ease-in 0.3s;
+    -webkit-transition: all ease-in 0.3s;
+}
+figure {
+    margin: 0;
+    padding: 0;
+}
+a, button, input {
+    transition: all ease-in 0.3s;
+    -moz-transition: all ease-in 0.3s;
+    -ms-transition: all ease-in 0.3s;
+    -o-transition: all ease-in 0.3s;
+    -webkit-transition: all ease-in 0.3s;
+}
+:focus {
+    outline: 0px;
+}
+table {
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+ol, ul, li {
+    list-style-type: none;
+    margin: 0px;
+    padding: 0px;
+}
+img, button {
+    user-select: none;
+    -webkit-user-drag: auto;
+}
+button {
+    cursor: pointer;
+}
+a, img {
+    -webkit-tap-highlight-color: transparent;
+    -moz-tap-highlight-color: transparent;
+}
+input, textarea, button, select, a {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+a:hover, a:active, a:focus {
+    text-decoration: none !important;
+}
+.clear {
+    clear: both;
+}
+.clearfix:after {
+    clear: both;
+}
+.clearfix:before, .clearfix:after {
+    content: " ";
+    display: table;
+}
+.full-height, body, html {
+    height: 100%;
+}
+.owl-carousel {
+    touch-action: manipulation;
+}
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+/* Firefox */
+input[type="number"] {
+    -moz-appearance: textfield;
+}
+a {
+    cursor: pointer;
+}
+img {
+    user-select: none;
+    -webkit-user-drag: none;
+}
+h2, h3, h4, h5 {
+    font-size: 28px;
+    font-family: "Neue Haas Grotesk Text Pro Bold";
+    line-height: 0.98;
+    color: var(--black);
+    margin-bottom: 20px;
+}
+@media (max-width: 768px) {
+    h2, h3, h4, h5 {
+        font-size: 24px;
+        margin-bottom: 18px;
+   }
+}
+@media (max-width: 650px) {
+    h2, h3, h4, h5 {
+        font-size: 22px;
+   }
+}
+::-webkit-scrollbar {
+  width: 5px;
+}
+::-webkit-scrollbar-track {
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+}
+::-webkit-scrollbar-thumb {
+  -webkit-border-radius: 10px;
+  border-radius: 10px;
+  background: var(--blue);
+  -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.5);
+}
+::-webkit-scrollbar-thumb:window-inactive {
+  background: var(--blue);
+}
+
+html {
+  scrollbar-color: var(--blue) #f7f8fa;
+}
+
+/**************Reset close ***********/
+
+/**************Fonts ***********/
+@font-face {
+    font-family: "Neue Haas Grotesk Text Pro Roman";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Neue Haas Grotesk Text Pro Roman"), url("../fonts/NHaasGroteskTXPro-55Rg.woff") format("woff");
+}
+@font-face {
+    font-family: "Neue Haas Grotesk Text Pro Medium";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Neue Haas Grotesk Text Pro Medium"), url("../fonts/NHaasGroteskTXPro-65Md.woff") format("woff");
+}
+@font-face {
+    font-family: "Neue Haas Grotesk Text Pro Bold";
+    font-style: normal;
+    font-weight: normal;
+    src: local("Neue Haas Grotesk Text Pro Bold"), url("../fonts/NHaasGroteskTXPro-75Bd.woff") format("woff");
+}
+/**************Fonts close***********/
+
+/**************Colors***********/
+:root {
+    --yellow: #fee600;
+    --blue: #161d4a;
+    --blue-two: #0b41a8;
+    --grey: #dfe5ef;
+    --white: #ffffff;
+    --black: #000000;
+    --black-two: #2d2d2d;
+    --greyish-brown: #313d48;
+    --light-gray: #f7f8fa;
+    --warm-gray: #dfe5ef;
+}
+/**************Colors close***********/
+
+/********Effects *************/
+.link {
+    position: relative;
+    font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+    letter-spacing: 0.3px;
+    color: var(--white) !important;
+    cursor: pointer;
+}
+@media (max-width: 812px) {
+    .link {
+        font-size: 13px !important;
+   }
+}
+@media (max-width: 320px) {
+    .link {
+        font-size: 11px;
+   }
+}
+.link:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 1px;
+    background: var(--white);
+    -webkit-transition: all ease 0.4s;
+    -o-transition: all ease 0.4s;
+    transition: all ease 0.4s;
+}
+.link:hover {
+    color: var(--white) !important;
+}
+.link:hover:after {
+    width: 100%;
+}
+
+.circle {
+    position: relative;
+    border-radius: 100%;
+    box-shadow: none;
+}
+.circle {
+    position: relative;
+    border-radius: 100%;
+    box-shadow: none;
+}
+.circle:hover {
+    color: var(--blue-two);
+}
+.circle::before, .circle::after {
+    content: "";
+    top: 0;
+    left: 0;
+    box-sizing: inherit;
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 100%;
+}
+.circle::before {
+    border: 2px solid transparent;
+}
+.circle:hover::before {
+    border-top-color: var(--blue-two);
+    border-right-color: var(--blue-two);
+    border-bottom-color: var(--blue-two);
+    transition: border-top-color 0.15s linear, border-right-color 0.15s linear 0.1s, border-bottom-color 0.15s linear 0.2s;
+}
+.circle::after {
+    border: 0 solid transparent;
+}
+.circle:hover::after {
+    border-top: 2px solid var(--blue-two);
+    border-left-width: 2px;
+    border-right-width: 2px;
+    transform: rotate(270deg);
+    transition: transform 0.4s linear 0s, border-left-width 0s linear 0.35s;
+}
+
+.btn-effect {
+    position: relative;
+    overflow: hidden;
+}
+.btn-effect::before {
+    width: 0%;
+    content: "";
+    background: #ffffff4f;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    right: 50%;
+}
+.btn-effect::after {
+    width: 0%;
+    content: "";
+    background: #ffffff4f;
+    height: 100%;
+    position: absolute;
+    bottom: 0;
+    opacity: 0;
+    -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+    left: 50%;
+}
+.btn-effect:hover::before, .btn-effect:hover::after {
+    width: 50%;
+    opacity: 1;
+}
+
+
+@-webkit-keyframes hvr-ripple-out {
+    100% {
+        top: -12px;
+        right: -12px;
+        bottom: -12px;
+        left: -12px;
+        opacity: 0;
+   }
+}
+@keyframes hvr-ripple-out {
+    100% {
+        top: -12px;
+        right: -12px;
+        bottom: -12px;
+        left: -12px;
+        opacity: 0;
+   }
+}
+.hvr-ripple-out {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+}
+.hvr-ripple-out:before {
+    content: '';
+    position: absolute;
+    border: var(--grey) solid 6px;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+}
+.hvr-ripple-out:hover:before, .hvr-ripple-out:focus:before, .hvr-ripple-out:active:before {
+    -webkit-animation-name: hvr-ripple-out;
+    animation-name: hvr-ripple-out;
+}
+
+
+/********Effects *************/
+
+/************** Common CSS ****************/
+
+body {
+    font-family: "Neue Haas Grotesk Text Pro Roman", sans-serif !important;
+}
+.app_wrapper {
+    position: relative;
+    min-height: 100%;
+    padding: 0 0px 230px;
+    width: 100%;
+    max-width: 1640px;
+    margin: 0 auto;
+}
+.app_wrapper.home {
+    padding: 0px 0px 180px;
+}
+.custom_container {
+    max-width: 1216px;
+    margin: 0 auto;
+    position: relative;
+}
+@media (max-width: 1366px) {
+    .custom_container {
+        max-width: 1150px;
+   }
+}
+@media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    .custom_container {
+        max-width: 1150px;
+   }
+}
+@media (max-width: 1200px) {
+    .custom_container {
+        max-width: 95%;
+   }
+}
+.section_wrapper {
+    padding: 40px 0 0 0;
+    position: relative;
+}
+@media (max-width: 650px) {
+    .section_wrapper {
+        padding: 20px 0 0 0;
+   }
+}
+.section_wrapper.top_wrap {
+    padding: 60px 0 0 0;
+}
+.line-1 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box!important;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
+}
+.line-2 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box!important;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+}
+.text-center{
+    text-align: center;
+}
+.error_msg {
+    color: red;
+    font-size: 12px;
+    margin:10px 0;
+}
+.commn_para {
+    font-size: 16px;
+    line-height: 1.5;
+    color: var(--blue);
+    margin: 0 0 15px 0;
+}
+@media (max-width: 650px) {
+    .commn_para {
+        font-size: 12px;
+   }
+}
+.info_note {
+    font-size: 14px;
+    text-align: left;
+    color: var(--greyish-brown);
+    display: inline-block;
+    margin-bottom: 20px;
+}
+.title {
+    font: 32px/1.16 'Neue Haas Grotesk Text Pro Bold';
+    color: var(--blue);
+    margin-bottom: 32px;
+    display: block;
+}
+@media (max-width: 812px) {
+    .title {
+        font-size: 20px;
+        margin-bottom: 20px;
+   }
+}
+@media (max-width: 768px) {
+    .title {
+        font-size: 26px;
+        margin-bottom: 14px;
+        max-width: 85%;
+   }
+}
+@media (max-width: 650px) {
+    .title {
+        font-size: 18px;
+        max-width: 100%;
+        margin-bottom: 15px;
+   }
+}
+.sub_title {
+    font: 24px/1.33 'Neue Haas Grotesk Text Pro Bold';
+    color: var(--blue);
+    letter-spacing: 0.1px;
+    margin-bottom: 16px;
+    display: block;
+    position: relative;
+}
+@media (max-width: 812px) {
+    .sub_title {
+        font-size: 22px;
+   }
+}
+@media (max-width: 768px) {
+    .sub_title {
+        font-size: 20px;
+   }
+}
+@media (max-width: 650px) {
+    .sub_title {
+        font-size: 16px;
+   }
+}
+.xs_title {
+    font: 20px/1.4 'Neue Haas Grotesk Text Pro Bold';
+    color: var(--blue);
+    letter-spacing: 0.3px;
+    margin-bottom: 10px;
+    display: block;
+}
+@media (max-width: 650px) {
+    .xs_title {
+        font-size: 16px;
+   }
+}
+.form_field {
+    margin-bottom: 25px;
+}
+.form_label, .show_label {
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #313d48;
+    color: var(--greyish-brown);
+    display: block;
+}
+.show_label {
+    line-height: 1.5;
+}
+.text_field {
+    position: relative;
+}
+input, textarea {
+    border-radius: 3px;
+    padding: 14px 18px;
+    width: 100%;
+    color: var(--blue);
+    background-color: var(--white);
+    border: solid 1px var(--warm-gray);
+    font: 14px 'Neue Haas Grotesk Text Pro Medium';
+    letter-spacing: 0.5px;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    transition: all 0.3s ease-in-out;
+    -webkit-transition: all 0.3s ease-in-out;
+    -moz-transition: all 0.3s ease-in-out;
+    -ms-transition: all 0.3s ease-in-out;
+    -o-transition: all 0.3s ease-in-out;
+    outline: none;
+}
+input:hover, textarea:hover, input:focus, textarea:focus {
+    border: solid 1px var(--blue) !important;
+    box-shadow: 0 0 5px var(--blue);
+}
+input:read-only, textarea:read-only, input:read-only, textarea:read-only {
+    border: none;
+    padding: 0;
+    pointer-events: none;
+}
+input::placeholder, textarea::placeholder {
+    font-family: 'Neue Haas Grotesk Text Pro Roman';
+}
+.detect_input {
+    padding: 15px 38px 15px 18px;
+}
+.detect_icon{
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    background-color: transparent;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--greyish-brown);
+}
+.hide{
+    display: none;
+}
+.fill_btn, a.fill_btn {
+    background-color: var(--yellow);
+    border-radius: 3px;
+    font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+    letter-spacing: 0.3px;
+    color: var(--blue);
+    padding: 10px 20px;
+    transition: all ease-in 0.3s;
+    display: inline-block;
+    min-width: 180px;
+    text-align: center;
+}
+.fill_btn:hover, a.fill_btn:hover {
+    background-color: #ecd501;
+}
+@media (max-width: 650px) {
+    .fill_btn, a.fill_btn {
+        font-size: 12px;
+        min-width: 150px;
+   }
+}
+.fill_grey_btn, a.fill_grey_btn {
+    background-color: var(--grey);
+    border-radius: 3px;
+    font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+    letter-spacing: 0.3px;
+    color: var(--blue);
+    padding: 10px 20px;
+    transition: all ease-in 0.3s;
+    display: inline-block;
+}
+.fill_grey_btn:hover, a.fill_grey_btn:hover {
+    background-color: #dadee6;
+}
+@media (max-width: 650px) {
+    .fill_grey_btn, a.fill_grey_btn {
+        font-size: 12px;
+   }
+}
+.flex_row {
+    display: flex;
+    flex-wrap: wrap;
+}
+.flex_col_sm_6 {
+    width: 50%;
+}
+@media (max-width: 768px) {
+    .flex_col_sm_6 {
+        width: 100%;
+   }
+}
+.flex_col_sm_4 {
+    width: 33.3%;
+    padding: 0 10px;
+}
+@media (max-width: 768px) {
+    .flex_col_sm_4 {
+        width: 50%;
+   }
+}
+.align_center{
+    align-items: center;
+}
+
+.owl-nav{
+    position: relative;
+}
+.owl-prev{
+    position: absolute;
+    left: 100px;
+    width: 40px;
+    height: 40px;
+    background: url('../images/left.svg') center no-repeat;
+    background-size: contain;
+    color: transparent;
+}
+.owl-next{
+    position: absolute;
+    right: 100px;
+    width: 40px;
+    height: 40px;
+    background: url('../images/right.svg') center no-repeat;
+    background-size: contain;
+    color: transparent;
+}
+.owl-dots{
+    display: flex;
+    position: absolute;
+    bottom: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.owl-dots .owl-dot{
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.4);
+    margin: 0 4px;
+}
+.owl-dots .owl-dot.active{
+    background-color: var(--white);
+}
+
+[type="checkbox"]:not(:checked), [type="checkbox"]:checked {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+[type="checkbox"] + label {
+    position: relative;
+    padding-left: 32px;
+    cursor: pointer;
+    display: inline-block;
+    height: 25px;
+    line-height: 18px;
+    font-size: 14px;
+    color: #282828;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -ms-user-select: none;
+}
+[type="checkbox"].filled-in:not(:checked) + label:before {
+    width: 0;
+    height: 0;
+    border: 3px solid transparent;
+    left: 6px;
+    top: 10px;
+    -webkit-transform: rotateZ(37deg);
+    transform: rotateZ(37deg);
+    -webkit-transform-origin: 20% 40%;
+    transform-origin: 100% 100%;
+}
+[type="checkbox"] + label:before, [type="checkbox"]:not(.filled-in) + label:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 18px;
+    height: 18px;
+    z-index: 0;
+    border: 2px solid #5a5a5a;
+    border-radius: 1px;
+    margin-top: 2px;
+    transition: 0.2s;
+}
+[type="checkbox"].filled-in:checked + label:before {
+    top: 1px;
+    left: 2px;
+    width: 8px;
+    height: 13px;
+    border-top: 2px solid transparent;
+    border-left: 2px solid transparent;
+    border-right: 2px solid var(--yellow);
+    border-bottom: 2px solid var(--yellow);
+    -webkit-transform: rotateZ(37deg);
+    transform: rotateZ(37deg);
+    -webkit-transform-origin: 100% 100%;
+    transform-origin: 100% 100%;
+}
+[type="checkbox"].filled-in + label:before, [type="checkbox"].filled-in + label:after {
+    content: "";
+    left: 0;
+    position: absolute;
+    transition: border 0.25s, background-color 0.25s, width 0.2s 0.1s, height 0.2s 0.1s, top 0.2s 0.1s, left 0.2s 0.1s;
+    z-index: 1;
+}
+[type="checkbox"].filled-in:not(:checked) + label:after {
+    width: 22px;
+    height: 22px;
+    background-color: transparent;
+    border: 1px solid #d2d1d1;
+    top: 0px;
+    z-index: 0;
+    border-radius: 50%;
+}
+[type="checkbox"].filled-in:checked + label:after {
+    top: 0;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #ebebeb;
+    background-color: var(--blue-two);
+    z-index: 0;
+    border-radius: 50%;
+}
+[type="radio"]:not(:checked), [type="radio"]:checked {
+    position: absolute;
+    left: -9999px;
+    opacity: 0;
+}
+[type="radio"]:not(:checked) + label, [type="radio"]:checked + label {
+    position: relative;
+    padding-left: 25px;
+    cursor: pointer;
+    display: inline-block;
+    height: 25px;
+    line-height: 24px;
+    font-size: 14px;
+    transition: 0.28s ease;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    color: #363636;
+}
+[type="radio"] + label:before, [type="radio"] + label:after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    margin: 4px;
+    width: 16px;
+    height: 16px;
+    z-index: 0;
+    transition: 0.28s ease;
+}
+[type="radio"]:checked + label:before {
+    border: 2px solid transparent;
+}
+[type="radio"]:not(:checked) + label:before, [type="radio"]:not(:checked) + label:after, [type="radio"]:checked + label:before, [type="radio"]:checked + label:after, [type="radio"]:checked + label:before, [type="radio"]:checked + label:after {
+    border-radius: 50%;
+}
+[type="radio"]:checked + label:after, [type="radio"]:checked + label:before, [type="radio"]:checked + label:after {
+    border: 2px solid #7da527;
+}
+[type="radio"]:checked + label:after {
+    -webkit-transform: scale(1.02);
+    transform: scale(1.02);
+}
+[type="radio"]:checked + label:after {
+    -webkit-transform: scale(0.5);
+    transform: scale(0.5);
+}
+[type="radio"]:checked + label:after, [type="radio"]:checked + label:after {
+    background-color: var(--blue-two);
+}
+[type="radio"]:not(:checked) + label:before, [type="radio"]:not(:checked) + label:after {
+    border: 1px solid #c1c1c1;
+}
+[type="radio"]:checked + label:after, [type="radio"]:checked + label:before, [type="radio"]:checked + label:after {
+    border: 1px solid #c1c1c1;
+}
+.radio_wrap {
+    margin-bottom: 16px;
+}
+.radio_wrap label {
+    font-size: 16px !important;
+    padding-left: 42px !important;
+    color: var(--blue) !important;
+    line-height: 35px !important;
+    height: 30px !important;
+}
+.radio_wrap [type="radio"] + label:before, .radio_wrap [type="radio"] + label:after {
+    width: 22px;
+    height: 22px;
+}
+.checkbox_wrap label {
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--greyish-brown);
+    margin-right: 5px;
+}
+.checkbox_wrap label a {
+    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    color: var(--blue);
+}
+.checkbox_wrap .and {
+    display: inline-block;
+}
+.checkbox_wrap .m-l-30 {
+    display: inline-block;
+    margin-left: 30px;
+}
+@media (max-width: 768px) {
+    .checkbox_wrap .m-l-30 {
+        margin-left: 0px;
+   }
+}
+/************** Common CSS close ****************/
+
+
+/* Header */
+header {
+    position: absolute;
+    width: 100%;
+    padding: 17px 0;
+    -webkit-transition: 0.5s all;
+    transition: 0.5s all;
+    background-color: var(--blue);
+    z-index: 999;
+    top: 0;
+    left: 0;
+    transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.flex_headrow {
+    display: flex;
+    align-items: center;
+}
+.brand_wrap {
+    width: 176px;
+    height: 34px;
+    cursor: pointer;
+    flex: 1;
+}
+.mob_menu_btn {
+    display: none;
+}
+@media (max-width: 650px) {
+    .brand_wrap {
+        width: 140px;
+   }
+}
+
+.auth_btn {
+    display: flex;
+    margin: 0 0 0 44px;
+}
+.auth_btn li{
+    margin: 0 20px;
+}
+.side_nav {
+     display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+}
+@media (max-width: 650px) {
+    .side_nav {
+        position: fixed;
+        width: 95%;
+        margin: 0 10px;
+        height: 0;
+        background: var(--blue);
+        left: 0;
+        top: 63px;
+        flex-flow: column;
+        align-items: flex-start;
+        justify-content: flex-start;
+        box-shadow: 0px 7px 13px 5px #000 36;
+        -webkit-transition: all ease 0.2s;
+        -o-transition: all ease 0.2s;
+        transition: all ease 0.2s;
+        opacity: 0;
+        visibility: hidden;
+   }
+    .side_nav.active {
+        height: 20%;
+        opacity: 1;
+        visibility: visible;
+   }
+}
+.side_nav li {
+    display: inline-block;
+    margin: 0 35px;
+    position: relative;
+}
+@media (max-width: 650px) {
+    .side_nav li {
+        margin: 10px 0 !important;
+        width: 100%;
+   }
+}
+.side_nav li:last-child{
+    margin: 0;
+}
+.side_nav li a {
+    display: block;
+}
+@media (max-width: 650px) {
+    .side_nav li a {
+        font-size: 12px;
+        padding: 8px 10px;
+   }
+}
+/*******Header close *********/
+
+/********* Banner  ***********/
+.banner_img {
+    width: 100%;
+    position: relative;
+}
+.banner_img img{
+    width: 100%;
+}
+.banner_img::before {
+    content: '';
+    background: url('../images/clip.png') no-repeat;
+    background-size: cover;
+    background-position: bottom;
+    width: 100%;
+    height: 130px;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+@media (max-width: 768px) {
+    .banner_img::before {
+        display: none;
+   }
+}
+@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    .banner_img::before {
+        display: none;
+   }
+}
+
+.banner_container {
+    position: absolute;
+    width: 1216px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+}
+@media(max-width:1300px){
+    .banner_container {
+        width: 1170px;
+    }
+}
+@media(max-width:1200px){
+    .banner_container {
+        width: 90%;
+    }
+}
+.banner_container .banner_txt {
+    max-width: 480px;
+    color: var(--white);
+}
+.banner_txt h1 {
+    letter-spacing: 0.3px;
+    margin-bottom: 30px;
+    font: 40px/1.4 'Neue Haas Grotesk Text Pro Bold';
+}
+.banner_txt p{
+    font-size: 16px;
+    color: var(--white);
+    margin-bottom: 40px;
+}
+/********* Banner close  ***********/
+
+/****** About ******/
+.about_block{
+    padding: 120px 0;
+}
+.about_block.clip{
+    background: url('../images/grey-cutout.png') no-repeat;
+    background-size: cover;
+    background-position: bottom;
+}
+.about_block .content{
+    max-width: 420px;
+    margin: auto;
+}
+.about_block.clip figure{
+    height: 350px;
+}
+.about_block figure{
+    width: 100%;
+    height: 600px;
+}
+.about_block figure img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+.about_block p{
+    max-width: 380px;
+    margin: 0 0 50px;
+}
+/****** About close ******/
+
+/***** Tailored *****/
+.tailord_block .container{
+    max-width: 650px;
+    margin: auto;
+    text-align: center;
+    padding: 100px 0;
+}
+.tailord_block .xs_title{
+    font: 18px/1.4 'Neue Haas Grotesk Text Pro Bold';
+}
+.tailord_block ul{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.tailord_block ul li{
+    display: inline-block;
+    width: 230px;
+}
+.tailord_block ul li figure{
+    margin: 0 0 30px;
+}
+/***** Tailored close *****/
+
+/***** Mission  *****/
+.mission_block{
+    padding: 120px 0;
+    background: url('../images/yellow-cutout.png') no-repeat;
+    background-size: cover;
+    background-position: top;
+    text-align: center;
+}
+/***** Mission close *****/
+
+/***** Top sphers  *****/
+.sphers_block{
+    background-color: var(--grey);
+    text-align: center;
+    padding: 100px 0;
+}
+.sphers_block .title{
+    max-width: 384px;
+    margin: auto auto 60px;
+}
+.sphers_block .xs_title{
+    font: 18px/1.4 'Neue Haas Grotesk Text Pro Bold';
+}
+.sphere_wrap{
+    display: flex;
+}
+.sphers_block .sphere{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    width: 135px;
+}
+.sphere figure{
+    width: 56px;
+    height: 56px;
+    margin-bottom: 20px;
+}
+.sphere figure img{
+    width: 56px;
+    height: 56px;
+}
+/***** Top sphers close *****/
+
+/****** Features *******/
+.features_block{
+    background-color: var(--light-gray);
+    padding: 100px 0 40px;
+    text-align: center;
+}
+.features_block figure{
+    width: 72px;
+    height: 72px;
+    margin: 0 0 30px;
+}
+.features_block figure img{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+.features_block .title{
+    max-width: 590px;
+    margin: 0 auto 60px;
+}
+.features_block .feature_wrap{
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+    max-width: 325px;
+    margin: auto auto 60px;
+}
+/****** Features close *******/
+
+/****** Active jobs  *****/
+.jobs_block{
+    padding: 50px 0 90px;
+}
+.jobs_block .title{
+    margin-bottom: 70px;
+}
+.job_wrap{
+    /* display: flex; */
+}
+.job_card {
+    width: 385px;
+    min-height: 305px;
+    padding: 16px;
+    box-shadow: 0 0 20px 0 #00000014;
+    background-color: var(--white);
+    position: relative;
+    margin: 0 0 20px;
+}
+.job_card .more_detail {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    bottom: auto;
+    left: auto;
+    width: 40px;
+    height: 40px;
+    background: url('../images/more.png') 50% no-repeat;
+    background-size: contain;
+    overflow: hidden;
+    cursor: pointer;
+}
+.job_card .user_wrap {
+    display: flex;
+    margin: 0 0 24px;
+}
+.job_card .user_wrap .u_img {
+    width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 16px;
+    border: 1px solid #e6e6e6;
+}
+.job_card .user_wrap .u_img img {
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
+.job_card .user_wrap .details {
+    width: 70%;
+    min-height: 57px;
+}
+.job_card .user_wrap .details .name {
+    display: block;
+    font: 16px "Neue Haas Grotesk Text Pro Bold";
+    color: var(--blue);
+    margin-bottom: 2px;
+}
+.job_card .user_wrap .details .prof {
+    font-size: 14px;
+    line-height: 1;
+    color: var(--greyish-brown);
+    display: block;
+    margin-bottom: 4px;
+}
+.job_info {
+    background-color: #f7f8fa;
+    padding: 15px;
+    margin-bottom: 15px;
+}
+.job_info ul {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+.job_info ul li.icon {
+    padding-left: 20px;
+    display: inline-block;
+    flex: 1 1 50%;
+    margin: 6px 0;
+    position: relative;
+    font-size: 14px;
+    color: var(--greyish-brown);
+}
+.job_info ul li.icon:before {
+    width: 16px;
+    height: 16px;
+}
+.job_info ul li.icon.clock:before {
+    background: url('../images/ic-clock.png') center no-repeat;
+}
+.job_info ul li.icon.dollar:before {
+    background: url('../images/ic-money.png') center no-repeat;
+}
+.job_info ul li.icon.location:before {
+    background: url('../images/ic-location.png') center no-repeat;
+}
+.job_info ul li.icon.calendar:before {
+    background: url('../images/ic-calendar.png') center no-repeat;
+}
+.job_card .count_wrap {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+.job_card .count_wrap li.icon {
+    padding-left: 30px;
+    position: relative;
+    font-size: 14px;
+    color: var(--greyish-brown);
+}
+.icon:before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    -webkit-transform: translateY(-50%);
+    transform: translateY(-50%);
+    width: 24px;
+    height: 24px;
+}
+.icon.view:before {
+    background: url('../images/ic-view.png') 50% no-repeat;
+}
+.icon.comment:before {
+    background: url('../images/ic-comment.png') 50% no-repeat;
+}
+/****** Active jobs close  *****/
+
+/******Footer *********/
+.footer_banner_block .banner_img::before{
+    display: none;
+}
+.footer_banner_block .title{
+    color: var(--white);
+    margin-bottom: 20px;
+}
+.footer_banner_block a{
+    display: inline-block;
+    margin: 0 16px 0 0;
+}
+.footer_banner_block a img{
+    height: 48px;
+}
+footer {
+    background: var(--blue);
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+}
+footer .copyright{
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    height: 57px;
+    display: flex;
+    align-items: center;
+}
+footer p{
+    font-size: 8px;
+    line-height: 1.4;
+    letter-spacing: 0.3px;
+    color: var(--white);
+    width: 1216px;
+}
+.foot_row{
+    display: flex;
+    justify-content: space-between;
+    padding: 70px 0px;
+}
+.logo_col{
+    width: 20%;
+    padding: 0 10px;
+}
+.links_col{
+    width: 40%;
+    padding: 0 10px;
+    display: flex;
+}
+.social_col{
+    width: 40%;
+    padding: 0 10px;
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+}
+.links_col ul{
+    display: flex;
+    flex-flow: column;
+    width: 50%;
+}
+.links_col ul li:not(:last-child){
+    margin: 0 0 10px;
+}
+.social_col ul{
+    display: flex;
+}
+.social_col ul li{
+    margin: 0 8px;
+}
+/******Footer close *********/
+
+/******Onboard Modal ********/
+.onboarding_head {
+    position: relative;
+}
+.onboarding_head .back_btn{
+    position: absolute;
+    top: 8px;
+    left: 0;
+    width: 24px;
+    height: 24px;
+    z-index: 9;
+    background: url('../images/icon-direction-left.png') center no-repeat;
+    background-size: contain;
+    outline: none ;
+}
+.onboarding_head .title{
+    padding-left: 40px;
+}
+.mob_logo {
+    max-width: 200px;
+    margin: 30px auto 0;
+    text-align: center;
+}
+@media(max-width: 812px){
+    #OnboardModal .hide{
+        display: block;
+    }
+}
+#OnboardModal .modal-dialog{
+    position: relative;
+    width: 880px;
+    max-width: 880px;
+    min-height: 666px;
+    background-color: var(--white);
+    border-radius: 3px;
+    align-items: flex-start;
+}
+#OnboardModal .modal-content{
+    border-radius: 0;
+    border: none;
+    height: 666px;
+    max-height: 666px;
+    overflow-y: auto;
+}
+#OnboardModal .close{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: transparent;
+    z-index: 9;
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    opacity: 1;
+    outline: none;
+}
+#OnboardModal .right_col .link{
+    color: var(--blue-two) !important;
+}
+#OnboardModal .right_col .link::after{
+    background-color: var(--blue-two);
+}
+#OnboardModal .fill_btn, #OnboardModal a.fill_btn, #OnboardModal .fill_grey_btn, #OnboardModal a.fill_grey_btn{
+    padding: 19px 20px;
+    width: 100%;
+}
+.f_row{
+    display: flex;
+}
+#OnboardModal .left_col {
+    width: 312px;
+    height: 100%;
+    overflow: hidden;
+    position: fixed;
+}
+#OnboardModal .right_col {
+    width: 85%;
+    padding: 40px 0 20px 360px;
+}
+#OnboardModal .banner_img {
+    position: relative;
+}
+#OnboardModal .banner_img img {
+    width: 100%;
+}
+#OnboardModal .logo, #OnboardModal .slider_txt {
+    position: absolute;
+    right: auto;
+    bottom: auto;
+    left: 50%;
+}
+#OnboardModal .logo {
+    top: 10%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 9;
+}
+#OnboardModal .slider_txt {
+    z-index: 9;
+    text-align: center;
+    top: 45%;
+    -webkit-transform: translate(-50%,50%);
+    transform: translate(-50%,50%);
+    width: 100%;
+}
+.slider_txt span {
+    font: 26px/1.25 "Neue Haas Grotesk Text Pro Bold";
+    letter-spacing: .1px;
+    color: var(--white);
+    max-width: 262px;
+    margin: auto;
+    display: block;
+}
+.bottom_txt {
+    position: absolute;
+    left: 45%;
+    bottom: 5%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 9;
+}
+.bottom_txt .reg {
+    font: 14px/1.29 "Neue Haas Grotesk Text Pro Bold";
+    letter-spacing: .1px;
+    color: var(--white);
+}
+.bottom_txt .link {
+    color: var(--yellow) !important;
+}
+.bottom_txt .link:after{
+    background-color: var(--yellow);
+}
+.form_wrapper{
+    width: 327px;
+    max-width: 327px;
+}
+.continue_with {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 24px 0;
+}
+.continue_with a {
+    border-radius: 3px;
+    background-color: var(--warm-gray);
+    width: 103px;
+    padding: 10px;
+    text-align: center;
+}
+.continue_with a img {
+    width: 25px;
+    height: 24px;
+}
+/******Onboard Modal close ********/
+
+/****** Step Wizard Start ********/
+
+.stepwizard-step p {
+    margin-top: 0px;
+    color:#666;
+}
+.stepwizard-row {
+    display: table-row;
+}
+.stepwizard {
+    display: table;
+    width: 100%;
+    position: relative;
+}
+.stepwizard .btn.disabled, .stepwizard .btn[disabled], .stepwizard fieldset[disabled] .btn {
+    opacity:1 !important;
+    color:#bbb;
+}
+.stepwizard-row:before {
+    top: 14px;
+    bottom: 0;
+    position: absolute;
+    content:" ";
+    width: 100%;
+    height: 1px;
+    z-index: 0;
+}
+.stepwizard-step {
+    display: table-cell;
+    text-align: center;
+    position: relative;
+}
+
+#finishbtn:disabled {
+    background: #dddddd;
+  }
+  
+/****** Step Wizard End ********/
+
+
+.tab .user-types label,
+.tab .user-types input {
+  display: block;
+  /* position: absolute; */
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+.tab .user-types input[type="radio"] {
+    opacity: 0.01;
+    z-index: 100;
+    border:none!important;
+  }
+  
+.tab .user-types input[type="radio"]:checked+label, .Checked+label {
+    background: yellow;
+    border:none!important;
+  }
+  
+  .tab .user-types [type="radio"]:not(:checked) + label:before, [type="radio"]:not(:checked) + label:after
+  {
+      border:none;
+  }
+
+  .tab .user-types [type="radio"]:checked + label:after, [type="radio"]:checked + label:before, [type="radio"]:checked + label:after {
+    border: none;
+}
+
+.tab .user-types [type="radio"]:checked + label:after, [type="radio"]:checked + label:after
+{
+    background-color:yellow!important;
+    right:0px;
+    left:90%;
+}
+
+.tab .user-types label {
+    cursor: pointer;
+    z-index: 90;
+    border-radius: 3px;
+    font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+    letter-spacing: 0.3px;
+    color: var(--blue);
+    padding: 10px 20px;
+    transition: all ease-in 0.3s;
+    display: inline-block;
+    min-width: 180px;
+    height:45px;
+    text-align: center;
+    background: #ddd;
+  }
+  
+.tab .user-types label:hover {
+    background: #DDD;
+  }
+
+  .tab {
+    display: none;
+  }
+
+  .step {
+    height: 15px;
+    width: 15px;
+    margin: 0 2px;
+    background-color: #bbbbbb;
+    border: none;  
+    border-radius: 50%;
+    display: none;
+    opacity: 0.5;
+  }
+  
+  .step.active {
+    opacity: 1;
+  }
+  
+  /* Mark the steps that are finished and valid: */
+  .step.finish {
+    background-color: #04AA6D;
+  }
+
+  .ajax-loader {
+    visibility: hidden;
+    background-color: rgba(255,255,255,0.7);
+    position: absolute;
+    z-index: +100 !important;
+    width: 100%;
+    height:100%;
+  }
+  
+  .ajax-loader img {
+    position: relative;
+    height:120px;
+  }
+
+  #enter_otp {
+      display:none;
+  }
