@@ -21,9 +21,11 @@ const Urls = {
     login: `${versions.v1}${ServiceEnum.auth}login`,
     logout: `${versions.v1}${ServiceEnum.auth}logout`,
     resendOtp: `${versions.v1}${ServiceEnum.auth}resendEmailOtp`,
+    resendMobileOtp: `${versions.v1}${ServiceEnum.auth}resendMobileOtp`,
     checkEmailId: `${versions.v1}${ServiceEnum.auth}checkEmailId`,
     checkMobileNumber: `${versions.v1}${ServiceEnum.auth}checkMobileNumber`,
     verifyOTP: `${versions.v1}${ServiceEnum.auth}verifyOTP`,
+    verifyMobileOTP: `${versions.v1}${ServiceEnum.auth}verifyMobileOtp`,
     createPassword: `${versions.v1}${ServiceEnum.auth}createPassword`,
     tradeList: `${versions.v1}${ServiceEnum.auth}tradeList`, //admin
     forgotPassword: `${versions.v1}${ServiceEnum.auth}forgot_password`,

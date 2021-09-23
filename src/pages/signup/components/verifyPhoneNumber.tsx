@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { checkMobileNumber, verifyOtp, verifyMobileOtp , resendOtp} from '../../../redux/auth/actions';
+import { checkMobileNumber, verifyOtp, verifyMobileOtp , resendOtp, resendMobileOtp} from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import OtpInput from "react-otp-input";
@@ -58,10 +58,9 @@ const VerifyPhoneNumber = (props: Propstype) => {
     const resendHandler = async (e: any) => {
         e.preventDefault();
         let data = {
-            "mobileNumber": props.mobileNumber,
-            "user_type": props.userType
+            "mobileNumber": props.mobileNumber
         };
-        let response = await resendOtp(data);
+        let response = await resendMobileOtp(data);
         if (response.success) {
         // const res: any = await checkMobileNumber(props.mobileNumber)
             setCounter(Constants.OTP_TIMER)
@@ -93,10 +92,12 @@ const VerifyPhoneNumber = (props: Propstype) => {
                     <span className="show_label">We have sent a verification code to your phone.
                         Please check SMS and enter the 5-digit code here.</span>
                 </div>
-                {counter === 0 && <div className="form_field text-center">
+                {counter === 0 &&
+                 <div className="form_field text-center">
                     <span className="show_label">Don’t you receive any codes?</span>
                     <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
-                </div>}
+                </div>
+                } 
                 {counter > 0 && <div className="form_field text-center">
                     <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
                 </div>}

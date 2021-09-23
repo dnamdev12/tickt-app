@@ -71,18 +71,19 @@ interface Proptypes {
   bankDetails: BankDetails;
 }
 
-const MarkMilestone = ({
-  getMilestoneList,
-  milestoneList,
-  showJobCompletePage,
-  showMilestoneCompletePage,
-  getBankDetails,
-  addBankDetails,
-  updateBankDetails,
-  removeBankDetails,
-  markMilestoneComplete,
-  bankDetails,
-}: Proptypes) => {
+const MarkMilestone = (props: Proptypes) => {
+  const {
+    getMilestoneList,
+    milestoneList,
+    showJobCompletePage,
+    showMilestoneCompletePage,
+    getBankDetails,
+    addBankDetails,
+    updateBankDetails,
+    removeBankDetails,
+    markMilestoneComplete,
+    bankDetails,
+  } = props;
   const history: any = useHistory();
   let params: any = new URLSearchParams(history.location?.search);
   params = {
@@ -297,9 +298,8 @@ const MarkMilestone = ({
     )
   }
 
-
+  console.log({props: props.milestoneList, step},'------>')
   const { sources, types } = renderFilteredItems();
-
   let page = null;
   const renderSteps = () => {
     switch (step) {

@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import close from '../assets/images/cancel.png';
 import { setShowToast } from '../redux/common/actions';
 import noInternet from '../assets/images/internet-connection-graphic.png';
+import { isOnline } from '../utils/common';
 
 export const TYPES = {
     success: 'success',
@@ -13,9 +14,9 @@ export const TYPES = {
 
 // handles the auto hiding of toast
 const TOAST_TIMEOUT = 3000;
-
+const checkConnection = window.navigator.onLine;
 const Toast = (props: any) => {
-    const [isOnline, setNetwork] = useState(window.navigator.onLine);
+    const [isOnline, setNetwork] = useState(checkConnection);
     const [restrictNoInternetToast, setRestrictNoInternetToast] = useState(1);
 
     useEffect(() => {
@@ -80,7 +81,7 @@ const Toast = (props: any) => {
         // }
         return props.toastMessage;
     }
-
+    console.log({ isOnline });
     return !!props.showToast ? (
         <div className={`body-message active ${props.toastType}`}>
             <div className="wrapppr">

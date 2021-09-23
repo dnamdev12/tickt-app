@@ -22,7 +22,7 @@ import CancelJobs from './cancelJobs/cancelJob'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import { CancelJob } from '../../../redux/jobs/actions';
 import storageService from '../../../utils/storageService';
-
+import noDataFound from '../../../assets/images/no-search-data.png';
 import SeeDetailsComponents from './seeDetails';
 
 interface Mile {
@@ -48,6 +48,7 @@ const MarkMilestones = (props: any) => {
 
     const [enableApprove, setEnableApprove] = useState(false);
     const [itemDetails, setDetails] = useState(null);
+    const [showError, setShowError] = useState(false);
     const [selectedMilestoneIndex, setMilestoneIndex] = useState<any>(null);
     const [selectedMile, setMilestone] = useState(null);
     const [expandItem, setExpandItem] = useState<any>({});
@@ -78,6 +79,7 @@ const MarkMilestones = (props: any) => {
             const { milestoneId, jobId } = selectedMilestoneIndex;
             if (milestoneId && jobId) {
                 let response: any = await getMilestoneDetails({ milestoneId, jobId });
+                console.log({ response })
                 if (response.success) {
                     setMilestone(response.data);
                     if (selectedMilestoneIndex?.type === "detail") {
@@ -141,8 +143,8 @@ const MarkMilestones = (props: any) => {
         let { jobId } = selectedItem;
         if (getMilestoneList) {
             const res: any = await getMilestoneList(jobId);
+            console.log({ res }, '---->')
             if (res.success) {
-                console.log({ res }, '---->')
                 if (res?.data?.milestones?.length) {
                     res?.data?.milestones?.forEach((item: any, index: any) => {
                         if (index === 0) {
@@ -160,6 +162,11 @@ const MarkMilestones = (props: any) => {
                     })
                 }
                 setDetails(res.data);
+                setShowError(false)
+            } else {
+                if (res?.status === 404) {
+                    setShowError(true)
+                }
             }
         }
     }
@@ -238,7 +245,33 @@ const MarkMilestones = (props: any) => {
     if (item_details?.milestones?.length) {
         dataItems = item_details?.milestones;
     }
-    console.log({selectedItem})
+    console.log({ selectedItem })
+
+    if (showError) {
+        return (
+            <div className="flex_row">
+                <div className="flex_col_sm_6">
+                    <div className="flex_col_sm_8 relative">
+                        <button
+                            className="back"
+                            onClick={() => {
+                                resetStateLocal();
+                            }}></button>
+                    </div>
+                </div>
+
+
+                <div className="no_record  m-t-vh">
+                    <figure className="no_img">
+                        <img src={noDataFound} alt="data not found" />
+                    </figure>
+                    <span>{'This tradie is no longer available.'}</span>
+                    <span>{'please contact admin.'} </span>
+                </div>
+            </div>
+        )
+    }
+
     return (
         <div className="flex_row">
             <div className="flex_col_sm_6">

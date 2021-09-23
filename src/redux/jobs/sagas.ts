@@ -119,13 +119,19 @@ function* getMilestoneList({ jobId }: any) {
   setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(`${Urls.milestoneList}?jobId=${jobId}`);
   setLoading(false);
-
+  console.log({ response })
   if (response.status_code === 200) {
     yield put({
       type: actionTypes.GET_MILESTONES_END,
       payload: response.result,
     });
 
+    return;
+  } else {
+    yield put({
+      type: actionTypes.GET_MILESTONES_END,
+      payload: [{ sucess: false, status: response.status_code }],
+    });
     return;
   }
 }

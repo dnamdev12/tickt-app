@@ -105,6 +105,7 @@ const BuilderInfo = (props: PropsType) => {
         showReviewReply: false,
         replyShownHideList: []
     })
+    const [showError, setShowError] = useState(false);
     const [showSpecs, setShowSpecs] = useState<boolean>(false);
     console.log(reviewsData, "reviewData", reviewList, "reviewList", profileData, "profileData", reviewListPageNo, "reviewListPageNo", props.history, "history");
 
@@ -136,8 +137,14 @@ const BuilderInfo = (props: PropsType) => {
             props.getBuilderProfileView();
         } else {
             const res1 = await getBuilderProfile(builderId);
+            console.log({ res1 })
             if (res1?.success) {
                 setProfileData(res1.data);
+                setShowError(false);
+            } else {
+                if (res1?.status === 404) {
+                    setShowError(true);
+                }
             }
         }
 
@@ -355,117 +362,117 @@ const BuilderInfo = (props: PropsType) => {
     // });
 
 
-    /* return (
-     <div className="app_wrapper">
-         <div className="section_wrapper">
-             <div className="custom_container">
+    if (showError) {
+        return (
+            <div className="app_wrapper">
+                <div className="section_wrapper">
+                    <div className="custom_container">
 
-                 <div className="vid_img_wrapper pt-20">
-                     <div className="flex_row">
-                         <div className="flex_col_sm_8 relative">
-                             <button className="back" onClick={() => {
-                                 props.history.goBack();
-                             }}></button>
-                         </div>
-                     </div>
-                 </div>
-
-                 <div className="no_record  m-t-vh">
-                     <figure className="no_img">
-                         <img src={noDataFound} alt="data not found" />
-                     </figure>
-                     <span>{'This tradie is no longer available'}</span>
-                 </div>
-             </div>
-         </div>
-     </div>)
-     */
-
-
-    return (
-        <div className="app_wrapper">
-            <div className="section_wrapper">
-                <div className="custom_container">
-                    <div className="vid_img_wrapper pt-20">
-                        <div className="flex_row">
-                            <div className="flex_col_sm_8 relative">
-                                <button className="back" onClick={() => props.history?.goBack()}></button>
-                            </div>
-                        </div>
-                        <div className="flex_row">
-                            <div className="flex_col_sm_8">
-                                <figure className="vid_img_thumb">
-                                    {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
-                                    {!props.isSkeletonLoading &&
-                                        <img
-                                            src={profileData?.builderImage || profilePlaceholder}
-                                            alt="profile-pic"
-                                            onLoad={() => setProfilePictureLoading(false)}
-                                            // onError={(e: any) => {
-                                            //     let e_: any = e;
-                                            //     e_.target.src = dummy;
-                                            // }}
-                                            hidden={profilePictureLoading} />}
-                                </figure>
-                            </div>
-                            <div className="flex_col_sm_4 relative">
-                                <div className="detail_card">
-                                    {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
-                                        <>
-                                            <span className="title">{profileData?.builderName || ''}</span>
-                                            <span className="tagg">{profileData?.position || ''}</span>
-                                            <span className="xs_sub_title">{profileData?.companyName || ''}</span>
-                                            <ul className="review_job">
-                                                <li>
-                                                    <span className="icon reviews">{profileData?.ratings || '0'}</span>
-                                                    <span className="review_count">{`${profileData?.reviewsCount || '0'} reviews`}</span>
-                                                </li>
-                                                {console.log({
-                                                    jobCompletedCount: profileData?.jobCompletedCount
-                                                })}
-                                                <li>
-                                                    <span className="icon job">{profileData?.jobCompletedCount || '0'}</span>
-                                                    <span className="review_count"> {"jobs completed"} </span>
-                                                </li>
-                                            </ul>
-                                            {userType === 2 ?
-                                                <button
-                                                    className="fill_btn full_btn btn-effect"
-                                                    onClick={() => props.history.push('/update-user-info')}>
-                                                    {"Edit"}
-                                                </button>
-                                                :
-                                                <button className="fill_btn full_btn btn-effect"
-                                                    onClick={() => {
-                                                        const builderId = new URLSearchParams(props.history?.location?.search).get('builderId');
-                                                        props.history.push({
-                                                            pathname: `/choose-job-to-start-chat`,
-                                                            state: {
-                                                                builderId: builderId ? builderId : '',
-                                                            }
-                                                        })
-                                                    }}>
-                                                    {"Write a message"}
-                                                </button>}
-                                        </>}
+                        <div className="vid_img_wrapper pt-20">
+                            <div className="flex_row">
+                                <div className="flex_col_sm_8 relative">
+                                    <button className="back" onClick={() => {
+                                        props.history.goBack();
+                                    }}></button>
                                 </div>
                             </div>
                         </div>
-                        <div className="flex_row description">
-                            <div className="flex_col_sm_8">
-                                {props.isSkeletonLoading ? <Skeleton count={2} /> : <div>
-                                    <span className="sub_title">About company</span>
-                                    <p className="commn_para">{profileData?.aboutCompany || ''}</p>
-                                </div>}
+
+                        <div className="no_record  m-t-vh">
+                            <figure className="no_img">
+                                <img src={noDataFound} alt="data not found" />
+                            </figure>
+                            <span>{'This builder is no longer available'}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        )
+    } else {
+        return (
+            <div className="app_wrapper">
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <div className="vid_img_wrapper pt-20">
+                            <div className="flex_row">
+                                <div className="flex_col_sm_8 relative">
+                                    <button className="back" onClick={() => props.history?.goBack()}></button>
+                                </div>
                             </div>
-                            <div className="flex_col_sm_4">
-                                <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of specialisation'}</span>
-                                <div className="tags_wrap">
-                                    {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
-                                        // Add active class when click on show more
-                                        <ul className={`${!showSpecs ? 'more_tags active' : ''}`}>
-                                            {/* <ul className={`more_tags ${showSpecs ? 'active' : ''}`}> */}
-                                            {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
+                            <div className="flex_row">
+                                <div className="flex_col_sm_8">
+                                    <figure className="vid_img_thumb">
+                                        {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
+                                        {!props.isSkeletonLoading &&
+                                            <img
+                                                src={profileData?.builderImage || profilePlaceholder}
+                                                alt="profile-pic"
+                                                onLoad={() => setProfilePictureLoading(false)}
+                                                // onError={(e: any) => {
+                                                //     let e_: any = e;
+                                                //     e_.target.src = dummy;
+                                                // }}
+                                                hidden={profilePictureLoading} />}
+                                    </figure>
+                                </div>
+                                <div className="flex_col_sm_4 relative">
+                                    <div className="detail_card">
+                                        {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
+                                            <>
+                                                <span className="title">{profileData?.builderName || ''}</span>
+                                                <span className="tagg">{profileData?.position || ''}</span>
+                                                <span className="xs_sub_title">{profileData?.companyName || ''}</span>
+                                                <ul className="review_job">
+                                                    <li>
+                                                        <span className="icon reviews">{profileData?.ratings || '0'}</span>
+                                                        <span className="review_count">{`${profileData?.reviewsCount || '0'} reviews`}</span>
+                                                    </li>
+                                                    {console.log({
+                                                        jobCompletedCount: profileData?.jobCompletedCount
+                                                    })}
+                                                    <li>
+                                                        <span className="icon job">{profileData?.jobCompletedCount || '0'}</span>
+                                                        <span className="review_count"> {"jobs completed"} </span>
+                                                    </li>
+                                                </ul>
+                                                {userType === 2 ?
+                                                    <button
+                                                        className="fill_btn full_btn btn-effect"
+                                                        onClick={() => props.history.push('/update-user-info')}>
+                                                        {"Edit"}
+                                                    </button>
+                                                    :
+                                                    <button className="fill_btn full_btn btn-effect"
+                                                        onClick={() => {
+                                                            const builderId = new URLSearchParams(props.history?.location?.search).get('builderId');
+                                                            props.history.push({
+                                                                pathname: `/choose-job-to-start-chat`,
+                                                                state: {
+                                                                    builderId: builderId ? builderId : '',
+                                                                }
+                                                            })
+                                                        }}>
+                                                        {"Write a message"}
+                                                    </button>}
+                                            </>}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="flex_row description">
+                                <div className="flex_col_sm_8">
+                                    {props.isSkeletonLoading ? <Skeleton count={2} /> : <div>
+                                        <span className="sub_title">About company</span>
+                                        <p className="commn_para">{profileData?.aboutCompany || ''}</p>
+                                    </div>}
+                                </div>
+                                <div className="flex_col_sm_4">
+                                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of specialisation'}</span>
+                                    <div className="tags_wrap">
+                                        {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
+                                            // Add active class when click on show more
+                                            <ul className={`${!showSpecs ? 'more_tags active' : ''}`}>
+                                                {/* <ul className={`more_tags ${showSpecs ? 'active' : ''}`}> */}
+                                                {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
                                               <Fragment key={_id}>
                                                 <li className="main">
                                                     <img src={selected_url || menu} alt="" />{trade_name}
@@ -475,333 +482,334 @@ const BuilderInfo = (props: PropsType) => {
                                                 })}
                                               </Fragment>
                                             ))} */}
-                                            {console.log({
-                                                areasOfSpecialization: profileData?.areasOfSpecialization
-                                            })}
-                                            {profileData?.areasOfSpecialization?.tradeData?.map(({
-                                                tradeId,
-                                                tradeSelectedUrl,
-                                                tradeName }: {
-                                                    tradeId: string,
-                                                    tradeSelectedUrl: string,
-                                                    tradeName: string
-                                                }) => (
-                                                <li key={tradeId} className="main">
-                                                    <img src={tradeSelectedUrl || menu} alt="" />{tradeName || ''}
-                                                </li>
-                                            ))}
-                                            {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
-                                                return (
-                                                    <li key={item.specializationId}>
-                                                        {item.specializationName || ''}
+                                                {console.log({
+                                                    areasOfSpecialization: profileData?.areasOfSpecialization
+                                                })}
+                                                {profileData?.areasOfSpecialization?.tradeData?.map(({
+                                                    tradeId,
+                                                    tradeSelectedUrl,
+                                                    tradeName }: {
+                                                        tradeId: string,
+                                                        tradeSelectedUrl: string,
+                                                        tradeName: string
+                                                    }) => (
+                                                    <li key={tradeId} className="main">
+                                                        <img src={tradeSelectedUrl || menu} alt="" />{tradeName || ''}
                                                     </li>
-                                                )
-                                            })}
-                                        </ul>) : (
-                                        <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
-                                            {profileData?.tradeName &&
-                                                <li className="main">
-                                                    <img src={profileData?.tradeSelectedUrl || menu} alt="" />
-                                                    {profileData?.tradeName || ''}
-                                                </li>}
-                                            {profileData?.areasOfjobs?.map((item: any) => {
-                                                return (
-                                                    <li key={item.specializationId}>
-                                                        {item.specializationName || ''}
-                                                    </li>
-                                                )
-                                            })}
-                                        </ul>)}
-                                    {(profileData?.areasOfjobs?.length > 6 ||
-                                        (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) &&
-                                        <span className="link show_more"
-                                            onClick={(e: any) => {
-                                                e.preventDefault();
-                                                setShowSpecs(!showSpecs);
-                                            }}>
-                                            {showSpecs ? 'Show less' : 'Show more'}
-                                        </span>}
-                                </div>
+                                                ))}
+                                                {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
+                                                    return (
+                                                        <li key={item.specializationId}>
+                                                            {item.specializationName || ''}
+                                                        </li>
+                                                    )
+                                                })}
+                                            </ul>) : (
+                                            <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
+                                                {profileData?.tradeName &&
+                                                    <li className="main">
+                                                        <img src={profileData?.tradeSelectedUrl || menu} alt="" />
+                                                        {profileData?.tradeName || ''}
+                                                    </li>}
+                                                {profileData?.areasOfjobs?.map((item: any) => {
+                                                    return (
+                                                        <li key={item.specializationId}>
+                                                            {item.specializationName || ''}
+                                                        </li>
+                                                    )
+                                                })}
+                                            </ul>)}
+                                        {(profileData?.areasOfjobs?.length > 6 ||
+                                            (profileData?.areasOfSpecialization?.specializationData?.length + profileData?.areasOfSpecialization?.tradeData?.length > 7)) &&
+                                            <span className="link show_more"
+                                                onClick={(e: any) => {
+                                                    e.preventDefault();
+                                                    setShowSpecs(!showSpecs);
+                                                }}>
+                                                {showSpecs ? 'Show less' : 'Show more'}
+                                            </span>}
+                                    </div>
 
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            {profileData?.portfolio?.length > 0 && <div className="section_wrapper">
-                <div className="custom_container">
-                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
-                    <Carousel
-                        responsive={portfolio}
-                        showDots={false}
-                        arrows={true}
-                        infinite={true}
-                        className="portfolio_wrappr"
-                        partialVisbile
-                    >
-                        {props.isSkeletonLoading ? <Skeleton height={256} /> : profileData?.portfolio?.length ? profileData?.portfolio?.map((item: any) => {
-                            return (
-                                <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
-                                    <figure className="portfolio_img">
-                                        <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
-                                        <span className="xs_sub_title">
-                                            <p className="line-3" title={item.jobName || ''}>{item.jobName || ''}</p>
-                                        </span>
-                                    </figure>
-                                </div>
-                            )
-                        }) : null}
-                    </Carousel>
-                </div>
-            </div>}
-
-            <Modal
-                className="custom_modal"
-                open={portfolioData.portfolioImageClicked}
-                onClose={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                    <div className="heading">
-                        <button className="close_btn" onClick={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}>
-                            <img src={cancel} alt="cancel" />
-                        </button>
-                    </div>
-                    <div className="flex_row">
-                        <div className="flex_col_sm_6">
-                            <Carousel
-                                responsive={portfolioModal}
-                                showDots={true}
-                                infinite={true}
-                                autoPlay={true}
-                                arrows={false}
-                                className="portfolio_wrappr"
-                            >
-                                {portfolioData?.portfolioDetails ? portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
-                                    return (
-                                        <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
-                                            <figure className="portfolio_img">
-                                                <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
-                                            </figure>
-                                        </div>
-                                    )
-                                }) : <img alt="" src={portfolioPlaceholder} />}
-                            </Carousel>
-                        </div>
-                        <div className="flex_col_sm_6">
-                            <span className="xs_sub_title">Job Description</span>
-                            <div className="job_content">
-                                <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </Modal>
-
-            <div className="section_wrapper">
-                <div className="custom_container">
-                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Job posted'}</span>
-                    {props.isSkeletonLoading ? <Skeleton height={250} /> : <div className="flex_row tradies_row">
-                        {(props.isSkeletonLoading || props.isLoading || profileData?.jobPostedData?.length > 0) ?
-                            (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
-                                return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} userType={storageService.getItem('userType')} />
-                            })) :
-                            <div className="no_record">
-                                <figure className="no_data_img">
-                                    <img src={noDataFound} alt="data not found" />
-                                </figure>
-                                <span>No Data Found</span>
-                            </div>}
-                    </div>}
-                    {props.isSkeletonLoading ? <Skeleton /> : <button
-                        className={`fill_grey_btn full_btn m-tb40 view_more ${profileData?.totalJobPostedCount === 0 ? 'disable_btn' : ''}`}
-                        disabled={profileData?.totalJobPostedCount === 0}
-                        onClick={builderAllJobsClicked}
-                    >
-                        {`View ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount === 1 ? `${profileData?.totalJobPostedCount} job` : `all ${profileData?.totalJobPostedCount} jobs`}` : ''}`}
-                    </button>}
-                </div>
-            </div >
-
-            <div className="section_wrapper">
-                <div className="custom_container">
-                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Reviews'}</span>
-                    {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
-                        {(props.isSkeletonLoading || props.isLoading || reviewList.length > 0) ?
-                            (reviewList.slice(0, 8)?.map((item: any) => {
-                                return <ReviewInfoBox item={item.reviewData} />
-                            })) :
-                            <div className="no_record">
-                                <figure className="no_data_img">
-                                    <img src={noDataFound} alt="data not found" />
-                                </figure>
-                                <span>No Data Found</span>
-                            </div>}
-                    </div>}
-                    {props.isSkeletonLoading ? <Skeleton /> :
-                        <button
-                            className={`fill_grey_btn full_btn view_more ${profileData?.reviewsCount === 0 ? 'disable_btn' : ''}`}
-                            disabled={profileData?.reviewsCount === 0}
-                            onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
+                {profileData?.portfolio?.length > 0 && <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
+                        <Carousel
+                            responsive={portfolio}
+                            showDots={false}
+                            arrows={true}
+                            infinite={true}
+                            className="portfolio_wrappr"
+                            partialVisbile
                         >
-                            {`View all ${profileData?.reviewsCount || 0} review${profileData?.reviewsCount ? 's' : ''}`}
-                        </button>}
-                </div>
-            </div>
+                            {props.isSkeletonLoading ? <Skeleton height={256} /> : profileData?.portfolio?.length ? profileData?.portfolio?.map((item: any) => {
+                                return (
+                                    <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
+                                        <figure className="portfolio_img">
+                                            <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
+                                            <span className="xs_sub_title">
+                                                <p className="line-3" title={item.jobName || ''}>{item.jobName || ''}</p>
+                                            </span>
+                                        </figure>
+                                    </div>
+                                )
+                            }) : null}
+                        </Carousel>
+                    </div>
+                </div>}
 
-            {/* view All reviews  */}
-            {reviewsData.showAllReviewsClicked && reviewList?.length > 0 &&
                 <Modal
-                    className="ques_ans_modal"
-                    open={reviewsData.showAllReviewsClicked}
-                    onClose={() => modalCloseHandler('showAllReviewsClicked')}
+                    className="custom_modal"
+                    open={portfolioData.portfolioImageClicked}
+                    onClose={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}
                     aria-labelledby="simple-modal-title"
                     aria-describedby="simple-modal-description"
                 >
-                    <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                    <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                         <div className="heading">
-                            <span className="sub_title">{`${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `${profileData?.reviewsCount} reviews`}` : ''}`}</span>
-                            <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
+                            <button className="close_btn" onClick={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}>
                                 <img src={cancel} alt="cancel" />
                             </button>
                         </div>
-                        <div className="inner_wrap">
-                            {reviewList?.map((item: any) => {
-                                const { reviewData } = item;
-                                return (
-                                    // <div key={reviewsData.reviewId}>
-                                    <div>
-                                        <div className="question_ans_card">
-                                            <div className="user_detail">
-                                                <figure className="user_img">
-                                                    <img src={reviewData?.userImage || dummy} alt="user-img" />
+                        <div className="flex_row">
+                            <div className="flex_col_sm_6">
+                                <Carousel
+                                    responsive={portfolioModal}
+                                    showDots={true}
+                                    infinite={true}
+                                    autoPlay={true}
+                                    arrows={false}
+                                    className="portfolio_wrappr"
+                                >
+                                    {portfolioData?.portfolioDetails ? portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
+                                        return (
+                                            <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
+                                                <figure className="portfolio_img">
+                                                    <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
                                                 </figure>
-                                                <div className="details">
-                                                    <span className="user_name">{reviewData?.name || ''}</span>
-                                                    <span className="date">{reviewData?.date || ''}</span>
-                                                </div>
-                                                <div className="rating_star">
-                                                    <ReactStars
-                                                        count={5}
-                                                        value={reviewData.rating}
-                                                        size={30}
-                                                        edit={false}
-                                                        isHalf={true}
-                                                        emptyIcon={<i className="far fa-star"></i>}
-                                                        halfIcon={<i className="fa fa-star-half-alt"></i>}
-                                                        fullIcon={<i className="fa fa-star"></i>}
-                                                        activeColor="#ffd700"
-                                                        color='#DFE5EF'
-                                                    />
-                                                </div>
                                             </div>
-                                            <p>{reviewData?.review || ''}</p>
-                                            {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
-                                                <span className="show_hide_ans link"
-                                                    onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
-                                            {reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) && <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>}
-                                            {!reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
-                                            {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('updateReviewBuilder', reviewData?.reviewId, '', reviewData?.review, reviewData?.rating)}>Edit</span>}
-                                            {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('removeReviewBuilder', reviewData?.reviewId)}>Delete</span>}
-                                        </div>
-                                        {reviewData?.replyData?.reply && reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) &&
-                                            <div className="question_ans_card answer">
-                                                <div className="user_detail">
-                                                    <figure className="user_img">
-                                                        <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
-                                                    </figure>
-                                                    <div className="details">
-                                                        <span className="user_name">{reviewData?.replyData?.name || ''}</span>
-                                                        <span className="date">{reviewData?.replyData?.date || ''}</span>
-                                                    </div>
-                                                </div>
-                                                <p>{reviewData?.replyData?.reply}</p>
-                                                {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
-                                                {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
-                                            </div>}
-                                    </div>
-                                )
-                            })}
-                            {profileData?.reviewsCount > reviewList.length && <div className="text-center">
-                                <button className="fill_grey_btn load_more" onClick={loadMoreReviewHandler}>View more</button>
-                            </div>}
+                                        )
+                                    }) : <img alt="" src={portfolioPlaceholder} />}
+                                </Carousel>
+                            </div>
+                            <div className="flex_col_sm_6">
+                                <span className="xs_sub_title">Job Description</span>
+                                <div className="job_content">
+                                    <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </Modal>
-            }
-            {/* review reply modal */}
-            <Modal
-                className="ques_ans_modal"
-                open={reviewsData.reviewReplyClicked}
-                onClose={() => modalCloseHandler('reviewReplyClicked')}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                    <div className="heading">
-                        <span className="sub_title">
-                            {`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
-                        <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
-                            <img src={cancel} alt="cancel" />
-                        </button>
+
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Job posted'}</span>
+                        {props.isSkeletonLoading ? <Skeleton height={250} /> : <div className="flex_row tradies_row">
+                            {(props.isSkeletonLoading || props.isLoading || profileData?.jobPostedData?.length > 0) ?
+                                (profileData?.jobPostedData?.slice(0, 4)?.map((jobData: any) => {
+                                    return <TradieJobInfoBox item={jobData} {...props} key={jobData.jobId} userType={storageService.getItem('userType')} />
+                                })) :
+                                <div className="no_record">
+                                    <figure className="no_data_img">
+                                        <img src={noDataFound} alt="data not found" />
+                                    </figure>
+                                    <span>No Data Found</span>
+                                </div>}
+                        </div>}
+                        {props.isSkeletonLoading ? <Skeleton /> : <button
+                            className={`fill_grey_btn full_btn m-tb40 view_more ${profileData?.totalJobPostedCount === 0 ? 'disable_btn' : ''}`}
+                            disabled={profileData?.totalJobPostedCount === 0}
+                            onClick={builderAllJobsClicked}
+                        >
+                            {`View ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount === 1 ? `${profileData?.totalJobPostedCount} job` : `all ${profileData?.totalJobPostedCount} jobs`}` : ''}`}
+                        </button>}
                     </div>
-                    <div className="form_field">
-                        <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
-                        {reviewsData.updateParentReviews && (
-                            <ReactStars
-                                value={reviewsData.rating || 0}
-                                count={5}
-                                isHalf={true}
-                                onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
-                                size={40}
-                                activeColor="#ffd700"
-                                color='#DFE5EF'
-                            />
-                        )}
-                        <div className="text_field">
-                            <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
-                            <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                </div >
+
+                <div className="section_wrapper">
+                    <div className="custom_container">
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Reviews'}</span>
+                        {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
+                            {(props.isSkeletonLoading || props.isLoading || reviewList.length > 0) ?
+                                (reviewList.slice(0, 8)?.map((item: any) => {
+                                    return <ReviewInfoBox item={item.reviewData} />
+                                })) :
+                                <div className="no_record">
+                                    <figure className="no_data_img">
+                                        <img src={noDataFound} alt="data not found" />
+                                    </figure>
+                                    <span>No Data Found</span>
+                                </div>}
+                        </div>}
+                        {props.isSkeletonLoading ? <Skeleton /> :
+                            <button
+                                className={`fill_grey_btn full_btn view_more ${profileData?.reviewsCount === 0 ? 'disable_btn' : ''}`}
+                                disabled={profileData?.reviewsCount === 0}
+                                onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
+                            >
+                                {`View all ${profileData?.reviewsCount || 0} review${profileData?.reviewsCount ? 's' : ''}`}
+                            </button>}
+                    </div>
+                </div>
+
+                {/* view All reviews  */}
+                {reviewsData.showAllReviewsClicked && reviewList?.length > 0 &&
+                    <Modal
+                        className="ques_ans_modal"
+                        open={reviewsData.showAllReviewsClicked}
+                        onClose={() => modalCloseHandler('showAllReviewsClicked')}
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                    >
+                        <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                            <div className="heading">
+                                <span className="sub_title">{`${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `${profileData?.reviewsCount} reviews`}` : ''}`}</span>
+                                <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
+                                    <img src={cancel} alt="cancel" />
+                                </button>
+                            </div>
+                            <div className="inner_wrap">
+                                {reviewList?.map((item: any) => {
+                                    const { reviewData } = item;
+                                    return (
+                                        // <div key={reviewsData.reviewId}>
+                                        <div>
+                                            <div className="question_ans_card">
+                                                <div className="user_detail">
+                                                    <figure className="user_img">
+                                                        <img src={reviewData?.userImage || dummy} alt="user-img" />
+                                                    </figure>
+                                                    <div className="details">
+                                                        <span className="user_name">{reviewData?.name || ''}</span>
+                                                        <span className="date">{reviewData?.date || ''}</span>
+                                                    </div>
+                                                    <div className="rating_star">
+                                                        <ReactStars
+                                                            count={5}
+                                                            value={reviewData.rating}
+                                                            size={30}
+                                                            edit={false}
+                                                            isHalf={true}
+                                                            emptyIcon={<i className="far fa-star"></i>}
+                                                            halfIcon={<i className="fa fa-star-half-alt"></i>}
+                                                            fullIcon={<i className="fa fa-star"></i>}
+                                                            activeColor="#ffd700"
+                                                            color='#DFE5EF'
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <p>{reviewData?.review || ''}</p>
+                                                {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
+                                                    <span className="show_hide_ans link"
+                                                        onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
+                                                {reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) && <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>}
+                                                {!reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
+                                                {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('updateReviewBuilder', reviewData?.reviewId, '', reviewData?.review, reviewData?.rating)}>Edit</span>}
+                                                {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('removeReviewBuilder', reviewData?.reviewId)}>Delete</span>}
+                                            </div>
+                                            {reviewData?.replyData?.reply && reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) &&
+                                                <div className="question_ans_card answer">
+                                                    <div className="user_detail">
+                                                        <figure className="user_img">
+                                                            <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
+                                                        </figure>
+                                                        <div className="details">
+                                                            <span className="user_name">{reviewData?.replyData?.name || ''}</span>
+                                                            <span className="date">{reviewData?.replyData?.date || ''}</span>
+                                                        </div>
+                                                    </div>
+                                                    <p>{reviewData?.replyData?.reply}</p>
+                                                    {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
+                                                    {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
+                                                </div>}
+                                        </div>
+                                    )
+                                })}
+                                {profileData?.reviewsCount > reviewList.length && <div className="text-center">
+                                    <button className="fill_grey_btn load_more" onClick={loadMoreReviewHandler}>View more</button>
+                                </div>}
+                            </div>
                         </div>
-                        {!!errors.reviewData && <span className="error_msg">{errors.reviewData}</span>}
+                    </Modal>
+                }
+                {/* review reply modal */}
+                <Modal
+                    className="ques_ans_modal"
+                    open={reviewsData.reviewReplyClicked}
+                    onClose={() => modalCloseHandler('reviewReplyClicked')}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading">
+                            <span className="sub_title">
+                                {`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
+                            <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
+                        <div className="form_field">
+                            <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
+                            {reviewsData.updateParentReviews && (
+                                <ReactStars
+                                    value={reviewsData.rating || 0}
+                                    count={5}
+                                    isHalf={true}
+                                    onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
+                                    size={40}
+                                    activeColor="#ffd700"
+                                    color='#DFE5EF'
+                                />
+                            )}
+                            <div className="text_field">
+                                <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
+                                <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                            </div>
+                            {!!errors.reviewData && <span className="error_msg">{errors.reviewData}</span>}
+                        </div>
+                        <div className="bottom_btn custom_btn">
+                            {(reviewsData.updateReviewsClicked || reviewsData.updateParentReviews) ?
+                                <button className="fill_btn full_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Save</button>
+                                : <button className="fill_btn full_btn btn-effect" onClick={() => reviewHandler(reviewsData.reviewsClickedType)}>Send</button>}
+                            <button className="fill_grey_btn btn-effect" onClick={() => reviewHandler('replyCancelBtnClicked')}>Cancel</button>
+                        </div>
                     </div>
-                    <div className="bottom_btn custom_btn">
-                        {(reviewsData.updateReviewsClicked || reviewsData.updateParentReviews) ?
-                            <button className="fill_btn full_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Save</button>
-                            : <button className="fill_btn full_btn btn-effect" onClick={() => reviewHandler(reviewsData.reviewsClickedType)}>Send</button>}
-                        <button className="fill_grey_btn btn-effect" onClick={() => reviewHandler('replyCancelBtnClicked')}>Cancel</button>
-                    </div>
-                </div>
-            </Modal>
-            {/* send confirmation modal */}
+                </Modal>
+                {/* send confirmation modal */}
 
-            <Modal
-                className="custom_modal"
-                open={reviewsData.confirmationClicked}
-                onClose={() => modalCloseHandler('confirmationClicked')}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                    <div className="heading">
-                        <span className="xs_sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>
-                        <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
-                            <img src={cancel} alt="cancel" />
-                        </button>
+                <Modal
+                    className="custom_modal"
+                    open={reviewsData.confirmationClicked}
+                    onClose={() => modalCloseHandler('confirmationClicked')}
+                    aria-labelledby="simple-modal-title"
+                    aria-describedby="simple-modal-description"
+                >
+                    <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="heading">
+                            <span className="xs_sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>
+                            <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
+                                <img src={cancel} alt="cancel" />
+                            </button>
+                        </div>
+                        <div className="modal_message">
+                            <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
+                        </div>
+                        <div className="dialog_actions">
+                            <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
+                            <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                        </div>
                     </div>
-                    <div className="modal_message">
-                        <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
-                    </div>
-                    <div className="dialog_actions">
-                        <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
-                        <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
-                    </div>
-                </div>
-            </Modal>
+                </Modal>
 
-        </div >
-    )
+            </div >
+        )
+    }
 }
 export { portfolio, portfolioModal };
 export default BuilderInfo;

@@ -76,7 +76,7 @@ export const verifyOtp = async (data: object) => {
 
 export const verifyMobileOtp = async (data: object) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.postToJson(Urls.verifyOTP, data);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.verifyMobileOTP, data);
   setLoading(false);
   if (response.status_code === 200) {
     return { success: true, message: response.message };
@@ -231,6 +231,15 @@ export const markNotifAsRead = async (data: any) => {
 
 export const resendOtp = async (data: any) => {
   const response: FetchResponse = await NetworkOps.postToJson(Urls.resendOtp, data);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+};
+
+export const resendMobileOtp = async (data: any) => {
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.resendMobileOtp, data);
   if (response.status_code === 200) {
     return { success: true };
   }

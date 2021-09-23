@@ -90,9 +90,9 @@ export const getMilestoneList = async (jobId: any) => {
     const response: FetchResponse = await NetworkOps.get(`${Urls.milestoneListBuilder}?jobId=${jobId}`)
     setLoading(false);
     if (response.status_code === 200) {
-        return { success: true, data: response.result };
+        return { success: true, data: response.result , status: response.status_code };
     }
-    return { success: false, data: response.result };
+    return { success: false, data: response.result, status: response.status_code  };
 }
 
 export const getMilestoneDetails = async (data: any) => {
@@ -100,7 +100,7 @@ export const getMilestoneDetails = async (data: any) => {
     const response: FetchResponse = await NetworkOps.get(`${Urls.milestoneDetails}?jobId=${data.jobId}&milestoneId=${data.milestoneId}`)
     setLoading(false);
     if (response.status_code === 200) {
-        return { success: true, data: response.result };
+        return { success: true, data: response.result};
     }
     return { success: false, data: response.result };
 }

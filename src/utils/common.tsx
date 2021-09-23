@@ -472,6 +472,19 @@ export const JobLodgeReasons = (type: number, isBuilder?: boolean) => {
     }
 }
 
+
+export const isOnline = () => {
+    var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHttp');
+    xhr.onload = function(){
+        return true;
+    }
+    xhr.onerror = function(){
+       return false;
+    }
+    xhr.open("GET","anypage.php",true);
+    xhr.send();
+}
+
 // CANCELLATION Reasons:
 // 1.Experiencing delays on other projects.
 // 2. Current project has taken longer than expected.

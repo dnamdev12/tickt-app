@@ -252,10 +252,10 @@ export const getBuilderProfile = async (builderId: any) => {
   const response: FetchResponse = await NetworkOps.get(Urls.builderProfile + `?builderId=${builderId}`);
   setSkeletonLoading(false);
   if (response.status_code === 200) {
-    return { success: true, data: response.result };
+    return { success: true, data: response.result, status: response.status_code };
   }
   setShowToast(true, response.message);
-  return { success: false };
+  return { success: false, status: response.status_code };
 }
 
 export const getActiveJobList = (page: number) => ({
@@ -411,9 +411,9 @@ export const getTradeProfile = async (data: any) => {
   const response: FetchResponse = await NetworkOps.get(Urls.tradieProfile + `?tradieId=${data.tradieId}&jobId=${data.jobId}`);
   setSkeletonLoading(false);
   if (response.status_code === 200) {
-    return { success: true, data: response.result };
+    return { success: true, data: response.result, status: response.status_code };
   }
-  return { success: false };
+  return { success: false, status: response.status_code };
 }
 
 
@@ -562,9 +562,9 @@ export const HomeTradieProfile = async (data: any) => {
   const response: FetchResponse = await NetworkOps.get(`${Urls.jobHome}tradieProfile?tradieId=${data.tradieId}`,);
   setSkeletonLoading(false);
   if (response?.status_code === 200) {
-    return { success: true, data: response.result };
+    return { success: true, data: response.result, status: response?.status_code };
   }
-  return { success: false };
+  return { success: false, status: response?.status_code };
 }
 
 export const AddVoucher = async (data: any) => {

@@ -44,6 +44,7 @@ const PhoneNumber = (props: Propstype) => {
         e.preventDefault();
         if (validateForm()) {
             const data = {
+                email: props.email,
                 otp: otp
             }
             const res: any = await verifyOtp(data)
@@ -57,8 +58,7 @@ const PhoneNumber = (props: Propstype) => {
 
     const resendHandler = async () => {
         let data = {
-            "email": '',//props.email,
-            "user_type": ''//props.userType
+            "email": props.email,
         };
         let response = await resendOtp(data);
         if (response.success) {
@@ -102,17 +102,12 @@ const PhoneNumber = (props: Propstype) => {
                     </span>
                 </div>
 
-                <div className="form_field  text-center">
-                    <span className="eg">
-                        {'Don’t you receive any codes?'}
-                        {/* {'Didn’t receive a mail with link?'}  */}
-                    </span>
-                    <br />
-                    <span onClick={resendHandler} className="link">
-                        {'Re-send code'}
-                        {/* {'Re-send a mail'} */}
-                    </span>
-                </div>
+                {counter === 0 &&
+                    <div className="form_field text-center">
+                        <span className="show_label">Don’t you receive any codes?</span>
+                        <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
+                    </div>
+                }
 
                 <div className="form_field">
                     <button className="fill_btn btn-effect">Next</button>
@@ -123,5 +118,5 @@ const PhoneNumber = (props: Propstype) => {
     )
 }
 
-export default PhoneNumber
+export default PhoneNumber;
 

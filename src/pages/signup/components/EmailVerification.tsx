@@ -46,6 +46,7 @@ const PhoneNumber = (props: Propstype) => {
         e.preventDefault();
         if (validateForm()) {
             const data = {
+                email:props.email,
                 otp: otp
             }
             const res: any = await verifyOtp(data)
@@ -59,8 +60,7 @@ const PhoneNumber = (props: Propstype) => {
 
     const resendHandler = async () => {
         let data = {
-            "email": props.email,
-            "user_type": props.userType
+            "email": props.email
         };
         let response = await resendOtp(data);
         if (response.success) {
@@ -95,10 +95,12 @@ const PhoneNumber = (props: Propstype) => {
                     </span>
                 </div>
 
-                {counter === 0 && <div className="form_field text-center">
+                {counter === 0 && 
+                <div className="form_field text-center">
                     <span className="show_label">Don’t you receive any codes?</span>
                     <a href="#" className="link" onClick={resendHandler}>Re-send code</a>
-                </div>}
+                </div>
+                }
                 {counter > 0 && <div className="form_field text-center">
                     <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
                 </div>}

@@ -80,6 +80,7 @@ interface Props {
 interface State {
     profilePictureLoading: boolean,
     tradieInfo: any,
+    showError: boolean,
     tradieReviews: any,
     profileData: any,
     portfolioData: {
@@ -124,6 +125,7 @@ class TradieInfo extends Component<Props, State> {
         toggleSpecialisation: true,
         profilePictureLoading: true,
         tradieInfo: null,
+        showError: false,
         tradieReviews: null,
         profileData: {},
         delete: {
@@ -164,6 +166,7 @@ class TradieInfo extends Component<Props, State> {
         this.setState({
             toggleSpecialisation: true,
             tradieInfo: null,
+            showError: false,
             tradieReviews: null,
             profileData: {},
             portfolioData: {
@@ -448,13 +451,21 @@ class TradieInfo extends Component<Props, State> {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
             console.log({ res_profile })
             if (res_profile.success) {
-                this.setState({ tradieInfo: res_profile.data })
+                this.setState({ tradieInfo: res_profile.data , showError:false})
+            } else {
+                if(res_profile?.status == 404){
+                    this.setState({ showError: true })
+                }
             }
         } else {
             let res_profile: any = await HomeTradieProfile({ tradieId: tradeId });
             console.log({ res_profile })
             if (res_profile?.success) {
-                this.setState({ tradieInfo: res_profile.data })
+                this.setState({ tradieInfo: res_profile.data, showError:false })
+            } else {
+                if(res_profile?.status == 404){
+                    this.setState({ showError: true })
+                }
             }
         }
 
@@ -550,7 +561,7 @@ class TradieInfo extends Component<Props, State> {
         })
         // let tradieInfo: any = props.tradieInfo;
         const { user_type, is_active } = this.getItemsFromLocation();
-        let { portfolioData, toggleVoucher } = this.state;
+        let { portfolioData, toggleVoucher , showError} = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
         let userType: number = Number(user_type);
@@ -573,33 +584,33 @@ class TradieInfo extends Component<Props, State> {
         haveJobId = urlParams.get('jobId') == null ? false : true;
         let toggleSpecialisation = this.state.toggleSpecialisation;
 
-        /*
-        return (
-            <div className="app_wrapper">
-                <div className="section_wrapper">
-                    <div className="custom_container">
+        if (showError) {
+            return (
+                <div className="app_wrapper">
+                    <div className="section_wrapper">
+                        <div className="custom_container">
 
-                        <div className="vid_img_wrapper pt-20">
-                            <div className="flex_row">
-                                <div className="flex_col_sm_8 relative">
-                                    <button className="back" onClick={() => {
-                                        props.history.goBack();
-                                    }}></button>
+                            <div className="vid_img_wrapper pt-20">
+                                <div className="flex_row">
+                                    <div className="flex_col_sm_8 relative">
+                                        <button className="back" onClick={() => {
+                                            props.history.goBack();
+                                        }}></button>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="no_record  m-t-vh">
-                            <figure className="no_img">
-                                <img src={noDataFound} alt="data not found" />
-                            </figure>
-                            <span>{'This tradie is no longer available'}</span>
+                            <div className="no_record  m-t-vh">
+                                <figure className="no_img">
+                                    <img src={noDataFound} alt="data not found" />
+                                </figure>
+                                <span>{'This tradie is no longer available'}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        )
-        */
+            )
+        }
 
         return (
             <div className="app_wrapper">
