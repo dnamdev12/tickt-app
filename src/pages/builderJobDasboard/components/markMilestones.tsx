@@ -98,6 +98,10 @@ const MarkMilestones = (props: any) => {
     }, []);
 
     useEffect(() => {
+        alert('Here!!')
+    },[props.location.pathname]);
+
+    useEffect(() => {
         console.log({ expandItem })
         if (Object.keys(expandItem).length === 0) {
             preFetch();
@@ -317,7 +321,8 @@ const MarkMilestones = (props: any) => {
 
 
                 </div>
-                <span className="sub_title">
+                <span
+                className="sub_title">
                     {'Job Milestones'}
                 </span>
                 <p className="commn_para">
@@ -409,8 +414,7 @@ const MarkMilestones = (props: any) => {
 
                 <div
                     onClick={() => {
-                        console.log({ item_details })
-                        props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}&hideInvite=true&active=true`);
+                        props?.history?.push(`tradie-info?tradeId=${item_details?.tradieId}&hideInvite=true&active=true&jobId=${item_details?.jobId}`);
                     }}
                     className="tradie_card posted_by">
                     <span

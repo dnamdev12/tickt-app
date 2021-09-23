@@ -67,10 +67,13 @@ const RateThisJob = (props: any) => {
         }
     }
 
-    const jobClickHandler = ({ jobId }: any) => {
+    const jobClickHandler = ({ jobId , data}: any) => {
         // let urlEncode: any = window.btoa(`?jobId=${jobId}`)
-        let urlEncode: any = `?jobId=${jobId}`;
-        props.history.push(`/job-detail?${urlEncode}`);
+        console.log({data},'----- data----- data')
+        if(data?.status){
+            let urlEncode: any = `?jobId=${jobId}&status=${data?.status}&job=past&activeType=past`;
+            props.history.push(`/job-detail?${urlEncode}`);
+        } 
     }
 
     const tradieClicked = ({ tradieId, jobId }: any) => {
@@ -163,7 +166,7 @@ const RateThisJob = (props: any) => {
                             className="edit_icon"
                             title="More"
                             onClick={() => {
-                                jobClickHandler({ jobId: data?.jobId })
+                                jobClickHandler({ jobId: data?.jobId , data})
                             }}>
                             <img src={more} alt="more" />
                         </span>
@@ -187,7 +190,7 @@ const RateThisJob = (props: any) => {
                             <div
                                 className="details"
                                 onClick={() => {
-                                    jobClickHandler({ jobId: data?.jobId })
+                                    jobClickHandler({ jobId: data?.jobId, data })
                                 }}>
                                 <span className="name">{data?.jobData?.tradeName}</span>
                                 <span className="prof">{data?.jobName}</span>

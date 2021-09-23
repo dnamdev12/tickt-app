@@ -15,6 +15,7 @@ interface Applicant {
     jobName: any,
     jobDescription: any,
     jobId: any,
+    quote:any,
     quoteCount: any,
     quoteJob: any,
     specializationName: any,
@@ -38,12 +39,8 @@ const NewApplicants = (props: any) => {
 
     const [isRender, setRender] = useState(false);
 
-
-
     const redirectToInfo = ({ jobId }: any) => {
-        console.log({ jobId });
         const props_: any = props;
-        console.log({ props_ })
         if (jobId?.length) {
             // let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
             let urlEncode: any = `?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`
@@ -75,6 +72,7 @@ const NewApplicants = (props: any) => {
                         jobName,
                         jobDescription,
                         jobId,
+                        quote,
                         quoteCount,
                         quoteJob,
                         location,

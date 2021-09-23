@@ -451,9 +451,9 @@ class TradieInfo extends Component<Props, State> {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
             console.log({ res_profile })
             if (res_profile.success) {
-                this.setState({ tradieInfo: res_profile.data , showError:false})
+                this.setState({ tradieInfo: res_profile.data, showError: false })
             } else {
-                if(res_profile?.status == 404){
+                if (res_profile?.status == 404) {
                     this.setState({ showError: true })
                 }
             }
@@ -461,9 +461,9 @@ class TradieInfo extends Component<Props, State> {
             let res_profile: any = await HomeTradieProfile({ tradieId: tradeId });
             console.log({ res_profile })
             if (res_profile?.success) {
-                this.setState({ tradieInfo: res_profile.data, showError:false })
+                this.setState({ tradieInfo: res_profile.data, showError: false })
             } else {
-                if(res_profile?.status == 404){
+                if (res_profile?.status == 404) {
                     this.setState({ showError: true })
                 }
             }
@@ -561,7 +561,7 @@ class TradieInfo extends Component<Props, State> {
         })
         // let tradieInfo: any = props.tradieInfo;
         const { user_type, is_active } = this.getItemsFromLocation();
-        let { portfolioData, toggleVoucher , showError} = this.state;
+        let { portfolioData, toggleVoucher, showError } = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
         let userType: number = Number(user_type);
@@ -576,7 +576,7 @@ class TradieInfo extends Component<Props, State> {
         const urlParams = new URLSearchParams(props.location.search)
         let hideInvite: any = false;
         let haveJobId: any = false;
-
+        let isActive = urlParams.get('active') == "true" ? true : false;
         if (urlParams.get('hideInvite')) {
             hideInvite = urlParams.get('hideInvite') === "false" ? false : true;
         }
@@ -593,9 +593,20 @@ class TradieInfo extends Component<Props, State> {
                             <div className="vid_img_wrapper pt-20">
                                 <div className="flex_row">
                                     <div className="flex_col_sm_8 relative">
-                                        <button className="back" onClick={() => {
-                                            props.history.goBack();
-                                        }}></button>
+                                        <button
+                                            className="back"
+                                            onClick={() => {
+                                                // props.history.goBack();
+                                                let url = props?.location?.state?.url;
+                                                if (url && !url.indexOf('tradie-info')) {
+                                                    props.history.push(props.location.state.url);
+                                                }
+                                                if (!isActive) {
+                                                    props.history.push('/jobs');
+                                                } else {
+                                                    props.history.push('/');
+                                                }
+                                            }}></button>
                                     </div>
                                 </div>
                             </div>
@@ -629,7 +640,18 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8 relative">
                                     <button className="back" onClick={() => {
-                                        props.history.goBack();
+                                        // props.history.goBack();
+                                        let url = props?.location?.state?.url;
+                                        if (url && !url.indexOf('tradie-info')) {
+                                            props.history.push();
+                                        }
+                                        if (isActive) {
+                                            let url_: any = new URLSearchParams(props.location.search);
+                                            let jobId: any = url_.get('jobId');
+                                            props.history.push(`/jobs?active=active&jobId=${jobId}&markMilestone=true`);
+                                        } else {
+                                            props.history.push('/');
+                                        }
                                     }}></button>
                                 </div>
                             </div>
