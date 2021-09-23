@@ -29,8 +29,9 @@ define( 'DB_USER', 'ticktwp_usr' );
 define( 'DB_PASSWORD', 'Z5PdpTNUR479hNOM' );
 
 /** MySQL hostname */
-define( 'DB_HOST', 'localhost' );
-
+//define( 'DB_HOST', 'localhost' );
+define( 'DB_HOST', '52.9.226.235' );
+define( 'DB_HOST_SLAVE', '52.9.226.235' );
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8mb4' );
 
@@ -79,7 +80,7 @@ $table_prefix = 'wp_';
  */
 
 define( 'WP_DEBUG', true );
-define( 'WP_DEBUG_DISPLAY', true );
+define( 'WP_DEBUG_DISPLAY', false );
 define( 'WP_DEBUG_LOG', true );
 define('FS_METHOD','direct');
 

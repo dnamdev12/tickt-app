@@ -1,0 +1,15 @@
+# ignore log files and databases
+*.log
+*.sql
+*.sqlite
+# ignore these plugins
+wp-content/plugins/hello.php
+
+# ignore specific themes
+wp-content/themes/twenty*/
+wp-config.php
+wp-content/mu-plugins/
+
+/.htaccess
+/license.txt
+/readme.html
