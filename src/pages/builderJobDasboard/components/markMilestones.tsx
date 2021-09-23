@@ -37,15 +37,6 @@ interface Mile {
     enableCancelJob: boolean
 }
 
-const usePrevValues = (value: any, callback: Function) => {
-    const prevValues = useRef(value);
-
-    useEffect(() => {
-        callback(prevValues.current);
-        return () => (prevValues.current = value);
-    });
-};
-
 const MarkMilestones = (props: any) => {
 
     let resetStateLocal = props?.resetStateLocal;
@@ -65,7 +56,6 @@ const MarkMilestones = (props: any) => {
     const [expandItem, setExpandItem] = useState<any>({});
 
     const [toggleSeeDetails, setSeeDetails] = useState(false);
-
     const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
 
     const backToScreen = () => {
@@ -77,14 +67,7 @@ const MarkMilestones = (props: any) => {
     let selectedItem: any = null;
     if (listData?.length) {
         selectedItem = listData[selectedIndex];
-
     }
-
-    usePrevValues({ pathname }, (prevValues:any) => {
-        if(prevValues.pathname !== pathname){
-            preFetch();
-        }
-    });
 
     useEffect(() => {
         fetchMilestoneDetail();
@@ -109,12 +92,10 @@ const MarkMilestones = (props: any) => {
     }
 
     useEffect(() => {
-        console.log({ props }, '-----??')
         preFetch();
     }, []);
 
     useEffect(() => {
-        console.log({ expandItem })
         if (Object.keys(expandItem).length === 0) {
             preFetch();
         }
@@ -217,8 +198,6 @@ const MarkMilestones = (props: any) => {
         setToggleItem((prev: any) => ({ ...prev, [name]: false }));
         setExpandItem({});
     }
-
-
 
     if (toggleItem?.edit) {
         let details: any = itemDetails;
