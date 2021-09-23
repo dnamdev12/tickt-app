@@ -116,6 +116,17 @@ class NetworkOps {
         }
     }
 
+    putRaw = async (service: string, data: any, options?: any): Promise<FetchResponse> => {
+        try {
+            const request = await this.getRequest('PUT', options);
+            request.body = data
+            return this.wrapperWithOptions(urlFor(service), request)
+        }
+        catch (err) {
+            throw err;
+        }
+    }
+
     get = async (service: any): Promise<FetchResponse> => {
         try {
             const request = await this.getRequest('GET');

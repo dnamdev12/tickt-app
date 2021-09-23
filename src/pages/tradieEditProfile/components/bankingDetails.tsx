@@ -10,6 +10,8 @@ interface BankDetails {
   account_name: string;
   account_number: string;
   bsb_number: string;
+  accountVerified: boolean;
+  stripeAccountId: string;
 }
 
 interface Props {
@@ -32,9 +34,11 @@ const digitalInfoPoints: Array<string> = [
 
 const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, bankDetails }: Props) => {
   const [data, setData] = useState<any>({
+    accountVerified: false,
     account_name: '',
     account_number: '',
     bsb_number: '',
+    stripeAccountId: ''
   });
   const [errors, setErrors] = useState({
     account_name: '',
@@ -56,7 +60,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
   }, [getBankDetails]);
 
   useEffect(() => {
-    setData(Object.keys(bankDetails).length ? bankDetails : { account_name: '', account_number: '', bsb_number: '' });
+    setData(Object.keys(bankDetails).length ? bankDetails : { accountVerified: false, account_name: '', account_number: '', bsb_number: '', stripeAccountId: '' });
   }, [bankDetails]);
 
   const validate = (name: string, value: string) => {
@@ -129,6 +133,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
     idVerifClicked ? (
       <DigitalIdVerification
         setIdVerifClicked={setIdVerifClicked}
+        stripeAccountId={data.stripeAccountId}
       />
     ) : (<div className="flex_row">
       <div className="flex_col_sm_8">
@@ -178,14 +183,18 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
           <span className="error_msg">{errors.bsb_number}</span>
         </div>
 
-        {/* <div className="form_field">
+        <div className="form_field">
           <button className="fill_grey_btn full_btn btn-effect id_verified"
-            onClick={() => setIdVerifClicked(true)}>
-            {false && <img src={verifiedIcon} alt="verified" />}
-            Add ID Verification
+            onClick={() => {
+              if (data?.accountVerified) return;
+              setIdVerifClicked(true);
+            }}
+          >
+            {data?.accountVerified && <img src={verifiedIcon} alt="verified" />}
+            {`${data?.accountVerified ? 'ID Verified' : 'Add ID Verification'}`}
           </button>
         </div>
-        <span className="show_label id_info" onClick={() => setDigitalIdInfo(true)}>ID verification is required as part of Stripe ID verification process.</span> */}
+        <span className="show_label id_info" onClick={() => setDigitalIdInfo(true)}>ID verification is required as part of Stripe ID verification process.</span>
 
         <button className={`fill_btn full_btn btn-effect${!updated ? ' disabled' : ''}`} onClick={handleSave}>Save changes</button>
       </div>

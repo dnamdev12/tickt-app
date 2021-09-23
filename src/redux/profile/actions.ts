@@ -186,3 +186,19 @@ export const getTnc = async () => {
   setShowToast(true, response.message);
   return { success: false, data: '' };
 }
+
+export const uploadStripeDocument = async (data: any) => {
+  setLoading(true);
+  const options = {
+    headerOverrides: {
+      'Content-Type': 'multipart/form-data'
+    }
+  }
+  const response: FetchResponse = await NetworkOps.putRaw(`${Urls.payment}/uploadStripeDocument`, data, options);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
+  }
+  setShowToast(true, response.message);
+  return { success: false, data: '' };
+}
