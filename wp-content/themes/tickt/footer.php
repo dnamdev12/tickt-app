@@ -467,7 +467,7 @@
                             <div class="form_field" id="email_section">
                                 <label class="form_label">Email</label>
                                 <div class="text_field">
-                                    <input type="text" placeholder="Enter Email" name="email">
+                                    <input type="text" placeholder="Enter Email" name="email" id="email_otp">
                                 </div>
                             </div>
                             <div class="form_field" id="enter_otp">
@@ -478,12 +478,15 @@
                             </div>
                             <div class="form_field">
                                 <span class="show_label">Enter the Email associated with your account and we will send a
-                                    SMS code to reset your password.</span>
+                                code to reset your password.</span>
                             </div>
                             <div class="form_field">
+                            <a class="link" id="send_otp_again">Send OTP again.</a>
                             <div id="forget_pwd_msg" class="error_msg"></div>
-                            <button type="submit" name="forget_pwd" class="fill_btn btn-effect">Next</button>
+                            <button type="submit" id="submit_forget_pwd" name="forget_pwd" class="fill_btn btn-effect">Next</button>
+                            <button type="submit" id="submit_otp_button" name="otp_button" class="fill_btn btn-effect">Next</button>
                             <input type="hidden" name="action" value="forget_pwd_action">
+                            <input type="hidden" name="action" value="send_otp_action">
                             </div>
                             </form>
                         </div>

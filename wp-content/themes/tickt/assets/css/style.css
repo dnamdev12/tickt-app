@@ -1607,6 +1607,6 @@ footer p{
     height:120px;
   }
 
-  #enter_otp {
+  #enter_otp, #submit_otp_button {
       display:none;
   }
