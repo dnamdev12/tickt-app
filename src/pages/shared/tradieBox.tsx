@@ -40,16 +40,24 @@ class TradieBox extends Component<PropsType, State> {
     }
 
     redirectPath = (item: any) => {
-        const { jobId, specializationId, history, hideInvite } = this.props;
+        const { jobId, specializationId, history, hideInvite, location } = this.props;
 
         console.log({ item }, '-->')
 
         let tradieId = item?.tradieId;
 
         if (jobId && tradieId) {
-            history.push(`tradie-info?jobId=${jobId}&tradeId=${tradieId}&hideInvite=${hideInvite ? true : false}`);
+            history.push({
+                pathname: `/tradie-info`,
+                search: `?jobId=${jobId}&tradeId=${tradieId}&hideInvite=${hideInvite ? true : false}`,
+                state: { url: location?.pathname }
+            });
         } else {
-            history.push(`tradie-info?tradeId=${tradieId}&hideInvite=${hideInvite ? true : false}`);
+            history.push({
+                pathname: `/tradie-info`,
+                search: `?tradeId=${tradieId}&hideInvite=${hideInvite ? true : false}`,
+                state: { url: location?.pathname }
+            });
         }
     }
 

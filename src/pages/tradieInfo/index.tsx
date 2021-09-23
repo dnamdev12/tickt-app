@@ -576,7 +576,7 @@ class TradieInfo extends Component<Props, State> {
         const urlParams = new URLSearchParams(props.location.search)
         let hideInvite: any = false;
         let haveJobId: any = false;
-
+        let isActive = urlParams.get('active') == "true" ? true : false;
         if (urlParams.get('hideInvite')) {
             hideInvite = urlParams.get('hideInvite') === "false" ? false : true;
         }
@@ -593,9 +593,20 @@ class TradieInfo extends Component<Props, State> {
                             <div className="vid_img_wrapper pt-20">
                                 <div className="flex_row">
                                     <div className="flex_col_sm_8 relative">
-                                        <button className="back" onClick={() => {
-                                            props.history.goBack();
-                                        }}></button>
+                                        <button
+                                            className="back"
+                                            onClick={() => {
+                                                // props.history.goBack();
+                                                let url = props?.location?.state?.url;
+                                                if (url && !url.indexOf('tradie-info')) {
+                                                    props.history.push(props.location.state.url);
+                                                }
+                                                if (!isActive) {
+                                                    props.history.push('/jobs');
+                                                } else {
+                                                    props.history.push('/');
+                                                }
+                                            }}></button>
                                     </div>
                                 </div>
                             </div>
@@ -629,7 +640,18 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8 relative">
                                     <button className="back" onClick={() => {
-                                        props.history.goBack();
+                                        // props.history.goBack();
+                                        let url = props?.location?.state?.url;
+                                        if (url && !url.indexOf('tradie-info')) {
+                                            props.history.push();
+                                        }
+                                        if (isActive) {
+                                            let url_: any = new URLSearchParams(props.location.search);
+                                            let jobId: any = url_.get('jobId');
+                                            props.history.push(`/jobs?active=active&jobId=${jobId}&markMilestone=true`);
+                                        } else {
+                                            props.history.push('/');
+                                        }
                                     }}></button>
                                 </div>
                             </div>

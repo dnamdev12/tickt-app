@@ -524,8 +524,10 @@ const JobDetailsPage = (props: PropsType) => {
                 if (item?.mediaType === 2) {
                     sources.push(item.link);
                     types.push('video');
-                }
-                if (item?.mediaType === 1) {
+                } else if (item?.mediaType === 1) {
+                    sources.push(item.link);
+                    types.push('image');
+                } else {
                     sources.push(item.link);
                     types.push('image');
                 }
@@ -684,6 +686,10 @@ const JobDetailsPage = (props: PropsType) => {
                         slide={selectedSlide}
                         sources={sources}
                         types={types}
+                        key={sources?.length}
+                        onClose={() => {
+                            setSelectSlide(1)
+                        }}
                     />
 
                     <div className="vid_img_wrapper pt-20">
@@ -707,7 +713,10 @@ const JobDetailsPage = (props: PropsType) => {
                                     <OwlCarousel className='owl-theme' {...options}>
                                         {itemsMedia.length ?
                                             itemsMedia.map((image: any, index: number) => {
-                                                console.log({ image }, '---?')
+                                                console.log({ 
+                                                    image,
+                                                    mediaType:image?.mediaType 
+                                                 }, '---?')
                                                 return image?.mediaType === 1 ? (
                                                     <img
                                                         key={`${image}${index}`}
