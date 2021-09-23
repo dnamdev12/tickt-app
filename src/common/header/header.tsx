@@ -94,8 +94,10 @@ const Header = (props: any) => {
             setShowNotification(true, payload);
             if (payload.data?.notificationType !== "25") {
                 setNotificationData((prevData: any) => {
+                    let newPayLoad = { ...payload.data };
+                    newPayLoad.read = 0;
                     let newPushList = [...prevData.list];
-                    newPushList.unshift(payload.data);
+                    newPushList.unshift(newPayLoad);
                     console.log('newPushList: ', newPushList);
                     return {
                         ...prevData,

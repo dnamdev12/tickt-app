@@ -451,9 +451,9 @@ class TradieInfo extends Component<Props, State> {
             let res_profile: any = await getTradeProfile({ tradieId: tradeId, jobId: jobId });
             console.log({ res_profile })
             if (res_profile.success) {
-                this.setState({ tradieInfo: res_profile.data , showError:false})
+                this.setState({ tradieInfo: res_profile.data, showError: false })
             } else {
-                if(res_profile?.status == 404){
+                if (res_profile?.status == 404) {
                     this.setState({ showError: true })
                 }
             }
@@ -461,9 +461,9 @@ class TradieInfo extends Component<Props, State> {
             let res_profile: any = await HomeTradieProfile({ tradieId: tradeId });
             console.log({ res_profile })
             if (res_profile?.success) {
-                this.setState({ tradieInfo: res_profile.data, showError:false })
+                this.setState({ tradieInfo: res_profile.data, showError: false })
             } else {
-                if(res_profile?.status == 404){
+                if (res_profile?.status == 404) {
                     this.setState({ showError: true })
                 }
             }
@@ -561,7 +561,7 @@ class TradieInfo extends Component<Props, State> {
         })
         // let tradieInfo: any = props.tradieInfo;
         const { user_type, is_active } = this.getItemsFromLocation();
-        let { portfolioData, toggleVoucher , showError} = this.state;
+        let { portfolioData, toggleVoucher, showError } = this.state;
         let reviewsData: any = this.state.reviewsData;
         let tradieInfo: any = this.state.tradieInfo;
         let userType: number = Number(user_type);
@@ -1026,7 +1026,7 @@ class TradieInfo extends Component<Props, State> {
                                         }
                                     });
                                 }}>
-                                {`View all ${tradieInfo?.vouchesData?.length} vouche${tradieInfo?.vouchesData?.length ? 's' : ''}`}
+                                {`View ${tradieInfo?.vouchesData?.length === 1 ? '' : 'all'} ${tradieInfo?.vouchesData?.length} vouch${tradieInfo?.vouchesData?.length === 1 ? '' : 'es'}`}
                             </button>
                         </div>
                     </div>

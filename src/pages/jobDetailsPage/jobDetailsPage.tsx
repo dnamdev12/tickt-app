@@ -505,6 +505,21 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
+    const isPendingRequest = () => {
+        if (!jobInviteAction && (
+            jobDetailsData?.isCancelJobRequest ||
+            jobDetailsData?.reasonForCancelJobRequest ||
+            (jobDetailsData?.isChangeRequest && jobDetailsData?.jobStatus === 'active') ||
+            (jobDetailsData?.reasonNoteForCancelJobRequest?.length > 0 && jobDetailsData?.jobStatus !== 'active') ||
+            (jobDetailsData?.rejectReasonNoteForCancelJobRequest?.length > 0 && jobDetailsData?.jobStatus === 'active')
+        ) && ['active', 'cancelled'].includes(redirectFrom === 'jobs' ? jobDetailsData?.jobStatus?.toLowerCase() : jobDetailsData?.appliedStatus?.toLowerCase())
+        ) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     return (
         <div className="app_wrapper">
             <div className="section_wrapper">
@@ -650,23 +665,19 @@ const JobDetailsPage = (props: PropsType) => {
                                                 : null
                                     }
 
-                                    {!jobInviteAction && (
-                                        jobDetailsData?.isCancelJobRequest ||
-                                        jobDetailsData?.isChangeRequest ||
-                                        jobDetailsData?.reasonNoteForCancelJobRequest?.length && jobDetailsData?.jobStatus !== 'active' ||
-                                        (jobDetailsData?.rejectReasonNoteForCancelJobRequest && jobDetailsData?.jobStatus === 'active')
-                                    ) && !['apply', 'applied', 'accepted'].includes(jobDetailsData?.appliedStatus?.toLowerCase()) &&
-                                        <button
+                                    {isPendingRequest() ?
+                                        (<button
                                             className="fill_grey_btn full_btn pending_info"
                                             onClick={() => setPendingRequestClicked(true)}>
                                             <span>
                                                 <img src={pendingIcon} alt="icon" />
                                                 {`View all request(s)`}
                                             </span>
-                                        </button>}
+                                        </button>)
+                                        : null}
 
                                     {props?.isSkeletonLoading ? <Skeleton /> :
-                                        !(jobInviteAction === 'invite') && jobDetailsData?.quoteJob && ['', 'active', 'applied'].includes(jobDetailsData?.jobStatus?.toLowerCase()) && (
+                                        !(jobInviteAction === 'invite') && !jobDetailsData?.isInvited && jobDetailsData?.quoteJob && ['', 'active', 'applied'].includes(jobDetailsData?.jobStatus?.toLowerCase()) && (
                                             <button
                                                 className={`${jobDetailsData?.jobStatus === '' ? 'fill_btn' : 'fill_grey_btn'} full_btn btn-effect mt-sm`}
                                                 onClick={() => {
