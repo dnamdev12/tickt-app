@@ -60,8 +60,8 @@ import DocViewerComponent from '../pages/shared/DocViewer';
 import quoteJobCancel from '../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel';
 
 import AllQuotes from '../pages/builderJobDasboard/components/quoteJobs/ListQuotes';
-import ViewQuote from '../pages/builderJobDasboard/components/quoteJobs/viewQuote';
- 
+import IDSuccess from '../pages/tradieEditProfile/components/idSuccess';
+
 const routes = [
     {
         name: 'main',
@@ -191,7 +191,7 @@ const routes = [
         component: QuoteSuccess,
         authRoute: false,
         privateRoute: true,
-    }, 
+    },
     {
         name: 'quoteJobSuccess',
         path: '/quote-job-accepted',
@@ -339,6 +339,13 @@ const routes = [
         name: 'update-user-info',
         path: '/update-user-info',
         component: TradieEditProfile,
+        authRoute: false,
+        privateRoute: true,
+    },
+    {
+        name: 'id-verification-success',
+        path: '/id-verification-success',
+        component: IDSuccess,
         authRoute: false,
         privateRoute: true,
     },

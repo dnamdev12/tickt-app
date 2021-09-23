@@ -3,35 +3,41 @@ import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+import { uploadStripeDocument } from '../../../redux/profile/actions';
+import { useHistory } from 'react-router-dom';
 
 import addMedia from "../../../assets/images/add-image.png";
 import close from '../../../assets/images/icon-close-1.png';
 
-const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
+const imageFormats: Array<string> = ["jpeg", "jpg", "png"];
+interface Props {
+    setIdVerifClicked: (data: boolean) => void;
+    stripeAccountId: string;
+}
 
-const LodgeDispute = (props: any) => {
-    const [filesUrl, setFilesUrl] = useState([] as any);
-    const [localFiles, setLocalFiles] = useState({});
+const LodgeDispute = (props: Props) => {
+    const [frontPhotoId, setFrontPhotoId] = useState<any>({});
+    const [backPhotoId, setBackPhotoId] = useState<any>({});
+    const [formData] = useState<any>(new FormData());
 
-    const [update, forceUpdate] = useState({});
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+    const history = useHistory();
 
-    const removeFromItem = (index: any) => {
-        filesUrl.splice(index, 1);
-        setFilesUrl(filesUrl);
-        Array.isArray(update) ? forceUpdate([]) : forceUpdate({});
+    const removeFromItem = (type: string) => {
+        if (type === 'frontId') {
+            formData.delete('stripeAccountId');
+            formData.delete('frontPhotoIDUpload');
+            setFrontPhotoId({});
+        }
+        if (type === 'backId') {
+            formData.delete('backPhotoIDUpload');
+            setBackPhotoId({});
+        }
     }
 
     const onFileChange = async (e: any) => {
-        const formData = new FormData();
         const newFile = e.target.files[0];
-
-        if (filesUrl?.length === 2) {
-            setShowToast(true, "Max files upload limit is 2.")
-            return;
-        }
-
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
@@ -45,65 +51,42 @@ const LodgeDispute = (props: any) => {
             return;
         }
 
-        formData.append('file', newFile);
-        const res = await onFileUpload(formData)
-        if (res.success) {
-            let link: string = res.imgUrl;
-            let check_type: any = 1;
-            setFilesUrl((prev: Array<any>) => [...prev, {
-                "mediaType": check_type,
-                "link": link
-            }]);
-            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
+        const data = {
+            localURL: URL.createObjectURL(newFile),
         }
-    }
-
-    const setItemToggle = (index: any) => {
-        setToggler((prev: boolean) => !prev);
-        setSelectSlide(index + 1);
-    }
-
-    const renderbyFileFormat = (item: any, index: any) => {
-        let split_item_format = item.split('.');
-        let get_split_fromat = split_item_format[split_item_format.length - 1];
-
-        let split_item_name = item.split('/');
-        let get_split_name = split_item_name[split_item_name.length - 1];
-        let image_render: any = null;
-        if (get_split_fromat) {
-            if (imageFormats.includes(get_split_fromat)) {
-                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={item} alt="media" />
-            }
-            return (
-                <figure className="img_video">
-                    {image_render}
-                    <img
-                        onClick={() => { removeFromItem(index) }}
-                        src={close} alt="remove" className="remove" />
-                    {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
-                </figure>
-            )
+        if (Object.keys(frontPhotoId)?.length === 0) {
+            formData.append('stripeAccountId', props.stripeAccountId);
+            formData.append('frontPhotoIDUpload', newFile);
+            setFrontPhotoId(data);
+        } else if (Object.keys(backPhotoId)?.length === 0) {
+            formData.append('backPhotoIDUpload', newFile);
+            setBackPhotoId(data);
         }
     }
 
     const checkErrors = () => {
-        return true;
+        return (Object.keys(frontPhotoId)?.length && Object.keys(backPhotoId)?.length) ? false : true;
     }
 
     const handleSubmit = async () => {
+        const res = await uploadStripeDocument(formData);
+        if (res.success) {
+            history.push('/id-verification-success');
+        }
     }
 
     const renderFilteredItems = () => {
         let sources: any = [];
         let types: any = [];
 
-        if (filesUrl?.length) {
-            filesUrl.forEach((item: any) => {
-                if (item?.mediaType === 1) {
-                    sources.push(item.link);
-                    types.push('image');
-                }
-            })
+        if (Object.keys(frontPhotoId)?.length > 0) {
+            sources.push(frontPhotoId.localURL);
+            types.push('image');
+        }
+
+        if (Object.keys(backPhotoId)?.length > 0) {
+            sources.push(backPhotoId.localURL);
+            types.push('image');
         }
 
         return { sources, types };
@@ -129,6 +112,7 @@ const LodgeDispute = (props: any) => {
                     slide={selectedSlide}
                     sources={sources}
                     types={types}
+                    onClose={() => setSelectSlide(1)}
                 />
             </div>
 
@@ -141,11 +125,30 @@ const LodgeDispute = (props: any) => {
             </div>
             <div className="flex_col_sm_12">
                 <div className="upload_img_video">
-                    {filesUrl?.length ?
-                        filesUrl.map((item: any, index: number) => (renderbyFileFormat(item.link, index)))
-                        : null}
+                    {Object.keys(frontPhotoId)?.length > 0 &&
+                        <figure className="img_video" onClick={() => {
+                            setToggler((prev: boolean) => !prev);
+                            setSelectSlide(1);
+                        }}>
+                            <img title={'front-photo-id'} src={frontPhotoId.localURL} alt="media" />
+                            <img
+                                onClick={(e) => { e.stopPropagation(); removeFromItem('frontId'); }}
+                                src={close} alt="remove" className="remove" />
+                        </figure>
+                    }
+                    {Object.keys(backPhotoId)?.length > 0 &&
+                        <figure className="img_video" onClick={() => {
+                            setToggler((prev: boolean) => !prev);
+                            setSelectSlide(2);
+                        }}>
+                            <img title={'back-photo-id'} src={backPhotoId.localURL} alt="media" />
+                            <img
+                                onClick={(e) => { e.stopPropagation(); removeFromItem('backId') }}
+                                src={close} alt="remove" className="remove" />
+                        </figure>
+                    }
 
-                    {filesUrl?.length < 3 ? (
+                    {(Object.keys(frontPhotoId)?.length && Object.keys(backPhotoId)?.length) ? null : (
                         <React.Fragment>
                             <label className="upload_media" htmlFor="upload_img_video">
                                 <img src={addMedia} alt="" />
@@ -158,7 +161,7 @@ const LodgeDispute = (props: any) => {
                                 id="upload_img_video"
                             />
                         </React.Fragment>
-                    ) : null}
+                    )}
                 </div>
                 <button
                     onClick={handleSubmit}
