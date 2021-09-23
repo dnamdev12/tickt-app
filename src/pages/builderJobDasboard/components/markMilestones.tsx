@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import UploadMedia from '../../postJob/components/uploadMedia';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
@@ -45,6 +45,8 @@ const MarkMilestones = (props: any) => {
     let enableEditMilestone = props?.enableEditMilestone;
     let enableLodgeDispute = props?.enableLodgeDispute;
     let enableCancelJob = props?.enableCancelJob;
+    let pathname = `${props.location.pathname}${props.location.search}`;
+    const [page, setPage] = useState(pathname);
 
     const [enableApprove, setEnableApprove] = useState(false);
     const [itemDetails, setDetails] = useState(null);
@@ -54,7 +56,6 @@ const MarkMilestones = (props: any) => {
     const [expandItem, setExpandItem] = useState<any>({});
 
     const [toggleSeeDetails, setSeeDetails] = useState(false);
-
     const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
 
     const backToScreen = () => {
@@ -66,13 +67,11 @@ const MarkMilestones = (props: any) => {
     let selectedItem: any = null;
     if (listData?.length) {
         selectedItem = listData[selectedIndex];
-
     }
+
     useEffect(() => {
         fetchMilestoneDetail();
     }, [selectedMilestoneIndex]);
-
-
 
     const fetchMilestoneDetail = async () => {
         if (selectedMilestoneIndex && Object.keys(selectedMilestoneIndex).length) {
@@ -93,16 +92,10 @@ const MarkMilestones = (props: any) => {
     }
 
     useEffect(() => {
-        console.log({ props }, '-----??')
         preFetch();
     }, []);
 
     useEffect(() => {
-        alert('Here!!')
-    },[props.location.pathname]);
-
-    useEffect(() => {
-        console.log({ expandItem })
         if (Object.keys(expandItem).length === 0) {
             preFetch();
         }
@@ -144,10 +137,9 @@ const MarkMilestones = (props: any) => {
     }
 
     const preFetch = async () => {
-        let { jobId } = selectedItem;
-        if (getMilestoneList) {
+        let jobId = selectedItem?.jobId;
+        if (getMilestoneList && jobId) {
             const res: any = await getMilestoneList(jobId);
-            console.log({ res }, '---->')
             if (res.success) {
                 if (res?.data?.milestones?.length) {
                     res?.data?.milestones?.forEach((item: any, index: any) => {
@@ -156,7 +148,6 @@ const MarkMilestones = (props: any) => {
                             let isPrevDone: any = false;
                             isPrevDone = false;
                             let result = classChecks(isActive, isPrevDone);
-                            console.log({ result }, '====>')
                             if (["check", "active"].includes(result)) {
                                 setExpandItem({
                                     [item?.milestoneId]: true
@@ -207,8 +198,6 @@ const MarkMilestones = (props: any) => {
         setToggleItem((prev: any) => ({ ...prev, [name]: false }));
         setExpandItem({});
     }
-
-
 
     if (toggleItem?.edit) {
         let details: any = itemDetails;
@@ -322,7 +311,10 @@ const MarkMilestones = (props: any) => {
 
                 </div>
                 <span
-                className="sub_title">
+                    onClick={() => {
+                        props.history.replace(`/jobs?${Math.random()}=${Math.random()}`)
+                    }}
+                    className="sub_title">
                     {'Job Milestones'}
                 </span>
                 <p className="commn_para">
