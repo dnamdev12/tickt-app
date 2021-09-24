@@ -499,6 +499,6 @@ export const isOnline = () => {
 // 2. Inadequate access.
 // 3. No access equipment on site as indicated in JD
 // 4. Materials had not been delivered and supplied by the builder as part of the JD.
-// 5. Tradespersons work does not be regulations or comply with the VBA.
+// 5. Tradesperson's work does not be regulations or comply with the VBA.
 // 6. Tradesperson has not supplied a Certificate of Currency for their work.
-// 7. Tradespersons work is not at an acceptable standard
+// 7. Tradesperson's work is not at an acceptable standard

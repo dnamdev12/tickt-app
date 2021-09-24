@@ -27,7 +27,7 @@ const BuilderReviewSuccess = () => {
                     <div className="content">
                         <h1 className="title">Thanks!</h1>
                         <span className="show_label">
-                            Your review will help other tradepeople find the highest quality builders on Tickt.
+                            Your review will help other tradespeople find the highest quality builders on Tickt.
                         </span>
                         <NavLink to='/past-jobs'>
                             <div className="btn_wrapr">

@@ -7,7 +7,7 @@ interface Props {
 function TradieDetails({}: Props): ReactElement {
     return (
         <div>
-            {'TradieDetails'}
+            {'Tradesperson Details'}
         </div>
     )
 }

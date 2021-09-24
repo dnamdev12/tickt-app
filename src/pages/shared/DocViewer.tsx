@@ -8,6 +8,7 @@ const DocViewerComponent = (props:any) => {
 
     const params = new URLSearchParams(location?.search);
     const Url = params.get('url');
+    const isHeader = params.get('header');
     console.log({Url})
     return (
         <div>
@@ -15,6 +16,7 @@ const DocViewerComponent = (props:any) => {
                 src={Url}
                 width={window.screen.width}
                 height={window.screen.height}
+                isHeader={isHeader}
             />
         </div>
     )

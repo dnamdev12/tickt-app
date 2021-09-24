@@ -18,7 +18,6 @@ interface Proptypes {
   handleStepBack: () => void;
 }
 // "Per hour" and "Fixed price"
-
 const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 

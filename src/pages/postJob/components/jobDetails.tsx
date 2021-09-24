@@ -21,7 +21,7 @@ import { useHistory } from "react-router-dom";
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
-const isDevelopment = process.env.NODE_ENV !== "development" ? true : false;
+const isDevelopment = process.env.NODE_ENV === "development" ? true : false;
 interface Proptypes {
     data: any;
     milestones: any;

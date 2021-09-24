@@ -615,7 +615,7 @@ class TradieInfo extends Component<Props, State> {
                                 <figure className="no_img">
                                     <img src={noDataFound} alt="data not found" />
                                 </figure>
-                                <span>{'This tradie is no longer available'}</span>
+                                <span>{'This tradesperson is no longer available'}</span>
                             </div>
                         </div>
                     </div>

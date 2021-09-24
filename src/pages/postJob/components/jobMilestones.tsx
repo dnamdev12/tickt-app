@@ -264,7 +264,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                     </div>
                                 )}
                                 <p className="commn_para">
-                                    {'Put the milestones in so you can be notified when the tradersperson completes them '}
+                                    {'Put the milestones in so you can be notified when the tradesperson completes them '}
                                 </p>
                             </div>
                             {localMilestones?.length ? (

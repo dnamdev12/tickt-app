@@ -968,7 +968,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                             </div>
                                                             {url ?
                                                                 (<div className="file_upload_box"
-                                                                    onClick={() => window.open(url, '_blank')}
+                                                                    onClick={() => window.open(`${window.location.origin}/doc-view?url=${url}&header=true`, '_blank')}
                                                                 >
                                                                     <span className="close" onClick={(e) => this.removeQualificationFileHandler(e, qualification_id, "filledQualification")}>
                                                                         <img src={removeFile} />
@@ -1019,7 +1019,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                         </div>
                                                         {url ?
                                                             (<div className="file_upload_box"
-                                                                onClick={() => window.open(url, '_blank')}
+                                                                onClick={() => window.open(`${window.location.origin}/doc-view?url=${url}&header=true`, '_blank')}
                                                             >
                                                                 <span className="close" onClick={(e) => this.removeQualificationFileHandler(e, _id, "remainingQualification")}>
                                                                     <img src={removeFile} />
@@ -1419,7 +1419,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     <span className="sub_title">Portfolio</span>
                                     <span className="info_note">
                                         {storageService.getItem('userType') === 1 ?
-                                            'Tradepeople who have a portfolio with photos get job faster.'
+                                            'Tradespeople who have a portfolio with photos get job faster.'
                                             :
                                             'Showcase your work and attract the best talent to your jobs.'
                                         }

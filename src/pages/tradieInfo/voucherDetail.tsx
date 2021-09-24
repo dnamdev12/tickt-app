@@ -60,6 +60,7 @@ const VoucherDetail = (props: any) => {
                             src={item?.recommendation}
                             width="100%"
                             height="1200px"
+                            isHeader={false}
                         />
 
                     </div>

@@ -603,7 +603,7 @@ body {
 }
 
 .select_menu,
-.css-yk16xz-control {
+.css-yk16xz-control, .css-1fhf3k1-control {
   min-height: 48px !important;
 
   border-radius: 3px !important;
@@ -894,12 +894,14 @@ span.save_bookmark {
 
 /*  doc-viewer plugin */
 
-a#pdf-download {
-  display: none;
-}
-
-a#no-renderer-download {
-  display: none;
+.doc-viewer-download-disabled {
+  a#pdf-download {
+    display: none;
+  }
+  
+  a#no-renderer-download {
+    display: none;
+  }
 }
 
 /*  doc-viewer plugin */

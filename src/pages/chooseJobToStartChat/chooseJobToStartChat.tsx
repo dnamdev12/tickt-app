@@ -106,7 +106,7 @@ const ChooseJobToStartChat = (props: any) => {
                                         <img src={noData} alt="data not found" />
                                     </figure>
                                     {/* <span>No Jobs Found</span> */}
-                                    <span>{`You must have worked on atleast a single job with the ${storageService.getItem('userType') === 1 ? 'builder' : 'tradie'} to start conversation with them.`}</span>
+                                    <span>{`You must have worked on atleast a single job with the ${storageService.getItem('userType') === 1 ? 'builder' : 'tradesperson'} to start conversation with them.`}</span>
                                 </div>}
 
                             </div>

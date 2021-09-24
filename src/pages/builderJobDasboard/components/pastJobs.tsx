@@ -212,7 +212,7 @@ const PastJobs = (props: any) => {
                                             className="fill_grey_btn full_btn">
                                             <React.Fragment>
                                                 <img src={rateStar} alt="rating-star" />
-                                                {'Rate this tradeperson'}
+                                                {'Rate this tradesperson'}
                                             </React.Fragment>
                                         </button>
                                         )
