@@ -51,6 +51,7 @@ interface State {
     globalJobId: string,
     hasLoad: boolean,
     actualLoad: boolean,
+    toggleClearActiveChecks: boolean
 }
 class JobDashboard extends Component<Props, State> {
     constructor(props: any) {
@@ -74,7 +75,8 @@ class JobDashboard extends Component<Props, State> {
             enableMakMilestone: false,
             globalJobId: '',
             hasLoad: true,
-            actualLoad: false
+            actualLoad: false,
+            toggleClearActiveChecks: false
         }
     }
 
@@ -397,7 +399,7 @@ class JobDashboard extends Component<Props, State> {
                     let result = [];
                     let concatedItems: any = prevValues;
                     let firstItem: any = null;
-                    
+
                     if (Array.isArray(past) && past?.length) {
                         firstItem = past[0];
                     }
@@ -568,6 +570,10 @@ class JobDashboard extends Component<Props, State> {
         if (jobtype === 'applicantList') { getnewJobApplicationListBuilder(dataItemsAddons); }
     }
 
+    setToggleActiveToFalse = () => {
+        this.setState({ toggleClearActiveChecks: false });
+    }
+
     render() {
         let {
             actualLoad,
@@ -636,7 +642,8 @@ class JobDashboard extends Component<Props, State> {
                                                 onClick={() => {
                                                     console.log('Here!!!!')
                                                     // setResetItem(true);
-                                                    setSelected('active')
+                                                    setSelected('active');
+                                                    this.setState({ toggleClearActiveChecks: true });
                                                 }}
                                                 className="menu_txt">Active</span>
                                         </span>
@@ -743,6 +750,8 @@ class JobDashboard extends Component<Props, State> {
                                     jobType={jobtype}
                                     activeType={activeType}
                                     setJobLabel={setSelected}
+                                    setToggleActiveToFalse={this.setToggleActiveToFalse}
+                                    toggleClearActiveChecks={this.state.toggleClearActiveChecks}
                                     history={props.history}
                                     globalJobId={globalJobId}
                                     enableEditMilestone={enableEditMilestone}

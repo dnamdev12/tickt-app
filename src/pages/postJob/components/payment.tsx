@@ -18,7 +18,7 @@ interface Proptypes {
   handleStepBack: () => void;
 }
 // "Per hour" and "Fixed price"
-const isDevelopment = process.env.NODE_ENV !== "development" ? true : false;
+
 const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 
@@ -304,7 +304,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
               </div>
             </div>
           </div>
-          {isDevelopment && (
+          
             <div className="form_field">
               <div className="checkbox_wrap agree_check">
                 <input
@@ -331,7 +331,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                 </label>
               </div>
             </div>
-          )}
+          
 
           <div className="form_field">
             <button

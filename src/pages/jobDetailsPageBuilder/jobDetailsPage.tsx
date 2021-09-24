@@ -713,10 +713,10 @@ const JobDetailsPage = (props: PropsType) => {
                                     <OwlCarousel className='owl-theme' {...options}>
                                         {itemsMedia.length ?
                                             itemsMedia.map((image: any, index: number) => {
-                                                console.log({ 
+                                                console.log({
                                                     image,
-                                                    mediaType:image?.mediaType 
-                                                 }, '---?')
+                                                    mediaType: image?.mediaType
+                                                }, '---?')
                                                 return image?.mediaType === 1 ? (
                                                     <img
                                                         key={`${image}${index}`}
@@ -894,7 +894,15 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <button
                                                         className="fill_btn btn-effect"
                                                         onClick={() => {
-                                                            handleCancelJob(1, jobDetailsData)
+                                                            if (jobDetailsData?.quoteJob) {
+                                                                let quote: any = jobDetailsData?.quote;
+                                                                if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId){
+                                                                    let quoteId:any = quote[0].tradieId;
+                                                                    props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
+                                                                }
+                                                            } else {
+                                                                handleCancelJob(1, jobDetailsData)
+                                                            }
                                                         }}>
                                                         {'Accept'}
                                                     </button>

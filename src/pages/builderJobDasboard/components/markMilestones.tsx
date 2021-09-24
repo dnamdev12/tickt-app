@@ -70,6 +70,18 @@ const MarkMilestones = (props: any) => {
     }
 
     useEffect(() => {
+        let UrlParams = new URLSearchParams(props.location.search);
+        let isForce = UrlParams.get('force');
+        let active = UrlParams.get('active');
+        let jobId = UrlParams.get('jobId');
+        let markMilestone = UrlParams.get('markMilestone');
+        if (isForce) {
+            props.history.replace(`${props.location.pathname}?active=${active}&jobId=${jobId}&markMilestone=${markMilestone}`);
+            preFetch();
+        }
+    }, [props]);
+
+    useEffect(() => {
         fetchMilestoneDetail();
     }, [selectedMilestoneIndex]);
 

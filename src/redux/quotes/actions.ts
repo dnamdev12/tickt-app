@@ -73,3 +73,17 @@ export const getAcceptDeclineTradie = async (data: any) => {
     setShowToast(true, response.message);
     return { success: false };
 }
+
+
+export const closeQuoteJob = async (data: any) => {
+    const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}closeQuoteJob`, data);
+    if (response.status_code === 200) {
+        setShowToast(true, response.message);
+        return { success: true, data: response?.result };
+    }
+    setShowToast(true, response.message);
+    return { success: false };
+}
+
+
+//PUT /job/closeQuoteJob

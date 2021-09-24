@@ -376,7 +376,7 @@ export const onNotificationClick = (notification: any) => {
                     let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=past`
                     return `/job-detail?${urlEncode}`;
                 } else {
-                    return `/jobs?active=active&jobId=${jobId}&markMilestone=true`;
+                    return `/jobs?active=active&jobId=${jobId}&markMilestone=true&force=true`;
                 }
             }
         case 15: //JOB_HOMEPAGE
@@ -402,7 +402,7 @@ export const onNotificationClick = (notification: any) => {
         case 19: //PRIVACY_POLICY
             return `/update-user-info?menu=pp`;
         case 21: // BUILDER_QUOTE_CANCEL
-            return `/quote-job-cancel?jobId=${extra_data?.jobId}&tradieId${extra_data?.senderId}`;
+            return `/quote-job-cancel?jobId=${jobId}&tradieId=${senderId}`;
         case 25: //CHAT_NOTIFICATION
             return `/chat`;
         default:

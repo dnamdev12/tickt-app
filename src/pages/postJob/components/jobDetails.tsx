@@ -315,14 +315,8 @@ const JobDetails = ({
         let response: any = null;
 
         if (update) {
-            if(!isDevelopment){
-                delete data_clone?.quoteJob;
-            }
             response = await publishOpenJobAgain(data_clone);
         } else {
-            if(!isDevelopment){
-                delete data_clone?.quoteJob;
-            }
             response = await createJob(data_clone);
         }
         if (response?.success) {

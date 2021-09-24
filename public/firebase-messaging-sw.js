@@ -113,7 +113,7 @@ const onNotificationClick = (notification) => {
                 if (extra_data?.jobStatusText === 'COMPLETED') {
                     return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
                 } else {
-                    return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs`;
+                    return `${url}mark-milestone?jobId=${jobId}&redirect_from=jobs&force=true`;
                 }
             } else {
                 if (extra_data?.jobStatusText === 'COMPLETED') {
@@ -145,6 +145,8 @@ const onNotificationClick = (notification) => {
             return `${url}admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
         case 19: //PRIVACY_POLICY
             return `${url}update-user-info?menu=pp`;
+        case 21: // BUILDER_QUOTE_CANCEL
+            return `/quote-job-cancel?jobId=${jobId}&tradieId=${senderId}`;
         case 25: //CHAT_NOTIFICATION
             return `${url}chat`;
         default:

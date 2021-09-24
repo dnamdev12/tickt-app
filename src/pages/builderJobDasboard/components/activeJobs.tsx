@@ -38,7 +38,9 @@ interface Active {
     enableLodgeDispute: boolean,
     enableCancelJob: boolean
     globalJobId: string,
-    mathrandom?: any
+    mathrandom?: any,
+    setToggleActiveToFalse:any,
+    toggleClearActiveChecks: () => void
 }
 
 const ActiveJobs = ({
@@ -52,7 +54,9 @@ const ActiveJobs = ({
     enableLodgeDispute,
     enableMakMilestone,
     enableCancelJob,
-    globalJobId
+    globalJobId,
+    setToggleActiveToFalse,
+    toggleClearActiveChecks
 }: any) => {
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
@@ -69,6 +73,14 @@ const ActiveJobs = ({
     useEffect(() => {
         console.log('here!')
     }, [jobType]);
+
+    useEffect(() => {
+        if(toggleClearActiveChecks === true){
+            setSelectedIndex(null);
+            setLocalState(false);  
+            setToggleActiveToFalse();
+        }
+    },[toggleClearActiveChecks])
 
 
     useEffect(() => {
