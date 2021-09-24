@@ -968,7 +968,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                             </div>
                                                             {url ?
                                                                 (<div className="file_upload_box"
-                                                                    onClick={() => window.open(url, '_blank')}
+                                                                    onClick={() => window.open(`${window.location.origin}/doc-view?url=${url}&header=true`, '_blank')}
                                                                 >
                                                                     <span className="close" onClick={(e) => this.removeQualificationFileHandler(e, qualification_id, "filledQualification")}>
                                                                         <img src={removeFile} />
@@ -1019,7 +1019,7 @@ export class PersonalInformation extends Component<Props, State> {
                                                         </div>
                                                         {url ?
                                                             (<div className="file_upload_box"
-                                                                onClick={() => window.open(url, '_blank')}
+                                                                onClick={() => window.open(`${window.location.origin}/doc-view?url=${url}&header=true`, '_blank')}
                                                             >
                                                                 <span className="close" onClick={(e) => this.removeQualificationFileHandler(e, _id, "remainingQualification")}>
                                                                     <img src={removeFile} />

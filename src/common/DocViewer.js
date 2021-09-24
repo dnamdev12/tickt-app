@@ -1,7 +1,7 @@
 import React from 'react';
 import DocViewer, { DocViewerRenderers } from "react-doc-viewer";
 
-const DocViewerComponent = ({ src, width, height }) => {
+const DocViewerComponent = ({ src, width, height, isHeader }) => {
     // https://docs.google.com/viewer?url=
     let checkFormat = src;
     let splitElements = checkFormat.split('.');
@@ -22,11 +22,12 @@ const DocViewerComponent = ({ src, width, height }) => {
             }}
             config={{
                 header: {
-                    disableHeader: true,
-                    disableFileName: true,
+                    disableHeader: isHeader ? false : true,
+                    disableFileName: false,
                     retainURLParams: true,
                 }
             }}
+            className={`${isHeader ? '' : 'doc-viewer-download-disabled'}`}
         />
     )
 

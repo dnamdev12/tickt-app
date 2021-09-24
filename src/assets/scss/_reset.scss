@@ -894,12 +894,14 @@ span.save_bookmark {
 
 /*  doc-viewer plugin */
 
-a#pdf-download {
-  display: none;
-}
-
-a#no-renderer-download {
-  display: none;
+.doc-viewer-download-disabled {
+  a#pdf-download {
+    display: none;
+  }
+  
+  a#no-renderer-download {
+    display: none;
+  }
 }
 
 /*  doc-viewer plugin */
