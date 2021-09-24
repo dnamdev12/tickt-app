@@ -18,7 +18,7 @@ interface Proptypes {
   handleStepBack: () => void;
 }
 // "Per hour" and "Fixed price"
-const isDevelopment = process.env.NODE_ENV !== "development" ? true : false;
+const isDevelopment = process.env.NODE_ENV === "development" ? true : false;
 const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
   const { errorStrings } = Constants;
 

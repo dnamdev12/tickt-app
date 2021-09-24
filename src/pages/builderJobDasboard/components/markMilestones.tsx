@@ -258,7 +258,7 @@ const MarkMilestones = (props: any) => {
                     <figure className="no_img">
                         <img src={noDataFound} alt="data not found" />
                     </figure>
-                    <span>{'This tradie is no longer available.'}</span>
+                    <span>{'This tradesperson is no longer available.'}</span>
                     <span>{'please contact admin.'} </span>
                 </div>
             </div>
@@ -402,7 +402,7 @@ const MarkMilestones = (props: any) => {
                 </ul>
             </div>
             <div className="flex_col_sm_6 col_ruler">
-                <span className="sub_title">Tradie</span>
+                <span className="sub_title">Tradesperson</span>
 
                 <div
                     onClick={() => {

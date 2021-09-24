@@ -1419,7 +1419,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     <span className="sub_title">Portfolio</span>
                                     <span className="info_note">
                                         {storageService.getItem('userType') === 1 ?
-                                            'Tradepeople who have a portfolio with photos get job faster.'
+                                            'Tradespeople who have a portfolio with photos get job faster.'
                                             :
                                             'Showcase your work and attract the best talent to your jobs.'
                                         }

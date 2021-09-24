@@ -154,7 +154,7 @@ const PaymentHistory = ({
                 </div>
               </div>
               <div className="flex_col_sm_4 col_ruler">
-                <span className="sub_title">{userType === 1 ? 'Posted by' : 'Tradie'}</span>
+                <span className="sub_title">{userType === 1 ? 'Posted by' : 'Tradesperson'}</span>
                 <div className="tradie_card posted_by ">
                   {/* <a href="javascript:void(0)" className="chat circle"></a> */}
                   <div className="user_wrap" onClick={() => history.push(`/${userType === 1 ? 'builder' : 'tradie'}-info?${userType === 1 ? 'builder' : 'trade'}Id=${userType === 1 ? builderId : tradieId}`)}>
@@ -250,7 +250,7 @@ const PaymentHistory = ({
                     <tr>
                       <th><span className="form_label">Job</span></th>
                       <th><span className="form_label">Status</span></th>
-                      <th> <span className="form_label">Hired {userType === 1 ? 'by' : 'tradie'}</span></th>
+                      <th> <span className="form_label">Hired {userType === 1 ? 'by' : 'tradesperson'}</span></th>
                       <th><span className="form_label">Start Date</span></th>
                       <th> <span className="form_label">Price</span></th>
                     </tr>

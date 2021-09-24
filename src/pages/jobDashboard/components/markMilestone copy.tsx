@@ -718,7 +718,7 @@ const MarkMilestone = ({
                 <p className="commn_para">
                   {' '}
                   Tickt does not handle payment for jobs, we only facilitate
-                  communication between tradepeople and builders. If you have problems
+                  communication between tradespeople and builders. If you have problems
                   receiving your payment, please contact your builder.
                 </p>
               </div>

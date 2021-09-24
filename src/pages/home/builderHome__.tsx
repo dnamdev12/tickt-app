@@ -545,7 +545,7 @@ const BuilderHome = (props: any) => {
             {/* Saved Tradies */}
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
-                    <span className="title">Saved tradepeople</span>
+                    <span className="title">Saved tradespeople</span>
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
@@ -648,7 +648,7 @@ const BuilderHome = (props: any) => {
             {/* Popular Tradies */}
             <div className="section_wrapper">
                 <div className="custom_container">
-                    <span className="title">Popular tradepeople</span>
+                    <span className="title">Popular tradespeople</span>
                     <ul className="popular_tradies">
                         <li>
                             <figure className="tradies_img">
@@ -702,7 +702,7 @@ const BuilderHome = (props: any) => {
             {/* Reccomended tradies */}
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
-                    <span className="title">Recommended tradepeople</span>
+                    <span className="title">Recommended tradespeople</span>
                     <div className="flex_row tradies_row">
                         <div className="flex_col_sm_4">
                             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
