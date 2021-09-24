@@ -206,7 +206,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
         aria-labelledby="simple-modal-title"
         aria-describedby="simple-modal-description"
       >
-        <div className="custom_wh filter_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+        <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
           <div className="heading">
             <span className="sub_title">ID verification</span>
             <button className="close_btn" onClick={() => setDigitalIdInfo(false)}>
@@ -214,14 +214,14 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
             </button>
           </div>
           <div className="inner_wrap">
-            <li>ID verification is required as part of Stripe ID verification process.</li>
-            <li>Below is a listing of documents that can accept as proof of identity, address, and entity.</li>
-            <ul>
-              {digitalInfoPoints.map((info, index) => <li key={index}>{info}</li>)}
+            <span className="show_label">ID verification is required as part of Stripe ID verification process.</span>
+            <span className="show_label">Below is a spansting of documents that can accept as proof of identity, address, and entity.</span>
+            <ul className="verificationid_list">
+              {digitalInfoPoints.map((info, index) => <li className="show_label" key={index}>{info}</li>)}
             </ul>
-            <div className="bottom_btn custom_btn">
+            <div className="bottom_btn custom_btn center">
               <button
-                className={`fill_btn full_btn centre btn-effect`}
+                className={`fill_btn full_btn btn-effect`}
                 onClick={() => setDigitalIdInfo(false)}
               >Ok</button>
             </div>
