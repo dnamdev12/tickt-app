@@ -75,8 +75,8 @@ textarea {
     box-shadow: 0 0 5px var(--blue);
   }
   &:read-only, &:read-only {
-    border: none;
-    padding: 0;
+    // border: none;
+    // padding: 0;
     pointer-events: none;
   }
   &::placeholder{
