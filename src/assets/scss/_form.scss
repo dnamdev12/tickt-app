@@ -660,6 +660,10 @@ a.fill_grey_btn {
   @media (max-width: 1366px){
     bottom: 25px;
   }
+  &.center{
+    left: 50%;
+    transform: translateX(-50%);
+  }
 }
 
 .pic_wrap {
