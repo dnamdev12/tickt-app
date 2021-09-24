@@ -401,6 +401,8 @@ export const onNotificationClick = (notification: any) => {
             return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
         case 19: //PRIVACY_POLICY
             return `/update-user-info?menu=pp`;
+        case 21: // BUILDER_QUOTE_CANCEL
+            return `/quote-job-cancel?jobId=${extra_data?.jobId}&tradieId${extra_data?.senderId}`;
         case 25: //CHAT_NOTIFICATION
             return `/chat`;
         default:
@@ -475,13 +477,13 @@ export const JobLodgeReasons = (type: number, isBuilder?: boolean) => {
 
 export const isOnline = () => {
     var xhr = XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHttp');
-    xhr.onload = function(){
+    xhr.onload = function () {
         return true;
     }
-    xhr.onerror = function(){
-       return false;
+    xhr.onerror = function () {
+        return false;
     }
-    xhr.open("GET","anypage.php",true);
+    xhr.open("GET", "anypage.php", true);
     xhr.send();
 }
 
