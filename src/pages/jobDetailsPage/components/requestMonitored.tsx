@@ -34,7 +34,7 @@ const RequestMonitored = (props: PropsType) => {
                         <h1 className="title">{`${(pathname === '/request-monitored/cr' || pathname === '/request-monitored/ccr') ? "Congratulations!" : "Got it!"}`}</h1>
                         {isBuilderCancelRequest ? (
                             <span className="show_label">
-                                {"We’ll send it to your tradie."}
+                                {"We’ll send it to your tradesperson."}
                             </span>
                         ) : (
                             <span className="show_label">

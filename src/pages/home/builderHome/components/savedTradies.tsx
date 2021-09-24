@@ -34,7 +34,7 @@ export default class SavedTradies extends Component {
         return (
             <div className="section_wrapper bg_gray">
                 <div className="custom_container">
-                    <span className="title">Saved tradies</span>
+                    <span className="title">Saved tradespeople</span>
                     <div className="flex_row tradies_row">
                         {data?.length ?
                             data.map((item: any, index: number) => (

@@ -208,7 +208,7 @@ const RateThisJob = (props: any) => {
                 <>
                     <div className="relate">
                         <span className="sub_title">
-                            {'Tradeperson'}
+                            {'Tradesperson'}
                         </span>
                         <span
                             className="edit_icon"

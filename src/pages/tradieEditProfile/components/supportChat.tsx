@@ -53,7 +53,7 @@ export class SupportChat extends Component<Props, State> {
                                 className="filter-type filled-in"
                                 type="radio"
                                 id="Tradie" />
-                            <label htmlFor="Tradie">Tradie</label>
+                            <label htmlFor="Tradie">Tradesperson</label>
                         </div>
                         <div className="radio_wrap agree_check">
                             <input

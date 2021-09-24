@@ -14,7 +14,7 @@ const ChooseJobSuccess = (props: any) => {
               {'Thanks!'}
             </h1>
             <span className="show_label">
-              {'We’ve sent this job to the tradie. You can find other recommended tradespeople in the search results.'}
+              {'We’ve sent this job to the tradesperson. You can find other recommended tradespeople in the search results.'}
             </span>
             <div className="btn_wrapr">
               <button
