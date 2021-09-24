@@ -4662,6 +4662,15 @@ body {
   }
 }
 
+.verificationid_list{
+  padding-left: 30px;
+  li{
+    list-style-type: disc;
+    margin-bottom: 10px;
+    display: list-item;
+  }
+}
+
 .id_verified{
   display: flex;
   justify-content: center;
