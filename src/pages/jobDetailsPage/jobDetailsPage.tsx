@@ -507,11 +507,10 @@ const JobDetailsPage = (props: PropsType) => {
 
     const isPendingRequest = () => {
         if (!jobInviteAction && (
-            jobDetailsData?.isCancelJobRequest ||
-            jobDetailsData?.reasonForCancelJobRequest ||
+            (jobDetailsData?.isCancelJobRequest && jobDetailsData?.jobStatus === 'active') ||
             (jobDetailsData?.isChangeRequest && jobDetailsData?.jobStatus === 'active') ||
-            (jobDetailsData?.reasonNoteForCancelJobRequest?.length > 0 && jobDetailsData?.jobStatus !== 'active') ||
-            (jobDetailsData?.rejectReasonNoteForCancelJobRequest?.length > 0 && jobDetailsData?.jobStatus === 'active')
+            (jobDetailsData?.reasonNoteForCancelJobRequest?.length > 0) ||
+            (jobDetailsData?.rejectReasonNoteForCancelJobRequest?.length > 0)
         ) && ['active', 'cancelled'].includes(redirectFrom === 'jobs' ? jobDetailsData?.jobStatus?.toLowerCase() : jobDetailsData?.appliedStatus?.toLowerCase())
         ) {
             return true;

@@ -98,7 +98,6 @@ const Header = (props: any) => {
                     newPayLoad.read = 0;
                     let newPushList = [...prevData.list];
                     newPushList.unshift(newPayLoad);
-                    console.log('newPushList: ', newPushList);
                     return {
                         ...prevData,
                         unreadCount: prevData.unreadCount + 1,
