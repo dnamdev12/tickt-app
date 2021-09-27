@@ -254,7 +254,7 @@ export const getBuilderProfile = async (builderId: any) => {
   if (response.status_code === 200) {
     return { success: true, data: response.result, status: response.status_code };
   }
-  setShowToast(true, response.message);
+  // setShowToast(true, response.message);
   return { success: false, status: response.status_code };
 }
 

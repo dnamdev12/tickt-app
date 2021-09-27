@@ -7,7 +7,19 @@ import storageService from '../../utils/storageService';
 
 export const quoteByJobId = async (data: any) => {
     setLoading(true);
-    const url = storageService.getItem('userType') === 1 ? `${Urls.quote}quoteByJobId?jobId=${data.jobId}&tradieId=${data.tradieId}` : `${Urls.quote}quoteByJobId?jobId=${data.jobId}&sort=${data.sortBy}`;
+    let url = '';
+    let isUserType = storageService.getItem('userType') === 1 ? true : false;
+    console.log({data, isUserType})
+    if (isUserType) {
+        url = `${Urls.quote}quoteByJobId?jobId=${data.jobId}&tradieId=${data.tradieId}`;
+    } else {
+        
+        if (data.tradieId?.length) {
+            url = `${Urls.quote}quoteByJobId?jobId=${data.jobId}&tradieId=${data.tradieId}`;
+        } else {
+            url = `${Urls.quote}quoteByJobId?jobId=${data.jobId}&sort=${data.sortBy}`
+        }
+    }
     const response: FetchResponse = await NetworkOps.get(url);
     setLoading(false);
     if (response.status_code === 200) {

@@ -39,7 +39,7 @@ class ViewQuote extends Component<Props, State> {
         if (response.success) {
             if (status == 1) {
                 this.props.history.push('/quote-job-accepted');
-            } 
+            }
 
             if (status == 2) {
                 this.props.setJobLabel('open');
@@ -58,18 +58,30 @@ class ViewQuote extends Component<Props, State> {
         const quotes_param: any = params.get('quotes');
         const viewQuotesParam: any = params.get('viewQuotes');
         const jobId: any = params.get('jobId');
-        if (jobId?.length) {
+        const tradieId: any = params.get('tradieId');
+        if (jobId?.length && !tradieId) {
             if (quotes_param === "true") {
-                this.fetchQuotesById(jobId, 1)
+                this.fetchQuotesById({ jobId: jobId, sortBy: 1 })
             } else {
-                this.fetchQuotesById(jobId, 1)
+                this.fetchQuotesById({ jobId: jobId, sortBy: 1 })
+            }
+        } else {
+            if (tradieId?.length) {
+                console.log({ tradieId })
+                this.fetchQuotesById({ jobId: jobId, sortBy: 1, tradieId: tradieId })
             }
         }
     }
 
-    fetchQuotesById = async (jobId: String, sortBy: Number) => {
-        let result = await quoteByJobId({ jobId, sortBy });
-        console.log({ result });
+    fetchQuotesById = async ({ jobId, sortBy, tradieId }: { jobId: String, sortBy: Number, tradieId?: String }) => {
+        let result = null;
+        console.log({ tradieId }, 'tradieId');
+        if (tradieId) {
+            result = await quoteByJobId({ jobId, tradieId });
+        } else {
+            result = await quoteByJobId({ jobId, sortBy });
+        }
+
         if (result?.success) {
             let data = result?.data?.resultData;
             if (data) {
@@ -94,13 +106,18 @@ class ViewQuote extends Component<Props, State> {
         const params = new URLSearchParams(props?.history?.location?.search);
         const id = params.get('id');
         const jobId = params.get('jobId');
+        const tradieId = params.get('tradieId');
         const activeType: any = params.get('active');
 
         let item: any = {};
-        if (quotesData && Array.isArray(quotesData) && quotesData?.length) {
-            item = quotesData.find((item: any) => item._id === id);
+        if (tradieId?.length && Array.isArray(quotesData) && quotesData?.length) {
+            item = quotesData[0];
+        } else {
+            if (quotesData && Array.isArray(quotesData) && quotesData?.length) {
+                item = quotesData.find((item: any) => item._id === id);
+            }
         }
-
+        console.log({ dataItems }, 'dataItems')
         let CASE_1 = ['open', 'applicant'].includes(activeType);
         return (
             <React.Fragment>

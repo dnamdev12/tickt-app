@@ -1,3 +1,4 @@
+import { retry } from '@redux-saga/core/effects';
 import colorLogo from '../../assets/images/ic-logo-yellow.png';
 import AuthSlider from './authSlider';
 
@@ -18,10 +19,61 @@ interface Props {
     socialId?: string,
 }
 
+
+const builderEnableSteps = [{
+    2: false,
+
+}]
 const AuthParent = (props: any) => {
+
+    const handleSteps = ({ step, index, type }: any) => {
+        console.log({ step, index, type })
+        if (type == 2) {
+            if (index == 0) {
+                return step === 3 ? 'active' : '';
+            }
+            if (index == 1) {
+                return step === 4 ? 'active' : '';
+            }
+            if (index == 2) {
+                return step === 5 ? 'active' : '';
+            }
+            if (index == 3) {
+                return step === 8 ? 'active' : '';
+            }
+            if (index == 4) {
+                return step === 9 ? 'active' : '';
+            }
+        } else {
+            if (index == 0) {
+                return step === 3 ? 'active' : '';
+            }
+            if (index == 1) {
+                return step === 4 ? 'active' : '';
+            }
+            if (index == 2) {
+                return step === 5 ? 'active' : '';
+            }
+            if (index == 3) {
+                return step === 6 ? 'active' : '';
+            }
+            if (index == 4) {
+                return step === 7 ? 'active' : '';
+            }
+            if (index == 5) {
+                return step === 8 ? 'active' : '';
+            }
+            if (index == 6) {
+                return step === 9 ? 'active' : '';
+            }
+        }
+        return '';
+    }
+
     const tradieStepsLength = 8;
     const builderStepsLength = props?.socialId ? 5 : 5;
-
+    let step_ = props.steps;
+    let type = props.userType;
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
@@ -49,13 +101,19 @@ const AuthParent = (props: any) => {
                             props.steps > 1 &&
                             !props.hideProgres &&
                             <ul className="custom_steppr">
-                                {Array.from(Array(props.userType === 1 ?
+                                {/* <div style={{fontSize:30, color:'#fff'}}>
+                                    {props.userType === 1 ? 'true' : 'false'}
+                                    {` -- ${step_}`}
+                                </div> */}
+                                {/* <span style={{color:'#fff', marginRight:'20px'}}>{step_}</span> */}
+                                {Array.from(Array(type === 1 ?
                                     tradieStepsLength :
                                     builderStepsLength).keys()).map((i) => {
                                         return (
                                             <li
                                                 key={i}
-                                                className={props.steps !== undefined && i + 1 < props.steps ? 'active' : ''}
+                                                className={handleSteps({ step: step_, index: i, type })}
+                                            // className={props.steps !== undefined && i + 1 < props.steps ? 'active' : ''}
                                             />)
                                     })
                                 }

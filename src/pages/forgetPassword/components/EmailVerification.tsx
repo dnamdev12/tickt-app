@@ -109,6 +109,10 @@ const PhoneNumber = (props: Propstype) => {
                     </div>
                 }
 
+                {counter > 0 && <div className="form_field text-center">
+                    <span className="show_label timer">{counter > 59 ? `01 : 00` : `00 : ${counter}`}</span>
+                </div>}
+
                 <div className="form_field">
                     <button className="fill_btn btn-effect">Next</button>
                 </div>

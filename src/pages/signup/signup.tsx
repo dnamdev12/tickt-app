@@ -94,18 +94,34 @@ const Signup = (props: Propstype) => {
     const backButtonHandler = () => {
         let minStep = 1;
         let stateStepsValue = steps;
-        if (stateStepsValue === 5) {
+        
+        if (stateStepsValue === 5 && signupData.user_type === 2) {
+            minStep = 2;
+        }
+
+        if (stateStepsValue === 5 && signupData.user_type === 1) {
             minStep = 3;
         }
+
         if (stateStepsValue === 3 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
             minStep = 3;
+        } else {
+            if (stateStepsValue === 3 && signupData.user_type === 2) {
+                minStep = 2;
+            }
         }
+
         if (stateStepsValue === 8 && signupData.user_type === 2) {
             stateStepsValue = 6;
         }
         if (stateStepsValue === 6 && signupData.socialId) {
             minStep = 4;
         }
+        console.log({
+            stateStepsValue,
+            minStep,
+            set: stateStepsValue - minStep
+        }, 'update')
         setSteps(stateStepsValue - minStep);
     }
 
@@ -132,6 +148,7 @@ const Signup = (props: Propstype) => {
             newStep += 2;
         }
         setSteps(newStep);
+        console.log({ newStep }, 'update')
         if (newData) {
             setSignupData((prevData: any) => ({ ...prevData, ...newData }))
         }
@@ -145,7 +162,7 @@ const Signup = (props: Propstype) => {
             authType: "signup",
             email: profileData.email,
             accountType: socialType,
-            user_image: profileData?.imageUrl || '', 
+            user_image: profileData?.imageUrl || '',
             ...(socialType === 'google' && { socialId: profileData.googleId }),
             ...(socialType === 'linkedIn' && { socialId: profileData.socialId })
         }
@@ -195,6 +212,7 @@ const Signup = (props: Propstype) => {
     console.log("signupData ==>", signupData)
 
     const renderPages = () => {
+        console.log(steps, 'step---->');
         switch (steps) {
             case 0:
                 return <InitialSignupPage updateSteps={updateSteps} history={props.history} step={steps} showModal={props.showModal} modalUpdateSteps={props.modalUpdateSteps} callTradeList={props.callTradeList} />

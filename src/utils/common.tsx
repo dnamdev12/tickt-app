@@ -401,6 +401,8 @@ export const onNotificationClick = (notification: any) => {
             return `/admin-announcement-page?admin_notification_id=${extra_data?.admin_notification_id}`;
         case 19: //PRIVACY_POLICY
             return `/update-user-info?menu=pp`;
+        case 20: // VIEW_QUOTE_JOB
+         return `/jobs?active=active&viewQuotes=true&jobId=${jobId}&tradieId=${senderId}`;
         case 21: // BUILDER_QUOTE_CANCEL
             return `/quote-job-cancel?jobId=${jobId}&tradieId=${senderId}`;
         case 25: //CHAT_NOTIFICATION
