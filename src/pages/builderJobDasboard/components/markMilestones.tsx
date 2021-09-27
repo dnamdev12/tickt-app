@@ -16,7 +16,6 @@ import {
 } from '../../../redux/homeSearch/actions';
 import { setShowToast } from '../../../redux/common/actions';
 import { renderTime } from '../../../utils/common';
-
 import EditMilestones from './editMilestones/index';
 import CancelJobs from './cancelJobs/cancelJob'
 import LodgeDispute from './lodgeDispute/lodgeDispute';
@@ -77,6 +76,7 @@ const MarkMilestones = (props: any) => {
         let markMilestone = UrlParams.get('markMilestone');
         if (isForce) {
             props.history.replace(`${props.location.pathname}?active=${active}&jobId=${jobId}&markMilestone=${markMilestone}`);
+            props.recallHeaderNotification(true);
             preFetch();
         }
     }, [props]);

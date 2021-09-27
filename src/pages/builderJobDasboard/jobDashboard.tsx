@@ -22,6 +22,7 @@ interface Props {
     getOpenJobsBuilder: (page: number) => void,
     getnewJobApplicationListBuilder: (item: any) => void,
     getNewApprovalList: (page: number) => void,
+    recallHeaderNotification: (data: boolean) => void,
     getClearJobs: () => void,
     activeJobs: any,
     pastJobs: any,
@@ -751,6 +752,7 @@ class JobDashboard extends Component<Props, State> {
                                     activeType={activeType}
                                     setJobLabel={setSelected}
                                     setToggleActiveToFalse={this.setToggleActiveToFalse}
+                                    recallHeaderNotification={this.props.recallHeaderNotification}
                                     toggleClearActiveChecks={this.state.toggleClearActiveChecks}
                                     history={props.history}
                                     globalJobId={globalJobId}

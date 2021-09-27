@@ -91,9 +91,6 @@ function* postHomeSearchData(action: any) {
     const response: FetchResponse = yield NetworkOps.postToJson(Urls.homeSearch, action.jobData)
     setLoading(false);
     let dataValues = response?.result?.data || response?.result;
-    console.log({
-        response: dataValues
-    },'--------------------------');
     if (response.status_code === 200) {
         let page = action?.jobData?.page;
         if (Array.isArray(dataValues) && dataValues?.length) {
@@ -109,6 +106,11 @@ function* resetHomeSearchJobData() {
     yield put({ type: actionTypes.SET_HOME_SEARCH_DATA, payload: [] });
 }
 
+function* recallHeaderNotification(action: any) {
+    console.log('action: ', action, 'z', action.isRecall);
+    yield put({ type: actionTypes.SET_RECALL_HEADER_NOTIFICATION, payload: action.isRecall });
+}
+
 function* authWatcher() {
     // yield takeLatest(actionTypes.GET_JOB_TYPE, getJobType);
     yield takeLatest(actionTypes.GET_SEARCH_JOB_LIST, getSearchJobList);
@@ -120,6 +122,7 @@ function* authWatcher() {
     yield takeLatest(actionTypes.POST_HOME_SEARCH_DATA, postHomeSearchData);
     yield takeLatest(actionTypes.RESET_HOME_SEARCH_DATA, resetHomeSearchJobData);
     yield takeLatest(actionTypes.RESET_VIEW_NEARBY_JOBS, resetViewNearByJobData);
+    yield takeLatest(actionTypes.RECALL_HEADER_NOTIFICATION, recallHeaderNotification);
 }
 
 export default authWatcher;

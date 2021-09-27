@@ -133,6 +133,9 @@ const Header = (props: any) => {
             } else {
                 setNotificationPgNo(notificationPgNo + 1);
             }
+            if (props.recallHeaderNotif) {
+                props.recallHeaderNotification(false);
+            }
         }
     }
     console.log('notificationDataHeader: ', notificationData);
@@ -194,7 +197,7 @@ const Header = (props: any) => {
             setIntercom(true)
             setHidden();
         }
-    }, [props])
+    }, [props]);
 
 
     const setHidden = () => {
@@ -260,7 +263,13 @@ const Header = (props: any) => {
 
     useEffect(() => {
         callOnPathChange();
-    }, [pathname, userType, isFalse])
+    }, [pathname, userType, isFalse]);
+
+    useEffect(() => {
+        if (props.recallHeaderNotif) {
+            callOnPathChange();
+        }
+    }, [props.recallHeaderNotif]);
 
     useEffect(() => {
         if (startTour) {

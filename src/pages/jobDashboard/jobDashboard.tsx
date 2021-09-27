@@ -168,7 +168,7 @@ const JobDashboard = ({
               <ul className="dashboard_menu">
                 <li>
                   <NavLink className="icon star" to="/active-jobs"
-                    isActive={() => ['/active-jobs', '/mark-milestone'].includes(pathname)}>
+                    isActive={() => ['/active-jobs', '/mark-milestone', '/active-quote-job'].includes(pathname)}>
                     <span className="menu_txt">Active</span>
                   </NavLink>
                 </li>
