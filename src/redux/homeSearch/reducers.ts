@@ -13,6 +13,7 @@ const initialState = {
     homeApplyJobData: '',
     error: '',
     builderProfile: {},
+    recallHeaderNotif: false,
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -73,7 +74,11 @@ const reducer = (state = initialState, action: any) => {
                 ...state,
                 homeApplyJobData: action.payload
             }
-
+        case actionTypes.SET_RECALL_HEADER_NOTIFICATION:
+            return {
+                ...state,
+                recallHeaderNotif: action.payload,
+            }
         default: return state
     }
 }

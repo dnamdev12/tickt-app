@@ -9,6 +9,7 @@ import {
     getnewJobApplicationListBuilder,
     getNewApprovalList,
 } from '../../redux/jobs/actions';
+import { recallHeaderNotification } from '../../redux/homeSearch/actions';
 
 import {
     getClearJobs
@@ -47,7 +48,8 @@ const mapDispatchToProps = (dispatch: any) => {
             getOpenJobsBuilder,
             getNewApplicantsBuilder,
             getnewJobApplicationListBuilder,
-            getNewApprovalList
+            getNewApprovalList,
+            recallHeaderNotification,
         },
         dispatch
     );

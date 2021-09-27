@@ -39,7 +39,7 @@ interface Active {
     enableCancelJob: boolean
     globalJobId: string,
     mathrandom?: any,
-    setToggleActiveToFalse:any,
+    setToggleActiveToFalse: any,
     toggleClearActiveChecks: () => void
 }
 
@@ -56,7 +56,8 @@ const ActiveJobs = ({
     enableCancelJob,
     globalJobId,
     setToggleActiveToFalse,
-    toggleClearActiveChecks
+    toggleClearActiveChecks,
+    recallHeaderNotification
 }: any) => {
     let listData: any = dataItems;
     const [selectedIndex, setSelectedIndex] = useState<any>(null);
@@ -75,12 +76,12 @@ const ActiveJobs = ({
     }, [jobType]);
 
     useEffect(() => {
-        if(toggleClearActiveChecks === true){
+        if (toggleClearActiveChecks === true) {
             setSelectedIndex(null);
-            setLocalState(false);  
+            setLocalState(false);
             setToggleActiveToFalse();
         }
-    },[toggleClearActiveChecks])
+    }, [toggleClearActiveChecks])
 
 
     useEffect(() => {
@@ -117,6 +118,7 @@ const ActiveJobs = ({
                 enableEditMilestone={enableEditMilestone}
                 enableLodgeDispute={enableLodgeDispute}
                 enableCancelJob={enableCancelJob}
+                recallHeaderNotification={recallHeaderNotification}
             />)
     }
 
@@ -205,7 +207,7 @@ const ActiveJobs = ({
                                                 }}
                                                     onClick={() => {
                                                         let quoteId = null;
-                                                        if(quote && quote[0] && quote[0]._id){
+                                                        if (quote && quote[0] && quote[0]._id) {
                                                             quoteId = quote[0]._id;
                                                             history.push(`/jobs?active=active&viewQuotes=true&jobId=${jobId}&id=${quoteId}`);
                                                             setJobLabel('quotes');
