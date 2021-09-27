@@ -97,7 +97,7 @@ const Vouchers = (props: any) => {
                                     }}
                                     className="back"></button>
                                 <span className="title">
-                                    {`${stateData.length} Vouches`}
+                                    {`${stateData.length} ${stateData.length === 1 ? 'Vouch' : 'Vouches'}`}
                                 </span>
                             </div>
                         </div>
