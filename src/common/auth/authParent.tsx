@@ -30,41 +30,41 @@ const AuthParent = (props: any) => {
         console.log({ step, index, type })
         if (type == 2) {
             if (index == 0) {
-                return step === 3 ? 'active' : '';
+                return step === 3 || step > 3 ? 'active' : '';
             }
             if (index == 1) {
-                return step === 4 ? 'active' : '';
+                return step === 4 || step > 4 ? 'active' : '';
             }
             if (index == 2) {
-                return step === 5 ? 'active' : '';
+                return step === 5 || step > 5 ? 'active' : '';
             }
             if (index == 3) {
-                return step === 8 ? 'active' : '';
+                return step === 8 || step > 8 ? 'active' : '';
             }
             if (index == 4) {
-                return step === 9 ? 'active' : '';
+                return step === 9 || step > 9 ? 'active' : '';
             }
         } else {
             if (index == 0) {
-                return step === 3 ? 'active' : '';
+                return step === 3 || step > 3 ? 'active' : '';
             }
             if (index == 1) {
-                return step === 4 ? 'active' : '';
+                return step === 4 || step > 4 ? 'active' : '';
             }
             if (index == 2) {
-                return step === 5 ? 'active' : '';
+                return step === 5 || step > 5 ? 'active' : '';
             }
             if (index == 3) {
-                return step === 6 ? 'active' : '';
+                return step === 6 || step > 6  ? 'active' : '';
             }
             if (index == 4) {
-                return step === 7 ? 'active' : '';
+                return step === 7 || step > 7  ? 'active' : '';
             }
             if (index == 5) {
-                return step === 8 ? 'active' : '';
+                return step === 8 || step > 8 ? 'active' : '';
             }
             if (index == 6) {
-                return step === 9 ? 'active' : '';
+                return step === 9 || step > 9 ? 'active' : '';
             }
         }
         return '';

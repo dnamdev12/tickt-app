@@ -117,7 +117,7 @@ const MileStoneTemplates = (props: Proptypes) => {
                             </div>
 
                             {!isLoading && !list?.length ? (
-                                <div className="no_record">
+                                <div className="no_record m-t-vh">
                                     <figure className="no_img">
                                         <img src={noData} alt="data not found" />
                                     </figure>
