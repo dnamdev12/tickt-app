@@ -177,7 +177,7 @@ class ViewQuote extends Component<Props, State> {
                                             {renderTime(item?.from_date, item?.to_date)}
                                         </span>
                                     </li>
-                                    <li className="icon dollar">{'for quoting'}</li>
+                                    <li className="icon dollar">{item?.amount}</li>
                                     <li className="icon location">
                                         <span>
                                             {item?.location_name}
@@ -250,7 +250,7 @@ class ViewQuote extends Component<Props, State> {
 
                         <div style={{ textAlign: 'right', marginBottom: '20px' }}>
                             <span className="fill_grey_btn">
-                                {`Total Quote: $${item?.amount}`}
+                                {`Total Quote: $${item?.totalQuoteAmount}`}
                             </span>
                         </div>
 

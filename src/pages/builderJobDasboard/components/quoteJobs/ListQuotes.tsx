@@ -143,7 +143,7 @@ class ListQuotes extends Component<Props, State> {
 
                                 <button
                                     className="fill_grey_btn full_btn btn-effect">
-                                    {`Total quote: $${item?.amount}`}
+                                    {`Total quote: $${item?.totalQuoteAmount}`}
                                 </button>
                             </div>
                         </div>
