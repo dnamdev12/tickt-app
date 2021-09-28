@@ -196,7 +196,7 @@ const UserMessages = (props: any) => {
             case 1:
                 return {
                     app_icon: "https://appinventiv-development.s3.amazonaws.com/1628513615740ic-logo-yellow.png",
-                    title: "Ticket App",
+                    title: "Tickt App",
                     notificationText: `${storageService.getItem('userInfo')?.userName} send you a message`,
                     senderName: `${storageService.getItem('userInfo')?.userName}`,
                     messageType: `${msg?.messageType}`,
