@@ -100,13 +100,17 @@ const Signup = (props: Propstype) => {
         }
 
         if (stateStepsValue === 5 && signupData.user_type === 1) {
-            minStep = 3;
+            minStep = 2;
         }
 
         if (stateStepsValue === 3 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
             minStep = 3;
         } else {
             if (stateStepsValue === 3 && signupData.user_type === 2) {
+                minStep = 2;
+            }
+
+            if (stateStepsValue === 3 && signupData.user_type === 1) {
                 minStep = 2;
             }
         }

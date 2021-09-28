@@ -269,7 +269,7 @@ const PaymentHistory = ({
                     ) : !revenueList?.length ? (
                       <tr>
                         <td colSpan={5}>
-                          <div className="no_record">
+                          <div className="no_record m-t-vh">
                             <figure className="no_img">
                               <img src={noData} alt="data not found" />
                             </figure>
