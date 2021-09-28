@@ -94,12 +94,12 @@ const FixedRate = (props: any) => {
                     })}
 
                     {renderItem({
-                        title: 'Milestone Amount',
+                        title: 'Milestone amount',
                         value: selectedItems?.milestoneAmount
                     })}
 
                     {renderItem({
-                        title: 'Taxes',
+                        title: 'GST',
                         value: selectedItems?.taxes
                     })}
 
