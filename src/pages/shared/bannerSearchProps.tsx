@@ -602,7 +602,7 @@ const BannerSearch = (props: PropsType) => {
     }
 
     const getCurrentLocation = async () => {
-        let itemToggle: any = await navigator.permissions.query({ name: 'geolocation' });
+        let itemToggle: any = await navigator?.permissions?.query({ name: 'geolocation' });
         setLocationStatus(itemToggle.state);
         let local_position: any = localStorage.getItem('position');
         let position: any = JSON.parse(local_position);

@@ -21,12 +21,12 @@ const Home = (props: any) => {
             if (userType === 1 || userType === 2) {
                 const res: any = await requestPermission();
                 const data: any = {
-                    deviceToken: res.deviceToken, //fcm device token
+                    deviceToken: res?.deviceToken, //fcm device token
                     deviceId: `${storageService.getItem('userInfo')?.deviceId}`,
                     deviceType: 1
                 }
                 console.log(data.deviceToken, "---------------diff----------------", storageService.getItem('fcmToken'));
-                if (res.success) {
+                if (res?.success) {
                     if (storageService.getItem('fcmToken') !== data.deviceToken) {
                         updateChatUserDetails('deviceToken', data.deviceToken);
                         const res2 = await addFCMNotifToken(data);

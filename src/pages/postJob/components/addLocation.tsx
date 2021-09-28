@@ -106,7 +106,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
   const getCurrentLocation = async (e: any) => {
     e.preventDefault();
     setActiveCurrent(true);
-    let permission_web = await navigator.permissions.query({ name: 'geolocation' });
+    let permission_web = await navigator?.permissions?.query({ name: 'geolocation' });
 
     if (permission_web.state !== 'denied') {
       setLoading(true)
