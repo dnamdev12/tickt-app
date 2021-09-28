@@ -9,8 +9,16 @@ import moment from 'moment';
 if (!firebase.apps.length) {
     firebase.initializeApp(qaStgFirebaseConfig);
 }
+
+const checkIfSupport = () => {
+    if(firebase.messaging.isSupported()) {
+        return firebase.messaging();
+    }
+    return false;
+}
+
 export const auth = firebase.auth();
-export const messaging = firebase.messaging();
+export const messaging = checkIfSupport(); //firebase.messaging();
 export const db = firebase.database();
 
 const CHAT_TYPE = 'single';
@@ -59,29 +67,33 @@ const isTokenSentToServer = () => {
 }
 
 export const requestPermission = () => {
+    if(checkIfSupport()){
     return new Promise((resolve, reject) => {
         Notification.requestPermission().then((permission) => {
-            const data = getRegisterToken();
-            resolve(data);
+                const data = getRegisterToken();
+                resolve(data);
+            })  
             // if (permission === 'granted' && isTokenSentToServer()) {
             //     const data = getRegisterToken();
             //     console.log('Token Already sent');
             //     resolve(data);
             // }
-        })
             .catch((err) => {
                 console.log('Unable to get permission to show notification browser : ', err);
                 reject({ success: false });
             });
-    })
+        })
+    }
 }
 
 export const deleteToken = () => {
-    messaging.deleteToken().then(() => {
-        console.log('firebase Token deleted.');
-    }).catch((err) => {
+    if(checkIfSupport()){
+        messaging.deleteToken().then(() => {
+            console.log('firebase Token deleted.');
+        }).catch((err) => {
         console.log('Unable to delete firebase token. ', err);
     });
+    }
 }
 
 export const signOut = () => {

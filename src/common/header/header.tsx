@@ -78,34 +78,36 @@ const Header = (props: any) => {
     }
 
     const onMessageListner = () => {
-        messaging.onMessage((payload: any) => {
-            console.log('firebase notification received inside header : ', payload);
-            // const title = payload.data.title;
-            // const options = {
-            //     body: payload.data.notificationText
-            // }
-            // var notifications = new Notification(title, options);
-            // notifications.onclick = function (event) {
-            //     console.log('event: ', event);
-            //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
-            //     window.open('http://localhost:3000/active-jobs', '_self');
-            // }
+        if (messaging) {
+            messaging.onMessage((payload: any) => {
+                console.log('firebase notification received inside header : ', payload);
+                // const title = payload.data.title;
+                // const options = {
+                //     body: payload.data.notificationText
+                // }
+                // var notifications = new Notification(title, options);
+                // notifications.onclick = function (event) {
+                //     console.log('event: ', event);
+                //     event.preventDefault(); // prevent the browser from focusing the Notification's tab
+                //     window.open('http://localhost:3000/active-jobs', '_self');
+                // }
 
-            setShowNotification(true, payload);
-            if (payload.data?.notificationType !== "25") {
-                setNotificationData((prevData: any) => {
-                    let newPayLoad = { ...payload.data };
-                    newPayLoad.read = 0;
-                    let newPushList = [...prevData.list];
-                    newPushList.unshift(newPayLoad);
-                    return {
-                        ...prevData,
-                        unreadCount: prevData.unreadCount + 1,
-                        list: newPushList
-                    }
-                });
-            }
-        })
+                setShowNotification(true, payload);
+                if (payload.data?.notificationType !== "25") {
+                    setNotificationData((prevData: any) => {
+                        let newPayLoad = { ...payload.data };
+                        newPayLoad.read = 0;
+                        let newPushList = [...prevData.list];
+                        newPushList.unshift(newPayLoad);
+                        return {
+                            ...prevData,
+                            unreadCount: prevData.unreadCount + 1,
+                            list: newPushList
+                        }
+                    });
+                }
+            })
+        }
     }
 
     const callNotificationList = async (resetUnreadNotif?: boolean, isInit?: boolean) => {
