@@ -591,9 +591,9 @@
 
     <script>
         $('#sphere-owl-carousel').owlCarousel({
-            stagePadding: 90,
+            stagePadding: 45,
             loop: true,
-            margin: 10,
+            margin: 50,
             dots: false,
             nav: true,
             responsive: {
@@ -608,7 +608,7 @@
                     stagePadding: 0,
                 },
                 1024: {
-                    items: 5
+                    items: 6
                 }
             }
         });

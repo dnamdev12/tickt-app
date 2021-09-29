@@ -1,5 +1,4 @@
 $( document ).ready(function() {
-	
 	$('#tickt_login').on('submit', function(e) {
 		e.preventDefault();
         //console.log("Form submitted");
@@ -11,8 +10,7 @@ $( document ).ready(function() {
             //console.log(data);
             if((data.status == true && data.status_code == 200) || (data.status == true && data.status_code == true)) {
                 $('.ajax-loader').css('visibility', 'hidden');
-                window.location.href = "http://localhost/tickt/web/";
-                
+                window.location.href = window.location;
             } else {
                 $('#login_action_msg').text(data.message);
                 $('.ajax-loader').css('visibility', 'hidden');
@@ -28,7 +26,7 @@ $( document ).ready(function() {
 		e.preventDefault();
         //console.log("Form submitted");
 		var $form = $(this);
-        
+        console.log($form);
 		$.post($form.attr('action'), $form.serialize(), function(data) {
             //alert('This is data returned from the server ' + data);
             

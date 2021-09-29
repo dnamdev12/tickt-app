@@ -260,7 +260,7 @@ function forget_pwd_action() {
     	'status' => true,
     	'status_code' => 200,
     );
-
+    echo 'hello'; die;
     if (trim($_POST['email']) == '') {
     	$response['status'] = false;
     	$response['status_code'] = 410;
