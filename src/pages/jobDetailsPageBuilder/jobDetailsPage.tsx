@@ -785,7 +785,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <div className="job_info">
                                         {jobDetailsData?.quoteCount?.length && jobDetailsData?.quoteJob ? ( // temporary check
                                             <ul>
-                                                <li className="icon dollar">{jobDetailsData.amount}</li>
+                                                <li className="icon dollar">{jobDetailsData?.quoteJob ? "for quoting" : jobDetailsData.amount }</li>
                                                 <li className=""></li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
                                                 <li className="icon calendar">
@@ -801,7 +801,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         ) : !isPastJob ? (
                                             <ul>
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
-                                                <li className="icon dollar">{jobDetailsData.amount}</li>
+                                                <li className="icon dollar">{jobDetailsData?.quoteJob ? "for quoting" : jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
                                                 <li className="icon calendar">
                                                     {jobDetailsData?.time ?
@@ -824,7 +824,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         )
                                                     }
                                                 </li>
-                                                <li className="icon dollar">{jobDetailsData?.amount}</li>
+                                                <li className="icon dollar">{jobDetailsData?.quoteJob ? "for quoting" : jobDetailsData.amount }</li>
                                                 <li className="icon location line-1" title={jobDetailsData?.locationName}>{jobDetailsData?.locationName}</li>
                                                 <li className="job_status">{paramStatus}</li>
                                                 {/* <li className="job_status">{jobDetailsData?.status}</li> */}

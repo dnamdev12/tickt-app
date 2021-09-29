@@ -3,6 +3,7 @@ import dummy from '../../../../assets/images/u_placeholder.jpg';
 import { withRouter } from 'react-router-dom'
 import noDataFound from '../../../assets/images/no-search-data.png';
 import moment from 'moment';
+import jobTypePlaceholder from '../../../../assets/images/job-type-placeholder.png';
 import { renderTime } from '../../../../utils/common';
 
 import {
@@ -137,7 +138,7 @@ class ViewQuote extends Component<Props, State> {
                                     }
                                 }}
                                 className="back"></button>
-                            <span className="title">Quotes</span>
+                            <span className="title">Quote</span>
                         </div>
                     </div>
                 </div>
@@ -153,14 +154,14 @@ class ViewQuote extends Component<Props, State> {
                             {/* <span className="more_detail circle"></span> */}
                             <div className="user_wrap">
                                 <figure className="u_img">
-                                    <img src={item?.tradieImage || dummy}
+                                    <img src={item?.selected_url || jobTypePlaceholder}
                                         alt="traide-img"
                                         onError={(e: any) => {
                                             if (e?.target?.onerror) {
                                                 e.target.onerror = null;
                                             }
                                             if (e?.target?.src) {
-                                                e.target.src = dummy;
+                                                e.target.src = jobTypePlaceholder;
                                             }
                                         }}
                                     />
@@ -222,7 +223,7 @@ class ViewQuote extends Component<Props, State> {
                                 <div className="details">
                                     <span className="name">{item?.trade_name}</span>
                                     <p className="commn_para">
-                                        <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : ''} , {item?.reviewCount} reviews</span>
+                                        <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'} , {item?.reviewCount} reviews</span>
                                     </p>
                                 </div>
                             </div>
@@ -274,7 +275,7 @@ class ViewQuote extends Component<Props, State> {
 
                         <div style={{ textAlign: 'right', marginBottom: '20px' }}>
                             <span className="fill_grey_btn">
-                                {`Total Quote: $${item?.totalQuoteAmount}`}
+                                {`Total Quote: $${!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}`}
                             </span>
                         </div>
 

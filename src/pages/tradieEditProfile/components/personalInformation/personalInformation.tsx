@@ -848,8 +848,8 @@ export class PersonalInformation extends Component<Props, State> {
 
                         <ul className="review_job">
                             {isSkeletonLoading ? <Skeleton /> : <li>
-                                <span className="icon reviews">{profileViewData?.ratings || 0}</span>
-                                <span className="review_count">{`${profileViewData?.reviewsCount || 0} reviews`}</span>
+                                <span className="icon reviews">{profileViewData?.ratings  || '0'}</span>
+                                <span className="review_count">{`${profileViewData?.reviewsCount  || '0'} reviews`}</span>
                             </li>}
                             {isSkeletonLoading ? <Skeleton /> : <li>
                                 <span className="icon job">{profileViewData?.jobCompletedCount}</span>

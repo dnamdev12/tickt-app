@@ -53,7 +53,7 @@ export default class SavedTradies extends Component {
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{item?.tradieName}</span>
-                                                <span className="rating">{item?.ratings}, {item?.reviews} reviews </span>
+                                                <span className="rating">{item?.ratings  || '0'}, {item?.reviews} reviews </span>
                                             </div>
                                         </div>
                                         <div className="tags_wrap">

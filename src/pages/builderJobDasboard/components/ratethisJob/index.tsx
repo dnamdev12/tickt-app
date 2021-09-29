@@ -248,7 +248,7 @@ const RateThisJob = (props: any) => {
                                 }}>
                                 <span className="name">{data?.tradieData?.tradieName}</span>
                                 <span className="rating">
-                                    {`${data?.tradieData?.ratings || 0} , ${data?.tradieData?.reviews || 0} reviews`}
+                                    {`${data?.tradieData?.ratings || '0'} , ${data?.tradieData?.reviews || 0} reviews`}
                                 </span>
                             </div>
                         </div>
