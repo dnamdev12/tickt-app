@@ -5,6 +5,8 @@ import noDataFound from '../../../assets/images/no-search-data.png';
 import moment from 'moment';
 import jobTypePlaceholder from '../../../../assets/images/job-type-placeholder.png';
 import { renderTime } from '../../../../utils/common';
+import NumberFormat from 'react-number-format';
+
 
 import {
     getAcceptDeclineTradie,
@@ -124,7 +126,7 @@ class ViewQuote extends Component<Props, State> {
             <React.Fragment>
                 <div className="flex_row">
                     <div className="flex_col_sm_5">
-                        <div className="relate" style={{marginBottom:'50px'}}>
+                        <div className="relate" style={{ marginBottom: '50px' }}>
                             <button
                                 onClick={() => {
                                     if (CASE_1) {
@@ -221,7 +223,7 @@ class ViewQuote extends Component<Props, State> {
                                     />
                                 </figure>
                                 <div className="details">
-                                    <span className="name">{item?.trade_name}</span>
+                                    <span className="name">{item?.tradieName}</span>
                                     <p className="commn_para">
                                         <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'} , {item?.reviewCount} reviews</span>
                                     </p>
@@ -249,9 +251,9 @@ class ViewQuote extends Component<Props, State> {
                             </div> */}
 
                         </div>
-                        <div className="change_req">
-                            {item?.quote_item?.length ?
-                                item?.quote_item.map((quote_item: any) => (
+                        {item?.quote_item?.length ?
+                            item?.quote_item.map((quote_item: any) => (
+                                <div className="change_req">
                                     <div className="flex_row">
                                         <div className="flex_col_sm_2">
                                             <label className="form_label">Item</label></div>
@@ -262,11 +264,13 @@ class ViewQuote extends Component<Props, State> {
                                             <label className="form_label">Price</label>
                                         </div>
                                         <div className="flex_col_sm_2">
-                                            <span className="show_label">{quote_item?.item_number}</span>
+                                            <span className="show_label">
+                                                {` ${quote_item?.item_number}`}
+                                            </span>
                                         </div>
                                         <div className="flex_col_sm_6">
                                             <span className="show_label line-1">
-                                                {quote_item?.description}
+                                                {` ${quote_item?.description}`}
                                             </span>
                                         </div>
                                         <div className="flex_col_sm_4">
@@ -278,11 +282,18 @@ class ViewQuote extends Component<Props, State> {
                                         </div>
 
                                     </div>
-                                )) : null}
-                        </div>
+                                </div>
+                            )) : null}
                         <div className="total_quote">
                             <span className="fill_grey_btn">
-                                {`Total Quote: $${!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}`}
+                                {`Total : `} 
+                                {<NumberFormat
+                                        value={!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}
+                                        displayType={'text'}
+                                        prefix={'$'}
+                                        thousandSeparator={true}
+                                        isNumericString={true}
+                                    />}
                             </span>
                         </div>
 
