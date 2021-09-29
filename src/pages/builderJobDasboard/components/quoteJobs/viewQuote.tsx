@@ -228,7 +228,7 @@ class ViewQuote extends Component<Props, State> {
                             </div>
 
 
-                            <div className="example">
+                            {/* <div className="example">
                                 {item?.quote_item?.length ?
                                     item?.quote_item.map((quote_item: any) => (
                                         <table style={{ marginTop: '20px' }}>
@@ -245,7 +245,31 @@ class ViewQuote extends Component<Props, State> {
                                         </table>
                                     ))
                                     : null}
+                            </div> */}
+
+                            <div className="change_req">
+                                <div className="flex_row">
+                                    <div className="flex_col_sm_2">
+                                        <label className="form_label">Item</label></div>
+                                    <div className="flex_col_sm_6">
+                                        <label className="form_label">Description</label>
+                                    </div>
+                                    <div className="flex_col_sm_4">
+                                        <label className="form_label">Price</label>
+                                    </div>
+                                    <div className="flex_col_sm_2">
+                                        <span className="show_label">1</span>
+                                    </div>
+                                    <div className="flex_col_sm_6">
+                                        <span className="show_label line-1">item1</span>
+                                    </div>
+                                    <div className="flex_col_sm_4">
+                                        <span className="show_label">
+                                            <span>$ 2,000</span></span>
+                                    </div>
+                                </div>
                             </div>
+
                         </div>
 
                         <div style={{ textAlign: 'right', marginBottom: '20px' }}>
