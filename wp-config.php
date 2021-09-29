@@ -20,17 +20,42 @@
 
 // ** MySQL settings - You can get this info from your web host ** //
 // For Local 
+$hostname = $_SERVER['SERVER_NAME']; 
+
+//VERIFY WHICH ENVIRONMENT THE APP IS RUNNING
+switch ($hostname) {
+    case 'localhost':
+        define( 'DB_NAME', 'tickt' ); //he name of the database for WordPress
+		define( 'DB_USER', 'root' ); // MySQL database username
+		define( 'DB_PASSWORD', 'root' ); //MySQL database password
+		define( 'DB_HOST', 'localhost' ); // MySQL Hostname
+        break;
+    case 'ticktwp.appskeeper.in':
+        define( 'DB_NAME', 'ticktwp_usr' );
+		define( 'DB_USER', 'ticktwp_usr' );
+		define( 'DB_PASSWORD', 'Z5PdpTNUR479hNOM' );
+		define( 'DB_HOST', '52.9.226.235' );
+		define( 'DB_HOST_SLAVE', '52.9.226.235' );
+        break;
+    default:
+		define( 'DB_NAME', 'ticktwp_usr' );
+		define( 'DB_USER', 'ticktwp_usr' );
+		define( 'DB_PASSWORD', 'Z5PdpTNUR479hNOM' );
+		define( 'DB_HOST', '52.9.226.235' );
+		define( 'DB_HOST_SLAVE', '52.9.226.235' );
+}
+
 /* define( 'DB_NAME', 'tickt' ); //he name of the database for WordPress
 define( 'DB_USER', 'root' ); // MySQL database username
 define( 'DB_PASSWORD', 'root' ); //MySQL database password
 define( 'DB_HOST', 'localhost' ); // MySQL Hostname */
 
 // For Dev Server
-define( 'DB_NAME', 'ticktwp_usr' );
+/* define( 'DB_NAME', 'ticktwp_usr' );
 define( 'DB_USER', 'ticktwp_usr' );
 define( 'DB_PASSWORD', 'Z5PdpTNUR479hNOM' );
 define( 'DB_HOST', '52.9.226.235' );
-define( 'DB_HOST_SLAVE', '52.9.226.235' );
+define( 'DB_HOST_SLAVE', '52.9.226.235' ); */
 
 /** Database Charset to use in creating database tables. */
 define( 'DB_CHARSET', 'utf8mb4' );
