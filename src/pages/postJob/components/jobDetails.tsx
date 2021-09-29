@@ -569,7 +569,7 @@ const JobDetails = ({
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{builderProfile?.userName}</span>
-                                                <span className="rating">{builderProfile?.rating || 0} , {builderProfile?.reviews || 0} reviews</span>
+                                                <span className="rating">{builderProfile?.rating  || '0'} , {builderProfile?.reviews  || '0'} reviews</span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                             </div>
                                         </div>

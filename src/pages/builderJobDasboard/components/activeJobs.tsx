@@ -196,15 +196,7 @@ const ActiveJobs = ({
                                         <li className="icon dollar">{amount}</li>
                                         <li className="">
                                             {total.toUpperCase() == "VIEW QUOTE" ? (
-                                                <span style={{
-                                                    background: '#DFE5EF',
-                                                    color: '#123F95',
-                                                    fontSize: '14px',
-                                                    fontWeight: 600,
-                                                    padding: '8px',
-                                                    borderRadius: '10px',
-                                                    cursor: 'pointer'
-                                                }}
+                                                <span className="view_quote"
                                                     onClick={() => {
                                                         let quoteId = null;
                                                         if (quote && quote[0] && quote[0]._id) {
