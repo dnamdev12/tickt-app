@@ -10,7 +10,7 @@ $( document ).ready(function() {
             //console.log(data);
             if((data.status == true && data.status_code == 200) || (data.status == true && data.status_code == true)) {
                 $('.ajax-loader').css('visibility', 'hidden');
-                window.location.href = window.location;
+                window.location.href = window.location; 
             } else {
                 $('#login_action_msg').text(data.message);
                 $('.ajax-loader').css('visibility', 'hidden');
