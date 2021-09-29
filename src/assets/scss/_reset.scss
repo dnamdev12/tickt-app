@@ -605,15 +605,15 @@ body {
 .select_menu,
 .css-yk16xz-control, .css-1fhf3k1-control {
   min-height: 48px !important;
-
   border-radius: 3px !important;
   font-size: 14px;
   width: 100%;
   color: var(--blue);
-  background-color: var(--white) !important;
+  background-color:  var(--grey) !important;
   letter-spacing: 0.5px;
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
   .css-yk16xz-control {
-    border: solid 1px var(--warm-gray) !important;
+    border: solid 1px var(--grey) !important;
     cursor: pointer;
   }
   input {
@@ -625,6 +625,12 @@ body {
       -moz-box-shadow: none !important;
     }
   }
+}
+.css-1okebmr-indicatorSeparator{
+  display: none;
+}
+.css-tlfecz-indicatorContainer{
+  color: var(--blue) !important;
 }
 .css-1pahdxg-control {
   border: 1px solid var(--blue) !important;
