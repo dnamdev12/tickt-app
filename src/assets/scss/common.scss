@@ -4921,6 +4921,9 @@ body {
   }
 }
 
+.change_req{
+  max-width: 100% !important;
+}
 .decline_reason, .change_req{
   background-color: #f6f7f9;
   margin: 15px 0;
@@ -4986,6 +4989,7 @@ body {
 }
 .total_quote{
   margin: 0 0 55px 150px;
+  text-align: right;
 }
 
 .view_quote {
