@@ -23,7 +23,7 @@ function my_enqueue_stuff_js() {
 
     wp_enqueue_script('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', true );
 
-    //wp_enqueue_script('custom', get_stylesheet_directory_uri().'/assets/js/custom.js', true );
+    wp_enqueue_script('custom', get_stylesheet_directory_uri().'/assets/js/custom.js', true );
    
 }
 add_action( 'wp_footer', 'my_enqueue_stuff_js' );
