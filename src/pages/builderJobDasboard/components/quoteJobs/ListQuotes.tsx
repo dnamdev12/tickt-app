@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom'
 import noDataFound from '../../../assets/images/no-search-data.png';
 import moment from 'moment';
 import { renderTime } from '../../../../utils/common';
+import NumberFormat from 'react-number-format';
 
 import {
     getAcceptDeclineTradie,
@@ -136,14 +137,22 @@ class ListQuotes extends Component<Props, State> {
                                     <div className="details">
                                         <span className="name">{item?.tradieName}</span>
                                         <p className="commn_para">
-                                            <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'  } , {item?.reviewCount || '0'} reviews</span>
+                                            <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'} , {item?.reviewCount || '0'} reviews</span>
                                         </p>
                                     </div>
                                 </div>
 
                                 <button
                                     className="fill_grey_btn full_btn btn-effect">
-                                    {`Total quote: $${!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}`}
+                                    {`Total : `}
+                                    {<NumberFormat
+                                        value={!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}
+                                        displayType={'text'}
+                                        prefix={'$'}
+                                        thousandSeparator={true}
+                                        isNumericString={true}
+                                    />}
+                                    {/* {`Total quote: $${!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}`} */}
                                 </button>
                             </div>
                         </div>
