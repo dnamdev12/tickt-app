@@ -208,6 +208,9 @@ const QuoteMark = (props: any) => {
             console.log('xxx localQuote?._id-----------if');
             return localQuote?.item_number;
         }
+        if (isEdit !== null) {
+            return Items[isEdit]?.item_number;
+        }
         console.log('xxx Items---------else');
         return Items[Items?.length - 1]?.item_number ? Items[Items?.length - 1]?.item_number + 1 : 1;
     }
@@ -352,7 +355,7 @@ const QuoteMark = (props: any) => {
                     <div className="text_field">
                         <textarea
                             value={description}
-                            onChange={(e) => handleChange('description', e.target.value)}
+                            onChange={(e) => handleChange('description', e.target.value.trimLeft())}
                         ></textarea>
                     </div>
                 </div>

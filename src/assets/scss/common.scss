@@ -2404,6 +2404,26 @@ body {
       height: 34px;
     }
   }
+  .tick_img {
+	  animation: tick_img 2s 0.5s forwards normal;
+	  opacity: 0; 
+	  width: 20% !important;
+	  height: 30% !important;
+	  margin: auto !important;
+	  padding-bottom: 30px !important;
+	}
+	@keyframes tick_img {
+		to   { opacity: 1; }
+		0% {
+		  transform: scale(1, 1);
+		}
+		50% {
+		  transform: scale(1.5, 1.5);
+		}
+		100% {
+		  transform: scale(1, 1);
+		}
+	  }
   .content {
     display: flex;
     flex-flow: column;
@@ -4748,20 +4768,30 @@ body {
     .progress_wrapper{
         position: relative;
     }
+    @keyframes approval_info {
+      to   { opacity: 1; }
+    }
+    @keyframes approval_img {
+      to   { opacity: 1; }
+    }
     .approval_info{
       @include position(absolute, 2px, 0px, auto, auto);
+      animation: approval_info 1.5s 2s forwards;
+      opacity: 0; 
       font: 10px/1.8 'Neue Haas Grotesk Text Pro Bold';
-        letter-spacing: 0.3px;
-        display: flex;
-        align-items: center;
-        color: var(--blue-two);
-        text-transform: uppercase;
-        img{
-            margin-right: 5px;
-            width: 12px;
-            height: 12px;
-            object-fit: none;
-        }
+      letter-spacing: 0.3px;
+      display: flex;
+      align-items: center;
+      color: var(--blue-two);
+      text-transform: uppercase;
+      img{
+          animation: approval_img 1s 3s forwards;
+          opacity: 0; 
+          margin-right: 5px;
+          width: 12px;
+          height: 12px;
+          object-fit: none;
+      }
     }
 }
 

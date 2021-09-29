@@ -14,6 +14,7 @@ import ActiveQuoteOuter from './components/activeQuoteJob/activeQuoteOuter';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import templateImage from '../../assets/images/job-complete-bg.png';
+import tickIcon from '../../assets/images/tick.svg';
 interface Proptypes {
   loading: boolean,
   getActiveJobList: (page: number) => void;
@@ -98,6 +99,7 @@ const JobDashboard = ({
               Nice one! The builder will review any required photos and approve
               your milestone shortly.
             </span>
+            <img className="tick_img" src={tickIcon} />
             <div className="btn_wrapr">
               <button
                 className="fill_btn btn-effect"
@@ -125,6 +127,7 @@ const JobDashboard = ({
               your completed jobs or leave a review. You will be paid as soon as
               the builder signs off.
             </span>
+            {/* <img className="tick_img" src={tickIcon} /> */}
             <div className="btn_wrapr">
               <button
                 className="fill_btn btn-effect"

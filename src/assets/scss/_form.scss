@@ -779,6 +779,14 @@ a.fill_grey_btn {
 
 
 //------------Progress bar---------------//
+@keyframes progres{
+  0%{
+    width: 0%;
+  }
+  100%{
+      width: 100%;
+  }
+};
 .progress_bar {
   position: relative;
   width: 100%;
@@ -790,17 +798,18 @@ a.fill_grey_btn {
   border-radius: 10px;
   margin: 10px 0;
   .done_progress {
-      display: block;
+      // display: block;
       height: 8px;
       border-top-left-radius: 10px;
       border-bottom-left-radius: 10px;
       border-top-right-radius: 10px;
       border-bottom-right-radius: 10px;
-      position: absolute;
+      position: relative;
       border: none !important;
       padding: 0px !important;
-      top: 0;
+      top: -100%;
       left: 0;
+      animation: progres 2s normal;
   }
   .ongoing {
       background-color: var(--blue);
