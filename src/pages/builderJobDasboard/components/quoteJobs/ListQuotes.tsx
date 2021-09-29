@@ -85,7 +85,7 @@ class ListQuotes extends Component<Props, State> {
                                     }
                                 }}
                                 className="back"></button>
-                            <span className="title">Quotes</span>
+                            <span style={{fontSize:'24px'}} className="title">Quotes</span>
                         </div>
                     </div>
                 </div>
@@ -144,7 +144,7 @@ class ListQuotes extends Component<Props, State> {
 
                                 <button
                                     className="fill_grey_btn full_btn btn-effect">
-                                    {`Total : `}
+                                    {`Total quote:`}
                                     {<NumberFormat
                                         value={!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}
                                         displayType={'text'}

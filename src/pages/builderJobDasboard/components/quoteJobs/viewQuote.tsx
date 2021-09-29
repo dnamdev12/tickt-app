@@ -140,7 +140,7 @@ class ViewQuote extends Component<Props, State> {
                                     }
                                 }}
                                 className="back"></button>
-                            <span className="title">Quote</span>
+                            <span style={{fontSize:'24px'}} className="title">Quote</span>
                         </div>
                     </div>
                 </div>
