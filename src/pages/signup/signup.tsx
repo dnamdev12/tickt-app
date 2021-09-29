@@ -160,7 +160,7 @@ const Signup = (props: Propstype) => {
 
     const onNewAccount = (profileData: any, socialType: string) => {
         console.log('profileData: ', profileData);
-        setSteps(steps + 1);
+        setSteps(steps + 2);
         const newProfileData = {
             firstName: profileData.name,
             authType: "signup",
