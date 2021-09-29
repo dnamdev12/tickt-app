@@ -124,7 +124,7 @@ class ViewQuote extends Component<Props, State> {
             <React.Fragment>
                 <div className="flex_row">
                     <div className="flex_col_sm_5">
-                        <div className="relate">
+                        <div className="relate" style={{marginBottom:'50px'}}>
                             <button
                                 onClick={() => {
                                     if (CASE_1) {
@@ -198,7 +198,7 @@ class ViewQuote extends Component<Props, State> {
                     <div className="flex_col_sm_6">
                         <div
                             style={{ minHeight: '180px' }}
-                            className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
+                            className="tradie_card posted_by" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                             <span
                                 onClick={() => {
                                     props.history.push(`/tradie-info?tradeId=${item?.userId}&hideInvite=true&active=true`)
@@ -248,56 +248,61 @@ class ViewQuote extends Component<Props, State> {
                                     : null}
                             </div> */}
 
-                            <div className="change_req">
-                                <div className="flex_row">
-                                    <div className="flex_col_sm_2">
-                                        <label className="form_label">Item</label></div>
-                                    <div className="flex_col_sm_6">
-                                        <label className="form_label">Description</label>
-                                    </div>
-                                    <div className="flex_col_sm_4">
-                                        <label className="form_label">Price</label>
-                                    </div>
-                                    <div className="flex_col_sm_2">
-                                        <span className="show_label">1</span>
-                                    </div>
-                                    <div className="flex_col_sm_6">
-                                        <span className="show_label line-1">item1</span>
-                                    </div>
-                                    <div className="flex_col_sm_4">
-                                        <span className="show_label">
-                                            <span>$ 2,000</span></span>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
+                        <div className="change_req">
+                            {item?.quote_item?.length ?
+                                item?.quote_item.map((quote_item: any) => (
+                                    <div className="flex_row">
+                                        <div className="flex_col_sm_2">
+                                            <label className="form_label">Item</label></div>
+                                        <div className="flex_col_sm_6">
+                                            <label className="form_label">Description</label>
+                                        </div>
+                                        <div className="flex_col_sm_4">
+                                            <label className="form_label">Price</label>
+                                        </div>
+                                        <div className="flex_col_sm_2">
+                                            <span className="show_label">{quote_item?.item_number}</span>
+                                        </div>
+                                        <div className="flex_col_sm_6">
+                                            <span className="show_label line-1">
+                                                {quote_item?.description}
+                                            </span>
+                                        </div>
+                                        <div className="flex_col_sm_4">
+                                            <span className="show_label">
+                                                <span>
+                                                    {`$ ${quote_item?.price}`}
+                                                </span>
+                                            </span>
+                                        </div>
 
-                        <div style={{ textAlign: 'right', marginBottom: '20px' }}>
+                                    </div>
+                                )) : null}
+                        </div>
+                        <div className="total_quote">
                             <span className="fill_grey_btn">
                                 {`Total Quote: $${!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}`}
                             </span>
                         </div>
 
                         {CASE_1 && (
-                            <div className="flex_row">
-                                <div className="flex_col_sm_8">
-                                    <div className="form_field">
-                                        <button
-                                            onClick={() => { this.handleSubmit(item, 1) }}
-                                            className="fill_btn full_btn btn-effect">
-                                            {'Accept Quote'}
-                                        </button>
-                                    </div>
-                                    <div className="form_field">
-                                        <button
-                                            onClick={() => { this.handleSubmit(item, 2) }}
-                                            className="fill_grey_btn full_btn btn-effect">
-                                            {'Decline Quote'}
-                                        </button>
-                                    </div>
+                            <>
+                                <div className="form_field">
+                                    <button
+                                        onClick={() => { this.handleSubmit(item, 1) }}
+                                        className="fill_btn w100per btn-effect">
+                                        {'Accept Quote'}
+                                    </button>
                                 </div>
-                            </div>
+                                <div className="form_field">
+                                    <button
+                                        onClick={() => { this.handleSubmit(item, 2) }}
+                                        className="fill_grey_btn w100per btn-effect">
+                                        {'Decline Quote'}
+                                    </button>
+                                </div>
+                            </>
                         )}
 
                     </div>
