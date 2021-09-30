@@ -22,7 +22,7 @@
             <div class="custom_container">
                 <div class="flex_row align_center">
                     <div class="flex_col_sm_6">
-                        <span class="title"><?php echo $section_1['heading'];?></span>
+                        <span class="sub_title"><?php echo $section_1['heading'];?></span>
                         <p class="commn_para"><?php echo $section_1['description'];?></p>
                     </div>
                     <div class="flex_col_sm_6">
