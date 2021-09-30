@@ -66,7 +66,7 @@
         <?php 
             $top_sphere_section = get_field('top_sphere_section');
         ?>
-            <span class="title">Top spheres for builders and tradies</span>
+            <span class="title"><?php echo $top_sphere_section['top_sphere_heading']; ?></span>
             <div class="sphere_wrap">
                  <div class="owl-carousel owl-theme" id="sphere-owl-carousel"> 
                      <?php 
