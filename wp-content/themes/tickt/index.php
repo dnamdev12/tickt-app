@@ -90,7 +90,7 @@
             </div>
         </section>
         <section class="about_block">
-            <div class="custom_container">
+            <!-- <div class="custom_container"> -->
                 <?php 
                     $section_2 = get_field('section_2');
                     $i = 1;
@@ -122,7 +122,7 @@
                 </div>
                 <?php $i++; 
                 } ?>
-            </div>
+            <!-- </div> -->
         </section>
         <section class="features_block">
             <div class="custom_container">
