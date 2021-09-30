@@ -41,10 +41,10 @@
                     <ul class="auth_btn">
                         
                         <li>
-                            <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_btn btn-effect" data-toggle="modal" data-target="#SignupModal"><!-- <a href="" class="fill_btn btn-effect" data-toggle="modal" data-target="#SignupModal"> -->Sign-up for free</a>
+                            <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_btn btn-effect"><!-- <a href="" class="fill_btn btn-effect" data-toggle="modal" data-target="#SignupModal"> -->Sign-up for free</a>
                         </li>
                         <li>
-                            <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_grey_btn btn-effect" data-toggle="modal" data-target="#OnboardModal"><!-- <a href="" class="fill_grey_btn btn-effect" data-toggle="modal" data-target="#OnboardModal"> -->Log In</a>
+                            <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_grey_btn btn-effect"><!-- <a href="" class="fill_grey_btn btn-effect" data-toggle="modal" data-target="#OnboardModal"> -->Log In</a>
                         </li>
                                             
                     <?php
