@@ -610,12 +610,27 @@ const JobDetailsPage = (props: PropsType) => {
                                                     // setShowToast(true, 'Under Development');
                                                     props.history.push(`/post-new-job?update=true&jobId=${paramJobId}`)
                                                 }}
-                                                className="icon edit_line">{'Edit'}</li>
-                                            <li
-                                                onClick={() => {
-                                                    setToggleDelete((prev: any) => !prev);
-                                                }}
-                                                className="icon delete">{'Delete'}</li>
+                                                className="icon edit_line">
+                                                {'Edit'}
+                                            </li>
+                                            {activeType == "open" && jobDetailsData?.quoteJob ? (
+                                                <li
+                                                    onClick={() => {
+                                                        // setToggleDelete((prev: any) => !prev);
+                                                    }}
+                                                    className="icon delete">
+                                                    {'Cancel'}
+                                                </li>
+                                            ) : (
+                                                <li
+                                                    onClick={() => {
+                                                        setToggleDelete((prev: any) => !prev);
+                                                    }}
+                                                    className="icon delete">
+                                                    {'Delete'}
+                                                </li>
+                                            )}
+
                                         </React.Fragment>
                                     )}
                                     {activeType == "active" && (
@@ -785,7 +800,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     <div className="job_info">
                                         {jobDetailsData?.quoteCount?.length && jobDetailsData?.quoteJob ? ( // temporary check
                                             <ul>
-                                                <li className="icon dollar">{jobDetailsData?.quoteJob ? "for quoting" : jobDetailsData.amount }</li>
+                                                <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className=""></li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
                                                 <li className="icon calendar">
@@ -801,7 +816,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         ) : !isPastJob ? (
                                             <ul>
                                                 <li className="icon clock">{jobDetailsData.duration}</li>
-                                                <li className="icon dollar">{jobDetailsData?.quoteJob ? "for quoting" : jobDetailsData.amount}</li>
+                                                <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData.locationName}>{jobDetailsData.locationName}</li>
                                                 <li className="icon calendar">
                                                     {jobDetailsData?.time ?
@@ -824,7 +839,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         )
                                                     }
                                                 </li>
-                                                <li className="icon dollar">{jobDetailsData?.quoteJob ? "for quoting" : jobDetailsData.amount }</li>
+                                                <li className="icon dollar">{jobDetailsData.amount}</li>
                                                 <li className="icon location line-1" title={jobDetailsData?.locationName}>{jobDetailsData?.locationName}</li>
                                                 <li className="job_status">{paramStatus}</li>
                                                 {/* <li className="job_status">{jobDetailsData?.status}</li> */}
@@ -896,8 +911,8 @@ const JobDetailsPage = (props: PropsType) => {
                                                         onClick={() => {
                                                             if (jobDetailsData?.quoteJob) {
                                                                 let quote: any = jobDetailsData?.quote;
-                                                                if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId){
-                                                                    let quoteId:any = quote[0].tradieId;
+                                                                if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
+                                                                    let quoteId: any = quote[0].tradieId;
                                                                     props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
                                                                 }
                                                             } else {
@@ -1385,14 +1400,16 @@ const JobDetailsPage = (props: PropsType) => {
                                 </div>
                             </div>
                         </div>
-
-                        <div className="section_wrapper">
-                            <span className="sub_title">Posted by</span>
-                            <div className="flex_row">
-                                <div className="flex_col_sm_3">
-                                    <div className={`tradie_card posted_by`}>
-                                        {/* <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}> */}
-                                        {/* {activeType == "active" && (
+                        {!!jobDetailsData?.postedBy?.ratings == false &&
+                            !!jobDetailsData?.postedBy?.reviews == false &&
+                            jobDetailsData?.quoteJob ? null : (
+                            <div className="section_wrapper">
+                                <span className="sub_title">Posted by</span>
+                                <div className="flex_row">
+                                    <div className="flex_col_sm_3">
+                                        <div className={`tradie_card posted_by`}>
+                                            {/* <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}> */}
+                                            {/* {activeType == "active" && (
                                             <span
                                                 className="chat circle"
                                                 onClick={(e) => {
@@ -1409,48 +1426,50 @@ const JobDetailsPage = (props: PropsType) => {
                                                 }}>
                                             </span>
                                         )} */}
-                                        <div className="user_wrap">
-                                            <figure className={`u_img`}>
-                                                {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
-                                                    <img
-                                                        src={jobDetailsData?.postedBy?.builderImage || dummy}
-                                                        alt="traide-img"
-                                                        onError={(e: any) => {
-                                                            if (e?.target?.onerror) {
-                                                                e.target.onerror = null;
+                                            <div className="user_wrap">
+                                                <figure className={`u_img`}>
+                                                    {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
+                                                        <img
+                                                            src={jobDetailsData?.postedBy?.builderImage || dummy}
+                                                            alt="traide-img"
+                                                            onError={(e: any) => {
+                                                                if (e?.target?.onerror) {
+                                                                    e.target.onerror = null;
+                                                                }
+                                                                if (e?.target?.src) {
+                                                                    e.target.src = dummy;
+                                                                }
+                                                            }}
+                                                        />
+                                                    ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
+                                                        <img
+                                                            src={dummy}
+                                                            alt="traide-img"
+                                                        />
+                                                    )}
+                                                </figure>
+                                                <div className='details'>
+                                                    <span
+                                                        className="name"
+                                                        onClick={() => {
+                                                            if (jobDetailsData?.postedBy?.builderName) {
+                                                                props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
                                                             }
-                                                            if (e?.target?.src) {
-                                                                e.target.src = dummy;
-                                                            }
-                                                        }}
-                                                    />
-                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
-                                                    <img
-                                                        src={dummy}
-                                                        alt="traide-img"
-                                                    />
-                                                )}
-                                            </figure>
-                                            <div className='details'>
-                                                <span
-                                                    className="name"
-                                                    onClick={() => {
-                                                        if (jobDetailsData?.postedBy?.builderName) {
-                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
-                                                        }
-                                                    }}>
-                                                    {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
-                                                </span>
+                                                        }}>
+                                                        {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
+                                                    </span>
 
-                                                <span className="rating">
-                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
-                                                </span>
+                                                    <span className="rating">
+                                                        {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
+
                     </div>
                 </div>
             </div>

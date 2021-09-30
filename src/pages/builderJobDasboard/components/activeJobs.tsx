@@ -236,6 +236,7 @@ const ActiveJobs = ({
                                         </span>
                                         <span className="approval_info">
                                             {(status).toUpperCase() === "APPROVED" && <img src={approved} alt="icon" />}
+                                            {["QUOTE REQUEST ACCEPTED","QUOTE ACCEPTED"].includes((status).toUpperCase()) && <img src={approved} alt="icon" />}
                                             {((status).toUpperCase() === "NEEDS APPROVAL" || (status).toUpperCase() === "NEED APPROVAL") && (
                                                 <img src={waiting} alt="icon" />
                                             )}
