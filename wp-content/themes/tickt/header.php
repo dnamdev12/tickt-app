@@ -40,12 +40,15 @@
                     
                     <ul class="auth_btn">
                         
-                        <!-- <li>
-                        <a class="fill_grey_btn btn-effect" data-toggle="modal"
-                                data-target="#OnboardModal">Login</a>
-                        </li> -->
+                        <li>
+                            <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_btn btn-effect" data-toggle="modal" data-target="#SignupModal"><!-- <a href="" class="fill_btn btn-effect" data-toggle="modal" data-target="#SignupModal"> -->Sign-up for free</a>
+                        </li>
+                        <li>
+                            <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_grey_btn btn-effect" data-toggle="modal" data-target="#OnboardModal"><!-- <a href="" class="fill_grey_btn btn-effect" data-toggle="modal" data-target="#OnboardModal"> -->Log In</a>
+                        </li>
+                                            
                     <?php
-                    $items = '';
+                    /* $items = '';
                     if (is_user_logged_in()) {
                         $nonce= wp_create_nonce('logout-wp');
                         $items = '
@@ -61,7 +64,7 @@
                         <a class="fill_grey_btn btn-effect" data-toggle="modal"
                                 data-target="#OnboardModal">'. __("Log In") .'</a></li>';
                     }
-                    echo $items;
+                    echo $items; */
                     ?>
                         <li>
                             <figure class="mob_menu_btn">
