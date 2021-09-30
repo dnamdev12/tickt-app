@@ -162,6 +162,9 @@ const QuoteMark = (props: any) => {
     }
 
     const handleChange = (name: any, value: any) => {
+        if (name === 'description' && value.length > 250) {
+            return;
+        }
         setLocalQuote((prev: any) => ({
             ...prev,
             [name]: name === 'description' ? value : + value
@@ -205,13 +208,13 @@ const QuoteMark = (props: any) => {
 
     const callItemNo = () => {
         if (localQuote?._id) {
-            console.log('xxx localQuote?._id-----------if');
+            console.log('localQuote?._id-----------if');
             return localQuote?.item_number;
         }
         if (isEdit !== null) {
             return Items[isEdit]?.item_number;
         }
-        console.log('xxx Items---------else');
+        console.log('Items---------else');
         return Items[Items?.length - 1]?.item_number ? Items[Items?.length - 1]?.item_number + 1 : 1;
     }
 
