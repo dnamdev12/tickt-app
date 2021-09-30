@@ -956,8 +956,8 @@ header {
 
 .banner_container {
     position: absolute;
-    width: 1216px;
-    top: 50%;
+    width: 950px;
+    top: 60%;
     left: 50%;
     transform: translate(-50%,-50%);
 }
