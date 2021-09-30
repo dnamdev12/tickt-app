@@ -616,7 +616,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             {activeType == "open" && jobDetailsData?.quoteJob ? (
                                                 <li
                                                     onClick={() => {
-                                                        // setToggleDelete((prev: any) => !prev);
+                                                        setToggleDelete((prev: any) => !prev);
                                                     }}
                                                     className="icon delete">
                                                     {'Cancel'}
