@@ -1610,3 +1610,7 @@ footer p{
   #enter_otp, #submit_otp_button {
       display:none;
   }
+
+  #SignupForm {
+      padding:20px 30px;
+  }

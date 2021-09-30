@@ -194,7 +194,7 @@
                         <span class="show_label text-center">or continue with</span>
                         <div class="continue_with">
                             <a class="hvr-ripple-out">
-                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ic-google.png" alt="google" />
+                                <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ic-google.png" class="g-signin2" data-onsuccess="onSignIn" alt="google" />
                             </a>
                             <a class="hvr-ripple-out">
                                 <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ic-linkedin.png" alt="linkedin" />

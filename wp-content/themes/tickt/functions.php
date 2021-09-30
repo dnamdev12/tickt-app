@@ -23,6 +23,8 @@ function my_enqueue_stuff_js() {
 
     wp_enqueue_script('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', true );
 
+    wp_enqueue_script('google-social', 'https://apis.google.com/js/platform.js', true );
+
     wp_enqueue_script('custom', get_stylesheet_directory_uri().'/assets/js/custom.js', true );
    
 }
@@ -334,3 +336,10 @@ function logoutUser(){
     }
 }
 add_action('init', 'logoutUser');
+
+add_filter( 'logout_url', 'wpse_58453_logout_url' );
+function wpse_58453_logout_url( $default ) 
+{
+    // set your URL here
+    return is_admin() ? 'http://example.com/custom' : $default;
+}
