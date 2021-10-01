@@ -6,7 +6,7 @@ import {
     jobDetailsBuilder,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
-import { getTradieQuestionList } from '../../redux/jobs/actions';
+import { getTradieQuestionList, closeOpenedJob } from '../../redux/jobs/actions';
 import {
     // postAskQuestion,
     // deleteQuestion,
@@ -681,8 +681,13 @@ const JobDetailsPage = (props: PropsType) => {
                         </DialogTitle>
                         <DialogActions>
                             <Button
-                                onClick={() => {
-                                    deleteJob(paramJobId);
+                                onClick={async () => {
+                                    if (activeType == "open" && jobDetailsData?.quoteJob) {
+                                        let response = await closeOpenedJob({ jobId: paramJobId });
+                                        setToggleDelete((prev: any) => !prev);
+                                    } else {
+                                        deleteJob(paramJobId);
+                                    }
                                 }}
                                 color="primary"
                                 autoFocus>

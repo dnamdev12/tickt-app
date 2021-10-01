@@ -853,4 +853,15 @@ export const getMostViewedTradies = async (data: any) => {
   return { success: false };
 }
 
+export const closeOpenedJob = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.putToJson(`${Urls.job}cancelOpenJob`, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+  setShowToast(true, response.message);
+  return { success: false };
+}
+
 // https://ticktdevapi.appskeeper.in/v1/home/getPopularTradie?long=144.9631&lat=-37.8136&page=1&perPage=10
