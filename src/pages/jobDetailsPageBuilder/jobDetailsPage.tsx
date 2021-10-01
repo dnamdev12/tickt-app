@@ -685,6 +685,9 @@ const JobDetailsPage = (props: PropsType) => {
                                     if (activeType == "open" && jobDetailsData?.quoteJob) {
                                         let response = await closeOpenedJob({ jobId: paramJobId });
                                         setToggleDelete((prev: any) => !prev);
+                                        if(response?.success){
+                                            props.history.push('/jobs?active=past');
+                                        }
                                     } else {
                                         deleteJob(paramJobId);
                                     }
