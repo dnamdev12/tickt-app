@@ -630,13 +630,13 @@
                     stagePadding:0,
                 },
                 1024: {
-                    items:2,
-                    stagePadding:90,
+                    items:3,
+                    stagePadding:15,
 
                 },
                 1366: {
                     items:3,
-                    stagePadding:90,
+                    stagePadding:190,
                 }
             }
             

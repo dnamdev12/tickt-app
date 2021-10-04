@@ -149,133 +149,71 @@
             </div>
         </section>
         <section class="jobs_block">
+        <?php
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://ticktdevapi.appskeeper.in/v1/job/getJobList',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_POSTFIELDS => 'page=1',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Basic dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz',
+            'timezone: Asia/Kolkata',
+            'job_status: 2',
+            'Content-Type: application/x-www-form-urlencoded'
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        //echo '<pre>';
+        $res = json_decode($response);
+        $results = $res->result->resultData;
+        //print_r($results[11]);
+        ?>
             <span class="title text-center">Active jobs</span>
             <div class="job_wrap">
-             <div class="owl-carousel owl-loaded owl-drag" id="jobs-owl-carousel"> 
+                <div class="owl-carousel owl-loaded owl-drag" id="jobs-owl-carousel">
+                <?php 
+                foreach(array_slice($results, 0, 7) as $result) {
+                    
+                    ?>
                     <div class="item">
                         <div class="job_card">
                             <a class="more_detail circle"></a>
                             <div class="user_wrap">
                                 <figure class="u_img">
-                                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ic-painter.svg" alt="icon" />
+                                    <img src="<?php echo $result->categories[0]->selected_url;?>" alt="<?php echo $result->jobName;?>" />
                                 </figure>
                                 <div class="details">
-                                    <span class="name">Plumber</span>
+                                    <span class="name"><?php echo $result->jobName;?></span>
                                     <span class="prof">to write up circuit box</span>
                                 </div>
                             </div>
                             <div class="job_info">
                                 <ul>
-                                    <li class="icon clock">8 hours ago</li>
-                                    <li class="icon dollar">$100 p/h</li>
-                                    <li class="icon location line-1">Melbourne VIC, Australia</li>
+                                    <li class="icon clock"><?php echo time_elapsed_string(date('Y-m-d H:i:s', strtotime($result->updatedAt)));?></li>
+                                    <li class="icon dollar">$<?php echo $result->amount;?> p/h</li>
+                                    <li class="icon location line-1"><?php echo $result->location_name;?></li>
                                     <li class="icon calendar">2 days</li>
                                 </ul>
                             </div>
-                            <p class="commn_para line-2">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Culpa
-                                accusamus ipsam dignissimos hic vero dolorum dolor incidunt adipisci quae?
-                                Aspernatur magni
-                                harum minus similique, nam est quidem fugiat officiis molestias!</p>
+                            <p class="commn_para line-2"><?php echo $result->job_description;?></p>
                             <ul class="count_wrap">
-                                <li class="icon view">127</li>
-                                <li class="icon comment">18</li>
+                                <li class="icon view"><?php echo $result->jobViewCount->views_count;?></li>
+                                <li class="icon comment"><?php echo $result->jobView->views_count;?></li>
                             </ul>
                         </div>
                     </div>
-                    <div class="item">
-                        <div class="job_card">
-                            <a class="more_detail circle"></a>
-                            <div class="user_wrap">
-                                <figure class="u_img">
-                                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ic-painter.svg" alt="icon" />
-                                </figure>
-                                <div class="details">
-                                    <span class="name">Plumber</span>
-                                    <span class="prof">to write up circuit box</span>
-                                </div>
-                            </div>
-                            <div class="job_info">
-                                <ul>
-                                    <li class="icon clock">8 hours ago</li>
-                                    <li class="icon dollar">$100 p/h</li>
-                                    <li class="icon location line-1">Melbourne VIC, Australia</li>
-                                    <li class="icon calendar">2 days</li>
-                                </ul>
-                            </div>
-                            <p class="commn_para line-2">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Culpa
-                                accusamus ipsam dignissimos hic vero dolorum dolor incidunt adipisci quae?
-                                Aspernatur magni
-                                harum minus similique, nam est quidem fugiat officiis molestias!</p>
-                            <ul class="count_wrap">
-                                <li class="icon view">127</li>
-                                <li class="icon comment">18</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="job_card">
-                            <a class="more_detail circle"></a>
-                            <div class="user_wrap">
-                                <figure class="u_img">
-                                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ic-painter.svg" alt="icon" />
-                                </figure>
-                                <div class="details">
-                                    <span class="name">Plumber</span>
-                                    <span class="prof">to write up circuit box</span>
-                                </div>
-                            </div>
-                            <div class="job_info">
-                                <ul>
-                                    <li class="icon clock">8 hours ago</li>
-                                    <li class="icon dollar">$100 p/h</li>
-                                    <li class="icon location line-1">Melbourne VIC, Australia</li>
-                                    <li class="icon calendar">2 days</li>
-                                </ul>
-                            </div>
-                            <p class="commn_para line-2">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Culpa
-                                accusamus ipsam dignissimos hic vero dolorum dolor incidunt adipisci quae?
-                                Aspernatur magni
-                                harum minus similique, nam est quidem fugiat officiis molestias!</p>
-                            <ul class="count_wrap">
-                                <li class="icon view">127</li>
-                                <li class="icon comment">18</li>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="item">
-                        <div class="job_card">
-                            <a class="more_detail circle"></a>
-                            <div class="user_wrap">
-                                <figure class="u_img">
-                                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/ic-painter.svg" alt="icon" />
-                                </figure>
-                                <div class="details">
-                                    <span class="name">Plumber</span>
-                                    <span class="prof">to write up circuit box</span>
-                                </div>
-                            </div>
-                            <div class="job_info">
-                                <ul>
-                                    <li class="icon clock">8 hours ago</li>
-                                    <li class="icon dollar">$100 p/h</li>
-                                    <li class="icon location line-1">Melbourne VIC, Australia</li>
-                                    <li class="icon calendar">2 days</li>
-                                </ul>
-                            </div>
-                            <p class="commn_para line-2">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Culpa
-                                accusamus ipsam dignissimos hic vero dolorum dolor incidunt adipisci quae?
-                                Aspernatur magni
-                                harum minus similique, nam est quidem fugiat officiis molestias!</p>
-                            <ul class="count_wrap">
-                                <li class="icon view">127</li>
-                                <li class="icon comment">18</li>
-                            </ul>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div> 
             </div>
         </section>
