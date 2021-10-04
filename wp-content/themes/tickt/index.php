@@ -188,7 +188,7 @@
                     ?>
                     <div class="item">
                         <div class="job_card">
-                            <a class="more_detail circle"></a>
+                            <a href="https://ticktreactqa.appskeeper.in/login" class="more_detail circle"></a>
                             <div class="user_wrap">
                                 <figure class="u_img">
                                     <img src="<?php echo $result->categories[0]->selected_url;?>" alt="<?php echo $result->jobName;?>" />
