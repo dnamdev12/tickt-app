@@ -678,12 +678,12 @@ const Header = (props: any) => {
                                                     const url1: string = onNotificationClick(item);
                                                     const url2: string = history.location?.pathname + history.location?.search;
                                                     if (item.read === 0) {
-                                                        const res: any = item?.notificationType === 13 ? await markNotifAsRead({ notificationId: item?._id }) : markNotifAsRead({ notificationId: item?._id });
+                                                        const res: any = (item?.notificationType === 13 || (url1 === url2 && item?.notificationType === 9)) ? await markNotifAsRead({ notificationId: item?._id }) : markNotifAsRead({ notificationId: item?._id });
                                                         if (item?.notificationType === 13 && res?.success) {
                                                             callNotificationList(true, true);
                                                         }
                                                     }
-                                                    if ((url1 === url2 && item.read === 0) || item?.notificationType == 9) {
+                                                    if ((url1 === url2 && item.read === 0) || (url1 === url2 && item?.notificationType == 9)) {
                                                         window.location?.reload();
                                                         return;
                                                     }
