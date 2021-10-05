@@ -74,9 +74,9 @@ const AddQualification = (props: Propstype) => {
         const itemIndex = newData.indexOf(item);
         console.log(qualification, item, itemIndex, 'okk');
         if (!qualification.length) {
-            setShowToast(true, "Please add atleast one qualification");
+            setShowToast(true, "Please Add At Least One Qualification");
         } else if (itemIndex >= 0) {
-            setShowToast(true, "Please upload all selected documents");
+            setShowToast(true, "Please Upload All Selected Documents");
         } else {
             props.updateSteps(props.step + 1, { qualification });
         }

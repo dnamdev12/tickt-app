@@ -353,7 +353,7 @@ const JobMilestones = (props: any) => {
                                             if (check) {
                                                 handleSubmit();
                                             } else {
-                                                setShowToast(true, "Please arrange milestone date wise.")
+                                                setShowToast(true, "Please Arrange Milestone Date Wise")
                                             }
                                         }}
                                         className={`fill_btn full_btn btn-effect`}>

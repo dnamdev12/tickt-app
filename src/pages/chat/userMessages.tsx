@@ -264,7 +264,7 @@ const UserMessages = (props: any) => {
             maxFileSize = 20;
         }
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > maxFileSize)) {
-            setShowToast(true, "The file must be in proper format or size.")
+            setShowToast(true, "The File Must Be In Proper Format Or Size")
             return;
         }
 
@@ -278,7 +278,7 @@ const UserMessages = (props: any) => {
             } else if (check_type === 2) {
                 sendImageVideoMsg(res.imgUrl, "video");
             } else {
-                setShowToast(true, "There is some technical issue");
+                setShowToast(true, "There Is Some Technical Issue");
             }
             setIsDocUploading(false);
             // setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));

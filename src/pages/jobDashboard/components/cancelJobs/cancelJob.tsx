@@ -60,7 +60,7 @@ const LodgeDispute = (props: PropTypes) => {
         const newFile = e.target.files[0];
 
         if (filesUrl?.length === 6) {
-            setShowToast(true, "Max files upload limit is 6.")
+            setShowToast(true, "Max Files Upload Limit Is 6")
             return;
         }
 
@@ -68,12 +68,12 @@ const LodgeDispute = (props: PropTypes) => {
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (imageFormats.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
-            setShowToast(true, "The file must be in proper format or size.")
+            setShowToast(true, "The File Must Be In Proper Format Or Size")
             return;
         }
 
         if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
-            setShowToast(true, "The image file size must be below 10 MB.")
+            setShowToast(true, "The Image File Size Must Be Below 10 MB")
             return;
         }
 

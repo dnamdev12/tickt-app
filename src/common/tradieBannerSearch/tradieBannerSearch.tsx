@@ -362,7 +362,7 @@ const TradieBannerSearch = (props: PropsType) => {
                         }
                     } else {
                         setInputFocus2(false);
-                        setShowToast(true, "Uh oh! we don't provide service currently in your location.");
+                        setShowToast(true, "Uh Oh! We Don't Provide Service Currently In Your Location");
                     }
                 }
             });

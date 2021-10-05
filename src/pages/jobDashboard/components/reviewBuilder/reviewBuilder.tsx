@@ -53,7 +53,7 @@ const ReviewBuilder = (props: Proptypes) => {
 
     const submitReviewClicked = async () => {
         if (reviewBuilderData.rating === 0) {
-            setShowToast(true, 'Star Rating is Required');
+            setShowToast(true, 'Star Rating Is Required');
             return;
         }
         // if (reviewBuilderData.review.trim().length < 1) {

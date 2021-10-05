@@ -102,12 +102,12 @@ const AddVoucherComponent = (props: any) => {
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (docformats.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
-            setShowToast(true, "The file must be in proper format or size.")
+            setShowToast(true, "The File Must Be In Proper Format Or Size")
             return;
         }
 
         if (docformats.includes(fileType) && selectedFileSize > 10) { // image validations
-            setShowToast(true, "The file size must be below 10 MB.")
+            setShowToast(true, "The File Size Must Be Below 10 MB")
             return;
         }
 

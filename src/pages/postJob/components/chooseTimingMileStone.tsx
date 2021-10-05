@@ -32,7 +32,7 @@ interface Proptypes {
 }
 
 const default_format = 'YYYY-MM-DD';
-const STRING_ERROR = 'Selected data is fully engage';
+const STRING_ERROR = 'Selected Data Is Fully Engage';
 const ChooseTimingMileStone = ({
     data,
     stepCompleted,

@@ -214,14 +214,14 @@ const PostJob = (props: Proptypes) => {
                         })
                         if (mile_start == time_start || mile_start == time_end) {
                             console.log('Inside - 1 ---')
-                            setShowToast(true, 'Selected start data is fully engage');
+                            setShowToast(true, 'Selected Start Data is Fully Engage');
                             return
                         }
                     }
 
                     if (count_times[mile_end] === 4) {
                         if (mile_end == time_start || mile_end == time_end) {
-                            setShowToast(true, 'Selected end data is fully engage');
+                            setShowToast(true, 'Selected End Data Is Fully Engage');
                             return
                         }
                     }
@@ -263,7 +263,7 @@ const PostJob = (props: Proptypes) => {
 
 
         if (!checkIsValid) {
-            setShowToast(true, 'Please add unique date.');
+            setShowToast(true, 'Please Add Unique Date');
             return;
         }
 

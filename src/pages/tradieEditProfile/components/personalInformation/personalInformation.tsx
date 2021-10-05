@@ -359,21 +359,21 @@ export class PersonalInformation extends Component<Props, State> {
             const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
             console.log(newQualificationDoc, "newQualificationDoc validation");
             if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
-                setShowToast(true, "Please upload all selected documents");
+                setShowToast(true, "Please Upload All Selected Documents");
                 return;
             }
 
             const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
             console.log(newRemainingDoc, "newRemainingDoc validation");
             if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
-                setShowToast(true, "Please upload all selected documents");
+                setShowToast(true, "Please Upload All Selected Documents");
                 return;
             }
         } else {
             if (!this.state.basicDetailsData?.companyName) {
                 newErrors.companyName = Constants.errorStrings.companyNameEmpty;
             } else if (this.state.basicDetailsData?.companyName.trim()?.length > 50) {
-                newErrors.companyName = 'Maximum 50 characters are allowed.';
+                newErrors.companyName = 'Maximum 50 Characters Are Allowed.';
             } else {
                 const nameRegex = new RegExp(regex.fullname);
                 if (!nameRegex.test(this.state.basicDetailsData.companyName.trim())) {
@@ -383,7 +383,7 @@ export class PersonalInformation extends Component<Props, State> {
             if (!this.state.basicDetailsData?.position) {
                 newErrors.position = Constants.errorStrings.positionNameEmpty;
             } else if (this.state.basicDetailsData?.position.trim()?.length > 50) {
-                newErrors.position = 'Maximum 50 characters are allowed.';
+                newErrors.position = 'Maximum 50 Characters Are Allowed.';
             } else {
                 const positionRegex = new RegExp(regex.fullname);
                 if (!positionRegex.test(this.state.basicDetailsData.position.trim())) {

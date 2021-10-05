@@ -683,7 +683,7 @@ const Header = (props: any) => {
                                                             callNotificationList(true, true);
                                                         }
                                                     }
-                                                    if (url1 === url2 && item.read === 0) {
+                                                    if ((url1 === url2 && item.read === 0) || item?.notificationType == 9) {
                                                         window.location?.reload();
                                                         return;
                                                     }

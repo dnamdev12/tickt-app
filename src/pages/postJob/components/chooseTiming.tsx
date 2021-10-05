@@ -102,7 +102,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
             });
 
             if (item_find && !jobId) {
-                setShowToast(true, 'Please check the milestone dates.');
+                setShowToast(true, 'Please Check The Milestone Dates');
                 return;
             }
         }

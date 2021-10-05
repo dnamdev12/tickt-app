@@ -173,7 +173,7 @@ const EditMilestone = (props: any) => {
         }
 
         if (item_find) {
-            setShowToast(true, 'Please check the milestone dates.');
+            setShowToast(true, 'Please Check The Milestone Dates');
             return item_find;
         }
 
@@ -655,7 +655,7 @@ const EditMilestone = (props: any) => {
                                             if (check) {
                                                 submitData()
                                             } else {
-                                                setShowToast(true, "Please arrange milestone date wise.")
+                                                setShowToast(true, "Please Arrange Milestone Date Wise")
                                             }
                                         }
                                     }}
