@@ -2,6 +2,7 @@ import { get } from 'lodash';
 import { setShowToast } from '../redux/common/actions';
 import storageService from '../utils/storageService';
 import { urlFor } from './Urls';
+import Constants from '../utils/constants';
 import * as moment from 'moment';
 import 'moment-timezone';
 
@@ -21,7 +22,7 @@ class NetworkOps {
             method: type,
             headers: {
                 'Content-Type': 'application/json',
-                Authorization: `Basic dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz`,
+                Authorization: `Basic ${Constants.BasicAuthorizationToken}`,
                 'timezone': moment.tz.guess(),
                 ...headerOverrides
             },

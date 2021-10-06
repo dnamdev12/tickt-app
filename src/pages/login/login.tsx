@@ -115,14 +115,13 @@ const LoginPage = (props: Propstype) => {
         if (validateForm()) {
             const res: any = await callLogin(newData);
             if (res.success) {
-                const authData = {
-                    email: newData.email,
-                    password: '12345678', //'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
-                }
+                // const authData = {
+                //     email: newData.email,
+                //     password: '12345678'
+                // }
                 loginAnonymously();
                 // firebaseLogInWithEmailPassword(authData, res?.data);
                 if (props.showModal) {
-                    // window.location.reload();
                     props.setShowModal(!props.showModal);
                 }
                 props?.history?.push('/');

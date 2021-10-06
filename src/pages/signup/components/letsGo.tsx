@@ -24,10 +24,10 @@ const LetsGo = (props: Propstype) => {
 
     const goToLogin = () => {
         if (storageService.getItem('jwtToken')) {
-            const authData = {
-                email: storageService.getItem('userInfo')?.email,
-                password: '12345678', //'R^4-3Wx?VTRufV=$B_pM9HP5GxqQF@'
-            }
+            // const authData = {
+            //     email: storageService.getItem('userInfo')?.email,
+            //     password: '12345678',
+            // }
             loginAnonymously();
             // firebaseLogInWithEmailPassword(authData, '', true);
             props.history?.push({

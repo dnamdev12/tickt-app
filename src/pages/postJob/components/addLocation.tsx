@@ -1,6 +1,5 @@
 
 import { useEffect, useState } from 'react';
-import { Popper } from '@material-ui/core';
 // @ts-ignore
 // import PlacesAutocomplete from 'react-places-autocomplete';
 import PlacesAutocomplete, {
@@ -11,8 +10,9 @@ import icgps from "../../../assets/images/ic-gps.png";
 import Geocode from "react-geocode";
 import { setShowToast, setLoading } from '../../../redux/common/actions';
 import cross from "../../../assets/images/close-black.png";
+import Constants from '../../../utils/constants';
 
-Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
+Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
 Geocode.setRegion('au');
 // Enable or disable logs. Its optional.

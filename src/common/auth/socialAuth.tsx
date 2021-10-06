@@ -1,9 +1,7 @@
 import Constants from '../../utils/constants';
 import gmail from '../../assets/images/ic-google.png';
 import linkedin from '../../assets/images/ic-linkedin.png';
-import apple from '../../assets/images/ic-apple.png';
 import { checkSocialId, getLinkedinProfile, socialSignupLogin } from '../../redux/auth/actions';
-import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 // @ts-ignore
 import { GoogleLogin } from 'react-google-login';
 // @ts-ignore
@@ -19,12 +17,6 @@ interface Propstype {
     showModal?: boolean,
     modalUpdateSteps: (data: any) => void,
     setShowModal: (data: any) => void,
-}
-
-const linkedInData = {
-    REDIRECT_URI: `${window.location.origin}/linkedin`,
-    CLIENT_ID: '77vhhfg24hx1s2',
-    CLIENT_SECRET: '83ODjX9bN2GIjCoj',
 }
 
 const SocialAuth = (props: Propstype) => {
@@ -49,17 +41,17 @@ const SocialAuth = (props: Propstype) => {
                 }
                 const res = await socialSignupLogin(data)
                 if (res.success) {
-                    const authData = {
-                        email: res.result?.email,
-                        password: '12345678'
-                    }
-                    const loginRes = {
-                        email: res.result?.email,
-                        user_image: res.result?.user_image,
-                        userName: res.result?.userName ? res.result?.userName : 'name',
-                        _id: res.result?._id,
-                        user_type: res.result?.user_type,
-                    }
+                    // const authData = {
+                    //     email: res.result?.email,
+                    //     password: '12345678'
+                    // }
+                    // const loginRes = {
+                    //     email: res.result?.email,
+                    //     user_image: res.result?.user_image,
+                    //     userName: res.result?.userName ? res.result?.userName : 'name',
+                    //     _id: res.result?._id,
+                    //     user_type: res.result?.user_type,
+                    // }
                     loginAnonymously();
                     // firebaseLogInWithEmailPassword(authData, loginRes);
                     if (props.showModal) {
@@ -75,7 +67,7 @@ const SocialAuth = (props: Propstype) => {
     };
 
     const linkedInResponse = async (response: any) => {
-        const resSocial = await getLinkedinProfile({ code: response.code, redirect_uri: linkedInData.REDIRECT_URI })
+        const resSocial = await getLinkedinProfile({ code: response.code, redirect_uri: Constants.LinkedInAuth.REDIRECT_URI })
         const resCheckId = await checkSocialId({ socialId: resSocial.result.id, email: resSocial.result.email })
         if (resCheckId.success) {
             if (resCheckId.isProfileCompleted) {
@@ -92,17 +84,17 @@ const SocialAuth = (props: Propstype) => {
                 const resAuth = await socialSignupLogin(data)
                 console.log('resAuth: ', resAuth);
                 if (resAuth.success) {
-                    const authData = {
-                        email: resAuth.result?.email,
-                        password: '12345678'
-                    }
-                    const loginRes = {
-                        email: resAuth.result?.email,
-                        user_image: resAuth.result?.user_image,
-                        userName: resAuth.result?.userName ? resAuth.result?.userName : 'name',
-                        _id: resAuth.result?._id,
-                        user_type: resAuth.result?.user_type,
-                    }
+                    // const authData = {
+                    //     email: resAuth.result?.email,
+                    //     password: '12345678'
+                    // }
+                    // const loginRes = {
+                    //     email: resAuth.result?.email,
+                    //     user_image: resAuth.result?.user_image,
+                    //     userName: resAuth.result?.userName ? resAuth.result?.userName : 'name',
+                    //     _id: resAuth.result?._id,
+                    //     user_type: resAuth.result?.user_type,
+                    // }
                     loginAnonymously();
                     // firebaseLogInWithEmailPassword(authData, loginRes);
                     if (props.showModal) {
@@ -128,12 +120,12 @@ const SocialAuth = (props: Propstype) => {
                 </a>)}
             />
             <LinkedIn
-                clientId={linkedInData.CLIENT_ID}
+                clientId={Constants.LinkedInAuth.CLIENT_ID}
                 onSuccess={linkedInResponse}
                 onFailure={onFailure}
                 scope="r_liteprofile r_emailaddress"
                 state="gjhcbf355ESDE"
-                redirectUri={linkedInData.REDIRECT_URI}
+                redirectUri={Constants.LinkedInAuth.REDIRECT_URI}
                 renderElement={(renderProps: any) => (<a className="hvr-ripple-out" onClick={renderProps.onClick} >
                     <img src={linkedin} alt="linkedin" />
                 </a>

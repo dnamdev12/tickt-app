@@ -31,8 +31,7 @@ import { property } from 'lodash';
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
 import { renderTime, renderTimeWithCustomFormat } from '../../utils/common'
-
-Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
+Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
 
 interface PropsType {

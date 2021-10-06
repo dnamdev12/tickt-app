@@ -3,15 +3,15 @@ import "firebase/messaging";
 import 'firebase/auth';
 import 'firebase/database';
 import storageService from "../utils/storageService";
-import { qaStgFirebaseConfig } from '../utils/globalConfig';
+import Constants from "../utils/constants";
 import moment from 'moment';
 
 if (!firebase.apps.length) {
-    firebase.initializeApp(qaStgFirebaseConfig);
+    firebase.initializeApp(Constants.qaStgFirebaseConfig);
 }
 
 const checkIfSupport = () => {
-    if(firebase.messaging.isSupported()) {
+    if (firebase.messaging.isSupported()) {
         return firebase.messaging();
     }
     return false;
@@ -39,7 +39,7 @@ let inboxListner;
 const getRegisterToken = () => {
     return new Promise((resolve, reject) => {
         messaging.getToken({
-            vapidKey: 'BHtgSVj0gw6YQDd6ByTPx_gyRtBWKlHBVYKFsemnv1t6bTH9efAseLWaoJx2GvTu0NW314ZF4DOj_eJ7tub9kHI'
+            vapidKey: `${Constants.FirebasePushServiceKey}`
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("firebase token fetched successsfully", currentToken);
@@ -67,32 +67,32 @@ const isTokenSentToServer = () => {
 }
 
 export const requestPermission = () => {
-    if(checkIfSupport()){
-    return new Promise((resolve, reject) => {
-        Notification.requestPermission().then((permission) => {
+    if (checkIfSupport()) {
+        return new Promise((resolve, reject) => {
+            Notification.requestPermission().then((permission) => {
                 const data = getRegisterToken();
                 resolve(data);
-            })  
-            // if (permission === 'granted' && isTokenSentToServer()) {
-            //     const data = getRegisterToken();
-            //     console.log('Token Already sent');
-            //     resolve(data);
-            // }
-            .catch((err) => {
-                console.log('Unable to get permission to show notification browser : ', err);
-                reject({ success: false });
-            });
+            })
+                // if (permission === 'granted' && isTokenSentToServer()) {
+                //     const data = getRegisterToken();
+                //     console.log('Token Already sent');
+                //     resolve(data);
+                // }
+                .catch((err) => {
+                    console.log('Unable to get permission to show notification browser : ', err);
+                    reject({ success: false });
+                });
         })
     }
 }
 
 export const deleteToken = () => {
-    if(checkIfSupport()){
+    if (checkIfSupport()) {
         messaging.deleteToken().then(() => {
             console.log('firebase Token deleted.');
         }).catch((err) => {
-        console.log('Unable to delete firebase token. ', err);
-    });
+            console.log('Unable to delete firebase token. ', err);
+        });
     }
 }
 

@@ -159,53 +159,9 @@ const TradieBannerSearch = (props: PropsType) => {
         }
     }, [props.currentCoordinates])
 
-    const getRecentLocationData = async () => { //cd june 9
-        var recentLocationDetails: any = [];
-
-        let recentLocationData = props.recentLocationData
-        for (let index = 0; index < recentLocationData.length; index++) {
-            let item = recentLocationData[index];
-            try {
-                let lat = item.location.coordinates[1];
-                let long = item.location.coordinates[0];
-                let response = await Geocode.fromLatLng(lat, long);
-                let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
-                let cityText: any = null;
-                if (formatedCityText?.formatted_address.includes(',')) {
-                    cityText = formatedCityText?.formatted_address.split(',')
-                } else {
-                    cityText = formatedCityText?.formatted_address.split('-');
-                }
-                const newData = {
-                    mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-                    secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-                }
-                recentLocationDetails[index] = {
-                    formatted_address: formatedCityText?.formatted_address,
-                    location: { coordinates: item?.location?.coordinates },
-                    allText: newData
-                };
-
-                if (recentLocationDetails?.length === props.recentLocationData?.length) {
-                    setRecentLocation(recentLocationDetails);
-                }
-            } catch (err) {
-                console.log({ err });
-            }
-        }
-    }
-
-    useEffect(() => {
-        // if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
-        //     getRecentLocationData();
-        // }
-    }, [props.recentLocationData, recentLocation]);
-
     const handleCalenderRange = (item: any) => {
         setCalenderRange1(item.selection1);
     };
-
-    console.log(stateData, "stateData", recentLocation, "recentLocation");
 
     const handleJobChange = (e: any) => {
         e.target.value.length >= 3 && props.getSearchJobList(e.target.value);
@@ -362,7 +318,7 @@ const TradieBannerSearch = (props: PropsType) => {
                         }
                     } else {
                         setInputFocus2(false);
-                        setShowToast(true, "Uh Oh! We Don't Provide Service Currently In Your Location");
+                        setShowToast(true, "Uh Oh! We don't Provide Service Currently in your Location");
                     }
                 }
             });

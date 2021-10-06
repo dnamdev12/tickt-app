@@ -1,11 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import Banner from './components/banner';
-// import Categories from './components/categories';
-// import JobTypes from './components/jobTypes';
-// import PopularTradies from './components/popularTradies';
-// import RecommendedTradies from './components/recommendedTradies';
-// import SavedJobs from './components/savedJobs';
-// import SavedTradies from './components/savedTradies';
+import Constants from '../../../utils/constants';
 import Geocode from "react-geocode";
 import { withRouter } from 'react-router'
 import { setShowToast, setLoading } from '../../../redux/common/actions';
@@ -17,7 +12,7 @@ import dummy from '../../../assets/images/u_placeholder.jpg';
 import * as moment from 'moment';
 import 'moment-timezone';
 
-Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
+Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 
 const setKey = () => {
     localStorage.setItem('toastLocation', 'true');
