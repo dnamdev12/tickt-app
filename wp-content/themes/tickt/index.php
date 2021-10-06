@@ -177,7 +177,7 @@
         //echo '<pre>';
         $res = json_decode($response);
         $results = $res->result->resultData;
-        //print_r($results[11]);
+        //print_r($results[1]);
         ?>
             <span class="title text-center">Active jobs</span>
             <div class="job_wrap">
@@ -194,14 +194,14 @@
                                     <img src="<?php echo $result->categories[0]->selected_url;?>" alt="<?php echo $result->jobName;?>" />
                                 </figure>
                                 <div class="details">
-                                    <span class="name"><?php echo $result->jobName;?></span>
-                                    <span class="prof">to write up circuit box</span>
+                                    <span class="name"><?php echo $result->categories[0]->trade_name;?></span>
+                                    <span class="prof"><?php echo $result->jobName;?></span>
                                 </div>
                             </div>
                             <div class="job_info">
                                 <ul>
                                     <li class="icon clock"><?php echo time_elapsed_string(date('Y-m-d H:i:s', strtotime($result->updatedAt)));?></li>
-                                    <li class="icon dollar">$<?php echo $result->amount;?> p/h</li>
+                                    <li class="icon dollar">$<?php echo $result->totalAmounts;?> p/h</li>
                                     <li class="icon location line-1"><?php echo $result->location_name;?></li>
                                     <li class="icon calendar">2 days</li>
                                 </ul>
