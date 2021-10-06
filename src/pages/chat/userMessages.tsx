@@ -22,8 +22,14 @@ import {
     sendImageVideoMessage,
 } from '../../services/firebase';
 
+import Constants from '../../utils/constants';
+
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+
+interface Types {
+    [key: string]: any | string;
+}
 
 let lastDate = '';
 const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi"];
@@ -237,12 +243,14 @@ const UserMessages = (props: any) => {
             to: `${props.roomData?.oppUserInfo?.deviceToken}`,
             data: data
         };
+
+        const headers_:Types = {
+                'Content-Type': 'application/json',
+                'Authorization': Constants.FcmAuthorization,
+            }
         const response: any = await fetch(`https://fcm.googleapis.com/fcm/send`, {
             method: "POST",
-            headers: {
-                'Content-Type': 'application/json',
-                Authorization: 'key=AAAAuTeicwc:APA91bEzBmgYwilKP3WkpZVp31g91YbLojHTftJbk_0Sc80gWZTRMRPaBZXMQZR-dcBJ5IGijVDFX_jFr2lk1fVoXBxsEwQ_h4olbSbyUy_Yg-psRJ51Wn-TnTxfoXg3wJvumbOkAwdH',
-            },
+            headers: headers_,
             body: JSON.stringify(newData)
         });
         // const res: any = await response.json();

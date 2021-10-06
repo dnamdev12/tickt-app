@@ -1,6 +1,6 @@
 import React, { Component, useEffect, useState } from 'react';
 import moment from 'moment';
-import AddMilestone from '../../../postJob/components/addMilestone copy';
+// import AddMilestone from '../../../postJob/components/addMilestone copy';
 import ChooseTimings from './chooseTimings';
 
 interface Props {
