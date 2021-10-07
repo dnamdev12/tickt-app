@@ -676,12 +676,12 @@ class TradieInfo extends Component<Props, State> {
                                 </div>
                                 <div className="flex_col_sm_4 relative">
                                     <div className="text-right">
-                                        <span
+                                        {storageService.getItem('userType') === 2 && <span
                                             className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}
                                             onClick={() => {
                                                 this.savedTradie({ tradieInfo })
                                             }}>
-                                        </span>
+                                        </span>}
                                     </div>
 
                                     <div className="detail_card">
