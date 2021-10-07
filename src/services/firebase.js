@@ -39,7 +39,7 @@ let inboxListner;
 const getRegisterToken = () => {
     return new Promise((resolve, reject) => {
         messaging.getToken({
-            vapidKey: `${Constants.FirebasePushServiceKey}`
+            vapidKey: Constants.FirebasePushServiceKey
         }).then((currentToken) => {
             if (currentToken) {
                 console.log("firebase token fetched successsfully", currentToken);
