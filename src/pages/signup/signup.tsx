@@ -118,8 +118,8 @@ const Signup = (props: Propstype) => {
         if (stateStepsValue === 8 && signupData.user_type === 2) {
             stateStepsValue = 6;
         }
-        if (stateStepsValue === 6 && signupData.socialId) {
-            minStep = 4;
+        if ((stateStepsValue === 6 || stateStepsValue === 3)  && signupData.socialId) {
+            minStep = 3;
         }
         console.log({
             stateStepsValue,
@@ -140,10 +140,10 @@ const Signup = (props: Propstype) => {
             if (props.history?.location?.state?.profileData) {
                 setSignupData((prevData: any) => ({ ...prevData, ...profile }))
             }
-            newStep += 1;
+            newStep += 2;
         }
-        if (newStep === 1 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin")) {
-            newStep += 1;
+        if (newStep === 1 && (props.socialData || props.history?.location?.redirect === "socialRedirectFromLogin" || signupData.socialId)) {
+            newStep += 2;
         }
         if (newStep === 5 && signupData.socialId) {
             newStep += 1;

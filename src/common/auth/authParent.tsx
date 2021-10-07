@@ -28,7 +28,23 @@ const AuthParent = (props: any) => {
 
     const handleSteps = ({ step, index, type }: any) => {
         console.log({ step, index, type })
-        if (type == 2) {
+        if (type == 2 && props.socialId) {
+            if (index == 0) {
+                return step > 3 ? 'active' : '';
+            }
+            if (index == 1) {
+                return step > 4 ? 'active' : '';
+            }
+            if (index == 2) {
+                return step > 5 ? 'active' : '';
+            }
+            if (index == 3) {
+                return step > 8 ? 'active' : '';
+            }
+            if (index == 4) {
+                return step > 9 ? 'active' : '';
+            }
+        } else if (type == 2) {
             if (index == 0) {
                 return step === 3 || step > 3 ? 'active' : '';
             }
@@ -44,7 +60,29 @@ const AuthParent = (props: any) => {
             if (index == 4) {
                 return step === 9 || step > 9 ? 'active' : '';
             }
-        } else {
+        } else if (type == 1 && props.socialId) {
+            if (index == 0) {
+                return step > 3 ? 'active' : '';
+            }
+            if (index == 1) {
+                return step > 4 ? 'active' : '';
+            }
+            if (index == 2) {
+                return step > 5 ? 'active' : '';
+            }
+            if (index == 3) {
+                return step > 6 ? 'active' : '';
+            }
+            if (index == 4) {
+                return step > 7 ? 'active' : '';
+            }
+            if (index == 5) {
+                return step > 8 ? 'active' : '';
+            }
+            if (index == 6) {
+                return step > 9 ? 'active' : '';
+            }
+        } else if (type == 1) {
             if (index == 0) {
                 return step === 3 || step > 3 ? 'active' : '';
             }
@@ -55,10 +93,10 @@ const AuthParent = (props: any) => {
                 return step === 5 || step > 5 ? 'active' : '';
             }
             if (index == 3) {
-                return step === 6 || step > 6  ? 'active' : '';
+                return step === 6 || step > 6 ? 'active' : '';
             }
             if (index == 4) {
-                return step === 7 || step > 7  ? 'active' : '';
+                return step === 7 || step > 7 ? 'active' : '';
             }
             if (index == 5) {
                 return step === 8 || step > 8 ? 'active' : '';
@@ -70,8 +108,8 @@ const AuthParent = (props: any) => {
         return '';
     }
 
-    const tradieStepsLength = 8;
-    const builderStepsLength = props?.socialId ? 5 : 5;
+    const tradieStepsLength = props?.socialId ? 7 : 8;
+    const builderStepsLength = props?.socialId ? 4 : 5;
     let step_ = props.steps;
     let type = props.userType;
     return (
