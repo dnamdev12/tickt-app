@@ -280,9 +280,9 @@ const Chat = (props: PropTypes) => {
                     {/* {(isInitialLoader || inBoxData?.length === 0) ? null : */}
                     {isInitialLoader ? null :
                         (!isInitialLoader && inBoxData?.length === 0) ?
-                            <div className="detail_col" style={{ paddingTop: "200px" }}>
-                                <div className="flex_row">
-                                    <div className="no_record">
+                            <div className="detail_col">
+                                <div className="flex_row tradies_row">
+                                    <div className="no_record  m-t-vh">
                                         <figure className="no_img">
                                             <img src={noData} alt="data not found" />
                                         </figure>

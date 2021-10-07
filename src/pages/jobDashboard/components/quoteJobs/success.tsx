@@ -18,7 +18,7 @@ const QuoteSuccess = (props: any) => {
               {'Nice!'}
             </h1>
             <span className="show_label">
-              {`You have submitted your bid. You can view your bid in your ${isQuoteInvited ? 'active' : 'applied'} jobs tab.`}
+              {`You have submitted your bid. You can view your bid in your ${isQuoteInvited ? 'applied' : 'applied'} jobs tab.`}
             </span>
             <div className="btn_wrapr">
               <button

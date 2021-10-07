@@ -154,7 +154,8 @@ const QuoteMark = (props: any) => {
         const res: any = await addQuote(data);
         if (res.success) {
             if (props.location?.state?.base_redirect === 'newJobs') {
-                inviteJobActionHandler();
+                // inviteJobActionHandler();
+                props.history.push('/quote-job-success/invite');
             } else {
                 applyJobClicked();
             }
@@ -340,8 +341,6 @@ const QuoteMark = (props: any) => {
                         <input
                             type="number"
                             value={callItemNo()}
-                        // value={Items[Items?.length - 1]?.item_number ? Items[Items?.length - 1]?.item_number + 1 : 1}
-                        // onChange={(e) => handleChange('item_number', e.target.value)}
                         />
                     </div>
                 </div>
@@ -494,7 +493,7 @@ const QuoteMark = (props: any) => {
                     </span>
                 </div>
             )}
-            
+
             {(quoteId || !props.isDataFetched) ? null : (
                 <button
                     onClick={handleSubmit}
