@@ -101,13 +101,6 @@ const ActiveJobs = ({
         }
     }, [enableEditMilestone, enableLodgeDispute, enableCancelJob, enableMakMilestone]);
 
-    // const redirectToInfo = ({ jobId, status }: any) => {
-    //     if (jobId?.length && status?.length) {
-    //         let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&edit=true`)
-    //         history.push(`/job-detail?${urlEncode}`);
-    //     }
-    // }
-
     if (localState && selectedIndex !== null) {
         console.log({ localState, selectedIndex, listData })
         return (
@@ -222,11 +215,6 @@ const ActiveJobs = ({
                                                 {timeLeft}
                                             </span>
                                         </li>
-
-                                        {/* <li className="icon clock">{durations}</li>
-                                        <li className="icon dollar">{amount}</li>
-                                        <li className="icon location line-1">{location}</li>
-                                        <li className="icon calendar">{timeLeft}</li> */}
                                     </ul>
                                 </div>
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -241,14 +229,6 @@ const ActiveJobs = ({
                                                 <img src={waiting} alt="icon" />
                                             )}
                                             {status}
-                                            {/* {(status).toUpperCase() === "ACCEPTED CHANGE REQUEST"
-                                                ? "ACCEPTED C.R "
-                                                : (status).toUpperCase()  === 'PENDING CHANGE REQUEST'
-                                                    ? 'PENDING C.R'
-                                                    : status}
-                                                    {console.log({
-                                                        status
-                                                    })} */}
                                         </span>
                                         <span className="progress_bar">
                                             <input
@@ -268,8 +248,6 @@ const ActiveJobs = ({
                                             }}
                                             className="fill_grey_btn full_btn btn-effect">
                                             {'Approve'}
-                                            {/* <img src={rateStar} alt="rating-star" />
-                                        {'Rate this job'} */}
                                         </button>
                                     )}
                                 </div>

@@ -115,11 +115,6 @@ const RateThisJob = (props: any) => {
                     {/* <span className="xs_sub_title">{item?.jobName}</span> */}
                     <span className="xs_sub_title">Review the tradesperson</span>
                 </div>
-                {/* <div className="form_field">
-                    <span className="sub_title">
-                        {'Review the tradesperson '}
-                    </span>
-                </div> */}
                 <span className="inner_title">
                     {'Rate this tradesperson'}
                 </span>

@@ -1,26 +1,12 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-
-// import TradieJobInfoBox from '../../common/tradieJobInfoBox';
 import SearchFilters from './searchFilters';
-// import RenderMap from './renderMap';
-
-// import filterUnselected from '../../assets/images/ic-filter-unselected.png';
-// import filterSelected from '../../assets/images/ic-filter-selected.png';
-// import mapIcon from '../../assets/images/map.png';
 import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
-
 // import BannerSearch from '../shared/bannerSearch'
 import BannerSearchProps from '../shared/bannerSearchProps'
 import TradieBox from '../shared/tradieBox'
 import moment from 'moment';
-// name
-// tradeId
-// specializations
-// location
-// calender
-
 import InfiniteScroll from "react-infinite-scroll-component";
 import { addListener } from 'process';
 
@@ -76,12 +62,6 @@ const SearchResultTradie = (props: any) => {
             delete data?.address;
         }
 
-        // console.log({
-        //     stateData,
-        //     suggestionSelected: props?.location?.state?.suggestionSelected?.mainText,
-        //     address: props?.location?.state?.address
-        // })
-
         setLocalInfo({
             name: stateData?.name,
             count: spec_count === 1 ? 0 : spec_count,
@@ -109,18 +89,6 @@ const SearchResultTradie = (props: any) => {
     const getTitleInfo = (info: any) => {
         setLocalInfo(info)
     }
-
-    /*
-    useEffect(() => {
-        let home: any = props.homeSearchJobData?.length ? true : false;
-        if (home) {
-            setLocalData(props.homeSearchJobData)
-        } else {
-            setLocalData([])
-        }
-    }, [props])
-    */
-
 
     const checkIfExist = (data: any) => {
         if (data && Array.isArray(data) && data?.length) {
@@ -288,10 +256,6 @@ const SearchResultTradie = (props: any) => {
                                     if (local_info?.sortBy > 0) {
                                         data['sortBy'] = local_info?.sortBy;
                                     }
-
-                                    // if (!data?.hasOwnProperty('tradeId') && !data?.hasOwnProperty('specializationId') && !data?.hasOwnProperty('location')) {
-                                    //     data['location'] = { coordinates: [144.9631, -37.8136] }
-                                    // }
 
                                     if (!data?.hasOwnProperty('specializationId')) {
                                         data['isFiltered'] = true;

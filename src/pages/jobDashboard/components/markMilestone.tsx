@@ -600,11 +600,7 @@ const MarkMilestone = (props: Proptypes) => {
                 <span className="xs_sub_title">{jobName}</span>
               </div>
               <span className="sub_title">Worked hours in this milestone</span>
-              {/* <p className="commn_para">
-              Submit your actual hours worked to calculate any variation from
-              the estimateed hours. The amount will be approved by the Builder
-            </p> */}
-
+  
               <p className="commn_para">
                 The amount paid will be recalculated based on approval of the
                 actual hours by the Builder

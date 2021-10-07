@@ -146,13 +146,6 @@ const Chat = (props: PropTypes) => {
             if (user) {
                 setUser(user);
                 setIsMobInbox(false);
-                // chatsRef.doc(chatDocumentId).get().then(doc => {
-                //     if (doc.exists) {
-                //         setIsChatAlreadyExist(true);
-                //     }
-                // }).catch((error) => {
-                //     console.log("Error getting document:", error);
-                // });
             } else {
                 setUser(false);
                 setIsMobInbox(true);

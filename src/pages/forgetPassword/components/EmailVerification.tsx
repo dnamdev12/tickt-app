@@ -70,17 +70,6 @@ const PhoneNumber = (props: Propstype) => {
     return (
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
-                {/* 
-                <div className="form_field">
-                    <label className="form_label">
-                        {'We have sent a mail with varification link. '}
-                    </label>
-                    <label className="form_label">
-                        {'Please check your email. Tap the link to verify your account and to get started!'}
-                    </label>
-                </div>
-                */}
-
                 <div className="form_field">
                     <div className="otp_input_wrapper">
                         <OtpInput

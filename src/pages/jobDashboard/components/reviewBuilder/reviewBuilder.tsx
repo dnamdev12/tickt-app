@@ -56,10 +56,6 @@ const ReviewBuilder = (props: Proptypes) => {
             setShowToast(true, 'Star Rating Is Required');
             return;
         }
-        // if (reviewBuilderData.review.trim().length < 1) {
-        //     setShowToast(true, 'Review text is required');
-        //     return;
-        // }
         if (reviewBuilderData.rating > 0) {
             let data: any = {
                 jobId: item?.jobId,

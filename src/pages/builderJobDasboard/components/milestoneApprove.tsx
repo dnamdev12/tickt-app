@@ -28,13 +28,6 @@ const MilestoneApprove = (props: any) => {
         let milestones: any = data?.itemDetails?.milestones;
         let index: any = data?.selectedMilestoneIndex?.index;
 
-        // let {
-        //     selectedMilestoneIndex: { index },
-        //     itemDetails: { milestones },
-        //     selectedMile: { description, hoursWorked, images },
-        //     selectedItem: { jobName, jobId }
-        // } = data;
-
         let item: any = milestones[index];
 
         const onSubmitAccept = async (data: any) => {

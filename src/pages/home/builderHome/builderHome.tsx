@@ -78,37 +78,12 @@ const BuilderHome = (props: any) => {
         navigator.geolocation.getCurrentPosition(showPosition, postionError)
     }
 
-    // const UpdateForcefully = () => {
-    //     if (Array.isArray(force)) {
-    //         forceUpdate({})
-    //     } else {
-    //         forceUpdate([]);
-    //     }
-    // }
-
     useEffect(() => {
         getRecentSearchList();
         callTradeList();
-        // let data = props.testBuilderHome || null;
-        // console.log({ data }, 'Here! -->')
-        // if (!data || !Object.keys(data)?.length || !data?.saved_tradespeople?.length) {
         checkPermission();
         getClearJobs();
-        // }
     }, []);
-
-
-    // useEffect(() => {
-    //     console.log('Here! -------------->')
-    //     if (props?.testBuilderHome && Object.keys(props?.testBuilderHome).length && !Object.keys(stateData).length) {
-    //         setStateData(props?.testBuilderHome);
-    //     }
-    // }, [props])
-
-    // useEffect(() => {
-    //     UpdateForcefully();
-    // }, [stateData])
-
     const fetchByLatLong = async (data: any) => {
 
         let url: string = `${process.env.REACT_APP_BASE_URL}/v1/home?lat=${data.lat}&long=${data.long}`
@@ -126,7 +101,6 @@ const BuilderHome = (props: any) => {
             if (response?.status === 200) {
                 let data: any = response?.data;
                 responseElement = data?.result;
-                // setStateData((prev: any) => ({ ...prev, ...data?.result }));
             }
         } catch (err) {
             console.log({ err });

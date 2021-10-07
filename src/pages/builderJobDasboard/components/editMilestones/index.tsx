@@ -148,14 +148,6 @@ const EditMilestone = (props: any) => {
                 let start: any = moment(item_date.fromDate).isValid() ? item_date.fromDate : null;
                 let end: any = moment(item_date.toDate).isValid() ? item_date.toDate : null;
 
-                // if (start && end) {
-                //     if (start_selection && end_selection) {
-                //         if (moment(start_selection).isAfter(moment(start)) || moment(end_selection).isBefore(moment(end))) {
-                //             item_find = true
-                //         }
-                //     }
-                // }
-
                 if (start && !end) {
                     if (moment(start_selection).isAfter(moment(start))) {
                         item_find = true; // true;

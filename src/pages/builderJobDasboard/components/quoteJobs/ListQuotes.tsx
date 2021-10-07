@@ -152,18 +152,10 @@ class ListQuotes extends Component<Props, State> {
                                         thousandSeparator={true}
                                         isNumericString={true}
                                     />}
-                                    {/* {`Total quote: $${!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}`} */}
                                 </button>
                             </div>
                         </div>
                     ))}
-
-                    {/* <div className="no_record  m-t-vh">
-                        <figure className="no_img">
-                            <img src={noDataFound} alt="data not found" />
-                        </figure>
-                        <span>{'No Data Found'}</span>
-                    </div> */}
 
                 </div>
             </React.Fragment>

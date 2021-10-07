@@ -47,10 +47,7 @@ const SelectCategories = (props: Propstype) => {
                     return (
                         <li key={item._id} className={active ? 'active' : ''} onClick={() => onClick(item._id)}>
                             <figure>
-                                {/* <img src={item[active ? 'selected_url' : 'unselected_url']} alt={item.trade_name} /> */}
-                                {/* <img onError={() => onImageError(index)} src={(item.selected_url && !imgPath[index]) ? item.selected_url : spherePlaceholder} /> */}
                                 <img onError={() => onImageError(index)} src={imgSrc} />
-                                {/* {item.selected_url && console.log(item.selected_url, "selected url")} */}
                             </figure>
                             <span className="name">{item.trade_name}</span>
                         </li>

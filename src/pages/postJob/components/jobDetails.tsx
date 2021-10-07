@@ -434,13 +434,8 @@ const JobDetails = ({
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            {/* <li className="icon clock">0 minutes ago</li> */}
                                             <li className="icon calendar">
                                                 {renderTime(data)}
-                                                {/* {data?.from_date?.length && !data?.to_date?.length ? '0 days' :
-                                                    data?.from_date?.length && data?.to_date?.length ?
-                                                        `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
-                                                        : '0 days'} */}
                                             </li>
                                             <li className="icon dollar">${data?.amount} {data?.pay_type === "Fixed price" ? 'f/p' : 'p/h'} </li>
                                             <li className="icon location line-1" title={data?.location_name}>{data?.location_name}</li>
@@ -480,21 +475,11 @@ const JobDetails = ({
                                             <li>
                                                 <span>{`${index + 1}. ${item?.milestone_name}`}</span>
                                                 <span>{renderTimeWithFormat(item?.from_date, item?.to_date, format)}</span>
-                                                {/* <span>{moment(item?.from_date,'MM-DD-YYYY').isValid() && !moment(item?.to_date,'MM-DD-YYYY').isValid()  ?
-                                                    `${moment(item?.from_date,'MM-DD-YYYY').format('MMM-DD')}` :
-                                                    moment(item?.from_date,'MM-DD-YYYY').isValid() && moment(item?.to_date,'MM-DD-YYYY').isValid() ?
-                                                        `${moment(item?.from_date,'MM-DD-YYYY').format('MMM DD')}-${moment(item?.to_date,'MM-DD-YYYY').format('DD')}` : ''
-                                                }</span> */}
                                             </li>
                                         ))
                                         : null}
-
-
                                 </ul>
                                 <button
-                                    // onClick={() => {
-                                    //     setShowToast(true, 'Under development.')
-                                    // }}
                                     style={{ cursor: 'default' }}
                                     className="fill_grey_btn ques_btn">
                                     <img src={question} alt="question" />
@@ -583,25 +568,6 @@ const JobDetails = ({
             </div>
         </div>
     )
-    // return (
-    //     <div className="app_wrapper">
-    //         <div className="section_wrapper">
-    //             <div className="custom_container">
-    //                 <div className="form_field">
-    //                     <div className="flex_row">
-    //                         <div className="flex_col_sm_5">
-    //                             <div className="relate">
-    //                                 <button className="back" onClick={handleStepBack}></button>
-    //                                 {/* <span className="title">Milestone Templates</span> */}
-    //                             </div>
-    //                             {/* <p className="commn_para">How mach will you pay for a job</p> */}
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // )
 }
 
 export default JobDetails;

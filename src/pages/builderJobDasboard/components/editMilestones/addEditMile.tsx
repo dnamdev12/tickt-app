@@ -17,11 +17,6 @@ import '../../../../plugins/react-date-range/dist/styles.css'
 import '../../../../plugins/react-date-range/dist/theme/default.css'
 import { randomColors as getRandomColors } from '../../../../utils/common'
 
-// @ts-ignore
-// import { DateRangePicker } from 'react-date-range';
-// import 'react-date-range/dist/styles.css'; // main style file
-// import 'react-date-range/dist/theme/default.css'; // theme css file
-
 // for error messages
 const label: { [index: string]: string } = {
     name: 'Milestone Name',
@@ -357,7 +352,7 @@ const AddEditMile = (props: any) => {
                     if (msw && mew) {
                         if (tsw && tew) {
                             let checkIfSame = moment(time_start).isSame(moment(mile_start)) && moment(time_end).isSame(moment(mile_end));
-
+                            /* conditions for timing start here */
                             // if (checkIfSame) {
                             //     checkIsValid = true;
                             // }
@@ -384,6 +379,7 @@ const AddEditMile = (props: any) => {
                         //         checkIsValid = false;
                         //     }
                         // }
+                        /* conditions for timing end here */
                     }
 
                     // here conditions
@@ -401,10 +397,6 @@ const AddEditMile = (props: any) => {
             endDate: moment(time.toDate).toDate(),
             key: "selection"
         })
-        // milestone_clone[index]['fromDate'] = time.fromDate;
-        // milestone_clone[index]['to_date'] = time.to_date;
-        // setMileStones(milestone_clone);
-        // Array.isArray(forceupdate) ? setForceUpdate({}) : setForceUpdate([]);
     }
 
     // before render check

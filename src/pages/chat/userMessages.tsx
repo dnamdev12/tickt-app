@@ -76,17 +76,11 @@ const UserMessages = (props: any) => {
             // divRref.current.scrollIntoView({ behavior: "smooth" })
             divRref.current.scrollTo(0, scroll);
         }
-        // const scrollHeight = divRref.current.scrollHeight;
-        // const height = divRref.current.clientHeight;
-        // const maxScrollTop = scrollHeight - height;
-        // divRref.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
 
     const onReceiveOfNewMsg = (arrmsg: any) => {
         console.log('arrmsg: ', arrmsg);
         setMessages(arrmsg);
-        // setInBoxLastMsg(arrmsg[arrmsg.length - 1]);
-        // setIsLoading(false);
     }
 
     useEffect(() => {

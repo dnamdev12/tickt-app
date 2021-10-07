@@ -34,16 +34,6 @@ const PostNewJob = ({
   const [errors, setErrors] = useState({ jobName: '', job_description: '' });
   const [continueClicked, setContinueClicked] = useState(false);
   const { jobName, job_description } = basicDetails;
-  // const theme = 'snow';
-  // const modules = {
-  //   toolbar: [['bold', 'italic', 'underline', 'strike']],
-  //   clipboard: {
-  //     matchVisual: false
-  //   }
-  // };
-  // const placeholder = 'This Job...';
-  // const formats: any = [];
-  // const { quill, quillRef } = useQuill({ theme, modules, formats, placeholder });
 
   let location = useLocation();
   let jobId: any = null;
@@ -54,32 +44,14 @@ const PostNewJob = ({
     update = urlParams.get('update');
   }
 
-  // React.useEffect(() => {
-  //   if (quill) {
-  //     quill.on('text-change', (delta, oldDelta, source) => {
-  //       console.log('Text change!');
-  //       let text = quill.getText().replace(/\n/g, "").trimLeft();
-  //       handleChange({
-  //         target: {
-  //           name: 'job_description',
-  //           value: text
-  //         }
-  //       });
-  //       console.log({ text: text }); // Get text only
-  //     });
-  //   }
-  // }, [quill]);
-
   useEffect(() => {
     if (stepCompleted) {
       setBasicDetails({
         jobName: data?.jobName,
         job_description: data?.job_description
       });
-      // quill?.clipboard?.dangerouslyPasteHTML(`<p>${data?.job_description}</p>`);
     }
   }, [stepCompleted, data]);
-  // }, [stepCompleted, data, quill]);
 
   // for error messages
   const label: { [index: string]: string } = {
@@ -225,31 +197,7 @@ const PostNewJob = ({
                         }))
                       }
                     }}
-                  /> 
-
-                  {/* <div className="editor-job-description">
-                    <div id="ref-quill" ref={quillRef} />
-                  </div> */}
-
-                  {/* <CKEditor
-                    editor={ClassicEditor}
-                    data="<p>Hello from CKEditor 5!  xxx</p>"
-                    onReady={(editor: any) => {
-                      // You can store the "editor" and use when it is needed.
-                      console.log('Editor is ready to use!', editor);
-                    }}
-                    onChange={(event: any, editor: any) => {
-                      const data = editor.getData();
-                      console.log({ event, editor, data });
-                    }}
-                    onBlur={(event: any, editor: any) => {
-                      console.log('Blur.', editor);
-                    }}
-                    onFocus={(event: any, editor: any) => {
-                      console.log('Focus.', editor);
-                    }}
-                  /> */}
-
+                  />
                   {job_description.length ?
                     <span className="char_count">
                       {`character length : ${job_description.length} / 250`}

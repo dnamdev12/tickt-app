@@ -252,11 +252,6 @@ const JobDetailsPage = (props: PropsType) => {
                     }
                     setQuestionList(res.data);
                     setQuestionListPageNo(1);
-                    // var updatedQuestionList = [...questionList];
-                    // updatedQuestionList.unshift(response.data);
-                    // updatedQuestionList.pop();
-                    // setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
-                    // setQuestionList(updatedQuestionList);
                 }
 
                 if (type === 'updateQuestion' && response.data?.question) {
