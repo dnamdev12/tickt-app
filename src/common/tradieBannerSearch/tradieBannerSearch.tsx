@@ -24,7 +24,7 @@ import icgps from "../../assets/images/ic-gps.png";
 import residential from "../../assets/images/ic-residential.png";
 import close from "../../assets/images/icon-close-1.png";
 
-Geocode.setApiKey("AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo");
+Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
 Geocode.setRegion("au");
 interface PropsType {

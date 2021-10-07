@@ -238,7 +238,7 @@ const UserMessages = (props: any) => {
 
         const headers_:Types = {
                 'Content-Type': 'application/json',
-                'Authorization': Constants.FcmAuthorization,
+                'Authorization': Constants.FcmHeaderAuthorizationKey,
             }
         const response: any = await fetch(`https://fcm.googleapis.com/fcm/send`, {
             method: "POST",

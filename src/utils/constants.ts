@@ -64,7 +64,7 @@ const LinkedInAuth: Types = {
 
 const BasicAuthorizationToken = process.env.REACT_APP_BASIC_AUTHORIZATION_TOKEN;
 const FirebasePushServiceKey = process.env.REACT_APP_FIREBASE_PUSH_SERVICE_KEY;
-const FcmAuthorization = process.env.REACT_APP_FCM_AUTHORIZATION;
+const FcmHeaderAuthorizationKey = process.env.REACT_APP_FCM_AUTHORIZATION;
 
 const qaStgFirebaseConfig: Types = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -86,5 +86,5 @@ export default {
     BasicAuthorizationToken,
     FirebasePushServiceKey,
     qaStgFirebaseConfig,
-    FcmAuthorization
+    FcmHeaderAuthorizationKey
 }
