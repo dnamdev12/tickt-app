@@ -1,9 +1,4 @@
 import React, { useState } from 'react';
-// import templateImage from '../../../assets/images/job-posted-bg.jpg';
-import { withRouter } from 'react-router-dom'
-
-//@ts-ignore
-import Skeleton from 'react-loading-skeleton';
 
 interface Proptypes {
     data: any;

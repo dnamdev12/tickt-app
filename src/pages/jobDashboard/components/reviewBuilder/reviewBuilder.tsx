@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import moment from 'moment';
 // @ts-ignore
 import ReactStars from "react-rating-stars-component";
 import {

@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
 import Banner from './components/banner';
 import Constants from '../../../utils/constants';
 import Geocode from "react-geocode";
 import { withRouter } from 'react-router'
-import { setShowToast, setLoading } from '../../../redux/common/actions';
-import { getBuilderHomeData } from '../../../redux/jobs/actions';
+import { setShowToast } from '../../../redux/common/actions';
 import TradieHome from '../../shared/tradieHome';
 import JobTypes from './components/jobTypes';
 import axios from 'axios';

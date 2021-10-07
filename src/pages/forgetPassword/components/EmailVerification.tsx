@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { checkMobileNumber, verifyOtp, resendOtp } from '../../../redux/auth/actions';
+import { verifyOtp, resendOtp } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import { setShowToast } from '../../../redux/common/actions';

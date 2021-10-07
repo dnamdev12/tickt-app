@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { setLoading, setShowToast } from '../../../../../../redux/common/actions';
+import { setLoading } from '../../../../../../redux/common/actions';
 import storageService from '../../../../../../utils/storageService';
 
 import colorLogo from '../../../../../../assets/images/ic-logo-yellow.png';

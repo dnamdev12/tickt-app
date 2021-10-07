@@ -6,7 +6,7 @@ import {
     jobDetailsBuilder,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
-import { getTradieQuestionList, closeOpenedJob } from '../../redux/jobs/actions';
+import { closeOpenedJob } from '../../redux/jobs/actions';
 import {
     getQuestionsList,
     answerQuestion,
@@ -15,7 +15,6 @@ import {
     handleCancelReply
 } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
-import storageService from '../../utils/storageService';
 
 import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
@@ -27,7 +26,6 @@ import pendingIcon from '../../assets/images/exclamation-icon.png'
 
 import noDataFound from '../../assets/images/no-search-data.png';
 
-import moment from 'moment';
 import approved from '../../assets/images/approved.png';
 import waiting from '../../assets/images/exclamation.png';
 
@@ -42,22 +40,14 @@ import editIconBlue from '../../assets/images/ic-edit-blue.png';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { deleteOpenJob } from '../../redux/jobs/actions';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
-import { setShowToast } from '../../redux/common/actions';
-
+// import { setShowToast } from '../../redux/common/actions';
 import { JobCancelReasons } from '../../utils/common';
-
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-
 import docThumbnail from '../../assets/images/add-document.png'
 interface PropsType {
     history: any,
@@ -495,13 +485,18 @@ const JobDetailsPage = (props: PropsType) => {
         if (data?.status) {
             data['note'] = replyText;
         }
-
-        // if (!data?.note) {
-        //     delete data?.note;
-        // }
-
+        
         let response = await handleCancelReply(data);
         if (response?.success) {
+            if (jobDetailsData?.quoteJob) {
+                let quote: any = jobDetailsData?.quote;
+                if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
+                    let quoteId: any = quote[0].tradieId;
+                    props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
+                }
+                return
+            }
+
             if (data?.status === 1) {
                 props.history.push('/request-monitored/ccr');
             } else {
@@ -672,7 +667,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     if (activeType == "open" && jobDetailsData?.quoteJob) {
                                         let response = await closeOpenedJob({ jobId: paramJobId });
                                         setToggleDelete((prev: any) => !prev);
-                                        if(response?.success){
+                                        if (response?.success) {
                                             props.history.push('/jobs?active=past');
                                         }
                                     } else {
@@ -883,15 +878,16 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <button
                                                         className="fill_btn btn-effect"
                                                         onClick={() => {
-                                                            if (jobDetailsData?.quoteJob) {
-                                                                let quote: any = jobDetailsData?.quote;
-                                                                if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
-                                                                    let quoteId: any = quote[0].tradieId;
-                                                                    props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
-                                                                }
-                                                            } else {
-                                                                handleCancelJob(1, jobDetailsData)
-                                                            }
+                                                            handleCancelJob(1, jobDetailsData);
+                                                            // if (jobDetailsData?.quoteJob) {
+                                                            //     let quote: any = jobDetailsData?.quote;
+                                                            //     if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
+                                                            //         let quoteId: any = quote[0].tradieId;
+                                                            //         props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
+                                                            //     }
+                                                            // } else {
+                                                            //     handleCancelJob(1, jobDetailsData) ;
+                                                            // }
                                                         }}>
                                                         {'Accept'}
                                                     </button>

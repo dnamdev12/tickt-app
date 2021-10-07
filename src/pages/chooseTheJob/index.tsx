@@ -1,16 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import milestonesPlaceholder from '../../assets/images/Job milestones-preview.png';
 import { renderTimeWithCustomFormat } from '../../utils/common';
-import CancelJobSuccess from './success';
-
 import { ChooseJob, InviteForJob, invitedJobIds, CancelInviteForJob } from '../../redux/jobs/actions';
 import { withRouter } from 'react-router-dom';
 
 const ChooseTheJob = (props: any) => {
-
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [stateData, setStateData] = useState([]);
-    const [isToggle, setToggle] = useState(false);
 
     const checkOnClick = (e: any, index: any) => {
         if(editItem[index]){

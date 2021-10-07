@@ -9,12 +9,10 @@ import viewMore from '../../assets/images/icon-direction-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
-import pageLoader from "../../assets/images/page-loader.gif";
 import loader from '../../assets/images/loader.gif';
 
-import moment from 'moment';
 import { formatDateTime, renderTime } from '../../utils/common';
-import { setShowToast, setLoading } from '../../redux/common/actions';
+import { setShowToast } from '../../redux/common/actions';
 import { onFileUpload } from '../../redux/auth/actions';
 import {
     getMessagesOfRoom,

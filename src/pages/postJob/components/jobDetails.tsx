@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dummy from '../../../assets/images/u_placeholder.jpg';
-import thumb from '../../../assets/images/job-posted-bg.jpg';
 import question from '../../../assets/images/ic-question.png';
-import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
@@ -12,7 +10,6 @@ import jobDummyImage from '../../../assets/images/ic-placeholder-detail.png';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-import { setShowToast } from '../../../redux/common/actions';
 
 import docThumbnail from '../../../assets/images/add-document.png'
 
