@@ -323,7 +323,7 @@ const QuoteMark = (props: any) => {
             </>
 
             {props.isDataFetched && <div className="change_req">
-                {isEditTrue && (
+                {isEditTrue && Items.length > 1 && (
                     <span
                         onClick={() => setDeleteItemModal(true)}
                         className="delete_quote">
