@@ -450,14 +450,15 @@ const BuilderInfo = (props: PropsType) => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex_row description">
+                            <div className="flex_row">
                                 <div className="flex_col_sm_8">
-                                    {props.isSkeletonLoading ? <Skeleton count={2} /> : <div>
+                                    {props.isSkeletonLoading ? <Skeleton count={2} /> : <div className="description">
                                         <span className="sub_title">About company</span>
                                         <p className="commn_para">{profileData?.aboutCompany || ''}</p>
                                     </div>}
                                 </div>
                                 <div className="flex_col_sm_4">
+                                    <div className="area">
                                     <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of specialisation'}</span>
                                     <div className="tags_wrap">
                                         {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
@@ -507,7 +508,7 @@ const BuilderInfo = (props: PropsType) => {
                                                 {showSpecs ? 'Show less' : 'Show more'}
                                             </span>}
                                     </div>
-
+</div>
                                 </div>
                             </div>
                         </div>

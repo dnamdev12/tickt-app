@@ -199,28 +199,29 @@ const SavedJobs = (props: any) => {
                     </div>
                 </InfiniteScroll>
             ) : (
-                <div className="section_wrapper">
+                <div className="pt-30">
                     <div className="custom_container">
                         <div className="relate">
                             <button className="back" onClick={backButtonClicked}></button>
-                            <span className="title">
+                            <span className="title mb0">
                                 {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
                             </span>
                         </div>
 
-                        <div className="flex_row tradies_row">
+                        
                             <div className="no_record">
                                 <figure className="no_img">
                                     <img src={noData} alt="data not found" />
                                 </figure>
                                 <span>No Data Found</span>
                             </div>
-                        </div>
                     </div>
                 </div>
             )}
         </div>
     )
+
+
 }
 
 export default withRouter(SavedJobs);

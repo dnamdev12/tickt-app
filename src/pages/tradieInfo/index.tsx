@@ -809,10 +809,10 @@ class TradieInfo extends Component<Props, State> {
                                     </div>
                                 </div>
                             </div>
-                            <div className="flex_row description">
+                            <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     {props.isSkeletonLoading ? <Skeleton count={2} /> : tradieInfo?.about?.length > 0 ? (
-                                        <div>
+                                        <div className="description">
                                             <span className="sub_title">About</span>
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
@@ -821,6 +821,7 @@ class TradieInfo extends Component<Props, State> {
                                 <div className="flex_col_sm_4">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
                                         <>
+                                         <div className="area">
                                             <span className="sub_title">Areas of specialisation</span>
                                             <div className={`tags_wrap ${toggleSpecialisation ? 'active' : ''}`}>
                                                 <ul>
@@ -844,9 +845,11 @@ class TradieInfo extends Component<Props, State> {
                                                     {toggleSpecialisation ? 'Show more' : 'Show less'}
                                                 </span>
                                             </div>
+                                            </div>
                                         </>
                                     ) : (tradieInfo?.areasOfSpecialization?.length > 0 ? (
                                         <>
+                                         <div className="area">
                                             <span className="sub_title">Areas of specialisation</span>
                                             <div className="tags_wrap">
                                                 <ul>
@@ -857,6 +860,7 @@ class TradieInfo extends Component<Props, State> {
                                                         return <li key={item.specializationId}>{item.specializationName}</li>
                                                     })}
                                                 </ul>
+                                            </div>
                                             </div>
                                         </>
                                     ) : null)}
