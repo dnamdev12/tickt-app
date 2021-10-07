@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { callForgotPassword } from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex'
-import { checkEmailId } from '../../../redux/auth/actions';
-import { setShowToast } from '../../../redux/common/actions';
 interface Propstype {
     updateSteps: (num: number, data: any) => void
     step: number

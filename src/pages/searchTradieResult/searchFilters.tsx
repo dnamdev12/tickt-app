@@ -184,9 +184,6 @@ const SearchFilter = (props: any) => {
 
     const renderFilterButtons = () => (
         <ul className="filters_row">
-            {/* {'Filter buttons on top'} */}
-            {/* specializationId
-            tradeId */}
             <li>
                 <a className={filterEnable ? 'active' : ''} onClick={sortByFilterClick}>
                     <img
@@ -198,12 +195,6 @@ const SearchFilter = (props: any) => {
             <li>
                 <a className={sortBySorting.sortBy > 0 ? 'active' : ''} onClick={sortBySortingClick}>
                     {`Sorting`}
-                    {/* 
-                    {sortBySorting.sortBy === 0 && 'Sort by'}
-                    {sortBySorting.sortBy === 1 && 'Highest rated'}
-                    {sortBySorting.sortBy === 2 && 'Closest to me'}
-                    {sortBySorting.sortBy === 3 && 'Most jobs completed'} 
-                    */}
                 </a>
             </li>
         </ul>
@@ -216,11 +207,6 @@ const SearchFilter = (props: any) => {
             setFilterEnable(false);
             return
         }
-
-        // if (!sortByFilter?.tradeId?.length) {
-        //     setShowToast(true, 'Please select atleast one field');
-        //     return;
-        // }
 
         updateOnChange(sortBySorting.sortBy);
         sortByFilterClose();
@@ -496,10 +482,7 @@ const SearchFilter = (props: any) => {
                     <span className="sub_title">
                         {'Sort by'}
                     </span>
-                    {/* <div><input type="radio" value="Highest rated" checked={sortBySorting.sortBy === 1} onChange={() => sortByButtonClicked(1)} /> Highest rated</div>
-                    <div><input type="radio" value="Closest to me" checked={sortBySorting.sortBy === 2} onChange={() => sortByButtonClicked(2)} /> Closest to me</div>
-                    <div><input type="radio" value="Most jobs completed" checked={sortBySorting.sortBy === 3} onChange={() => sortByButtonClicked(3)} /> Most jobs completed</div> */}
-
+  
                     <div className="radio_wrap agree_check">
                         <input
                             className="filter-type filled-in"

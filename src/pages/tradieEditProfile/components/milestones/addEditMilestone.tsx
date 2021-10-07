@@ -4,17 +4,6 @@ import moment from 'moment';
 import ChooseTimings from './chooseTimings';
 
 interface Props {
-    // data: any;
-    // stepCompleted: Boolean;
-    // editMileStone: any;
-    // editMilestoneTiming: any;
-    // handleStepComplete: (data: any) => void;
-    // addTimeToMileStone: (data: any, index: any, skip?: any) => void;
-    // handleStepForward: (data: any) => void;
-    // newMileStoneScreen: (data: any) => void;
-    // handleStepMileStone: (data: any, index: any) => void;
-    // handleStepBack: () => void;
-    // milestones: any;
     item: any;
     items: any;
     index: any;
@@ -60,61 +49,6 @@ class AddEditMilestone extends Component<Props, State> {
         }
     }
 
-    checkIsDateValid = (milestones: any, time: any) => {
-        // const { editMileStone, editMilestoneTiming } = this.props;
-        // let checkIsValid: any = true;
-        // let isSkip: any = true;
-
-        // let filterMilestone: any = [];
-
-        // if (milestones.length > 1) {
-        //     filterMilestone = milestones.filter((mile_item: any, index: any) => index !== editMileStone);
-        //     filterMilestone.forEach((mile: any) => {
-        //         let validStart = moment(mile.from_date).isValid();
-        //         let validEnd = moment(mile.to_date).isValid();
-
-        //         let validStartInput = moment(time.from_date).isValid();
-        //         let validEndInput = moment(time.to_date).isValid();
-
-        //         if (validStart && validEnd) {
-        //             if (validStartInput && validEndInput) {
-        //                 if (moment(time.from_date).isSameOrAfter(mile.from_date) && (moment(time.to_date).isSameOrBefore(mile.to_date) ||
-        //                     moment(time.to_date).isSameOrAfter(mile.from_date))
-        //                 ) {
-        //                     checkIsValid = false;
-        //                     isSkip = false;
-        //                 }
-        //             }
-
-        //             if (validStartInput && !validEndInput) {
-        //                 if (
-        //                     moment(time.from_date).isSameOrAfter(mile.from_date) &&
-        //                     moment(time.from_date).isSameOrBefore(mile.to_date)) {
-        //                     checkIsValid = false;
-        //                     isSkip = false;
-        //                 }
-        //             }
-        //         }
-
-        //         if (validStart && validStartInput && !validEnd) {
-        //             if (moment(time.from_date).isSame(mile.from_date) || moment(time.to_date).isSame(mile.from_date)) {
-        //                 checkIsValid = false;
-        //                 isSkip = false;
-        //             }
-        //         }
-
-        //         if (validEnd && validEndInput) {
-        //             if (moment(time.to_date).isSame(mile.to_date)) {
-        //                 checkIsValid = false;
-        //                 isSkip = false;
-        //             }
-        //         }
-
-        //     });
-        // }
-        // return { checkIsValid, skip: isSkip };
-    }
-
     componentDidMount() {
         let props = this.props;
         let props_item: any = props?.item;
@@ -127,48 +61,6 @@ class AddEditMilestone extends Component<Props, State> {
             to_date: props_item?.to_date,
             order: props_item?.order,
         })
-
-
-        // const { editMileStone, milestones, editMilestoneTiming } = this.props;
-        // let item = milestones[editMileStone];
-
-        // if (item && Object.keys(item).length) {
-        //     let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = item;
-
-        //     let isValid: any = null;
-        //     let isSkip: any = null;
-
-        //     if (editMilestoneTiming && Object.keys(editMilestoneTiming).length) {
-        //         const { checkIsValid, skip } = this.checkIsDateValid(milestones, editMilestoneTiming);
-        //         isValid = checkIsValid;
-        //         isSkip = skip;
-
-        //         if (isValid) {
-        //             if ('from_date' in editMilestoneTiming) {
-        //                 from_date = editMilestoneTiming?.from_date;
-        //             }
-        //             if ('to_date' in editMilestoneTiming) {
-        //                 to_date = editMilestoneTiming?.to_date;
-        //             }
-        //         }
-        //     }
-
-        //     this.setState({
-        //         from_date: from_date,
-        //         isPhotoevidence: isPhotoevidence === undefined ? false : isPhotoevidence,
-        //         milestone_name: milestone_name,
-        //         recommended_hours: recommended_hours,
-        //         to_date: to_date,
-        //     }, () => {
-        //         if (isValid !== null) {
-        //             this.props.addTimeToMileStone(
-        //                 { from_date, to_date },
-        //                 editMileStone,
-        //                 isSkip
-        //             )
-        //         }
-        //     })
-        // }
     }
 
     handleChange = (name: string, value: any) => {
@@ -215,21 +107,6 @@ class AddEditMilestone extends Component<Props, State> {
         })
     }
 
-
-    setItems = () => {
-        // const { milestones, handleStepMileStone, newMileStoneScreen, editMileStone } = this.props;
-        // let { milestone_name, from_date, to_date, isPhotoevidence, recommended_hours, errors } = this.state;
-        // let milestone_index = editMileStone;
-        // handleStepMileStone({
-        //     "milestone_name": milestone_name,
-        //     "isPhotoevidence": isPhotoevidence,
-        //     "from_date": from_date, // milestones[milestone_index]?.from_date || '',
-        //     "to_date": to_date, //milestones[milestone_index]?.to_date || '',
-        //     "recommended_hours": recommended_hours
-        // }, milestone_index);
-    }
-
-
     checkHoursVal = (value: any, lable: any, name: any) => {
         if (value?.length) {
             if (value.match(pattern) !== null) {
@@ -246,15 +123,6 @@ class AddEditMilestone extends Component<Props, State> {
         } else {
             return `${label[name]} is required.`
         }
-
-        // if (value?.length) {
-        //     if (value.match(pattern) !== null) {
-        //         return '';
-        //     } else {
-        //         return 'Please enter a valid pattern like : 04:03'
-        //     }
-        // }
-        // return `${label[name]} is required.`
     }
 
     isInvalid = (name: string, value: string) => {
@@ -291,44 +159,6 @@ class AddEditMilestone extends Component<Props, State> {
         if (!error_1?.length && !error_2?.length && !error_3?.length) {
             return false;
         }
-
-        // let filteredMiles = [];
-        // if (milestones?.length && Array.isArray(milestones)) {
-        //     filteredMiles = milestones.filter((item: any) => {
-        //         if (item?.milestone_name) {
-        //             return item;
-        //         }
-        //     });
-        // }
-
-        // let milestone_index = filteredMiles.length ? filteredMiles.length - 1 : 0;
-        // let from_date = filteredMiles[milestone_index]?.from_date || '';
-        // let { milestone_name, recommended_hours, errors: { pattern_error } } = this.state;
-        // if (milestone_name?.length) {
-        //     let errorItems: any = {};
-        //     let error_1 = this.isInvalid('milestone_name', milestone_name);
-        //     let error_2 = this.isInvalid('from_date', from_date);
-        //     let error_3 = this.isInvalid('recommended_hours', recommended_hours);
-        //     errorItems['milestone_name'] = error_1;
-        //     errorItems['from_date'] = error_2;
-        //     errorItems['recommended_hours'] = error_3;
-
-        //     if (milestone_name?.length) {
-        //         errorItems['milestone_name'] = error_1;
-        //     }
-
-        //     if (recommended_hours?.length && error_3?.length) {
-        //         errorItems['recommended_hours'] = error_3;
-        //     }
-
-        //     if (JSON.stringify(this.state.errors) !== JSON.stringify(errorItems)) {
-        //         this.setState({ errors: errorItems })
-        //     }
-
-        //     if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
-        //         return false;
-        //     }
-        // }
         return true;
     }
 

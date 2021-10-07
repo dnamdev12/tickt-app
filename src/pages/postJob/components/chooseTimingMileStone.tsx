@@ -1,13 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-// import menu from '../../../assets/images/menu-line-white.svg';
-// import bell from '../../../assets/images/ic-notification.png';
-// import dummy from '../../../assets/images/u_placeholder.jpg';
-// @ts-ignore
-// import { DateRangePicker } from 'react-date-range';
-// import 'react-date-range/dist/styles.css'; // main style file
-// import 'react-date-range/dist/theme/default.css'; // theme css file
-
 // @ts-ignore
 import { DateRangePicker } from '../../../plugins/react-date-range/dist/index';
 import '../../../plugins/react-date-range/dist/styles.css';
@@ -307,8 +298,6 @@ const ChooseTimingMileStone = ({
                                 </div>
                                 <p className="commn_para">
                                     {'Select a start and end date, or a due date.'}
-                                    {/* {"if you tab the back arrow, you lose the `draft`. Can we save it ?"} */}
-                                    {/* {'Choose the start and finish day of your job'} */}
                                 </p>
                             </div>
                         </div>

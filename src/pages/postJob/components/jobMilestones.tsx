@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 // @ts-ignore
 import { DragDropContext, Droppable, Draggable, DropResult } from 'react-beautiful-dnd';
-import { callMilestones, profileTemplateList } from '../../../redux/jobs/actions';
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 
@@ -9,10 +8,8 @@ import milestonesPlaceholder from '../../../assets/images/Job milestones-preview
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { useHistory, useLocation } from "react-router-dom";
+import {  useLocation } from "react-router-dom";
 
 import { renderTimeWithFormat } from '../../../utils/common';
 

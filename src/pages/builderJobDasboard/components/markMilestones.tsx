@@ -482,15 +482,4 @@ const MarkMilestones = (props: any) => {
     )
 }
 
-// const mapProps = (dispatch: any) => {
-//     return bindActionCreators({
-//         getHomeJobDetails
-//     }, dispatch)
-// }
-
-// const mapState = () => ({
-
-// })
-
-// export default connect(mapState, mapProps)(withRouter(MarkMilestones));
 export default withRouter(MarkMilestones)

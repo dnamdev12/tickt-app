@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { createPassword } from '../../redux/auth/actions';
 import CreatePassword from './components/createPassword';
 import SuccessPage from './components/successPage';
 import ResetPassword from './components/resetPassword';
-import VerifyPhoneNumber from './components/verifyPhoneNumber';
+// import VerifyPhoneNumber from './components/verifyPhoneNumber';
 import AuthParent from '../../common/auth/authParent';
 import VerifyEmail from './components/EmailVerification';
 

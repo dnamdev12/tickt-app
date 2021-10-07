@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { connect } from 'react-redux';
-import { portfolio, portfolioModal } from '../builderInfo/builderInfo';
+import { portfolio } from '../builderInfo/builderInfo';
 import { getAdminNotificationData } from '../../redux/homeSearch/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
@@ -36,14 +36,6 @@ const AdminAnnouncementPage = (props: any) => {
 
         sources.push(itemsMedia);
         types.push('image');
-        // if (itemsMedia?.length) {
-        //     itemsMedia.forEach((item: any) => {
-        //         if (item?.mediaType === 1) {
-        //             sources.push(item.link);
-        //             types.push('image');
-        //         }
-        //     })
-        // }
         return { sources, types };
     }
 

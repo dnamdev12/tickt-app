@@ -229,27 +229,6 @@ class ViewQuote extends Component<Props, State> {
                                     </p>
                                 </div>
                             </div>
-
-
-                            {/* <div className="example">
-                                {item?.quote_item?.length ?
-                                    item?.quote_item.map((quote_item: any) => (
-                                        <table style={{ marginTop: '20px' }}>
-                                            <tr>
-                                                <th>Item</th>
-                                                <th>Description</th>
-                                                <th>Price</th>
-                                            </tr>
-                                            <tr>
-                                                <td>{quote_item?.item_number}</td>
-                                                <td>{quote_item?.description}</td>
-                                                <td>{`$ ${quote_item?.price}`}</td>
-                                            </tr>
-                                        </table>
-                                    ))
-                                    : null}
-                            </div> */}
-
                         </div>
                         {item?.quote_item?.length ?
                             item?.quote_item.map((quote_item: any) => (

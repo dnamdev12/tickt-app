@@ -318,8 +318,3 @@ const LodgeDispute = (props: any) => {
 }
 
 export default withRouter(LodgeDispute);
-
-
-{/* <div className="app_wrapper">
-<div className="section_wrapper">
-    <div className="custom_container"> */}

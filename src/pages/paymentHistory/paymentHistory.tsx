@@ -317,26 +317,6 @@ const PaymentHistory = ({
                 </table>
               </InfiniteScroll>
             </div>
-
-
-            {/* <div className="flex_row">
-              <div className="flex_col_sm_3">
-                <span className="form_label">Job</span>
-              </div>
-              <div className="flex_col_sm_2">
-                <span className="form_label">Status</span>
-              </div>
-              <div className="flex_col_sm_3">
-                <span className="form_label">Hired {userType === 1 ? 'by' : 'tradie'}</span>
-              </div>
-              <div className="flex_col_sm_2">
-                <span className="form_label">Date</span>
-              </div>
-              <div className="flex_col_sm_2">
-                <span className="form_label">Price</span>
-              </div>
-            </div> */}
-
           </div>
         </div>
       </div>

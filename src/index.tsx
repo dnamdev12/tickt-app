@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 
 import reportWebVitals from './reportWebVitals';
@@ -6,19 +6,29 @@ import reportWebVitals from './reportWebVitals';
 import App from './App';
 import ErrorBoundary from '../src/hoc/errorBoundary';
 import * as serviceWorkerRegistration from './serviceWorkerRegistration';
-
 import '../src/assets/scss/common.scss'
+import loader from '../src/assets/images/loader.gif';
 
 // added this check to remove console from code (In-Production)
 if (process.env.NODE_ENV !== "development") {
   console.log = () => { };
 }
 
+const Loader = () => (
+  <div className={`loader active`}>
+  <figure>
+    <img src={loader} alt="loader" />
+  </figure>
+</div>
+)
+
 const app = (
   <React.StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <Suspense fallback={<Loader />}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </Suspense>
   </React.StrictMode>
 )
 

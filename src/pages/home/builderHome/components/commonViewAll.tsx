@@ -142,7 +142,6 @@ const SavedJobs = (props: any) => {
     if (props?.location?.state?.title === "Popular tradespeople" || props.location.pathname === '/popular-tradespeople') {
 
     }
-
     let dataItems = stateData?.length;
     return (
         <div className={'app_wrapper'} >
@@ -186,7 +185,6 @@ const SavedJobs = (props: any) => {
                                     {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
                                 </span>
                             </div>
-                            {/* {!props?.location?.state?.popular ? ( */}
 
                             <div className="flex_row tradies_row">
                                 {stateData?.length > 0 ?
@@ -209,7 +207,6 @@ const SavedJobs = (props: any) => {
                                 {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
                             </span>
                         </div>
-                        {/* {!props?.location?.state?.popular ? ( */}
 
                         
                             <div className="no_record">

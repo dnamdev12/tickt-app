@@ -892,21 +892,6 @@ export class PersonalInformation extends Component<Props, State> {
                                             prefix={'+61 '}
                                             format="+61 ### ### ###"
                                         />
-                                        {/* <input type="number" placeholder="Enter Mobile Number" value={basicDetailsData?.mobileNumber} /> */}
-                                        {/* <NumberFormat
-                                            value={basicDetailsData?.mobileNumber}
-                                            displayType={'input'}
-                                            type={'tel'}
-                                            placeholder="+61 400 123 456"
-                                            format="+61 ### ### ###"
-                                            isNumericString={true}
-                                            onValueChange={(values) => {
-                                                const { formattedValue, value } = values;
-                                                const newBasicDetails = { ...this.state.basicDetailsData };
-                                                newBasicDetails.mobileNumber = value;
-                                                this.setState({ basicDetailsData: newBasicDetails, isEditProfileModalChanged: true });
-                                            }}
-                                        /> */}
                                     </div>
                                     {!!errors?.mobileNumber && <span className="error_msg">{errors?.mobileNumber}</span>}
                                 </div>

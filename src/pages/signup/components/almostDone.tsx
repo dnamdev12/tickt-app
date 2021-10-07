@@ -144,8 +144,6 @@ const AlmostDone = (props: Propstype) => {
                 <div className="form_field">
                     <label className="form_label">Australian Business Number</label>
                     <div className="text_field">
-                        {/* <input type="number" placeholder="Enter australian business number" value={almostDoneData.abn} name="abn" onChange={changeHandler} /> */}
-                        {/* <input type="text" placeholder="51 824 753 556" value={almostDoneData.abn} name="abn" onChange={abnHandler} maxLength={14} /> */}
                         <NumberFormat
                             type="text"
                             placeholder="51 824 753 556"

@@ -1,8 +1,8 @@
-import { call, put, takeLatest } from 'redux-saga/effects'
+import {  put, takeLatest } from 'redux-saga/effects'
 import * as actionTypes from './constants'
 import NetworkOps, { FetchResponse } from '../../network/NetworkOps';
 import Urls from '../../network/Urls';
-import * as commonActions from '../common/actions';
+// import * as commonActions from '../common/actions';
 
 function* postSignup({ data }: any) {
   const response: FetchResponse = yield NetworkOps.postToJson(Urls.signup, data);

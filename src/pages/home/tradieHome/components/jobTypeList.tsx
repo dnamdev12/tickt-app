@@ -52,9 +52,3 @@ const JobTypeList = (props: any) => {
 }
 
 export default JobTypeList;
-
-{/* <div className="page_loader">
-    <figure>
-        <img src={loader} alt="loader" />
-    </figure>
-</div> */}

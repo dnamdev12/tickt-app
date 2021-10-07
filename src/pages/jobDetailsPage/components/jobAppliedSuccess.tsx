@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import reviewBuilderSuccess from '../../../assets/images/review-builder-success.png';
-import { setLoading, setShowToast } from '../../../redux/common/actions';
+import { setLoading } from '../../../redux/common/actions';
 
 interface PropsType {
     history: any

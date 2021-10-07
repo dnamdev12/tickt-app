@@ -55,20 +55,6 @@ const MileStoneTemplates = (props: Proptypes) => {
         if (success && data) {
             let { to_date, from_date } = props?.data;
             let selected_milestone: any = formatMilestones({ items: data });
-
-            // if (selected_milestone?.length) {
-            //     selected_milestone.forEach((item: any) => {
-            //         console.log({
-            //             item,
-            //             fromDate: item?.fromDate,
-            //             from_date,
-            //             check: moment(item?.fromDate, 'DD-MM-YYYY').isSameOrBefore(moment(from_date, 'YYYY-MM-DD'))
-            //         });
-            //     })
-            // }
-            // // console.log({ selected_milestone, from_date })
-            // return
-            
             let filter_milestones = data?.milestones?.map((item: any) => ({
                 from_date: moment(item?.fromDate, 'MM-DD-YYYY').format('MM-DD-YYYY'),
                 to_date: moment(item?.toDate, 'MM-DD-YYYY').isValid() ? moment(item?.toDate, 'MM-DD-YYYY').format('MM-DD-YYYY') : '',

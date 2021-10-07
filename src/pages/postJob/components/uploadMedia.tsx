@@ -13,16 +13,7 @@ import { setLoading, setShowToast } from '../../../redux/common/actions';
 import FsLightbox from 'fslightbox-react';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
-
-//@ts-ignore
-// import genThumbnail from 'simple-thumbnail';
-
 import { thumbnailExtract } from '../../../common/thumbnail';
-
-
-// import Loader from "react-loader-spinner";
-// import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-// import { AsyncImage } from '../../../utils/common';
 
 interface Proptypes {
     jobName?: string;
@@ -40,9 +31,6 @@ const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
 const docTypes: Array<any> = ["jpeg", "jpg", "png", "mp4", "wmv", "avi", "pdf", "doc", "docx", "msword"];
 const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
-
-// 'https://appinventiv-development.s3.amazonaws.com/SampleVideo_1280x720_1mb.mp4'
-// 'https://appinventiv-development.s3.amazonaws.com/sample_jpg_file.jpg'
 
 const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localFiles, setLocalFiles] = useState({});
@@ -312,22 +300,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
 
             if (videoFormats.includes(get_split_fromat)) {
-                // image_render = (
-                //     <img
-                //         id={`media_${index}`}
-                //         onClick={() => { setItemToggle(index) }}
-                //         title={get_split_name}
-                //         src={videoThumbnail}
-                //         async-src={item}
-                //         decoding="async"
-                //         loading="lazy"
-                //         alt="media"
-                //         onLoad={() => {
-                //             loadByIndex[index] = false;
-                //         }}
-                //         style={{ padding: '17px' }}
-                //     />);
-
                 if (base64) {
                     image_render = (
                         <video
@@ -381,9 +353,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         alt="media"
                     />)
             }
-            // let checkRender: any = document.getElementById(`media_${index}`);
-            // if (checkRender?.complete) {
-            // console.log({image_render, index: loadByIndex[index] })
             return (
                 <figure className="img_video">
                     <React.Fragment>
@@ -399,7 +368,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             </React.Fragment>
                         )}
                     </React.Fragment>
-                    {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
                 </figure>
             )
             // }
@@ -423,7 +391,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 if (item?.mediaType === 3) {
                     sources.push(docThumbnail);
                     types.push('image');
-                }
+                } 
             })
         }
 
@@ -456,6 +424,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         slide={selectedSlide}
                         sources={sources}
                         types={types}
+                        key={sources?.length}
+                        onClose={() => {
+                            setSelectSlide(1)
+                        }}
                     />
 
                     <canvas id="canvas-extractor" style={{ display: 'none' }}></canvas>

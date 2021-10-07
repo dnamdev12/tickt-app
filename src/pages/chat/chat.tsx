@@ -1,16 +1,14 @@
 import React, { useState, useEffect } from 'react';
 
 import dummy from '../../assets/images/u_placeholder.jpg';
-// import search from '../../assets/images/main-search.png';
 import chatSearch from '../../assets/images/search-chat.png';
-// import more from '../../assets/images/icon-direction-right.png';
-import viewMore from '../../assets/images/icon-direction-blue.png';
 import menu from '../../assets/images/menu-line-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 
-import { setShowToast, setLoading } from '../../redux/common/actions';
+import { setLoading } from '../../redux/common/actions';
 import { formatDateTime } from '../../utils/common';
-import { format, formatRelative, lightFormat } from 'date-fns';
+import noData from '../../assets/images/no-search-data.png';
+
 import {
     auth,
     createRoom,
@@ -146,13 +144,6 @@ const Chat = (props: PropTypes) => {
             if (user) {
                 setUser(user);
                 setIsMobInbox(false);
-                // chatsRef.doc(chatDocumentId).get().then(doc => {
-                //     if (doc.exists) {
-                //         setIsChatAlreadyExist(true);
-                //     }
-                // }).catch((error) => {
-                //     console.log("Error getting document:", error);
-                // });
             } else {
                 setUser(false);
                 setIsMobInbox(true);
@@ -286,16 +277,28 @@ const Chat = (props: PropTypes) => {
                             </ul>
                         </div>
                     </div>
-                    {(isInitialLoader || inBoxData?.length === 0) ? null :
-                        <UserMessages
-                            roomId={selectedRoomID}
-                            roomData={roomData}
-                            isNoRecords={isNoRecords}
-                            history={props.history}
-                            isLoading={props.isLoading}
-                            inBoxData={inBoxData}
-                            setInBoxData={setInBoxData}
-                        />}
+                    {/* {(isInitialLoader || inBoxData?.length === 0) ? null : */}
+                    {isInitialLoader ? null :
+                        (!isInitialLoader && inBoxData?.length === 0) ?
+                            <div className="detail_col" style={{ paddingTop: "200px" }}>
+                                <div className="flex_row">
+                                    <div className="no_record">
+                                        <figure className="no_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                        <span>No Data Found</span>
+                                    </div>
+                                </div>
+                            </div> :
+                            <UserMessages
+                                roomId={selectedRoomID}
+                                roomData={roomData}
+                                isNoRecords={isNoRecords}
+                                history={props.history}
+                                isLoading={props.isLoading}
+                                inBoxData={inBoxData}
+                                setInBoxData={setInBoxData}
+                            />}
                 </div>
             </div>
         </div >

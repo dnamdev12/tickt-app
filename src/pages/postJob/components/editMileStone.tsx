@@ -1,4 +1,4 @@
-import React, { Component, useEffect, useState } from 'react';
+import React, { Component } from 'react';
 import moment from 'moment';
 
 interface Props {
@@ -203,15 +203,6 @@ export default class EditMilestone extends Component<Props, State> {
         } else {
             return `${label[name]} is required.`
         }
-
-        // if (value?.length) {
-        //     if (value.match(pattern) !== null) {
-        //         return '';
-        //     } else {
-        //         return 'Please enter a valid pattern like : 04:03'
-        //     }
-        // }
-        // return `${label[name]} is required.`
     }
 
     isInvalid = (name: string, value: string) => {

@@ -1,14 +1,4 @@
 import React, { useState, useEffect } from 'react';
-// import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-// import menu from '../../../assets/images/menu-line-white.svg';
-// import bell from '../../../assets/images/ic-notification.png';
-// import dummy from '../../../assets/images/u_placeholder.jpg';
-// @ts-ignore
-// import { DateRangePicker } from 'react-date-range';
-// import 'react-date-range/dist/styles.css'; // main style file
-// import 'react-date-range/dist/theme/default.css'; // theme css file
-
-
 // @ts-ignore
 import { DateRangePicker } from '../../../../plugins/react-date-range/dist/index';
 import '../../../../plugins/react-date-range/dist/styles.css';
@@ -20,17 +10,6 @@ import { setShowToast } from '../../../../redux/common/actions';
 
 interface Proptypes {
     items: any;
-    // data: any;
-    // stepCompleted: Boolean;
-    // milestones: any,
-    // editMilestoneTiming: any;
-    // editMileStone: any;
-    // handleStepForward: (data: any) => void;
-    // handleStepComplete: (data: any) => void;
-    // handleStepMileStone: (data: any, index: any) => void;
-    // handleStepBack: () => void;
-    // addTimeToMileStone: (time: any, index: number, skip?: any) => void;
-    // updateMileStoneTimings: (data: any) => void;
     toggleCalenderTime: (data?: any) => void;
 }
 
@@ -38,17 +17,7 @@ const default_format = 'YYYY-MM-DD';
 const STRING_ERROR = 'Selected Data Is Fully Engage';
 const ChooseTimings = ({
     toggleCalenderTime,
-    items
-    // data,
-    // stepCompleted,
-    // handleStepForward,
-    // updateMileStoneTimings,
-    // editMileStone,
-    // addTimeToMileStone,
-    // milestones,
-    // handleStepComplete,
-    // handleStepMileStone,
-    // handleStepBack 
+    items 
 }: Proptypes) => {
     const [range, setRange] = useState<{ [index: string]: string | Date }>({
         startDate: '', //new Date(),
@@ -267,17 +236,7 @@ const ChooseTimings = ({
         }
 
         let item_index = null;
-        // item_index = milestones.length ? milestones.length - 1 : 0;
-
-        // if (editMileStone == null) {
-        //     addTimeToMileStone(timings, item_index);
-        //     handleStepBack();
-        // } else {
-        //     updateMileStoneTimings(timings);
-        //     addTimeToMileStone(timings, editMileStone);
-        //     handleStepForward(15);
-        // }
-
+  
         let isChecked = checkBeforeExist(timings);
         if (isChecked) {
             toggleCalenderTime(range);
@@ -290,10 +249,6 @@ const ChooseTimings = ({
         }
         return true;
     }
-
-
-    // minDate={data?.from_date?.length ? moment(data?.from_date, 'YYYY-MM-DD').toDate() : new Date()}
-    // maxDate={data?.to_date?.length && data?.from_date !== data?.to_date ? moment(data?.to_date, 'YYYY-MM-DD').toDate() : moment().add(2, 'years').toDate()}
 
     return (
         <div className="custom_container">

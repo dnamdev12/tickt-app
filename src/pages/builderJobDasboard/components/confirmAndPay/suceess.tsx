@@ -58,15 +58,6 @@ const Success = (props: any) => {
                                 </div>
                             </div>
                         </div>
-                        {/* <div className="btn_wrapr">
-                            <button
-                                onClick={() => {
-                                    props.history.push('/');
-                                }}
-                                className="fill_btn btn-effect">
-                                {'OK'}
-                            </button>
-                        </div> */}
                     </div>
                 </div>
             </figure>

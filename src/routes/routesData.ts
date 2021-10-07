@@ -1,67 +1,69 @@
-import Home from '../pages/home/home';
-import Login from '../pages/login/login';
-import NotFound from '../pages/notFound/notFound';
-import Signup from '../pages/signup';
-import ForgerPassword from '../pages/forgetPassword/forgetPassword';
-import PostJob from '../pages/postJob';
-import SavedJobs from '../pages/savedJobs/index';
-import RecommendedJobs from '../pages/recommendedJobs/index';
-import MostViewedJobs from '../pages/mostViewedJobs/index';
-import TradieSearchJobResult from '../pages/tradieSearchJobResult/index';
-import PopularBuilders from '../pages/popularBuilders/index';
-import JobDetailsPage from '../pages/jobDetailsPage/index';
-import JobAppliedSuccessfully from '../pages/jobDetailsPage/components/jobAppliedSuccess';
+import React from 'react';
 // @ts-ignore
 import { LinkedInPopUp } from 'react-linkedin-login-oauth2';
-import JobDashboard from '../pages/jobDashboard';
-import TradieListData from '../pages/shared/tradieListData';
-import SearchResultTradie from '../pages/searchTradieResult/index';
-import builderJobDasboard from '../pages/builderJobDasboard/index';
-import TradieDetails from '../common/tradieDetails';
-import BuilderInfo from '../pages/builderInfo/index';
-import BuilderReviewSubmitted from '../pages/jobDashboard/components/reviewBuilder/builderReviewSubmitted';
-import TradieInfo from '../pages/tradieInfo';
-import BuilderPostedJobs from '../pages/builderInfo/builderPostedJobs';
-import JobDetailsPageBuilder from '../pages/jobDetailsPageBuilder/index';
-import TradieEditProfile from '../pages/tradieEditProfile';
-import EmailUpdatedSuccess from '../pages/tradieEditProfile/components/personalInformation/changeEmailModal/components/successPage';
-import RateSuccessTradie from '../pages/builderJobDasboard/components/rateSuccess';
-import TradieVouchers from '../pages/tradieInfo/vouchers';
 
-import LodgeSuccess from '../pages/builderJobDasboard/components/lodgeDispute/success';
-import CancelJobSuccess from '../pages/builderJobDasboard/components/cancelJobs/success';
+const Home = React.lazy(() => import('../pages/home/home'));
+const Login = React.lazy(() => import('../pages/login/login'));
+const NotFound = React.lazy(() => import('../pages/notFound/notFound'));
+const Signup = React.lazy(() => import('../pages/signup'));
+const ForgerPassword = React.lazy(() => import('../pages/forgetPassword/forgetPassword'));
+const PostJob = React.lazy(() => import('../pages/postJob'));
+const SavedJobs = React.lazy(() => import('../pages/savedJobs/index'));
+const RecommendedJobs = React.lazy(() => import('../pages/recommendedJobs/index'));
+const MostViewedJobs = React.lazy(() => import('../pages/mostViewedJobs/index'));
+const TradieSearchJobResult = React.lazy(() => import('../pages/tradieSearchJobResult/index'));
+const PopularBuilders = React.lazy(() => import('../pages/popularBuilders/index'));
+const JobDetailsPage = React.lazy(() => import('../pages/jobDetailsPage/index'));
+const JobAppliedSuccessfully = React.lazy(() => import('../pages/jobDetailsPage/components/jobAppliedSuccess'));
 
-import ChooseTheJob from '../pages/chooseTheJob/index';
-import ChooseJobToStartChat from '../pages/chooseJobToStartChat/chooseJobToStartChat';
-import ChooseJobSuccess from '../pages/chooseTheJob/success';
+const JobDashboard = React.lazy(() => import('../pages/jobDashboard'));
+const TradieListData = React.lazy(() => import('../pages/shared/tradieListData'));
+const SearchResultTradie = React.lazy(() => import('../pages/searchTradieResult/index'));
+const builderJobDasboard = React.lazy(() => import('../pages/builderJobDasboard/index'));
+const TradieDetails = React.lazy(() => import('../common/tradieDetails'));
+const BuilderInfo = React.lazy(() => import('../pages/builderInfo/index'));
+const BuilderReviewSubmitted = React.lazy(() => import('../pages/jobDashboard/components/reviewBuilder/builderReviewSubmitted'));
+const TradieInfo = React.lazy(() => import('../pages/tradieInfo'));
+const BuilderPostedJobs = React.lazy(() => import('../pages/builderInfo/builderPostedJobs'));
+const JobDetailsPageBuilder = React.lazy(() => import('../pages/jobDetailsPageBuilder/index'));
+const TradieEditProfile = React.lazy(() => import('../pages/tradieEditProfile'));
+const EmailUpdatedSuccess = React.lazy(() => import('../pages/tradieEditProfile/components/personalInformation/changeEmailModal/components/successPage'));
+const RateSuccessTradie = React.lazy(() => import('../pages/builderJobDasboard/components/rateSuccess'));
+const TradieVouchers = React.lazy(() => import('../pages/tradieInfo/vouchers'));
 
-import MilestoneRequestSentSuccess from '../pages/builderJobDasboard/components/editMilestones/sucess'
-import RequestMonitored from '../pages/jobDetailsPage/components/requestMonitored';
-import ChangePasswordSuccess from '../pages/tradieEditProfile/components/personalInformation/changePasswordSuccess';
-import NeedApprovalSuccess from '../pages/builderJobDasboard/components/confirmAndPay/suceess';
-import declineMilestoneSuccess from '../pages/builderJobDasboard/components/declineMilestoneSuccess'
+const LodgeSuccess = React.lazy(() => import('../pages/builderJobDasboard/components/lodgeDispute/success'));
+const CancelJobSuccess = React.lazy(() => import('../pages/builderJobDasboard/components/cancelJobs/success'));
 
-import PostJobSuccess from '../pages/postJob/sucess';
-import CommonViewAll from '../pages/home/builderHome/components/commonViewAll';
+const ChooseTheJob = React.lazy(() => import('../pages/chooseTheJob/index'));
+const ChooseJobToStartChat = React.lazy(() => import('../pages/chooseJobToStartChat/chooseJobToStartChat'));
+const ChooseJobSuccess = React.lazy(() => import('../pages/chooseTheJob/success'));
 
-import ChatComponent from '../pages/chat';
-import SupportChat from '../pages/tradieEditProfile/components/supportChat'
-import PaymentHistory from '../pages/paymentHistory';
+const MilestoneRequestSentSuccess = React.lazy(() => import('../pages/builderJobDasboard/components/editMilestones/sucess'));
+const RequestMonitored = React.lazy(() => import('../pages/jobDetailsPage/components/requestMonitored'));
+const ChangePasswordSuccess = React.lazy(() => import('../pages/tradieEditProfile/components/personalInformation/changePasswordSuccess'));
+const NeedApprovalSuccess = React.lazy(() => import('../pages/builderJobDasboard/components/confirmAndPay/suceess'));
+const declineMilestoneSuccess = React.lazy(() => import('../pages/builderJobDasboard/components/declineMilestoneSuccess'));
 
-import TemplateSavedSuccess from '../pages/postJob/components/templateSavedSucess';
-import GuestPage from '../pages/home/guestHome';
-import AdminAnnouncementPage from '../pages/adminAnnouncementPage/adminAnnouncementPage';
+const PostJobSuccess = React.lazy(() => import('../pages/postJob/sucess'));
+const CommonViewAll = React.lazy(() => import('../pages/home/builderHome/components/commonViewAll'));
 
-import QuoteSuccess from '../pages/jobDashboard/components/quoteJobs/success';
-import QuoteSuccessBuilder from '../pages/builderJobDasboard/components/quoteJobs/quoteSuccess';
-import QuoteJobCancel from '../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel';
+const ChatComponent = React.lazy(() => import('../pages/chat'));
+const SupportChat = React.lazy(() => import('../pages/tradieEditProfile/components/supportChat'));
+const PaymentHistory = React.lazy(() => import('../pages/paymentHistory'));
 
-import DocViewerComponent from '../pages/shared/DocViewer';
-import quoteJobCancel from '../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel';
+const TemplateSavedSuccess = React.lazy(() => import('../pages/postJob/components/templateSavedSucess'));
+const GuestPage = React.lazy(() => import('../pages/home/guestHome'));
+const AdminAnnouncementPage = React.lazy(() => import('../pages/adminAnnouncementPage/adminAnnouncementPage'));
 
-import AllQuotes from '../pages/builderJobDasboard/components/quoteJobs/ListQuotes';
-import IDSuccess from '../pages/tradieEditProfile/components/idSuccess';
+const QuoteSuccess = React.lazy(() => import('../pages/jobDashboard/components/quoteJobs/success'));
+const QuoteSuccessBuilder = React.lazy(() => import('../pages/builderJobDasboard/components/quoteJobs/quoteSuccess'));
+// const QuoteJobCancel = React.lazy(() => import('../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel'));
 
+const DocViewerComponent = React.lazy(() => import('../pages/shared/DocViewer'));
+const quoteJobCancel = React.lazy(() => import('../pages/builderJobDasboard/components/quoteJobs/quoteJobCancel'));
+
+// const AllQuotes = React.lazy(() => import('../pages/builderJobDasboard/components/quoteJobs/ListQuotes'));
+const IDSuccess = React.lazy(() => import('../pages/tradieEditProfile/components/idSuccess'));
 const routes = [
     {
         name: 'main',

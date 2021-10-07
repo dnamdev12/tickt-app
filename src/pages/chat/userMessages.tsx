@@ -9,12 +9,10 @@ import viewMore from '../../assets/images/icon-direction-blue.png';
 import close from '../../assets/images/ic-cancel-blue.png';
 import sendMedia from '../../assets/images/ic-media.png';
 import sendBtn from '../../assets/images/ic-send.png';
-import pageLoader from "../../assets/images/page-loader.gif";
 import loader from '../../assets/images/loader.gif';
 
-import moment from 'moment';
 import { formatDateTime, renderTime } from '../../utils/common';
-import { setShowToast, setLoading } from '../../redux/common/actions';
+import { setShowToast } from '../../redux/common/actions';
 import { onFileUpload } from '../../redux/auth/actions';
 import {
     getMessagesOfRoom,
@@ -76,17 +74,11 @@ const UserMessages = (props: any) => {
             // divRref.current.scrollIntoView({ behavior: "smooth" })
             divRref.current.scrollTo(0, scroll);
         }
-        // const scrollHeight = divRref.current.scrollHeight;
-        // const height = divRref.current.clientHeight;
-        // const maxScrollTop = scrollHeight - height;
-        // divRref.current.scrollTop = maxScrollTop > 0 ? maxScrollTop : 0;
     }
 
     const onReceiveOfNewMsg = (arrmsg: any) => {
         console.log('arrmsg: ', arrmsg);
         setMessages(arrmsg);
-        // setInBoxLastMsg(arrmsg[arrmsg.length - 1]);
-        // setIsLoading(false);
     }
 
     useEffect(() => {
@@ -246,7 +238,7 @@ const UserMessages = (props: any) => {
 
         const headers_:Types = {
                 'Content-Type': 'application/json',
-                'Authorization': Constants.FcmAuthorization,
+                'Authorization': Constants.FcmHeaderAuthorizationKey,
             }
         const response: any = await fetch(`https://fcm.googleapis.com/fcm/send`, {
             method: "POST",

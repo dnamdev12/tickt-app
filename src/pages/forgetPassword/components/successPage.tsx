@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import colorLogo from '../../../assets/images/ic-logo-yellow.png';
 import templateImage from '../../../assets/images/thanks-bg.jpg';
-import { setLoading, setShowToast } from '../../../redux/common/actions';
+import { setLoading } from '../../../redux/common/actions';
 
 interface Propstype {
     history: any,

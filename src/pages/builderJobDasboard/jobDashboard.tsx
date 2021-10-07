@@ -90,12 +90,6 @@ class JobDashboard extends Component<Props, State> {
             let activeType_ = urlParams.get('active');
             let ListQuote = urlParams.get('quotes');
             let viewQuotes = urlParams.get('viewQuotes');
-            // let jobId_ = urlParams.get('jobId');
-            // let editMilestone_ = urlParams.get('editMilestone');
-            // let lodgeDispute_ = urlParams.get('lodgeDispute');
-            // let cancelJob_ = urlParams.get('cancelJob');
-            // let markMilestone_ = urlParams.get('markMilestone');
-
 
             let activeTypeByUrl: any = activeType_;
             if (ListQuote === "true") {
@@ -234,20 +228,6 @@ class JobDashboard extends Component<Props, State> {
 
                     let randomResult = result && Array.isArray(result) && result[0] && result[0].mathrandom ? result[0].mathrandom : '';
 
-                    // console.log({
-                    //     1: needApprovalCount !== approveCount,
-                    //     2: newApplicantsCount !== applicantCount,
-                    //     3: this.state.globalJobId !== globalJobId,
-                    //     4: this.state.enableEditMilestone !== enableEditMilestone,
-                    //     5: this.state.enableLodgeDispute !== enableLodgeDispute,
-                    //     6: this.state.enableCancelJob !== enableCancelJob,
-                    //     7: this.state.enableCancelJob !== enableCancelJob,
-                    //     8: this.state.activeJobs?.length !== result?.length,
-                    //     9: this.state.activeJobs?.length,
-                    //     10: result,
-                    //     11: randomState !== randomResult, 
-                    // })
-
                     if (needApprovalCount !== approveCount ||
                         newApplicantsCount !== applicantCount ||
                         this.state.globalJobId !== globalJobId ||
@@ -306,17 +286,6 @@ class JobDashboard extends Component<Props, State> {
                         this.setState({ hasLoad: false });
                     }
                 } else if (hasLoad && open?.length && page_get === currentPage) {
-                    // let result = [];
-                    // if (JSON.stringify(prevValues) === JSON.stringify(open) && page_get === currentPage) {
-                    //     // same data items here!
-                    // } else {
-                    //     result = page_get > 0 && page_get === currentPage ? [...prevValues, ...open] : open;
-                    // }
-                    // console.log({
-                    //     prevValues,
-                    //     open
-                    // })
-
                     let result = [];
                     if (JSON.stringify(prevValues) === JSON.stringify(open) && page_get === currentPage) {
                         // same data items here!

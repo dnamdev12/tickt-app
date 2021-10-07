@@ -1,4 +1,4 @@
-import { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect } from 'react';
 import Constants from '../../utils/constants';
 import {
     getBuilderProfile,
@@ -354,14 +354,6 @@ const BuilderInfo = (props: PropsType) => {
     const { user_type } = getItemsFromLocation();
     let userType: number = Number(user_type);
 
-    // const addedTradeList = profileData?.areasOfSpecialization?.tradeData?.map(({ tradeId }: { tradeId: string }) => tradeId) || [];
-    // const addedSpecializationList = profileData?.areasOfSpecialization?.specializationData?.map(({ specializationId }: { specializationId: string }) => specializationId) || [];
-    // const addedTradeData = props.tradeListData.filter(({ _id }: { _id: string }) => addedTradeList.includes(_id));
-    // addedTradeData.forEach(({ specialisations }: any, index: number) => {
-    //   addedTradeData[index].specialisations = specialisations.filter(({ _id }: { _id: string }) => addedSpecializationList.includes(_id));
-    // });
-
-
     if (showError) {
         return (
             <div className="app_wrapper">
@@ -472,20 +464,6 @@ const BuilderInfo = (props: PropsType) => {
                                         {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
                                             // Add active class when click on show more
                                             <ul className={`${!showSpecs ? 'more_tags active' : ''}`}>
-                                                {/* <ul className={`more_tags ${showSpecs ? 'active' : ''}`}> */}
-                                                {/* {addedTradeData?.map(({ _id, trade_name, selected_url, specialisations }: any) => (
-                                              <Fragment key={_id}>
-                                                <li className="main">
-                                                    <img src={selected_url || menu} alt="" />{trade_name}
-                                                </li>
-                                                {specialisations?.map(({ _id, name }: { _id: string, name: string }) => {
-                                                  return <li key={_id}>{name}</li>
-                                                })}
-                                              </Fragment>
-                                            ))} */}
-                                                {console.log({
-                                                    areasOfSpecialization: profileData?.areasOfSpecialization
-                                                })}
                                                 {profileData?.areasOfSpecialization?.tradeData?.map(({
                                                     tradeId,
                                                     tradeSelectedUrl,

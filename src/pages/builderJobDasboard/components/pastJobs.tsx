@@ -166,13 +166,6 @@ const PastJobs = (props: any) => {
                                         <span className="completed-digit" id="digit-progress">
                                             <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
                                         </span>
-                                        {/* <span className="approval_info">
-                                            {status === "Approved" && <img src={approved} alt="icon" />}
-                                            {status}
-                                        </span> */}
-                                        {/* {'Approved'} */} {/* Awaiting */}
-                                        {/* <img src={waiting} alt="icon" /> */}
-                                        {/* Need approval */}
                                         <span className="progress_bar">
                                             <input
                                                 className="done_progress"

@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import dummy from '../../../assets/images/u_placeholder.jpg';
-import thumb from '../../../assets/images/job-posted-bg.jpg';
 import question from '../../../assets/images/ic-question.png';
-import locations from '../../../assets/images/ic-location.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import leftIcon from '../../../assets/images/ic-back-arrow-line.png'
 import rightIcon from '../../../assets/images/ic-next-arrow-line.png'
@@ -12,7 +10,6 @@ import jobDummyImage from '../../../assets/images/ic-placeholder-detail.png';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-import { setShowToast } from '../../../redux/common/actions';
 
 import docThumbnail from '../../../assets/images/add-document.png'
 
@@ -341,6 +338,10 @@ const JobDetails = ({
                     sources.push(item.link);
                     types.push('image');
                 }
+                if (item?.mediaType === 3) {
+                    sources.push(docThumbnail);
+                    types.push('image');
+                } 
             })
         }
 
@@ -434,13 +435,8 @@ const JobDetails = ({
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
                                         <ul>
-                                            {/* <li className="icon clock">0 minutes ago</li> */}
                                             <li className="icon calendar">
                                                 {renderTime(data)}
-                                                {/* {data?.from_date?.length && !data?.to_date?.length ? '0 days' :
-                                                    data?.from_date?.length && data?.to_date?.length ?
-                                                        `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
-                                                        : '0 days'} */}
                                             </li>
                                             <li className="icon dollar">${data?.amount} {data?.pay_type === "Fixed price" ? 'f/p' : 'p/h'} </li>
                                             <li className="icon location line-1" title={data?.location_name}>{data?.location_name}</li>
@@ -480,21 +476,11 @@ const JobDetails = ({
                                             <li>
                                                 <span>{`${index + 1}. ${item?.milestone_name}`}</span>
                                                 <span>{renderTimeWithFormat(item?.from_date, item?.to_date, format)}</span>
-                                                {/* <span>{moment(item?.from_date,'MM-DD-YYYY').isValid() && !moment(item?.to_date,'MM-DD-YYYY').isValid()  ?
-                                                    `${moment(item?.from_date,'MM-DD-YYYY').format('MMM-DD')}` :
-                                                    moment(item?.from_date,'MM-DD-YYYY').isValid() && moment(item?.to_date,'MM-DD-YYYY').isValid() ?
-                                                        `${moment(item?.from_date,'MM-DD-YYYY').format('MMM DD')}-${moment(item?.to_date,'MM-DD-YYYY').format('DD')}` : ''
-                                                }</span> */}
                                             </li>
                                         ))
                                         : null}
-
-
                                 </ul>
                                 <button
-                                    // onClick={() => {
-                                    //     setShowToast(true, 'Under development.')
-                                    // }}
                                     style={{ cursor: 'default' }}
                                     className="fill_grey_btn ques_btn">
                                     <img src={question} alt="question" />
@@ -583,25 +569,6 @@ const JobDetails = ({
             </div>
         </div>
     )
-    // return (
-    //     <div className="app_wrapper">
-    //         <div className="section_wrapper">
-    //             <div className="custom_container">
-    //                 <div className="form_field">
-    //                     <div className="flex_row">
-    //                         <div className="flex_col_sm_5">
-    //                             <div className="relate">
-    //                                 <button className="back" onClick={handleStepBack}></button>
-    //                                 {/* <span className="title">Milestone Templates</span> */}
-    //                             </div>
-    //                             {/* <p className="commn_para">How mach will you pay for a job</p> */}
-    //                         </div>
-    //                     </div>
-    //                 </div>
-    //             </div>
-    //         </div>
-    //     </div>
-    // )
 }
 
 export default JobDetails;
