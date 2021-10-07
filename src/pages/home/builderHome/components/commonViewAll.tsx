@@ -143,50 +143,50 @@ const SavedJobs = (props: any) => {
 
     }
 
+    let dataItems = stateData?.length;
     return (
-
         <div className={'app_wrapper'} >
-            <InfiniteScroll
-                dataLength={stateData?.length}
-                next={() => {
-                    let cp: any = currentPage;
-                    if (stateData?.length === (cp * 10)) {
-                        setCurrentPage((prev: any) => prev + 1);
-                        cp = cp + 1;
+            {dataItems ? (
+                <InfiniteScroll
+                    dataLength={stateData?.length}
+                    next={() => {
+                        let cp: any = currentPage;
+                        if (stateData?.length === (cp * 10)) {
+                            setCurrentPage((prev: any) => prev + 1);
+                            cp = cp + 1;
 
-                        if (props?.location?.state?.title === "Saved tradespeople") {
-                            preFetch(cp);
+                            if (props?.location?.state?.title === "Saved tradespeople") {
+                                preFetch(cp);
+                            }
+
+                            if (props?.location?.state?.title === "Popular tradespeople") {
+                                preFetchPopularTradie(cp);
+                            }
+
+                            if (props?.location?.state?.title === "Recommended tradespeople") {
+                                preFetchRecommendedTradie(cp);
+                            }
+
+                            if (props?.location?.state?.title === "Most Viewed tradespeople") {
+                                preFetchMostViewedTradie(cp);
+                            }
+                        } else {
+                            setHasLoad(false);
                         }
+                    }}
+                    hasMore={hasLoad}
+                    loader={<></>}
+                    style={{ overflowX: 'hidden' }}>
 
-                        if (props?.location?.state?.title === "Popular tradespeople") {
-                            preFetchPopularTradie(cp);
-                        }
-
-                        if (props?.location?.state?.title === "Recommended tradespeople") {
-                            preFetchRecommendedTradie(cp);
-                        }
-
-                        if (props?.location?.state?.title === "Most Viewed tradespeople") {
-                            preFetchMostViewedTradie(cp);
-                        }
-                    } else {
-                        setHasLoad(false);
-                    }
-                }}
-                hasMore={hasLoad}
-                loader={<></>}
-                style={{ overflowX: 'hidden' }}>
-
-
-                <div className="section_wrapper">
-                    <div className="custom_container">
-                        <div className="relate">
-                            <button className="back" onClick={backButtonClicked}></button>
-                            <span className="title">
-                                {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
-                            </span>
-                        </div>
-                        {/* {!props?.location?.state?.popular ? ( */}
+                    <div className="section_wrapper">
+                        <div className="custom_container">
+                            <div className="relate">
+                                <button className="back" onClick={backButtonClicked}></button>
+                                <span className="title">
+                                    {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
+                                </span>
+                            </div>
+                            {/* {!props?.location?.state?.popular ? ( */}
 
                             <div className="flex_row tradies_row">
                                 {stateData?.length > 0 ?
@@ -195,60 +195,36 @@ const SavedJobs = (props: any) => {
                                             item={item}
                                             index={index}
                                         />
-                                    ))) :
-                                    <div className="no_record">
-                                        <figure className="no_img">
-                                            <img src={noData} alt="data not found" />
-                                        </figure>
-                                        <span>No Data Found</span>
-                                    </div>}
+                                    ))) : null}
                             </div>
-                        {/* ) : (
-                            <ul className="popular_tradies">
-                                {stateData?.length > 0 ?
-                                    (stateData?.map((item: any, index: any) => {
-                                        return (
-                                            <li
-                                                key={`${item.firstName}item${index}`}
-                                                data-aos="flip-right"
-                                                data-aos-delay="200"
-                                                onClick={() => {
-                                                    // setShowToast(true,'Under development');
-                                                    if (props?.history && item?._id) {
-                                                        props?.history?.push(`tradie-info?tradeId=${item?._id}&hideInvite=${false}`);
-                                                    }
-                                                }}
-                                                data-aos-duration="1000">
-                                                <figure className="tradies_img">
-                                                    <img
-                                                        src={item.user_image || dummy}
-                                                        alt="tradies-img"
-                                                        onError={(e: any) => {
-                                                            let e_: any = e;
-                                                            e_.target.src = dummy;
-                                                        }}
-                                                    />
-                                                </figure>
-                                                <span className="name">{item?.firstName}</span>
-                                                <span className="post">
-                                                    {item?.trade && Array.isArray(item?.trade) && item?.trade[0] && item?.trade[0]?.trade_name ? item?.trade[0]?.trade_name : ''}
-                                                </span>
-                                            </li>)
-                                    })) : (
-                                        <div className="no_record">
-                                            <figure className="no_img">
-                                                <img src={noData} alt="data not found" />
-                                            </figure>
-                                            <span>No Data Found</span>
-                                        </div>
-                                    )} 
-                            </ul>
-                        )}*/}
+                        </div>
+                    </div>
+                </InfiniteScroll>
+            ) : (
+                <div className="pt-30">
+                    <div className="custom_container">
+                        <div className="relate">
+                            <button className="back" onClick={backButtonClicked}></button>
+                            <span className="title mb0">
+                                {props?.location?.state?.title || (props.location.pathname === '/saved-tradespeople' ? 'Saved tradespeople' : '')}
+                            </span>
+                        </div>
+                        {/* {!props?.location?.state?.popular ? ( */}
+
+                        
+                            <div className="no_record">
+                                <figure className="no_img">
+                                    <img src={noData} alt="data not found" />
+                                </figure>
+                                <span>No Data Found</span>
+                            </div>
                     </div>
                 </div>
-            </InfiniteScroll>
+            )}
         </div>
     )
+
+
 }
 
 export default withRouter(SavedJobs);

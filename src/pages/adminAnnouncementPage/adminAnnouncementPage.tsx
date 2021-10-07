@@ -54,11 +54,13 @@ const AdminAnnouncementPage = (props: any) => {
                 <div className="custom_container">
                     {(notificationData || props.isLoading) ? (
                         <>
-                            <div className="flex_row description">
+                            <div className="flex_row">
                                 <div className="flex_col_sm_8">
+                                    <div className="description">
                                     <span className="sub_title">{notificationData?.title}</span>
                                     <p className="commn_para">{notificationData?.sub_title}
                                     </p>
+                                    </div>
                                 </div>
                             </div>
                             <FsLightbox
