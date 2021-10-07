@@ -338,6 +338,10 @@ const JobDetails = ({
                     sources.push(item.link);
                     types.push('image');
                 }
+                if (item?.mediaType === 3) {
+                    sources.push(docThumbnail);
+                    types.push('image');
+                } 
             })
         }
 

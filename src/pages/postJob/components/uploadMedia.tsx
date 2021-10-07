@@ -391,7 +391,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 if (item?.mediaType === 3) {
                     sources.push(docThumbnail);
                     types.push('image');
-                }
+                } 
             })
         }
 
@@ -424,6 +424,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         slide={selectedSlide}
                         sources={sources}
                         types={types}
+                        key={sources?.length}
+                        onClose={() => {
+                            setSelectSlide(1)
+                        }}
                     />
 
                     <canvas id="canvas-extractor" style={{ display: 'none' }}></canvas>
