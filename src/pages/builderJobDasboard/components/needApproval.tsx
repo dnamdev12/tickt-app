@@ -191,12 +191,6 @@ class NeedApproval extends Component<Props, State> {
                                                     {timeLeft}
                                                 </span>
                                             </li>
-                                            {/* <li className="icon clock">
-                                                
-                                            </li>
-                                            <li className="icon dollar">{amount}</li>
-                                            <li className="icon location line-1">{location}</li>
-                                            <li className="icon calendar">{durations}</li> */}
                                         </ul>
                                     </div>
                                     <div className="job_progress_wrap" id="scroll-progress-bar">
@@ -233,51 +227,6 @@ class NeedApproval extends Component<Props, State> {
                                             </button>
                                         )}
                                     </div>
-                                    {/* <div className="job_progress_wrap" id="scroll-progress-bar">
-                                        <div className="progress_wrapper">
-                                            <span className="completed-digit" id="digit-progress">
-                                                <b>{`Job Milestones ${milestoneNumber} `}</b>{`of ${totalMilestones}`}
-                                            </span>
-                                            <span className="approval_info">
-                                                {console.log({ status })}
-                                                {status === "Approved" && <img src={approved} alt="icon" />}
-                                                {status === "NEED APPROVAL" && <img src={waiting} alt="icon" />}
-                                                {status}
-                                            </span>
-                                            <div className="progress_bar">
-                                                <input
-                                                    className="done_progress"
-                                                    id="progress-bar"
-                                                    type="range"
-                                                    min="0"
-                                                    value={milestoneNumber / totalMilestones * 100}
-                                                />
-                                                {status === "NEEDS APPROVAL" && (
-                                                    <button
-                                                        onClick={() => {
-                                                            this.setState({
-                                                                localState: true,
-                                                                selectedIndex: index
-                                                            })
-                                                        }}
-                                                        className="fill_grey_btn full_btn btn-effect">
-                                                        {'Approve'}
-                                                    </button>
-                                                )}
-                                            </div>
-                                        </div>
-                                        {tradieId?.length ? (
-                                            <button
-                                                onClick={() => {
-                                                    this.setToggle();
-                                                    setJobLabel('applicantList', jobId, 1, specializationId);
-                                                }}
-                                                className="fill_grey_btn full_btn btn-effect">
-                                                {'Applications'}
-                                            </button>
-                                        ) : null}
-                                    </div> */}
-
                                 </div>
                             </div>
                         )) : !isLoading && (

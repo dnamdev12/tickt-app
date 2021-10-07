@@ -185,56 +185,11 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
               <div className="flex_col_sm_5">
                 <div className="relate">
                   <button className="back" onClick={handleStepBack}></button>
-                  {/* <span className="title">Payment</span> */}
-                  {/* {'CR Change'} */}
                   <span className="title">Job type</span>
-
                 </div>
-                {/* <p className="commn_para">How much will you pay for a job</p> */}
               </div>
             </div>
           </div>
-          {/* 
-          <div className="flex_row">
-            <div className="flex_col_sm_6">
-              <div className="flex_row">
-                <div className="flex_col_sm_7">
-                  <div className="form_field">
-                    <div className="text_field">
-                      <input
-                        type="number"
-                        placeholder="Price"
-                        name="Price"
-                        className="detect_input_ltr"
-                        min="1"
-                        step=".01"
-                        required
-                        value={amount}
-                        onChange={({ target: { value } }) => handleChange(value, 'amount')}
-                      />
-                      <span className="detect_icon_ltr dollar">$</span>
-                    </div>
-                    <span className="error_msg mtb-15">{errors?.amount}</span>
-                  </div>
-                </div>
-                <div className="flex_col_sm_5">
-                  <div className="form_field">
-                    <div className="text_field">
-                      <Select
-                        className="select_menu"
-                        value={reactSelect}
-                        options={priceOptions}
-                        onChange={(item: any) => {
-                          setReactSelect(item);
-                          handleChange(item?.value, 'pay_type')
-                        }}
-                      />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>  */}
 
           {/* {'CR Change'} */}
           <div className="form_field">
@@ -337,46 +292,8 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
               className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
               onClick={handleContinue}>Continue</button>
           </div>
-
-          {/* <div className="flex_row">
-                        <div className="flex_col_sm_5">
-                            <div className="form_field">
-                                <div className="radio_wrap agree_check">
-                                    <input className="filter-type filled-in" name="pay_type" type="radio" id="perHour" />
-                                    <label htmlFor="perHour">Per hour</label>
-                                </div>
-                                <div className="radio_wrap agree_check">
-                                    <input className="filter-type filled-in" name="pay_type" type="radio" id="fixed" />
-                                    <label htmlFor="fixed">Fixed price</label>
-                                </div>
-                            </div>
-
-                            <div className="form_field">
-                                <div className="text_field">
-                                    <input type="number" placeholder="Price" name="Price" className="sm_box" value={amount} onChange={({ target: { value }}) => handleChange(value, 'amount')} />
-                                </div>
-                                <span className="error_msg"></span>
-                            </div>
-
-                            <div className="form_field">
-
-                            <Slider
-                                value={value}
-                                onChange={handleSliderChange}
-                                valueLabelDisplay="auto"
-                                aria-labelledby="range-slider"
-                                getAriaValueText={valuetext}
-                            />
-                            </div>
-
-                            <div className="form_field">
-                                <button className="fill_btn full_btn" onClick={handleContinue}>Continue</button>
-                            </div>
-                        </div>
-                    </div> */}
-          {/* <Typography id="range-slider" gutterBottom></Typography> */}
-        </div >
-      </div >
+        </div>
+      </div>
 
     </div >
   )

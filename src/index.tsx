@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import ReactDOM from 'react-dom';
 
 import reportWebVitals from './reportWebVitals';
@@ -16,9 +16,11 @@ if (process.env.NODE_ENV !== "development") {
 
 const app = (
   <React.StrictMode>
-    <ErrorBoundary>
-      <App />
-    </ErrorBoundary>
+    <Suspense fallback={''}>
+      <ErrorBoundary>
+        <App />
+      </ErrorBoundary>
+    </Suspense>
   </React.StrictMode>
 )
 

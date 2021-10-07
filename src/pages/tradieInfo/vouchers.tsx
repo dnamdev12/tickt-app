@@ -3,9 +3,6 @@ import dummy from '../../assets/images/u_placeholder.jpg';
 import vouch from '../../assets/images/ic-template.png';
 import { withRouter } from 'react-router-dom';
 import {
-    HomeTradieProfile,
-    AddVoucher,
-    ChooseJob,
     getVouchers
 } from '../../redux/jobs/actions';
 import storageService from '../../utils/storageService';
@@ -15,7 +12,6 @@ import VoucherDetailModal from './voucherDetail';
 
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { useLocation } from "react-router-dom";
 
 const Vouchers = (props: any) => {
     const [stateData, setStateData] = useState<any>([]);

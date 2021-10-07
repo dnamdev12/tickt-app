@@ -202,13 +202,6 @@ const BannerSearch = (props: PropsType) => {
     }, [props])
 
     useEffect(() => {
-        // if (addressText !== null) {
-        //     if (addressText?.length > 2) {
-        //         document.getElementById('location-input-tag')?.focus(); // commented this for first render un-focus
-        //     } else {
-        //         document.getElementById('location_search_static')?.focus();
-        //     }
-        // }
         if ((!addressText || !addressText?.length) && inputFocus2) {
             setSelectedAddress({});
             setSelectedTrade({});
@@ -217,16 +210,11 @@ const BannerSearch = (props: PropsType) => {
         if (!addressText?.length) {
             fetchItemsSearchWithLocation(1);
         }
-
-
     }, [addressText])
 
     useEffect(() => {
         fetchItemsSearchWithLocation();
-        // getRecentLocationData();
-
     }, []);
-
 
     const fetchItemsSearchWithLocation = (fetch?: any) => {
         if (getRecentSearchList && fetch !== 1) {
@@ -517,13 +505,6 @@ const BannerSearch = (props: PropsType) => {
                         parseFloat(selected_address?.lat)
                     ]
                 }
-                // if (prev_address == addressText) {
-                //     data['address'] = prev_address
-                // } else {
-                //     if (addressText?.length) {
-                //         data['address'] = addressText
-                //     }
-                // }
 
                 if (suggestion_selected) {
                     if (addressText) {
@@ -721,31 +702,6 @@ const BannerSearch = (props: PropsType) => {
                     {/* {'location search start here!'} */}
                     <li className="loc_box">
                         <div id="location-text-field-div">
-                            {/* 
-                            <div
-                                className={`text_field ${addressText?.length > 2 ? 'none' : ''}`}>
-                                <input
-                                    id="location_search_static"
-                                    placeholder='Where?'
-                                    ref={locationRefClone}
-                                    value={addressText}
-                                    autoComplete="off"
-                                    className={'line-1'}
-                                    onChange={(e: any) => {
-                                        setAddressText((e.target.value).trimLeft());
-                                    }}
-                                    onFocus={() => {
-                                        setInputFocus2(true);
-                                        setInputFocus1(false);
-                                        setInputFocus3(false);
-                                    }}
-                                />
-                                <span className="detect_icon_ltr">
-                                    <img src={Location} alt="location" />
-                                </span>
-                            </div> */}
-
-
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
@@ -887,25 +843,6 @@ const BannerSearch = (props: PropsType) => {
                                     {'Recent searches'}
                                 </span>}
                             <div className="flex_row recent_search auto_loc">
-
-                                {/* {recentLocation?.map((item: any) => {
-                                    return (
-                                        <div className="flex_col_sm_4"
-                                            onClick={() => {
-                                                let location_coordinates: any = item.location.coordinates
-                                                setAddressText(item.formatted_address);
-                                                setSelectedAddress({
-                                                    lat: location_coordinates[1],
-                                                    lng: location_coordinates[0]
-                                                });
-                                            }}>
-                                            <div className="autosuggestion_icon card loc name">
-                                                <span>{item.allText?.mainText}</span>
-                                                <span className="name">{item.allText?.secondaryText}</span>
-                                            </div>
-                                        </div>)
-                                })} */}
-
                                 {props?.recentLocationData?.map((item: any) => {
                                     return item?.address?.length > 0 && (
                                         <div className="flex_col_sm_4"
@@ -915,15 +852,7 @@ const BannerSearch = (props: PropsType) => {
                                                     lat: item?.location?.coordinates[1],
                                                     lng: item?.location?.coordinates[0],
                                                 });
-
                                                 setSuggestion(JSON.parse(item?.address));
-
-                                                // let location_coordinates: any = item.location.coordinates
-                                                // setAddressText(item.formatted_address);
-                                                // setSelectedAddress({
-                                                //     lat: location_coordinates[1],
-                                                //     lng: location_coordinates[0]
-                                                // });
                                             }}>
                                             <div className="autosuggestion_icon card loc name">
                                                 <span>{JSON.parse(item?.address)?.mainText}</span>

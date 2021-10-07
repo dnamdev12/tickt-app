@@ -12,14 +12,6 @@ interface PropsType {
 const HomeBanner = (props: PropsType) => {
 
     const viewMoreClicked = () => {
-        // props.history.push({
-        //     pathname: '/search-job-results?pageType=viewNearByJob&heading=Jobs in your area',
-        //     search
-        //     state: {
-        //         queryParam: "viewNearByJob",
-        //         heading: "Jobs in your area",
-        //     }
-        // })
         props.history.push(`/search-job-results?jobResults=viewNearByJob&defaultLat=${props.currentCoordinates?.coordinates[1]}&defaultLong=${props.currentCoordinates?.coordinates[0]}`)
     }
 

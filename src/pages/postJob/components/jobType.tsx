@@ -186,14 +186,6 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ed
     }
   };
 
-
-  // const checkErrors = () => {
-  //   if (!errors.job_type.length && !errors.specialization.length && !errors.categories.length) {
-  //     return false
-  //   }
-  //   return true;
-  // }
-
   const checkErrors = () => {
     let error_1 = isInvalid('categories', jobTypeDetails['categories']);
     let error_2 = isInvalid('job_type', jobTypeDetails['job_type']);

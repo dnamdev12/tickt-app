@@ -1,19 +1,11 @@
 import React, { useState, useEffect } from 'react'
-import dummy from '../../assets/images/u_placeholder.jpg';
-import vouch from '../../assets/images/ic-template.png';
 import cancel from '../../assets/images/ic-cancel.png';
-import remove from "../../assets/images/icon-close-1.png";
 import addMedia from "../../assets/images/add-image.png";
 import Modal from '@material-ui/core/Modal';
-import { withRouter } from 'react-router-dom';
-
 import { setShowToast } from '../../redux/common/actions';
 
 import close from '../../assets/images/icon-close-1.png';
 import { onFileUpload } from '../../redux/auth/actions';
-
-import { ChooseJob } from '../../redux/jobs/actions'
-
 import { AddVoucher, fetchVouchesJobs } from '../../redux/jobs/actions';
 import docThumbnail from '../../assets/images/add-document.png'
 

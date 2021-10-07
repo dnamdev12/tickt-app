@@ -80,41 +80,7 @@ class OpenJobs extends Component<Props, State> {
         // this.preFetchForQuotes();
     }
 
-    // preFetchForQuotes = () => {
-    //     const props: any = this.props;
-    //     const params = new URLSearchParams(props?.history?.location?.search);
-    //     const quotes_param: any = params.get('quotes');
-    //     const viewQuotesParam: any = params.get('viewQuotes');
-    //     const jobId: any = params.get('jobId');
-
-    //     const { toggleQuoteSort } = this.state;
-    //     if (jobId?.length) {
-    //         if (quotes_param === "true") {
-    //             this.fetchQuotesById(jobId, 1)
-    //         } else {
-    //             this.fetchQuotesById(jobId, 1)
-    //         }
-    //     }
-    // }
-
-    // fetchQuotesById = async (jobId: String, sortBy: Number) => {
-    //     let result = await quoteByJobId({ jobId, sortBy });
-    //     console.log({ result });
-    //     if (result?.success) {
-    //         let data = result?.data?.resultData;
-    //         if (data) {
-    //             this.setState({ quotesData: data })
-    //         }
-    //     }
-    // }
-
     setToggle = () => this.setState({ isToggleApplicants: !this.state.isToggleApplicants });
-
-    // setToggleSort = () => {
-    //     this.setState({
-    //         toggleQuoteSort: !this.state.toggleQuoteSort
-    //     });
-    // }
 
     render() {
         // props defined & render by params
@@ -132,31 +98,6 @@ class OpenJobs extends Component<Props, State> {
         if (isLoading) {
             return null;
         }
-
-        // if (quotes_param === 'true') {
-        //     return (
-        //         <ListQuotes
-        //             {...this.props}
-        //             jobId={jobId}
-        //             history={this.props.history}
-        //             quotes_param={quotes_param}
-        //             // quotesData={quotesData}
-        //             // setToggleSort={this.setToggleSort}
-        //             // toggleQuoteSort={toggleQuoteSort}
-        //         />
-        //     )
-        // }
-
-        // if (viewQuotesParam === 'true') {
-        //     return (
-        //         <ViewQuote
-        //             {...this.props}
-        //             history={this.props.history}
-        //             // quotes_param={viewQuotesParam}
-        //             // quotesData={quotesData}
-        //         />
-        //     )
-        // }
 
         return (
             <React.Fragment>

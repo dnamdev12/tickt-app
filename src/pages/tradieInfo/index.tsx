@@ -1141,17 +1141,6 @@ class TradieInfo extends Component<Props, State> {
                                                             <span className="user_name">{reviewData?.name}</span>
                                                             <span className="date">{reviewData?.date}</span>
                                                             <span className="item-star">
-                                                                {/* <ReactStars
-                                                                    classNames="review-stars"
-                                                                    value={reviewData?.rating}
-                                                                    count={5}
-                                                                    edit={false}
-                                                                    size={30}
-                                                                    activeColor="#ffd700"
-                                                                    color='#DFE5EF'
-                                                                /> */}
-
-
                                                                 <Rating
                                                                     fractions={2}
                                                                     emptySymbol={empty_star_rating_below}
@@ -1221,24 +1210,7 @@ class TradieInfo extends Component<Props, State> {
                                                             </span>)
                                                             : ''
                                                     )}
-                                                    {/* {Object.keys(replyData).length > 0 &&
-                                                !(reviewsData?.replyShownHideList.includes(replyId) ||
-                                                    reviewsData.replyShownHideList.includes(replyId)) &&
-                                                <span
-                                                    className="show_hide_ans link"
-                                                    onClick={() => { reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId) }}>
-                                                    {'Show review'}
-                                                </span>}
-                                            {reviewData?.isModifiable && Object.keys(item?.reviewData?.replyData).length ? (
-                                                <span
-                                                    className="action link"
-                                                    onClick={() => {
-                                                        reviewHandler('reviewReplyClicked', reviewData.reviewId)
-                                                    }}>
-                                                    {'Reply'}
-                                                </span>) : null} */}
                                                 </div>
-                                                {/* {reviewData?.replyData?.reply && (reviewsData.replyShownHideList.includes(reviewData?.replyData?.reviewId) || reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) && */}
                                                 {Object.keys(reviewsData.replyShownHideList).length &&
                                                     reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                     <div className="question_ans_card answer">

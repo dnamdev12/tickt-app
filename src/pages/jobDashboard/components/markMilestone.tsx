@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router';
-import { format } from 'date-fns';
 import { setShowToast } from '../../../redux/common/actions';
 import UploadMedia from '../../postJob/components/uploadMedia';
 import { renderTime } from '../../../utils/common';
@@ -14,7 +13,6 @@ import "react-multi-carousel/lib/styles.css";
 
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
-import removeIconBlue from '../../../assets/images/ic-cancel-blue.png';
 import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
 import pendingIcon from '../../../assets/images/exclamation-icon.png'
@@ -600,11 +598,7 @@ const MarkMilestone = (props: Proptypes) => {
                 <span className="xs_sub_title">{jobName}</span>
               </div>
               <span className="sub_title">Worked hours in this milestone</span>
-              {/* <p className="commn_para">
-              Submit your actual hours worked to calculate any variation from
-              the estimateed hours. The amount will be approved by the Builder
-            </p> */}
-
+  
               <p className="commn_para">
                 The amount paid will be recalculated based on approval of the
                 actual hours by the Builder
@@ -702,12 +696,6 @@ const MarkMilestone = (props: Proptypes) => {
                 <span className="xs_sub_title">{jobName}</span>
                 {data?.userId && readOnly && (
                   <>
-                    {/* <span className="edit_icon" title="Edit">
-                    <img src={editIconBlue} alt="edit" onClick={() => setReadOnly(!readOnly)} />
-                  </span>
-                  <span className="edit_icon remove_icon" title="Remove" onClick={() => removeBankDetails()} >
-                    <img src={removeIconBlue} alt="remove" />
-                  </span> */}
                     <div className="edit_delete">
                       <span className="edit" title="Edit" onClick={() => setReadOnly(!readOnly)}></span>
                       <span className="delete" title="Remove" onClick={() => removeBankDetails()}></span>

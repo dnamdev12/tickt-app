@@ -6,11 +6,8 @@ import {
     jobDetailsBuilder,
     postHomeApplyJob
 } from '../../redux/homeSearch/actions';
-import { getTradieQuestionList, closeOpenedJob } from '../../redux/jobs/actions';
+import { closeOpenedJob } from '../../redux/jobs/actions';
 import {
-    // postAskQuestion,
-    // deleteQuestion,
-    // updateQuestion,
     getQuestionsList,
     answerQuestion,
     updateAnswer,
@@ -18,7 +15,6 @@ import {
     handleCancelReply
 } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
-import storageService from '../../utils/storageService';
 
 import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
@@ -30,7 +26,6 @@ import pendingIcon from '../../assets/images/exclamation-icon.png'
 
 import noDataFound from '../../assets/images/no-search-data.png';
 
-import moment from 'moment';
 import approved from '../../assets/images/approved.png';
 import waiting from '../../assets/images/exclamation.png';
 
@@ -45,22 +40,14 @@ import editIconBlue from '../../assets/images/ic-edit-blue.png';
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { deleteOpenJob } from '../../redux/jobs/actions';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
-import { setShowToast } from '../../redux/common/actions';
-
+// import { setShowToast } from '../../redux/common/actions';
 import { JobCancelReasons } from '../../utils/common';
-
-import Accordion from '@material-ui/core/Accordion';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-
 import docThumbnail from '../../assets/images/add-document.png'
 interface PropsType {
     history: any,
@@ -498,13 +485,18 @@ const JobDetailsPage = (props: PropsType) => {
         if (data?.status) {
             data['note'] = replyText;
         }
-
-        // if (!data?.note) {
-        //     delete data?.note;
-        // }
-
+        
         let response = await handleCancelReply(data);
         if (response?.success) {
+            if (jobDetailsData?.quoteJob) {
+                let quote: any = jobDetailsData?.quote;
+                if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
+                    let quoteId: any = quote[0].tradieId;
+                    props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
+                }
+                return
+            }
+
             if (data?.status === 1) {
                 props.history.push('/request-monitored/ccr');
             } else {
@@ -549,16 +541,6 @@ const JobDetailsPage = (props: PropsType) => {
         console.log({ response });
         props.history.push(`/jobs?active=${activeType}`)
     }
-
-    // let CASE_1 = jobDetailsData?.isCancelJobRequest;
-    // let CASE_2 = paramStatus === 'CANCELLED' &&
-    //     jobDetailsData?.reasonForCancelJobRequest > 0;
-    // let CASE_3 = paramStatus === 'Pending dispute' &&
-    //     jobDetailsData?.changeRequestDeclineReason?.length > 0;
-
-    // let CASE_1 = jobDetailsData?.isCancelJobRequest;
-    // let CASE_2 = jobDetailsData?.reasonForCancelJobRequest ? jobDetailsData?.reasonForCancelJobRequest : false;
-    // let CASE_3 = jobDetailsData?.changeRequestDeclineReason?.length ? jobDetailsData?.changeRequestDeclineReason : false;
 
     let CASE_1 = jobDetailsData?.isCancelJobRequest;
     let CASE_2 = paramStatus === 'CANCELLED' && jobDetailsData?.reasonForCancelJobRequest > 0 ? jobDetailsData?.reasonForCancelJobRequest : false;
@@ -685,7 +667,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     if (activeType == "open" && jobDetailsData?.quoteJob) {
                                         let response = await closeOpenedJob({ jobId: paramJobId });
                                         setToggleDelete((prev: any) => !prev);
-                                        if(response?.success){
+                                        if (response?.success) {
                                             props.history.push('/jobs?active=past');
                                         }
                                     } else {
@@ -782,29 +764,6 @@ const JobDetailsPage = (props: PropsType) => {
                             <div className="flex_col_sm_4 relative">
 
                                 <div className="detail_card">
-                                    {console.log({ jobDetailsData, paramStatus })}
-                                    {/* {paramStatus === 'CANCELLED' &&
-                                        jobDetailsData?.reasonForCancelJobRequest > 0 &&
-                                        <div className="chang_req_card mb-sm">
-                                            <span className="sub_title">Job cancelled</span>
-                                            <p className="commn_para line-2">
-                                                {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
-                                            </p>
-                                            <p className="commn_para line-2">
-                                                {jobDetailsData?.reasonNoteForCancelJobRequest}
-                                            </p>
-                                        </div>} */}
-
-                                    {/* {paramStatus === 'Pending dispute' &&
-                                        jobDetailsData?.changeRequestDeclineReason?.length > 0 &&
-                                        <div className="chang_req_card mb-sm">
-                                            <span className="sub_title">Job cancelled reason</span>
-                                            <p className="commn_para line-2">
-                                                {jobDetailsData?.changeRequestDeclineReason}
-                                            </p>
-                                         </div>} */}
-
-
                                     <span className="title line-3" title={jobDetailsData.jobName}>{jobDetailsData.jobName}</span>
                                     <span className="tagg">Job details</span>
                                     <div className="job_info">
@@ -919,15 +878,16 @@ const JobDetailsPage = (props: PropsType) => {
                                                     <button
                                                         className="fill_btn btn-effect"
                                                         onClick={() => {
-                                                            if (jobDetailsData?.quoteJob) {
-                                                                let quote: any = jobDetailsData?.quote;
-                                                                if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
-                                                                    let quoteId: any = quote[0].tradieId;
-                                                                    props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
-                                                                }
-                                                            } else {
-                                                                handleCancelJob(1, jobDetailsData)
-                                                            }
+                                                            handleCancelJob(1, jobDetailsData);
+                                                            // if (jobDetailsData?.quoteJob) {
+                                                            //     let quote: any = jobDetailsData?.quote;
+                                                            //     if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
+                                                            //         let quoteId: any = quote[0].tradieId;
+                                                            //         props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
+                                                            //     }
+                                                            // } else {
+                                                            //     handleCancelJob(1, jobDetailsData) ;
+                                                            // }
                                                         }}>
                                                         {'Accept'}
                                                     </button>
@@ -1106,29 +1066,6 @@ const JobDetailsPage = (props: PropsType) => {
                                             </div>
                                         </div>
                                     </Modal>
-
-                                    {/* {jobDetailsData?.isCancelJobRequest &&
-                                        <div className="chang_req_card mt-sm">
-                                            <span className="sub_title">Job cancellation request</span>
-                                            <p className="commn_para">
-                                                {JobCancelReasons(jobDetailsData?.reasonForCancelJobRequest)}
-                                            </p>
-                                            {jobDetailsData?.reasonNoteForCancelJobRequest && <p className="commn_para">{jobDetailsData?.reasonNoteForCancelJobRequest}</p>}
-                                            <button
-                                                onClick={() => {
-                                                    handleCancelJob(1, jobDetailsData)
-                                                }}
-                                                className="fill_btn btn-effect">
-                                                {'Accept'}
-                                            </button>
-                                            <button
-                                                onClick={() => {
-                                                    handleCancelJob(2, jobDetailsData)
-                                                }}
-                                                className="fill_grey_btn btn-effect">
-                                                {'Reject'}
-                                            </button>
-                                        </div>} */}
                                 </div>
                             </div>
                         </div>
@@ -1171,11 +1108,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                 <span>{`${index + 1}. ${item?.milestoneName}`}</span>
                                                 {console.log({ item })}
                                                 <span>{renderTime(item?.fromDate, item?.toDate)}</span>
-                                                {/* <span>{item?.fromDate?.length && !item?.toDate?.length ?
-                                                    `${moment(item?.fromDate).format('MMM DD')}` :
-                                                    item?.fromDate?.length && item?.toDate?.length ?
-                                                        `${moment(item?.fromDate).format('MMM DD ')}-${moment(item?.toDate).format(' DD')}` : ''
-                                                }</span> */}
                                             </li>
                                         )
                                     })}
@@ -1224,31 +1156,6 @@ const JobDetailsPage = (props: PropsType) => {
                                                                         </div>
                                                                     </div>
                                                                     <p>{questionData?.question}</p>
-                                                                    {console.log({ questionList })}
-                                                                    {/* {Object.keys(questionData?.answerData).length > 0 &&
-                                                                    !(questionsData.answerShownHideList.includes(questionData?.questionId)) ?
-                                                                    <span
-                                                                        className="show_hide_ans link"
-                                                                        onClick={() => questionHandler('showAnswerClicked', questionData?.questionId)}>
-                                                                        {'Show answer'}
-                                                                    </span>: (
-                                                                        <span
-                                                                        className="show_hide_ans link">
-                                                                            {'Answer'}
-                                                                        </span>
-                                                                    )} */}
-                                                                    {/* {questionData?.isModifiable &&
-                                                                    <span
-                                                                        className="action link"
-                                                                        onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>
-                                                                        {'Edit'}
-                                                                    </span>}
-                                                                {questionData?.isModifiable &&
-                                                                    <span
-                                                                        className="action link"
-                                                                        onClick={() => questionHandler('deleteQuestion', questionData?.questionId, '', index)}>
-                                                                        {'Delete'}
-                                                                    </span>} */}
                                                                     {Object.keys(questionsData?.showHideAnswer).length &&
                                                                         questionsData?.showHideAnswer[questionData?.questionId] ? (
                                                                         <span
@@ -1418,24 +1325,6 @@ const JobDetailsPage = (props: PropsType) => {
                                 <div className="flex_row">
                                     <div className="flex_col_sm_3">
                                         <div className={`tradie_card posted_by`}>
-                                            {/* <div className={`tradie_card posted_by ${activeType == "active" ? 'view_more' : ''}`}> */}
-                                            {/* {activeType == "active" && (
-                                            <span
-                                                className="chat circle"
-                                                onClick={(e) => {
-                                                    e.preventDefault();
-                                                    props.history.push({
-                                                        pathname: `/chat`,
-                                                        state: {
-                                                            tradieId: tradieId,
-                                                            builderId: storageService.getItem('userInfo')?._id,
-                                                            jobId: jobDetailsData?.jobId,
-                                                            jobName: jobDetailsData?.jobName
-                                                        }
-                                                    })
-                                                }}>
-                                            </span>
-                                        )} */}
                                             <div className="user_wrap">
                                                 <figure className={`u_img`}>
                                                     {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (

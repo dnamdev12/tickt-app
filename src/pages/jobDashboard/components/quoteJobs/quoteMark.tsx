@@ -264,14 +264,6 @@ const QuoteMark = (props: any) => {
                                 totalAmount: 0
                             });
                         } else {
-                            // if (props.location?.state?.base_redirect === 'jobDetailPage') {
-                            //     const jobDetailsData: any = props.location?.state?.jobData;
-                            //     props.history.push(`/job-details-page?jobId=${jobDetailsData?.jobId}&tradeId=${jobDetailsData?.tradeId}&specializationId=${jobDetailsData?.specializationId}`);
-                            //     return;
-                            // }
-                            // if (props.location?.state?.redirect_from === 'appliedJobs') {
-                            //     props.history.push('applied-jobs');
-                            // }
                             props.history.goBack();
                         }
                     }}
@@ -502,23 +494,7 @@ const QuoteMark = (props: any) => {
                     </span>
                 </div>
             )}
-
-            {/* {isEditTrue ? (
-                <button
-                    onClick={() => {
-                        setEdit(null);
-                        setLocalQuote({
-                            item_number: Items?.length + 1,
-                            description: '',
-                            price: 0,
-                            quantity: 0,
-                            totalAmount: 0
-                        });
-                    }}
-                    className="fill_grey_btn quote_btn">
-                    {'Continue'}
-                </button>
-            ) :  */}
+            
             {(quoteId || !props.isDataFetched) ? null : (
                 <button
                     onClick={handleSubmit}

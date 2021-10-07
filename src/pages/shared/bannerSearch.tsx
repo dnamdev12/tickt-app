@@ -148,14 +148,6 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [props])
 
-    // useEffect(() => {
-    //     if (addressText?.length > 2) {
-    //         document.getElementById('location-input-tag')?.focus();
-    //     } else {
-    //         document.getElementById('location_search_static')?.focus();
-    //     }
-    // }, [addressText])
-
     useEffect(() => {
         // if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
         //     getRecentLocationData();
@@ -604,27 +596,6 @@ const BannerSearch = (props: PropsType) => {
                     {/* {'location search start here!'} */}
                     <li className="loc_box">
                         <div id="location-text-field-div">
-                            {/* <div
-                                className={`text_field ${addressText?.length > 2 ? 'none' : ''}`}>
-                                <input
-                                    id="location_search_static"
-                                    placeholder='Where?'
-                                    ref={locationRefClone}
-                                    value={addressText}
-                                    autoComplete="off"
-                                    className={'line-1'}
-                                    onChange={(e: any) => { setAddressText((e.target.value).trimLeft()) }}
-                                    onFocus={() => {
-                                        setInputFocus2(true);
-                                        setInputFocus1(false);
-                                        setInputFocus3(false);
-                                    }}
-                                />
-                                <span className="detect_icon_ltr">
-                                    <img src={Location} alt="location" />
-                                </span>
-                            </div> */}
-
                             <div>
                                 <PlacesAutocomplete
                                     value={addressText}
@@ -693,18 +664,6 @@ const BannerSearch = (props: PropsType) => {
                                                             }}
                                                         />
                                                     </span> : null}
-
-                                                {/* {inputFocus2 && addressText?.length > 2 ?
-                                                    <span className="detect_icon" >
-                                                        <img
-                                                            src={cross}
-                                                            alt="cross"
-                                                            onClick={() => {
-                                                                setAddressText('');
-                                                                setSelectedAddress({});
-                                                            }}
-                                                        />
-                                                    </span> : null} */}
                                             </div>
 
                                             {suggestions?.length && inputFocus2 && addressText?.length > 2 ?
@@ -787,15 +746,7 @@ const BannerSearch = (props: PropsType) => {
                                                     lat: item?.location?.coordinates[1],
                                                     lng: item?.location?.coordinates[0],
                                                 });
-
                                                 setSuggestion(JSON.parse(item?.address));
-
-                                                // let location_coordinates: any = item.location.coordinates
-                                                // setAddressText(item.formatted_address);
-                                                // setSelectedAddress({
-                                                //     lat: location_coordinates[1],
-                                                //     lng: location_coordinates[0]
-                                                // });
                                             }}>
                                             <div className="autosuggestion_icon card loc name">
                                                 <span>{JSON.parse(item?.address)?.mainText}</span>

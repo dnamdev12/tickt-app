@@ -91,7 +91,18 @@
     "extends": [
       "react-app",
       "react-app/jest"
-    ]
+    ],
+    "rules": {
+      "eqeqeq": "off",
+      "strict": "off",
+      "no-sequences": "off",
+      "no-mixed-operators": "off",
+      "no-func-assign": "off",
+      "no-loop-func": "off",
+      "no-useless-escape": "off",
+      "array-callback-return":"off",
+      "react-hooks/exhaustive-deps":"off"
+    }
   },
   "browserslist": {
     "production": [
