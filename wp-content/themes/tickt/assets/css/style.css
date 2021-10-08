@@ -359,19 +359,18 @@ body {
 }
 @media (max-width: 1366px) {
     .custom_container {
-        max-width: 1150px;
+        max-width: 95%
    }
+   footer p {
+    width: 1000px;
+    }
 }
 @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     .custom_container {
         max-width: 1150px;
    }
 }
-@media (max-width: 1200px) {
-    .custom_container {
-        max-width: 95%;
-   }
-}
+
 .section_wrapper {
     padding: 40px 0 0 0;
     position: relative;
@@ -963,22 +962,18 @@ header {
 }
 @media(max-width:1300px){
     .banner_container {
-        width: 1170px;
+        width: 70%;
     }
 }
-@media(max-width:1200px){
-    .banner_container {
-        width: 90%;
-    }
-}
+
 .banner_container .banner_txt {
     max-width: 480px;
     color: var(--white);
 }
 .banner_txt h1 {
     letter-spacing: 0.3px;
-    margin-bottom: 30px;
-    font: 40px/1.4 'Neue Haas Grotesk Text Pro Bold';
+    margin-bottom: 20px;
+    font: 36px/1.4 'Neue Haas Grotesk Text Pro Bold';
 }
 .banner_txt p{
     font-size: 16px;
@@ -1614,3 +1609,5 @@ footer p{
   #SignupForm {
       padding:20px 30px;
   }
+
+  

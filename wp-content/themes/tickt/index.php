@@ -62,6 +62,36 @@
                 <p class="sub_title"><?php echo $tailored_for_section['our_mission'];?></p>
             </div>
         </section>
+        <?php
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+        CURLOPT_URL => 'https://ticktdevapi.appskeeper.in/v1/job/getJobList',
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => '',
+        CURLOPT_MAXREDIRS => 10,
+        CURLOPT_TIMEOUT => 0,
+        CURLOPT_FOLLOWLOCATION => true,
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => 'GET',
+        CURLOPT_POSTFIELDS => 'page=1',
+        CURLOPT_HTTPHEADER => array(
+            'Authorization: Basic dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz',
+            'timezone: Asia/Kolkata',
+            'job_status: 2',
+            'Content-Type: application/x-www-form-urlencoded'
+        ),
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        //echo '<pre>';
+        $res = json_decode($response);
+        $results = $res->result->resultData;
+        //print_r($results[1]);
+        ?>
         <section class="sphers_block">  
         <?php 
             $top_sphere_section = get_field('top_sphere_section');
@@ -149,36 +179,7 @@
             </div>
         </section>
         <section class="jobs_block">
-        <?php
-
-        $curl = curl_init();
-
-        curl_setopt_array($curl, array(
-        CURLOPT_URL => 'https://ticktdevapi.appskeeper.in/v1/job/getJobList',
-        CURLOPT_RETURNTRANSFER => true,
-        CURLOPT_ENCODING => '',
-        CURLOPT_MAXREDIRS => 10,
-        CURLOPT_TIMEOUT => 0,
-        CURLOPT_FOLLOWLOCATION => true,
-        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-        CURLOPT_CUSTOMREQUEST => 'GET',
-        CURLOPT_POSTFIELDS => 'page=1',
-        CURLOPT_HTTPHEADER => array(
-            'Authorization: Basic dGlja3RfYXBwOnRpY2t0X2FwcF8xMjNzYWRlZnNz',
-            'timezone: Asia/Kolkata',
-            'job_status: 2',
-            'Content-Type: application/x-www-form-urlencoded'
-        ),
-        ));
-
-        $response = curl_exec($curl);
-
-        curl_close($curl);
-        //echo '<pre>';
-        $res = json_decode($response);
-        $results = $res->result->resultData;
-        //print_r($results[1]);
-        ?>
+        
             <span class="title text-center">Active jobs</span>
             <div class="job_wrap">
                 <div class="owl-carousel owl-loaded owl-drag" id="jobs-owl-carousel">
