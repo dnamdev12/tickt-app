@@ -312,14 +312,14 @@ function forget_pwd_action() {
 
 
 
-add_action('init','redirect_login_homepage');
+/* add_action('init','redirect_login_homepage');
 function redirect_login_homepage(){
  global $pagenow;
  if( 'wp-login.php' == $pagenow ) {
   wp_redirect(home_url());
   exit();
  }
-}
+} */
 
 
 function logoutUser(){
