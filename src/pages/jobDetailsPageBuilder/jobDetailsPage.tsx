@@ -485,7 +485,7 @@ const JobDetailsPage = (props: PropsType) => {
         if (data?.status) {
             data['note'] = replyText;
         }
-        
+
         let response = await handleCancelReply(data);
         if (response?.success) {
             if (jobDetailsData?.quoteJob) {
@@ -1317,58 +1317,53 @@ const JobDetailsPage = (props: PropsType) => {
                                 </div>
                             </div>
                         </div>
-                        {!!jobDetailsData?.postedBy?.ratings == false &&
-                            !!jobDetailsData?.postedBy?.reviews == false &&
-                            jobDetailsData?.quoteJob ? null : (
-                            <div className="section_wrapper">
-                                <span className="sub_title">Posted by</span>
-                                <div className="flex_row">
-                                    <div className="flex_col_sm_3">
-                                        <div className={`tradie_card posted_by`}>
-                                            <div className="user_wrap">
-                                                <figure className={`u_img`}>
-                                                    {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
-                                                        <img
-                                                            src={jobDetailsData?.postedBy?.builderImage || dummy}
-                                                            alt="traide-img"
-                                                            onError={(e: any) => {
-                                                                if (e?.target?.onerror) {
-                                                                    e.target.onerror = null;
-                                                                }
-                                                                if (e?.target?.src) {
-                                                                    e.target.src = dummy;
-                                                                }
-                                                            }}
-                                                        />
-                                                    ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
-                                                        <img
-                                                            src={dummy}
-                                                            alt="traide-img"
-                                                        />
-                                                    )}
-                                                </figure>
-                                                <div className='details'>
-                                                    <span
-                                                        className="name"
-                                                        onClick={() => {
-                                                            if (jobDetailsData?.postedBy?.builderName) {
-                                                                props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                        <div className="section_wrapper">
+                            <span className="sub_title">Posted by</span>
+                            <div className="flex_row">
+                                <div className="flex_col_sm_3">
+                                    <div className={`tradie_card posted_by`}>
+                                        <div className="user_wrap">
+                                            <figure className={`u_img`}>
+                                                {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
+                                                    <img
+                                                        src={jobDetailsData?.postedBy?.builderImage || dummy}
+                                                        alt="traide-img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
                                                             }
-                                                        }}>
-                                                        {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
-                                                    </span>
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
+                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
+                                                    <img
+                                                        src={dummy}
+                                                        alt="traide-img"
+                                                    />
+                                                )}
+                                            </figure>
+                                            <div className='details'>
+                                                <span
+                                                    className="name"
+                                                    onClick={() => {
+                                                        if (jobDetailsData?.postedBy?.builderName) {
+                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                                                        }
+                                                    }}>
+                                                    {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
+                                                </span>
 
-                                                    <span className="rating">
-                                                        {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
-                                                    </span>
-                                                </div>
+                                                <span className="rating">
+                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        )}
-
+                        </div>
                     </div>
                 </div>
             </div>
