@@ -282,7 +282,7 @@ const Chat = (props: PropTypes) => {
                         (!isInitialLoader && inBoxData?.length === 0) ?
                             <div className="detail_col">
                                 <div className="flex_row tradies_row">
-                                    <div className="no_record  m-t-vh">
+                                    <div className="no_record">
                                         <figure className="no_img">
                                             <img src={noData} alt="data not found" />
                                         </figure>
@@ -290,26 +290,16 @@ const Chat = (props: PropTypes) => {
                                     </div>
                                 </div>
                             </div> :
-                            // <UserMessages
-                            //     roomId={selectedRoomID}
-                            //     roomData={roomData}
-                            //     isNoRecords={isNoRecords}
-                            //     history={props.history}
-                            //     isLoading={props.isLoading}
-                            //     inBoxData={inBoxData}
-                            //     setInBoxData={setInBoxData}
-                            // />
-                            <div className="detail_col">
-                                <div className="flex_row tradies_row">
-                                    <div className="no_record  m-t-vh">
-                                        <figure className="no_img">
-                                            <img src={noData} alt="data not found" />
-                                        </figure>
-                                        <span>No Data Found</span>
-                                    </div>
-                                </div>
-                            </div>
-                        }
+                            <UserMessages
+                                roomId={selectedRoomID}
+                                roomData={roomData}
+                                isNoRecords={isNoRecords}
+                                history={props.history}
+                                isLoading={props.isLoading}
+                                inBoxData={inBoxData}
+                                setInBoxData={setInBoxData}
+                            />
+                    }
                 </div>
             </div>
         </div >
