@@ -639,7 +639,7 @@ body {
 .react-select__option,
 .css-1uccc91-singleValue {
   font-size: 14px;
-  color: var(--blue);
+  color: var(--blue) !important;
   cursor: pointer;
 }
 
