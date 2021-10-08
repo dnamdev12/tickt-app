@@ -362,7 +362,7 @@ body {
         max-width: 95%
    }
    footer p {
-    width: 1000px;
+    width: 1000px !important;
     }
 }
 @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
