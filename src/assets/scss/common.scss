@@ -5370,6 +5370,7 @@ div#light-box div {
 
 //----------Chat-------------//
   .chat_wrapr{
+    height: 100%;
   .side_nav_col {
     width: 490px;
     @media(max-width: 768px){
@@ -5430,7 +5431,7 @@ div#light-box div {
     }
   }
   .detail_col{
-    margin-left: 300px;
+    margin-left: 390px;
     padding: 48px 0px 0 20px;
     overflow: hidden;
     @media (max-width: 1366px){
@@ -5673,6 +5674,9 @@ div#light-box div {
         cursor: pointer;
       }
     }
+  }
+  .tradies_row{
+    height: 100%;
   }
 }
 
