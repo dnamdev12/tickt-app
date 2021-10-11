@@ -64,7 +64,7 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
   }, [bankDetails]);
 
   const validate = (name: string, value: string) => {
-    if (!value?.trim()) {
+    if (value && !value.trimLeft()) {
       return `${errorLabel[name]} is required`;
     }
 

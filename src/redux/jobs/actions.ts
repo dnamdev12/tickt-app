@@ -603,7 +603,7 @@ export const republishJob = async (jobId: string) => {
   const response: FetchResponse = await NetworkOps.get(Urls.republishJob + `?jobId=${jobId}`);
   setLoading(false);
   if (response.status_code === 200) {
-    return { success: true, data: response.result };
+    return { success: true, data: {...response.result, isJobRepublish: true }};
   }
   setShowToast(true, response.message);
   return { success: false };
