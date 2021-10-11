@@ -994,7 +994,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <img src={cancel} alt="cancel" />
                                         </button>
                                     </div>
-                                    {!jobDetailsData?.questionsCount && <div className="no_record">
+                                    {!jobDetailsData?.questionsCount && <div className="no_record align_centr">
                                         <figure className="no_img">
                                             <img src={noDataFound} alt="data not found" />
                                         </figure>

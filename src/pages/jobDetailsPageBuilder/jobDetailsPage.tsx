@@ -1204,7 +1204,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                             </div>
                                                         )
                                                     }) : (
-                                                        <div className="no_record">
+                                                        <div className="no_record align_centr">
                                                             <figure className="no_img">
                                                                 <img src={noDataFound} alt="data not found" />
                                                             </figure>

@@ -4087,6 +4087,9 @@ body {
 	flex-flow: column;
 	width: 100%;
   height: 100%;
+  &.align_centr{
+    height: 95%;
+  }
 	.no_img{
 		height: 100px;
 		margin: 0 auto 15px;
