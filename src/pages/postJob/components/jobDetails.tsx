@@ -310,7 +310,7 @@ const JobDetails = ({
         const createJob = jobId ? publishJobAgain : createPostJob;
 
         let response: any = null;
-
+        if (data_clone.isJobRepublish) delete data_clone.isJobRepublish;
         if (update) {
             response = await publishOpenJobAgain(data_clone);
         } else {
@@ -341,7 +341,7 @@ const JobDetails = ({
                 if (item?.mediaType === 3) {
                     sources.push(docThumbnail);
                     types.push('image');
-                } 
+                }
             })
         }
 
@@ -438,7 +438,8 @@ const JobDetails = ({
                                             <li className="icon calendar">
                                                 {renderTime(data)}
                                             </li>
-                                            <li className="icon dollar">${data?.amount} {data?.pay_type === "Fixed price" ? 'f/p' : 'p/h'} </li>
+                                            {data.quoteJob == 0 && <li className="icon dollar">${data?.amount} {data?.pay_type === "Fixed price" ? 'f/p' : 'p/h'} </li>}
+                                            {data.quoteJob == 1 && <li className="icon dollar">for quoting</li>}
                                             <li className="icon location line-1" title={data?.location_name}>{data?.location_name}</li>
                                         </ul>
                                     </div>
@@ -555,7 +556,7 @@ const JobDetails = ({
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{builderProfile?.userName}</span>
-                                                <span className="rating">{builderProfile?.rating  || '0'} , {builderProfile?.reviews  || '0'} reviews</span>
+                                                <span className="rating">{builderProfile?.rating || '0'} , {builderProfile?.reviews || '0'} reviews</span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                             </div>
                                         </div>

@@ -144,7 +144,7 @@ const NewApplicants = (props: any) => {
                                             }
                                         }}
                                         className="fill_grey_btn full_btn btn-effect">
-                                        {`${quoteCount?.length || quoteCount} Quotes`}
+                                        {`${quoteCount?.length || quoteCount} Applications`}
                                     </button>
                                 ) : (
                                     <button

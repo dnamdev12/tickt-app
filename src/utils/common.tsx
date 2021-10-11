@@ -401,9 +401,13 @@ export const onNotificationClick = (notification: any) => {
         case 19: //PRIVACY_POLICY
             return `/update-user-info?menu=pp`;
         case 20: // VIEW_QUOTE_JOB
-         return `/jobs?active=active&viewQuotes=true&jobId=${jobId}&tradieId=${senderId}`;
+            return `/jobs?active=active&viewQuotes=true&jobId=${jobId}&tradieId=${senderId}`;
         case 21: // BUILDER_QUOTE_CANCEL
-            return `/quote-job-cancel?jobId=${jobId}&tradieId=${senderId}`;
+            if (user_type == 1) {
+                return `/job-details-page?jobId=${jobId}&redirect_from=jobs`;
+            } else {
+                return `/quote-job-cancel?jobId=${jobId}&tradieId=${senderId}`;
+            }
         case 25: //CHAT_NOTIFICATION
             return `/chat`;
         default:

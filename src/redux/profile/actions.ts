@@ -197,7 +197,7 @@ export const uploadStripeDocument = async (data: any) => {
   const response: FetchResponse = await NetworkOps.putRaw(`${Urls.payment}/uploadStripeDocument`, data, options);
   setLoading(false);
   if (response.status_code === 200) {
-    return { success: true };
+    return { success: true, msg: response.message };
   }
   setShowToast(true, response.message);
   return { success: false, data: '' };
