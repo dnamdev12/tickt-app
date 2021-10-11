@@ -582,28 +582,20 @@ const JobDetailsPage = (props: PropsType) => {
                 <div className="custom_container">
                     {['active', 'open'].includes(activeType) ? (
                         <span className="dot_menu r0">
-                            <img src={editIconBlue} alt="edit" />
+                            {activeType === 'active' && <img src={editIconBlue} alt="edit" />}
+                            {activeType === 'open' && !(jobDetailsData?.quoteCount > 0 || jobDetailsData?.isInvited) && <img src={editIconBlue} alt="edit" />}
                             <div className="edit_menu">
                                 <ul>
                                     {activeType == "open" && (
                                         <React.Fragment>
                                             <li
                                                 onClick={() => {
-                                                    // setShowToast(true, 'Under Development');
                                                     props.history.push(`/post-new-job?update=true&jobId=${paramJobId}`)
                                                 }}
                                                 className="icon edit_line">
                                                 {'Edit'}
                                             </li>
-                                            {activeType == "open" && jobDetailsData?.quoteJob ? (
-                                                <li
-                                                    onClick={() => {
-                                                        setToggleDelete((prev: any) => !prev);
-                                                    }}
-                                                    className="icon delete">
-                                                    {'Cancel'}
-                                                </li>
-                                            ) : (
+                                            {activeType == "open" && !(jobDetailsData?.quoteCount > 0 || jobDetailsData?.isInvited) && (
                                                 <li
                                                     onClick={() => {
                                                         setToggleDelete((prev: any) => !prev);
@@ -612,7 +604,14 @@ const JobDetailsPage = (props: PropsType) => {
                                                     {'Delete'}
                                                 </li>
                                             )}
-
+                                            {/* :
+                                            <li
+                                                onClick={() => {
+                                                    setToggleDelete((prev: any) => !prev);
+                                                }}
+                                                className="icon delete">
+                                                {'Delete'}
+                                            </li> */}
                                         </React.Fragment>
                                     )}
                                     {activeType == "active" && (
@@ -664,15 +663,15 @@ const JobDetailsPage = (props: PropsType) => {
                         <DialogActions>
                             <Button
                                 onClick={async () => {
-                                    if (activeType == "open" && jobDetailsData?.quoteJob) {
-                                        let response = await closeOpenedJob({ jobId: paramJobId });
-                                        setToggleDelete((prev: any) => !prev);
-                                        if (response?.success) {
-                                            props.history.push('/jobs?active=past');
-                                        }
-                                    } else {
-                                        deleteJob(paramJobId);
-                                    }
+                                    // if (activeType == "open" && jobDetailsData?.quoteJob) {
+                                    //     let response = await closeOpenedJob({ jobId: paramJobId });
+                                    //     setToggleDelete((prev: any) => !prev);
+                                    //     if (response?.success) {
+                                    //         props.history.push('/jobs?active=past');
+                                    //     }
+                                    // } else {
+                                    if (activeType == "open") deleteJob(paramJobId);
+                                    // }
                                 }}
                                 color="primary"
                                 autoFocus>
