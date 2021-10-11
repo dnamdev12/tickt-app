@@ -593,7 +593,7 @@
         $('#sphere-owl-carousel').owlCarousel({
             stagePadding: 45,
             loop: true,
-            margin: 50,
+            margin: 70,
             dots: false,
             nav: true,
             responsive: {
@@ -608,7 +608,7 @@
                     stagePadding: 0,
                 },
                 1024: {
-                    items: 6
+                    items: 5
                 }
             }
         });

@@ -87,10 +87,29 @@
         $response = curl_exec($curl);
 
         curl_close($curl);
-        //echo '<pre>';
+        //echo 'Hello <pre>';
         $res = json_decode($response);
         $results = $res->result->resultData;
         //print_r($results[1]);
+        foreach($results as $result) {
+            //$result->categories[0]->trade_name
+            $cats[] = $result->categories[0];
+        }
+        //print_r($cats);
+        $arrs = array_unique(array_column($cats, 'trade_name'));
+        $arrsimg = array_unique(array_column($cats, 'selected_url'));
+        $gallery_arr = array_combine($arrs, $arrsimg);
+        //print_r($gallery_arr);
+        foreach ( $gallery_arr as $k=>$v )
+        {
+            $gallery_arrs[] = array('trade_name'=>$k, 'url'=> $v);
+        }
+                
+        //print_r($gallery_arrs);
+        //$tarr = array_unique(array_column($results, 'jobName'));
+        //$inters[] = array_intersect_key($cats, $arrs);
+        //$top_sphere_gallery = array_combine($arrs, $arrsimg);
+        //print_r($arrs);
         ?>
         <section class="sphers_block">  
         <?php 
@@ -101,16 +120,16 @@
                  <div class="owl-carousel owl-theme" id="sphere-owl-carousel"> 
                      <?php 
                      $i = 0;
-                     foreach($top_sphere_section['top_sphere_gallery'] as $gallery)
-                     { 
-                        
+                     foreach($gallery_arrs as $gallery)
+                     {
+                      
                         ?>
                     <div class="item">
                         <div class="sphere">
                             <figure>
                                 <img src="<?php echo $gallery['url'];?>" />
                             </figure>
-                            <span class="xs_title"><?php echo $gallery['alt'];?></span>
+                            <span class="xs_title"><?php echo $gallery['trade_name'];?></span>
                         </div>
                     </div>
                     <?php 
@@ -167,7 +186,7 @@
                     <div class="flex_col_sm_4">
                         <div class="feature_wrap">
                             <figure>
-                                <img src="<?php echo $section_reason['section_reason_icon']; ?>" alt="time-saver" />
+                                <img src="<?php echo $section_reason['section_reason_icon']; ?>" alt="<?php echo $section_reason['section_reason_heading']; ?>" />
                             </figure>
                             <span class="xs_title"><?php echo $section_reason['section_reason_heading']; ?></span>
                             <p class="commn_para"><?php echo $section_reason['section_reason_description']; ?></p>
