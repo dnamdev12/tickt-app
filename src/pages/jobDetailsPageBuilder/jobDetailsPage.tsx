@@ -1140,7 +1140,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </button>
                                             </div>
                                             <div className="inner_wrap">
-                                                {questionList?.length ?
+                                                {questionList?.length > 0 &&
                                                     questionList?.map((item: any, index: number) => {
                                                         const { questionData } = item;
                                                         return (
@@ -1203,18 +1203,19 @@ const JobDetailsPage = (props: PropsType) => {
                                                                     </div> : ''}
                                                             </div>
                                                         )
-                                                    }) : (
-                                                        <div className="no_record">
-                                                            <figure className="no_img">
-                                                                <img src={noDataFound} alt="data not found" />
-                                                            </figure>
-                                                            <span>No Questions Found</span>
-                                                        </div>
-                                                    )}
+                                                    })}
                                                 {jobDetailsData?.questionsCount > questionList.length && <div className="text-center">
                                                     <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>View more</button>
                                                 </div>}
                                             </div>
+                                            {questionList?.length === 0 &&
+                                                <div className="no_record">
+                                                    <figure className="no_img">
+                                                        <img src={noDataFound} alt="data not found" />
+                                                    </figure>
+                                                    <span>No Questions Found</span>
+                                                </div>
+                                            }
                                         </div>
                                     </>
                                 </Modal>
