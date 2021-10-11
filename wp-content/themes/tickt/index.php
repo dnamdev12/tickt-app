@@ -15,7 +15,7 @@
                 </div>
             </figure>
         </section>
-        <section class="about_block clip">
+        <section class="about_block clip" id="about">
         <?php 
             $section_1 = get_field('section_1');
         ?>
@@ -111,7 +111,7 @@
         //$top_sphere_gallery = array_combine($arrs, $arrsimg);
         //print_r($arrs);
         ?>
-        <section class="sphers_block">  
+        <section class="sphers_block" id="product">  
         <?php 
             $top_sphere_section = get_field('top_sphere_section');
         ?>
@@ -208,7 +208,7 @@
                     ?>
                     <div class="item">
                         <div class="job_card">
-                            <a href="https://ticktreactqa.appskeeper.in/login" class="more_detail circle"></a>
+                            <a href="https://ticktreactqa.appskeeper.in" class="more_detail circle"></a>
                             <div class="user_wrap">
                                 <figure class="u_img">
                                     <img src="<?php echo $result->categories[0]->selected_url;?>" alt="<?php echo $result->jobName;?>" />
@@ -237,7 +237,7 @@
                 </div> 
             </div>
         </section>
-        <section class="footer_banner_block">
+        <section class="footer_banner_block" id="contact">
             <figure class="banner_img">
             <?php
             $get_the_app_section = get_field('get_the_app_section');

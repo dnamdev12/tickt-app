@@ -909,9 +909,9 @@ header {
         width: 100%;
    }
 }
-.side_nav li:last-child{
+/* .side_nav li:last-child{
     margin: 0;
-}
+} */
 .side_nav li a {
     display: block;
 }

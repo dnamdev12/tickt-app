@@ -28,13 +28,13 @@
                    
                     <ul class="side_nav">
                         <li>
-                            <a href="https://ticktreactqa.appskeeper.in" class="link">About us</a>
+                            <a href="#about" class="link">About us</a>
                         </li>
                         <li>
-                            <a href="https://ticktreactqa.appskeeper.in" class="link">Product</a>
+                            <a href="#product" class="link">Product</a>
                         </li>
                         <li>
-                            <a href="https://ticktreactqa.appskeeper.in" class="link">Contacts</a>
+                            <a href="#contact" class="link">Contacts</a>
                         </li>
                     </ul>
                     

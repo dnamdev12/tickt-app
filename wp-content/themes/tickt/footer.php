@@ -8,8 +8,8 @@
                 </div>
                 <div class="links_col">
                     <ul>
-                        <li><a class="link">About us</a></li>
-                        <li><a class="link">Product</a></li>
+                        <li><a href="#about" class="link">About us</a></li>
+                        <li><a href="#product" class="link">Product</a></li>
                         <li><a class="link">Download</a></li>
                     </ul>
                     <ul>
@@ -29,7 +29,7 @@
                             <a><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/instagram.svg" alt="instagram" /></a>
                         </li>
                     </ul>
-                    <button class="fill_btn btn-effect">Sign-up for free</button>
+                    <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_btn btn-effect">Sign-up for free</a>
                 </div>
             </div>
         </div>
