@@ -79,6 +79,7 @@ const JobDetails = ({
     const [isEnablePopup, setPopUp] = useState(false);
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
+    const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
     const history = useHistory();
 
@@ -130,126 +131,29 @@ const JobDetails = ({
         }
     }, [categories, jobTypes, stepCompleted])
 
+    useEffect(() => {
+        let fsSlideObj: any = {};
+        let slideCount = 1;
+
+        if (data?.urls?.length) {
+            data?.urls.forEach((item: any, index: number) => {
+                if (item?.mediaType === 1 || item?.mediaType === 2) {
+                    fsSlideObj[`${index}`] = slideCount++;
+                }
+            });
+        }
+        if (Object.keys(fsSlideObj)?.length > 0) setFsSlideListner(fsSlideObj);
+    }, [data.urls]);
+    
     const forwardScreenStep = (id: any, data?: any) => {
         updateDetailScreen({ currentScreen: id, data });
         handleStepForward(id);
     }
 
-    const renderByFileFormat = (data: any) => {
-        let data_clone: any = data;
-        console.log({ data_clone })
-        if (data_clone?.urls?.length) {
-            let format_items = data_clone?.urls?.map((item: any) => {
-                let split_item_format = item?.link?.split('.');
-                let get_split_fromat = split_item_format[split_item_format.length - 1];
-                console.log({
-                    split_item_format,
-                    get_split_fromat,
-                    docformats
-                })
-                if (imageFormats.includes(get_split_fromat) || videoFormats.includes(get_split_fromat)) {
-                    return {
-                        url: item?.link,
-                        format: get_split_fromat,
-                        posture: item?.base64 || ''
-                    };
-                }
-
-                if (docformats.includes(get_split_fromat)) {
-                    return {
-                        url: item?.link,
-                        format: get_split_fromat,
-                        posture: docThumbnail,
-                        isPdf: get_split_fromat == "pdf" ? true : false
-                    };
-                }
-            }).filter((item: any) => item! !== undefined);
-
-            let filterItems: any = [];
-            console.log({ format_items })
-            if (format_items?.length) {
-                format_items.forEach((item: any, index: number) => {
-                    let render_item: any = null;
-                    if (imageFormats.includes(item?.format)) {
-                        render_item = (
-                            <img
-                                onClick={() => {
-                                    setToggler((prev: any) => !prev);
-                                    setSelectSlide(index + 1);
-                                }}
-                                alt=""
-                                src={item?.url}
-                            />)
-                    }
-
-                    if (videoFormats.includes(item?.format)) {
-                        render_item = (
-                            <video
-                                onClick={() => {
-                                    setToggler((prev: any) => !prev);
-                                    setSelectSlide(index + 1);
-                                }}
-                                poster={item?.posture}
-                                preload="metadata"
-                                src={item?.url}
-                            />)
-                    }
-
-                    console.log({
-                        format: docformats.includes(item?.format),
-                        item: item.format
-                    })
-                    if (docformats.includes(item?.format)) {
-                        render_item = (
-                            <img
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    // setToggler((prev: any) => !prev);
-                                    // setSelectSlide(index + 1);
-                                    // https://docs.google.com/viewer?url=https://appinventiv-development.s3.amazonaws.com/1631009256441file-sample_100kB.doc
-                                    //item?.isPdf ? item.url : 
-                                    // let url = `https://docs.google.com/gview?url=${item.url}&embedded=true`;
-                                    let url = `/doc-view?url=${item.url}`//
-                                    window.open(url, '_blank');
-                                }}
-                                alt=""
-                                src={item?.posture}
-                            />)
-                    }
-
-                    if (render_item) {
-                        filterItems.push(
-                            <div className='item' >
-                                <span
-                                    onClick={(e: any) => {
-                                        e.preventDefault();
-                                        handleStepForward(13);
-                                    }}
-                                    className="edit_icon" title="Edit">
-                                    <img src={editIconBlue} alt="edit" />
-                                </span>
-                                {render_item}
-                            </div>
-                        )
-                    }
-                })
-            } else {
-                filterItems.push(
-                    <div className='item' >
-                        <span
-                            onClick={(e: any) => {
-                                e.preventDefault();
-                                handleStepForward(13);
-                            }}
-                            className="edit_icon" title="Edit">
-                            <img src={editIconBlue} alt="edit" />
-                        </span>
-                        {<img src={jobDummyImage} alt="item-url" />}
-                    </div>
-                )
-            }
-
-            return filterItems;
+    const filterFileName = (link: any) => {
+        if (link?.length) {
+            let arrItems = link.split('/');
+            return arrItems[arrItems?.length - 1];
         }
     }
 
@@ -268,8 +172,6 @@ const JobDetails = ({
                 if (!item?.from_date?.length || item?.from_date === "Invalid date") {
                     delete item?.from_date;
                 }
-
-
                 item['order'] = index + 1;
                 return item;
             }
@@ -324,6 +226,8 @@ const JobDetails = ({
     }
 
     let data_clone: any = data;
+
+
     const renderFilteredItems = () => {
         let sources: any = [];
         let types: any = [];
@@ -403,6 +307,10 @@ const JobDetails = ({
                         slide={selectedSlide}
                         sources={sources}
                         types={types}
+                        key={sources?.length}
+                        onClose={() => {
+                            setSelectSlide(1)
+                        }}
                     />
 
                     <div className="vid_img_wrapper pt-20">
@@ -418,7 +326,46 @@ const JobDetails = ({
                                 <figure className="vid_img_thumb">
                                     {data_clone?.urls?.length ? (
                                         <OwlCarousel className='owl-theme' {...options}>
-                                            {renderByFileFormat(data)}
+                                            {/* {renderByFileFormat(data)} */}
+                                            {data?.urls?.length ?
+                                                data?.urls?.map((image: any, index: number) => {
+                                                    console.log({
+                                                        image,
+                                                        mediaType: image?.mediaType
+                                                    }, '---?')
+                                                    return image?.mediaType === 1 ? (
+                                                        <img
+                                                            key={`${image}${index}`}
+                                                            onClick={() => {
+                                                                setToggler((prev: any) => !prev);
+                                                                setSelectSlide(fsSlideListner[`${index}`]);
+                                                            }}
+                                                            title={filterFileName(image.link)}
+                                                            alt=""
+                                                            src={image?.link ? image?.link : jobDummyImage}
+                                                        />) : image?.mediaType === 2 ? (
+                                                            <video
+                                                                key={`${image}${index}`}
+                                                                onClick={() => {
+                                                                    setToggler((prev: any) => !prev);
+                                                                    setSelectSlide(fsSlideListner[`${index}`]);
+                                                                }}
+                                                                title={filterFileName(image.link)}
+                                                                src={image?.link}
+                                                                style={{ height: '400px', width: '800px' }}
+                                                            />
+                                                        ) : (
+                                                        <img
+                                                            key={`${image}${index}`}
+                                                            onClick={() => {
+                                                                let url = `/doc-view?url=${image.link}`//
+                                                                window.open(url, '_blank');
+                                                            }}
+                                                            title={filterFileName(image.link)}
+                                                            alt=""
+                                                            src={docThumbnail}
+                                                        />)
+                                                }) : <img alt="" src={jobDummyImage} />}
                                         </OwlCarousel>
                                     ) : (
                                         <img src={jobDummyImage} alt="item-url" />

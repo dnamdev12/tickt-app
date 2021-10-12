@@ -116,12 +116,27 @@ const JobDetailsPage = (props: PropsType) => {
 
     const [jobData, setJobData] = useState({});
     const [replyText, setReplyText] = useState('');
+    const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
     useEffect(() => {
         (async () => {
             await preFetch();
         })();
     }, [])
+
+    useEffect(() => {
+        let fsSlideObj: any = {};
+        let slideCount = 1;
+
+        if (jobDetailsData?.photos?.length) {
+            jobDetailsData?.photos.forEach((item: any, index: number) => {
+                if (item?.mediaType === 1 || item?.mediaType === 2) {
+                    fsSlideObj[`${index}`] = slideCount++;
+                }
+            });
+        }
+        if (Object.keys(fsSlideObj)?.length > 0) setFsSlideListner(fsSlideObj);
+    }, [jobDetailsData?.photos]);
 
     const preFetch = async () => {
         let location_search = (props?.history?.location?.search).substring(1) //window.atob()
@@ -519,9 +534,6 @@ const JobDetailsPage = (props: PropsType) => {
                 } else if (item?.mediaType === 1) {
                     sources.push(item.link);
                     types.push('image');
-                } else {
-                    sources.push(item.link);
-                    types.push('image');
                 }
             })
         }
@@ -728,7 +740,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         key={`${image}${index}`}
                                                         onClick={() => {
                                                             setToggler((prev: any) => !prev);
-                                                            setSelectSlide(index + 1);
+                                                            setSelectSlide(fsSlideListner[`${index}`]);
                                                         }}
                                                         title={filterFileName(image.link)}
                                                         alt=""
@@ -738,7 +750,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                             key={`${image}${index}`}
                                                             onClick={() => {
                                                                 setToggler((prev: any) => !prev);
-                                                                setSelectSlide(index + 1);
+                                                                setSelectSlide(fsSlideListner[`${index}`]);
                                                             }}
                                                             title={filterFileName(image.link)}
                                                             src={image?.link}
