@@ -14,7 +14,7 @@ interface Propstype {
 }
 
 const InitialSignupPage = (props: Propstype) => {
-    let window_:any = window;
+    let window_: any = window;
 
     useEffect(() => {
         // prefetch();
@@ -41,6 +41,8 @@ const InitialSignupPage = (props: Propstype) => {
 
     const guestLoginClicked = (e: any) => {
         e.preventDefault();
+        window.location.href = 'http://ticktwp.appskeeper.in/';
+        return;
         var today = new Date();
         var date = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
         storageService.setItem("guestToken", date)
