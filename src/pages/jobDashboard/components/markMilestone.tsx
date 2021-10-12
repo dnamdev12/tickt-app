@@ -462,7 +462,7 @@ const MarkMilestone = (props: Proptypes) => {
                               <button
                                 onClick={() => {
                                   if (declinedCount >= 5) {
-                                    setShowToast(true, 'You Have Exceeded Maximum Number Of Chances To Submit The Milestone');
+                                    setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
                                     return;
                                   }
                                   setMilestoneIndex(index);

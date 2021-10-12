@@ -184,12 +184,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
 
         if (hasDescription && !imageFormats.includes(fileType)) {
-            setShowToast(true, "The File Must Be In Proper Format");
+            setShowToast(true, "The file must be in proper format");
             return;
         }
 
         if (filesUrl?.length === 8) {
-            setShowToast(true, "Max Files Upload Limit Is 6")
+            setShowToast(true, "Max files upload limit is 6")
             return;
         }
 
@@ -223,22 +223,22 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
-            setShowToast(true, "The File Must Be In Proper Format Or Size")
+            setShowToast(true, "The file must be in proper format or size")
             return;
         }
 
         if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
-            setShowToast(true, "The Image File Size Must Be Below 10 MB")
+            setShowToast(true, "The image file size must be below 10 mb")
             return;
         }
 
         if (videoFormats.includes(fileType)) { // video validations
             if (selectedFileSize > 10) {
-                setShowToast(true, "The Video File Size Must Be Below 20 MB")
+                setShowToast(true, "The video file size must be below 20 mb")
                 return;
             }
             if (countVideoFormats?.length > 1) {
-                setShowToast(true, "Max Video File Upload Limit Is 2")
+                setShowToast(true, "Max video file upload limit is 2")
                 return;
             }
         }

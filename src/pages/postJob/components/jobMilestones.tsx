@@ -151,9 +151,9 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
 
         if (item_find) {
             if (not_lie_between) {
-                setShowToast(true, 'Milestones Dates Should Be Lie Between The Job Details');
+                setShowToast(true, 'Milestones dates should be lie between the job details');
             } else {
-                setShowToast(true, 'Please Check The Milestone Dates');
+                setShowToast(true, 'Please check the milestone dates');
             }
             return item_find;
         }
@@ -274,7 +274,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                 handleCombineMileStones(localMilestones);
                                                 handleStepForward(10)
                                             } else {
-                                                setShowToast(true, "Please Arrange Milestone Date Wise")
+                                                setShowToast(true, "Please arrange milestone date wise")
                                             }
                                         }
                                     }}
@@ -438,7 +438,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                             handleStepForward(13)
                                                         }
                                                     } else {
-                                                        setShowToast(true, "Please Arrange Milestone Date Wise")
+                                                        setShowToast(true, "Please arrange milestone date wise")
                                                     }
                                                 }
                                             }}

@@ -363,7 +363,7 @@ const BannerSearch = (props: PropsType) => {
         let props_trade: any = selected_item?.selectedTrade;
 
         if (!stateData?._id && !props_trade?._id) {
-            setShowToast(true, 'Please Enter The Valid Search Text.');
+            setShowToast(true, 'Please enter the valid search text');
             return;
         }
 
@@ -490,7 +490,7 @@ const BannerSearch = (props: PropsType) => {
                 }
             } else {
                 if (itemToggle?.state !== "denied") {
-                    setShowToast(true, "Uh Oh! We Don't Provide Service Currently In Your Location");
+                    setShowToast(true, "Uh Oh! We don't provide service currently in your location");
                 }
             }
         }

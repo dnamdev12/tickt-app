@@ -32,7 +32,7 @@ const Specialization = (props: Propstype) => {
         if (specialization.length) {
             props.updateSteps(props.step + 1, { specialization })
         } else {
-            setShowToast(true, "Please Select At Least One Specialisation")
+            setShowToast(true, "Please select at least one specialisation")
         }
     }
 

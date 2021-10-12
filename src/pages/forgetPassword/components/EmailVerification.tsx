@@ -62,7 +62,7 @@ const PhoneNumber = (props: Propstype) => {
         };
         let response = await resendOtp(data);
         if (response.success) {
-            setShowToast(true, 'We Have Resent The Verification Code On Your Email. Please Check Your Email');
+            setShowToast(true, 'We have resent the verification code on your email. Please check your email');
             setCounter(Constants.OTP_TIMER);
         }
     }
