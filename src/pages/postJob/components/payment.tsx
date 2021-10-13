@@ -205,9 +205,9 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                 type="checkbox"
                 id="milestone1" />
               <label htmlFor="milestone1">
-                <b>
+              <span className="ft_bold">
                   {'I have a budget'}
-                </b>
+                  </span>
                 <div className="sub-title">
                   How would you like to pay for it?
                 </div>
@@ -276,9 +276,9 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                   type="checkbox"
                   id="milestone2" />
                 <label htmlFor="milestone2">
-                  <b>
-                    {'I need a quote'}
-                  </b>
+                  <span className="ft_bold">
+                  {'I need a quote'}
+                  </span>
                   <div className="sub-title">
                     Find a quote that suits your budget
                   </div>
