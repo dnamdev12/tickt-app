@@ -281,7 +281,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 image_render = (
                     <img
                         id={`media_${index}`}
-                        onClick={() => { setItemToggle(index) }}
+                        // onClick={() => { setItemToggle(index) }}
                         title={get_split_name}
                         src={item}
                         async-src={item}
@@ -315,7 +315,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     [index]: true
                                 }))
                             }}
-                            onClick={() => { setItemToggle(index) }} />
+                            // onClick={() => { setItemToggle(index) }}
+                             />
                     )
                 } else {
                     image_render = (
@@ -329,7 +330,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     [index]: true
                                 }))
                             }}
-                            onClick={() => { setItemToggle(index) }} />
+                            // onClick={() => { setItemToggle(index) }}
+                             />
                     )
                 }
             }
@@ -398,7 +400,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         return { sources, types };
     }
 
-    const { sources, types } = renderFilteredItems();
+    // const { sources, types } = renderFilteredItems();
     let IsRenderValues = null;
     if (Object.values(isItemsLoad)?.length) {
         IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
@@ -419,7 +421,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
                 <div className="custom_container">
 
-                    <FsLightbox
+                    {/* <FsLightbox
                         toggler={toggler}
                         slide={selectedSlide}
                         sources={sources}
@@ -428,7 +430,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         onClose={() => {
                             setSelectSlide(1)
                         }}
-                    />
+                    /> */}
 
                     <canvas id="canvas-extractor" style={{ display: 'none' }}></canvas>
 
