@@ -25,7 +25,7 @@ const label: { [index: string]: string } = {
 }
 
 const pattern = "^([0-9][0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
-const STRING_ERROR = 'Selected Data Is Fully Engage';
+const STRING_ERROR = 'Selected data is fully engage';
 const AddEditMile = (props: any) => {
     const { resetItems, item } = props;
     const [isToggle, setToggle] = useState(false);
@@ -388,7 +388,7 @@ const AddEditMile = (props: any) => {
         }
         console.log({ checkIsValid });
         if (!checkIsValid) {
-            setShowToast(true, 'Please Add Unique Date');
+            setShowToast(true, 'Please add unique date');
             return;
         }
 

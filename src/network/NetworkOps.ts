@@ -55,7 +55,7 @@ class NetworkOps {
                         // alert('Token Expired');
                         const res1 = await response.text();
                         const res2 = JSON.parse(res1);
-                        setShowToast(true, res2.message || 'You\'ve Been Logged Out');
+                        setShowToast(true, res2.message || 'You\'ve been logged out');
                         setTimeout(() => {
                             window.location.pathname = '/login';
                         }, 1000);

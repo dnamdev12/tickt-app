@@ -107,7 +107,7 @@ const AddLocation = ({ data, stepCompleted, handleStepComplete, handleStepBack }
           setLocation({ coordinates: coordinates_values, address: address })
           setLoading(false);
         } else {
-          setShowToast(true, "Uh Oh! We Don't Provide Service Currently In Your Location");
+          setShowToast(true, "Uh Oh! We don't provide service currently in your location");
           setLoading(false);
         }
       } catch (err) {

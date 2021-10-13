@@ -79,7 +79,7 @@ export const updateItem = async (data: any) => {
 export const getAcceptDeclineTradie = async (data: any) => {
     const response: FetchResponse = await NetworkOps.putToJson(Urls.acceptDeclineRequest, data);
     if (response.status_code === 200) {
-        return { success: true, data: response?.result };
+        return { success: true, data: response?.result, msg: response.message };
     }
     setShowToast(true, response.message);
     return { success: false };

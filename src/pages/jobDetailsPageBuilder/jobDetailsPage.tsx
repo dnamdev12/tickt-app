@@ -116,12 +116,27 @@ const JobDetailsPage = (props: PropsType) => {
 
     const [jobData, setJobData] = useState({});
     const [replyText, setReplyText] = useState('');
+    const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
     useEffect(() => {
         (async () => {
             await preFetch();
         })();
     }, [])
+
+    useEffect(() => {
+        let fsSlideObj: any = {};
+        let slideCount = 1;
+
+        if (jobDetailsData?.photos?.length) {
+            jobDetailsData?.photos.forEach((item: any, index: number) => {
+                if (item?.mediaType === 1 || item?.mediaType === 2) {
+                    fsSlideObj[`${index}`] = slideCount++;
+                }
+            });
+        }
+        if (Object.keys(fsSlideObj)?.length > 0) setFsSlideListner(fsSlideObj);
+    }, [jobDetailsData?.photos]);
 
     const preFetch = async () => {
         let location_search = (props?.history?.location?.search).substring(1) //window.atob()
@@ -485,7 +500,7 @@ const JobDetailsPage = (props: PropsType) => {
         if (data?.status) {
             data['note'] = replyText;
         }
-        
+
         let response = await handleCancelReply(data);
         if (response?.success) {
             if (jobDetailsData?.quoteJob) {
@@ -517,9 +532,6 @@ const JobDetailsPage = (props: PropsType) => {
                     sources.push(item.link);
                     types.push('video');
                 } else if (item?.mediaType === 1) {
-                    sources.push(item.link);
-                    types.push('image');
-                } else {
                     sources.push(item.link);
                     types.push('image');
                 }
@@ -582,28 +594,20 @@ const JobDetailsPage = (props: PropsType) => {
                 <div className="custom_container">
                     {['active', 'open'].includes(activeType) ? (
                         <span className="dot_menu r0">
-                            <img src={editIconBlue} alt="edit" />
+                            {activeType === 'active' && <img src={editIconBlue} alt="edit" />}
+                            {activeType === 'open' && !(jobDetailsData?.quoteCount > 0 || jobDetailsData?.isInvited) && <img src={editIconBlue} alt="edit" />}
                             <div className="edit_menu">
                                 <ul>
                                     {activeType == "open" && (
                                         <React.Fragment>
                                             <li
                                                 onClick={() => {
-                                                    // setShowToast(true, 'Under Development');
                                                     props.history.push(`/post-new-job?update=true&jobId=${paramJobId}`)
                                                 }}
                                                 className="icon edit_line">
                                                 {'Edit'}
                                             </li>
-                                            {activeType == "open" && jobDetailsData?.quoteJob ? (
-                                                <li
-                                                    onClick={() => {
-                                                        setToggleDelete((prev: any) => !prev);
-                                                    }}
-                                                    className="icon delete">
-                                                    {'Cancel'}
-                                                </li>
-                                            ) : (
+                                            {activeType == "open" && !(jobDetailsData?.quoteCount > 0 || jobDetailsData?.isInvited) && (
                                                 <li
                                                     onClick={() => {
                                                         setToggleDelete((prev: any) => !prev);
@@ -612,7 +616,14 @@ const JobDetailsPage = (props: PropsType) => {
                                                     {'Delete'}
                                                 </li>
                                             )}
-
+                                            {/* :
+                                            <li
+                                                onClick={() => {
+                                                    setToggleDelete((prev: any) => !prev);
+                                                }}
+                                                className="icon delete">
+                                                {'Delete'}
+                                            </li> */}
                                         </React.Fragment>
                                     )}
                                     {activeType == "active" && (
@@ -664,15 +675,15 @@ const JobDetailsPage = (props: PropsType) => {
                         <DialogActions>
                             <Button
                                 onClick={async () => {
-                                    if (activeType == "open" && jobDetailsData?.quoteJob) {
-                                        let response = await closeOpenedJob({ jobId: paramJobId });
-                                        setToggleDelete((prev: any) => !prev);
-                                        if (response?.success) {
-                                            props.history.push('/jobs?active=past');
-                                        }
-                                    } else {
-                                        deleteJob(paramJobId);
-                                    }
+                                    // if (activeType == "open" && jobDetailsData?.quoteJob) {
+                                    //     let response = await closeOpenedJob({ jobId: paramJobId });
+                                    //     setToggleDelete((prev: any) => !prev);
+                                    //     if (response?.success) {
+                                    //         props.history.push('/jobs?active=past');
+                                    //     }
+                                    // } else {
+                                    if (activeType == "open") deleteJob(paramJobId);
+                                    // }
                                 }}
                                 color="primary"
                                 autoFocus>
@@ -729,7 +740,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         key={`${image}${index}`}
                                                         onClick={() => {
                                                             setToggler((prev: any) => !prev);
-                                                            setSelectSlide(index + 1);
+                                                            setSelectSlide(fsSlideListner[`${index}`]);
                                                         }}
                                                         title={filterFileName(image.link)}
                                                         alt=""
@@ -739,7 +750,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                             key={`${image}${index}`}
                                                             onClick={() => {
                                                                 setToggler((prev: any) => !prev);
-                                                                setSelectSlide(index + 1);
+                                                                setSelectSlide(fsSlideListner[`${index}`]);
                                                             }}
                                                             title={filterFileName(image.link)}
                                                             src={image?.link}
@@ -1140,7 +1151,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </button>
                                             </div>
                                             <div className="inner_wrap">
-                                                {questionList?.length ?
+                                                {questionList?.length > 0 &&
                                                     questionList?.map((item: any, index: number) => {
                                                         const { questionData } = item;
                                                         return (
@@ -1203,18 +1214,19 @@ const JobDetailsPage = (props: PropsType) => {
                                                                     </div> : ''}
                                                             </div>
                                                         )
-                                                    }) : (
-                                                        <div className="no_record  m-t-vh">
-                                                            <figure className="no_img">
-                                                                <img src={noDataFound} alt="data not found" />
-                                                            </figure>
-                                                            <span>No Questions Found</span>
-                                                        </div>
-                                                    )}
+                                                    })}
                                                 {jobDetailsData?.questionsCount > questionList.length && <div className="text-center">
                                                     <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>View more</button>
                                                 </div>}
                                             </div>
+                                            {questionList?.length === 0 &&
+                                                <div className="no_record align_centr">
+                                                    <figure className="no_img">
+                                                        <img src={noDataFound} alt="data not found" />
+                                                    </figure>
+                                                    <span>No Questions Found</span>
+                                                </div>
+                                            }
                                         </div>
                                     </>
                                 </Modal>
@@ -1317,58 +1329,53 @@ const JobDetailsPage = (props: PropsType) => {
                                 </div>
                             </div>
                         </div>
-                        {!!jobDetailsData?.postedBy?.ratings == false &&
-                            !!jobDetailsData?.postedBy?.reviews == false &&
-                            jobDetailsData?.quoteJob ? null : (
-                            <div className="section_wrapper">
-                                <span className="sub_title">Posted by</span>
-                                <div className="flex_row">
-                                    <div className="flex_col_sm_3">
-                                        <div className={`tradie_card posted_by`}>
-                                            <div className="user_wrap">
-                                                <figure className={`u_img`}>
-                                                    {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
-                                                        <img
-                                                            src={jobDetailsData?.postedBy?.builderImage || dummy}
-                                                            alt="traide-img"
-                                                            onError={(e: any) => {
-                                                                if (e?.target?.onerror) {
-                                                                    e.target.onerror = null;
-                                                                }
-                                                                if (e?.target?.src) {
-                                                                    e.target.src = dummy;
-                                                                }
-                                                            }}
-                                                        />
-                                                    ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
-                                                        <img
-                                                            src={dummy}
-                                                            alt="traide-img"
-                                                        />
-                                                    )}
-                                                </figure>
-                                                <div className='details'>
-                                                    <span
-                                                        className="name"
-                                                        onClick={() => {
-                                                            if (jobDetailsData?.postedBy?.builderName) {
-                                                                props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                        <div className="section_wrapper">
+                            <span className="sub_title">Posted by</span>
+                            <div className="flex_row">
+                                <div className="flex_col_sm_3">
+                                    <div className={`tradie_card posted_by`}>
+                                        <div className="user_wrap">
+                                            <figure className={`u_img`}>
+                                                {(jobDetailsData?.postedBy)?.hasOwnProperty('builderImage') ? (
+                                                    <img
+                                                        src={jobDetailsData?.postedBy?.builderImage || dummy}
+                                                        alt="traide-img"
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
                                                             }
-                                                        }}>
-                                                        {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
-                                                    </span>
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
+                                                        }}
+                                                    />
+                                                ) : Array.isArray(jobDetailsData?.postedBy) ? renderBuilderAvatar("image") : (
+                                                    <img
+                                                        src={dummy}
+                                                        alt="traide-img"
+                                                    />
+                                                )}
+                                            </figure>
+                                            <div className='details'>
+                                                <span
+                                                    className="name"
+                                                    onClick={() => {
+                                                        if (jobDetailsData?.postedBy?.builderName) {
+                                                            props?.history?.push(`/builder-info?builderId=${jobDetailsData?.postedBy?.builderId}`)
+                                                        }
+                                                    }}>
+                                                    {jobDetailsData?.postedBy?.builderName || renderBuilderAvatar("name")}
+                                                </span>
 
-                                                    <span className="rating">
-                                                        {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
-                                                    </span>
-                                                </div>
+                                                <span className="rating">
+                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
+                                                </span>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        )}
-
+                        </div>
                     </div>
                 </div>
             </div>

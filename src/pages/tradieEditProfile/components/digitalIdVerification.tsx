@@ -11,8 +11,10 @@ import close from '../../../assets/images/icon-close-1.png';
 
 const imageFormats: Array<string> = ["jpeg", "jpg", "png"];
 interface Props {
-    setIdVerifClicked: (data: boolean) => void;
+    setIdVerifClicked?: (data: boolean) => void;
+    markMilestoneVerif?: (data: any) => void;
     stripeAccountId: string;
+    redirect_from?: string
 }
 
 const LodgeDispute = (props: Props) => {
@@ -42,12 +44,12 @@ const LodgeDispute = (props: Props) => {
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (imageFormats.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
-            setShowToast(true, "The File Must Be In Proper Format Or Size")
+            setShowToast(true, "The file must be in proper format or size")
             return;
         }
 
         if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
-            setShowToast(true, "The Image File Size Must Be Below 10 MB")
+            setShowToast(true, "The image file size must be below 10 mb")
             return;
         }
 
@@ -70,7 +72,11 @@ const LodgeDispute = (props: Props) => {
 
     const handleSubmit = async () => {
         const res = await uploadStripeDocument(formData);
-        if (res.success) {
+        if (res.success && props.redirect_from === 'mark-milestone' && props.markMilestoneVerif) {
+            setShowToast(true, res.msg);
+            props.markMilestoneVerif('verifSuccess');
+            return;
+        } else if (res.success) {
             history.push('/id-verification-success');
         }
     }
@@ -98,7 +104,11 @@ const LodgeDispute = (props: Props) => {
             <div className="flex_col_sm_8">
                 <div className="relate">
                     <button
-                        onClick={() => { props.setIdVerifClicked(false) }}
+                        onClick={() => {
+                            if (props.redirect_from === 'mark-milestone' && props.markMilestoneVerif) {
+                                props.markMilestoneVerif('backStep');
+                            } else if (props.setIdVerifClicked) props.setIdVerifClicked(false);
+                        }}
                         className="back"></button>
                     <span className="xs_sub_title">
                         {'Add your ID photo'}

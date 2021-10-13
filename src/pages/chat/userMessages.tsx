@@ -190,7 +190,7 @@ const UserMessages = (props: any) => {
     }
 
     const setResDeviceType = (deviceType: number, msg: any) => {
-        switch (deviceType) {
+        switch (Number(deviceType)) {
             case 1:
                 return {
                     app_icon: "https://appinventiv-development.s3.amazonaws.com/1628513615740ic-logo-yellow.png",
@@ -206,16 +206,22 @@ const UserMessages = (props: any) => {
                 }
             case 2:
                 return {
-                    messageId: msg?.messageId,
+                    body: msg?.messageText,
                     messageText: msg?.messageText,
-                    roomId: msg?.messageRoomId,
-                    roomName: '',
-                    roomType: 'single',
-                    type: 'chat',
-                    sound: 'default',
-                    badge: '',
+                    sender: {
+                        first_name: storageService.getItem('userInfo')?.userName,
+                        device_token: storageService.getItem('fcmToken'),
+                        user_id: storageService.getItem('userInfo')?._id,
+                        device_type: 2,
+                    },
+                    jobId: msg?.messageRoomId?.split('_')?.[0],
+                    badge: 1,
                     device_type: 2,
-                    sender: '',
+                    title: storageService.getItem('userInfo')?.userName,
+                    jobName: props.roomData?.jobName,
+                    notification_type: 50,
+                    sound: 'default',
+                    messageId: msg?.messageId,
                 }
             case 3:
                 return {
@@ -233,13 +239,13 @@ const UserMessages = (props: any) => {
         let data = setResDeviceType(props.roomData?.oppUserInfo?.deviceType, msg);
         let newData = {
             to: `${props.roomData?.oppUserInfo?.deviceToken}`,
-            data: data
+            ...(props.roomData?.oppUserInfo?.deviceType == 2 ? { notification: data } : { data: data })
         };
 
-        const headers_:Types = {
-                'Content-Type': 'application/json',
-                'Authorization': Constants.FcmHeaderAuthorizationKey,
-            }
+        const headers_: Types = {
+            'Content-Type': 'application/json',
+            'Authorization': Constants.FcmHeaderAuthorizationKey,
+        }
         const response: any = await fetch(`https://fcm.googleapis.com/fcm/send`, {
             method: "POST",
             headers: headers_,
@@ -264,7 +270,7 @@ const UserMessages = (props: any) => {
             maxFileSize = 20;
         }
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > maxFileSize)) {
-            setShowToast(true, "The File Must Be In Proper Format Or Size")
+            setShowToast(true, "The file must be in proper format or size")
             return;
         }
 
@@ -278,7 +284,7 @@ const UserMessages = (props: any) => {
             } else if (check_type === 2) {
                 sendImageVideoMsg(res.imgUrl, "video");
             } else {
-                setShowToast(true, "There Is Some Technical Issue");
+                setShowToast(true, "There is some technical issue");
             }
             setIsDocUploading(false);
             // setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));

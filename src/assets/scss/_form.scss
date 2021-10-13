@@ -580,15 +580,15 @@ a.fill_grey_btn {
   }
 }
 
-// .m-t-vh{
-//   margin-top: 20vh;
-//   @media (max-width: 1366px) {
-//    margin-top: 15vh;
-//   }
-//   @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-//    margin-top: 15vh;
-//   }
-// }
+.m-t-vh{
+  margin-top: 20vh;
+  @media (max-width: 1366px) {
+   margin-top: 15vh;
+  }
+  @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+   margin-top: 15vh;
+  }
+}
 
 .pt-20{
   padding-top: 20px;

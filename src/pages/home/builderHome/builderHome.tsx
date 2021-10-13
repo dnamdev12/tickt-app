@@ -70,7 +70,7 @@ const BuilderHome = (props: any) => {
         let permission: any = await navigator?.permissions?.query({ name: 'geolocation' });
         if (permission?.state === 'denied') {
             if (getKey() !== "true") {
-                setShowToast(true, 'Please Enable The Location Permission From The Browser Settings So That Tickt App Can Access Your Location');
+                setShowToast(true, 'Please enable the location permission from the browser settings so that Tickt App can access your location');
                 setKey();
             }
         }

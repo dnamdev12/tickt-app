@@ -1,12 +1,9 @@
-import id from 'date-fns/esm/locale/id/index.js';
-import { isError } from 'lodash';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import Constants from '../../../utils/constants';
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 //@ts-ignore
 import _ from 'lodash';
 //@ts-ignore
-import { useQuill } from 'react-quilljs';
 import 'quill/dist/quill.snow.css'; // Add css for snow theme
 
 interface Proptypes {

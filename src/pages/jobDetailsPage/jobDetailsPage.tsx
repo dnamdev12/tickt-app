@@ -108,6 +108,7 @@ const JobDetailsPage = (props: PropsType) => {
         replyChangeRequestReason: '',
     });
     const [pendingRequestClicked, setPendingRequestClicked] = useState<boolean>(false);
+    const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
     console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation", jobInviteAction, "jobInviteAction");
 
@@ -151,6 +152,20 @@ const JobDetailsPage = (props: PropsType) => {
             setJobConfirmation((prevData: any) => ({ ...prevData, tradieTradeId: props.tradieProfileData?.trade[0] }));
         }
     }, [props.tradieProfileData]);
+
+    useEffect(() => {
+        let fsSlideObj: any = {};
+        let slideCount = 1;
+
+        if (jobDetailsData?.photos?.length) {
+            jobDetailsData?.photos.forEach((item: any, index: number) => {
+                if (item?.mediaType === 1 || item?.mediaType === 2) {
+                    fsSlideObj[`${index}`] = slideCount++;
+                }
+            });
+        }
+        if (Object.keys(fsSlideObj)?.length > 0) setFsSlideListner(fsSlideObj);
+    }, [jobDetailsData?.photos]);
 
     const applyJobClicked = async () => {
         var isValid = true;
@@ -571,7 +586,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                         key={`${image}${index}`}
                                                         onClick={() => {
                                                             setToggler((prev: any) => !prev);
-                                                            setSelectSlide(index + 1);
+                                                            setSelectSlide(fsSlideListner[`${index}`]);
                                                         }}
                                                         title={filterFileName(image.link)}
                                                         alt=""
@@ -581,7 +596,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                             key={`${image}${index}`}
                                                             onClick={() => {
                                                                 setToggler((prev: any) => !prev);
-                                                                setSelectSlide(index + 1);
+                                                                setSelectSlide(fsSlideListner[`${index}`]);
                                                             }}
                                                             title={filterFileName(image.link)}
                                                             src={image?.link}
@@ -994,7 +1009,7 @@ const JobDetailsPage = (props: PropsType) => {
                                             <img src={cancel} alt="cancel" />
                                         </button>
                                     </div>
-                                    {!jobDetailsData?.questionsCount && <div className="no_record  m-t-vh">
+                                    {!jobDetailsData?.questionsCount && <div className="no_record align_centr">
                                         <figure className="no_img">
                                             <img src={noDataFound} alt="data not found" />
                                         </figure>

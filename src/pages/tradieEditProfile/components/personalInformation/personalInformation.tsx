@@ -359,21 +359,21 @@ export class PersonalInformation extends Component<Props, State> {
             const newQualificationDoc = this.state.basicDetailsData?.qualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && !isSelected?.length));
             console.log(newQualificationDoc, "newQualificationDoc validation");
             if (!!newQualificationDoc && Object.keys(newQualificationDoc)?.length > 0) {
-                setShowToast(true, "Please Upload All Selected Documents");
+                setShowToast(true, "Please upload all selected documents");
                 return;
             }
 
             const newRemainingDoc = this.state.remainingQualificationDoc?.find(({ url, isSelected }: { url: string, isSelected: string }) => (!url?.length && isSelected?.length));
             console.log(newRemainingDoc, "newRemainingDoc validation");
             if (!!newRemainingDoc && Object.keys(newRemainingDoc)?.length > 0) {
-                setShowToast(true, "Please Upload All Selected Documents");
+                setShowToast(true, "Please upload all selected documents");
                 return;
             }
         } else {
             if (!this.state.basicDetailsData?.companyName) {
                 newErrors.companyName = Constants.errorStrings.companyNameEmpty;
             } else if (this.state.basicDetailsData?.companyName.trim()?.length > 50) {
-                newErrors.companyName = 'Maximum 50 Characters Are Allowed.';
+                newErrors.companyName = 'Maximum 50 characters are allowed.';
             } else {
                 const nameRegex = new RegExp(regex.fullname);
                 if (!nameRegex.test(this.state.basicDetailsData.companyName.trim())) {

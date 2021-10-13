@@ -50,6 +50,11 @@ body {
   font-family: 'Neue Haas Grotesk Text Pro Roman';
   font-weight: normal;
 }
+.ft_bold{
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  font-size: 16px !important;
+  color: var(--blue) !important;
+}
 
 .app_wrapper {
   position: relative;
@@ -4087,6 +4092,9 @@ body {
 	flex-flow: column;
 	width: 100%;
   height: 100%;
+  &.align_centr{
+    height: 95%;
+  }
 	.no_img{
 		height: 100px;
 		margin: 0 auto 15px;
@@ -4947,6 +4955,7 @@ body {
   position: relative;
   .show_label{
     font-family: 'Neue Haas Grotesk Text Pro Medium';
+    color: var(--blue);
   }
   .decline_media{
     li{

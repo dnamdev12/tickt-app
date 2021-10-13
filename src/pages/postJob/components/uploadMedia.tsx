@@ -184,12 +184,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
 
         if (hasDescription && !imageFormats.includes(fileType)) {
-            setShowToast(true, "The File Must Be In Proper Format");
+            setShowToast(true, "The file must be in proper format");
             return;
         }
 
         if (filesUrl?.length === 8) {
-            setShowToast(true, "Max Files Upload Limit Is 6")
+            setShowToast(true, "Max files upload limit is 6")
             return;
         }
 
@@ -223,22 +223,22 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
         if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
-            setShowToast(true, "The File Must Be In Proper Format Or Size")
+            setShowToast(true, "The file must be in proper format or size")
             return;
         }
 
         if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
-            setShowToast(true, "The Image File Size Must Be Below 10 MB")
+            setShowToast(true, "The image file size must be below 10 mb")
             return;
         }
 
         if (videoFormats.includes(fileType)) { // video validations
             if (selectedFileSize > 10) {
-                setShowToast(true, "The Video File Size Must Be Below 20 MB")
+                setShowToast(true, "The video file size must be below 20 mb")
                 return;
             }
             if (countVideoFormats?.length > 1) {
-                setShowToast(true, "Max Video File Upload Limit Is 2")
+                setShowToast(true, "Max video file upload limit is 2")
                 return;
             }
         }
@@ -281,7 +281,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 image_render = (
                     <img
                         id={`media_${index}`}
-                        onClick={() => { setItemToggle(index) }}
+                        // onClick={() => { setItemToggle(index) }}
                         title={get_split_name}
                         src={item}
                         async-src={item}
@@ -315,7 +315,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     [index]: true
                                 }))
                             }}
-                            onClick={() => { setItemToggle(index) }} />
+                            // onClick={() => { setItemToggle(index) }}
+                             />
                     )
                 } else {
                     image_render = (
@@ -329,7 +330,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     [index]: true
                                 }))
                             }}
-                            onClick={() => { setItemToggle(index) }} />
+                            // onClick={() => { setItemToggle(index) }}
+                             />
                     )
                 }
             }
@@ -398,7 +400,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         return { sources, types };
     }
 
-    const { sources, types } = renderFilteredItems();
+    // const { sources, types } = renderFilteredItems();
     let IsRenderValues = null;
     if (Object.values(isItemsLoad)?.length) {
         IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
@@ -419,7 +421,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
                 <div className="custom_container">
 
-                    <FsLightbox
+                    {/* <FsLightbox
                         toggler={toggler}
                         slide={selectedSlide}
                         sources={sources}
@@ -428,7 +430,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         onClose={() => {
                             setSelectSlide(1)
                         }}
-                    />
+                    /> */}
 
                     <canvas id="canvas-extractor" style={{ display: 'none' }}></canvas>
 

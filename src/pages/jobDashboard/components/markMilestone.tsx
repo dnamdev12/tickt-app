@@ -5,6 +5,9 @@ import UploadMedia from '../../postJob/components/uploadMedia';
 import { renderTime } from '../../../utils/common';
 import LodgeDispute from './lodgeDispute/lodgeDispute';
 import CancelJobs from './cancelJobs/cancelJob'
+import DigitalIdVerification from '../../tradieEditProfile/components/digitalIdVerification';
+import Modal from '@material-ui/core/Modal';
+
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 import storageService from '../../../utils/storageService';
@@ -16,10 +19,20 @@ import editIconBlue from '../../../assets/images/ic-edit-blue.png';
 import more from '../../../assets/images/icon-direction-right.png';
 import check from '../../../assets/images/checked-2.png';
 import pendingIcon from '../../../assets/images/exclamation-icon.png'
-
 import noDataFound from '../../../assets/images/no-search-data.png';
+import verifiedIcon from '../../../assets/images/checked-2.png';
+import cancel from "../../../assets/images/ic-cancel.png";
 
-
+const digitalInfoPoints: Array<string> = [
+  'Passport',
+  'Driver Licence (Driver\'s license) - scans of front and back are required',
+  'Photo Card - scans of front and back are required',
+  'New South Wales Driving Instructor Licence - scans of front and back are required',
+  'Tasmanian Government Personal Information Card - scans of front and back are required',
+  'ImmiCard - scans of front and back are required',
+  'Proof of Age card - scans of front and back are required',
+  'Australian Defence Force (ADF) identification card (Military ID) - scans of front and back are required'
+]
 
 const declinedImages = {
   desktop: {
@@ -57,6 +70,8 @@ interface BankDetails {
   account_name: string;
   account_number: string;
   bsb_number: string;
+  accountVerified: boolean;
+  stripeAccountId: string;
 }
 interface Proptypes {
   getMilestoneList: (jobId: string) => void;
@@ -100,6 +115,8 @@ const MarkMilestone = (props: Proptypes) => {
     account_name: '',
     account_number: '',
     bsb_number: '',
+    accountVerified: false,
+    stripeAccountId: '',
   };
   const [data, setData] = useState<any>(defaultData);
   const [errors, setErrors] = useState({
@@ -123,6 +140,7 @@ const MarkMilestone = (props: Proptypes) => {
   const [mediaList, setMediaList] = useState([]);
   const [toggler, setToggler] = useState(false);
   const [selectedSlide, setSelectSlide] = useState(1);
+  const [digitalIDInfo, setDigitalIDInfo] = useState<boolean>(false);
 
   useEffect(() => {
     const params = new URLSearchParams(history.location?.search);
@@ -298,6 +316,17 @@ const MarkMilestone = (props: Proptypes) => {
     )
   }
 
+  const markMilestoneVerif = (val: any) => {
+    if (val === 'backStep') setStep(5)
+    if (val === 'verifSuccess') {
+      setData((prevData: any) => ({
+        ...prevData,
+        accountVerified: true,
+      }));
+      setStep(5);
+    }
+  }
+
   const { sources, types } = renderFilteredItems();
   let page = null;
   let isMilestoneList: any = props?.milestoneList || false;
@@ -433,7 +462,7 @@ const MarkMilestone = (props: Proptypes) => {
                               <button
                                 onClick={() => {
                                   if (declinedCount >= 5) {
-                                    setShowToast(true, 'You Have Exceeded Maximum Number Of Chances To Submit The Milestone');
+                                    setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
                                     return;
                                   }
                                   setMilestoneIndex(index);
@@ -598,7 +627,7 @@ const MarkMilestone = (props: Proptypes) => {
                 <span className="xs_sub_title">{jobName}</span>
               </div>
               <span className="sub_title">Worked hours in this milestone</span>
-  
+
               <p className="commn_para">
                 The amount paid will be recalculated based on approval of the
                 actual hours by the Builder
@@ -752,8 +781,55 @@ const MarkMilestone = (props: Proptypes) => {
                 </div>
                 <span className="error_msg">{errors.bsb_number}</span>
               </div>
+              {data.account_name && data.account_number && data.bsb_number && data.stripeAccountId &&
+                <>
+                  <div className="form_field">
+                    <button className="fill_grey_btn full_btn btn-effect id_verified"
+                      onClick={() => {
+                        if (data?.accountVerified) return;
+                        setStep(6);
+                      }}
+                    >
+                      {data?.accountVerified && <img src={verifiedIcon} alt="verified" />}
+                      {`${data?.accountVerified ? 'ID Verified' : 'Add ID Verification'}`}
+                    </button>
+                  </div>
+                  <span className="show_label id_info" onClick={() => setDigitalIDInfo(true)}>ID verification is required as part of Stripe ID verification process.</span>
+                </>
+              }
+
+              <Modal
+                className="custom_modal"
+                open={digitalIDInfo}
+                onClose={() => setDigitalIDInfo(false)}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+              >
+                <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                  <div className="heading">
+                    <span className="sub_title">ID verification</span>
+                    <button className="close_btn" onClick={() => setDigitalIDInfo(false)}>
+                      <img src={cancel} alt="cancel" />
+                    </button>
+                  </div>
+                  <div className="inner_wrap">
+                    <span className="show_label">ID verification is required as part of Stripe ID verification process.</span>
+                    <span className="show_label">Below is a spansting of documents that can accept as proof of identity, address, and entity.</span>
+                    <ul className="verificationid_list">
+                      {digitalInfoPoints.map((info, index) => <li className="show_label" key={index}>{info}</li>)}
+                    </ul>
+                    <div className="bottom_btn custom_btn center">
+                      <button
+                        className={`fill_btn full_btn btn-effect`}
+                        onClick={() => setDigitalIDInfo(false)}
+                      >Ok</button>
+                    </div>
+                  </div>
+                </div>
+              </Modal>
+
               <button
-                className="fill_btn full_btn btn-effect"
+                className={`fill_btn full_btn btn-effect ${readOnly ? data?.accountVerified ? '' : 'disable_btn' : ''}`}
                 onClick={readOnly ? () => {
                   const callback = (jobCompletedCount: number) => {
                     if (isLastMilestone) {
@@ -816,6 +892,15 @@ const MarkMilestone = (props: Proptypes) => {
             </div>
           </div>
         );
+        break;
+      case 6:
+        return page = (
+          <DigitalIdVerification
+            redirect_from={"mark-milestone"}
+            markMilestoneVerif={markMilestoneVerif}
+            stripeAccountId={data.stripeAccountId}
+          />
+        )
         break;
 
       default:

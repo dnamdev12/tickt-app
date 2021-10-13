@@ -1,11 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // @ts-ignore
 import { DateRangePicker } from 'react-date-range';
 import 'react-date-range/dist/styles.css'; // main style file
 import 'react-date-range/dist/theme/default.css'; // theme css file
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 interface Proptypes {
@@ -39,11 +39,22 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
     useEffect(() => {
         if (stepCompleted) {
             if (jobId) {
+                let startDt = moment(data.from_date, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')) ? moment(data.from_date).toDate() : '';
+                let endDt = moment(data.to_date, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')) ? moment(data.to_date).toDate() : '';
+                if (data.isJobRepublish) {
+                    if (!startDt) {
+                        startDt = new Date();
+                    }
+                    if (!endDt) {
+                        endDt = new Date();
+                    }
+                }
                 setRange({
-                    startDate: moment(data.from_date, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')) ? moment(data.from_date).toDate() : '',
-                    endDate: moment(data.to_date, 'YYYY-MM-DD').isSameOrAfter(moment().format('YYYY-MM-DD')) ? moment(data.to_date).toDate() : '',
+                    startDate: startDt,
+                    endDate: endDt,
                     key: 'selection',
                 });
+                handleCheck({startDate: startDt, endDate: endDt});
             } else {
                 setRange({
                     startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
@@ -90,7 +101,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
             });
 
             if (item_find && !jobId) {
-                setShowToast(true, 'Please Check The Milestone Dates');
+                setShowToast(true, 'Please check the milestone dates');
                 return;
             }
         }
