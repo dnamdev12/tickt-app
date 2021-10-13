@@ -50,6 +50,11 @@ body {
   font-family: 'Neue Haas Grotesk Text Pro Roman';
   font-weight: normal;
 }
+.ft_bold{
+  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  font-size: 16px !important;
+  color: var(--blue) !important;
+}
 
 .app_wrapper {
   position: relative;
