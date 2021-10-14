@@ -10,7 +10,7 @@
                     <div class="banner_txt">
                         <h1><?php echo $banner_section['banner_heading'];?></h1>
                         <p><?php echo $banner_section['banner_subheading'];?></p>
-                        <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_btn btn-effect"><?php echo $banner_section['banner_button_cta'];?></a>
+                        <a href="https://ticktreactstg.appskeeper.in/signup" class="fill_btn btn-effect"><?php echo $banner_section['banner_button_cta'];?></a>
                     </div>
                 </div>
             </figure>

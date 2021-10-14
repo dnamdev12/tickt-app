@@ -29,7 +29,7 @@
                             <a><img src="<?php echo get_stylesheet_directory_uri(); ?>/assets/images/instagram.svg" alt="instagram" /></a>
                         </li>
                     </ul>
-                    <a href="https://ticktreactqa.appskeeper.in/signup" class="fill_btn btn-effect">Sign-up for free</a>
+                    <a href="https://ticktreactstg.appskeeper.in/signup" class="fill_btn btn-effect">Sign-up for free</a>
                 </div>
             </div>
         </div>
