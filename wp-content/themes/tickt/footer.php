@@ -13,8 +13,8 @@
                         <li><a class="link">Download</a></li>
                     </ul>
                     <ul>
-                        <li><a class="link">Privacy Policy</a></li>
-                        <li><a class="link">Terms of Use</a></li>
+                        <li><a href="https://ticktstgapi.appskeeper.in/privacyPolicyWeb" class="link">Privacy Policy</a></li>
+                        <li><a href="https://ticktstgapi.appskeeper.in/tncWeb" class="link">Terms of Use</a></li>
                     </ul>
                 </div>
                 <div class="social_col">
