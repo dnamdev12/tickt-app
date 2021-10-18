@@ -669,7 +669,7 @@ const JobDetailsPage = (props: PropsType) => {
                         aria-describedby="alert-dialog-description">
                         <DialogTitle id="alert-dialog-title">
                             {activeType == "open" && jobDetailsData?.quoteJob ?
-                                "Are you sure you want to cancel the job ?" :
+                                "Are you sure you want to delete the job ?" :
                                 "Are you sure you want to delete the job ?"}
                         </DialogTitle>
                         <DialogActions>

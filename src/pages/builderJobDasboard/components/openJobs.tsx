@@ -223,7 +223,7 @@ class OpenJobs extends Component<Props, State> {
                                                     }
                                                 }}
                                                 className="fill_grey_btn full_btn btn-effect">
-                                                {`${quoteCount} Quotes`}
+                                                {`${quoteCount} Quote${quoteCount === 1 ? '' : 's'}`}
                                             </button>
                                         ) : null}
                                         {!quoteJob && tradieId?.length ? (
