@@ -6,7 +6,11 @@ import 'react-date-range/dist/theme/default.css'; // theme css file
 import moment from 'moment';
 import { setShowToast } from '../../../redux/common/actions';
 import { useLocation } from "react-router-dom";
-
+import _ from 'lodash';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 interface Proptypes {
     data: any;
@@ -31,6 +35,8 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
         endDate: '',// new Date(),
         key: 'selection',
     });
+    const [singleDayRange, setSingleDayRange] = useState<number | null>(null);
+    const [singleDayModal, setSingleDayModal] = useState<boolean>(false);
     const [formattedDates, setFormattedDates] = useState({});
     const [error, setError] = useState('');
     const [localChanges, setLocalChanges] = useState(false);
@@ -54,7 +60,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
                     endDate: endDt,
                     key: 'selection',
                 });
-                handleCheck({startDate: startDt, endDate: endDt});
+                handleCheck({ startDate: startDt, endDate: endDt });
             } else {
                 setRange({
                     startDate: data.from_date ? moment(data.from_date).toDate() : new Date(),
@@ -65,6 +71,13 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
             setLocalChanges(true);
         }
     }, [data, stepCompleted])
+
+    useEffect(() => {
+        if (singleDayRange === 2) {
+            setSingleDayModal(true);
+        }
+    }, [singleDayRange])
+
 
     const handleChange = (item: any) => {
         let mile: any = milestones;
@@ -107,6 +120,17 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
         }
         setRange(item.selection);
         handleCheck(item.selection);
+        console.log(_.isEqual(item.selection.startDate, item.selection.endDate), 'val', _.isEqual(item.selection, range), singleDayRange)
+        if ((_.isEqual(item.selection.startDate, item.selection.endDate) && singleDayRange === null) || !_.isEqual(item.selection, range)) {
+            setSingleDayRange(1)
+            return;
+        }
+        if (_.isEqual(item.selection.startDate, item.selection.endDate) && _.isEqual(item.selection, range) && singleDayRange === 1) {
+            setSingleDayRange(2)
+            return;
+        }
+        if (_.isEqual(item.selection.startDate, item.selection.endDate) && _.isEqual(item.selection, range) && singleDayRange === 2) return;
+        if (singleDayRange === 1 || singleDayRange === 2) setSingleDayRange(null);
     };
 
     const handleCheck = (item: any) => {
@@ -121,7 +145,10 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
     }
 
     const handleContinue = () => {
-        handleStepComplete(formattedDates);
+        handleStepComplete({
+            ...formattedDates,
+            ...(singleDayRange === 2 ? { isSingleDayJob: true } : { isSingleDayJob: false })
+        });
     }
 
     const checkDisable = () => {
@@ -135,6 +162,32 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
         <div className="app_wrapper">
             <div className="section_wrapper">
                 <div className="custom_container">
+                    <Dialog
+                        open={singleDayModal}
+                        // onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {'Are you sure you want to create single day job?'}
+                        </DialogTitle>
+                        <DialogActions>
+                            <Button
+                                onClick={() => { setSingleDayModal(false) }}
+                                color="primary">
+                                {'Yes'}
+                            </Button>
+                            <Button
+                                onClick={() => {
+                                    setSingleDayModal(false);
+                                    setSingleDayRange(1);
+                                }}
+                                color="primary" autoFocus>
+                                {'No'}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+
                     <div className="form_field">
                         <div className="flex_row">
                             <div className="flex_col_sm_5">

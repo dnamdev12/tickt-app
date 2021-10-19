@@ -595,7 +595,7 @@ const JobDetailsPage = (props: PropsType) => {
                     {['active', 'open'].includes(activeType) ? (
                         <span className="dot_menu r0">
                             {activeType === 'active' && <img src={editIconBlue} alt="edit" />}
-                            {activeType === 'open' && !(jobDetailsData?.quoteCount > 0 || jobDetailsData?.isInvited) && <img src={editIconBlue} alt="edit" />}
+                            {activeType === 'open' && !(jobDetailsData?.quoteCount > 0 || jobDetailsData?.isInvited || !jobDetailsData?.editJob) && <img src={editIconBlue} alt="edit" />}
                             <div className="edit_menu">
                                 <ul>
                                     {activeType == "open" && (
