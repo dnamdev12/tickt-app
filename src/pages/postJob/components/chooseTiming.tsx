@@ -147,7 +147,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
     const handleContinue = () => {
         handleStepComplete({
             ...formattedDates,
-            ...(singleDayRange === 2 ? { isSingleDayJob: true } : { isSingleDayJob: false })
+            ...((singleDayRange === 2 || data.isSingleDayJob) ? { isSingleDayJob: true } : { isSingleDayJob: false })
         });
     }
 
