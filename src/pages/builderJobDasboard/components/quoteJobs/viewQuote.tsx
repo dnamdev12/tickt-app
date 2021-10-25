@@ -276,7 +276,7 @@ class ViewQuote extends Component<Props, State> {
                                     </span>
                                 </div>
 
-                                {CASE_1 && (
+                                {CASE_1 && quotesData[0]?.status?.toLowerCase() === 'pending' && (
                                     <>
                                         <div className="form_field">
                                             <button

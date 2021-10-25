@@ -39,6 +39,7 @@ import storageService from '../../utils/storageService';
 
 import { JobCancelReasons } from '../../utils/common';
 import docThumbnail from '../../assets/images/add-document.png'
+import { setShowToast } from '../../redux/common/actions';
 
 interface PropsType {
     history: any,
@@ -439,6 +440,15 @@ const JobDetailsPage = (props: PropsType) => {
         if (res.success) {
             setJobInviteAction('');
             props.history.replace(`job-details-page?jobId=${jobDetailsData?.jobId}&redirect_from=jobs`);
+            if (type === 2) {
+                setShowToast(true, res.msg);
+                if (!jobInviteAction) {
+                    const newData = { ...jobDetailsData }
+                    newData.isInvited = false;
+                    delete newData.jobStatus;
+                    setJobDetailsData(newData);
+                }
+            }
 
             if (type === 1) {
                 props.history.push('/active-jobs');
