@@ -665,7 +665,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         jobDetailsData?.quoteJob ? null :
                                             (['cancelled', 'expired', 'completed'].includes(jobDetailsData?.jobStatus?.toLowerCase()) || jobDetailsData?.jobStatus === '') &&
                                                 jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' &&
-                                                jobDetailsData?.applyButtonDisplay ? (
+                                                jobDetailsData?.applyButtonDisplay && !jobDetailsData?.isInvited ? (
                                                 <div className="pt-10">
                                                     <button
                                                         className="fill_btn full_btn btn-effect"
