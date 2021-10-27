@@ -206,6 +206,7 @@ const MarkMilestone = (props: Proptypes) => {
 
   const handleChange = ({ target: { name, value } }: any) => {
     let newVal: '';
+    value = value.trimLeft();
     if (name === 'actualHours') {
       let tim = value?.split(':')[0];
       if (value.includes(':') && tim?.length < 3) {

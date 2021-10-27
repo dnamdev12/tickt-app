@@ -457,26 +457,14 @@ const JobDetailsPage = (props: PropsType) => {
     }
     console.log({ activeType, hideDispute })
 
-    console.log({ paramStatus })
-    const renderByStatus = ({ status }: any) => {
-        if (status) {
-            return (
-                <>
-                    {status === "APPROVED" && <img src={approved} alt="icon" />}
-                    {status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
-                    {status}
-                </>
-            )
-        } else {
+    const renderByStatus = () => {
             return (
                 <>
                     {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
                     {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
-                    {jobDetailsData?.status}
+                    {jobDetailsData?.status?.toUpperCase()}
                 </>
             )
-        }
-
     }
 
     const handleCancelJob = async (type: any, job_detail: any) => {
@@ -1098,7 +1086,7 @@ const JobDetailsPage = (props: PropsType) => {
                                 <div className="job_progress_wrap" id="scroll-progress-bar">
                                     <div className="progress_wrapper">
                                         <span className="approval_info" id="digit-progress">
-                                            {renderByStatus({ status: paramStatus })}
+                                            {renderByStatus()}
                                         </span>
                                         <span className="progress_bar">
                                             <input

@@ -284,7 +284,7 @@ export default class AddMilestone extends Component<Props, State> {
                             aria-describedby="alert-dialog-description"
                         >
                             <DialogTitle id="alert-dialog-title">
-                                {'If you click the back arrow, you lose the data, do you want to save it?'}
+                                {'If you go back, you will lose all your changes.'}
                             </DialogTitle>
                             <DialogActions>
                                 <Button
@@ -382,7 +382,7 @@ export default class AddMilestone extends Component<Props, State> {
                                                 from_date_format,
                                                 to_date_format,
                                                 'MM-DD-YYYY',
-                                                ['DD MMM', 'DD MM YYYY']
+                                                ['DD MMM', 'DD MMM YYYY']
                                                 // ['MMM DD', 'MMM DD YYYY'] // to keep the date format stable on front-end (TIC-2467)
                                             )}
                                         </button>

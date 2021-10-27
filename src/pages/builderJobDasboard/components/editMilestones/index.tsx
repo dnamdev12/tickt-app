@@ -488,7 +488,7 @@ const EditMilestone = (props: any) => {
                 aria-describedby="alert-dialog-description"
             >
                 <DialogTitle id="alert-dialog-title">
-                    {'If you click the back arrow, you lose the data, do you want to save it ?'}
+                    {'If you go back, you will lose all your changes.'}
                 </DialogTitle>
                 <DialogActions>
                     <Button

@@ -215,6 +215,7 @@ const JobDetails = ({
         if (data_clone.isJobRepublish) delete data_clone.isJobRepublish;
         delete data_clone.isSingleDayJob;
         if (update) {
+            delete data_clone.editJob;
             response = await publishOpenJobAgain(data_clone);
         } else {
             response = await createJob(data_clone);
@@ -486,7 +487,7 @@ const JobDetails = ({
                                             history.push(`/builder-info?builderId=${builderProfile?.userId}`);
                                         }}
                                         className="tradie_card posted_by ">
-                                        <span className="chat circle"></span>
+                                        {/* <span className="chat circle"></span> */}
                                         <div className="user_wrap">
                                             <figure className="u_img">
                                                 <img

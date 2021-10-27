@@ -30,12 +30,18 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
         jobId = urlParams.get('jobId');
     }
 
+    const setCurrentDateWithoutTime = () => {
+        const date = new Date();
+        date.setHours(0, 0, 0, 0);
+        return date;
+    }
     const [range, setRange] = useState<{ [index: string]: any }>({
-        startDate: '',//new Date(), // ''
-        endDate: '',// new Date(),
+        //startDate: '', //new Date(), // ''
+        startDate: setCurrentDateWithoutTime(), // ''
+        endDate: setCurrentDateWithoutTime(),
         key: 'selection',
     });
-    const [singleDayRange, setSingleDayRange] = useState<number | null>(null);
+    const [singleDayRange, setSingleDayRange] = useState<number | null>(data.isSingleDayJob ? 2 : 1);
     const [singleDayModal, setSingleDayModal] = useState<boolean>(false);
     const [formattedDates, setFormattedDates] = useState({});
     const [error, setError] = useState('');
@@ -74,9 +80,11 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
 
     useEffect(() => {
         if (singleDayRange === 2) {
-            setSingleDayModal(true);
+            if(!data.isSingleDayJob){
+                setSingleDayModal(true);
+            }
         }
-    }, [singleDayRange])
+    }, [singleDayRange]);
 
 
     const handleChange = (item: any) => {
@@ -147,7 +155,7 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
     const handleContinue = () => {
         handleStepComplete({
             ...formattedDates,
-            ...((singleDayRange === 2 || data.isSingleDayJob) ? { isSingleDayJob: true } : { isSingleDayJob: false })
+            ...((singleDayRange === 2) ? { isSingleDayJob: true } : { isSingleDayJob: false })
         });
     }
 
