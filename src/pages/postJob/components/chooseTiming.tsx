@@ -80,11 +80,13 @@ const ChooseTiming = ({ data, milestones, stepCompleted, handleStepComplete, han
 
     useEffect(() => {
         if (singleDayRange === 2) {
-            if(!data.isSingleDayJob){
+            if (!data.isSingleDayJob) {
                 setSingleDayModal(true);
             }
+        } else if ((singleDayRange === 1)) {
+            handleCheck(range);
         }
-    }, [singleDayRange]);
+    }, [singleDayRange, range]);
 
 
     const handleChange = (item: any) => {
