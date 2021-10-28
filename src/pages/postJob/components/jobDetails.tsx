@@ -216,6 +216,7 @@ const JobDetails = ({
         delete data_clone.isSingleDayJob;
         if (update) {
             delete data_clone.editJob;
+            if(data_clone.to_date === "Invalid date" || data_clone.to_date === "") delete data_clone.to_date;
             response = await publishOpenJobAgain(data_clone);
         } else {
             response = await createJob(data_clone);
