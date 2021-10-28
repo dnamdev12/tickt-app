@@ -46,7 +46,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
         setCheckType('1');
       } else {
         setCheckType('2');
-        setCanDisable('1');
+        // setCanDisable('1');
       }
 
       setLocationChanges(true);
@@ -196,9 +196,9 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
             <div className="checkbox_wrap agree_check">
               <input
                 onChange={() => {
-                  if (canDisable !== '1') {
+                  // if (canDisable !== '1') {
                     checkType !== '1' ? setCheckType('1') : setCheckType('0')
-                  }
+                  // }
                 }}
                 checked={checkType === '1' ? true : false}
                 className="filter-type filled-in"
@@ -230,7 +230,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         // min="1"
                         step=".01"
                         required
-                        value={amount}
+                        value={Number(amount) ? amount : ''}
                         readOnly={checkType === '2' ? true : false}
                         onChange={({ target: { value } }) => handleChange(value, 'amount')}
                       />

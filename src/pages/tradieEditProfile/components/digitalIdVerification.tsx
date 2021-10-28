@@ -115,7 +115,7 @@ const LodgeDispute = (props: Props) => {
                     </span>
                 </div>
                 {/* <span className="sub_title">Lodge dispute</span> */}
-                <p className="commn_para">Make sure the lighting is good and put the front side the of the ID into the frame and then click Take a Photo</p>
+                <p className="commn_para">Please add image of Front & Back side of your ID.</p>
 
                 <FsLightbox
                     toggler={toggler}

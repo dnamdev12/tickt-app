@@ -34,7 +34,7 @@ const EditMilestone = (props: any) => {
     const [toggleItem, setToggleItem] = useState(false);
 
     const [description, setDescription] = useState<any>([]);
-  
+
 
     useEffect(() => {
         if (!stateData?.length) {
@@ -487,9 +487,14 @@ const EditMilestone = (props: any) => {
                 aria-labelledby="alert-dialog-title"
                 aria-describedby="alert-dialog-description"
             >
-                <DialogTitle id="alert-dialog-title">
-                    {'If you go back, you will lose all your changes.'}
+                <DialogTitle id="alert-dialog-title" className="xs_alert_dialog_title">
+                    {'Heads Up'}
                 </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {'If you go back, you will lose all your changes.'}
+                    </DialogContentText>
+                </DialogContent>
                 <DialogActions>
                     <Button
                         onClick={() => {

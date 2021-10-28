@@ -57,6 +57,7 @@ const PostJob = (props: Proptypes) => {
     const [step, setStep] = useState(1);
     const [stepsCompleted, setStepsCompleted] = useState<Array<number>>([]);
     const [data, setData] = useState({});
+    console.log('data: ', data);
     const [editMileStone, setEditMileStone] = useState(0 as number);
     const [milestones, setMileStones] = useState([]);
     const [forceupdate, setForceUpdate] = useState({});
