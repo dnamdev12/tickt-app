@@ -203,7 +203,7 @@ class ViewQuote extends Component<Props, State> {
                                     className="tradie_card posted_by" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                                     <span
                                         onClick={() => {
-                                            props.history.push(`/tradie-info?tradeId=${item?.userId}&hideInvite=true&active=true`)
+                                            props.history.push(`/tradie-info?jobId=${item?.jobId}&tradeId=${item?.userId}`)
                                         }}
                                         className="more_detail circle">
                                     </span>

@@ -173,8 +173,12 @@ const JobDetailsPage = (props: PropsType) => {
         if (jobConfirmation.tradieTradeId !== jobDetailsData?.tradeId && !jobConfirmation.isJobModalAuthorized) {
             setJobConfirmation((prevData: any) => ({ ...prevData, isJobModalOpen: true, isJobModalAuthorized: true }))
             isValid = false;
+        } else if(jobDetailsData?.quoteJob){
+            quoteBtnActions();
+            return;
         }
-        if (isValid) {
+
+        if (isValid && !jobDetailsData?.quoteJob) {
             const data = {
                 jobId: jobDetailsData?.jobId,
                 builderId: jobDetailsData?.postedBy?.builderId,
@@ -456,6 +460,21 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
+    const quoteBtnActions = () => {
+        const path = jobDetailsData?.jobStatus === '' ? `/quote-job` : jobDetailsData?.jobStatus === 'applied' ? `/quote-job` : jobDetailsData?.jobStatus === 'active' ? `/active-quote-job` : '';
+        const redirectFrom = jobDetailsData?.jobStatus === '' ? 'jobDetailPage' : jobDetailsData?.jobStatus === 'applied' ? 'appliedJobs' : '';
+        if (path) {
+            props.history.push({
+                pathname: path,
+                state: {
+                    jobData: jobDetailsData,
+                    ...(redirectFrom && { redirect_from: redirectFrom }),
+                    base_redirect: 'jobDetailPage'
+                }
+            });
+        }
+    }
+
     const renderBuilderAvatar = (item: any) => {
         let postedBy: any = jobDetailsData?.postedBy;
         console.log({ jobDetailsData })
@@ -699,20 +718,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         !(jobInviteAction === 'invite') && !jobDetailsData?.isInvited && jobDetailsData?.quoteJob && ['', 'active', 'applied'].includes(jobDetailsData?.jobStatus?.toLowerCase()) && (
                                             <button
                                                 className={`${jobDetailsData?.jobStatus === '' ? 'fill_btn' : 'fill_grey_btn'} full_btn btn-effect mt-sm`}
-                                                onClick={() => {
-                                                    const path = jobDetailsData?.jobStatus === '' ? `/quote-job` : jobDetailsData?.jobStatus === 'applied' ? `/quote-job` : jobDetailsData?.jobStatus === 'active' ? `/active-quote-job` : '';
-                                                    const redirectFrom = jobDetailsData?.jobStatus === '' ? 'jobDetailPage' : jobDetailsData?.jobStatus === 'applied' ? 'appliedJobs' : '';
-                                                    if (path) {
-                                                        props.history.push({
-                                                            pathname: path,
-                                                            state: {
-                                                                jobData: jobDetailsData,
-                                                                ...(redirectFrom && { redirect_from: redirectFrom }),
-                                                                base_redirect: 'jobDetailPage'
-                                                            }
-                                                        });
-                                                    }
-                                                }}>
+                                                onClick={jobDetailsData?.jobStatus === '' ? applyJobClicked : quoteBtnActions}>
                                                 {jobDetailsData?.jobStatus === '' ? 'Quote' : jobDetailsData?.jobStatus === 'applied' ? 'Quote sent' : jobDetailsData?.jobStatus === 'active' ? 'View your quote' : ''}
                                             </button>
                                         )}
