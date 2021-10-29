@@ -39,6 +39,7 @@ import storageService from '../../utils/storageService';
 
 import { JobCancelReasons } from '../../utils/common';
 import docThumbnail from '../../assets/images/add-document.png'
+import { setShowToast } from '../../redux/common/actions';
 
 interface PropsType {
     history: any,
@@ -172,8 +173,12 @@ const JobDetailsPage = (props: PropsType) => {
         if (jobConfirmation.tradieTradeId !== jobDetailsData?.tradeId && !jobConfirmation.isJobModalAuthorized) {
             setJobConfirmation((prevData: any) => ({ ...prevData, isJobModalOpen: true, isJobModalAuthorized: true }))
             isValid = false;
+        } else if(jobDetailsData?.quoteJob){
+            quoteBtnActions();
+            return;
         }
-        if (isValid) {
+
+        if (isValid && !jobDetailsData?.quoteJob) {
             const data = {
                 jobId: jobDetailsData?.jobId,
                 builderId: jobDetailsData?.postedBy?.builderId,
@@ -439,10 +444,34 @@ const JobDetailsPage = (props: PropsType) => {
         if (res.success) {
             setJobInviteAction('');
             props.history.replace(`job-details-page?jobId=${jobDetailsData?.jobId}&redirect_from=jobs`);
+            if (type === 2) {
+                setShowToast(true, res.msg);
+                if (!jobInviteAction) {
+                    const newData = { ...jobDetailsData }
+                    newData.isInvited = false;
+                    delete newData.jobStatus;
+                    setJobDetailsData(newData);
+                }
+            }
 
             if (type === 1) {
                 props.history.push('/active-jobs');
             }
+        }
+    }
+
+    const quoteBtnActions = () => {
+        const path = jobDetailsData?.jobStatus === '' ? `/quote-job` : jobDetailsData?.jobStatus === 'applied' ? `/quote-job` : jobDetailsData?.jobStatus === 'active' ? `/active-quote-job` : '';
+        const redirectFrom = jobDetailsData?.jobStatus === '' ? 'jobDetailPage' : jobDetailsData?.jobStatus === 'applied' ? 'appliedJobs' : '';
+        if (path) {
+            props.history.push({
+                pathname: path,
+                state: {
+                    jobData: jobDetailsData,
+                    ...(redirectFrom && { redirect_from: redirectFrom }),
+                    base_redirect: 'jobDetailPage'
+                }
+            });
         }
     }
 
@@ -655,7 +684,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         jobDetailsData?.quoteJob ? null :
                                             (['cancelled', 'expired', 'completed'].includes(jobDetailsData?.jobStatus?.toLowerCase()) || jobDetailsData?.jobStatus === '') &&
                                                 jobDetailsData?.appliedStatus?.toUpperCase() === 'APPLY' &&
-                                                jobDetailsData?.applyButtonDisplay ? (
+                                                jobDetailsData?.applyButtonDisplay && !jobDetailsData?.isInvited ? (
                                                 <div className="pt-10">
                                                     <button
                                                         className="fill_btn full_btn btn-effect"
@@ -689,20 +718,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         !(jobInviteAction === 'invite') && !jobDetailsData?.isInvited && jobDetailsData?.quoteJob && ['', 'active', 'applied'].includes(jobDetailsData?.jobStatus?.toLowerCase()) && (
                                             <button
                                                 className={`${jobDetailsData?.jobStatus === '' ? 'fill_btn' : 'fill_grey_btn'} full_btn btn-effect mt-sm`}
-                                                onClick={() => {
-                                                    const path = jobDetailsData?.jobStatus === '' ? `/quote-job` : jobDetailsData?.jobStatus === 'applied' ? `/quote-job` : jobDetailsData?.jobStatus === 'active' ? `/active-quote-job` : '';
-                                                    const redirectFrom = jobDetailsData?.jobStatus === '' ? 'jobDetailPage' : jobDetailsData?.jobStatus === 'applied' ? 'appliedJobs' : '';
-                                                    if (path) {
-                                                        props.history.push({
-                                                            pathname: path,
-                                                            state: {
-                                                                jobData: jobDetailsData,
-                                                                ...(redirectFrom && { redirect_from: redirectFrom }),
-                                                                base_redirect: 'jobDetailPage'
-                                                            }
-                                                        });
-                                                    }
-                                                }}>
+                                                onClick={jobDetailsData?.jobStatus === '' ? applyJobClicked : quoteBtnActions}>
                                                 {jobDetailsData?.jobStatus === '' ? 'Quote' : jobDetailsData?.jobStatus === 'applied' ? 'Quote sent' : jobDetailsData?.jobStatus === 'active' ? 'View your quote' : ''}
                                             </button>
                                         )}

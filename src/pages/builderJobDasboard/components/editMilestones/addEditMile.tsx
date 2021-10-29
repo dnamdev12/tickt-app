@@ -406,7 +406,7 @@ const AddEditMile = (props: any) => {
         calenderItems.startDate,
         calenderItems.endDate,
         '',
-        ['DD MMM', 'DD MMM YY', true],
+        ['DD MMM', 'DD MMM YYYY', true],
         'Choose'
     );
 
@@ -432,9 +432,14 @@ const AddEditMile = (props: any) => {
                     aria-labelledby="alert-dialog-title"
                     aria-describedby="alert-dialog-description"
                 >
-                    <DialogTitle id="alert-dialog-title">
-                        {'If you click the back arrow, you lose the data, do you want to save it ?'}
+                    <DialogTitle id="alert-dialog-title" className="xs_alert_dialog_title">
+                        {'Heads Up'}
                     </DialogTitle>
+                    <DialogContent>
+                        <DialogContentText>
+                            {'If you go back, you will lose all your changes.'}
+                        </DialogContentText>
+                    </DialogContent>
                     <DialogActions>
                         <Button
                             onClick={() => {

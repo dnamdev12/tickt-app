@@ -361,6 +361,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                         </span>
                                                                         <span>
                                                                             {recommended_hours}
+                                                                            {' hours'}
                                                                         </span>
                                                                     </div>
                                                                 </div>

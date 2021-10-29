@@ -144,7 +144,7 @@ const JobDetails = ({
         }
         if (Object.keys(fsSlideObj)?.length > 0) setFsSlideListner(fsSlideObj);
     }, [data.urls]);
-    
+
     const forwardScreenStep = (id: any, data?: any) => {
         updateDetailScreen({ currentScreen: id, data });
         handleStepForward(id);
@@ -181,7 +181,7 @@ const JobDetails = ({
         let from_date = data_clone?.from_date;
         let to_date = data_clone?.to_date;
         console.log({ from_date, to_date })
-        if (moment(from_date).isSame(moment(to_date))) {
+        if (!data_clone.isSingleDayJob && moment(from_date).isSame(moment(to_date))) {
             delete data_clone?.to_date;
         }
 
@@ -213,7 +213,11 @@ const JobDetails = ({
 
         let response: any = null;
         if (data_clone.isJobRepublish) delete data_clone.isJobRepublish;
+        delete data_clone.isSingleDayJob;
+        if (data_clone.quoteJob == '1' && data_clone.amount) delete data_clone.amount;
         if (update) {
+            delete data_clone.editJob;
+            if(data_clone.to_date === "Invalid date" || data_clone.to_date === "") delete data_clone.to_date;
             response = await publishOpenJobAgain(data_clone);
         } else {
             response = await createJob(data_clone);
@@ -485,7 +489,7 @@ const JobDetails = ({
                                             history.push(`/builder-info?builderId=${builderProfile?.userId}`);
                                         }}
                                         className="tradie_card posted_by ">
-                                        <span className="chat circle"></span>
+                                        {/* <span className="chat circle"></span> */}
                                         <div className="user_wrap">
                                             <figure className="u_img">
                                                 <img

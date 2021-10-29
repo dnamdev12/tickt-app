@@ -296,8 +296,8 @@ const MarkMilestones = (props: any) => {
                         <img src={editIconBlue} alt="edit" />
                         <div className="edit_menu">
                             <ul>
-                                {/* {item_status && ( )} */}
-                                {!selectedItem?.quoteJob && (
+                                {/* {!selectedItem?.quoteJob && ( */}
+                                {(
                                     <li
                                         onClick={() => { setToggleItem({ edit: true, lodge: false, cancel: false }) }}
                                         className="icon edit_line">

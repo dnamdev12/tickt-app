@@ -59,6 +59,8 @@ const reducer = (state = initialState, action: any) => {
             account_name: '',
             account_number: '',
             bsb_number: '',
+            stripeAccountId: '',
+            accountVerified: false,
           },
         }
       } else {

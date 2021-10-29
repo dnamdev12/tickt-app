@@ -78,11 +78,10 @@ export default class AddMilestone extends Component<Props, State> {
         let { milestone_name, isPhotoevidence, from_date, to_date, recommended_hours } = this.state;
         if (nextProps.milestones.length) {
             console.log({
-                mile:nextProps.milestones
+                mile: nextProps.milestones
             })
             let milestones_items = nextProps.milestones;
             let item = milestones_items[milestones_items.length - 1];
-            console.log({item},'---')
             if ('milestone_name' in item) {
                 this.setLocalValueByCompare(item?.milestone_name, milestone_name, 'milestone_name');
             } else {
@@ -283,9 +282,14 @@ export default class AddMilestone extends Component<Props, State> {
                             aria-labelledby="alert-dialog-title"
                             aria-describedby="alert-dialog-description"
                         >
-                            <DialogTitle id="alert-dialog-title">
-                                {'If you click the back arrow, you lose the data, do you want to save it?'}
+                            <DialogTitle id="alert-dialog-title" className="xs_alert_dialog_title">
+                                {'Heads Up'}
                             </DialogTitle>
+                            <DialogContent>
+                                <DialogContentText>
+                                {'If you go back, you will lose all your changes.'}
+                                </DialogContentText>
+                            </DialogContent>
                             <DialogActions>
                                 <Button
                                     onClick={() => { this.toggleOpen() }}
@@ -365,7 +369,7 @@ export default class AddMilestone extends Component<Props, State> {
                                             id="milestone1" />
                                         <label htmlFor="milestone1">
                                             <b>
-                                            {'Photo evidence required'}
+                                                {'Photo evidence required'}
                                             </b>
                                         </label>
                                     </div>
@@ -382,7 +386,7 @@ export default class AddMilestone extends Component<Props, State> {
                                                 from_date_format,
                                                 to_date_format,
                                                 'MM-DD-YYYY',
-                                                ['DD MMM', 'DD MM YYYY']
+                                                ['DD MMM', 'DD MMM YYYY']
                                                 // ['MMM DD', 'MMM DD YYYY'] // to keep the date format stable on front-end (TIC-2467)
                                             )}
                                         </button>

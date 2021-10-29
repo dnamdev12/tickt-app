@@ -540,7 +540,7 @@ export const acceptDeclineJobInvitation = async (data: any, isDisable?: boolean)
   setLoading(false);
   if (response.status_code === 200) {
     if (isDisable) return { success: true };
-    return { success: true };
+    return { success: true, msg: response.message };
   }
   setShowToast(true, response.message);
   return { success: false };

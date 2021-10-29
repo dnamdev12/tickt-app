@@ -11,6 +11,12 @@ import { acceptDeclineJobInvitation } from '../../../../redux/jobs/actions';
 import NumberFormat from 'react-number-format';
 import Modal from '@material-ui/core/Modal';
 import storageService from '../../../../utils/storageService';
+import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
 
 import deleteQuote from '../../../../assets/images/ic-delete.png';
 import cancel from "../../../../assets/images/ic-cancel.png";
@@ -28,6 +34,7 @@ const QuoteMark = (props: any) => {
         quantity: 0,
         totalAmount: 0
     });
+    const [isQuoteDialog, setIsQuoteDialog] = useState<boolean>(false);
     console.log('localQuote: ', localQuote);
 
     useEffect(() => {
@@ -197,6 +204,61 @@ const QuoteMark = (props: any) => {
             return total;
         }
         return `$0`;
+    }
+
+    const saveAddItem = async () => {
+        if (isEditTrue) {
+            let index = isEdit;
+            let items_ = Items;
+            let item: any = localQuote;
+            item['totalAmount'] = (+item.quantity * +item.price);
+            items_[isEdit] = (item);
+            let isSuccess: boolean = true;
+            if (quoteId) {
+                isSuccess = await updateItem_(index, items_);
+            }
+            if (isSuccess) {
+                setItems(items_);
+                setEdit(null);
+                setLocalQuote({
+                    item_number: items_[items_?.length - 1]?.item_number + 1,
+                    description: '',
+                    price: 0,
+                    quantity: 0,
+                    totalAmount: 0
+                });
+            }
+            return;
+        } else {
+            let items_ = Items;
+            let item: any = localQuote;
+            item['totalAmount'] = (+item.quantity * +item.price);
+            if (props.location?.state?.redirect_from === 'appliedJobs') {
+                await addItem_(item);
+            } else {
+                items_.push(item);
+                setItems(items_);
+                setLocalQuote({
+                    item_number: items_[items_?.length - 1]?.item_number ? items_[items_?.length - 1]?.item_number + 1 : 1,
+                    description: '',
+                    price: 0,
+                    quantity: 0,
+                    totalAmount: 0
+                });
+            }
+        }
+        if (isQuoteDialog) {
+            setIsQuoteDialog(false);
+        }
+    }
+
+    const handleQuoteDialog = (ans?: string, hitApi?: boolean) => {
+        if (quoteId) {
+            setIsQuoteDialog(ans === 'yes' ? true : false);
+            if (hitApi) saveAddItem();
+        } else {
+            saveAddItem();
+        }
     }
 
     let item_number = localQuote.item_number;
@@ -412,49 +474,7 @@ const QuoteMark = (props: any) => {
                     </div>
                 </div>
                 <button
-                    onClick={async () => {
-                        if (isEditTrue) {
-                            let index = isEdit;
-                            let items_ = Items;
-                            let item: any = localQuote;
-                            item['totalAmount'] = (+item.quantity * +item.price);
-                            items_[isEdit] = (item);
-                            let isSuccess: boolean = true;
-                            if (quoteId) {
-                                isSuccess = await updateItem_(index, items_);
-                            }
-                            if (isSuccess) {
-                                setItems(items_);
-                                setEdit(null);
-                                setLocalQuote({
-                                    item_number: items_[items_?.length - 1]?.item_number + 1,
-                                    description: '',
-                                    price: 0,
-                                    quantity: 0,
-                                    totalAmount: 0
-                                });
-                            }
-                            return;
-                        } else {
-                            let items_ = Items;
-                            let item: any = localQuote;
-                            item['totalAmount'] = (+item.quantity * +item.price);
-                            if (props.location?.state?.redirect_from === 'appliedJobs') {
-                                await addItem_(item);
-                            } else {
-                                items_.push(item);
-                                setItems(items_);
-                                setLocalQuote({
-                                    item_number: items_[items_?.length - 1]?.item_number ? items_[items_?.length - 1]?.item_number + 1 : 1,
-                                    description: '',
-                                    price: 0,
-                                    quantity: 0,
-                                    totalAmount: 0
-                                });
-                            }
-                        }
-                    }
-                    }
+                    onClick={() => handleQuoteDialog('yes')}
                     className={`fill_btn w100per ${quoteValidate() ? 'disable_btn' : ''}`}>
                     {`${isEditTrue ? 'Save' : 'Add'} Item`}
                 </button>
@@ -485,6 +505,58 @@ const QuoteMark = (props: any) => {
                 </div>
             </Modal>
 
+            <Dialog
+                open={isQuoteDialog}
+                // onClose={() => handleQuoteDialog}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description"
+            >
+                <DialogTitle id="alert-dialog-title" className="xs_alert_dialog_title">
+                    {'This quote will be send to builder'}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        {'Are you sure you want to update quote?'}
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button
+                        onClick={() => handleQuoteDialog('no', true)}
+                        color="primary">
+                        {'Yes'}
+                    </Button>
+                    <Button
+                        onClick={() => handleQuoteDialog('no')}
+                        color="primary">
+                        {'No'}
+                    </Button>
+                </DialogActions>
+            </Dialog>
+
+            {/* <Modal
+                className="custom_modal"
+                open={isQuoteDialog}
+                onClose={() => handleQuoteDialog('no')}
+                aria-labelledby="simple-modal-title"
+                aria-describedby="simple-modal-description"
+            >
+                <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                    <div className="heading">
+                        <span className="xs_sub_title">{'This quote will be send to builder'}</span>
+                        <button className="close_btn" onClick={() => handleQuoteDialog('no')}>
+                            <img src={cancel} alt="cancel" />
+                        </button>
+                    </div>
+                    <div className="modal_message">
+                        <p>Are you sure you want to update quote?</p>
+                    </div>
+                    <div className="dialog_actions">
+                        <button className="fill_btn btn-effect" onClick={() => handleQuoteDialog('no', true)}>Yes</button>
+                        <button className="fill_grey_btn btn-effect" onClick={() => handleQuoteDialog('no')}>No</button>
+                    </div>
+                </div>
+            </Modal> */}
+
             {(Items?.length > 0 && !isEditTrue) && (
                 <div className="total_quote">
                     <span className="fill_grey_btn">
@@ -494,7 +566,7 @@ const QuoteMark = (props: any) => {
                 </div>
             )}
 
-            {(quoteId || !props.isDataFetched) ? null : (
+            {(quoteId || !props.isDataFetched || isEditTrue) ? null : (
                 <button
                     onClick={handleSubmit}
                     className={`fill_grey_btn quote_btn ${Items?.length === 0 ? 'disable_btn' : ''}`}>
