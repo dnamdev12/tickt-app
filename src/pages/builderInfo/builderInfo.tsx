@@ -473,7 +473,8 @@ const BuilderInfo = (props: PropsType) => {
                                                         tradeName: string
                                                     }) => (
                                                     <li key={tradeId} className="main">
-                                                        <img src={tradeSelectedUrl || menu} alt="" />{tradeName || ''}
+                                                        {/* <img src={tradeSelectedUrl || menu} alt="" /> */}
+                                                        {tradeName || ''}
                                                     </li>
                                                 ))}
                                                 {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
@@ -487,7 +488,7 @@ const BuilderInfo = (props: PropsType) => {
                                             <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
                                                 {profileData?.tradeName &&
                                                     <li className="main">
-                                                        <img src={profileData?.tradeSelectedUrl || menu} alt="" />
+                                                        {/* <img src={profileData?.tradeSelectedUrl || menu} alt="" /> */}
                                                         {profileData?.tradeName || ''}
                                                     </li>}
                                                 {profileData?.areasOfjobs?.map((item: any) => {

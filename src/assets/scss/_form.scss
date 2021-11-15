@@ -752,6 +752,7 @@ a.fill_grey_btn {
     height: 240px;
     border-radius: 3px;
     position: relative;
+    border: 0.5px solid #f7f8fa;
     @media(max-width: 650px){
       width: 100%;
       margin: 10px 0 15px;

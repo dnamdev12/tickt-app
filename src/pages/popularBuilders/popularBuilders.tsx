@@ -94,7 +94,8 @@ const PopularBuilders = (props: any) => {
                                                 <ul>
                                                     {item.trade?.length ? item.trade.map(({ _id, selected_url, trade_name }: { _id: string, selected_url: string, trade_name: string }) => (
                                                         <li key={_id} className="main">
-                                                            <img src={selected_url || menu} alt="" />{trade_name || ''}
+                                                            {/* <img src={selected_url || menu} alt="" /> */}
+                                                            {trade_name || ''}
                                                         </li>)) : <i style={{ color: '#929292' }}>
                                                         {'No Trade Found'}
                                                     </i>}

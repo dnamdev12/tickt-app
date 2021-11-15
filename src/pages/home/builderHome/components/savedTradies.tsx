@@ -61,7 +61,7 @@ export default class SavedTradies extends Component {
                                                 {item?.tradeData?.length ?
                                                     item?.tradeData?.map((item_trade: any) => (
                                                         <li className="main">
-                                                            <img src={item_trade?.tradeSelectedUrl} alt="icon" />
+                                                            {/* <img src={item_trade?.tradeSelectedUrl} alt="icon" /> */}
                                                             {item_trade?.tradeName}
                                                         </li>
                                                     ))
