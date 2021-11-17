@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import Constants from '../../../utils/constants';
 import { setShowToast } from '../../../redux/common/actions';
-import spherePlaceholder from '../../../assets/images/ic_categories_placeholder.svg';
+import spherePlaceholder from '../../../assets/images/tick-grey.svg';
 import noData from '../../../assets/images/no-search-data.png';
 
 interface Propstype {
@@ -42,7 +42,9 @@ const SelectCategories = (props: Propstype) => {
             <ul>
                 {props.tradeListData?.length ? props.tradeListData.map((item, index) => {
                     const active = trade === item._id;
-                    const imgSrc = (item.selected_url && !imgPath[index]) ? item.selected_url : spherePlaceholder
+                    // const imgSrc = (item.selected_url && !imgPath[index]) ? item.selected_url : spherePlaceholder
+                    const imgSrc = spherePlaceholder
+
                     // console.log(index,imgSrc, "imgSrc")
                     return (
                         <li key={item._id} className={active ? 'active' : ''} onClick={() => onClick(item._id)}>

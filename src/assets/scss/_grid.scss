@@ -125,7 +125,7 @@
   align-items: center;
   .show_label{
     margin-bottom: 0;
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
   }
 }
 
@@ -166,7 +166,7 @@
 
     h1{
       position: relative;
-      font: 32px/1.16 'Neue Haas Grotesk Text Pro Bold';
+      font: 32px/1.16 'Neue Haas Grotesk Text Pro Medium';
       color: var(--white);
       margin-bottom: 15px;
       @media (max-width: 650px){
@@ -218,7 +218,7 @@
 .upload_btn{
   @include border-radius(3px);
   background-color: var(--grey);
-  font: 12px 'Neue Haas Grotesk Text Pro Bold';
+  font: 12px 'Neue Haas Grotesk Text Pro Medium';
   color: var(--blue);
   padding: 10px 15px;
   display: inline-block;
