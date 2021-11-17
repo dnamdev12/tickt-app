@@ -225,11 +225,28 @@ const UserMessages = (props: any) => {
                 }
             case 3:
                 return {
-                    messageId: msg?.messageId,
-                    roomId: msg?.messageRoomId,
-                    notification_type: 25,
-                    name: '',
-                    titile: '',
+                    notification: {
+                        body: msg?.messageText,
+                        title: storageService.getItem('userInfo')?.userName
+                    },
+                    data: {
+                        body: msg?.messageText,
+                        messageText: msg?.messageText,
+                        sender: {
+                            first_name: storageService.getItem('userInfo')?.userName,
+                            device_token: storageService.getItem('fcmToken'),
+                            user_id: storageService.getItem('userInfo')?._id,
+                            device_type: 2,
+                        },
+                        jobId: msg?.messageRoomId?.split('_')?.[0],
+                        badge: 1,
+                        device_type: 2,
+                        title: storageService.getItem('userInfo')?.userName,
+                        jobName: props.roomData?.jobName,
+                        notification_type: 50,
+                        sound: 'default',
+                        messageId: msg?.messageId,
+                    }
                 }
             default:
                 return;
@@ -239,7 +256,9 @@ const UserMessages = (props: any) => {
         let data = setResDeviceType(props.roomData?.oppUserInfo?.deviceType, msg);
         let newData = {
             to: `${props.roomData?.oppUserInfo?.deviceToken}`,
-            ...(props.roomData?.oppUserInfo?.deviceType == 2 ? { notification: data } : { data: data })
+            ...(props.roomData?.oppUserInfo?.deviceType == 1 && { data: data }),
+            ...(props.roomData?.oppUserInfo?.deviceType == 2 && { notification: data }),
+            ...(props.roomData?.oppUserInfo?.deviceType == 3 && { notification: data?.notification, data: data?.data }),
         };
 
         const headers_: Types = {

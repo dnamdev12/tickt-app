@@ -116,7 +116,7 @@ const RenderMap = (props: any) => {
             {selected ? (<InfoWindow position={{ lat: selected.location.coordinates[1], lng: selected.location.coordinates[0] }}
                 onCloseClick={() => setSelected(null)}
             >
-                <div className="preview_card" data-aos="fade-in" data-aos-delay="40" data-aos-duration="1000">
+                <div className="preview_card">
                     <div className="tradie_card">
                         <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(selected)}></a>
                         <div className="user_wrap">
