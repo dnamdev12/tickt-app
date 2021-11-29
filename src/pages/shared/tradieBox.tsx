@@ -99,7 +99,7 @@ class TradieBox extends Component<PropsType, State> {
                                 item?.tradeData?.map((item_trade: any, index: any) => (
                                     <li key={index}
                                         className="main">
-                                        <img src={item_trade?.tradeSelectedUrl} alt="icon" />
+                                        {/* <img src={item_trade?.tradeSelectedUrl} alt="icon" /> */}
                                         {item_trade?.tradeName}
                                     </li>
                                 ))
@@ -109,7 +109,7 @@ class TradieBox extends Component<PropsType, State> {
                                 item?.tradie_details?.trade.map((item_: any) => (
                                     <li key={index}
                                         className="main">
-                                        <img src={item_?.selected_url} alt="icon" />
+                                        {/* <img src={item_?.selected_url} alt="icon" /> */}
                                         {item_?.trade_name}
                                     </li>
                                 )) : null}
@@ -119,7 +119,7 @@ class TradieBox extends Component<PropsType, State> {
                                 item?.trade.map((item_: any) => (
                                     <li key={index}
                                         className="main">
-                                        <img src={item_?.selected_url} alt="icon" />
+                                        {/* <img src={item_?.selected_url} alt="icon" /> */}
                                         {item_?.trade_name}
                                     </li>
                                 )) : null}

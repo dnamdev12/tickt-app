@@ -59,7 +59,7 @@ textarea {
   color: var(--blue);
   background-color: var(--white);
   border: solid 1px var(--warm-gray);
-  font: 14px 'Neue Haas Grotesk Text Pro Medium';
+  font: 14px 'Neue Haas Grotesk Text Pro Roman';
   letter-spacing: 0.5px;
   -webkit-appearance: none;
   -moz-appearance: none;
@@ -80,7 +80,7 @@ textarea {
     pointer-events: none;
   }
   &::placeholder{
-    font-family: 'Neue Haas Grotesk Text Pro Roman';
+    font-family: 'Inter';
   }
 }
 
@@ -108,7 +108,7 @@ textarea {
 textarea {
   min-height: 120px;
   resize: none;
-  font-family: 'Neue Haas Grotesk Text Pro Medium';
+  font-family: 'Neue Haas Grotesk Text Pro Roman';
   @media(max-width:1024px){
     min-height: 225px;
     width: 100%;
@@ -154,7 +154,7 @@ textarea {
 a.fill_btn {
   @include border-radius(3px);
   background-color: var(--yellow);
-  font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
   letter-spacing: 0.3px;
   color: var(--blue);
   padding: 19px 20px;
@@ -178,7 +178,7 @@ a.fill_btn {
 a.fill_grey_btn {
   @include border-radius(3px);
   background-color: var(--grey);
-  font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
   letter-spacing: 0.3px;
   color: var(--blue);
   padding: 19px 20px;   
@@ -529,7 +529,7 @@ a.fill_grey_btn {
     color: var(--greyish-brown);
     margin-right: 5px;
     a {
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      font-family: 'Neue Haas Grotesk Text Pro Medium';
       color: var(--blue);
     }
   }
@@ -752,6 +752,7 @@ a.fill_grey_btn {
     height: 240px;
     border-radius: 3px;
     position: relative;
+    border: 0.5px solid #f7f8fa;
     @media(max-width: 650px){
       width: 100%;
       margin: 10px 0 15px;
@@ -858,7 +859,7 @@ a.fill_grey_btn {
   color: #313d48;
   font-size: 14px;
   b{
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      font-family: 'Neue Haas Grotesk Text Pro Medium';
       font-weight: 500;
   }
 }

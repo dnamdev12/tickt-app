@@ -1171,7 +1171,8 @@ export class PersonalInformation extends Component<Props, State> {
 
                                 return (
                                     <li key={tradeId} className="main">
-                                        <img src={tradeSelectedUrl || menu} alt="" />{tradeName}
+                                        {/* <img src={tradeSelectedUrl || menu} alt="" /> */}
+                                        {tradeName}
                                     </li>
                                 )
                             })}
