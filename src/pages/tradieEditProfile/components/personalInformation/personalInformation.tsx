@@ -271,8 +271,8 @@ export class PersonalInformation extends Component<Props, State> {
         const formData = new FormData();
         const newFile = e.target.files[0];
         var uploadFileName = newFile?.name?.split('.');
-        uploadFileName.pop();
-        uploadFileName = uploadFileName.join('.');
+        uploadFileName?.pop();
+        uploadFileName = uploadFileName?.join('.');
         var fileType = newFile?.type?.split('/')[1]?.toLowerCase();
         const docTypes: Array<any> = ["jpeg", "jpg", "png", "pdf", "msword", "doc", "docx", "vnd.openxmlformats-officedocument.wordprocessingml.document"];
         const docTypes2: Array<any> = ["jpeg", "jpg", "png"];

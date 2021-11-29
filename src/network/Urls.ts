@@ -135,6 +135,7 @@ const Urls = {
     publishJobAgain: `${versions.v1}${ServiceEnum.job}${ServiceEnum.builder}publishJobAgain`,
     getAllPostedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getAllJobs`,
     payment: `${versions.v1}${ServiceEnum.payment}`,
+    getStripeClientSecretKey: `${versions.v1}${ServiceEnum.payment}createClientSecretKey`,
     notification: `${versions.v1}${ServiceEnum.home}notification`,
     addFCMNotifToken: `${versions.v1}${ServiceEnum.auth}addDeviceToken`,
     tradieSavedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getSavedJobs`,
