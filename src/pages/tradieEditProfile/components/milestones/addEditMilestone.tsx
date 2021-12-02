@@ -112,13 +112,13 @@ class AddEditMilestone extends Component<Props, State> {
             if (value.match(pattern) !== null) {
                 let splitItem = value.split(':')[1];
                 let IntItem = +splitItem;
-                let conditionItem = IntItem % 5 === 0;
+                let conditionItem = IntItem % 15 === 0;
 
                 if (!conditionItem) {
-                    return 'Time should be in mutiples of 5 like 10:05, 10:10';
+                    return 'Time should be in mutiples of 15 like 10:15, 10:30';
                 }
             } else {
-                return 'Please enter a valid pattern like : 10:05';
+                return 'Please enter a valid pattern like : 10:15';
             }
         } else {
             return `${label[name]} is required.`
@@ -273,7 +273,7 @@ class AddEditMilestone extends Component<Props, State> {
                         </div>
                         <div className="form_field">
                             <div className="f_spacebw">
-                                <label className="form_label">Duration of milestone</label>
+                                <label className="form_label">Duration of milestone (optional)</label>
                                 <button
                                     onClick={() => {
                                         // handleStepForward(8) 
@@ -293,7 +293,7 @@ class AddEditMilestone extends Component<Props, State> {
                             </div>
                         </div>
                         <div className="form_field">
-                            <label className="form_label">Recommended hours</label>
+                            <label className="form_label">Estimated hours (optional)</label>
                             <div className="text_field">
                                 <input
                                     onChange={(e) => {
@@ -307,12 +307,12 @@ class AddEditMilestone extends Component<Props, State> {
                                                 error_item['pattern_error'] = '';
                                                 let splitItem = rh_value.split(':')[1];
                                                 let IntItem = +splitItem;
-                                                let conditionItem = IntItem % 5 === 0;
+                                                let conditionItem = IntItem % 15 === 0;
                                                 if (!conditionItem) {
-                                                    error_item['pattern_error'] = 'Time should be in mutiples of 5 like 10:05, 10:10';
+                                                    error_item['pattern_error'] = 'Time should be in mutiples of 15 like 10:15, 10:30';
                                                 }
                                             } else {
-                                                error_item['pattern_error'] = 'Please enter a valid pattern like : 10:05';
+                                                error_item['pattern_error'] = 'Please enter a valid pattern like : 10:15';
                                             }
                                             this.setState({ errors: error_item });
                                         });
@@ -321,7 +321,7 @@ class AddEditMilestone extends Component<Props, State> {
                                     value={recommended_hours}
                                     autoComplete="off"
                                     type="text"
-                                    placeholder="Enter Recommended hours"
+                                    placeholder="Enter Estimated hours"
                                     name="recommended_hours" />
                             </div>
                             <span className="error_msg">{errors.recommended_hours}</span>

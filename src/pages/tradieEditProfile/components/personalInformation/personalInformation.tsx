@@ -848,8 +848,8 @@ export class PersonalInformation extends Component<Props, State> {
 
                         <ul className="review_job">
                             {isSkeletonLoading ? <Skeleton /> : <li>
-                                <span className="icon reviews">{profileViewData?.ratings  || '0'}</span>
-                                <span className="review_count">{`${profileViewData?.reviewsCount  || '0'} reviews`}</span>
+                                <span className="icon reviews">{profileViewData?.ratings || '0'}</span>
+                                <span className="review_count">{`${profileViewData?.reviewsCount || '0'} reviews`}</span>
                             </li>}
                             {isSkeletonLoading ? <Skeleton /> : <li>
                                 <span className="icon job">{profileViewData?.jobCompletedCount}</span>
@@ -1436,7 +1436,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     </div>
                                 </div>
                                 <div className="form_field">
-                                    <label className="form_label">Job Description</label>
+                                    <label className="form_label">{`Job Description ${this.userType === 2 ? `(optional)` : ''}`}</label>
                                     <div className="text_field">
                                         <textarea
                                             placeholder="Enter Job Description"
@@ -1493,7 +1493,7 @@ export class PersonalInformation extends Component<Props, State> {
                         </div>
                         <div className="bottom_btn custom_btn">
                             <button
-                                className={`fill_btn full_btn btn-effect ${portfolioJobDetail?.jobName?.trim() && portfolioJobDetail?.jobDescription?.trim() && portfolioJobDetail?.portfolioImage?.length ? '' : 'disable_btn'}`}
+                                className={`fill_btn full_btn btn-effect ${portfolioJobDetail?.jobName?.trim() && (this.userType === 2 ? true : portfolioJobDetail?.jobDescription?.trim()) && (this.userType === 2 ? true : portfolioJobDetail?.portfolioImage?.length) ? '' : 'disable_btn'}`}
                                 onClick={this.submitPortfolioJobs}
                             >
                                 Save changes

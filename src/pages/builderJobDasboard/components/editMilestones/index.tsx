@@ -145,20 +145,22 @@ const EditMilestone = (props: any) => {
 
         if (filteredItem?.length) {
             filteredItem.forEach((item_date: any) => {
-                let start: any = moment(item_date.fromDate).isValid() ? item_date.fromDate : null;
-                let end: any = moment(item_date.toDate).isValid() ? item_date.toDate : null;
+                if (item_date.fromDate) {
+                    let start: any = moment(item_date.fromDate).isValid() ? item_date.fromDate : null;
+                    let end: any = moment(item_date.toDate).isValid() ? item_date.toDate : null;
 
-                if (start && !end) {
-                    if (moment(start_selection).isAfter(moment(start))) {
-                        item_find = true; // true;
+                    if (start && !end) {
+                        if (moment(start_selection).isAfter(moment(start))) {
+                            item_find = true; // true;
+                        }
                     }
-                }
 
-                if (start_selection && end_selection && !end) {
-                    if (moment(start).isSameOrAfter(moment(start_selection)) && moment(start).isSameOrBefore(moment(end_selection))) {
-                        item_find = false;
-                    } else {
-                        item_find = true
+                    if (start_selection && end_selection && !end) {
+                        if (moment(start).isSameOrAfter(moment(start_selection)) && moment(start).isSameOrBefore(moment(end_selection))) {
+                            item_find = false;
+                        } else {
+                            item_find = true
+                        }
                     }
                 }
             });
@@ -318,7 +320,7 @@ const EditMilestone = (props: any) => {
                 "milestoneId": item?.milestoneId || '',
                 "milestone_name": item?.milestoneName,
                 "isPhotoevidence": item?.isPhotoevidence,
-                "from_date": moment(item?.fromDate).format("YYYY-MM-DD"),
+                "from_date": moment(item?.fromDate).isValid() ? moment(item?.fromDate).format("YYYY-MM-DD") : '',
                 "to_date": moment(item?.toDate).isValid() ? moment(item?.toDate).format("YYYY-MM-DD") : '',
                 "recommended_hours": item?.recommendedHours,
                 "description": item?.description,
@@ -373,6 +375,16 @@ const EditMilestone = (props: any) => {
         }
     }
 
+    const renderTimeIfExist = (fromDate: string, toDate: string) => {
+        const time = renderTimeWithCustomFormat(
+            fromDate,
+            moment(fromDate).isSame(moment(toDate)) ? '' : toDate,
+            '',
+            ['DD MMM', 'DD MMM YY']
+        )
+        return time === 'Choose' ? '' : time;
+    }
+
 
     const customRenderElements = ({
         milestoneName,
@@ -394,12 +406,12 @@ const EditMilestone = (props: any) => {
                 key={`${index}-${milestoneName}`}
                 draggableId={`${milestoneName}-${index}`}
                 index={index}
-                isDragDisabled={![0, 4, -1].includes(status) ? true : false}
+                isDragDisabled={![0, 4, 5, -1].includes(status) ? true : false}
             >
                 {(provided: any, snapshot: any) => (
                     <li
                         key={index}
-                        className={![0, 4, -1].includes(status) ? 'disable_milstone' : ''}
+                        className={![0, 4, 5, -1].includes(status) ? 'disable_milstone' : ''}
                         ref={provided.innerRef}
                         {...provided.draggableProps}
                         {...provided.dragHandleProps}
@@ -437,7 +449,7 @@ const EditMilestone = (props: any) => {
                             <input
                                 checked={editItem[index]}
                                 onClick={(e: any) => {
-                                    if ([0, 4, -1].includes(status)) {
+                                    if ([0, 4, 5, -1].includes(status)) {
                                         checkOnClick(e, index)
                                     } else {
                                         e.preventDefault();
@@ -456,12 +468,7 @@ const EditMilestone = (props: any) => {
                                     <span>{'Photo evidence required'}</span>
                                     : <span></span>}
                                 <span>
-                                    {renderTimeWithCustomFormat(
-                                        fromDate,
-                                        moment(fromDate).isSame(moment(toDate)) ? '' : toDate,
-                                        '',
-                                        ['DD MMM', 'DD MMM YY']
-                                    )}
+                                    {renderTimeIfExist(fromDate, toDate)}
                                 </span>
                                 <span>
                                     {recommendedHours}

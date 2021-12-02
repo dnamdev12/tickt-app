@@ -464,7 +464,7 @@ export const sendImageVideoMessage = async (roomId, url, type) => {
     await db.ref(`${FIREBASE_COLLECTION.MESSAGES}/${roomId}/${messageID}`).set(msgData);
     msgData.messageTimestamp = moment().toDate().getTime();
 
-    //TODO Implement Update Message Counter
+    //Implement Update Message Counter
     //https://stackoverflow.com/questions/42276881/increment-firebase-value-from-javascript-subject-to-constraint
     let inboxId = `${senderId}_${jobId}`;
     await db.ref(`${FIREBASE_COLLECTION.INBOX}/${receiverId}/${inboxId}`).child('unreadMessages').set(firebase.database.ServerValue.increment(1));
