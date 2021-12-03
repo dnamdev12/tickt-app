@@ -9,6 +9,8 @@ const errorStrings: any = {
     fullNameShortErr: 'Name must have minimum 3 letters',
     companyNameEmpty: 'Company Name is required',
     companyNameErr: 'Please enter a valid company name',
+    businessNameEmpty: 'Business Name is required',
+    businessNameErr: 'Please enter a valid business name',
     companyNameShortErr: 'Company Name must have minimum 3 letters',
     positionNameEmpty: 'Position is required',
     positionNameErr: 'Please enter a valid position',
