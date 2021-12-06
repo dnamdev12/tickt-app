@@ -61,6 +61,7 @@ const QuoteOuter = (props: any) => {
             <div className="flex_row">
                 <QuoteMark
                     {...props}
+                    builderName={builderName}
                     jobId={jobId}
                     dataFetched={dataFetched}
                     isDataFetched={isDataFetched}

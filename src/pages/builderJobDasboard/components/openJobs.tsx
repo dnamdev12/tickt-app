@@ -162,7 +162,7 @@ class OpenJobs extends Component<Props, State> {
                                     <div className="job_info">
                                         {quoteJob ? (
                                             <ul>
-                                                <li className="icon dollar">{'for quoting'}</li>
+                                                <li className="icon dollar">{amount}</li>
                                                 <li className="">
                                                 </li>
                                                 <li className="icon calendar">

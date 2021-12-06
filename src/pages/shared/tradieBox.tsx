@@ -17,9 +17,6 @@ type PropsType = RouteComponentProps & {
     showStatus?: boolean,
 }
 
-const randomRating = Math.floor(Math.random() * 5) + 1;
-const randomReview = Math.floor(Math.random() * 200) + 50;
-
 class TradieBox extends Component<PropsType, State> {
     constructor(props: any) {
         super(props);
@@ -86,10 +83,8 @@ class TradieBox extends Component<PropsType, State> {
                         </figure>
                         <div className="details">
                             <span className="name">{item?.tradieName || item?.tradie_details?.firstName || item?.firstName}</span>
-                            {/* {item?.tradieId} */}
                             <span className="rating">
                                 {(item?.ratings) || (item?.rating)?.toFixed(1) || (item?.tradie_details?.rating)?.toFixed(1)  || '0'} , {item?.reviews || (item?.review) || (item?.tradie_details?.review)  || '0'} reviews </span>
-                            {/* <span className="rating">{item?.ratings || randomRating} , {item?.reviews || randomReview} reviews </span> */}
                         </div>
                     </div>
                     {showStatus && item?.status && <div className="form_field"><div className="job_status" >{item?.status}</div></div>}

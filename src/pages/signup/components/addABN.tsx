@@ -10,85 +10,21 @@ interface Propstype {
 
 const AddABN = (props: Propstype) => {
     const [errors, setErrors] = useState<any>({});
-    const [ABN, setAbn] = useState<any>('')
-
-    const changeHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        // const inputVal = e.target.value;
-        let inputVal = e.target.value.replaceAll(' ', '');
-        console.log(inputVal, inputVal.length, ABN, "okok")
-        if (regex.numeric.test(inputVal) || !inputVal) {
-            if (inputVal.length === 2) {
-                if (inputVal.length < ABN.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2);
-                    setAbn(inputVal);
-                    return;
-                } else if (inputVal.length == ABN.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 1);
-                    setAbn(inputVal);
-                    return;
-                }
-            }
-
-            if (inputVal.length >= 2 && inputVal.length < 5) {
-                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, inputVal.length);
-                setAbn(inputVal);
-                return;
-            }
-
-            if (inputVal.length === 5) {
-                if (inputVal.length == ABN.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 4);
-                } else if (inputVal.length < ABN.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5);
-                } else {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " ";
-                }
-                setAbn(inputVal);
-                return;
-            }
-
-            if (inputVal.length === 8) {
-                if (inputVal.length == ABN.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 7);
-                } else if (inputVal.length < ABN.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8);
-                } else {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8) + " ";
-                }
-                setAbn(inputVal);
-                return;
-            }
-
-            if (inputVal.length > 5 && inputVal.length < 8) {
-                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, inputVal.length);
-                setAbn(inputVal);
-                return;
-            }
-
-            if (inputVal.length > 8) {
-                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8) + " " + inputVal.slice(8, inputVal.length);
-            }
-            setAbn(inputVal)
-        }
-        // const key = inputVal.charCodeAt(inputVal.length - 1)
-        // if ((key == NaN || inputVal == "") && abn.length === 1) {
-        //     setAbn('');
-        //     return;
-        // }
-        // if ((key > 47 && key < 58) || key === 8) {
-        //     e.preventDefault();
-        //     setAbn(e.target.value)
-        // }
-
-        // if (e.target.value.length > 11) { previous dual msg 
-        //     return;
-        // }
-        // setAbn(e.target.value)
-    }
-
+    const [ABN, setAbn] = useState<any>('');
+    const [businessName, setBusinessName] = useState<any>('');
 
     const validateForm = () => {
         const newErrors: any = {};
+        if (!businessName) {
+            newErrors.businessName = Constants.errorStrings.businessNameEmpty;
+        }
+        // else {
+        //     const nameRegex = new RegExp(regex.fullname);
+        //     if (!nameRegex.test(businessName.trim())) {
+        //         newErrors.businessName = Constants.errorStrings.businessNameErr;
+        //     }
+        // }
+
         if (!ABN) {
             newErrors.abn = Constants.errorStrings.abnEmpty;
         } else {
@@ -108,7 +44,7 @@ const AddABN = (props: Propstype) => {
         e.preventDefault();
         if (validateForm()) {
             const abn = ABN.replaceAll(' ', '');
-            props.onSubmitSignup({ abn })
+            props.onSubmitSignup({ abn, businessName: businessName })
         }
     }
 
@@ -116,10 +52,15 @@ const AddABN = (props: Propstype) => {
         <div className="form_wrapper">
             <form onSubmit={onSubmit}>
                 <div className="form_field">
+                    <label className="form_label">Business Name</label>
+                    <div className="text_field">
+                        <input type="text" placeholder="Enter Business Name" value={businessName} name="businessName" onChange={({ target: { value } }: { target: { value: string } }) => setBusinessName(value.trimLeft())} maxLength={50} />
+                    </div>
+                    {!!errors.businessName && <span className="error_msg">{errors.businessName}</span>}
+                </div>
+                <div className="form_field">
                     <label className="form_label">Australian Business Number</label>
                     <div className="text_field">
-                        {/* <input type="number" placeholder="Enter Australian business number" value={abn} name="abn" onChange={changeHandler} /> */}
-                        {/* <input type="text" placeholder="51 824 753 556" value={ABN} onChange={changeHandler} maxLength={14} /> */}
                         <NumberFormat
                             type="text"
                             placeholder="51 824 753 556"
@@ -136,8 +77,8 @@ const AddABN = (props: Propstype) => {
                 <div className="form_field">
                     <button className="fill_btn btn-effect">Create account</button>
                 </div>
-            </form>
-        </div>
+            </form >
+        </div >
     )
 }
 

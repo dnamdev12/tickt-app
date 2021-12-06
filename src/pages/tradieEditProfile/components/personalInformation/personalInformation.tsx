@@ -466,6 +466,7 @@ export class PersonalInformation extends Component<Props, State> {
                 abn: basicDetails?.abn,
                 qualificationDoc: this.userType === 1 ? [...newFilledQualification, ...newRemainingQualification] : undefined,
                 ...(this.userType === 1 ? {} : builderData),
+                ...(this.userType === 1 && { businessName: basicDetails?.businessName }),
             }
             const res = await tradieUpdateBasicDetails(data);
             if (res?.success) {
@@ -476,7 +477,8 @@ export class PersonalInformation extends Component<Props, State> {
                     profileModalClicked: false,
                     addQualificationClicked: false,
                     remainingQualificationDoc: [],
-                    basicDetailsData: basicDetails
+                    basicDetailsData: basicDetails,
+                    isEditProfileModalChanged: false
                 }));
                 this.props.getTradieBasicDetails();
                 this.userType === 1 ? this.props.callTradieProfileData() : this.props.getProfileBuilder();
@@ -884,17 +886,40 @@ export class PersonalInformation extends Component<Props, State> {
                                 </div>
                                 <div className="form_field">
                                     <label className="form_label">Mobile Number</label>
-                                    <div className="text_field">
-                                        <NumberFormat
+                                    <div className="text_field f_spacebw">
+                                        <span className="show_label">{`+61 ${basicDetailsData?.mobileNumber}`}</span>
+                                        {/* <NumberFormat
                                             value={basicDetailsData?.mobileNumber}
                                             className="foo"
                                             displayType={'text'}
                                             prefix={'+61 '}
                                             format="+61 ### ### ###"
-                                        />
+                                        /> */}
                                     </div>
                                     {!!errors?.mobileNumber && <span className="error_msg">{errors?.mobileNumber}</span>}
                                 </div>
+                                <div className="form_field">
+                                    <label className="form_label">Email</label>
+                                    <div className="text_field f_spacebw">
+                                        {/* <input type="text" placeholder="Enter Email" value={basicDetailsData?.email} name='email' onChange={this.changeHandler} /> */}
+                                        <span className="show_label">{basicDetailsData?.email}</span>
+                                    </div>
+                                    {!!errors?.email && <span className="error_msg">{errors?.email}</span>}
+                                </div>
+                                {storageService.getItem('userInfo')?.accountType === 'normal' && <div className="form_field f_spacebw">
+                                    <a className="link" onClick={() => this.setState({ changeEmailModalClicked: true, profileModalClicked: false })}> Change Email</a>
+                                    <a className="link"
+                                        onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
+                                    >Change Password</a>
+                                </div>}
+
+                                {this.userType === 1 && <div className="form_field">
+                                    <label className="form_label">Business Name</label>
+                                    <div className="text_field">
+                                        <input type="text" placeholder="Enter Business Name" name='businessName' value={basicDetailsData?.businessName} onChange={this.changeHandler} />
+                                    </div>
+                                    {!!errors?.businessName && <span className="error_msg">{errors?.businessName}</span>}
+                                </div>}
                                 {this.userType === 1 && <div className="form_field">
                                     <label className="form_label">Australian Business Number</label>
                                     <div className="text_field">
@@ -915,20 +940,7 @@ export class PersonalInformation extends Component<Props, State> {
                                     </div>
                                     {!!errors?.abn && <span className="error_msg">{errors?.abn}</span>}
                                 </div>}
-                                <div className="form_field">
-                                    <label className="form_label">Email</label>
-                                    <div className="text_field f_spacebw">
-                                        {/* <input type="text" placeholder="Enter Email" value={basicDetailsData?.email} name='email' onChange={this.changeHandler} /> */}
-                                        <span className="show_label">{basicDetailsData?.email}</span>
-                                    </div>
-                                    {!!errors?.email && <span className="error_msg">{errors?.email}</span>}
-                                </div>
-                                {storageService.getItem('userInfo')?.accountType === 'normal' && <div className="form_field f_spacebw">
-                                    <a className="link" onClick={() => this.setState({ changeEmailModalClicked: true, profileModalClicked: false })}> Change Email</a>
-                                    <a className="link"
-                                        onClick={() => this.setState({ passwordModalClicked: true, profileModalClicked: false })}
-                                    >Change Password</a>
-                                </div>}
+
                                 {this.userType === 1 && (<div className="form_field">
                                     <label className="form_label">Qualification documents </label>
 
