@@ -688,7 +688,8 @@ class TradieInfo extends Component<Props, State> {
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
                                                 <span className="title line-3" title="">{tradieInfo?.tradieName || ''}</span>
-                                                <span className="tagg  mb30">{tradieInfo?.position || ''}</span>
+                                                <span className="xs_sub_title">{tradieInfo?.businessName || ''}</span>
+                                                <span className="tagg">{tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}</span>
                                                 <ul className="review_job">
                                                     <li>
                                                         <span className="icon reviews">{tradieInfo?.ratings || '0'}</span>
@@ -827,10 +828,10 @@ class TradieInfo extends Component<Props, State> {
                                                 <ul>
                                                     {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName &&
                                                         <li className="main">
-                                                            <img
+                                                            {/* <img
                                                                 src={tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu}
                                                                 alt=""
-                                                            />
+                                                            /> */}
                                                             {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
                                                         </li>}
                                                     {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any, index: any) => {
@@ -854,7 +855,8 @@ class TradieInfo extends Component<Props, State> {
                                             <div className="tags_wrap">
                                                 <ul>
                                                     {tradieInfo?.tradeName && <li className="main">
-                                                        <img src={tradieInfo?.tradeSelectedUrl || menu} alt="" />{tradieInfo?.tradeName || ''}
+                                                        {/* <img src={tradieInfo?.tradeSelectedUrl || menu} alt="" /> */}
+                                                        {tradieInfo?.tradeName || ''}
                                                     </li>}
                                                     {tradieInfo?.areasOfSpecialization?.map((item: any) => {
                                                         return <li key={item.specializationId}>{item.specializationName}</li>

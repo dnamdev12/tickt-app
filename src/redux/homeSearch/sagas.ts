@@ -76,9 +76,9 @@ function* getJobWithJobTypeLatLong(action: any) {
     } else {
         url = Urls.home + `?lat=${jobData.lat}` + `&long=${jobData.long}`
     }
-    setLoading(true);
+    // setLoading(true);
     const response: FetchResponse = yield NetworkOps.get(url)
-    setLoading(false);
+    // setLoading(false);
     if (response.status_code === 200) {
         yield put({ type: actionTypes.SET_JOB_WITH_JOB_TYPE_AND_LATLONG, payload: response.result });
     } else {

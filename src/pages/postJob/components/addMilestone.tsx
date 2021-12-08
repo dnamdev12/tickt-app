@@ -179,11 +179,11 @@ export default class AddMilestone extends Component<Props, State> {
     checkHoursVal = (value: any, lable: any, name: any) => {
         if (value?.length) {
             if (value.match(pattern) !== null) {
-                if (!((+value.split(':')[1]) % 5 === 0)) {
-                    return 'Time should be in mutiples of 5 like 10:05, 10:10';
+                if (!((+value.split(':')[1]) % 15 === 0)) {
+                    return 'Time should be in mutiples of 15 like 10:15, 10:30';
                 }
             } else {
-                return 'Please enter a valid pattern like : 10:05';
+                return 'Please enter a valid pattern like : 10:15';
             }
         } else {
             return `${label[name]} is required.`
@@ -224,9 +224,8 @@ export default class AddMilestone extends Component<Props, State> {
                 this.setState({ errors: errorItems })
             }
 
-            // if (recommended_hours?.length && error_3 && !pattern_error?.length) {
-            // if (!error_1?.length && !error_3?.length && !pattern_error?.length) {
-            if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
+            // if (!error_1?.length && !error_2?.length && !error_3?.length && !pattern_error?.length) {
+            if (!error_1?.length && (recommended_hours?.length === 0 || !pattern_error?.length)) {
                 return false;
             }
         }
@@ -298,7 +297,7 @@ export default class AddMilestone extends Component<Props, State> {
                                 </Button>
                                 <Button
                                     onClick={() => {
-                                        if (check_errors) {
+                                        if (milestone_name?.length || isPhotoevidence == true || recommended_hours?.length || from_date_format?.length) {
                                             this.setState(defaultStates, () => {
                                                 this.setItems(true);
                                                 handleStepBack();
@@ -377,7 +376,7 @@ export default class AddMilestone extends Component<Props, State> {
                                 <div className="form_field">
                                     <div className="f_spacebw">
                                         <label className="form_label">
-                                            {'Duration of milestone'}
+                                            {'Duration of milestone (optional)'}
                                         </label>
                                         <button
                                             onClick={() => { handleStepForward(8) }}
@@ -394,7 +393,7 @@ export default class AddMilestone extends Component<Props, State> {
                                 </div>
                                 <div className="form_field">
                                     <label className="form_label">
-                                        {'Recommended Hours'}
+                                        {'Estimated Hours (optional)'}
                                     </label>
                                     <div className="text_field">
                                         <input
@@ -409,11 +408,11 @@ export default class AddMilestone extends Component<Props, State> {
 
                                                     if (!rh_value?.length || rh_value.match(pattern) !== null) {
                                                         error_item['pattern_error'] = '';
-                                                        if (!((+rh_value.split(':')[1]) % 5 === 0)) {
-                                                            error_item['pattern_error'] = 'Time should be in mutiples of 5 like 10:05, 10:10';
+                                                        if (!((+rh_value.split(':')[1]) % 15 === 0)) {
+                                                            error_item['pattern_error'] = 'Time should be in multiples of 15 like 10:15, 10:30';
                                                         }
                                                     } else {
-                                                        error_item['pattern_error'] = 'Please enter a valid pattern like : 10:05';
+                                                        error_item['pattern_error'] = 'Please enter a valid pattern like : 10:15';
                                                     }
                                                     this.setState({ errors: error_item });
                                                 });
@@ -421,7 +420,7 @@ export default class AddMilestone extends Component<Props, State> {
                                             autoComplete='off'
                                             value={recommended_hours}
                                             type="text"
-                                            placeholder="Enter Recommended Hours"
+                                            placeholder="Enter Estimated Hours"
                                             name="recommended_hours" />
                                     </div>
                                     <span className="error_msg">{errors.recommended_hours}</span>

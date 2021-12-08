@@ -16,13 +16,40 @@ body {
 @import "./grid";
 @import "./mixin";
 @import "./effects";
+
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+
 // -------------------Fonts-----------------------//
+// @font-face {
+//   font-family: "Neue Haas Grotesk Text Pro Roman";
+//   font-style: normal;
+//   font-weight: normal;
+//   src: local("Neue Haas Grotesk Text Pro Roman"),
+//     url("../fonts/NHaasGroteskTXPro-55Rg.woff") format("woff");
+// }
+
+// @font-face {
+//   font-family: "Neue Haas Grotesk Text Pro Medium";
+//   font-style: normal;
+//   font-weight: normal;
+//   src: local("Neue Haas Grotesk Text Pro Medium"),
+//     url("../fonts/NHaasGroteskTXPro-65Md.woff") format("woff");
+// }
+
+// @font-face {
+//   font-family: "Neue Haas Grotesk Text Pro Bold";
+//   font-style: normal;
+//   font-weight: normal;
+//   src: local("Neue Haas Grotesk Text Pro Bold"),
+//     url("../fonts/NHaasGroteskTXPro-75Bd.woff") format("woff");
+// }
+
 @font-face {
   font-family: "Neue Haas Grotesk Text Pro Roman";
   font-style: normal;
   font-weight: normal;
   src: local("Neue Haas Grotesk Text Pro Roman"),
-    url("../fonts/NHaasGroteskTXPro-55Rg.woff") format("woff");
+    url("../fonts/Neue\ Haas\ Grotesk\ Text\ Pro\ 55\ Roman.woff") format("woff"); //roman
 }
 
 @font-face {
@@ -33,25 +60,17 @@ body {
     url("../fonts/NHaasGroteskTXPro-65Md.woff") format("woff");
 }
 
-@font-face {
-  font-family: "Neue Haas Grotesk Text Pro Bold";
-  font-style: normal;
-  font-weight: normal;
-  src: local("Neue Haas Grotesk Text Pro Bold"),
-    url("../fonts/NHaasGroteskTXPro-75Bd.woff") format("woff");
-}
-
 // -------------------Fonts close-----------------------//
 body {
-  font-family: "Neue Haas Grotesk Text Pro Roman", sans-serif !important;
+  font-family: "Inter", sans-serif !important;
 }
 
 .ft_normal{
-  font-family: 'Neue Haas Grotesk Text Pro Roman';
+  font-family: 'Inter';
   font-weight: normal;
 }
 .ft_bold{
-  font-family: 'Neue Haas Grotesk Text Pro Bold';
+  font-family: 'Neue Haas Grotesk Text Pro Medium';
   font-size: 16px !important;
   color: var(--blue) !important;
 }
@@ -112,7 +131,7 @@ body {
 }
 
 .title {
-  font: 32px/1.16 'Neue Haas Grotesk Text Pro Bold';
+  font: 32px/1.16 'Neue Haas Grotesk Text Pro Medium';
 	color: var(--blue);
 	margin-bottom: 32px;
 	display: block;
@@ -133,7 +152,7 @@ body {
 }
 
 .sub_title {
-  font: 24px/1.33 'Neue Haas Grotesk Text Pro Bold';
+  font: 24px/1.33 'Neue Haas Grotesk Text Pro Medium';
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 16px;
@@ -151,7 +170,7 @@ body {
 }
 
 .xs_sub_title {
-  font: 18px/1.33 'Neue Haas Grotesk Text Pro Bold';
+  font: 18px/1.33 'Neue Haas Grotesk Text Pro Medium';
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 16px;
@@ -168,7 +187,7 @@ body {
 }
 
 .inner_title {
-  font: 16px/1.33 'Neue Haas Grotesk Text Pro Bold';
+  font: 16px/1.33 'Neue Haas Grotesk Text Pro Medium';
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 15px;
@@ -179,7 +198,7 @@ body {
 }
 
 .xs_head {
-  font: 14px 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px 'Neue Haas Grotesk Text Pro Medium';
   color: var(--blue);
   margin-bottom: 10px;
   display: block;
@@ -263,9 +282,9 @@ body {
       align-items: center;
       margin: 0 12px 12px 0;
       padding: 8px;
-      @include border-radius(6px);
-      background-color: #f6f7f9;
-      font: 12px/1.3 'Neue Haas Grotesk Text Pro Medium';
+      @include border-radius(2px);
+      background-color: #dfe4ed;
+      font: 12px/1.3 'Neue Haas Grotesk Text Pro Roman';
       color: var(--blue);
       cursor: pointer;
       &.active {
@@ -293,7 +312,8 @@ body {
         font-size: 11px;
       }
       &.main {
-        background-color: var(--grey);
+        background-color: var(--blue-two);
+        color: var(--white);
         img {
           width: 15px;
           height: 15px;
@@ -308,7 +328,7 @@ body {
 .tag_status {
   padding: 4px 8px;
   @include border-radius(4px);
-  font: 10px/1.3 'Neue Haas Grotesk Text Pro Bold';
+  font: 10px/1.3 'Neue Haas Grotesk Text Pro Medium';
   letter-spacing: 0.5px;
   background-color: var(--light-gray);
   color: var(--greyish-brown);
@@ -499,7 +519,7 @@ body {
   }
 }
 .share {
-  font: 14px/1.14 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px/1.14 'Neue Haas Grotesk Text Pro Medium';
   letter-spacing: 0.1px;
   color: var(--greyish-brown);
   position: relative;
@@ -591,7 +611,7 @@ body {
 }
 
 .autosuggestion_icon {
-  font: 14px 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px 'Neue Haas Grotesk Text Pro Medium';
   color: var(--greyish-brown);
   position: relative;
   padding-left: 55px;
@@ -686,7 +706,7 @@ body {
       height: 24px;
     }
     &.active {
-      font-family: "Neue Haas Grotesk Text Pro Bold";
+      font-family: "Neue Haas Grotesk Text Pro Medium";
     }
     &.logout {
       color: #ed1c24;
@@ -717,7 +737,7 @@ body {
           background-color: #f6f7f9;
         }
         .who{
-          font-family: 'Neue Haas Grotesk Text Pro Bold';
+          font-family: 'Neue Haas Grotesk Text Pro Medium';
         }
       }
     }
@@ -771,7 +791,7 @@ body {
   }
   .see{
     color: #123f95;
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    font-family: 'Neue Haas Grotesk Text Pro Medium';
     padding: 2px 8px;
     border-radius: 6px;
     background-color: var(--grey);
@@ -916,7 +936,7 @@ body {
     bottom: 10%;
   }
   .reg {
-    font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
+    font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
     letter-spacing: 0.1px;
     color: var(--white);
   }
@@ -957,7 +977,7 @@ body {
   transform: translate(-50%, 50%);
   width: 100%;
   span {
-    font: 26px/1.25 'Neue Haas Grotesk Text Pro Bold';
+    font: 26px/1.25 'Neue Haas Grotesk Text Pro Medium';
     letter-spacing: 0.1px;
     color: var(--white);
     max-width: 262px;
@@ -984,7 +1004,7 @@ body {
   }
   .inner_title{
     margin: 0;
-    font: 15px/1.33 'Neue Haas Grotesk Text Pro Medium';
+    font: 15px/1.33 'Neue Haas Grotesk Text Pro Roman';
   }
 }
 
@@ -1296,7 +1316,7 @@ body {
       .icon{
           position: relative;
           padding-left: 35px;
-          font: 24px 'Neue Haas Grotesk Text Pro Bold';
+          font: 24px 'Neue Haas Grotesk Text Pro Medium';
           color: var(--blue);
           margin-bottom: 8px;
           display: block;
@@ -1466,7 +1486,7 @@ body {
       width: 80%;
       .user_name {
         display: block;
-        font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+        font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
         color: var(--blue);
         max-width: 125px;
         text-overflow: ellipsis;
@@ -1503,13 +1523,13 @@ body {
       @include border-radius(6px);
       background-color: var(--white);
       display: inline-flex;
-      font: 12px/1.5 'Neue Haas Grotesk Text Pro Bold';
+      font: 12px/1.5 'Neue Haas Grotesk Text Pro Medium';
       text-align: center;
       color: var(--greyish-brown);
     }
   }
   .bottom_note {
-    font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
+    font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
     color: var(--blue);
   }
   &.vouchers{
@@ -1809,7 +1829,7 @@ body {
     .checkbox_wrap{   
       label{
         font-size: 16px;
-        font-family: 'Neue Haas Grotesk Text Pro Medium';
+        font-family: 'Neue Haas Grotesk Text Pro Roman';
         max-width: 550px;
       }
     }
@@ -1840,7 +1860,7 @@ body {
       margin-bottom: 5px;
     }
     .info_note{
-      font-family: 'Neue Haas Grotesk Text Pro Roman';
+      font-family: 'Inter';
     }
   }
 
@@ -2061,7 +2081,7 @@ body {
       font-size: 14px;
       color: var(--greyish-brown);
       position: relative;
-      font-family: 'Neue Haas Grotesk Text Pro Medium';
+      font-family: 'Neue Haas Grotesk Text Pro Roman';
       cursor: pointer;
       line-height: 1.43;
       letter-spacing: 0.3px;
@@ -2092,7 +2112,10 @@ body {
       .ico{
         width: 24px;
         height: 24px;
+        padding: 2px;
         margin-right: 7px;
+        background-image: linear-gradient(to top, #161d4a, #0b41a8);
+        border-radius: 4px;
         img{
           width: 100%;
           height: 100%;
@@ -2116,7 +2139,7 @@ body {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     &.name {
-      font-family: 'Neue Haas Grotesk Text Pro Roman';
+      font-family: 'Inter';
       margin-top: 2px;
     }
   }
@@ -2235,12 +2258,12 @@ body {
       height: 3px;
     }
 		.per_day {
-			font: 16px/1.33 'Neue Haas Grotesk Text Pro Medium';
+			font: 16px/1.33 'Neue Haas Grotesk Text Pro Roman';
 			color: var(--blue);
 			display: block;
 		}
 		.price {
-      font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
+      font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
 			color: var(--blue);
 			margin-bottom: 8px;
 			display: block;
@@ -2305,7 +2328,7 @@ body {
       }
       &.icon {
         padding-left: 32px;
-        font: 14px 'Neue Haas Grotesk Text Pro Bold';
+        font: 14px 'Neue Haas Grotesk Text Pro Medium';
         text-align: left;
         &:before {
           width: 24px;
@@ -2488,7 +2511,7 @@ body {
     text-align: center;
     h1 {
       color: var(--blue);
-      font: 30px/1.5 'Neue Haas Grotesk Text Pro Bold';
+      font: 30px/1.5 'Neue Haas Grotesk Text Pro Medium';
       margin-bottom: 20px;
     }
   }
@@ -2516,7 +2539,7 @@ body {
     margin: 0 auto 10px;
     text-align: center;
     color: var(--blue);
-    font: 24px/1.5 'Neue Haas Grotesk Text Pro Bold';
+    font: 24px/1.5 'Neue Haas Grotesk Text Pro Medium';
     @media (max-width: 1024px) {
       max-width: 52%;
     }
@@ -2562,17 +2585,14 @@ body {
         width: 24px;
         height: 24px;
         content: "";
-        @include position(absolute, 5px, -5px, auto, auto);
+        @include position(absolute, -10px, -5px, auto, auto);
         background: url("../images/yellow-tick.png") center no-repeat;
         background-size: contain;
         opacity: 0;
       }
       &.active {
-        figure {
-          border-color: var(--blue-two);
-        }
         .name {
-          font-family: "Neue Haas Grotesk Text Pro Bold";
+          font-family: "Neue Haas Grotesk Text Pro Medium";
         }
         &::after {
           opacity: 1;
@@ -2587,13 +2607,12 @@ body {
         margin-bottom: 8px;
         width: 80px;
         height: 80px;
-        background-color: var(--grey);
-        border-radius: 50%;
+        background-image: linear-gradient(to top, #161d4a, #0b41a8);
+        border-radius: 4px;
         overflow: hidden;
         display: flex;
         justify-content: center;
         align-items: center;
-        border: 2px solid transparent;
         @media (max-width: 650px) {
           width: 70px;
           height: 70px;
@@ -2608,7 +2627,7 @@ body {
         font-size: 12px;
         line-height: 1.67;
         color: var(--blue);
-        max-width: 80px;
+        max-width: 85px;
         overflow: hidden;
         text-overflow: ellipsis;
         display: -webkit-box;
@@ -2687,7 +2706,7 @@ body {
         font-size: 11px;
       }
       &.who{
-        font-family: 'Neue Haas Grotesk Text Pro Bold';
+        font-family: 'Neue Haas Grotesk Text Pro Medium';
       }
     }
   }
@@ -2821,7 +2840,7 @@ body {
     }
   }
   .heading {
-    font: 34px/1 'Neue Haas Grotesk Text Pro Bold';
+    font: 34px/1 'Neue Haas Grotesk Text Pro Medium';
     letter-spacing: 0.3px;
     color: var(--white);
     margin: 0 auto 5px;
@@ -3099,15 +3118,14 @@ body {
       .category {
         width: 40px;
         height: 40px;
-        border-radius: 50%;
+        background-image: linear-gradient(to top, #161d4a, #0b41a8);
+        border-radius: 4px;
         display: flex;
         justify-content: center;
         align-items: center;
-        background-color: var(--grey);
         margin-right: 15px;
         img {
-          width: 20px;
-          height: 20px;
+          height: 28px;
           object-fit: contain;
         }
       }
@@ -3117,7 +3135,7 @@ body {
           font-size: 14px;
           line-height: 1.43;
           color: var(--greyish-brown);
-          font-family: "Neue Haas Grotesk Text Pro Medium";
+          font-family: "Neue Haas Grotesk Text Pro Roman";
           display: block;
         }
         .prof {
@@ -3157,7 +3175,7 @@ body {
   background-color: var(--grey);
   display: flex;
   align-items: center;
-  font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
   text-align: center;
   color: #120e24;
   @media (max-width: 768px) {
@@ -3213,7 +3231,7 @@ body {
 
 .job_status{
   color: var(--blue-two);
-  font: 10px/1.7 'Neue Haas Grotesk Text Pro Bold';
+  font: 10px/1.7 'Neue Haas Grotesk Text Pro Medium';
   letter-spacing: 0.3px;
   text-transform: uppercase;
   display: block;
@@ -3279,7 +3297,7 @@ body {
       min-height: 57px;
 			.name {
 				display: block;
-        font: 16px 'Neue Haas Grotesk Text Pro Bold';
+        font: 16px 'Neue Haas Grotesk Text Pro Medium';
 				color: var(--blue);
 				margin-bottom: 2px;
 			}
@@ -3487,7 +3505,7 @@ body {
         }
       }
       .categ_name {
-        font: 12px/1.29 'Neue Haas Grotesk Text Pro Bold';
+        font: 12px/1.29 'Neue Haas Grotesk Text Pro Medium';
         text-align: center;
         color: var(--greyish-brown);
       }
@@ -3649,7 +3667,7 @@ body {
     }
     .name {
       color: var(--blue);
-      font: 20px 'Neue Haas Grotesk Text Pro Bold';
+      font: 20px 'Neue Haas Grotesk Text Pro Medium';
       display: block;
       margin-bottom: 8px;
       @media (max-width: 768px) {
@@ -3738,7 +3756,7 @@ body {
     label {
       font-size: 16px;
       color: var(--blue);
-      font-family: "Neue Haas Grotesk Text Pro Medium";
+      font-family: "Neue Haas Grotesk Text Pro Roman";
       width: 100%;
       max-width: 400px;
       @media (max-width: 650px) {
@@ -3773,7 +3791,7 @@ body {
 	  cursor: pointer;
     .name {
       color: var(--blue);
-      font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+      font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
       max-width: 500px;
       display: block;
       width: 100%;
@@ -3899,7 +3917,7 @@ body {
 		  color: var(--dark-grey);
 		  line-height: 1.13;
 		  display: block;
-		  font-family: 'Neue Haas Grotesk Text Pro Roman';
+		  font-family: 'Inter';
 		  @media (max-width: 650px) {
 			font-size: 14px;
 			}
@@ -3918,7 +3936,7 @@ body {
 			}
 			a {
 			  font-size: 14px;
-			  font-family: 'Neue Haas Grotesk Text Pro Medium';
+			  font-family: 'Neue Haas Grotesk Text Pro Roman';
 			  line-height: 1.43;
 			  color: var(--blue);
 			  padding: 13px 15px;
@@ -3956,7 +3974,7 @@ body {
 		}
 	}
 	.map_btn{
-    font: 14px/1.43 'Neue Haas Grotesk Text Pro Bold';
+    font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
 		color: var(--blue);
 		padding: 13px 15px;
 		border-radius: 6px;
@@ -4125,7 +4143,7 @@ body {
 		text-align: center;
 		color: #2f5cb5;
     margin: 0 0 10px;
-    font: 16px/1 'Neue Haas Grotesk Text Pro Bold';
+    font: 16px/1 'Neue Haas Grotesk Text Pro Medium';
 	}
 }
 //----------------Data not found close---------------------//
@@ -4249,7 +4267,7 @@ body {
         background: #ffffff;
       }
       &.active{
-        font-family: "Neue Haas Grotesk Text Pro Bold";
+        font-family: "Neue Haas Grotesk Text Pro Medium";
         background: #ffffff;
       }
       &:before {
@@ -4342,7 +4360,7 @@ body {
     @include position(absolute, 50%, -40px, auto, auto);
     transform: translateY(-50%);
     color: var(--blue);
-    font: 14px 'Neue Haas Grotesk Text Pro Bold';
+    font: 14px 'Neue Haas Grotesk Text Pro Medium';
   }
 }
 .detail_col {
@@ -4490,7 +4508,7 @@ body {
       margin: 30px 0 25px;
     }
     span{
-      font-family: 'Neue Haas Grotesk Text Pro Bold';
+      font-family: 'Neue Haas Grotesk Text Pro Medium';
     }
   }
   .bank_btn{
@@ -4537,7 +4555,7 @@ body {
       display: flex;
       align-items: center;
       @include position(absolute, 0px, 0px, auto, auto);
-      font: 14px 'Neue Haas Grotesk Text Pro Bold';
+      font: 14px 'Neue Haas Grotesk Text Pro Medium';
       color: var(--blue-two);
       @media(max-width: 768px){
         font-size: 12px;
@@ -4653,7 +4671,7 @@ body {
     margin: 35px 0;
     .radio_wrap{
       label{
-        font-family: 'Neue Haas Grotesk Text Pro Medium';
+        font-family: 'Neue Haas Grotesk Text Pro Roman';
       }
     }
   }
@@ -4713,10 +4731,10 @@ body {
   background-color: #f7f8fa;
   position: relative;
   display: block;
-  font: 14px 'Neue Haas Grotesk Text Pro Bold';
+  font: 14px 'Neue Haas Grotesk Text Pro Medium';
   span{
     display: inline-block;
-    font-family: 'Neue Haas Grotesk Text Pro Roman';
+    font-family: 'Inter';
     margin: 0;
   }
   .pos{
@@ -4771,7 +4789,7 @@ body {
       @include position(absolute, 2px, 0px, auto, auto);
       animation: approval_info 1.5s 2s forwards;
       opacity: 0; 
-      font: 10px/1.8 'Neue Haas Grotesk Text Pro Bold';
+      font: 10px/1.8 'Neue Haas Grotesk Text Pro Medium';
       letter-spacing: 0.3px;
       display: flex;
       align-items: center;
@@ -4802,7 +4820,7 @@ body {
     }
   }
   .detect_icon{
-    font-family: "Neue Haas Grotesk Text Pro Medium";    
+    font-family: "Neue Haas Grotesk Text Pro Roman";    
   }
 }
 .pending_info{
@@ -4927,7 +4945,7 @@ body {
       label {
         font-size: 16px;
         color: var(--blue);
-        font-family: "Neue Haas Grotesk Text Pro Medium";
+        font-family: "Neue Haas Grotesk Text Pro Roman";
         width: 100%;
         max-width: 400px;
         display: block;
@@ -4954,7 +4972,7 @@ body {
   max-width: 327px;
   position: relative;
   .show_label{
-    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    font-family: 'Neue Haas Grotesk Text Pro Roman';
     color: var(--blue);
   }
   .decline_media{
@@ -5001,7 +5019,7 @@ body {
     flex-flow: column-reverse;
     align-items: center;
     font-size: 13px;
-    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    font-family: 'Neue Haas Grotesk Text Pro Roman';
     cursor: pointer;
     img{
       margin-bottom: 5px;
@@ -5019,7 +5037,7 @@ body {
 .view_quote {
   display: inline-block;
   color: var(--blue-two);
-  font: 13px 'Neue Haas Grotesk Text Pro Medium';
+  font: 13px 'Neue Haas Grotesk Text Pro Roman';
   background-color: #dfe5ef;
   padding: 5px;
   border-radius: 6px;
@@ -5036,7 +5054,7 @@ body {
       label{
         font-size: 16px;
         color: var(--blue);
-        font-family: 'Neue Haas Grotesk Text Pro Medium';
+        font-family: 'Neue Haas Grotesk Text Pro Roman';
         margin: 0;
       }
     }
@@ -5149,7 +5167,7 @@ body {
     .details {
       width: 80%;
       .user_name {
-        font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
+        font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
         color: var(--black-two);
         display: block;
       }
@@ -5176,7 +5194,7 @@ body {
   .action {
     cursor: pointer;
     display: inline-block;
-    font: 14px/1.29 'Neue Haas Grotesk Text Pro Bold';
+    font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
     color: var(--blue-two);
     margin-right: 16px;
   }
@@ -5485,7 +5503,7 @@ div#light-box div {
           }
         }
         .name{
-          font: 20px 'Neue Haas Grotesk Text Pro Bold';
+          font: 20px 'Neue Haas Grotesk Text Pro Medium';
           display: block;
           width: 74%;
           white-space: nowrap;
@@ -5501,7 +5519,7 @@ div#light-box div {
           display: flex;
           align-items: center;
           color: var(--blue-two);
-          font: 14px 'Neue Haas Grotesk Text Pro Bold';
+          font: 14px 'Neue Haas Grotesk Text Pro Medium';
           cursor: pointer;
           @media(max-width: 650px){
             top: 10px;
@@ -5726,7 +5744,7 @@ div#light-box div {
           &.job{
             padding-left: 18px;
             position: relative;
-            font-family: "Neue Haas Grotesk Text Pro Medium";
+            font-family: "Neue Haas Grotesk Text Pro Roman";
             &::before{
               @include position(absolute, 50%, auto, auto, 0px);
               transform: translateY(-50%);
@@ -5749,7 +5767,7 @@ div#light-box div {
         @include position(absolute, 15px, 15px, auto, auto);
       }
       .count{
-        font: 12px/1.67 'Neue Haas Grotesk Text Pro Bold';
+        font: 12px/1.67 'Neue Haas Grotesk Text Pro Medium';
         color: var(--greyish-brown);
         width: 20px;
         height: 20px;
@@ -5818,7 +5836,7 @@ div#light-box div {
   }
   &-content {
     color: var(--white);
-    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    font-family: 'Neue Haas Grotesk Text Pro Roman';
     max-width: 210px;
     margin: 0 0 20px auto;
     font-size: 16px;
@@ -5857,7 +5875,7 @@ div#light-box div {
 
 .xs_alert_dialog_title {
   h2 {
-    font: 18px 'Neue Haas Grotesk Text Pro Bold';
+    font: 18px 'Neue Haas Grotesk Text Pro Medium';
     color: var(--blue);
     display: block;
     text-align: center;

@@ -20,64 +20,6 @@ const AlmostDone = (props: Propstype) => {
         setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
     }
 
-    const abnHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        let inputVal = e.target.value.replaceAll(' ', '');
-        if (regex.numeric.test(inputVal) || !inputVal) {
-            if (inputVal.length === 2) {
-                if (inputVal.length < almostDoneData.abn.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2);
-                    setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
-                    return;
-                } else if (inputVal.length == almostDoneData.abn.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 1);
-                    setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
-                    return;
-                }
-            }
-
-            if (inputVal.length >= 2 && inputVal.length < 5) {
-                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, inputVal.length);
-                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
-                return;
-            }
-
-            if (inputVal.length === 5) {
-                if (inputVal.length == almostDoneData.abn.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 4);
-                } else if (inputVal.length < almostDoneData.abn.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5);
-                } else {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " ";
-                }
-                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
-                return;
-            }
-
-            if (inputVal.length === 8) {
-                if (inputVal.length == almostDoneData.abn.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 7);
-                } else if (inputVal.length < almostDoneData.abn.replaceAll(' ', '').length) {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8);
-                } else {
-                    inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8) + " ";
-                }
-                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
-                return;
-            }
-
-            if (inputVal.length > 5 && inputVal.length < 8) {
-                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, inputVal.length);
-                setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
-                return;
-            }
-
-            if (inputVal.length > 8) {
-                inputVal = inputVal.slice(0, 2) + " " + inputVal.slice(2, 5) + " " + inputVal.slice(5, 8) + " " + inputVal.slice(8, inputVal.length);
-            }
-            setAlmostDoneData((prevData: any) => ({ ...prevData, [e.target.name]: inputVal }))
-        }
-    }
-
     const validateForm = () => {
         const newErrors: any = {};
         if (!almostDoneData.company_name) {

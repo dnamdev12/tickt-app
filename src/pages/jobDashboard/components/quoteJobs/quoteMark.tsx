@@ -133,20 +133,12 @@ const QuoteMark = (props: any) => {
         }
         const res = await postHomeApplyJob(data);
         if (res.success) {
-            props.history.push('/quote-job-success');
-        }
-    }
-
-    const inviteJobActionHandler = async () => {
-        const jobDetailsData: any = props.location?.state?.jobData;
-        let data = {
-            jobId: jobDetailsData?.jobId,
-            builderId: jobDetailsData?.postedBy?.builderId,
-            isAccept: true
-        };
-        const res: any = await acceptDeclineJobInvitation(data, true);
-        if (res.success) {
-            props.history.push('/quote-job-success/invite');
+            props.history.push({
+                pathname: '/quote-job-success',
+                state: {
+                    builderName: props.builderName ? props.builderName : 'Builder'
+                }
+            });
         }
     }
 
@@ -161,8 +153,12 @@ const QuoteMark = (props: any) => {
         const res: any = await addQuote(data);
         if (res.success) {
             if (props.location?.state?.base_redirect === 'newJobs') {
-                // inviteJobActionHandler();
-                props.history.push('/quote-job-success/invite');
+                props.history.push({
+                    pathname: '/quote-job-success',
+                    state: {
+                        builderName: props.builderName ? props.builderName : 'Builder'
+                    }
+                });
             } else {
                 applyJobClicked();
             }

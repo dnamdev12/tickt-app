@@ -553,7 +553,7 @@ const BannerSearch = (props: PropsType) => {
                             <input
                                 type="text"
                                 ref={searchRef}
-                                placeholder="What jobs are you after?"
+                                placeholder="What trade are you looking for?"
                                 value={custom_name}
                                 onChange={(e) => {
                                     // isHandleChanges(true)

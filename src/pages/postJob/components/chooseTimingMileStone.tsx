@@ -86,7 +86,7 @@ const ChooseTimingMileStone = ({
                 if(index > 500){
                     // make random index from the limit 0 to 500.
                     // if the index is greater than 500.
-                    color_index = Math.floor((Math.random()*500) + 1); 
+                    color_index = Math.floor((Math.random()*500) + 1);
                 }
 
                 if (!to_date && from_date) {
@@ -159,13 +159,13 @@ const ChooseTimingMileStone = ({
 
     useEffect(() => {
         const interval = setInterval(() => {
-             onMountCallable();
-          }, 1500);
+            onMountCallable();
+        }, 1500);
 
-          return () => {
+        return () => {
             console.log(`clearing interval`);
             clearInterval(interval);
-          };
+        };
     }, []);
 
     const handleChange = (item: any) => {
@@ -316,7 +316,8 @@ const ChooseTimingMileStone = ({
                                     showSelectionPreview={true}
                                     showPreview={true}
                                     minDate={data?.from_date?.length ? moment(data?.from_date, 'YYYY-MM-DD').toDate() : new Date()}
-                                    maxDate={data?.to_date?.length && data?.from_date !== data?.to_date ? moment(data?.to_date, 'YYYY-MM-DD').toDate() : moment().add(2, 'years').toDate()}
+                                    maxDate={moment().add(2, 'years').toDate()}
+                                    // maxDate={data?.to_date?.length && data?.from_date !== data?.to_date ? moment(data?.to_date, 'YYYY-MM-DD').toDate() : moment().add(2, 'years').toDate()}
                                     fixedHeight={true}
                                 />
                             </div>

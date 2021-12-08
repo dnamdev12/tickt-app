@@ -390,7 +390,7 @@ const JobDetails = ({
                                                 {renderTime(data)}
                                             </li>
                                             {data.quoteJob == 0 && <li className="icon dollar">${data?.amount} {data?.pay_type === "Fixed price" ? 'f/p' : 'p/h'} </li>}
-                                            {data.quoteJob == 1 && <li className="icon dollar">for quoting</li>}
+                                            {data.quoteJob == 1 && <li className="icon dollar">For Quoting</li>}
                                             <li className="icon location line-1" title={data?.location_name}>{data?.location_name}</li>
                                         </ul>
                                     </div>

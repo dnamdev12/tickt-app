@@ -116,7 +116,8 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
 
                 if (start && end) {
                     if (start_selection && end_selection) {
-                        if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
+                        // if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
+                        if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
                             item_find = true
                         }
                     }
@@ -126,7 +127,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))
                         ) {
                             item_find = true;
-                            not_lie_between = true;
+                            // not_lie_between = true;
                         }
                     }
                 }
@@ -139,7 +140,8 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                     }
                 } else {
                     if (start_selection && end_selection && !end) {
-                        if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                        // if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
+                        if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY'))) {
                             item_find = false;
                         } else {
                             item_find = true
@@ -150,11 +152,11 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         }
 
         if (item_find) {
-            if (not_lie_between) {
-                setShowToast(true, 'Milestones dates should be lie between the job details');
-            } else {
+            // if (not_lie_between) {
+            //     setShowToast(true, 'Milestones dates should be lie between the job details');
+            // } else {
                 setShowToast(true, 'Please check the milestone dates');
-            }
+            // }
             return item_find;
         }
 
@@ -359,10 +361,10 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                                 format
                                                                             )}
                                                                         </span>
-                                                                        <span>
+                                                                        {recommended_hours && <span>
                                                                             {recommended_hours}
                                                                             {' hours'}
-                                                                        </span>
+                                                                        </span>}
                                                                     </div>
                                                                 </div>
                                                             </li>

@@ -18,7 +18,6 @@ function* callTradeList() {
   // commonActions.setLoading(true);
   const response: FetchResponse = yield NetworkOps.get(Urls.tradeList);
   // commonActions.setLoading(false);
-  console.log(response)
   if (response.status_code === 200) {
     yield put({ type: actionTypes.CALL_TRADE_LIST_SUCCESSED, payload: response.result.trade });
   }

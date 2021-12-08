@@ -412,8 +412,8 @@ const BuilderInfo = (props: PropsType) => {
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
                                                 <span className="title">{profileData?.builderName || ''}</span>
-                                                <span className="tagg">{profileData?.position || ''}</span>
                                                 <span className="xs_sub_title">{profileData?.companyName || ''}</span>
+                                                <span className="tagg">{profileData?.position || ''}</span>
                                                 <ul className="review_job">
                                                     <li>
                                                         <span className="icon reviews">{profileData?.ratings || '0'}</span>
@@ -473,7 +473,8 @@ const BuilderInfo = (props: PropsType) => {
                                                         tradeName: string
                                                     }) => (
                                                     <li key={tradeId} className="main">
-                                                        <img src={tradeSelectedUrl || menu} alt="" />{tradeName || ''}
+                                                        {/* <img src={tradeSelectedUrl || menu} alt="" /> */}
+                                                        {tradeName || ''}
                                                     </li>
                                                 ))}
                                                 {profileData?.areasOfSpecialization?.specializationData?.map((item: any) => {
@@ -487,7 +488,7 @@ const BuilderInfo = (props: PropsType) => {
                                             <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
                                                 {profileData?.tradeName &&
                                                     <li className="main">
-                                                        <img src={profileData?.tradeSelectedUrl || menu} alt="" />
+                                                        {/* <img src={profileData?.tradeSelectedUrl || menu} alt="" /> */}
                                                         {profileData?.tradeName || ''}
                                                     </li>}
                                                 {profileData?.areasOfjobs?.map((item: any) => {

@@ -246,3 +246,12 @@ export const resendMobileOtp = async (data: any) => {
   setShowToast(true, response.message);
   return { success: false };
 };
+
+export const getStripeClientSecretkey = async () => {
+  const response: FetchResponse = await NetworkOps.get(Urls.getStripeClientSecretKey);
+  if (response.status_code === 200) {
+    return { success: true, stripeClientSecretkey: response.result?.clientSecret };
+  }
+  setShowToast(true, 'Something went wrong');
+  return { success: false };
+};

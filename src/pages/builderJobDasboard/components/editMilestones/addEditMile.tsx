@@ -55,15 +55,16 @@ const AddEditMile = (props: any) => {
     const checkHoursVal = (value: any, lable: any, name: any) => {
         if (value?.length) {
             if (value.match(pattern) !== null) {
-                if (!((+value.split(':')[1]) % 5 === 0)) {
-                    return 'Time should be in mutiples of 5 like 10:05, 10:10';
+                if (!((+value.split(':')[1]) % 15 === 0)) {
+                    return 'Time should be in mutiples of 15 like 10:15, 10:30';
                 }
                 return '';
             } else {
-                return 'Please enter a valid pattern like : 10:05'
+                return 'Please enter a valid pattern like : 10:15'
             }
         }
-        return `${label[name]} is required.`
+        return '';
+        // return `${label[name]} is required.`
     }
 
     const isInvalid = (name: string, value: string) => {
@@ -71,7 +72,7 @@ const AddEditMile = (props: any) => {
             case 'name':
                 return !value.length ? `${label[name]} is required.` : value.length > 50 ? 'Maximum 50 characters are allowed.' : '';
             case 'duration':
-                return !value.length ? `${label[name]} is required.` : '';
+                return '';
             case 'recommended':
                 return checkHoursVal(value, label, name);
         }
@@ -89,8 +90,10 @@ const AddEditMile = (props: any) => {
             value = (value).trimLeft();
         }
 
-        if (['name', 'duration', 'recommended'].includes(name)) {
-            error_clone[name] = isInvalid(name, value)
+        if (['name', 'recommended'].includes(name)) {
+            if (isInvalid(name, value)) {
+                error_clone[name] = isInvalid(name, value)
+            }
         }
 
         setStateData((prev: any) => ({
@@ -410,7 +413,7 @@ const AddEditMile = (props: any) => {
         'Choose'
     );
 
-    if (!name?.length || !recommended?.length || renderDuration === 'Choose') {
+    if (!name?.length || (recommended?.length > 0 && errors.recommended?.length)) {
         check_errors = true;
     }
 
@@ -420,7 +423,8 @@ const AddEditMile = (props: any) => {
     }
 
     let min_date: any = moment(item?.fromDate).isValid() ? moment(item?.fromDate).toDate() : new Date();
-    let max_date: any = moment(item?.toDate).isValid() && !moment(item?.fromDate).isSame(item?.toDate) ? moment(item?.toDate).toDate() : moment().add(2, 'years').toDate();
+    // let max_date: any = moment(item?.toDate).isValid() && !moment(item?.fromDate).isSame(item?.toDate) ? moment(item?.toDate).toDate() : moment().add(2, 'years').toDate();
+    let max_date: any = moment().add(2, 'years').toDate();
     return (
         <div className="flex_row">
             <div className="flex_col_sm_12">
@@ -565,7 +569,7 @@ const AddEditMile = (props: any) => {
                         <div className="form_field">
                             <div className="f_spacebw">
                                 <label className="form_label">
-                                    {'Duration of milestone'}
+                                    {'Duration of milestone (optional)'}
                                 </label>
                                 <button
                                     onClick={() => { toggleCal() }}
@@ -576,7 +580,7 @@ const AddEditMile = (props: any) => {
                         </div>
                         <div className="form_field">
                             <label className="form_label">
-                                {'Recommended Hours'}
+                                {'Estimated Hours (optional)'}
                             </label>
                             <div className="text_field">
                                 <input
@@ -587,7 +591,7 @@ const AddEditMile = (props: any) => {
                                     autoComplete='off'
                                     value={recommended}
                                     type="text"
-                                    placeholder="Enter Recommended Hours"
+                                    placeholder="Enter Estimated Hours"
                                     name="recommended_hours" />
                             </div>
                             <span className="error_msg">{errors.recommended}</span>

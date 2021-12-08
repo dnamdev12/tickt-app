@@ -145,7 +145,11 @@ class ListQuotes extends Component<Props, State> {
                                 {item?.status && <div className="form_field"><div className="job_status" >{item?.status?.toUpperCase()}</div></div>}
 
                                 <button
-                                    className="fill_grey_btn full_btn btn-effect">
+                                    className="fill_grey_btn full_btn btn-effect"
+                                    onClick={() => {
+                                        this.props.history.replace(`/jobs?active=${activeType}&viewQuotes=true&jobId=${jobId}&id=${item?._id}`);
+                                        this.props.setJobLabel('quotes');
+                                    }}>
                                     {`Total quote:`}
                                     {<NumberFormat
                                         value={!!item?.totalQuoteAmount ? item?.totalQuoteAmount : '0'}

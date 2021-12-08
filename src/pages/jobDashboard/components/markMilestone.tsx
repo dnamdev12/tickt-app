@@ -586,7 +586,6 @@ const MarkMilestone = (props: Proptypes) => {
               </div>
             </div>
           ));
-        break;
       case 2:
         return page = (
           <UploadMedia
@@ -609,7 +608,6 @@ const MarkMilestone = (props: Proptypes) => {
             hasDescription
           />
         );
-        break;
       case 3:
         return page = (
           <div className="flex_row">
@@ -670,7 +668,6 @@ const MarkMilestone = (props: Proptypes) => {
             </div>
           </div>
         );
-        break;
       case 4:
         return page = (
           <div className="flex_row">
@@ -716,7 +713,6 @@ const MarkMilestone = (props: Proptypes) => {
             </div>
           </div>
         );
-        break;
       case 5:
         return page = (
           <div className="flex_row">
@@ -893,7 +889,6 @@ const MarkMilestone = (props: Proptypes) => {
             </div>
           </div>
         );
-        break;
       case 6:
         return page = (
           <DigitalIdVerification
@@ -902,7 +897,6 @@ const MarkMilestone = (props: Proptypes) => {
             stripeAccountId={data.stripeAccountId}
           />
         )
-        break;
 
       default:
         return null;
