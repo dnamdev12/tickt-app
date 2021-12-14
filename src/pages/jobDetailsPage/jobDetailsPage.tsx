@@ -1005,7 +1005,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         )
                                     }) : null}
                                 </ul>
-                                {props.isSkeletonLoading ? <Skeleton /> : <button className="fill_grey_btn ques_btn" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
+                                {props.isSkeletonLoading ? <Skeleton /> : <button className="fill_grey_btn ques_btn btn-effect" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
                                     <img src={question} alt="question" />
                                     {`${jobDetailsData?.questionsCount ? `${jobDetailsData?.questionsCount === 1 ? `${jobDetailsData?.questionsCount} question` : `${jobDetailsData?.questionsCount} questions`}` : '0 questions'}`}
                                 </button>}
@@ -1230,7 +1230,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                                 <span className="rating">
-                                                    {`${jobDetailsData?.postedBy?.ratings || '0'}, ${jobDetailsData?.postedBy?.reviews ? `${jobDetailsData?.postedBy?.reviews === 1 ? `${jobDetailsData?.postedBy?.reviews} review` : `${jobDetailsData?.postedBy?.reviews} reviews`}` : '0 reviews'}`}
+                                                    {`${jobDetailsData?.postedBy?.ratings || '0'} | ${jobDetailsData?.postedBy?.reviews ? `${jobDetailsData?.postedBy?.reviews === 1 ? `${jobDetailsData?.postedBy?.reviews} review` : `${jobDetailsData?.postedBy?.reviews} reviews`}` : '0 reviews'}`}
                                                 </span>
                                             </div>
                                         </div>

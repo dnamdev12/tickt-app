@@ -545,7 +545,7 @@ const MarkMilestone = (props: Proptypes) => {
                     <div className="details">
                       <span className="name">{builderName}</span>
                       {/* <span className="prof">Project Manager</span> */}
-                      <span className="rating">{ratings} , {reviews} reviews</span>
+                      <span className="rating">{ratings} | {reviews} reviews</span>
                     </div>
                   </div>
                 </div>

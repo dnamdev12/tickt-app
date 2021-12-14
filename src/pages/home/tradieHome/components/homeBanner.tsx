@@ -22,7 +22,7 @@ const HomeBanner = (props: PropsType) => {
                 <div className="banner_container">
                     <BannerSearch {...props} />
                     <div className="text-center">
-                        <h1 className="heading text_shine">See all around me</h1>
+                        <h1 className="heading">See all around me</h1>
                         <p className="commn_para">Get the job in your area</p>
                         <button className="fill_btn view-btn" onClick={viewMoreClicked}>View More</button>
                     </div>
