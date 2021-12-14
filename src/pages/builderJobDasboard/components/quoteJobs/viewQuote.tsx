@@ -225,7 +225,7 @@ class ViewQuote extends Component<Props, State> {
                                         <div className="details">
                                             <span className="name">{item?.tradieName}</span>
                                             <p className="commn_para">
-                                                <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'} , {item?.reviewCount} reviews</span>
+                                                <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'} | {item?.reviewCount} reviews</span>
                                             </p>
                                         </div>
                                     </div>

@@ -1111,7 +1111,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         )
                                     })}
                                 </ul>
-                                <button className="fill_grey_btn ques_btn" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
+                                <button className="fill_grey_btn ques_btn btn-effect" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
                                     <img src={question} alt="question" />
                                     {`${jobDetailsData?.questionsCount || '0'} ${jobDetailsData?.questionsCount === 1 ? 'question' : 'questions'}`}
                                 </button>
@@ -1356,7 +1356,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </span>
 
                                                 <span className="rating">
-                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
+                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'} | ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
                                                 </span>
                                             </div>
                                         </div>

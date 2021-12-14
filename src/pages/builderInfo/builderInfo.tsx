@@ -44,7 +44,7 @@ interface PropsType {
 const portfolio = {
     desktop: {
         breakpoint: { max: 3000, min: 1024 },
-        items: 4,
+        items: 6,
         slidesToSlide: 1, // optional, default to 1.
         paritialVisibilityGutter: 30
     },
@@ -357,12 +357,11 @@ const BuilderInfo = (props: PropsType) => {
     if (showError) {
         return (
             <div className="app_wrapper">
-                <div className="section_wrapper">
-                    <div className="custom_container">
-
+                <div className="custom_container">
+                    <div className="section_wrapper">
                         <div className="vid_img_wrapper pt-20">
                             <div className="flex_row">
-                                <div className="flex_col_sm_8 relative">
+                                <div className="flex_col_sm_3 relative">
                                     <button className="back" onClick={() => {
                                         props.history.goBack();
                                     }}></button>
@@ -383,31 +382,33 @@ const BuilderInfo = (props: PropsType) => {
     } else {
         return (
             <div className="app_wrapper">
-                <div className="section_wrapper">
-                    <div className="custom_container">
+                <div className="custom_container">
+                    <div className="section_wrapper">
                         <div className="vid_img_wrapper pt-20">
                             <div className="flex_row">
-                                <div className="flex_col_sm_8 relative">
+                                <div className="flex_col_sm_3 relative">
                                     <button className="back" onClick={() => props.history?.goBack()}></button>
                                 </div>
                             </div>
                             <div className="flex_row">
-                                <div className="flex_col_sm_8">
-                                    <figure className="vid_img_thumb">
-                                        {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
-                                        {!props.isSkeletonLoading &&
-                                            <img
-                                                src={profileData?.builderImage || profilePlaceholder}
-                                                alt="profile-pic"
-                                                onLoad={() => setProfilePictureLoading(false)}
-                                                // onError={(e: any) => {
-                                                //     let e_: any = e;
-                                                //     e_.target.src = dummy;
-                                                // }}
-                                                hidden={profilePictureLoading} />}
-                                    </figure>
+                                <div className="flex_col_sm_3">
+                                    <div className="upload_profile_pic">
+                                        <figure className="user_img">
+                                            {profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 240 }} />}
+                                            {!props.isSkeletonLoading &&
+                                                <img
+                                                    src={profileData?.builderImage || profilePlaceholder}
+                                                    alt="profile-pic"
+                                                    onLoad={() => setProfilePictureLoading(false)}
+                                                    // onError={(e: any) => {
+                                                    //     let e_: any = e;
+                                                    //     e_.target.src = dummy;
+                                                    // }}
+                                                    hidden={profilePictureLoading} />}
+                                        </figure>
+                                    </div>
                                 </div>
-                                <div className="flex_col_sm_4 relative">
+                                <div className="flex_col_sm_3 relative">
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
@@ -457,12 +458,11 @@ const BuilderInfo = (props: PropsType) => {
                                         <p className="commn_para">{profileData?.aboutCompany || ''}</p>
                                     </div>}
                                 </div>
-                                <div className="flex_col_sm_4">
+                                {/* <div className="flex_col_sm_8">
                                     <div className="area">
                                     <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Areas of specialisation'}</span>
                                     <div className="tags_wrap">
                                         {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 2 ? (
-                                            // Add active class when click on show more
                                             <ul className={`${!showSpecs ? 'more_tags active' : ''}`}>
                                                 {profileData?.areasOfSpecialization?.tradeData?.map(({
                                                     tradeId,
@@ -473,7 +473,6 @@ const BuilderInfo = (props: PropsType) => {
                                                         tradeName: string
                                                     }) => (
                                                     <li key={tradeId} className="main">
-                                                        {/* <img src={tradeSelectedUrl || menu} alt="" /> */}
                                                         {tradeName || ''}
                                                     </li>
                                                 ))}
@@ -488,7 +487,6 @@ const BuilderInfo = (props: PropsType) => {
                                             <ul className={`more_tags ${showSpecs ? 'active' : ''}`}>
                                                 {profileData?.tradeName &&
                                                     <li className="main">
-                                                        {/* <img src={profileData?.tradeSelectedUrl || menu} alt="" /> */}
                                                         {profileData?.tradeName || ''}
                                                     </li>}
                                                 {profileData?.areasOfjobs?.map((item: any) => {
@@ -510,14 +508,12 @@ const BuilderInfo = (props: PropsType) => {
                                             </span>}
                                     </div>
 </div>
-                                </div>
+                                </div> */}
                             </div>
                         </div>
                     </div>
-                </div>
 
-                {profileData?.portfolio?.length > 0 && <div className="section_wrapper">
-                    <div className="custom_container">
+                    {profileData?.portfolio?.length > 0 && <div className="section_wrapper">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
                         <Carousel
                             responsive={portfolio}
@@ -540,55 +536,53 @@ const BuilderInfo = (props: PropsType) => {
                                 )
                             }) : null}
                         </Carousel>
-                    </div>
-                </div>}
+                    </div>}
 
-                <Modal
-                    className="custom_modal"
-                    open={portfolioData.portfolioImageClicked}
-                    onClose={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        <div className="heading">
-                            <button className="close_btn" onClick={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}>
-                                <img src={cancel} alt="cancel" />
-                            </button>
-                        </div>
-                        <div className="flex_row">
-                            <div className="flex_col_sm_6">
-                                <Carousel
-                                    responsive={portfolioModal}
-                                    showDots={true}
-                                    infinite={true}
-                                    autoPlay={true}
-                                    arrows={false}
-                                    className="portfolio_wrappr"
-                                >
-                                    {portfolioData?.portfolioDetails ? portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
-                                        return (
-                                            <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
-                                                <figure className="portfolio_img">
-                                                    <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
-                                                </figure>
-                                            </div>
-                                        )
-                                    }) : <img alt="" src={portfolioPlaceholder} />}
-                                </Carousel>
+                    <Modal
+                        className="custom_modal"
+                        open={portfolioData.portfolioImageClicked}
+                        onClose={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                    >
+                        <div className="custom_wh portfolio_preview" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                            <div className="heading">
+                                <button className="close_btn" onClick={() => setPortfolioData((prevData: any) => ({ ...prevData, portfolioImageClicked: false }))}>
+                                    <img src={cancel} alt="cancel" />
+                                </button>
                             </div>
-                            <div className="flex_col_sm_6">
-                                <span className="xs_sub_title">Job Description</span>
-                                <div className="job_content">
-                                    <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
+                            <div className="flex_row">
+                                <div className="flex_col_sm_6">
+                                    <Carousel
+                                        responsive={portfolioModal}
+                                        showDots={true}
+                                        infinite={true}
+                                        autoPlay={true}
+                                        arrows={false}
+                                        className="portfolio_wrappr"
+                                    >
+                                        {portfolioData?.portfolioDetails ? portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
+                                            return (
+                                                <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
+                                                    <figure className="portfolio_img">
+                                                        <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
+                                                    </figure>
+                                                </div>
+                                            )
+                                        }) : <img alt="" src={portfolioPlaceholder} />}
+                                    </Carousel>
+                                </div>
+                                <div className="flex_col_sm_6">
+                                    <span className="xs_sub_title">Job Description</span>
+                                    <div className="job_content">
+                                        <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                </Modal>
+                    </Modal>
 
-                <div className="section_wrapper">
-                    <div className="custom_container">
+                    <div className="section_wrapper">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Job posted'}</span>
                         {props.isSkeletonLoading ? <Skeleton height={250} /> : <div className="flex_row tradies_row">
                             {(props.isSkeletonLoading || props.isLoading || profileData?.jobPostedData?.length > 0) ?
@@ -609,11 +603,9 @@ const BuilderInfo = (props: PropsType) => {
                         >
                             {`View ${profileData?.totalJobPostedCount ? `${profileData?.totalJobPostedCount === 1 ? `${profileData?.totalJobPostedCount} job` : `all ${profileData?.totalJobPostedCount} jobs`}` : ''}`}
                         </button>}
-                    </div>
-                </div >
+                    </div >
 
-                <div className="section_wrapper">
-                    <div className="custom_container">
+                    <div className="section_wrapper">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton count={2} /> : 'Reviews'}</span>
                         {props.isSkeletonLoading ? <Skeleton height={200} /> : <div className="flex_row review_parent">
                             {(props.isSkeletonLoading || props.isLoading || reviewList.length > 0) ?
@@ -636,157 +628,156 @@ const BuilderInfo = (props: PropsType) => {
                                 {`View all ${profileData?.reviewsCount || 0} review${profileData?.reviewsCount ? 's' : ''}`}
                             </button>}
                     </div>
-                </div>
 
-                {/* view All reviews  */}
-                {reviewsData.showAllReviewsClicked && reviewList?.length > 0 &&
+                    {/* view All reviews  */}
+                    {reviewsData.showAllReviewsClicked && reviewList?.length > 0 &&
+                        <Modal
+                            className="ques_ans_modal"
+                            open={reviewsData.showAllReviewsClicked}
+                            onClose={() => modalCloseHandler('showAllReviewsClicked')}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                                <div className="heading">
+                                    <span className="sub_title">{`${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `${profileData?.reviewsCount} reviews`}` : ''}`}</span>
+                                    <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                <div className="inner_wrap">
+                                    {reviewList?.map((item: any) => {
+                                        const { reviewData } = item;
+                                        return (
+                                            // <div key={reviewsData.reviewId}>
+                                            <div>
+                                                <div className="question_ans_card">
+                                                    <div className="user_detail">
+                                                        <figure className="user_img">
+                                                            <img src={reviewData?.userImage || dummy} alt="user-img" />
+                                                        </figure>
+                                                        <div className="details">
+                                                            <span className="user_name">{reviewData?.name || ''}</span>
+                                                            <span className="date">{reviewData?.date || ''}</span>
+                                                        </div>
+                                                        <div className="rating_star">
+                                                            <ReactStars
+                                                                count={5}
+                                                                value={reviewData.rating}
+                                                                size={30}
+                                                                edit={false}
+                                                                isHalf={true}
+                                                                emptyIcon={<i className="far fa-star"></i>}
+                                                                halfIcon={<i className="fa fa-star-half-alt"></i>}
+                                                                fullIcon={<i className="fa fa-star"></i>}
+                                                                activeColor="#ffd700"
+                                                                color='#DFE5EF'
+                                                            />
+                                                        </div>
+                                                    </div>
+                                                    <p>{reviewData?.review || ''}</p>
+                                                    {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
+                                                        <span className="show_hide_ans link"
+                                                            onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
+                                                    {reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) && <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>}
+                                                    {!reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
+                                                    {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('updateReviewBuilder', reviewData?.reviewId, '', reviewData?.review, reviewData?.rating)}>Edit</span>}
+                                                    {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('removeReviewBuilder', reviewData?.reviewId)}>Delete</span>}
+                                                </div>
+                                                {reviewData?.replyData?.reply && reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) &&
+                                                    <div className="question_ans_card answer">
+                                                        <div className="user_detail">
+                                                            <figure className="user_img">
+                                                                <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
+                                                            </figure>
+                                                            <div className="details">
+                                                                <span className="user_name">{reviewData?.replyData?.name || ''}</span>
+                                                                <span className="date">{reviewData?.replyData?.date || ''}</span>
+                                                            </div>
+                                                        </div>
+                                                        <p>{reviewData?.replyData?.reply}</p>
+                                                        {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
+                                                        {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
+                                                    </div>}
+                                            </div>
+                                        )
+                                    })}
+                                    {profileData?.reviewsCount > reviewList.length && <div className="text-center">
+                                        <button className="fill_grey_btn load_more" onClick={loadMoreReviewHandler}>View more</button>
+                                    </div>}
+                                </div>
+                            </div>
+                        </Modal>
+                    }
+                    {/* review reply modal */}
                     <Modal
                         className="ques_ans_modal"
-                        open={reviewsData.showAllReviewsClicked}
-                        onClose={() => modalCloseHandler('showAllReviewsClicked')}
+                        open={reviewsData.reviewReplyClicked}
+                        onClose={() => modalCloseHandler('reviewReplyClicked')}
                         aria-labelledby="simple-modal-title"
                         aria-describedby="simple-modal-description"
                     >
-                        <div className="custom_wh" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                        <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                             <div className="heading">
-                                <span className="sub_title">{`${profileData?.reviewsCount ? `${profileData?.reviewsCount === 1 ? `${profileData?.reviewsCount} review` : `${profileData?.reviewsCount} reviews`}` : ''}`}</span>
-                                <button className="close_btn" onClick={() => modalCloseHandler('showAllReviewsClicked')}>
+                                <span className="sub_title">
+                                    {`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
+                                <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
                                     <img src={cancel} alt="cancel" />
                                 </button>
                             </div>
-                            <div className="inner_wrap">
-                                {reviewList?.map((item: any) => {
-                                    const { reviewData } = item;
-                                    return (
-                                        // <div key={reviewsData.reviewId}>
-                                        <div>
-                                            <div className="question_ans_card">
-                                                <div className="user_detail">
-                                                    <figure className="user_img">
-                                                        <img src={reviewData?.userImage || dummy} alt="user-img" />
-                                                    </figure>
-                                                    <div className="details">
-                                                        <span className="user_name">{reviewData?.name || ''}</span>
-                                                        <span className="date">{reviewData?.date || ''}</span>
-                                                    </div>
-                                                    <div className="rating_star">
-                                                        <ReactStars
-                                                            count={5}
-                                                            value={reviewData.rating}
-                                                            size={30}
-                                                            edit={false}
-                                                            isHalf={true}
-                                                            emptyIcon={<i className="far fa-star"></i>}
-                                                            halfIcon={<i className="fa fa-star-half-alt"></i>}
-                                                            fullIcon={<i className="fa fa-star"></i>}
-                                                            activeColor="#ffd700"
-                                                            color='#DFE5EF'
-                                                        />
-                                                    </div>
-                                                </div>
-                                                <p>{reviewData?.review || ''}</p>
-                                                {Object.keys(reviewData?.replyData).length > 0 && !(reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId)) &&
-                                                    <span className="show_hide_ans link"
-                                                        onClick={() => reviewHandler('showReviewClicked', '', reviewData?.replyData?.replyId)}>Show reply</span>}
-                                                {reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) && <span className="show_hide_ans link" onClick={() => reviewHandler('hideReviewClicked', '', reviewData?.replyData?.replyId)}>Hide reply</span>}
-                                                {!reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('reviewReplyClicked', reviewData.reviewId)}>Reply</span>}
-                                                {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('updateReviewBuilder', reviewData?.reviewId, '', reviewData?.review, reviewData?.rating)}>Edit</span>}
-                                                {reviewData?.isModifiable && Object.keys(reviewData?.replyData).length === 0 && <span className="action link" onClick={() => reviewHandler('removeReviewBuilder', reviewData?.reviewId)}>Delete</span>}
-                                            </div>
-                                            {reviewData?.replyData?.reply && reviewsData.replyShownHideList.includes(reviewData?.replyData?.replyId) &&
-                                                <div className="question_ans_card answer">
-                                                    <div className="user_detail">
-                                                        <figure className="user_img">
-                                                            <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
-                                                        </figure>
-                                                        <div className="details">
-                                                            <span className="user_name">{reviewData?.replyData?.name || ''}</span>
-                                                            <span className="date">{reviewData?.replyData?.date || ''}</span>
-                                                        </div>
-                                                    </div>
-                                                    <p>{reviewData?.replyData?.reply}</p>
-                                                    {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('updateReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId, reviewData?.replyData?.reply)}>Edit</span>}
-                                                    {reviewData?.replyData?.isModifiable && <span className="action link" onClick={() => reviewHandler('removeReviewReply', reviewData?.replyData?.reviewId, reviewData?.replyData?.replyId)}>Delete</span>}
-                                                </div>}
-                                        </div>
-                                    )
-                                })}
-                                {profileData?.reviewsCount > reviewList.length && <div className="text-center">
-                                    <button className="fill_grey_btn load_more" onClick={loadMoreReviewHandler}>View more</button>
-                                </div>}
+                            <div className="form_field">
+                                <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
+                                {reviewsData.updateParentReviews && (
+                                    <ReactStars
+                                        value={reviewsData.rating || 0}
+                                        count={5}
+                                        isHalf={true}
+                                        onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
+                                        size={40}
+                                        activeColor="#ffd700"
+                                        color='#DFE5EF'
+                                    />
+                                )}
+                                <div className="text_field">
+                                    <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
+                                    <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                                </div>
+                                {!!errors.reviewData && <span className="error_msg">{errors.reviewData}</span>}
+                            </div>
+                            <div className="bottom_btn custom_btn">
+                                {(reviewsData.updateReviewsClicked || reviewsData.updateParentReviews) ?
+                                    <button className="fill_btn full_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Save</button>
+                                    : <button className="fill_btn full_btn btn-effect" onClick={() => reviewHandler(reviewsData.reviewsClickedType)}>Send</button>}
+                                <button className="fill_grey_btn btn-effect" onClick={() => reviewHandler('replyCancelBtnClicked')}>Cancel</button>
                             </div>
                         </div>
                     </Modal>
-                }
-                {/* review reply modal */}
-                <Modal
-                    className="ques_ans_modal"
-                    open={reviewsData.reviewReplyClicked}
-                    onClose={() => modalCloseHandler('reviewReplyClicked')}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        <div className="heading">
-                            <span className="sub_title">
-                                {`${reviewsData.updateReviewsClicked ? 'Edit reply' : reviewsData.updateParentReviews ? 'Edit Review' : 'Reply'}`}</span>
-                            <button className="close_btn" onClick={() => modalCloseHandler('reviewReplyClicked')}>
-                                <img src={cancel} alt="cancel" />
-                            </button>
-                        </div>
-                        <div className="form_field">
-                            <label className="form_label">{`Your ${reviewsData.updateParentReviews ? 'review' : 'reply'}`}</label>
-                            {reviewsData.updateParentReviews && (
-                                <ReactStars
-                                    value={reviewsData.rating || 0}
-                                    count={5}
-                                    isHalf={true}
-                                    onChange={(newRating: any) => setReviewsData((prevData: any) => ({ ...prevData, rating: newRating }))}
-                                    size={40}
-                                    activeColor="#ffd700"
-                                    color='#DFE5EF'
-                                />
-                            )}
-                            <div className="text_field">
-                                <textarea placeholder="Text" maxLength={250} value={reviewsData.reviewData} onChange={(e) => handleChange(e, 'reviewData')}></textarea>
-                                <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                    {/* send confirmation modal */}
+
+                    <Modal
+                        className="custom_modal"
+                        open={reviewsData.confirmationClicked}
+                        onClose={() => modalCloseHandler('confirmationClicked')}
+                        aria-labelledby="simple-modal-title"
+                        aria-describedby="simple-modal-description"
+                    >
+                        <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                            <div className="heading">
+                                <span className="xs_sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>
+                                <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
+                                    <img src={cancel} alt="cancel" />
+                                </button>
                             </div>
-                            {!!errors.reviewData && <span className="error_msg">{errors.reviewData}</span>}
+                            <div className="modal_message">
+                                <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
+                            </div>
+                            <div className="dialog_actions">
+                                <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
+                                <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                            </div>
                         </div>
-                        <div className="bottom_btn custom_btn">
-                            {(reviewsData.updateReviewsClicked || reviewsData.updateParentReviews) ?
-                                <button className="fill_btn full_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Save</button>
-                                : <button className="fill_btn full_btn btn-effect" onClick={() => reviewHandler(reviewsData.reviewsClickedType)}>Send</button>}
-                            <button className="fill_grey_btn btn-effect" onClick={() => reviewHandler('replyCancelBtnClicked')}>Cancel</button>
-                        </div>
-                    </div>
-                </Modal>
-                {/* send confirmation modal */}
-
-                <Modal
-                    className="custom_modal"
-                    open={reviewsData.confirmationClicked}
-                    onClose={() => modalCloseHandler('confirmationClicked')}
-                    aria-labelledby="simple-modal-title"
-                    aria-describedby="simple-modal-description"
-                >
-                    <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                        <div className="heading">
-                            <span className="xs_sub_title">{`${(reviewsData.deleteReviewsClicked || reviewsData.deleteParentReviews) ? 'Delete' : 'Reply'} Confirmation`}</span>
-                            <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
-                                <img src={cancel} alt="cancel" />
-                            </button>
-                        </div>
-                        <div className="modal_message">
-                            <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}${reviewsData.deleteParentReviews ? 'delete review' : 'reply'}?`}</p>
-                        </div>
-                        <div className="dialog_actions">
-                            <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
-                            <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
-                        </div>
-                    </div>
-                </Modal>
-
+                    </Modal>
+                </div>
             </div >
         )
     }

@@ -434,7 +434,7 @@ const JobDetails = ({
                                 </ul>
                                 <button
                                     style={{ cursor: 'default' }}
-                                    className="fill_grey_btn ques_btn">
+                                    className="fill_grey_btn ques_btn btn-effect">
                                     <img src={question} alt="question" />
                                     {'0 questions'}
                                 </button>
@@ -449,7 +449,7 @@ const JobDetails = ({
                                             </span>
                                         </span>
                                         <ul className="job_categories">
-                                            <li className="draw">
+                                            <li>
                                                 <figure className="type_icon">
                                                     <img src={categorySelected?.job_type?.image} alt="icon" />
                                                 </figure>
@@ -507,7 +507,7 @@ const JobDetails = ({
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{builderProfile?.userName}</span>
-                                                <span className="rating">{builderProfile?.rating || '0'} , {builderProfile?.reviews || '0'} reviews</span>
+                                                <span className="rating">{builderProfile?.rating || '0'} | {builderProfile?.reviews || '0'} reviews</span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                             </div>
                                         </div>
