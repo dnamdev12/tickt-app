@@ -400,10 +400,10 @@ const BuilderInfo = (props: PropsType) => {
                                                     src={profileData?.builderImage || profilePlaceholder}
                                                     alt="profile-pic"
                                                     onLoad={() => setProfilePictureLoading(false)}
-                                                    // onError={(e: any) => {
-                                                    //     let e_: any = e;
-                                                    //     e_.target.src = dummy;
-                                                    // }}
+                                                    onError={(e: any) => {
+                                                        let e_: any = e;
+                                                        e_.target.src = dummy;
+                                                    }}
                                                     hidden={profilePictureLoading} />}
                                         </figure>
                                     </div>

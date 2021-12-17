@@ -108,8 +108,10 @@ export const getBuilderHomeData = async (item: any) => {
 
 export const isHandleChanges = (data: any) => ({ type: actionTypes.GET_LOCAL_CHANGES, data });
 
-export const getTradieQuestionList = async (data: any) => {
+export const getTradieQuestionList = async (data: any, showLoading?: boolean) => {
+  if(showLoading) setLoading(true);
   const response: FetchResponse = await NetworkOps.get(Urls.tradieQuestionList + `?jobId=${data.jobId}&page=${data.page}`);
+  if(showLoading) setLoading(false);
   if (response.status_code === 200) {
     return { success: true, data: response.result?.list };
   }
@@ -328,7 +330,19 @@ export const getQuestionsList = async (data: any) => {
 
 export const answerQuestion = async (data: any) => {
   setLoading(true);
-  const response: FetchResponse = await NetworkOps.putToJson(Urls.answerQuestion, data)
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.answerQuestion, data)
+  setLoading(false);
+  setShowToast(true, response.message);
+  if (response.status_code === 200) {
+    return { success: true, data: response.result };
+  }
+
+  return { success: false, data: response.result };
+}
+
+export const askNestedQuestion = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.askNestedQuestion, data)
   setLoading(false);
   setShowToast(true, response.message);
   if (response.status_code === 200) {

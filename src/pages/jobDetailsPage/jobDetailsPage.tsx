@@ -10,6 +10,9 @@ import {
     getJobDetails,
     getTradieQuestionList,
     postAskQuestion,
+    askNestedQuestion,
+    updateAnswer,
+    deleteAnswer,
     deleteQuestion,
     updateQuestion,
     replyCancellation,
@@ -27,7 +30,7 @@ import rightIcon from '../../assets/images/ic-next-arrow-line.png';
 import noDataFound from "../../assets/images/no-search-data.png";
 import editIconBlue from '../../assets/images/ic-edit-blue.png';
 import pendingIcon from '../../assets/images/exclamation-icon.png'
-
+import moment from 'moment';
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
@@ -89,10 +92,12 @@ const JobDetailsPage = (props: PropsType) => {
         submitQuestionsClicked: false,
         deleteQuestionsClicked: false,
         updateQuestionsClicked: false,
+        isNestedAction: false,
         questionsClickedType: '',
         confirmationClicked: false,
         showAnswerButton: true,
         questionId: '',
+        answerId: '',
         questionData: '',
         answerShownHideList: [],
         questionIndex: null
@@ -112,7 +117,6 @@ const JobDetailsPage = (props: PropsType) => {
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
     console.log(props, "props", questionsData, "questionsData", jobDetailsData, "jobDetailsData", questionList, 'questionList', questionListPageNo, 'questionListPageNo', jobConfirmation, "jobConfirmation", jobInviteAction, "jobInviteAction");
-
     useEffect(() => {
         const params = new URLSearchParams(props.location?.search);
         const jobInviteAction: any = params.get('jobAction');
@@ -173,7 +177,7 @@ const JobDetailsPage = (props: PropsType) => {
         if (jobConfirmation.tradieTradeId !== jobDetailsData?.tradeId && !jobConfirmation.isJobModalAuthorized) {
             setJobConfirmation((prevData: any) => ({ ...prevData, isJobModalOpen: true, isJobModalAuthorized: true }))
             isValid = false;
-        } else if(jobDetailsData?.quoteJob){
+        } else if (jobDetailsData?.quoteJob) {
             quoteBtnActions();
             return;
         }
@@ -213,7 +217,7 @@ const JobDetailsPage = (props: PropsType) => {
             jobId: jobDetailsData?.jobId,
             page: questionListPageNo + 1
         }
-        const res = await getTradieQuestionList(data);
+        const res = await getTradieQuestionList(data, true);
         if (res.success) {
             setQuestionList((prevData: any) => ([...prevData, ...res.data]));
             setQuestionListPageNo(data.page);
@@ -230,14 +234,16 @@ const JobDetailsPage = (props: PropsType) => {
         return !Object.keys(newErrors).length;
     }
 
-    const submitQuestionHandler = async (type: string) => {
-        console.log('type: ', type);
+    const submitQuestionHandler = async (type: any) => {
+        let isNestedAction = questionsData?.isNestedAction;;
+
         if (['askQuestion', 'deleteQuestion', 'updateQuestion'].includes(type)) {
             if (!validateForm(type)) {
                 return;
             }
             var response: any;
             var data: any;
+            var data2: any;
             if (type === 'askQuestion') {
                 data = {
                     jobId: jobDetailsData?.jobId,
@@ -246,27 +252,57 @@ const JobDetailsPage = (props: PropsType) => {
                     tradeId: jobDetailsData?.tradeId,
                     specializationId: jobDetailsData?.specializationId
                 }
-                response = await postAskQuestion(data);
+
+                data2 = {
+                    tradieId: questionList[0]?.tradieId,
+                    builderId: questionList[0]?.builderId,
+                    answer: questionsData.questionData.trim(),
+                    questionId: questionsData.questionId,
+                }
+
+                response = isNestedAction ? await askNestedQuestion(data2) : await postAskQuestion(data);
             } else if (type === 'deleteQuestion') {
                 data = {
                     jobId: jobDetailsData?.jobId,
                     questionId: questionsData.questionId
                 }
-                response = await deleteQuestion(data);
+
+                data2 = {
+                    questionId: questionsData.questionId,
+                    answerId: questionsData.answerId
+                }
+                response = isNestedAction ? await deleteAnswer(data2) : await deleteQuestion(data);
             } else if (type === 'updateQuestion') {
                 data = {
                     questionId: questionsData.questionId,
                     question: questionsData.questionData.trim()
                 }
-                response = await updateQuestion(data);
+
+                data2 = {
+                    questionId: questionsData.questionId,
+                    answerId: questionsData.answerId,
+                    answer: questionsData.questionData
+                }
+                response = isNestedAction ? await updateAnswer(data2) : await updateQuestion(data);
             }
-            if (response?.success) {
+
+            if (isNestedAction && response?.success) {
+                const askData: any = {
+                    jobId: jobDetailsData?.jobId,
+                    page: 1
+                }
+                const res = await getTradieQuestionList(askData, true);
+                if (res.success) {
+                    setQuestionList(res.data);
+                    setQuestionListPageNo(1);
+                }
+            } else if (response?.success) {
                 if (type === 'askQuestion' && response.data?.questionData?.question) {
                     const askData: any = {
                         jobId: jobDetailsData?.jobId,
                         page: 1
                     }
-                    const res = await getTradieQuestionList(askData);
+                    const res = await getTradieQuestionList(askData, true);
                     if (res.success) {
                         setJobDetailsData((prevData: any) => ({ ...prevData, questionsCount: prevData.questionsCount + 1 }));
                     }
@@ -276,8 +312,8 @@ const JobDetailsPage = (props: PropsType) => {
 
                 if (type === 'updateQuestion' && response.data?.question) {
                     let updatedQuestionList = [...questionList];
-                    var newList = updatedQuestionList.find((item: any) => item.questionData.questionId == response.data?.questionId);
-                    newList.questionData.question = response.data?.question;
+                    var newList = updatedQuestionList.find((item: any) => item._id == response.data?.questionId);
+                    newList.question = response.data?.question;
                     setQuestionList(updatedQuestionList);
                 }
 
@@ -287,6 +323,9 @@ const JobDetailsPage = (props: PropsType) => {
                     updatedQuestionList.splice(questionsData.questionIndex, 1);
                     setQuestionList(updatedQuestionList);
                 }
+            }
+
+            if (response?.success) {
                 setQuestionsData((prevData: any) => ({
                     ...prevData,
                     submitQuestionsClicked: false,
@@ -296,7 +335,12 @@ const JobDetailsPage = (props: PropsType) => {
                     questionsClickedType: '',
                     deleteQuestionsClicked: false,
                     updateQuestionsClicked: false,
+                    askQuestionsAnsClicked: false,
+                    deleteQuestionsAnsClicked: false,
+                    updateQuestionsAnsClicked: false,
+                    isNestedAction: false,
                     questionId: '',
+                    answerId: '',
                     questionData: '',
                     showQuestionAnswer: false,
                     questionIndex: null
@@ -305,7 +349,10 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    const questionHandler = (type: string, questionId?: string, question?: string, questionIndex?: number) => {
+    const questionHandler = (actionType: any, questionId?: string, question?: any, questionIndex?: any, answerId?: any) => {
+        let type = Array.isArray(actionType) ? actionType[0] : actionType;
+        let isNestedAction = Array.isArray(actionType) ? true : false;
+
         if (type === 'submitAskQuestion' && validateForm('askQuestion')) {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
@@ -316,27 +363,36 @@ const JobDetailsPage = (props: PropsType) => {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 askQuestionsClicked: true,
+                askQuestionsAnsClicked: isNestedAction,
                 showAllQuestionsClicked: false,
                 questionsClickedType: type,
+                ...(questionId && { questionId: questionId }),
+                ...(isNestedAction && { isNestedAction: true })
             }));
         } else if (type === 'deleteQuestion') {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 confirmationClicked: true,
                 deleteQuestionsClicked: true,
+                deleteQuestionsAnsClicked: isNestedAction,
                 questionId: questionId,
+                answerId: answerId,
                 questionsClickedType: type,
-                questionIndex: questionIndex
+                questionIndex: questionIndex,
+                ...(isNestedAction && { isNestedAction: true }),
             }));
         } else if (type === 'updateQuestion') {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 askQuestionsClicked: true,
                 updateQuestionsClicked: true,
+                updateQuestionsAnsClicked: isNestedAction,
                 questionId: questionId,
+                answerId: answerId,
                 questionsClickedType: type,
                 showAllQuestionsClicked: false,
-                questionData: question
+                questionData: question,
+                ...(isNestedAction && { isNestedAction: true }),
             }));
         } else if (type === 'questionCancelBtnClicked') {
             setQuestionsData((prevData: any) => ({
@@ -344,10 +400,15 @@ const JobDetailsPage = (props: PropsType) => {
                 askQuestionsClicked: false,
                 updateQuestionsClicked: false,
                 deleteQuestionsClicked: false,
+                askQuestionsAnsClicked: false,
+                updateQuestionsAnsClicked: false,
+                deleteQuestionsAnsClicked: false,
                 showAllQuestionsClicked: true,
+                isNestedAction: false,
                 questionData: '',
                 questionsClickedType: '',
                 questionId: '',
+                answerId: '',
             }));
             setErrors({});
         } else if (type === 'hideAnswerClicked') {
@@ -556,6 +617,39 @@ const JobDetailsPage = (props: PropsType) => {
         } else {
             return false;
         }
+    }
+
+    const showNestedAnswersData = (answers: Array<any>, questionId: string) => {
+        let val = answers.map((item: any, index: number) => {
+            return (
+                <div className="question_ans_card answer">
+                    <div className="user_detail">
+                        <figure className="user_img">
+                            <img src={`${item?.sender_user_type === 1 ? item?.tradie?.[0]?.user_image : item?.builder?.[0]?.user_image ? item?.builder?.[0]?.user_image : dummy}`} alt="user-img" />
+                        </figure>
+                        <div className="details">
+                            <span className="user_name">{`${item?.sender_user_type === 1 ? item?.tradie?.[0]?.firstName : item?.builder?.[0]?.firstName ? item?.builder?.[0]?.firstName : ''}`}</span>
+                            <span className="date">{moment(item?.updatedAt).format('Do MMMM YYYY') || ''}</span>
+                        </div>
+                    </div>
+                    <p>{item?.answer}</p>
+                    {(index === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 1 &&
+                        <>
+                            <span className="action link" onClick={() => questionHandler(['updateQuestion'], questionId, answers?.[answers?.length - 1]?.answer, null, item?._id)}>Edit</span>
+                            <span className="action link" onClick={() => questionHandler(['deleteQuestion'], questionId, '', answers?.length - 1, answers?.[answers?.length - 1]?._id)}>Delete</span>
+                        </>
+                    }
+                    {(index === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 2 &&
+                        <span
+                            onClick={() => questionHandler(['askQuestion'], questionId)}
+                            className="show_hide_ans link">
+                            {'Ask question'}
+                        </span>
+                    }
+                </div>
+            )
+        });
+        return val;
     }
 
     return (
@@ -1033,39 +1127,28 @@ const JobDetailsPage = (props: PropsType) => {
                                     </div>}
                                     <div className="inner_wrap">
                                         {questionList?.map((item: any, index: number) => {
-                                            const { questionData } = item;
+                                            const { tradieData } = item;
                                             return (
-                                                <div key={questionData?.questionId}>
+                                                <div key={item?._id}>
                                                     <div className="question_ans_card">
                                                         <div className="user_detail">
                                                             <figure className="user_img">
-                                                                <img src={questionData?.userImage || dummy} alt="user-img" />
+                                                                <img src={tradieData?.[0]?.user_image || dummy} alt="user-img" />
                                                             </figure>
                                                             <div className="details">
-                                                                <span className="user_name">{questionData?.userName || ''}</span>
-                                                                <span className="date">{questionData?.date || ''}</span>
+                                                                <span className="user_name">{tradieData?.[0]?.firstName || ''}</span>
+                                                                <span className="date">{moment(item?.updatedAt).format('Do MMMM YYYY') || ''}</span>
                                                             </div>
                                                         </div>
-                                                        <p>{questionData?.question || ''}</p>
-                                                        {Object.keys(questionData?.answerData).length > 0 && !(questionsData.answerShownHideList.includes(questionData?.questionId)) &&
-                                                            <span className="show_hide_ans link" onClick={() => questionHandler('showAnswerClicked', questionData?.questionId)}>Show answer</span>}
-                                                        {questionsData.answerShownHideList.includes(questionData?.questionId) && <span className="show_hide_ans link" onClick={() => questionHandler('hideAnswerClicked', questionData?.questionId)}>Hide answer</span>}
-                                                        {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('updateQuestion', questionData?.questionId, questionData?.question)}>Edit</span>}
-                                                        {questionData?.isModifiable && <span className="action link" onClick={() => questionHandler('deleteQuestion', questionData?.questionId, '', index)}>Delete</span>}
+                                                        <p>{item?.question || ''}</p>
+                                                        {/* {Object.keys(questionData?.answerData).length > 0 && !(questionsData.answerShownHideList.includes(questionData?.questionId)) &&
+                                                            <span className="show_hide_ans link" onClick={() => questionHandler('showAnswerClicked', questionData?.questionId)}>Show answer</span>} */}
+                                                        {/* {questionsData.answerShownHideList.includes(questionData?.questionId) && <span className="show_hide_ans link" onClick={() => questionHandler('hideAnswerClicked', questionData?.questionId)}>Hide answer</span>} */}
+                                                        {item?.answers?.length === 0 && <span className="action link" onClick={() => questionHandler('updateQuestion', item?._id, item?.question)}>Edit</span>}
+                                                        {item?.answers?.length === 0 && <span className="action link" onClick={() => questionHandler('deleteQuestion', item?._id, '', index)}>Delete</span>}
                                                     </div>
-                                                    {questionData?.answerData?.answer && questionsData.answerShownHideList.includes(questionData?.questionId) &&
-                                                        <div className="question_ans_card answer">
-                                                            <div className="user_detail">
-                                                                <figure className="user_img">
-                                                                    <img src={questionData?.answerData?.userImage || dummy} alt="user-img" />
-                                                                </figure>
-                                                                <div className="details">
-                                                                    <span className="user_name">{questionData?.answerData?.userName || ''}</span>
-                                                                    <span className="date">{questionData?.answerData?.date || ''}</span>
-                                                                </div>
-                                                            </div>
-                                                            <p>{questionData?.answerData?.answer}</p>
-                                                        </div>}
+                                                    {/* {questionData?.answers && questionsData.answerShownHideList.includes(questionData?.questionId) && */}
+                                                    {item?.answers?.length > 0 && showNestedAnswersData(item?.answers, item?._id)}
                                                 </div>
                                             )
                                         })}

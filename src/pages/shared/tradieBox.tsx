@@ -70,7 +70,7 @@ class TradieBox extends Component<PropsType, State> {
                     data-aos-duration={hideAos ? '' : "1000"}>
 
                     <div className="f_spacebw tag_review">
-                        <span className="form_label">Plumber</span>
+                        <span className="form_label">{(item?.tradeData?.[0]?.tradeName) || (item?.tradie_details?.trade?.[0]?.trade_name) || (item?.trade?.[0]?.trade_name)}</span>
                         <span className="rating">
                             {(item?.ratings) || (item?.rating)?.toFixed(1) || (item?.tradie_details?.rating)?.toFixed(1) || '0'} | {item?.reviews || (item?.review) || (item?.tradie_details?.review) || '0'} reviews </span>
                     </div>
@@ -90,7 +90,7 @@ class TradieBox extends Component<PropsType, State> {
                         </figure>
                         <div className="details">
                             <span className="name">{item?.tradieName || item?.tradie_details?.firstName || item?.firstName}</span>
-                            <span className="job">Levelup Plumbing</span>
+                            <span className="job">{item?.businessName}</span>
                         </div>
                     </div>
                     {showStatus && item?.status && <div className="form_field"><div className="job_status" >{item?.status}</div></div>}

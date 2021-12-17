@@ -666,7 +666,7 @@ class TradieInfo extends Component<Props, State> {
                                                 })}
                                                 onError={(e: any) => {
                                                     let e_: any = e;
-                                                    e_.target.src = profilePlaceholder;
+                                                    e_.target.src = dummy;
                                                 }}
                                                 hidden={this.state.profilePictureLoading}
                                             />}
@@ -674,14 +674,14 @@ class TradieInfo extends Component<Props, State> {
                                     </div>
                                 </div>
                                 <div className="flex_col_sm_3 relative">
-                                    <div className="text-right">
+                                    {props.isSkeletonLoading ? null : <div className="text-right">
                                         {storageService.getItem('userType') === 2 && <span
                                             className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}
                                             onClick={() => {
                                                 this.savedTradie({ tradieInfo })
                                             }}>
                                         </span>}
-                                    </div>
+                                    </div>}
 
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
@@ -866,30 +866,28 @@ class TradieInfo extends Component<Props, State> {
                         </div>
                     </div>
                     {tradieInfo?.portfolio?.length ? <div className="section_wrapper">
-                        <div className="custom_container">
-                            <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
-                            <Carousel
-                                responsive={portfolio}
-                                showDots={false}
-                                arrows={true}
-                                infinite={true}
-                                className="portfolio_wrappr"
-                                partialVisbile
-                            >
-                                {props.isSkeletonLoading ? <Skeleton height={256} /> : tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
-                                    return (
-                                        <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
-                                            <figure className="portfolio_img">
-                                                <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
-                                                <span className="xs_sub_title">
-                                                    <p className="line-3" title={item.jobName}>{item.jobName}</p>
-                                                </span>
-                                            </figure>
-                                        </div>
-                                    )
-                                }) : <img alt="" src={portfolioPlaceholder} />}
-                            </Carousel>
-                        </div>
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
+                        <Carousel
+                            responsive={portfolio}
+                            showDots={false}
+                            arrows={true}
+                            infinite={true}
+                            className="portfolio_wrappr"
+                            partialVisbile
+                        >
+                            {props.isSkeletonLoading ? <Skeleton height={256} /> : tradieInfo?.portfolio?.length ? tradieInfo?.portfolio?.map((item: any) => {
+                                return (
+                                    <div className="media" key={item.portfolioId} onClick={() => portfolioImageHandler(item)}>
+                                        <figure className="portfolio_img">
+                                            <img src={item.portfolioImage?.length ? item.portfolioImage[0] : portfolioPlaceholder} alt="portfolio-images" />
+                                            <span className="xs_sub_title">
+                                                <p className="line-3" title={item.jobName}>{item.jobName}</p>
+                                            </span>
+                                        </figure>
+                                    </div>
+                                )
+                            }) : <img alt="" src={portfolioPlaceholder} />}
+                        </Carousel>
                     </div> : null}
 
                     {/* portfolio Image modal desc */}
@@ -948,108 +946,104 @@ class TradieInfo extends Component<Props, State> {
                         </Modal>}
 
                     <div className="section_wrapper">
-                        <div className="custom_container">
-                            <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Reviews'}</span>
-                            {props.isSkeletonLoading ? <Skeleton height={200} /> :
-                                <div className="flex_row review_parent">
-                                    {tradieInfo?.reviewData?.length > 0 ?
-                                        (tradieInfo?.reviewData?.slice(0, 8)?.map((jobData: any) => {
-                                            return <ReviewInfoBox item={jobData} {...props} />
-                                        })) :
-                                        <div className="no_record">
-                                            <figure className="no_data_img">
-                                                <img src={noData} alt="data not found" />
-                                            </figure>
-                                            <span>No Data Found</span>
-                                        </div>}
-                                </div>}
-                            {props.isSkeletonLoading ? <Skeleton height={25} /> :
-                                <button
-                                    className={`fill_grey_btn full_btn view_more ${!tradieInfo?.reviewsCount ? 'disable_btn' : ''}`}
-                                    onClick={() => {
-                                        this.setState((prevData: any) => ({
-                                            reviewsData: {
-                                                ...prevData.reviewsData, showAllReviewsClicked: true
-                                            }
-                                        }))
-                                    }}>
-                                    {`View all ${tradieInfo?.reviewsCount || 0} ${!!tradieInfo?.reviewsCount ? 'review' : 'reviews'} `}</button>}
-                        </div>
+                        <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Reviews'}</span>
+                        {props.isSkeletonLoading ? <Skeleton height={200} /> :
+                            <div className="flex_row review_parent">
+                                {tradieInfo?.reviewData?.length > 0 ?
+                                    (tradieInfo?.reviewData?.slice(0, 8)?.map((jobData: any) => {
+                                        return <ReviewInfoBox item={jobData} {...props} />
+                                    })) :
+                                    <div className="no_record">
+                                        <figure className="no_data_img">
+                                            <img src={noData} alt="data not found" />
+                                        </figure>
+                                        <span>No Data Found</span>
+                                    </div>}
+                            </div>}
+                        {props.isSkeletonLoading ? <Skeleton height={25} /> :
+                            <button
+                                className={`fill_grey_btn full_btn view_more ${!tradieInfo?.reviewsCount ? 'disable_btn' : ''}`}
+                                onClick={() => {
+                                    this.setState((prevData: any) => ({
+                                        reviewsData: {
+                                            ...prevData.reviewsData, showAllReviewsClicked: true
+                                        }
+                                    }))
+                                }}>
+                                {`View all ${tradieInfo?.reviewsCount || 0} ${!!tradieInfo?.reviewsCount ? 'review' : 'reviews'} `}</button>}
                     </div>
 
                     {tradieInfo?.vouchesData?.length ?
                         <div className="section_wrapper">
-                            <div className="custom_container">
-                                <span className="sub_title">Vouches</span>
-                                <div className="flex_row">
+                            <span className="sub_title">Vouches</span>
+                            <div className="flex_row">
 
-                                    {tradieInfo?.vouchesData.slice(0, 8).map((item: any) => (
-                                        <div className="flex_col_sm_3">
-                                            <div className="review_card vouchers">
-                                                <div className="pic_shot_dtl">
-                                                    <figure className="u_img">
-                                                        <img
-                                                            src={item?.builderImage || dummy}
-                                                            onError={(e: any) => {
-                                                                if (e?.target?.onerror) {
-                                                                    e.target.onerror = null;
-                                                                }
-                                                                if (e?.target?.src) {
-                                                                    e.target.src = dummy;
-                                                                }
-                                                            }}
-                                                            alt="user-img"
-                                                        />
-                                                    </figure>
-                                                    <div className="name_wrap">
-                                                        <span className="user_name" title={item?.builderName || ''}>
-                                                            {item?.builderName || ''}
-                                                        </span>
-                                                        <span className="date">
-                                                            {item?.date}
-                                                        </span>
-                                                    </div>
-                                                </div>
-
-                                                <span className="xs_head">
-                                                    {item?.jobName}
-                                                </span>
-
-                                                <p className="commn_para" title="">
-                                                    {item?.vouchDescription || ''}
-                                                </p>
-                                                <div className="vouch">
-                                                    <figure className="vouch_icon">
-                                                        <img src={vouch} alt="vouch" />
-                                                    </figure>
-                                                    <span
-                                                        onClick={() => {
-                                                            this.setState({
-                                                                toggleVoucher: { item: item, isTrue: true }
-                                                            })
+                                {tradieInfo?.vouchesData.slice(0, 8).map((item: any) => (
+                                    <div className="flex_col_sm_3">
+                                        <div className="review_card vouchers">
+                                            <div className="pic_shot_dtl">
+                                                <figure className="u_img">
+                                                    <img
+                                                        src={item?.builderImage || dummy}
+                                                        onError={(e: any) => {
+                                                            if (e?.target?.onerror) {
+                                                                e.target.onerror = null;
+                                                            }
+                                                            if (e?.target?.src) {
+                                                                e.target.src = dummy;
+                                                            }
                                                         }}
-                                                        className="link">
-                                                        {`Vouch for ${item?.tradieName}`}
+                                                        alt="user-img"
+                                                    />
+                                                </figure>
+                                                <div className="name_wrap">
+                                                    <span className="user_name" title={item?.builderName || ''}>
+                                                        {item?.builderName || ''}
+                                                    </span>
+                                                    <span className="date">
+                                                        {item?.date}
                                                     </span>
                                                 </div>
                                             </div>
+
+                                            <span className="xs_head">
+                                                {item?.jobName}
+                                            </span>
+
+                                            <p className="commn_para" title="">
+                                                {item?.vouchDescription || ''}
+                                            </p>
+                                            <div className="vouch">
+                                                <figure className="vouch_icon">
+                                                    <img src={vouch} alt="vouch" />
+                                                </figure>
+                                                <span
+                                                    onClick={() => {
+                                                        this.setState({
+                                                            toggleVoucher: { item: item, isTrue: true }
+                                                        })
+                                                    }}
+                                                    className="link">
+                                                    {`Vouch for ${item?.tradieName}`}
+                                                </span>
+                                            </div>
                                         </div>
-                                    ))}
-                                </div>
-                                <button
-                                    className={`fill_grey_btn full_btn view_more ${!tradieInfo?.vouchesData?.length ? 'disable_btn' : ''}`}
-                                    onClick={() => {
-                                        props.history.push({
-                                            pathname: '/tradie-vouchers',
-                                            state: {
-                                                path: props.location.search,
-                                                id: tradieInfo.tradieId
-                                            }
-                                        });
-                                    }}>
-                                    {`View ${tradieInfo?.vouchesData?.length === 1 ? '' : 'all'} ${tradieInfo?.vouchesData?.length} vouch${tradieInfo?.vouchesData?.length === 1 ? '' : 'es'}`}
-                                </button>
+                                    </div>
+                                ))}
                             </div>
+                            <button
+                                className={`fill_grey_btn full_btn view_more ${!tradieInfo?.vouchesData?.length ? 'disable_btn' : ''}`}
+                                onClick={() => {
+                                    props.history.push({
+                                        pathname: '/tradie-vouchers',
+                                        state: {
+                                            path: props.location.search,
+                                            id: tradieInfo.tradieId
+                                        }
+                                    });
+                                }}>
+                                {`View ${tradieInfo?.vouchesData?.length === 1 ? '' : 'all'} ${tradieInfo?.vouchesData?.length} vouch${tradieInfo?.vouchesData?.length === 1 ? '' : 'es'}`}
+                            </button>
                         </div>
                         : (storageService.getItem('userType') === 2 ?
                             <div className="section_wrapper">
