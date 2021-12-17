@@ -4750,7 +4750,7 @@ body {
   .pos{
     @include position(absolute, 50%, auto, auto, auto);
     transform: translateY(-50%);
-    height: 20px;
+    height: 25px;
     &.card{
       left: 12px;
     }

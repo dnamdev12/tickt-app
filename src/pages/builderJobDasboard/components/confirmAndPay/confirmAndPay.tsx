@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import cardIcon from '../../../../assets/images/ic-credit.png';
+import masterIcon from '../../../../assets/images/mastercard.svg';
+import visaIcon from '../../../../assets/images/visacard.svg';
 import check from '../../../../assets/images/checked-2.png';
 
 import PaymentDetails from './paymentDetails';
@@ -56,6 +57,7 @@ const ConfirmAndPay = (props: any) => {
             filterItems = data.map((item: any) => {
                 let exp_date = (item?.exp_month).toLocaleString('en-US', { minimumIntegerDigits: 2, useGrouping: false })
                 return {
+                    brand: item?.brand,
                     cardId: item?.cardId,
                     number: `${item?.last4}`,
                     cardholderName: item?.name,
@@ -217,7 +219,7 @@ const ConfirmAndPay = (props: any) => {
                                     setSelected(index);
                                 }}
                                 className="card_btn full_btn">
-                                <img src={cardIcon} alt="card-icon" className="pos card" />
+                                <img src={item.brand == 'visa' ? visaIcon : masterIcon} alt="card-icon" className="pos card" />
                                 {/* {item?.cardholderName} */}
                                 {`${item?.cardType?.charAt(0).toUpperCase() + item?.cardType?.slice(1)} Card`}{' '}
                                 <span className="show_label">
@@ -229,7 +231,7 @@ const ConfirmAndPay = (props: any) => {
                             </button>
                         ))
                         : null}
-                        
+
                     <button
                         onClick={() => {
                             setToggle(true);
