@@ -82,10 +82,10 @@ class TradieBox extends Component<PropsType, State> {
                         <figure className="u_img">
                             <img
                                 src={item?.tradieImage || item?.tradie_details?.user_image || item?.user_image || dummy}
-                                onError={(e) => {
-                                    let event: any = e;
-                                    event.target.src = dummy;
-                                }}
+                                // onError={(e) => {
+                                //     let event: any = e;
+                                //     event.target.src = dummy;
+                                // }}
                                 alt="traide-img" />
                         </figure>
                         <div className="details">

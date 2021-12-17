@@ -5132,6 +5132,9 @@ body {
     -webkit-transform: translateX(0%);
     animation: slide-out 0.5s forwards;
     -webkit-animation: slide-out 0.5s forwards;
+    &.tradie_ans {
+      background: #f6f6f6;
+    }
     @media (max-width: 650px) {
       margin: 0 0 16px 15px;
     }

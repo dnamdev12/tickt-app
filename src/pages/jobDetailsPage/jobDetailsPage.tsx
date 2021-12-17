@@ -86,6 +86,7 @@ const JobDetailsPage = (props: PropsType) => {
     });
     const [questionList, setQuestionList] = useState<Array<any>>([]);
     const [questionListPageNo, setQuestionListPageNo] = useState<number>(1);
+    const [showMoreIndex, setShowMoreIndex] = useState<Array<any>>([]);
     const [questionsData, setQuestionsData] = useState<any>({
         askQuestionsClicked: false,
         showAllQuestionsClicked: false,
@@ -210,6 +211,7 @@ const JobDetailsPage = (props: PropsType) => {
     const modalCloseHandler = (modalType: string) => {
         setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, answerShownHideList: [], questionData: '' }));
         setErrors({});
+        showMoreIndex && setShowMoreIndex([]);
     }
 
     const loadMoreQuestionHandler = async () => {
@@ -335,9 +337,6 @@ const JobDetailsPage = (props: PropsType) => {
                     questionsClickedType: '',
                     deleteQuestionsClicked: false,
                     updateQuestionsClicked: false,
-                    askQuestionsAnsClicked: false,
-                    deleteQuestionsAnsClicked: false,
-                    updateQuestionsAnsClicked: false,
                     isNestedAction: false,
                     questionId: '',
                     answerId: '',
@@ -363,7 +362,6 @@ const JobDetailsPage = (props: PropsType) => {
             setQuestionsData((prevData: any) => ({
                 ...prevData,
                 askQuestionsClicked: true,
-                askQuestionsAnsClicked: isNestedAction,
                 showAllQuestionsClicked: false,
                 questionsClickedType: type,
                 ...(questionId && { questionId: questionId }),
@@ -374,7 +372,6 @@ const JobDetailsPage = (props: PropsType) => {
                 ...prevData,
                 confirmationClicked: true,
                 deleteQuestionsClicked: true,
-                deleteQuestionsAnsClicked: isNestedAction,
                 questionId: questionId,
                 answerId: answerId,
                 questionsClickedType: type,
@@ -386,7 +383,6 @@ const JobDetailsPage = (props: PropsType) => {
                 ...prevData,
                 askQuestionsClicked: true,
                 updateQuestionsClicked: true,
-                updateQuestionsAnsClicked: isNestedAction,
                 questionId: questionId,
                 answerId: answerId,
                 questionsClickedType: type,
@@ -400,9 +396,6 @@ const JobDetailsPage = (props: PropsType) => {
                 askQuestionsClicked: false,
                 updateQuestionsClicked: false,
                 deleteQuestionsClicked: false,
-                askQuestionsAnsClicked: false,
-                updateQuestionsAnsClicked: false,
-                deleteQuestionsAnsClicked: false,
                 showAllQuestionsClicked: true,
                 isNestedAction: false,
                 questionData: '',
@@ -619,10 +612,10 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    const showNestedAnswersData = (answers: Array<any>, questionId: string) => {
-        let val = answers.map((item: any, index: number) => {
+    const showNestedAnswersData = (answers: Array<any>, questionId: string, indexP: number) => {
+        let val = answers.slice(0, (showMoreIndex?.length && indexP === showMoreIndex[0]) ? answers?.length : 3)?.map((item: any, indexC: number) => {
             return (
-                <div className="question_ans_card answer">
+                <div className={`question_ans_card answer ${item?.sender_user_type === 1 ? 'tradie_ans' : ''}`}>
                     <div className="user_detail">
                         <figure className="user_img">
                             <img src={`${item?.sender_user_type === 1 ? item?.tradie?.[0]?.user_image : item?.builder?.[0]?.user_image ? item?.builder?.[0]?.user_image : dummy}`} alt="user-img" />
@@ -633,17 +626,24 @@ const JobDetailsPage = (props: PropsType) => {
                         </div>
                     </div>
                     <p>{item?.answer}</p>
-                    {(index === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 1 &&
+                    {(indexC === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 1 &&
                         <>
                             <span className="action link" onClick={() => questionHandler(['updateQuestion'], questionId, answers?.[answers?.length - 1]?.answer, null, item?._id)}>Edit</span>
                             <span className="action link" onClick={() => questionHandler(['deleteQuestion'], questionId, '', answers?.length - 1, answers?.[answers?.length - 1]?._id)}>Delete</span>
                         </>
                     }
-                    {(index === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 2 &&
+
+                    {indexC === 2 && answers?.length > 3 && indexP !== showMoreIndex[0] &&
+                        <span className="show_hide_ans link"
+                            onClick={() => setShowMoreIndex([indexP])}
+                        >Show more</span>
+                    }
+
+                    {(indexC === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 2 &&
                         <span
                             onClick={() => questionHandler(['askQuestion'], questionId)}
                             className="show_hide_ans link">
-                            {'Ask question'}
+                            {'Reply'}
                         </span>
                     }
                 </div>
@@ -1141,14 +1141,11 @@ const JobDetailsPage = (props: PropsType) => {
                                                             </div>
                                                         </div>
                                                         <p>{item?.question || ''}</p>
-                                                        {/* {Object.keys(questionData?.answerData).length > 0 && !(questionsData.answerShownHideList.includes(questionData?.questionId)) &&
-                                                            <span className="show_hide_ans link" onClick={() => questionHandler('showAnswerClicked', questionData?.questionId)}>Show answer</span>} */}
                                                         {/* {questionsData.answerShownHideList.includes(questionData?.questionId) && <span className="show_hide_ans link" onClick={() => questionHandler('hideAnswerClicked', questionData?.questionId)}>Hide answer</span>} */}
                                                         {item?.answers?.length === 0 && <span className="action link" onClick={() => questionHandler('updateQuestion', item?._id, item?.question)}>Edit</span>}
                                                         {item?.answers?.length === 0 && <span className="action link" onClick={() => questionHandler('deleteQuestion', item?._id, '', index)}>Delete</span>}
                                                     </div>
-                                                    {/* {questionData?.answers && questionsData.answerShownHideList.includes(questionData?.questionId) && */}
-                                                    {item?.answers?.length > 0 && showNestedAnswersData(item?.answers, item?._id)}
+                                                    {item?.answers?.length > 0 && showNestedAnswersData(item?.answers, item?._id, index)}
                                                 </div>
                                             )
                                         })}
@@ -1180,13 +1177,13 @@ const JobDetailsPage = (props: PropsType) => {
                             >
                                 <div className="custom_wh ask_ques" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                     <div className="heading">
-                                        <span className="sub_title">{`${questionsData.updateQuestionsClicked ? 'Edit a question' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} a question`}`}</span>
+                                        <span className="sub_title">{`${questionsData.updateQuestionsClicked ? questionsData?.isNestedAction ? 'Edit Reply' : 'Edit Question' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} ${questionsData?.isNestedAction ? '' : 'Question'}`}`}</span>
                                         <button className="close_btn" onClick={() => modalCloseHandler('askQuestionsClicked')}>
                                             <img src={cancel} alt="cancel" />
                                         </button>
                                     </div>
                                     <div className="form_field">
-                                        <label className="form_label">Your Question</label>
+                                        <label className="form_label">{`Your ${questionsData?.isNestedAction ? 'Reply' : 'Question'}`}</label>
                                         <div className="text_field">
                                             <textarea placeholder={`${questionsData.updateQuestionsClicked ? 'Text' : `Ask ${jobDetailsData?.postedBy?.builderName || ''} what do you want to know`}`} maxLength={250} value={questionsData.questionData} onChange={(e) => handleChange(e, 'questionData')}></textarea>
                                             <span className="char_count">{`${questionsData.questionData?.length}/250`}</span>
@@ -1210,13 +1207,13 @@ const JobDetailsPage = (props: PropsType) => {
                             >
                                 <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
                                     <div className="heading">
-                                        <span className="xs_sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : 'Ask'} Question Confirmation`}</span>
+                                        <span className="xs_sub_title">{`${questionsData.deleteQuestionsClicked ? 'Delete' : questionsData?.isNestedAction ? '' : 'Ask'} ${questionsData?.isNestedAction ? 'Reply' : 'Question'} Confirmation`}</span>
                                         <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
                                             <img src={cancel} alt="cancel" />
                                         </button>
                                     </div>
                                     <div className="modal_message">
-                                        <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : 'ask'} a question?`}</p>
+                                        <p>{`Are you sure you want to ${questionsData.deleteQuestionsClicked ? 'delete' : questionsData?.isNestedAction ? '' : 'ask'} ${questionsData?.isNestedAction ? 'reply' : 'question'}?`}</p>
                                     </div>
                                     <div className="dialog_actions">
                                         <button className="fill_btn btn-effect" onClick={() => submitQuestionHandler(questionsData.questionsClickedType)}>Yes</button>

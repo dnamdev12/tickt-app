@@ -1,18 +1,7 @@
-import React from 'react'
-import Carousel from 'react-multi-carousel';
-
-
 import OwlCarousel from 'react-owl-carousel';
 import 'owl.carousel/dist/assets/owl.carousel.css';
 import 'owl.carousel/dist/assets/owl.theme.default.css';
-
 import colorLogo from '../../../../assets/images/ic-logo-yellow.png';
-
-import residential from "../../../../assets/images/ic-residential.png";
-import industrial from "../../../../assets/images/ic-money.png";
-import contracted from "../../../../assets/images/ic-contracted.png";
-import commercial from "../../../../assets/images/ic-commercial.png";
-import hourlyRate from "../../../../assets/images/ic-clock.png";
 
 const JobTypes = (props: any) => {
     let tradeListData: any = props.tradeListData;

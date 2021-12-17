@@ -109,6 +109,7 @@ const JobDetailsPage = (props: PropsType) => {
     const [jobRejectModal, setJobRejectModal] = useState(false);
     const [pendingRequestClicked, setPendingRequestClicked] = useState(false);
 
+    const [showMoreIndex, setShowMoreIndex] = useState<Array<any>>([]);
     const [jobData, setJobData] = useState({});
     const [replyText, setReplyText] = useState('');
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
@@ -200,6 +201,7 @@ const JobDetailsPage = (props: PropsType) => {
     const modalCloseHandler = (modalType: string) => {
         setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, answerShownHideList: [] }));
         setErrors({});
+        showMoreIndex && setShowMoreIndex([]);
     }
 
     const loadMoreQuestionHandler = async () => {
@@ -514,10 +516,10 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    const showNestedAnswersData = (answers: Array<any>, questionId: string) => {
-        let val = answers.map((item: any, index: number) => {
+    const showNestedAnswersData = (answers: Array<any>, questionId: string, indexP: number) => {
+        let val = answers.slice(0, (showMoreIndex?.length && indexP === showMoreIndex[0]) ? answers?.length : 3)?.map((item: any, indexC: number) => {
             return (
-                <div className="question_ans_card answer">
+                <div className={`question_ans_card answer ${item?.sender_user_type === 1 ? 'tradie_ans' : ''}`}>
                     <div className="user_detail">
                         <figure className="user_img">
                             <img src={`${item?.sender_user_type === 1 ? item?.tradie?.[0]?.user_image : item?.builder?.[0]?.user_image ? item?.builder?.[0]?.user_image : dummy}`} alt="user-img" />
@@ -528,7 +530,7 @@ const JobDetailsPage = (props: PropsType) => {
                         </div>
                     </div>
                     <p>{item?.answer}</p>
-                    {(index === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 2 &&
+                    {(indexC === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 2 &&
                         <>
                             <span onClick={() => questionHandler('updateQuestion', questionId, answers?.[answers?.length - 1]?.answer, null, item?._id)}
                                 className="show_hide_ans link">Edit</span>
@@ -536,7 +538,14 @@ const JobDetailsPage = (props: PropsType) => {
                                 className="show_hide_ans link">Delete</span>
                         </>
                     }
-                    {(index === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 1 &&
+
+                    {indexC === 2 && answers?.length > 3 && indexP !== showMoreIndex[0] &&
+                        <span className="show_hide_ans link"
+                            onClick={() => setShowMoreIndex([indexP])}
+                        >Show more</span>
+                    }
+
+                    {(indexC === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 1 &&
                         <span
                             onClick={() => questionHandler('askQuestion', questionId)}
                             className="show_hide_ans link">
@@ -1155,7 +1164,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                                         </span>
                                                                     }
                                                                 </div>
-                                                                {item?.answers?.length > 0 && showNestedAnswersData(item?.answers, item?._id)}
+                                                                {item?.answers?.length > 0 && showNestedAnswersData(item?.answers, item?._id, index)}
                                                                 {/* {item?.answers?.length && item?.answers?.[0]?.hasOwnProperty('answer') && item?.answers?.[item?.answers?.length - 1]?.sender_user_type === 2 &&
                                                                     <>
                                                                         <span onClick={() => questionHandler('updateQuestion', item?.questionData?.questionId, item?.questionData?.answerData?.answer, null, item?.questionData?.answerData?.answerId)}
