@@ -166,7 +166,7 @@ const ActiveJobs = ({
                                     }}>
                                 </span>
                                 <div className="user_wrap">
-                                    <figure className="u_img">
+                                    <figure className="u_img icon">
                                         <img
                                             src={tradeSelectedUrl || jobTypePlaceholder}
                                             onError={(e: any) => {

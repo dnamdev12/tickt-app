@@ -3303,6 +3303,11 @@ body {
 				height: 40px;
 				object-fit: cover;
 			}
+      &.icon {
+        border-radius: 4px;
+        border: none;
+        background-image: linear-gradient(to top, #161d4a, #0b41a8);;
+      }
 		}
 		.details {
 			width: 70%;

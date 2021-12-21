@@ -134,7 +134,7 @@ const PastJobs = (props: any) => {
                                     className="more_detail circle">
                                 </span>
                                 <div className="user_wrap">
-                                    <figure className="u_img">
+                                    <figure className="u_img icon">
                                         <img
                                             src={jobData?.tradeSelectedUrl || jobTypePlaceholder}
                                             alt="traide-img"
