@@ -84,7 +84,7 @@ export default function BecsForm(props) {
       </div>
 
       <div className="form_field">
-        <div className="checkbox_wrap agree_check">
+        <div className="checkbox_wrap agree_check mt-15">
           <label>By providing your bank account details, you agree to this Direct Debit Request
             and the </label>
           <a onClick={() => window.open("https://stripe.com/au-becs-dd-service-agreement/legal", "_blank")} rel="noopener" className="link">Direct Debit Request service agreement</a>
@@ -101,7 +101,7 @@ export default function BecsForm(props) {
         type="submit"
         disabled={props.disabled}
         className={`fill_btn full_btn btn-effect ${props.disabled ? 'disable_btn' : ''}`}
-      >Confirm Payment</button>
+      >{`Confirm payment of ${props.milestoneTotalAmount}`}</button>
     </form>
   )
 }

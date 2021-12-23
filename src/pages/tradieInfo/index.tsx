@@ -812,7 +812,7 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     {props.isSkeletonLoading ? <Skeleton count={2} /> : tradieInfo?.about?.length > 0 ? (
-                                        <div className="description">
+                                        <div className={`description ${(haveJobId && tradieInfo?.isRequested) ? 'public_view_btn2' : ''}`}>
                                             <span className="sub_title">About</span>
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>

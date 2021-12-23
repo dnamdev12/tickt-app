@@ -137,6 +137,7 @@ const Urls = {
     getAllPostedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.builder}getAllJobs`,
     payment: `${versions.v1}${ServiceEnum.payment}`,
     getStripeClientSecretKey: `${versions.v1}${ServiceEnum.payment}createClientSecretKey`,
+    saveStripeTransaction: `${versions.v1}${ServiceEnum.payment}saveTransaction`,
     notification: `${versions.v1}${ServiceEnum.home}notification`,
     addFCMNotifToken: `${versions.v1}${ServiceEnum.auth}addDeviceToken`,
     tradieSavedJobs: `${versions.v1}${ServiceEnum.profile}${ServiceEnum.tradie}getSavedJobs`,

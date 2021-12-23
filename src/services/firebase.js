@@ -181,7 +181,7 @@ export const loginAnonymously = async () => {
 }
 
 export const getLoggedInuserId = () => {
-    return storageService.getItem("userInfo")._id;
+    return storageService.getItem("userInfo")?._id;
 }
 
 export const updateChatUserDetails = async (updateType, value) => {

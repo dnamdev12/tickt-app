@@ -9,6 +9,9 @@ import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
 import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../services/firebase';
+import { moengage } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
+
 interface Propstype {
     history: any,
     showModal?: boolean,
@@ -28,7 +31,6 @@ const LoginPage = (props: Propstype) => {
     let window_: any = window;
     window_.Intercom('shutdown');
 
-
     const backButtonHandler = () => {
         props?.history?.push('/signup')
     }
@@ -39,7 +41,7 @@ const LoginPage = (props: Propstype) => {
             window_.Intercom('hide');
             localStorage.clear();
         }
-    }, [])
+    }, []);
 
     const changeHandler = (e: any) => {
         setLoginData((prevData: any) => ({ ...prevData, [e.target.name]: e.target.value }))
@@ -124,6 +126,8 @@ const LoginPage = (props: Propstype) => {
                 if (props.showModal) {
                     props.setShowModal(!props.showModal);
                 }
+                moengage.moE_LoginEvent({ email: res.data?.email, userName: res.data?.userName, userId: res.data?._id });
+                moengage.moE_SendEvent(MoEConstants.APP_OPEN, { app_open: true });
                 props?.history?.push('/');
             }
         }

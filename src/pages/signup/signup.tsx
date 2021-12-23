@@ -14,6 +14,8 @@ import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
 import AuthParent from '../../common/auth/authParent';
 import { firebaseSignUpWithEmailPassword } from '../../services/firebase';
 import VerifyEmail from './components/EmailVerification'
+import { moengage } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 
 interface Propstype {
     history?: any,
@@ -94,7 +96,7 @@ const Signup = (props: Propstype) => {
     const backButtonHandler = () => {
         let minStep = 1;
         let stateStepsValue = steps;
-        
+
         if (stateStepsValue === 5 && signupData.user_type === 2) {
             minStep = 2;
         }
@@ -205,6 +207,13 @@ const Signup = (props: Propstype) => {
             //     fullName: res.result?.firstName,
             //     user_type: res.result?.user_type
             // });
+            moengage.moE_SendEvent(MoEConstants.SIGN_UP, {
+                success_status: true,
+                name: data?.firstName,
+                //'sign up source': '',
+                Platform: 'Web',
+                email: data?.email
+            });
             if (signupData.user_type === 2) {
                 setSteps(9);
             } else {
