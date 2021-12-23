@@ -180,7 +180,10 @@ const Header = (props: any) => {
         } else {
             setShowHeader(true);
         }
-        setUserType(storageService.getItem('userType'))
+        setUserType(storageService.getItem('userType'));
+        if (props.tradeListData?.length === 0) {
+            props.callTradeList();
+        }
     }
 
     useEffect(() => {

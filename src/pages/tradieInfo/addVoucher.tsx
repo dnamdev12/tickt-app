@@ -8,7 +8,8 @@ import close from '../../assets/images/icon-close-1.png';
 import { onFileUpload } from '../../redux/auth/actions';
 import { AddVoucher, fetchVouchesJobs } from '../../redux/jobs/actions';
 import docThumbnail from '../../assets/images/add-document.png'
-
+import { moengage } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 import Select, { components }  from 'react-select';
 const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
@@ -151,7 +152,9 @@ const AddVoucherComponent = (props: any) => {
         }
         let response = await AddVoucher(data);
         if (response?.success) {
-            console.log('Here!');
+            moengage.moE_SendEvent(MoEConstants.LEFT_VOUCHER, {
+                timeStamp: moengage.getCurrentTimeStamp()
+            });
             setToggle((prev: any) => !prev);
             await prefetch();
         }

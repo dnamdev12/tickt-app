@@ -57,13 +57,11 @@ import noDataFound from '../../assets/images/no-search-data.png';
 
 //@ts-ignore
 import ReactStars from "react-rating-stars-component";
-
 import Rating from 'react-rating';
-
-
-
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { moengage } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 interface Props {
     tradieInfo: any,
     tradieId: any,
@@ -113,6 +111,7 @@ interface State {
     toggleAddVoucher: boolean,
     toggleSpecialisation: boolean,
     hasMore: boolean,
+    isSendEvent: boolean,
     currentReviewPage: number
 }
 
@@ -124,7 +123,7 @@ class TradieInfo extends Component<Props, State> {
     state = {
         toggleSpecialisation: true,
         profilePictureLoading: true,
-        tradieInfo: null,
+        tradieInfo: '',
         showError: false,
         tradieReviews: null,
         profileData: {},
@@ -158,7 +157,8 @@ class TradieInfo extends Component<Props, State> {
         toggleVoucher: { item: '', isTrue: false },
         toggleAddVoucher: false,
         hasMore: true,
-        currentReviewPage: 1
+        currentReviewPage: 1,
+        isSendEvent: false
     };
 
 
@@ -222,7 +222,7 @@ class TradieInfo extends Component<Props, State> {
         return null;
     }
 
-    componentDidUpdate(prevProps: any) {
+    componentDidUpdate(prevProps: any, prevState: any) {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
         let prevPath = `${prevProps?.location?.pathname}${prevProps?.location?.search}`;
@@ -234,6 +234,14 @@ class TradieInfo extends Component<Props, State> {
 
         if (tradeStatus) {
             props.history.push('/jobs');
+        }
+
+        if (prevState.tradieInfo?.tradieName && !this.state.isSendEvent && storageService.getItem('userType') == 2) {
+            moengage.moE_SendEvent(MoEConstants.VIEWED_TRADIE_PROFILE, {
+                name: prevState.tradieInfo?.tradieName,
+                category: props.tradeListData.find((i: any) => i._id === prevState.tradieInfo?.tradeId)?.trade_name,
+            });
+            this.setState({ isSendEvent: true });
         }
     }
 
@@ -490,12 +498,19 @@ class TradieInfo extends Component<Props, State> {
     }
 
     savedTradie = async ({ tradieInfo }: any) => {
+        let props: any = this.props;
         let data = {
             tradieId: tradieInfo?._id || tradieInfo?.tradieId,
             isSave: tradieInfo?.isSaved ? false : true
         }
         let response = await SaveTradie(data);
         if (response.success) {
+            if (!tradieInfo?.isSaved) {
+                moengage.moE_SendEvent(MoEConstants.SAVED_TRADIE, {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                    category: props.tradeListData.find((i: any) => i._id === tradieInfo?.tradeId)?.trade_name,
+                });
+            }
             await this.setItems()
         }
     }
@@ -968,7 +983,10 @@ class TradieInfo extends Component<Props, State> {
                                         reviewsData: {
                                             ...prevData.reviewsData, showAllReviewsClicked: true
                                         }
-                                    }))
+                                    }));
+                                    moengage.moE_SendEvent(MoEConstants.VIEWED_REVIEWS, {
+                                        timeStamp: moengage.getCurrentTimeStamp()
+                                    });
                                 }}>
                                 {`View all ${tradieInfo?.reviewsCount || 0} ${!!tradieInfo?.reviewsCount ? 'review' : 'reviews'} `}</button>}
                     </div>
@@ -1455,6 +1473,7 @@ class TradieInfo extends Component<Props, State> {
 const mapState = (state: any) => ({
     tradieInfo: state.profile.tradieInfo,
     userType: state.profile.userType,
+    tradeListData: state.auth.tradeListData,
     tradieReviews: state.jobs.tradieReviews,
     tradieRequestStatus: state.jobs.tradieRequestStatus,
     tradieProfileViewData: state.profile.tradieProfileViewData,

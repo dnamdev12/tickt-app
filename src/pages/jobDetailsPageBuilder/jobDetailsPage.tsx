@@ -44,7 +44,8 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { deleteOpenJob } from '../../redux/jobs/actions';
-
+import { moengage } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 import { JobCancelReasons } from '../../utils/common';
@@ -499,6 +500,9 @@ const JobDetailsPage = (props: PropsType) => {
 
     const deleteJob = async (jobId: any) => {
         let response: any = await deleteOpenJob({ jobId });
+        moengage.moE_SendEvent(jobDetailsData?.quoteJob ? MoEConstants.CANCEL_QUOTED_JOB : MoEConstants.CANCEL_JOB, {
+            timeStamp: moengage.getCurrentTimeStamp()
+        });
         console.log({ response });
         props.history.push(`/jobs?active=${activeType}`)
     }

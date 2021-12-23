@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useSelector } from "react-redux";
 import Constants from '../../utils/constants';
 // @ts-ignore
 import PlacesAutocomplete, { geocodeByAddress, getLatLng, } from 'react-places-autocomplete';
@@ -31,6 +32,8 @@ import { setShowToast } from '../../redux/common/actions';
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
 import { renderTime, renderTimeWithCustomFormat } from '../../utils/common';
+import { moengage } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 
 Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
@@ -98,6 +101,7 @@ const BannerSearch = (props: PropsType) => {
     const [calenderRange1, setCalenderRange1] = useState<any>(example_calender);
 
     const [suggestionSelected, setSuggestion] = useState({});
+    const tradeListRedux = useSelector((state: any) => state.auth.tradeListData);
 
     const handleOnOutsideSearch = () => {
         setOnChange(false);
@@ -163,44 +167,6 @@ const BannerSearch = (props: PropsType) => {
         }
     }, [searchText])
 
-    const getRecentLocationData = async () => {
-        var recentLocationDetails: any = [];
-
-        let recentLocationData = props.recentLocationData
-        for (let index = 0; index < recentLocationData.length; index++) {
-            let item = recentLocationData[index];
-            try {
-                let lat = item.location.coordinates[1];
-                let long = item.location.coordinates[0];
-                let response = await Geocode.fromLatLng(lat, long);
-                console.log({
-                    results: response?.results
-                })
-                let formatedCityText = JSON.parse(JSON.stringify(response?.results[0]));
-                let cityText: any = null;
-                if (formatedCityText?.formatted_address.includes(',')) {
-                    cityText = formatedCityText?.formatted_address.split(',')
-                } else {
-                    cityText = formatedCityText?.formatted_address.split('-');
-                }
-                const newData = {
-                    mainText: cityText?.length > 3 ? cityText?.slice(0, 2).join(',') : cityText?.slice(0, 1).join(','),
-                    secondaryText: cityText?.length > 3 ? cityText?.slice(2, cityText?.length).join(',') : cityText?.slice(1, cityText?.length).join(','),
-                }
-                recentLocationDetails[index] = {
-                    formatted_address: formatedCityText?.formatted_address,
-                    location: { coordinates: item?.location?.coordinates },
-                    allText: newData
-                };
-
-                if (recentLocationDetails?.length === props.recentLocationData?.length) {
-                    setRecentLocation(recentLocationDetails);
-                }
-            } catch (err) {
-                console.log({ err });
-            }
-        }
-    }
 
     const checkIfExist = (_id: any) => {
         if (selectedTrade) {
@@ -423,13 +389,21 @@ const BannerSearch = (props: PropsType) => {
                 }
             }
 
-    
-            if(!data?.address || !data?.address?.length){
+
+            if (!data?.address || !data?.address?.length) {
                 delete data?.address;
             }
 
             if (!localChanges) {
                 props.postHomeSearchData(data);
+                moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                    category: tradeListRedux.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
+                    ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
+                    //'length of hire': '',
+                    ...(data?.from_date && { 'start date': data?.from_date }),
+                    ...(data?.to_date && { 'end date': data?.to_date }),
+                })
             }
             isHandleChanges(false)
             props.history.push({

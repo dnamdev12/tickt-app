@@ -10,7 +10,6 @@ import icgps from "../../../../assets/images/ic-gps.png";
 import BannerSearch from '../../../shared/bannerSearch';
 // import BannerSearch from '../../tradieHome/components/bannerSearch/index';
 
-
 const Banner = (props: any) => {
     const [positions, setPositions] = useState<any>([]);
 

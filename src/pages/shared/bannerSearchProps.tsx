@@ -30,7 +30,9 @@ import { setShowToast } from '../../redux/common/actions';
 import { property } from 'lodash';
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
-import { renderTime, renderTimeWithCustomFormat } from '../../utils/common'
+import { renderTime, renderTimeWithCustomFormat } from '../../utils/common';
+import { moengage } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
 
@@ -59,6 +61,7 @@ interface PropsType {
     getRecentLocationList: () => void,
     localInfo: any,
     recentLocationData: Array<any>,
+    tradeListData: Array<any>,
 }
 
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
@@ -558,6 +561,14 @@ const BannerSearch = (props: PropsType) => {
                 suggestionSelected: suggestion_selected ? JSON.parse(suggestion_selected) : null
             })
             props.postHomeSearchData(data);
+            moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, {
+                timeStamp: moengage.getCurrentTimeStamp(),
+                category: props?.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
+                ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
+                //'length of hire': '',
+                ...(data?.from_date && { 'start date': data?.from_date }),
+                ...(data?.to_date && { 'end date': data?.to_date }),
+            });
         }
     }
 

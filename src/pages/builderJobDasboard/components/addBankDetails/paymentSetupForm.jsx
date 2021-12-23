@@ -4,6 +4,8 @@ import { setShowToast } from '../../../../redux/common/actions';
 import { useStripe, useElements, AuBankAccountElement } from '@stripe/react-stripe-js';
 import BecsForm from './becsForm';
 import { useHistory } from 'react-router-dom';
+import { moengage } from '../../../../services/analyticsTools';
+import { MoEConstants } from '../../../../utils/constants';
 
 export default function PaymentSetupForm(props) {
   const stripe = useStripe();
@@ -61,9 +63,14 @@ export default function PaymentSetupForm(props) {
             "milestoneAmount": `${props.milestoneAmount?.slice(1)}`,
             "amount": `${paymentIntent?.amount}`,
           }
-
+          moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, {
+            timeStamp: moengage.getCurrentTimeStamp(),
+          });
           let response = await milestoneAcceptOrDecline(data_);
           if (response?.success) {
+            moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, {
+              timeStamp: moengage.getCurrentTimeStamp(),
+            });
             history.push('/need-approval-success');
           }
         }

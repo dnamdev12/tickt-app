@@ -3,6 +3,8 @@ import deleteIcon from '../../../../assets/images/ic-bin.png'
 import cardValidator, { cardholderName } from "card-validator";
 import moment from 'moment';
 import { addNewCard, updateCard } from '../../../../redux/jobs/actions'
+import { moengage } from '../../../../services/analyticsTools';
+import { MoEConstants } from '../../../../utils/constants';
 
 const defaultValues = {
     cardId: 'xxx',
@@ -71,7 +73,9 @@ const PaymentDetails = (props: any) => {
         if (!stateData?.fetched) {
             let result = await addNewCard(data);
             if (result?.success) {
-                // props.setDetials(stateData)
+                moengage.moE_SendEvent(MoEConstants.ADDED_PAYMENT_DETAILS, {
+                    timeStamp: moengage.getCurrentTimeStamp()
+                });
                 props.backToScreen();
             }
         } else {
