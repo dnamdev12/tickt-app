@@ -26,7 +26,8 @@ import 'react-multi-carousel/lib/styles.css';
 import storageService from '../../utils/storageService';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
-
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 interface PropsType {
     location: any,
     history: any,
@@ -117,7 +118,15 @@ const BuilderInfo = (props: PropsType) => {
         if (props.builderProfileViewData) {
             setProfileData(props.builderProfileViewData);
         }
-    }, [props.builderProfileViewData]);
+        if (profileData && (user_type == '1' || props.userType == 1)) {
+            const mData = {
+                name: profileData?.builderName,
+                category: profileData?.jobPostedData[0]?.tradeName,
+            }
+            moengage.moE_SendEvent(MoEConstants.VIEWED_BUILDER_PROFILE, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.VIEWED_BUILDER_PROFILE, mData);
+        }
+    }, [props.builderProfileViewData, profileData]);
 
     const getItemsFromLocation = () => {
         const urlParams = new URLSearchParams(props.location.search);
@@ -623,7 +632,17 @@ const BuilderInfo = (props: PropsType) => {
                             <button
                                 className={`fill_grey_btn full_btn view_more ${profileData?.reviewsCount === 0 ? 'disable_btn' : ''}`}
                                 disabled={profileData?.reviewsCount === 0}
-                                onClick={() => setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))}
+                                onClick={() => {
+                                    if(user_type == '2' || props.userType == 2){
+                                        const mData = {
+                                        timeStamp: moengage.getCurrentTimeStamp(),
+                                    }
+                                    moengage.moE_SendEvent(MoEConstants.VIEWED_REVIEWS, mData);
+                                    mixPanel.mixP_SendEvent(MoEConstants.VIEWED_REVIEWS, mData);
+                                }
+                                    setReviewsData((prevData: any) => ({ ...prevData, showAllReviewsClicked: true }))
+                                }
+                                }
                             >
                                 {`View all ${profileData?.reviewsCount || 0} review${profileData?.reviewsCount ? 's' : ''}`}
                             </button>}

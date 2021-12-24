@@ -13,10 +13,10 @@ import { withRouter } from 'react-router-dom';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
-
 import { CancelJob } from '../../../../redux/jobs/actions';
-
 import { JobCancelReasons } from '../../../../utils/common';
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
+import { MoEConstants } from '../../../../utils/constants';
 
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
@@ -141,6 +141,11 @@ const LodgeDispute = (props: any) => {
 
         let response: any = await CancelJob(data);
         if (response?.success) {
+            const mData = {
+                timeStamp: moengage.getCurrentTimeStamp(),
+            }
+            moengage.moE_SendEvent(MoEConstants.CANCEL_JOB, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.CANCEL_JOB, mData);
             history.push('/cancel-job-success');
         }
     }

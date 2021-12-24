@@ -196,7 +196,6 @@ class JobDashboard extends Component<Props, State> {
                     let result = [];
                     if (JSON.stringify(prevValues) === JSON.stringify(active) && page_get === currentPage) {
                         // same data items here!
-                        alert('Ok!')
                     } else {
                         let concatedItems: any = prevValues;
                         let firstItem: any = null;

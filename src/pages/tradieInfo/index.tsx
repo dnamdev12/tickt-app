@@ -60,7 +60,7 @@ import ReactStars from "react-rating-stars-component";
 import Rating from 'react-rating';
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 interface Props {
     tradieInfo: any,
@@ -984,9 +984,13 @@ class TradieInfo extends Component<Props, State> {
                                             ...prevData.reviewsData, showAllReviewsClicked: true
                                         }
                                     }));
-                                    moengage.moE_SendEvent(MoEConstants.VIEWED_REVIEWS, {
-                                        timeStamp: moengage.getCurrentTimeStamp()
-                                    });
+                                    if (user_type == '1' || props.userType == 1) {
+                                        const mData = {
+                                            timeStamp: moengage.getCurrentTimeStamp(),
+                                        }
+                                        moengage.moE_SendEvent(MoEConstants.VIEWED_REVIEWS, mData);
+                                        mixPanel.mixP_SendEvent(MoEConstants.VIEWED_REVIEWS, mData);
+                                    }
                                 }}>
                                 {`View all ${tradieInfo?.reviewsCount || 0} ${!!tradieInfo?.reviewsCount ? 'review' : 'reviews'} `}</button>}
                     </div>

@@ -10,6 +10,8 @@ import { renderTime } from '../../../../utils/common';
 
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 import more from '../../../../assets/images/icon-direction-right.png';
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
+import { MoEConstants } from '../../../../utils/constants';
 
 interface Proptypes {
     history: any,
@@ -65,7 +67,12 @@ const ReviewBuilder = (props: Proptypes) => {
             if (!data.review) delete data.review;
             const response = await reviewBuilder(data);
             if (response?.success) {
-                props?.history?.push('/builder-review-submitted')
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                }
+                moengage.moE_SendEvent(MoEConstants.ADDED_REVIEW, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.ADDED_REVIEW, mData);
+                props?.history?.push('/builder-review-submitted');
             }
         }
     }

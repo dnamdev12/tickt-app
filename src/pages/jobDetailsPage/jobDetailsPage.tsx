@@ -43,6 +43,8 @@ import storageService from '../../utils/storageService';
 import { JobCancelReasons } from '../../utils/common';
 import docThumbnail from '../../assets/images/add-document.png'
 import { setShowToast } from '../../redux/common/actions';
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 
 interface PropsType {
     history: any,
@@ -192,6 +194,11 @@ const JobDetailsPage = (props: PropsType) => {
             }
             const res = await postHomeApplyJob(data);
             if (res.success) {
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                }
+                moengage.moE_SendEvent(MoEConstants.APPLIED_FOR_A_JOB, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.APPLIED_FOR_A_JOB, mData);
                 props.history.push('job-applied-successfully');
             }
         }
@@ -263,6 +270,13 @@ const JobDetailsPage = (props: PropsType) => {
                 }
 
                 response = isNestedAction ? await askNestedQuestion(data2) : await postAskQuestion(data);
+                if (response?.success) {
+                    const mData = {
+                        timeStamp: moengage.getCurrentTimeStamp(),
+                    }
+                    moengage.moE_SendEvent(MoEConstants.ASKED_A_QUESTION, mData);
+                    mixPanel.mixP_SendEvent(MoEConstants.ASKED_A_QUESTION, mData);
+                }
             } else if (type === 'deleteQuestion') {
                 data = {
                     jobId: jobDetailsData?.jobId,
@@ -437,8 +451,18 @@ const JobDetailsPage = (props: PropsType) => {
         const res = await replyCancellation(data);
         if (res.success) {
             if (type === 'acceptJobCancelRequest') {
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                }
+                moengage.moE_SendEvent(MoEConstants.ACCEPT_CANCELLATION, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.ACCEPT_CANCELLATION, mData);
                 props.history.push('/request-monitored/ccr');
             } else {
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                }
+                moengage.moE_SendEvent(MoEConstants.REJECT_CANCELLATION, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.REJECT_CANCELLATION, mData);
                 props.history.push('/request-monitored/cc');
             }
             setJobActionState((prevData: any) => ({

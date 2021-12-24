@@ -24,7 +24,7 @@ import Constants from '../../utils/constants';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 interface Types {
     [key: string]: any | string;
@@ -122,9 +122,11 @@ const UserMessages = (props: any) => {
                 && (props.roomData?.oppUserInfo?.hasOwnProperty('isNotification') ? props.roomData?.oppUserInfo?.isNotification : true)
             ) {
                 sendFCMPushNotificationToOppUser(lastMsg);
-                moengage.moE_SendEvent(MoEConstants.CHAT, {
-                    timeStamp: moengage.getCurrentTimeStamp()
-                });
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                }
+                moengage.moE_SendEvent(MoEConstants.CHAT, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.CHAT, mData);
             }
             setInboxToTopWithLastMsg(lastMsg);
         }

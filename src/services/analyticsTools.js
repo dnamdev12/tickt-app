@@ -17,6 +17,9 @@ export const moengage = {
     }
 }
 
-export const mixpanel = {
-
+export const mixPanel = {
+    mixP_SendEvent(eventName, properties) {
+        console.log('mixP_SendEvent: ', eventName, 'zzz', properties);
+        window.mixpanel.track(eventName, properties);
+    }
 }
