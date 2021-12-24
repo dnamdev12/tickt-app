@@ -14,7 +14,7 @@ import { messaging, deleteToken, signOut } from '../../services/firebase';
 import { onNotificationClick, formatNotificationTime } from '../../utils/common';
 import { getNotificationList } from '../../redux/homeSearch/actions';
 import { markNotifAsRead } from '../../redux/auth/actions';
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 
 import moment from 'moment';
@@ -317,6 +317,7 @@ const Header = (props: any) => {
         setLoading(false);
         if (res.status_code === 200) {
             moengage.moE_SendEvent(MoEConstants.LOG_OUT, { success_status: true, current_page: pathname })
+            mixPanel.mixP_SendEvent(MoEConstants.LOG_OUT, { success_status: true, current_page: pathname })
             signOut();
             deleteToken();
             moengage.moE_LogoutEvent();

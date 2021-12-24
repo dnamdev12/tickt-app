@@ -31,7 +31,7 @@ import { property } from 'lodash';
 import { deleteRecentSearch } from '../../redux/homeSearch/actions';
 
 import { renderTime, renderTimeWithCustomFormat } from '../../utils/common';
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
@@ -561,14 +561,16 @@ const BannerSearch = (props: PropsType) => {
                 suggestionSelected: suggestion_selected ? JSON.parse(suggestion_selected) : null
             })
             props.postHomeSearchData(data);
-            moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, {
+            const mData = {
                 timeStamp: moengage.getCurrentTimeStamp(),
                 category: props?.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
                 ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
                 //'length of hire': '',
                 ...(data?.from_date && { 'start date': data?.from_date }),
                 ...(data?.to_date && { 'end date': data?.to_date }),
-            });
+            };
+            moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
         }
     }
 

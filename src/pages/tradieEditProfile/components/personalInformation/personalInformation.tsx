@@ -48,7 +48,7 @@ import { validateABN } from '../../../../utils/common';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 import { updateChatUserDetails } from '../../../../services/firebase';
-import { moengage } from '../../../../services/analyticsTools';
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
 import { MoEConstants } from '../../../../utils/constants';
 interface Props {
     history: any,
@@ -541,9 +541,8 @@ export class PersonalInformation extends Component<Props, State> {
             };
             const res = await tradieAddPortfolioJob(data);
             if (res?.success) {
-                moengage.moE_SendEvent(MoEConstants.ADDED_PORTFOLIO, {
-                    timeStamp: moengage.getCurrentTimeStamp()
-                });
+                moengage.moE_SendEvent(MoEConstants.ADDED_PORTFOLIO, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.ADDED_PORTFOLIO, { timeStamp: moengage.getCurrentTimeStamp() });
                 const data = { ...this.state.profileViewData };
                 data.portfolio.push(res?.data);
                 this.setState({
@@ -656,9 +655,8 @@ export class PersonalInformation extends Component<Props, State> {
             });
             this.userType === 1 ? this.props.callTradieProfileData() : this.props.getProfileBuilder();
             if (this.userType === 2 && this.state.about && this.state.profileViewData?.companyName !== this.state.about) {
-                moengage.moE_SendEvent(MoEConstants.ADDED_INFO_ABOUT_COMPANY, {
-                    timeStamp: moengage.getCurrentTimeStamp()
-                });
+                moengage.moE_SendEvent(MoEConstants.ADDED_INFO_ABOUT_COMPANY, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.ADDED_INFO_ABOUT_COMPANY, { timeStamp: moengage.getCurrentTimeStamp() });
             }
         }
     }

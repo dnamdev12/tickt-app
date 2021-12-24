@@ -20,7 +20,7 @@ import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import spherePlaceholder from '../../assets/images/ic_categories_placeholder.svg';
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 
 const SearchFilter = (props: any) => {
@@ -279,14 +279,16 @@ const SearchFilter = (props: any) => {
 
         props.postHomeSearchData(data);
 
-        moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, {
+        const mData = {
             timeStamp: moengage.getCurrentTimeStamp(),
             category: props?.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
             ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
             //'length of hire': '',
             ...(data?.from_date && { 'start date': data?.from_date }),
             ...(data?.to_date && { 'end date': data?.to_date }),
-        });
+        };
+        moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
+        mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
         let trade_name: any = tradeInfo?.trade_name;
         let local_info_name: any = local_info?.name;
         let local_info_count: any = local_info?.count;

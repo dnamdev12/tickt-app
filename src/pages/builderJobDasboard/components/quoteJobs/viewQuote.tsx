@@ -4,7 +4,7 @@ import noDataFound from '../../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../../assets/images/job-type-placeholder.png';
 import { renderTime } from '../../../../utils/common';
 import NumberFormat from 'react-number-format';
-import { moengage } from '../../../../services/analyticsTools';
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
 import { MoEConstants } from '../../../../utils/constants';
 
 import {
@@ -42,9 +42,8 @@ class ViewQuote extends Component<Props, State> {
         if (response.success) {
             if (status == 1) {
                 this.props.history.push('/quote-job-accepted');
-                moengage.moE_SendEvent(MoEConstants.ACCEPT_QUOTE, {
-                    timeStamp: moengage.getCurrentTimeStamp()
-                });
+                moengage.moE_SendEvent(MoEConstants.ACCEPT_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.ACCEPT_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
             }
 
             if (status == 2) {
@@ -57,9 +56,8 @@ class ViewQuote extends Component<Props, State> {
 
     componentDidMount() {
         this.preFetchForQuotes();
-        moengage.moE_SendEvent(MoEConstants.VIEW_QUOTE, {
-            timeStamp: moengage.getCurrentTimeStamp()
-        });
+        moengage.moE_SendEvent(MoEConstants.VIEW_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
+        mixPanel.mixP_SendEvent(MoEConstants.VIEW_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
     }
 
     preFetchForQuotes = () => {

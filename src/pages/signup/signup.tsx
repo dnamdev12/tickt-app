@@ -14,7 +14,7 @@ import { postSignup, socialSignupLogin } from '../../redux/auth/actions';
 import AuthParent from '../../common/auth/authParent';
 import { firebaseSignUpWithEmailPassword } from '../../services/firebase';
 import VerifyEmail from './components/EmailVerification'
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 
 interface Propstype {
@@ -120,7 +120,7 @@ const Signup = (props: Propstype) => {
         if (stateStepsValue === 8 && signupData.user_type === 2) {
             stateStepsValue = 6;
         }
-        if ((stateStepsValue === 6 || stateStepsValue === 3)  && signupData.socialId) {
+        if ((stateStepsValue === 6 || stateStepsValue === 3) && signupData.socialId) {
             minStep = 3;
         }
         console.log({
@@ -207,13 +207,15 @@ const Signup = (props: Propstype) => {
             //     fullName: res.result?.firstName,
             //     user_type: res.result?.user_type
             // });
-            moengage.moE_SendEvent(MoEConstants.SIGN_UP, {
+            const mData = {
                 success_status: true,
                 name: data?.firstName,
                 //'sign up source': '',
                 Platform: 'Web',
                 email: data?.email
-            });
+            };
+            moengage.moE_SendEvent(MoEConstants.SIGN_UP, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.SIGN_UP, mData);
             if (signupData.user_type === 2) {
                 setSteps(9);
             } else {

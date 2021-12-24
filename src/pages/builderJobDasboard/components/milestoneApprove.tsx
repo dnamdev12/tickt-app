@@ -8,7 +8,7 @@ import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 //@ts-ignore
-import { moengage } from '../../../services/analyticsTools';
+import { moengage, mixPanel } from '../../../services/analyticsTools';
 import { MoEConstants } from '../../../utils/constants';
 
 const MilestoneApprove = (props: any) => {
@@ -43,12 +43,10 @@ const MilestoneApprove = (props: any) => {
 
             let response: any = await milestoneAcceptOrDecline(data_);
             if (response?.success) {
-                moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, {
-                    timeStamp: moengage.getCurrentTimeStamp(),
-                });
-                moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, {
-                    timeStamp: moengage.getCurrentTimeStamp(),
-                });
+                moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.MADE_PAYMENT, { timeStamp: moengage.getCurrentTimeStamp() });
+                moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, { timeStamp: moengage.getCurrentTimeStamp() });
                 resetStateLocal();
                 props.history.push('/need-approval-success');
             }

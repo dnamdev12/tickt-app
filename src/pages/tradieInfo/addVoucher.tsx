@@ -8,9 +8,9 @@ import close from '../../assets/images/icon-close-1.png';
 import { onFileUpload } from '../../redux/auth/actions';
 import { AddVoucher, fetchVouchesJobs } from '../../redux/jobs/actions';
 import docThumbnail from '../../assets/images/add-document.png'
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
-import Select, { components }  from 'react-select';
+import Select, { components } from 'react-select';
 const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
 
 const AddVoucherComponent = (props: any) => {
@@ -54,7 +54,7 @@ const AddVoucherComponent = (props: any) => {
             setReactSelect((prev: any) => ({ ...prev, label: '', value: '' }));
             setJobDesciption("");
             setFilesUrl([]);
-            setErrorData((prev: any) => ({ ...prev, name:'', detail: '', upload: '' }))
+            setErrorData((prev: any) => ({ ...prev, name: '', detail: '', upload: '' }))
         } else {
             prefetch();
         }
@@ -152,29 +152,28 @@ const AddVoucherComponent = (props: any) => {
         }
         let response = await AddVoucher(data);
         if (response?.success) {
-            moengage.moE_SendEvent(MoEConstants.LEFT_VOUCHER, {
-                timeStamp: moengage.getCurrentTimeStamp()
-            });
+            moengage.moE_SendEvent(MoEConstants.LEFT_VOUCHER, { timeStamp: moengage.getCurrentTimeStamp() });
+            mixPanel.mixP_SendEvent(MoEConstants.LEFT_VOUCHER, { timeStamp: moengage.getCurrentTimeStamp() });
             setToggle((prev: any) => !prev);
             await prefetch();
         }
     }
-    
+
     let JobSelectOptions: any = [];
     if (jobsList?.length) {
         JobSelectOptions = jobsList.map((item: any) => ({ label: item?.jobName, value: item?.jobId }));
         JobSelectOptions.unshift({ label: 'Please select a job', value: '' });
-    } 
+    }
 
-    const NoOptionsMessage = (props:any) => {
+    const NoOptionsMessage = (props: any) => {
         return (
-          <components.NoOptionsMessage {...props}>
-            <span className="custom-css-class">
-                {'No completed jobs with this tradesperson'}
-                </span> 
-          </components.NoOptionsMessage>
+            <components.NoOptionsMessage {...props}>
+                <span className="custom-css-class">
+                    {'No completed jobs with this tradesperson'}
+                </span>
+            </components.NoOptionsMessage>
         );
-      };
+    };
 
     return (
         <Modal
@@ -282,7 +281,7 @@ const AddVoucherComponent = (props: any) => {
                                 if (!jobDescription?.length) {
                                     setErrorData((prev: any) => ({ ...prev, detail: 'Job Description is required' }));
                                 }
-                                
+
                                 if (!reactSelect?.value?.length) {
                                     setErrorData((prev: any) => ({ ...prev, name: 'Job Name is required' }));
                                 }

@@ -237,10 +237,12 @@ class TradieInfo extends Component<Props, State> {
         }
 
         if (prevState.tradieInfo?.tradieName && !this.state.isSendEvent && storageService.getItem('userType') == 2) {
-            moengage.moE_SendEvent(MoEConstants.VIEWED_TRADIE_PROFILE, {
+            const mData = {
                 name: prevState.tradieInfo?.tradieName,
                 category: props.tradeListData.find((i: any) => i._id === prevState.tradieInfo?.tradeId)?.trade_name,
-            });
+            };
+            moengage.moE_SendEvent(MoEConstants.VIEWED_TRADIE_PROFILE, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.VIEWED_TRADIE_PROFILE, mData);
             this.setState({ isSendEvent: true });
         }
     }
@@ -506,10 +508,12 @@ class TradieInfo extends Component<Props, State> {
         let response = await SaveTradie(data);
         if (response.success) {
             if (!tradieInfo?.isSaved) {
-                moengage.moE_SendEvent(MoEConstants.SAVED_TRADIE, {
+                const mData = {
                     timeStamp: moengage.getCurrentTimeStamp(),
                     category: props.tradeListData.find((i: any) => i._id === tradieInfo?.tradeId)?.trade_name,
-                });
+                };
+                moengage.moE_SendEvent(MoEConstants.SAVED_TRADIE, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.SAVED_TRADIE, mData);
             }
             await this.setItems()
         }

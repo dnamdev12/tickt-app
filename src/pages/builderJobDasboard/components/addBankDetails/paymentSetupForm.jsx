@@ -4,7 +4,7 @@ import { setShowToast } from '../../../../redux/common/actions';
 import { useStripe, useElements, AuBankAccountElement } from '@stripe/react-stripe-js';
 import BecsForm from './becsForm';
 import { useHistory } from 'react-router-dom';
-import { moengage } from '../../../../services/analyticsTools';
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
 import { MoEConstants } from '../../../../utils/constants';
 
 export default function PaymentSetupForm(props) {
@@ -25,7 +25,13 @@ export default function PaymentSetupForm(props) {
 
     const auBankAccount = elements.getElement(AuBankAccountElement);
 
-    const res = await getStripeClientSecretkey({ amount: props.milestoneTotalAmount?.slice(1), tradieId: props.tradieId, builderId: props.builderId });
+    const res = await getStripeClientSecretkey({
+      amount: props.milestoneTotalAmount?.slice(1),
+      tradieId: props.tradieId,
+      builderId: props.builderId,
+      jobId: props.jobId,
+      milestoneId: props.milestoneId,
+    });
     if (res.success) {
       const result = await stripe.confirmAuBecsDebitPayment(res.stripeClientSecretkey, {
         payment_method: {
@@ -63,14 +69,18 @@ export default function PaymentSetupForm(props) {
             "milestoneAmount": `${props.milestoneAmount?.slice(1)}`,
             "amount": `${paymentIntent?.amount}`,
           }
-          moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, {
+          const mData = {
             timeStamp: moengage.getCurrentTimeStamp(),
-          });
+          }
+          moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, mData);
+          mixPanel.mixP_SendEvent(MoEConstants.MADE_PAYMENT, mData);
           let response = await milestoneAcceptOrDecline(data_);
           if (response?.success) {
-            moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, {
+            const mData = {
               timeStamp: moengage.getCurrentTimeStamp(),
-            });
+            }
+            moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData);
             history.push('/need-approval-success');
           }
         }

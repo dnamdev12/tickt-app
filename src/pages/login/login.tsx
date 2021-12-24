@@ -9,7 +9,7 @@ import Constants from '../../utils/constants';
 import regex from '../../utils/regex'
 import SocialAuth from "../../common/auth/socialAuth";
 import { firebaseLogInWithEmailPassword, loginAnonymously } from '../../services/firebase';
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 
 interface Propstype {
@@ -128,6 +128,7 @@ const LoginPage = (props: Propstype) => {
                 }
                 moengage.moE_LoginEvent({ email: res.data?.email, userName: res.data?.userName, userId: res.data?._id });
                 moengage.moE_SendEvent(MoEConstants.APP_OPEN, { app_open: true });
+                mixPanel.mixP_SendEvent(MoEConstants.APP_OPEN, { app_open: true });
                 props?.history?.push('/');
             }
         }

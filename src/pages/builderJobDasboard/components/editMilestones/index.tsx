@@ -12,7 +12,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import { moengage } from '../../../../services/analyticsTools';
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
 import { MoEConstants } from '../../../../utils/constants';
 import { changeRequest } from '../../../../redux/jobs/actions';
 
@@ -372,9 +372,8 @@ const EditMilestone = (props: any) => {
 
         let response: any = await changeRequest(data);
         if (response?.success) {
-            moengage.moE_SendEvent(MoEConstants.EDIT_MILESTONES, {
-                timeStamp: moengage.getCurrentTimeStamp()
-            });
+            moengage.moE_SendEvent(MoEConstants.EDIT_MILESTONES, { timeStamp: moengage.getCurrentTimeStamp() });
+            mixPanel.mixP_SendEvent(MoEConstants.EDIT_MILESTONES, { timeStamp: moengage.getCurrentTimeStamp() });
             props.history.push('/milestone-request-sent-success');
         }
     }

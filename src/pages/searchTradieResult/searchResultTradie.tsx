@@ -9,7 +9,7 @@ import TradieBox from '../shared/tradieBox'
 import moment from 'moment';
 import InfiniteScroll from "react-infinite-scroll-component";
 import { addListener } from 'process';
-import { moengage } from '../../services/analyticsTools';
+import { moengage, mixPanel } from '../../services/analyticsTools';
 import { MoEConstants } from '../../utils/constants';
 
 const SearchResultTradie = (props: any) => {
@@ -86,14 +86,16 @@ const SearchResultTradie = (props: any) => {
 
         // if (!stateData?.suggestionSelected || (data?.location?.coordinates && Array.isArray(data?.location?.coordinates) && data?.location?.coordinates?.length)) {
         props.postHomeSearchData(data);
-        moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, {
+        const mData = {
             timeStamp: moengage.getCurrentTimeStamp(),
             category: props?.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
             ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
             //'length of hire': '',
             ...(data?.from_date && { 'start date': data?.from_date }),
             ...(data?.to_date && { 'end date': data?.to_date }),
-        })
+        };
+        moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
+        mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
         // }
 
     }, []);

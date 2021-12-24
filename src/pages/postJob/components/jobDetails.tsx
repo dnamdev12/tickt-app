@@ -16,7 +16,7 @@ import docThumbnail from '../../../assets/images/add-document.png'
 
 import { renderTime, renderTimeWithFormat } from '../../../utils/common';
 import { useHistory } from "react-router-dom";
-import { moengage } from '../../../services/analyticsTools';
+import { moengage, mixPanel } from '../../../services/analyticsTools';
 import { MoEConstants } from '../../../utils/constants';
 
 //@ts-ignore
@@ -225,18 +225,19 @@ const JobDetails = ({
         } else {
             response = await createJob(data_clone);
             if (jobId) {
-                moengage.moE_SendEvent(MoEConstants.REPUBLISHED_JOB, {
-                    timeStamp: moengage.getCurrentTimeStamp()
-                });
+                moengage.moE_SendEvent(MoEConstants.REPUBLISHED_JOB, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.REPUBLISHED_JOB, { timeStamp: moengage.getCurrentTimeStamp() });
             } else {
-                moengage.moE_SendEvent(MoEConstants.POSTED_A_JOB, {
+                const mData = {
                     timeStamp: moengage.getCurrentTimeStamp(),
                     category: tradeListRedux.find((i: any) => i._id === data_clone?.categories[0])?.trade_name,
                     location: data_clone?.location_name,
                     'Number of milestones': data_clone?.milestones?.length,
                     'start date': data_clone?.from_date,
                     ...(data_clone?.to_date && { 'end date': data_clone?.to_date }),
-                });
+                };
+                moengage.moE_SendEvent(MoEConstants.POSTED_A_JOB, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.POSTED_A_JOB, mData);
             }
         }
         if (response?.success) {

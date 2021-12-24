@@ -6,7 +6,7 @@ import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
 import videoThumbnail from '../../../assets/images/add-video.png';
 
-import { moengage } from '../../../services/analyticsTools';
+import { moengage, mixPanel } from '../../../services/analyticsTools';
 import { MoEConstants } from '../../../utils/constants';
 interface Props {
     milestoneAcceptOrDecline: any
@@ -43,9 +43,8 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
 
         let response: any = await milestoneAcceptOrDecline(data);
         if (response?.success) {
-            moengage.moE_SendEvent(MoEConstants.MILESTONE_DECLINED, {
-                timeStamp: moengage.getCurrentTimeStamp(),
-            });
+            moengage.moE_SendEvent(MoEConstants.MILESTONE_DECLINED, { timeStamp: moengage.getCurrentTimeStamp() });
+            mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_DECLINED, { timeStamp: moengage.getCurrentTimeStamp() });
             resetStateLocal(true);
         }
     }
