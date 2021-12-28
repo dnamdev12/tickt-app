@@ -38,6 +38,8 @@ function ApproveMilestonePayment(props) {
               tradieId={props.tradieId}
               builderId={props.builderId}
               backToScreen={props.backToScreen}
+              milestoneNumber={props.milestoneNumber}
+              category={props.category}
             />
           </Elements>
         </div>

@@ -11,7 +11,6 @@ export default function PaymentSetupForm(props) {
   const stripe = useStripe();
   const elements = useElements();
   const history = useHistory();
-
   //   const stripe = useStripe('stripePublishableKey', {
   //     stripeAccount: 'stripeAccountId',
   //   });
@@ -51,7 +50,7 @@ export default function PaymentSetupForm(props) {
         setShowToast(true, 'Milestone payment initiated, will take upto 3 business days to settle.');
         const { paymentIntent } = result;
         const data = {
-          amount: `${paymentIntent?.amount}`,
+          amount: `${props.milestoneTotalAmount?.slice(1)}`,
           builderId: props.builderId,
           tradieId: props.tradieId,
           transactionId: paymentIntent?.id,
@@ -69,18 +68,20 @@ export default function PaymentSetupForm(props) {
             "milestoneAmount": `${props.milestoneAmount?.slice(1)}`,
             "amount": `${paymentIntent?.amount}`,
           }
-          const mData = {
+          const mData1 = {
+            Category: props?.category,
             timeStamp: moengage.getCurrentTimeStamp(),
           }
-          moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, mData);
-          mixPanel.mixP_SendEvent(MoEConstants.MADE_PAYMENT, mData);
+          moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, mData1);
+          mixPanel.mixP_SendEvent(MoEConstants.MADE_PAYMENT, mData1);
           let response = await milestoneAcceptOrDecline(data_);
           if (response?.success) {
-            const mData = {
-              timeStamp: moengage.getCurrentTimeStamp(),
-            }
-            moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData);
-            mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData);
+            const mData2 = {
+              ...mData1,
+              'Milestone number': props?.milestoneNumber + 1,
+          }
+            moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData2);
+            mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData2);
             history.push('/need-approval-success');
           }
         }

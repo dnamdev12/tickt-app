@@ -64,6 +64,8 @@ const FixedRate = (props: any) => {
                 milestoneAmount={selectedItems?.milestoneAmount}
                 milestoneTotalAmount={selectedItems?.total}
                 backToScreen={backToScreen}
+                milestoneNumber={indexMile}
+                category={props?.data?.itemDetails?.categories?.[0]?.trade_name}
             />
         )
     }

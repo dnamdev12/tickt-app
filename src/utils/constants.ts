@@ -84,14 +84,14 @@ export const MoEConstants: any = {
     LOG_OUT: 'Log Out',
     APP_OPEN: 'App Open',
     SIGN_UP: 'Sign Up',
-    SEARCHED_FOR_TRADIES: 'Search for tradies',
+    SEARCHED_FOR_TRADIES: 'Searched for tradies',
     VIEWED_TRADIE_PROFILE: 'Viewed tradie profile',
     POSTED_A_JOB: 'Posted a job',
-    VIEW_QUOTE: 'View quote',
+    VIEW_QUOTE: 'View Quote',
     ACCEPT_QUOTE: 'Accept quote',
     CANCEL_QUOTED_JOB: 'Cancel quoted job',
-    MILESTONE_CHECKED_AND_APPROVED: 'Milestone checked and approved',
-    MADE_PAYMENT: 'Made payment',
+    MILESTONE_CHECKED_AND_APPROVED: 'Milestone Checked and approved',
+    MADE_PAYMENT: 'Made Payment',
     MILESTONE_DECLINED: 'Milestone declined',
     SAVED_TRADIE:'Saved tradie',
     CHAT: 'Chat',
@@ -114,7 +114,7 @@ export const MoEConstants: any = {
     VIEWED_APPROVED_MILESTONE: 'Viewed approved milestone',
     ADDED_REVIEW: 'Added review',
     ACCEPT_CANCELLATION: 'Accept cancellation',
-    REJECT_CANCELLATION: 'Reject cancellation',
+    REJECT_CANCELLATION: 'Reject Cancellation',
 }
 
 export default {

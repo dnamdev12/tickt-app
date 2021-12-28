@@ -5903,3 +5903,28 @@ div#light-box div {
   }
 }
 //----------M-UI Dialog Title Heading Close-------------//
+
+//----------Stripe add bank account UI------------//
+.StripeElement {
+  height: 40px;
+  padding: 10px 12px;
+
+  color: #32325d;
+  background-color: white;
+  border: 1px solid transparent;
+  border-radius: 4px;
+
+  box-shadow: 0 1px 3px 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
+
+//----------Stripe add bank account UI close------------//

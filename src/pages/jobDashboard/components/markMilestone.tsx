@@ -65,6 +65,7 @@ interface JobDetails {
   jobName: string;
   milestones: Array<any>;
   postedBy: BuilderDetails;
+  categories: Array<any>
 }
 
 interface BankDetails {
@@ -108,7 +109,7 @@ const MarkMilestone = (props: Proptypes) => {
     tradeId: params.get('tradeId'),
     specializationId: params.get('specializationId'),
   };
-
+  
   const defaultData = {
     urls: [],
     description: '',
@@ -842,7 +843,7 @@ const MarkMilestone = (props: Proptypes) => {
                   const callback = (jobCompletedCount: number) => {
                     const mData = {
                       timeStamp: moengage.getCurrentTimeStamp(),
-                      //category: '',
+                      category: milestoneList?.categories?.[0]?.trade_name,
                       'Milestone number': milestoneIndex + 1
                     }
                     moengage.moE_SendEvent(MoEConstants.MILESTONE_COMPLETED, mData);
