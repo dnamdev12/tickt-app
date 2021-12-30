@@ -82,7 +82,7 @@ export default function PaymentSetupForm(props) {
           }
             moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData2);
             mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData2);
-            history.push('/need-approval-success');
+            history.push('/need-approval-success?payMode=bank');
           }
         }
       }
