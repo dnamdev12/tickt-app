@@ -14,6 +14,7 @@ const mapStateToProps = (state: any) => {
         recentSearchJobData: state.homeSearch.recentSearchJobData,
         homeSearchJobData: state.homeSearch.homeSearchJobData,
         recentLocationData: state.homeSearch.recentLocationData,
+        tradeListData: state.auth.tradeListData,
     }
 }
 

@@ -57,13 +57,11 @@ import noDataFound from '../../assets/images/no-search-data.png';
 
 //@ts-ignore
 import ReactStars from "react-rating-stars-component";
-
 import Rating from 'react-rating';
-
-
-
 import InfiniteScroll from "react-infinite-scroll-component";
 
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 interface Props {
     tradieInfo: any,
     tradieId: any,
@@ -113,6 +111,7 @@ interface State {
     toggleAddVoucher: boolean,
     toggleSpecialisation: boolean,
     hasMore: boolean,
+    isSendEvent: boolean,
     currentReviewPage: number
 }
 
@@ -124,7 +123,7 @@ class TradieInfo extends Component<Props, State> {
     state = {
         toggleSpecialisation: true,
         profilePictureLoading: true,
-        tradieInfo: null,
+        tradieInfo: '',
         showError: false,
         tradieReviews: null,
         profileData: {},
@@ -158,7 +157,8 @@ class TradieInfo extends Component<Props, State> {
         toggleVoucher: { item: '', isTrue: false },
         toggleAddVoucher: false,
         hasMore: true,
-        currentReviewPage: 1
+        currentReviewPage: 1,
+        isSendEvent: false
     };
 
 
@@ -222,7 +222,7 @@ class TradieInfo extends Component<Props, State> {
         return null;
     }
 
-    componentDidUpdate(prevProps: any) {
+    componentDidUpdate(prevProps: any, prevState: any) {
         let props: any = this.props;
         let tradeStatus: any = props.tradieRequestStatus;
         let prevPath = `${prevProps?.location?.pathname}${prevProps?.location?.search}`;
@@ -234,6 +234,16 @@ class TradieInfo extends Component<Props, State> {
 
         if (tradeStatus) {
             props.history.push('/jobs');
+        }
+
+        if (prevState.tradieInfo?.tradieName && !this.state.isSendEvent && storageService.getItem('userType') == 2) {
+            const mData = {
+                name: prevState.tradieInfo?.tradieName,
+                category: props.tradeListData.find((i: any) => i._id === prevState.tradieInfo?.tradeId)?.trade_name,
+            };
+            moengage.moE_SendEvent(MoEConstants.VIEWED_TRADIE_PROFILE, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.VIEWED_TRADIE_PROFILE, mData);
+            this.setState({ isSendEvent: true });
         }
     }
 
@@ -490,12 +500,21 @@ class TradieInfo extends Component<Props, State> {
     }
 
     savedTradie = async ({ tradieInfo }: any) => {
+        let props: any = this.props;
         let data = {
             tradieId: tradieInfo?._id || tradieInfo?.tradieId,
             isSave: tradieInfo?.isSaved ? false : true
         }
         let response = await SaveTradie(data);
         if (response.success) {
+            if (!tradieInfo?.isSaved) {
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                    category: props.tradeListData.find((i: any) => i._id === tradieInfo?.tradeId)?.trade_name,
+                };
+                moengage.moE_SendEvent(MoEConstants.SAVED_TRADIE, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.SAVED_TRADIE, mData);
+            }
             await this.setItems()
         }
     }
@@ -587,12 +606,11 @@ class TradieInfo extends Component<Props, State> {
         if (showError) {
             return (
                 <div className="app_wrapper">
-                    <div className="section_wrapper">
-                        <div className="custom_container">
-
+                    <div className="custom_container">
+                        <div className="section_wrapper">
                             <div className="vid_img_wrapper pt-20">
                                 <div className="flex_row">
-                                    <div className="flex_col_sm_8 relative">
+                                    <div className="flex_col_sm_3 relative">
                                         <button
                                             className="back"
                                             onClick={() => {
@@ -625,10 +643,8 @@ class TradieInfo extends Component<Props, State> {
 
         return (
             <div className="app_wrapper">
-                <div className="section_wrapper">
-                    <div className="custom_container">
-
-
+                <div className="custom_container">
+                    <div className="section_wrapper">
                         <VoucherDetail
                             toggleProps={toggleVoucher.isTrue}
                             item={toggleVoucher.item}
@@ -638,7 +654,7 @@ class TradieInfo extends Component<Props, State> {
 
                         <div className="vid_img_wrapper pt-20">
                             <div className="flex_row">
-                                <div className="flex_col_sm_8 relative">
+                                <div className="flex_col_sm_3 relative">
                                     <button className="back" onClick={() => {
                                         // props.history.goBack();
                                         let url = props?.location?.state?.url;
@@ -657,32 +673,34 @@ class TradieInfo extends Component<Props, State> {
                             </div>
 
                             <div className="flex_row">
-                                <div className="flex_col_sm_8">
-                                    <figure className="vid_img_thumb">
-                                        {this.state.profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 400 }} />}
-                                        {!isSkeletonLoading && <img
-                                            src={tradieInfo?.tradieImage || profilePlaceholder}
-                                            alt="profile-pic"
-                                            onLoad={() => this.setState({
-                                                profilePictureLoading: false,
-                                            })}
-                                            onError={(e: any) => {
-                                                let e_: any = e;
-                                                e_.target.src = profilePlaceholder;
-                                            }}
-                                            hidden={this.state.profilePictureLoading}
-                                        />}
-                                    </figure>
+                                <div className="flex_col_sm_3">
+                                    <div className="upload_profile_pic">
+                                        <figure className="user_img">
+                                            {this.state.profilePictureLoading && <Skeleton style={{ lineHeight: 2, height: 240 }} />}
+                                            {!isSkeletonLoading && <img
+                                                src={tradieInfo?.tradieImage || profilePlaceholder}
+                                                alt="profile-pic"
+                                                onLoad={() => this.setState({
+                                                    profilePictureLoading: false,
+                                                })}
+                                                onError={(e: any) => {
+                                                    let e_: any = e;
+                                                    e_.target.src = dummy;
+                                                }}
+                                                hidden={this.state.profilePictureLoading}
+                                            />}
+                                        </figure>
+                                    </div>
                                 </div>
-                                <div className="flex_col_sm_4 relative">
-                                    <div className="text-right">
+                                <div className="flex_col_sm_3 relative">
+                                    {props.isSkeletonLoading ? null : <div className="text-right">
                                         {storageService.getItem('userType') === 2 && <span
                                             className={`bookmark_icon ${tradieInfo?.isSaved ? 'active' : ''}`}
                                             onClick={() => {
                                                 this.savedTradie({ tradieInfo })
                                             }}>
                                         </span>}
-                                    </div>
+                                    </div>}
 
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
@@ -813,67 +831,60 @@ class TradieInfo extends Component<Props, State> {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     {props.isSkeletonLoading ? <Skeleton count={2} /> : tradieInfo?.about?.length > 0 ? (
-                                        <div className="description">
+                                        <div className={`description ${(haveJobId && tradieInfo?.isRequested) ? 'public_view_btn2' : ''}`}>
                                             <span className="sub_title">About</span>
                                             <p className="commn_para">{tradieInfo?.about}</p>
                                         </div>
                                     ) : null}
                                 </div>
-                                <div className="flex_col_sm_4">
+                                {/* <div className="flex_col_sm_8">
                                     {props.isSkeletonLoading ? <Skeleton count={3} /> : userType === 1 ? (
                                         <>
-                                         <div className="area">
-                                            <span className="sub_title">Areas of specialisation</span>
-                                            <div className={`tags_wrap ${toggleSpecialisation ? 'active' : ''}`}>
-                                                <ul>
-                                                    {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName &&
-                                                        <li className="main">
-                                                            {/* <img
-                                                                src={tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeSelectedUrl || menu}
-                                                                alt=""
-                                                            /> */}
-                                                            {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
-                                                        </li>}
-                                                    {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any, index: any) => {
-                                                        return toggleSpecialisation ? index <= 4 && <li key={item.specializationId}>{item.specializationName || ''}</li> : <li key={item.specializationId}>{item.specializationName || ''}</li>
-                                                    })}
-                                                </ul>
-                                                <span className="link show_more"
-                                                    onClick={(e: any) => {
-                                                        e.preventDefault();
-                                                        this.setState({ toggleSpecialisation: !this.state.toggleSpecialisation })
-                                                    }}>
-                                                    {toggleSpecialisation ? 'Show more' : 'Show less'}
-                                                </span>
-                                            </div>
+                                            <div className="area">
+                                                <span className="sub_title">Areas of specialisation</span>
+                                                <div className={`tags_wrap ${toggleSpecialisation ? 'active' : ''}`}>
+                                                    <ul>
+                                                        {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName &&
+                                                            <li className="main">
+                                                                {tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}
+                                                            </li>}
+                                                        {tradieInfo?.areasOfSpecialization?.specializationData?.map((item: any, index: any) => {
+                                                            return toggleSpecialisation ? index <= 4 && <li key={item.specializationId}>{item.specializationName || ''}</li> : <li key={item.specializationId}>{item.specializationName || ''}</li>
+                                                        })}
+                                                    </ul>
+                                                    <span className="link show_more"
+                                                        onClick={(e: any) => {
+                                                            e.preventDefault();
+                                                            this.setState({ toggleSpecialisation: !this.state.toggleSpecialisation })
+                                                        }}>
+                                                        {toggleSpecialisation ? 'Show more' : 'Show less'}
+                                                    </span>
+                                                </div>
                                             </div>
                                         </>
                                     ) : (tradieInfo?.areasOfSpecialization?.length > 0 ? (
                                         <>
-                                         <div className="area">
-                                            <span className="sub_title">Areas of specialisation</span>
-                                            <div className="tags_wrap">
-                                                <ul>
-                                                    {tradieInfo?.tradeName && <li className="main">
-                                                        {/* <img src={tradieInfo?.tradeSelectedUrl || menu} alt="" /> */}
-                                                        {tradieInfo?.tradeName || ''}
-                                                    </li>}
-                                                    {tradieInfo?.areasOfSpecialization?.map((item: any) => {
-                                                        return <li key={item.specializationId}>{item.specializationName}</li>
-                                                    })}
-                                                </ul>
-                                            </div>
+                                            <div className="area">
+                                                <span className="sub_title">Areas of specialisation</span>
+                                                <div className="tags_wrap">
+                                                    <ul>
+                                                        {tradieInfo?.tradeName && <li className="main">
+                                                            {tradieInfo?.tradeName || ''}
+                                                        </li>}
+                                                        {tradieInfo?.areasOfSpecialization?.map((item: any) => {
+                                                            return <li key={item.specializationId}>{item.specializationName}</li>
+                                                        })}
+                                                    </ul>
+                                                </div>
                                             </div>
                                         </>
                                     ) : null)}
-                                </div>
+                                </div> */}
                             </div>
 
                         </div>
                     </div>
-                </div>
-                {tradieInfo?.portfolio?.length ? <div className="section_wrapper">
-                    <div className="custom_container">
+                    {tradieInfo?.portfolio?.length ? <div className="section_wrapper">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Portfolio'}</span>
                         <Carousel
                             responsive={portfolio}
@@ -896,66 +907,64 @@ class TradieInfo extends Component<Props, State> {
                                 )
                             }) : <img alt="" src={portfolioPlaceholder} />}
                         </Carousel>
-                    </div>
-                </div> : null}
+                    </div> : null}
 
-                {/* portfolio Image modal desc */}
-                {portfolioData?.portfolioImageClicked &&
-                    <Modal
-                        className="custom_modal"
-                        open={portfolioData.portfolioImageClicked}
-                        onClose={() => {
-                            this.setState((prev: any) => ({ portfolioData: { ...prev.portfolioData, portfolioImageClicked: false } }))
-                        }}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                    >
-                        <div className="custom_wh portfolio_preview">
-                            <div className="heading">
-                                <button
-                                    onClick={() => {
-                                        this.setState((prev: any) => ({ portfolioData: { ...prev.portfolioData, portfolioImageClicked: false } }))
-                                    }}
-                                    className="close_btn">
-                                    <img src={cancel} alt="cancel" />
-                                </button>
-                            </div>
-                            <div className="flex_row">
-                                <div className="flex_col_sm_6">
-                                    <Carousel
-                                        responsive={portfolioModal}
-                                        showDots={true}
-                                        infinite={true}
-                                        autoPlay={true}
-                                        arrows={false}
-                                        className="portfolio_wrappr"
-                                    >
-                                        {portfolioData?.portfolioDetails &&
-                                            portfolioData?.portfolioDetails?.portfolioImage &&
-                                            portfolioData?.portfolioDetails?.portfolioImage?.length ?
-                                            portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
-                                                return (
-                                                    <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
-                                                        <figure className="portfolio_img">
-                                                            <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
-                                                        </figure>
-                                                    </div>
-                                                )
-                                            }) : <img alt="" src={portfolioPlaceholder} />}
-                                    </Carousel>
+                    {/* portfolio Image modal desc */}
+                    {portfolioData?.portfolioImageClicked &&
+                        <Modal
+                            className="custom_modal"
+                            open={portfolioData.portfolioImageClicked}
+                            onClose={() => {
+                                this.setState((prev: any) => ({ portfolioData: { ...prev.portfolioData, portfolioImageClicked: false } }))
+                            }}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh portfolio_preview">
+                                <div className="heading">
+                                    <button
+                                        onClick={() => {
+                                            this.setState((prev: any) => ({ portfolioData: { ...prev.portfolioData, portfolioImageClicked: false } }))
+                                        }}
+                                        className="close_btn">
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
                                 </div>
-                                <div className="flex_col_sm_6">
-                                    <span className="xs_sub_title">Job Description</span>
-                                    <div className="job_content">
-                                        <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
+                                <div className="flex_row">
+                                    <div className="flex_col_sm_6">
+                                        <Carousel
+                                            responsive={portfolioModal}
+                                            showDots={true}
+                                            infinite={true}
+                                            autoPlay={true}
+                                            arrows={false}
+                                            className="portfolio_wrappr"
+                                        >
+                                            {portfolioData?.portfolioDetails &&
+                                                portfolioData?.portfolioDetails?.portfolioImage &&
+                                                portfolioData?.portfolioDetails?.portfolioImage?.length ?
+                                                portfolioData?.portfolioDetails?.portfolioImage?.map((image: string) => {
+                                                    return (
+                                                        <div className="media" key={portfolioData?.portfolioDetails?.portfolioId}>
+                                                            <figure className="portfolio_img">
+                                                                <img src={image ? image : portfolioPlaceholder} alt="portfolio-images" />
+                                                            </figure>
+                                                        </div>
+                                                    )
+                                                }) : <img alt="" src={portfolioPlaceholder} />}
+                                        </Carousel>
+                                    </div>
+                                    <div className="flex_col_sm_6">
+                                        <span className="xs_sub_title">Job Description</span>
+                                        <div className="job_content">
+                                            <p>{portfolioData?.portfolioDetails?.jobDescription}</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                    </Modal>}
+                        </Modal>}
 
-                <div className="section_wrapper">
-                    <div className="custom_container">
+                    <div className="section_wrapper">
                         <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Reviews'}</span>
                         {props.isSkeletonLoading ? <Skeleton height={200} /> :
                             <div className="flex_row review_parent">
@@ -978,15 +987,20 @@ class TradieInfo extends Component<Props, State> {
                                         reviewsData: {
                                             ...prevData.reviewsData, showAllReviewsClicked: true
                                         }
-                                    }))
+                                    }));
+                                    if (user_type == '1' || props.userType == 1) {
+                                        const mData = {
+                                            timeStamp: moengage.getCurrentTimeStamp(),
+                                        }
+                                        moengage.moE_SendEvent(MoEConstants.VIEWED_REVIEWS, mData);
+                                        mixPanel.mixP_SendEvent(MoEConstants.VIEWED_REVIEWS, mData);
+                                    }
                                 }}>
                                 {`View all ${tradieInfo?.reviewsCount || 0} ${!!tradieInfo?.reviewsCount ? 'review' : 'reviews'} `}</button>}
                     </div>
-                </div>
 
-                {tradieInfo?.vouchesData?.length ?
-                    <div className="section_wrapper">
-                        <div className="custom_container">
+                    {tradieInfo?.vouchesData?.length ?
+                        <div className="section_wrapper">
                             <span className="sub_title">Vouches</span>
                             <div className="flex_row">
 
@@ -1057,408 +1071,407 @@ class TradieInfo extends Component<Props, State> {
                                 {`View ${tradieInfo?.vouchesData?.length === 1 ? '' : 'all'} ${tradieInfo?.vouchesData?.length} vouch${tradieInfo?.vouchesData?.length === 1 ? '' : 'es'}`}
                             </button>
                         </div>
-                    </div>
-                    : (storageService.getItem('userType') === 2 ?
-                        <div className="section_wrapper">
-                            <div className="custom_container">
-                                <span className="sub_title">Vouches</span>
+                        : (storageService.getItem('userType') === 2 ?
+                            <div className="section_wrapper">
+                                <div className="custom_container">
+                                    <span className="sub_title">Vouches</span>
 
 
-                                <div className="flex_row review_parent">
-                                    <div className="no_record">
-                                        <figure className="no_data_img">
-                                            <img src={noData} alt="data not found" />
-                                        </figure>
-                                        <span>No Data Found</span>
+                                    <div className="flex_row review_parent">
+                                        <div className="no_record">
+                                            <figure className="no_data_img">
+                                                <img src={noData} alt="data not found" />
+                                            </figure>
+                                            <span>No Data Found</span>
+                                        </div>
                                     </div>
+
+                                    <button
+                                        className="fill_grey_btn full_btn"
+                                        onClick={() => {
+                                            this.setState({
+                                                toggleAddVoucher: !this.state.toggleAddVoucher
+                                            })
+                                        }}>
+                                        {`Leave a Vouch`}
+                                    </button>
                                 </div>
+                            </div> : null
+                        )}
 
-                                <button
-                                    className="fill_grey_btn full_btn"
-                                    onClick={() => {
-                                        this.setState({
-                                            toggleAddVoucher: !this.state.toggleAddVoucher
-                                        })
-                                    }}>
-                                    {`Leave a Vouch`}
-                                </button>
-                            </div>
-                        </div> : null
-                    )}
+                    {storageService.getItem('userType') === 2 && <AddVoucherComponent
+                        toggleProps={this.state.toggleAddVoucher}
+                        id={tradieInfo?.tradieId}
+                        closeToggle={this.closeAddVoucher}
+                    />}
 
-                {storageService.getItem('userType') === 2 && <AddVoucherComponent
-                    toggleProps={this.state.toggleAddVoucher}
-                    id={tradieInfo?.tradieId}
-                    closeToggle={this.closeAddVoucher}
-                />}
-
-                {
-                    reviewsData.showAllReviewsClicked && tradieReviews?.length &&
-                    <Modal
-                        className="ques_ans_modal"
-                        open={reviewsData.showAllReviewsClicked}
-                        onClose={() => modalCloseHandler('showAllReviewsClicked')}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                    >
-                        <div className="custom_wh">
-                            <div className="heading">
-                                <span className="sub_title">{`${tradieInfo.reviewsCount} ${tradieInfo?.reviewsCount === 1 ? 'review' : 'reviews'}`}</span>
-                                <button className="close_btn"
-                                    onClick={() => modalCloseHandler('showAllReviewsClicked')}
-                                >
-                                    <img src={cancel} alt="cancel" />
-                                </button>
-                            </div>
-                            <div id="divScrollable" className="inner_wrap">
-                                <InfiniteScroll
-                                    dataLength={tradieReviews?.length}
-                                    next={async () => {
-                                        const { tradeId } = this.getItemsFromLocation();
-                                        let cp = this.state.currentReviewPage + 1;
-                                        let prevValues = tradieReviews;
-                                        this.setState({ currentReviewPage: this.state.currentReviewPage + 1 });
-                                        let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: cp });
-                                        if (res_trade?.success) {
-                                            let data_ = res_trade?.data?.list || res_trade?.data;
-                                            if (data_?.length) {
-                                                this.setState({ tradieReviews: [...prevValues, ...data_] });
-                                            } else {
-                                                this.setState({ hasMore: false });
+                    {
+                        reviewsData.showAllReviewsClicked && tradieReviews?.length &&
+                        <Modal
+                            className="ques_ans_modal"
+                            open={reviewsData.showAllReviewsClicked}
+                            onClose={() => modalCloseHandler('showAllReviewsClicked')}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <div className="custom_wh">
+                                <div className="heading">
+                                    <span className="sub_title">{`${tradieInfo.reviewsCount} ${tradieInfo?.reviewsCount === 1 ? 'review' : 'reviews'}`}</span>
+                                    <button className="close_btn"
+                                        onClick={() => modalCloseHandler('showAllReviewsClicked')}
+                                    >
+                                        <img src={cancel} alt="cancel" />
+                                    </button>
+                                </div>
+                                <div id="divScrollable" className="inner_wrap">
+                                    <InfiniteScroll
+                                        dataLength={tradieReviews?.length}
+                                        next={async () => {
+                                            const { tradeId } = this.getItemsFromLocation();
+                                            let cp = this.state.currentReviewPage + 1;
+                                            let prevValues = tradieReviews;
+                                            this.setState({ currentReviewPage: this.state.currentReviewPage + 1 });
+                                            let res_trade: any = await getTradeReviews({ tradieId: tradeId, page: cp });
+                                            if (res_trade?.success) {
+                                                let data_ = res_trade?.data?.list || res_trade?.data;
+                                                if (data_?.length) {
+                                                    this.setState({ tradieReviews: [...prevValues, ...data_] });
+                                                } else {
+                                                    this.setState({ hasMore: false });
+                                                }
                                             }
-                                        }
-                                    }}
-                                    hasMore={this.state.hasMore}
-                                    loader={<></>}
-                                    scrollableTarget="divScrollable">
-                                    {tradieReviews?.map((item: any) => {
-                                        let reviewData: any = item.reviewData;
-                                        let replyData: any = reviewData.replyData;
-                                        let replyId: any = replyData.replyId;
-                                        return (
-                                            <>
-                                                <div className="question_ans_card" key={reviewData.reviewId}>
-                                                    <div className="user_detail">
-                                                        <figure className="user_img">
-                                                            <img src={reviewData?.userImage || dummy} alt="user-img" />
-                                                        </figure>
-
-                                                        <div className="details">
-                                                            <span className="user_name">{reviewData?.name}</span>
-                                                            <span className="date">{reviewData?.date}</span>
-                                                            <span className="item-star">
-                                                                <Rating
-                                                                    fractions={2}
-                                                                    emptySymbol={empty_star_rating_below}
-                                                                    fullSymbol={full_star_rating_below}
-                                                                    initialRating={reviewData?.rating}
-                                                                    readonly={true}
-                                                                />
-
-                                                            </span>
-                                                        </div>
-                                                    </div>
-                                                    <p>{reviewData?.review}</p>
-
-                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
-                                                        <span
-                                                            onClick={() => {
-                                                                reviewHandler(
-                                                                    'editBuilderReview',
-                                                                    reviewData?.reviewId,
-                                                                    '',
-                                                                    reviewData
-                                                                );
-                                                            }}
-                                                            className="action link">
-                                                            {'Edit '}
-                                                        </span>
-                                                    ) : null}
-                                                    {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
-                                                        <span
-                                                            onClick={() => {
-                                                                this.setState({
-                                                                    delete: {
-                                                                        isToggle: true,
-                                                                        deleteId: reviewData?.reviewId
-                                                                    }
-                                                                })
-                                                            }}
-                                                            className="action link">
-                                                            {'Delete '}
-                                                        </span>
-                                                    ) : null}
-                                                    <br />
-                                                    <br />
-                                                    {Object.keys(reviewsData.replyShownHideList).length &&
-                                                        reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
-                                                        <span
-                                                            className="action link"
-                                                            onClick={() => {
-                                                                reviewHandler('hideReviewClicked', '', item?.reviewData?.reviewId)
-                                                            }}>
-                                                            {'Hide reply'}
-                                                        </span>
-                                                    ) : Object.keys(item?.reviewData?.replyData).length ? (
-                                                        <span
-                                                            className="show_hide_ans link"
-                                                            onClick={() => { reviewHandler('showReviewClicked', '', item?.reviewData?.reviewId) }}>
-                                                            {'Show reply'}
-                                                        </span>
-                                                    ) : (
-                                                        storageService.getItem('userType') === 1 ?
-                                                            (<span
-                                                                className="action link"
-                                                                onClick={() => {
-                                                                    reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
-                                                                }}>
-                                                                {'Reply'}
-                                                            </span>)
-                                                            : ''
-                                                    )}
-                                                </div>
-                                                {Object.keys(reviewsData.replyShownHideList).length &&
-                                                    reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
-                                                    <div className="question_ans_card answer">
+                                        }}
+                                        hasMore={this.state.hasMore}
+                                        loader={<></>}
+                                        scrollableTarget="divScrollable">
+                                        {tradieReviews?.map((item: any) => {
+                                            let reviewData: any = item.reviewData;
+                                            let replyData: any = reviewData.replyData;
+                                            let replyId: any = replyData.replyId;
+                                            return (
+                                                <>
+                                                    <div className="question_ans_card" key={reviewData.reviewId}>
                                                         <div className="user_detail">
                                                             <figure className="user_img">
-                                                                <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
+                                                                <img src={reviewData?.userImage || dummy} alt="user-img" />
                                                             </figure>
+
                                                             <div className="details">
-                                                                <span className="user_name">{reviewData?.replyData?.userName}</span>
-                                                                <span className="date">{reviewData?.replyData?.date}</span>
+                                                                <span className="user_name">{reviewData?.name}</span>
+                                                                <span className="date">{reviewData?.date}</span>
+                                                                <span className="item-star">
+                                                                    <Rating
+                                                                        fractions={2}
+                                                                        emptySymbol={empty_star_rating_below}
+                                                                        fullSymbol={full_star_rating_below}
+                                                                        initialRating={reviewData?.rating}
+                                                                        readonly={true}
+                                                                    />
+
+                                                                </span>
                                                             </div>
                                                         </div>
-                                                        <p>{reviewData?.replyData?.reply}</p>
-                                                        {reviewData?.replyData?.isModifiable && (
+                                                        <p>{reviewData?.review}</p>
+
+                                                        {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
                                                             <span
-                                                                className="action link"
                                                                 onClick={() => {
                                                                     reviewHandler(
-                                                                        'updateReviewReply',
-                                                                        item?.reviewData?.reviewId,
-                                                                        item?.reviewData?.replyData?.replyId,
-                                                                        reviewData?.replyData?.reply
-                                                                    )
-                                                                }}>
-                                                                {'Edit'}
-                                                            </span>)}
-                                                        {reviewData?.replyData?.isModifiable &&
+                                                                        'editBuilderReview',
+                                                                        reviewData?.reviewId,
+                                                                        '',
+                                                                        reviewData
+                                                                    );
+                                                                }}
+                                                                className="action link">
+                                                                {'Edit '}
+                                                            </span>
+                                                        ) : null}
+                                                        {storageService.getItem('userType') === 2 && item.reviewData.name == storageService.getItem('userInfo')?.userName ? (
+                                                            <span
+                                                                onClick={() => {
+                                                                    this.setState({
+                                                                        delete: {
+                                                                            isToggle: true,
+                                                                            deleteId: reviewData?.reviewId
+                                                                        }
+                                                                    })
+                                                                }}
+                                                                className="action link">
+                                                                {'Delete '}
+                                                            </span>
+                                                        ) : null}
+                                                        <br />
+                                                        <br />
+                                                        {Object.keys(reviewsData.replyShownHideList).length &&
+                                                            reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
                                                             <span
                                                                 className="action link"
                                                                 onClick={() => {
-                                                                    reviewHandler('removeReviewReply', item?.reviewData?.reviewId, item?.reviewData?.replyData?.replyId)
+                                                                    reviewHandler('hideReviewClicked', '', item?.reviewData?.reviewId)
                                                                 }}>
-                                                                {'Delete'}
-                                                            </span>}
+                                                                {'Hide reply'}
+                                                            </span>
+                                                        ) : Object.keys(item?.reviewData?.replyData).length ? (
+                                                            <span
+                                                                className="show_hide_ans link"
+                                                                onClick={() => { reviewHandler('showReviewClicked', '', item?.reviewData?.reviewId) }}>
+                                                                {'Show reply'}
+                                                            </span>
+                                                        ) : (
+                                                            storageService.getItem('userType') === 1 ?
+                                                                (<span
+                                                                    className="action link"
+                                                                    onClick={() => {
+                                                                        reviewHandler('reviewReplyClicked', item?.reviewData?.reviewId)
+                                                                    }}>
+                                                                    {'Reply'}
+                                                                </span>)
+                                                                : ''
+                                                        )}
                                                     </div>
+                                                    {Object.keys(reviewsData.replyShownHideList).length &&
+                                                        reviewsData.replyShownHideList[item?.reviewData?.reviewId] ? (
+                                                        <div className="question_ans_card answer">
+                                                            <div className="user_detail">
+                                                                <figure className="user_img">
+                                                                    <img src={reviewData?.replyData?.userImage || dummy} alt="user-img" />
+                                                                </figure>
+                                                                <div className="details">
+                                                                    <span className="user_name">{reviewData?.replyData?.userName}</span>
+                                                                    <span className="date">{reviewData?.replyData?.date}</span>
+                                                                </div>
+                                                            </div>
+                                                            <p>{reviewData?.replyData?.reply}</p>
+                                                            {reviewData?.replyData?.isModifiable && (
+                                                                <span
+                                                                    className="action link"
+                                                                    onClick={() => {
+                                                                        reviewHandler(
+                                                                            'updateReviewReply',
+                                                                            item?.reviewData?.reviewId,
+                                                                            item?.reviewData?.replyData?.replyId,
+                                                                            reviewData?.replyData?.reply
+                                                                        )
+                                                                    }}>
+                                                                    {'Edit'}
+                                                                </span>)}
+                                                            {reviewData?.replyData?.isModifiable &&
+                                                                <span
+                                                                    className="action link"
+                                                                    onClick={() => {
+                                                                        reviewHandler('removeReviewReply', item?.reviewData?.reviewId, item?.reviewData?.replyData?.replyId)
+                                                                    }}>
+                                                                    {'Delete'}
+                                                                </span>}
+                                                        </div>
 
-                                                ) : null}
-                                            </>
-                                        )
-                                    })}
-                                </InfiniteScroll>
-                            </div>
-                        </div>
-                    </Modal>
-                }
-                {/* post reply modal */}
-                {
-                    reviewsData.reviewReplyClicked &&
-                    <Modal
-                        className="ques_ans_modal"
-                        open={reviewsData.reviewReplyClicked}
-                        onClose={() => { modalCloseHandler('reviewReplyClicked') }}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                    >
-                        <>
-                            <div className="custom_wh ask_ques">
-                                <div className="heading">
-                                    <span className="sub_title">{`${reviewsData?.updateReviewsClicked ? 'Edit reply' : 'Reply'}`}</span>
-                                    <button className="close_btn" onClick={() => { modalCloseHandler('reviewReplyClicked') }}>
-                                        <img src={cancel} alt="cancel" />
-                                    </button>
+                                                    ) : null}
+                                                </>
+                                            )
+                                        })}
+                                    </InfiniteScroll>
                                 </div>
-                                <div className="form_field">
-                                    <label className="form_label">Your reply</label>
-                                    <div className="text_field">
-                                        <textarea
-                                            placeholder="Text"
-                                            value={reviewsData.reviewData}
-                                            onChange={(e) => {
-                                                handleChange(e, 'reviewData')
-                                            }}>
-                                        </textarea>
-                                        <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                            </div>
+                        </Modal>
+                    }
+                    {/* post reply modal */}
+                    {
+                        reviewsData.reviewReplyClicked &&
+                        <Modal
+                            className="ques_ans_modal"
+                            open={reviewsData.reviewReplyClicked}
+                            onClose={() => { modalCloseHandler('reviewReplyClicked') }}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <>
+                                <div className="custom_wh ask_ques">
+                                    <div className="heading">
+                                        <span className="sub_title">{`${reviewsData?.updateReviewsClicked ? 'Edit reply' : 'Reply'}`}</span>
+                                        <button className="close_btn" onClick={() => { modalCloseHandler('reviewReplyClicked') }}>
+                                            <img src={cancel} alt="cancel" />
+                                        </button>
+                                    </div>
+                                    <div className="form_field">
+                                        <label className="form_label">Your reply</label>
+                                        <div className="text_field">
+                                            <textarea
+                                                placeholder="Text"
+                                                value={reviewsData.reviewData}
+                                                onChange={(e) => {
+                                                    handleChange(e, 'reviewData')
+                                                }}>
+                                            </textarea>
+                                            <span className="char_count">{`${reviewsData.reviewData?.length || '0'}/250`}</span>
+                                        </div>
+                                    </div>
+                                    <div className="bottom_btn custom_btn">
+                                        {reviewsData.updateReviewsClicked ?
+                                            <button
+                                                className="fill_btn full_btn btn-effect"
+                                                onClick={() => { submitReviewHandler('updateReviewReply') }}>
+                                                {'Save'}
+                                            </button>
+                                            : <button
+                                                className="fill_btn full_btn btn-effect"
+                                                onClick={() => { reviewHandler('reviewReply') }}>
+                                                {'Send'}
+                                            </button>}
+                                        <button
+                                            className="fill_grey_btn btn-effect"
+                                            onClick={() => { reviewHandler('replyCancelBtnClicked') }}>
+                                            {'Cancel'}
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="bottom_btn custom_btn">
-                                    {reviewsData.updateReviewsClicked ?
-                                        <button
-                                            className="fill_btn full_btn btn-effect"
-                                            onClick={() => { submitReviewHandler('updateReviewReply') }}>
-                                            {'Save'}
+                            </>
+                        </Modal>
+                    }
+                    {/* send confirmation yes/no modal */}
+                    {
+                        (reviewsData.confirmationClicked) &&
+                        <Modal
+                            className="custom_modal"
+                            open={reviewsData.confirmationClicked}
+                            onClose={() => modalCloseHandler('confirmationClicked')}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <>
+                                <div className="custom_wh confirmation">
+                                    <div className="heading">
+                                        <span className="xs_sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : reviewsData.updateReviewsClicked ? 'Update' : ''} Reply Confirmation`}</span>
+                                        <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
+                                            <img src={cancel} alt="cancel" />
                                         </button>
-                                        : <button
-                                            className="fill_btn full_btn btn-effect"
-                                            onClick={() => { reviewHandler('reviewReply') }}>
-                                            {'Send'}
-                                        </button>}
-                                    <button
-                                        className="fill_grey_btn btn-effect"
-                                        onClick={() => { reviewHandler('replyCancelBtnClicked') }}>
-                                        {'Cancel'}
-                                    </button>
+                                    </div>
+                                    <div className="modal_message">
+                                        <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}reply?`}</p>
+                                    </div>
+                                    <div className="dialog_actions">
+                                        <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
+                                        <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
+                                    </div>
                                 </div>
-                            </div>
-                        </>
-                    </Modal>
-                }
-                {/* send confirmation yes/no modal */}
-                {
-                    (reviewsData.confirmationClicked) &&
-                    <Modal
-                        className="custom_modal"
-                        open={reviewsData.confirmationClicked}
-                        onClose={() => modalCloseHandler('confirmationClicked')}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                    >
-                        <>
-                            <div className="custom_wh confirmation">
-                                <div className="heading">
-                                    <span className="xs_sub_title">{`${reviewsData.deleteReviewsClicked ? 'Delete' : reviewsData.updateReviewsClicked ? 'Update' : ''} Reply Confirmation`}</span>
-                                    <button className="close_btn" onClick={() => modalCloseHandler('confirmationClicked')}>
-                                        <img src={cancel} alt="cancel" />
-                                    </button>
-                                </div>
-                                <div className="modal_message">
-                                    <p>{`Are you sure you want to ${reviewsData.deleteReviewsClicked ? 'delete ' : ''}reply?`}</p>
-                                </div>
-                                <div className="dialog_actions">
-                                    <button className="fill_btn btn-effect" onClick={() => submitReviewHandler(reviewsData.reviewsClickedType)}>Yes</button>
-                                    <button className="fill_grey_btn btn-effect" onClick={() => modalCloseHandler('confirmationClicked')}>No</button>
-                                </div>
-                            </div>
-                        </>
-                    </Modal>
-                }
+                            </>
+                        </Modal>
+                    }
 
 
-                {reviewsData.editBuilderReview &&
-                    <Modal
-                        className="ques_ans_modal"
-                        open={reviewsData.editBuilderReview}
-                        onClose={() => { modalCloseHandler('editBuilderReview') }}
-                        aria-labelledby="simple-modal-title"
-                        aria-describedby="simple-modal-description"
-                    >
-                        <>
-                            <div className="custom_wh ask_ques">
-                                <div className="heading">
-                                    <span className="sub_title">{'Edit Review'}</span>
-                                    <button className="close_btn" onClick={() => { modalCloseHandler('editBuilderReview') }}>
-                                        <img src={cancel} alt="cancel" />
-                                    </button>
-                                </div>
-                                <div className="form_field">
-                                    <label className="form_label">Your Review</label>
-                                    <ReactStars
-                                        value={reviewsData?.reviewData?.rating}
-                                        count={5}
-                                        isHalf={true}
-                                        onChange={(newRating: any) => {
-                                            this.setState((prevData: any) => {
-                                                console.log({ prevData })
-                                                return {
-                                                    reviewsData: {
-                                                        ...prevData.reviewsData,
-                                                        reviewData: {
-                                                            ...prevData?.reviewsData?.reviewData,
-                                                            rating: newRating
+                    {reviewsData.editBuilderReview &&
+                        <Modal
+                            className="ques_ans_modal"
+                            open={reviewsData.editBuilderReview}
+                            onClose={() => { modalCloseHandler('editBuilderReview') }}
+                            aria-labelledby="simple-modal-title"
+                            aria-describedby="simple-modal-description"
+                        >
+                            <>
+                                <div className="custom_wh ask_ques">
+                                    <div className="heading">
+                                        <span className="sub_title">{'Edit Review'}</span>
+                                        <button className="close_btn" onClick={() => { modalCloseHandler('editBuilderReview') }}>
+                                            <img src={cancel} alt="cancel" />
+                                        </button>
+                                    </div>
+                                    <div className="form_field">
+                                        <label className="form_label">Your Review</label>
+                                        <ReactStars
+                                            value={reviewsData?.reviewData?.rating}
+                                            count={5}
+                                            isHalf={true}
+                                            onChange={(newRating: any) => {
+                                                this.setState((prevData: any) => {
+                                                    console.log({ prevData })
+                                                    return {
+                                                        reviewsData: {
+                                                            ...prevData.reviewsData,
+                                                            reviewData: {
+                                                                ...prevData?.reviewsData?.reviewData,
+                                                                rating: newRating
+                                                            }
                                                         }
                                                     }
-                                                }
-                                            })
-                                        }}
-                                        size={40}
-                                        activeColor="#ffd700"
-                                        color='#DFE5EF'
-                                    />
-                                    <div className="text_field">
-                                        <textarea
-                                            placeholder="Text"
-                                            value={reviewsData?.reviewData?.review}
-                                            onChange={(e) => {
-                                                handleChange(e, 'reviewData', 'review')
-                                            }}>
-                                        </textarea>
-                                        <span className="char_count">{`${reviewsData?.reviewData?.review?.length || '0'}/250`}</span>
+                                                })
+                                            }}
+                                            size={40}
+                                            activeColor="#ffd700"
+                                            color='#DFE5EF'
+                                        />
+                                        <div className="text_field">
+                                            <textarea
+                                                placeholder="Text"
+                                                value={reviewsData?.reviewData?.review}
+                                                onChange={(e) => {
+                                                    handleChange(e, 'reviewData', 'review')
+                                                }}>
+                                            </textarea>
+                                            <span className="char_count">{`${reviewsData?.reviewData?.review?.length || '0'}/250`}</span>
+                                        </div>
+                                    </div>
+                                    <div className="bottom_btn custom_btn">
+                                        <button
+                                            className="fill_btn full_btn btn-effect"
+                                            onClick={() => { submitReviewHandler('updateBuilderReview') }}>
+                                            {'Save'}
+                                        </button>
+                                        <button
+                                            className="fill_grey_btn btn-effect"
+                                            onClick={() => { reviewHandler('cancelBuilderReview') }}>
+                                            {'Cancel'}
+                                        </button>
                                     </div>
                                 </div>
-                                <div className="bottom_btn custom_btn">
-                                    <button
-                                        className="fill_btn full_btn btn-effect"
-                                        onClick={() => { submitReviewHandler('updateBuilderReview') }}>
-                                        {'Save'}
-                                    </button>
-                                    <button
-                                        className="fill_grey_btn btn-effect"
-                                        onClick={() => { reviewHandler('cancelBuilderReview') }}>
-                                        {'Cancel'}
-                                    </button>
-                                </div>
-                            </div>
-                        </>
-                    </Modal>
-                }
+                            </>
+                        </Modal>
+                    }
 
 
-                <Dialog
-                    open={this.state?.delete?.isToggle}
-                    // onClose={handleClose}
-                    aria-labelledby="alert-dialog-title"
-                    aria-describedby="alert-dialog-description"
-                >
-                    <DialogTitle id="alert-dialog-title">
-                        {'Do you want to delete this review ?'}
-                    </DialogTitle>
-                    <DialogActions>
-                        <Button
-                            onClick={async () => {
-                                let response = await deleteReviewTradie({
-                                    reviewId: this.state?.delete?.deleteId
-                                });
-                                if (response?.success) {
+                    <Dialog
+                        open={this.state?.delete?.isToggle}
+                        // onClose={handleClose}
+                        aria-labelledby="alert-dialog-title"
+                        aria-describedby="alert-dialog-description"
+                    >
+                        <DialogTitle id="alert-dialog-title">
+                            {'Do you want to delete this review ?'}
+                        </DialogTitle>
+                        <DialogActions>
+                            <Button
+                                onClick={async () => {
+                                    let response = await deleteReviewTradie({
+                                        reviewId: this.state?.delete?.deleteId
+                                    });
+                                    if (response?.success) {
+                                        this.setState({
+                                            delete: {
+                                                isToggle: false,
+                                                deleteId: ''
+                                            }
+                                        }, () => {
+                                            this.setItems();
+                                        })
+                                    }
+                                }}
+                                color="primary">
+                                {'Yes'}
+                            </Button>
+                            <Button
+                                onClick={() => {
                                     this.setState({
                                         delete: {
                                             isToggle: false,
                                             deleteId: ''
                                         }
-                                    }, () => {
-                                        this.setItems();
                                     })
-                                }
-                            }}
-                            color="primary">
-                            {'Yes'}
-                        </Button>
-                        <Button
-                            onClick={() => {
-                                this.setState({
-                                    delete: {
-                                        isToggle: false,
-                                        deleteId: ''
-                                    }
-                                })
-                            }}
-                            color="primary" autoFocus>
-                            {'No'}
-                        </Button>
-                    </DialogActions>
-                </Dialog>
-
+                                }}
+                                color="primary" autoFocus>
+                                {'No'}
+                            </Button>
+                        </DialogActions>
+                    </Dialog>
+                </div>
             </div >
         )
     }
@@ -1468,6 +1481,7 @@ class TradieInfo extends Component<Props, State> {
 const mapState = (state: any) => ({
     tradieInfo: state.profile.tradieInfo,
     userType: state.profile.userType,
+    tradeListData: state.auth.tradeListData,
     tradieReviews: state.jobs.tradieReviews,
     tradieRequestStatus: state.jobs.tradieRequestStatus,
     tradieProfileViewData: state.profile.tradieProfileViewData,

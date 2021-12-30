@@ -70,11 +70,15 @@ const PopularBuilders = (props: any) => {
                                 return (
                                     <div className="flex_col_sm_4">
                                         <div className="tradie_card">
-                                            <a href="javascript:void(0)" className="more_detail circle"
+                                            <div className="f_spacebw tag_review">
+                                                <span className="form_label">{(item?.trade?.[0]?.trade_name)}</span>
+                                                <span className="rating">
+                                                    {`${item.reviewCount ? `${item.rating % 1 === 0 ? item.rating : item.rating?.toFixed(2)} | ${item.review} reviews` : `0 | 0 reviews`}`}</span>
+                                            </div>
+                                            <span className="more_detail new_top circle"
                                                 onClick={(e: any) => {
-                                                    e.preventDefault();
                                                     props.history.push(`/builder-info?builderId=${item._id}`)
-                                                }} />
+                                                }}></span>
                                             <div className="user_wrap">
                                                 <figure className="u_img">
                                                     <img
@@ -87,14 +91,15 @@ const PopularBuilders = (props: any) => {
                                                 </figure>
                                                 <div className="details">
                                                     <span className="name">{item.firstName}</span>
-                                                    <span className="rating">{`${item.reviewCount ? `${item.rating % 1 === 0 ? item.rating : item.rating?.toFixed(2)}, ${item.review} reviews` : `0, 0 reviews`}`}</span>
+                                                    <span className="job">{item?.company_name}</span>
+                                                    {/* <span className="rating">{`${item.reviewCount ? `${item.rating % 1 === 0 ? item.rating : item.rating?.toFixed(2)} | ${item.review} reviews` : `0, 0 reviews`}`}</span> */}
                                                 </div>
                                             </div>
-                                            <div className="tags_wrap">
+                                            {/* <div className="tags_wrap">
                                                 <ul>
                                                     {item.trade?.length ? item.trade.map(({ _id, selected_url, trade_name }: { _id: string, selected_url: string, trade_name: string }) => (
                                                         <li key={_id} className="main">
-                                                            {/* <img src={selected_url || menu} alt="" /> */}
+                                                            <img src={selected_url || menu} alt="" />
                                                             {trade_name || ''}
                                                         </li>)) : <i style={{ color: '#929292' }}>
                                                         {'No Trade Found'}
@@ -102,7 +107,7 @@ const PopularBuilders = (props: any) => {
                                                     {item.trade?.length > 0 && item.specializations.slice(0, 5 - item.trade?.length).map((item: any) => <li key={item._id}>{item.name}</li>)}
                                                     {item.trade?.length > 0 && (item.trade?.length + item.specializations?.length > 5) && <li>More</li>}
                                                 </ul>
-                                            </div>
+                                            </div> */}
                                         </div>
                                     </div>)
                             }) : <div className="no_record">

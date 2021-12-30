@@ -8,8 +8,8 @@ import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 //@ts-ignore
-import Skeleton from 'react-loading-skeleton';
-
+import { moengage, mixPanel } from '../../../services/analyticsTools';
+import { MoEConstants } from '../../../utils/constants';
 
 const MilestoneApprove = (props: any) => {
     const { backToScreen, data, resetStateLocal } = props;
@@ -43,6 +43,18 @@ const MilestoneApprove = (props: any) => {
 
             let response: any = await milestoneAcceptOrDecline(data_);
             if (response?.success) {
+                const mData1 = {
+                    Category: props.data?.itemDetails?.categories?.[0]?.trade_name,
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                }
+                moengage.moE_SendEvent(MoEConstants.MADE_PAYMENT, mData1);
+                mixPanel.mixP_SendEvent(MoEConstants.MADE_PAYMENT, mData1);
+                const mData2 = {
+                    ...mData1,
+                    'Milestone number': props.data?.selectedMilestoneIndex?.index + 1,
+                }
+                moengage.moE_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData2);
+                mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_CHECKED_AND_APPROVED, mData2);
                 resetStateLocal();
                 props.history.push('/need-approval-success');
             }
@@ -56,6 +68,7 @@ const MilestoneApprove = (props: any) => {
         if (IsToggleAccept) {
             return (
                 <FixedRate
+                    {...props}
                     jobName={jobName}
                     data={props.data}
                     toggleBack={toggleBack}

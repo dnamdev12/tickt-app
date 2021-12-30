@@ -20,6 +20,8 @@ import DialogContentText from '@material-ui/core/DialogContentText';
 
 import deleteQuote from '../../../../assets/images/ic-delete.png';
 import cancel from "../../../../assets/images/ic-cancel.png";
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
+import { MoEConstants } from '../../../../utils/constants';
 
 const QuoteMark = (props: any) => {
     const [Items, setItems] = useState<Array<any>>([]);
@@ -35,7 +37,8 @@ const QuoteMark = (props: any) => {
         totalAmount: 0
     });
     const [isQuoteDialog, setIsQuoteDialog] = useState<boolean>(false);
-    console.log('localQuote: ', localQuote);
+    var jobData = props.location?.state?.jobData;
+    console.log('jobData: ', jobData);
 
     useEffect(() => {
         preFetch();
@@ -123,6 +126,18 @@ const QuoteMark = (props: any) => {
         }
     }
 
+    const moECalled = () => {
+        const mData = {
+            timeStamp: moengage.getCurrentTimeStamp(),
+            category: jobData?.tradeName,
+            location: jobData?.locationName,
+            'Number of milestone': jobData?.jobMilestonesData?.length,
+            Amount: totalItemsAmt,
+        }
+        moengage.moE_SendEvent(MoEConstants.QUOTED_A_JOB, mData);
+        mixPanel.mixP_SendEvent(MoEConstants.QUOTED_A_JOB, mData);
+    }
+
     const applyJobClicked = async () => {
         const jobDetailsData: any = props.location?.state?.jobData;
         const data = {
@@ -133,6 +148,7 @@ const QuoteMark = (props: any) => {
         }
         const res = await postHomeApplyJob(data);
         if (res.success) {
+            moECalled();
             props.history.push({
                 pathname: '/quote-job-success',
                 state: {
@@ -153,6 +169,7 @@ const QuoteMark = (props: any) => {
         const res: any = await addQuote(data);
         if (res.success) {
             if (props.location?.state?.base_redirect === 'newJobs') {
+                moECalled();
                 props.history.push({
                     pathname: '/quote-job-success',
                     state: {

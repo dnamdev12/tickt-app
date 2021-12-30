@@ -23,6 +23,8 @@ import cross from "../../assets/images/close-black.png";
 import icgps from "../../assets/images/ic-gps.png";
 import residential from "../../assets/images/ic-residential.png";
 import close from "../../assets/images/icon-close-1.png";
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 
 Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
@@ -36,6 +38,7 @@ interface PropsType {
     recentSearchJobData: Array<any>,
     recentLocationData: Array<any>,
     homeSearchJobData: Array<any>,
+    tradeListData: Array<any>,
     setTradieHomeData?: (data: any) => void,
     getSearchJobList: (data: any) => void,
     postHomeSearchData: (data: any) => void,
@@ -387,6 +390,16 @@ const TradieBannerSearch = (props: PropsType) => {
             console.log('data: ', data, "suggestionSelected", suggestionSelected);
             if (props?.location?.pathname === '/search-job-results') {
                 props.postHomeSearchData(data);
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                    category: props.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
+                    ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
+                    ...(data?.max_budget && { 'Max budget': data?.max_budget }),
+                    ...(data?.from_date && { 'start date': data?.from_date }),
+                    ...(data?.to_date && { 'end date': data?.to_date }),
+                }
+                moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
             }
             // delete data.address;
             const newData = {

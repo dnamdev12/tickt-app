@@ -4,6 +4,7 @@ import ApproveMilestonePayment from '../addBankDetails/approveMilestonePayment';
 import { lastUsedCard } from '../../../../redux/jobs/actions';
 import { setShowToast } from '../../../../redux/common/actions';
 import { useSelector } from 'react-redux';
+import storageService from "../../../../utils/storageService";
 
 const FixedRate = (props: any) => {
     console.log({ props });
@@ -14,8 +15,8 @@ const FixedRate = (props: any) => {
     const [toggleBankAcc, setToggleBankAcc] = useState(false);
     const [lastCard, setLastCard] = useState<any>({});
     const [toggleDetails, setToggleDetails] = useState<any>({ toggle: false, data: null })
-    // const [toggleBankAccDetails, setToggleBankAccDetails] = useState<any>({ toggleBankAcc: false, data: null })
     const isLoading = useSelector((state: any) => state.common.isLoading)
+    const [checkPaymentType, setCheckPaymentType] = useState('1'); // 1 => credit card; 2 => bank account
 
     const backToScreen = () => {
         if (toggle) setToggle(false);
@@ -55,8 +56,16 @@ const FixedRate = (props: any) => {
         return (
             <ApproveMilestonePayment
                 isAddnewAccount={true}
+                tradieId={props?.data?.itemDetails?.tradieId}
+                builderId={storageService.getItem("userInfo")?._id || ''}
                 jobName={props?.jobName}
+                jobId={props?.data?.itemDetails?.jobId}
+                milestoneId={props?.data?.selectedMilestoneIndex?.milestoneId}
+                milestoneAmount={selectedItems?.milestoneAmount}
+                milestoneTotalAmount={selectedItems?.total}
                 backToScreen={backToScreen}
+                milestoneNumber={indexMile}
+                category={props?.data?.itemDetails?.categories?.[0]?.trade_name}
             />
         )
     }
@@ -141,46 +150,76 @@ const FixedRate = (props: any) => {
                                         setToggle(true);
                                     }}>Add card</button>
                             </div>
-                            {/* <div className="mb50">
+                            <div className="mb50">
                                 <button className="fill_grey_btn full_btn btn-effect"
                                     onClick={() => {
                                         setToggleBankAcc(true);
-                                    }}>Add bank account</button>
-                            </div> */}
+                                    }}>Bank account</button>
+                            </div>
                         </>
                     ) : (
-                        <React.Fragment>
-                            <div
-                                onClick={() => {
-                                    setToggle(true);
-                                    setToggleDetails({
-                                        toggle: true,
-                                        data: lastCard
-                                    })
-                                }}
-                                style={{ cursor: 'pointer' }}
-                                className="bank_detail view_more">
-                                <span className="xs_head">{`${lastCard?.funding} card`}</span>
-                                <span className="show_label">{`xxxx ${lastCard?.last4}`}</span>
-                                <div className="edit_delete">
+                        <div>
+                            <div className="view_more agree_check mb50">
+                                <input
+                                    onChange={() => {
+                                        checkPaymentType !== '1' ? setCheckPaymentType('1') : setCheckPaymentType('0')
+                                    }}
+                                    checked={checkPaymentType === '1' ? true : false}
+                                    className="filter-type filled-in"
+                                    type="checkbox"
+                                    id="creditCard" />
+                                <label htmlFor="creditCard">
+                                    <div
+                                        onClick={() => {
+                                            setToggle(true);
+                                            setToggleDetails({
+                                                toggle: true,
+                                                data: lastCard
+                                            })
+                                        }}
+                                        style={{ cursor: 'pointer' }}
+                                        className="bank_detail">
+                                        <span className="xs_head">{`${lastCard?.funding} card`}</span>
+                                        <span className="show_label">{`xxxx ${lastCard?.last4}`}</span>
+                                        {/* <div className="edit_delete">
                                     <span className="edit" title="Edit"></span>
-                                </div>
+                                </div> */}
+                                    </div>
+                                </label>
                             </div>
-                            {/* <div
-                                style={{ cursor: 'pointer' }}
-                                className="bank_detail view_more">
-                                <span className="xs_head">{`Add bank account`}</span>
-                            </div> */}
-                        </React.Fragment>
+                            <div className="view_more agree_check mb50">
+                                <input
+                                    onChange={() => {
+                                        checkPaymentType !== '2' ? setCheckPaymentType('2') : setCheckPaymentType('0')
+                                    }}
+                                    checked={checkPaymentType === '2' ? true : false}
+                                    className="filter-type filled-in"
+                                    type="checkbox"
+                                    id="bankAccount" />
+                                <label htmlFor="bankAccount">
+                                    <div
+                                        style={{ cursor: 'pointer' }}
+                                        className="bank_detail"
+                                        onClick={() => {
+                                            setToggleBankAcc(true);
+                                        }}>
+                                        <span className="xs_head">{`Bank account`}</span>
+                                    </div>
+                                </label>
+                            </div>
+                        </div>
                     )}
                     <button
                         onClick={() => {
-                            if (!lastCard?.last4) {
-                                setShowToast(true, 'Add card to proceed')
-                                // setShowToast(true, 'Add card or bank account to proceed')
-                                return;
+                            if (checkPaymentType === '1') {
+                                if (!lastCard?.last4) {
+                                    setShowToast(true, 'Add card to proceed')
+                                    return;
+                                }
+                                setToggle(true);
+                            } else if (checkPaymentType === '2') {
+                                setToggleBankAcc(true);
                             }
-                            setToggle(true);
                         }}
                         className="fill_btn full_btn btn-effect"
                     >

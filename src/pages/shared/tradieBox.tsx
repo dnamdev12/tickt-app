@@ -68,33 +68,39 @@ class TradieBox extends Component<PropsType, State> {
                     data-aos={hideAos ? '' : "fade-in"}
                     data-aos-delay={hideAos ? '' : "250"}
                     data-aos-duration={hideAos ? '' : "1000"}>
+
+                    <div className="f_spacebw tag_review">
+                        <span className="form_label">{(item?.tradeData?.[0]?.tradeName) || (item?.tradie_details?.trade?.[0]?.trade_name) || (item?.trade?.[0]?.trade_name)}</span>
+                        <span className="rating">
+                            {(item?.ratings) || (item?.rating)?.toFixed(1) || (item?.tradie_details?.rating)?.toFixed(1) || '0'} | {item?.reviews || (item?.review) || (item?.tradie_details?.review) || '0'} reviews </span>
+                    </div>
+
                     <span
                         onClick={() => { this.redirectPath(item) }}
-                        className="more_detail circle"></span>
+                        className="more_detail new_top circle"></span>
                     <div className="user_wrap">
                         <figure className="u_img">
                             <img
                                 src={item?.tradieImage || item?.tradie_details?.user_image || item?.user_image || dummy}
-                                onError={(e) => {
-                                    let event: any = e;
-                                    event.target.src = dummy;
-                                }}
+                                // onError={(e) => {
+                                //     let event: any = e;
+                                //     event.target.src = dummy;
+                                // }}
                                 alt="traide-img" />
                         </figure>
                         <div className="details">
                             <span className="name">{item?.tradieName || item?.tradie_details?.firstName || item?.firstName}</span>
-                            <span className="rating">
-                                {(item?.ratings) || (item?.rating)?.toFixed(1) || (item?.tradie_details?.rating)?.toFixed(1)  || '0'} , {item?.reviews || (item?.review) || (item?.tradie_details?.review)  || '0'} reviews </span>
+                            <span className="job">{item?.businessName}</span>
                         </div>
                     </div>
                     {showStatus && item?.status && <div className="form_field"><div className="job_status" >{item?.status}</div></div>}
-                    <div className="tags_wrap">
+                    {/* <div className="tags_wrap">
                         <ul>
                             {item?.tradeData?.length ?
                                 item?.tradeData?.map((item_trade: any, index: any) => (
                                     <li key={index}
                                         className="main">
-                                        {/* <img src={item_trade?.tradeSelectedUrl} alt="icon" /> */}
+                                        // <img src={item_trade?.tradeSelectedUrl} alt="icon" />
                                         {item_trade?.tradeName}
                                     </li>
                                 ))
@@ -104,7 +110,7 @@ class TradieBox extends Component<PropsType, State> {
                                 item?.tradie_details?.trade.map((item_: any) => (
                                     <li key={index}
                                         className="main">
-                                        {/* <img src={item_?.selected_url} alt="icon" /> */}
+                                        // <img src={item_?.selected_url} alt="icon" />
                                         {item_?.trade_name}
                                     </li>
                                 )) : null}
@@ -114,13 +120,13 @@ class TradieBox extends Component<PropsType, State> {
                                 item?.trade.map((item_: any) => (
                                     <li key={index}
                                         className="main">
-                                        {/* <img src={item_?.selected_url} alt="icon" /> */}
+                                        // <img src={item_?.selected_url} alt="icon" />
                                         {item_?.trade_name}
                                     </li>
                                 )) : null}
                         </ul>
-                    </div>
-                    {item?.specializationData?.length ? (
+                    </div> */}
+                    {/* {item?.specializationData?.length ? (
                         <div className="tags_wrap">
                             <ul>
                                 {isItemSpec[index] ?
@@ -136,9 +142,9 @@ class TradieBox extends Component<PropsType, State> {
                                 ) : null}
                             </ul>
                         </div>
-                    ) : null}
+                    ) : null} */}
 
-                    {item?.tradie_details?.specializations[0]?.length ?
+                    {/* {item?.tradie_details?.specializations[0]?.length ?
                         <div className="tags_wrap">
                             <ul>
                                 {item?.tradie_details?.specializations[0]?.slice(0, 4)?.map((item_: any) => (
@@ -166,7 +172,7 @@ class TradieBox extends Component<PropsType, State> {
                                 ) : null}
                             </ul>
                         </div>
-                        : null}
+                        : null} */}
                 </div>
             </div>
         )

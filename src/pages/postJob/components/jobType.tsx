@@ -237,7 +237,7 @@ const JobType = ({ categories: categoriesData, jobTypes, data, stepCompleted, ed
               jobTypes.map(({ _id, name, image }: { _id: string, name: string, image: string }) => (
                 <li
                   key={_id}
-                  className={`draw${job_type.includes(_id) ? ' active' : ''}`}
+                  className={`${job_type.includes(_id) ? ' active' : ''}`}
                   onClick={() => handleChange(_id, 'job_type')}
                 >
                   <figure className="type_icon">

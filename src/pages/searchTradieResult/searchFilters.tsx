@@ -20,7 +20,8 @@ import filterUnselected from '../../assets/images/ic-filter-unselected.png';
 import filterSelected from '../../assets/images/ic-filter-selected.png';
 import cancel from "../../assets/images/ic-cancel.png";
 import spherePlaceholder from '../../assets/images/ic_categories_placeholder.svg';
-
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 
 const SearchFilter = (props: any) => {
     // const { data, searchText, selectedAddress, selectedTrade, exta } = props.selectedItem;
@@ -58,10 +59,10 @@ const SearchFilter = (props: any) => {
     })
     console.log({ sortByFilter, sortBySorting, sortByPrice })
     useEffect(() => {
-        props.getJobTypeList();
-        props.callTradeList();
+        if (props.jobTypeListData?.length === 0) props.getJobTypeList();
+        if (props.tradeListData?.length === 0) props.callTradeList();
         setPrevLocal(props.localInfo);
-    }, [])
+    }, []);
 
     useEffect(() => {
         if (props?.localInfo?.tradeId?.length) {
@@ -103,19 +104,6 @@ const SearchFilter = (props: any) => {
         setSortingAnchorEl(null);
         setSortBySorting((prevData: any) => ({ ...prevData, sortBySorting: false }))
     };
-
-    const maxBudgetHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const inputVal = e.target.value;
-        const key = inputVal.charCodeAt(inputVal.length - 1)
-        if ((key == NaN || inputVal == "") && sortByPrice.max_budget?.length === 1) {
-            setSortByPrice((prevData: any) => ({ ...prevData, max_budget: null }))
-            return;
-        }
-        if ((key > 47 && key < 58) || key === 8) {
-            e.preventDefault();
-            setSortByPrice((prevData: any) => ({ ...prevData, max_budget: e.target.value }))
-        }
-    }
 
     const sortByButtonClicked = (num: number) => {
         setSortBySorting((prevData: any) => ({ ...prevData, sortBy: num }));
@@ -176,10 +164,6 @@ const SearchFilter = (props: any) => {
         } else if (name == 'Clear All') {
             setSortByFilter((prevData: any) => ({ ...prevData, allSpecializationClicked: false, jobTypes: [], specializationId: [], tradeId: [], }))
         }
-    }
-
-    const checkIfActive = () => {
-        return sortByFilter?.sortChanged;
     }
 
     const renderFilterButtons = () => (
@@ -293,7 +277,18 @@ const SearchFilter = (props: any) => {
             delete data?.address;
         }
 
-        props.postHomeSearchData(data)
+        props.postHomeSearchData(data);
+
+        const mData = {
+            timeStamp: moengage.getCurrentTimeStamp(),
+            category: props?.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
+            ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
+            //'length of hire': '',
+            ...(data?.from_date && { 'start date': data?.from_date }),
+            ...(data?.to_date && { 'end date': data?.to_date }),
+        };
+        moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
+        mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
         let trade_name: any = tradeInfo?.trade_name;
         let local_info_name: any = local_info?.name;
         let local_info_count: any = local_info?.count;
@@ -482,7 +477,7 @@ const SearchFilter = (props: any) => {
                     <span className="sub_title">
                         {'Sort by'}
                     </span>
-  
+
                     <div className="radio_wrap agree_check">
                         <input
                             className="filter-type filled-in"

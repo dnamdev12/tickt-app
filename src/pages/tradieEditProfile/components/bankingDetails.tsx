@@ -4,6 +4,8 @@ import Modal from '@material-ui/core/Modal';
 import DigitalIdVerification from './digitalIdVerification';
 import cancel from "../../../assets/images/ic-cancel.png";
 import verifiedIcon from '../../../assets/images/checked-2.png';
+import { moengage, mixPanel } from '../../../services/analyticsTools';
+import { MoEConstants } from '../../../utils/constants';
 
 interface BankDetails {
   userId: string;
@@ -122,6 +124,11 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
         );
       } else {
         addBankDetails(updatedBankDetails);
+        const mData = {
+          timeStamp: moengage.getCurrentTimeStamp(),
+        }
+        moengage.moE_SendEvent(MoEConstants.ADDED_PAYMENT_DETAILS, mData);
+        mixPanel.mixP_SendEvent(MoEConstants.ADDED_PAYMENT_DETAILS, mData);
       }
     }
   };

@@ -10,7 +10,8 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import mapIcon from '../../assets/images/map.png';
 import noData from '../../assets/images/no-search-data.png';
 import closeMap from '../../assets/images/close-white.png';
-
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 interface PropsType {
     history: any,
     location?: any,
@@ -72,6 +73,16 @@ const TradieSearchJobResult = (props: PropsType) => {
                 ...(queryParamsData.addres && queryParamsData.address && { address: queryParamsData.address })
             }
             props.postHomeSearchData(data);
+            const mData = {
+                timeStamp: moengage.getCurrentTimeStamp(),
+                category: props.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
+                ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
+                ...(data?.max_budget && { 'Max budget': data?.max_budget }),
+                ...(data?.from_date && { 'start date': data?.from_date }),
+                ...(data?.to_date && { 'end date': data?.to_date }),
+            }
+            moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
         }
         setApiRequestData(data);
         return () => {
@@ -261,6 +272,17 @@ const TradieSearchJobResult = (props: PropsType) => {
         }
         const newUrl = url.slice(0, url.length - 1);
         props.postHomeSearchData(newObjData);
+        const mData = {
+            timeStamp: moengage.getCurrentTimeStamp(),
+            category: props.tradeListData.find((i: any) => i._id === newObjData?.tradeId[0])?.trade_name,
+            ...(newObjData.address && { location: `${JSON.parse(newObjData.address)?.mainText} ${JSON.parse(newObjData.address)?.secondaryText}` }),
+            ...(newObjData?.max_budget && { 'Max budget': newObjData?.max_budget }),
+            ...(newObjData?.from_date && { 'start date': newObjData?.from_date }),
+            ...(newObjData?.to_date && { 'end date': newObjData?.to_date }),
+        }
+        moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
+        mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
+
         props.history.replace(newUrl);
         setJobListData([]);
         setParamsData(data);

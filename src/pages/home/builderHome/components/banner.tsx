@@ -10,32 +10,31 @@ import icgps from "../../../../assets/images/ic-gps.png";
 import BannerSearch from '../../../shared/bannerSearch';
 // import BannerSearch from '../../tradieHome/components/bannerSearch/index';
 
-
 const Banner = (props: any) => {
     const [positions, setPositions] = useState<any>([]);
 
-    const preFetch = (isTrue?:boolean) => {
+    const preFetch = (isTrue?: boolean) => {
         let position: any = props.position;
-        let positions_:any = [];
+        let positions_: any = [];
         if (position?.long && !positions?.length) {
             let long: any = parseFloat(position?.long);
             let lat: any = parseFloat(position?.lat);
             positions_ = [long, lat];
             setPositions(positions_);
         }
-        if(isTrue && positions_?.length){
+        if (isTrue && positions_?.length) {
             redirectToUrl(positions_);
         }
     }
 
-    const redirectToUrl = (position:any) => {
+    const redirectToUrl = (position: any) => {
         props.history.push({
             pathname: `search-tradie-results`,
             state: {
                 name: null,
                 tradeId: null,
                 specializations: null,
-                location: Object.keys(position).length ? { "coordinates": position} : null,
+                location: Object.keys(position).length ? { "coordinates": position } : null,
                 calender: null,
                 address: null
             }
@@ -61,10 +60,12 @@ const Banner = (props: any) => {
                 <div className="banner_container">
                     <BannerSearch {...props} />
                     <div className="text-center">
-                        <h1 className="heading text_shine">Your local network</h1>
-                        <p className="commn_para">Connect with tradespeople in your area</p>
-                        {/* <a className="fill_btn view-btn">View More</a> */}
-                        <button className="fill_btn view-btn" onClick={viewMoreClicked}>View More</button>
+                        <h1 className="heading">Need a tradie?</h1>
+                        <p className="commn_para">Find the right person for the job now.</p>
+                        <button className="fill_btn view-btn"
+                            //  onClick={viewMoreClicked}
+                            onClick={() => props.history.push('/post-new-job')}
+                        >Post a job!</button>
                     </div>
                 </div>
             </figure>

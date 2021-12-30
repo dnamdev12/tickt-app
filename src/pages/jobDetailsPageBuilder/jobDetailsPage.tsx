@@ -15,6 +15,7 @@ import {
     handleCancelReply
 } from '../../redux/jobs/actions';
 import Modal from '@material-ui/core/Modal';
+import moment from 'moment';
 
 import cancel from "../../assets/images/ic-cancel.png";
 import dummy from '../../assets/images/u_placeholder.jpg';
@@ -43,10 +44,10 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
 import { deleteOpenJob } from '../../redux/jobs/actions';
-
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
-// import { setShowToast } from '../../redux/common/actions';
 import { JobCancelReasons } from '../../utils/common';
 import docThumbnail from '../../assets/images/add-document.png'
 interface PropsType {
@@ -77,7 +78,6 @@ const options = {
     },
 };
 
-
 const defaultQuestionValues = {
     askQuestionsClicked: false,
     showAllQuestionsClicked: false,
@@ -103,17 +103,14 @@ const JobDetailsPage = (props: PropsType) => {
     const [questionsData, setQuestionsData] = useState<any>(defaultQuestionValues)
 
     const [toggler, setToggler] = useState(false);
-    const [showEditBtn, setEditBtn] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
-    const [tradieId, setTradieId] = useState<string>('');
-
     const [toggleDelete, setToggleDelete] = useState(false);
 
     const [jobAcceptModal, setJobAcceptModal] = useState(false);
     const [jobRejectModal, setJobRejectModal] = useState(false);
-
     const [pendingRequestClicked, setPendingRequestClicked] = useState(false);
 
+    const [showMoreIndex, setShowMoreIndex] = useState<Array<any>>([]);
     const [jobData, setJobData] = useState({});
     const [replyText, setReplyText] = useState('');
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
@@ -142,10 +139,6 @@ const JobDetailsPage = (props: PropsType) => {
         let location_search = (props?.history?.location?.search).substring(1) //window.atob()
         const params = new URLSearchParams(location_search);
 
-        if (params.get('edit')) {
-            setEditBtn((prev: any) => true);
-        }
-
         if (params.get('jobId') && params.get('tradeId') && params.get('specializationId')) {
             const res1 = await getHomeJobDetails({
                 jobId: params.get('jobId'),
@@ -166,11 +159,9 @@ const JobDetailsPage = (props: PropsType) => {
         }
         if (params.get('tradieId')) {
             const id: string | null = params.get('tradieId');
-            setTradieId(id ? id : '');
         }
         fetchQuestionsList();
     }
-
 
     const fetchQuestionsList = async (isTrue?: boolean) => {
         let location_search = (props?.location?.search).substring(1); //window.atob()
@@ -208,33 +199,10 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-    const applyJobClicked = async () => {
-        const data = {
-            jobId: jobDetailsData?.jobId,
-            builderId: jobDetailsData?.postedBy?.builderId,
-            tradeId: jobDetailsData?.tradeId,
-            specializationId: jobDetailsData?.specializationId
-        }
-        const res = await postHomeApplyJob(data);
-        if (res.success) {
-            props.history.push('job-applied-successfully');
-        }
-    }
-
-    const saveJobClicked = () => {
-        const data = {
-            jobId: jobDetailsData?.jobId,
-            tradeId: jobDetailsData?.tradeId,
-            specializationId: jobDetailsData?.specializationId,
-            isSave: !jobDetailsData?.isSaved
-        }
-        getHomeSaveJob(data);
-        setJobDetailsData((prevData: any) => ({ ...prevData, isSaved: !prevData.isSaved }))
-    }
-
     const modalCloseHandler = (modalType: string) => {
         setQuestionsData((prevData: any) => ({ ...prevData, [modalType]: false, deleteQuestionsClicked: false, answerShownHideList: [] }));
         setErrors({});
+        showMoreIndex && setShowMoreIndex([]);
     }
 
     const loadMoreQuestionHandler = async () => {
@@ -274,7 +242,8 @@ const JobDetailsPage = (props: PropsType) => {
             var data: any;
             if (type === 'askQuestion') {
                 data = {
-                    jobId: jobDetailsData?.jobId,
+                    tradieId: questionList[0]?.tradieId,
+                    builderId: questionList[0]?.builderId,
                     answer: questionsData.questionData,
                     questionId: questionsData.questionId,
                 }
@@ -371,10 +340,6 @@ const JobDetailsPage = (props: PropsType) => {
             setQuestionsData((prevData: any) => ({ ...prevData, showHideAnswer: item_ }));
 
         } else if (type == 'showAnswerClicked') {
-            // const newData = [...questionsData.answerShownHideList];
-            // newData.push(questionId);
-            // setQuestionsData((prevData: any) => ({ ...prevData, answerShownHideList: newData }));
-
             let item_: any = {};
             let question_id: any = questionId;
             item_ = questionsData?.showHideAnswer;
@@ -394,10 +359,8 @@ const JobDetailsPage = (props: PropsType) => {
         }
     }
 
-
     const renderBuilderAvatar = (item: any) => {
         let postedBy: any = jobDetailsData?.postedBy;
-        // console.log({ jobDetailsData })
         if (item === "image") {
             if (postedBy && Array.isArray(postedBy) && postedBy[0] && postedBy[0].builderImage) {
                 return (
@@ -458,13 +421,13 @@ const JobDetailsPage = (props: PropsType) => {
     console.log({ activeType, hideDispute })
 
     const renderByStatus = () => {
-            return (
-                <>
-                    {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
-                    {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
-                    {jobDetailsData?.status?.toUpperCase()}
-                </>
-            )
+        return (
+            <>
+                {jobDetailsData?.status === "APPROVED" && <img src={approved} alt="icon" />}
+                {jobDetailsData?.status === "NEEDS APPROVAL" && <img src={waiting} alt="icon" />}
+                {jobDetailsData?.status?.toUpperCase()}
+            </>
+        )
     }
 
     const handleCancelJob = async (type: any, job_detail: any) => {
@@ -531,14 +494,14 @@ const JobDetailsPage = (props: PropsType) => {
     let itemsMedia: any = [];
     if (jobDetailsData?.photos?.length) {
         itemsMedia = jobDetailsData.photos;
-        // itemsMedia = jobDetailsData?.photos?.filter((itemP: any) => itemP.mediaType !== 3 && itemP.mediaType !== 4);
     }
     const { sources, types } = renderFilteredItems(itemsMedia);
 
 
     const deleteJob = async (jobId: any) => {
         let response: any = await deleteOpenJob({ jobId });
-        console.log({ response });
+        moengage.moE_SendEvent(jobDetailsData?.quoteJob ? MoEConstants.CANCEL_QUOTED_JOB : MoEConstants.CANCEL_JOB, { timeStamp: moengage.getCurrentTimeStamp() });
+        mixPanel.mixP_SendEvent(jobDetailsData?.quoteJob ? MoEConstants.CANCEL_QUOTED_JOB : MoEConstants.CANCEL_JOB, { timeStamp: moengage.getCurrentTimeStamp() });
         props.history.push(`/jobs?active=${activeType}`)
     }
 
@@ -548,32 +511,53 @@ const JobDetailsPage = (props: PropsType) => {
 
     let CASE_4 = activeType === "active" && jobDetailsData?.rejectReasonNoteForCancelJobRequest?.length ? jobDetailsData?.rejectReasonNoteForCancelJobRequest : false;
 
-
-    const checkTrueCase = () => {
-        let C1 = CASE_1 ? 1 : 0;
-        let C2 = CASE_2 ? 1 : 0;
-        let C3 = CASE_3 ? 1 : 0;
-
-        let Count = C1 + C2 + C3;
-
-        if (Count == 1) {
-            return '1'
-        }
-
-        if (Count == 2) {
-            return '2'
-        }
-
-        if (Count == 3) {
-            return '3'
-        }
-    }
-
     const filterFileName = (link: any) => {
         if (link?.length) {
             let arrItems = link.split('/');
             return arrItems[arrItems?.length - 1];
         }
+    }
+
+    const showNestedAnswersData = (answers: Array<any>, questionId: string, indexP: number) => {
+        let val = answers.slice(0, (showMoreIndex?.length && indexP === showMoreIndex[0]) ? answers?.length : 3)?.map((item: any, indexC: number) => {
+            return (
+                <div className={`question_ans_card answer ${item?.sender_user_type === 1 ? 'tradie_ans' : ''}`}>
+                    <div className="user_detail">
+                        <figure className="user_img">
+                            <img src={`${item?.sender_user_type === 1 ? item?.tradie?.[0]?.user_image : item?.builder?.[0]?.user_image ? item?.builder?.[0]?.user_image : dummy}`} alt="user-img" />
+                        </figure>
+                        <div className="details">
+                            <span className="user_name">{`${item?.sender_user_type === 1 ? item?.tradie?.[0]?.firstName : item?.builder?.[0]?.firstName ? item?.builder?.[0]?.firstName : ''}`}</span>
+                            <span className="date">{moment(item?.updatedAt).format('Do MMMM YYYY') || ''}</span>
+                        </div>
+                    </div>
+                    <p>{item?.answer}</p>
+                    {(indexC === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 2 &&
+                        <>
+                            <span onClick={() => questionHandler('updateQuestion', questionId, answers?.[answers?.length - 1]?.answer, null, item?._id)}
+                                className="show_hide_ans link">Edit</span>
+                            <span onClick={() => questionHandler('deleteQuestion', questionId, '', answers?.length - 1, answers?.[answers?.length - 1]?._id)}
+                                className="show_hide_ans link">Delete</span>
+                        </>
+                    }
+
+                    {indexC === 2 && answers?.length > 3 && indexP !== showMoreIndex[0] &&
+                        <span className="show_hide_ans link"
+                            onClick={() => setShowMoreIndex([indexP])}
+                        >Show more</span>
+                    }
+
+                    {(indexC === answers?.length - 1) && answers?.length > 0 && answers?.[answers?.length - 1]?.sender_user_type === 1 &&
+                        <span
+                            onClick={() => questionHandler('askQuestion', questionId)}
+                            className="show_hide_ans link">
+                            {'Answer'}
+                        </span>
+                    }
+                </div>
+            )
+        });
+        return val;
     }
 
     return (
@@ -834,7 +818,6 @@ const JobDetailsPage = (props: PropsType) => {
                                             {(CASE_1 || CASE_2 || CASE_3 || CASE_4) && (
                                                 <span>
                                                     <img src={pendingIcon} alt="icon" />
-                                                    {/* {`${checkTrueCase()} pending request(s)`} */}
                                                     {`View all request(s)`}
                                                 </span>
                                             )}
@@ -1111,7 +1094,7 @@ const JobDetailsPage = (props: PropsType) => {
                                         )
                                     })}
                                 </ul>
-                                <button className="fill_grey_btn ques_btn" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
+                                <button className="fill_grey_btn ques_btn btn-effect" onClick={() => setQuestionsData((prevData: any) => ({ ...prevData, showAllQuestionsClicked: true }))}>
                                     <img src={question} alt="question" />
                                     {`${jobDetailsData?.questionsCount || '0'} ${jobDetailsData?.questionsCount === 1 ? 'question' : 'questions'}`}
                                 </button>
@@ -1141,21 +1124,21 @@ const JobDetailsPage = (props: PropsType) => {
                                             <div className="inner_wrap">
                                                 {questionList?.length > 0 &&
                                                     questionList?.map((item: any, index: number) => {
-                                                        const { questionData } = item;
+                                                        const { tradieData } = item;
                                                         return (
-                                                            <div key={questionData?.questionId}>
+                                                            <div key={item?._id}>
                                                                 <div className="question_ans_card">
                                                                     <div className="user_detail">
                                                                         <figure className="user_img">
-                                                                            <img src={questionData?.userImage || dummy} alt="user-img" />
+                                                                            <img src={tradieData?.[0]?.user_image || dummy} alt="user-img" />
                                                                         </figure>
                                                                         <div className="details">
-                                                                            <span className="user_name">{questionData?.userName}</span>
-                                                                            <span className="date">{questionData?.date}</span>
+                                                                            <span className="user_name">{tradieData?.[0]?.firstName || ''}</span>
+                                                                            <span className="date">{moment(item?.updatedAt).format('Do MMMM YYYY') || ''}</span>
                                                                         </div>
                                                                     </div>
-                                                                    <p>{questionData?.question}</p>
-                                                                    {Object.keys(questionsData?.showHideAnswer).length &&
+                                                                    <p>{item?.question || ''}</p>
+                                                                    {/* {Object.keys(questionsData?.showHideAnswer).length &&
                                                                         questionsData?.showHideAnswer[questionData?.questionId] ? (
                                                                         <span
                                                                             onClick={() => questionHandler('showAnswerClicked', item?.questionData?.questionId)}
@@ -1174,34 +1157,25 @@ const JobDetailsPage = (props: PropsType) => {
                                                                             className="show_hide_ans link">
                                                                             {'Answer'}
                                                                         </span>
-                                                                    )}
+                                                                    )} */}
+
+                                                                    {item?.answers?.length === 0 &&
+                                                                        <span onClick={() => questionHandler('askQuestion', item?._id)}
+                                                                            className="show_hide_ans link">
+                                                                            {'Answer'}
+                                                                        </span>
+                                                                    }
                                                                 </div>
-                                                                {Object.keys(questionsData?.showHideAnswer).length &&
-                                                                    questionsData?.showHideAnswer[questionData?.questionId] &&
-                                                                    Object.keys(item?.questionData?.answerData).length ?
-                                                                    <div className="question_ans_card answer">
-                                                                        <div className="user_detail">
-                                                                            <figure className="user_img">
-                                                                                <img
-                                                                                    src={questionData?.answerData?.userImage || dummy}
-                                                                                    alt="user-img"
-                                                                                />
-                                                                            </figure>
-                                                                            <div className="details">
-                                                                                <span className="user_name">{questionData?.answerData?.userName}</span>
-                                                                                <span className="date">{questionData?.answerData?.date}</span>
-                                                                            </div>
-                                                                        </div>
-                                                                        <p>{questionData?.answerData?.answer}</p>
-                                                                        <span
-                                                                            onClick={() => questionHandler('updateQuestion', item?.questionData?.questionId, item?.questionData?.answerData?.answer, null, item?.questionData?.answerData?.answerId)}
+                                                                {item?.answers?.length > 0 && showNestedAnswersData(item?.answers, item?._id, index)}
+                                                                {/* {item?.answers?.length && item?.answers?.[0]?.hasOwnProperty('answer') && item?.answers?.[item?.answers?.length - 1]?.sender_user_type === 2 &&
+                                                                    <>
+                                                                        <span onClick={() => questionHandler('updateQuestion', item?.questionData?.questionId, item?.questionData?.answerData?.answer, null, item?.questionData?.answerData?.answerId)}
                                                                             className="show_hide_ans link">Edit</span>
-                                                                        <span
-                                                                            onClick={() => questionHandler('deleteQuestion', item?.questionData?.questionId, '', index, item?.questionData?.answerData?.answerId)}
+                                                                        <span onClick={() => questionHandler('deleteQuestion', item?.questionData?.questionId, '', index, item?.questionData?.answerData?.answerId)}
                                                                             className="show_hide_ans link">Delete</span>
-                                                                    </div> : ''}
-                                                            </div>
-                                                        )
+                                                                    </>
+                                                                } */}
+                                                            </div>)
                                                     })}
                                                 {jobDetailsData?.questionsCount > questionList.length && <div className="text-center">
                                                     <button className="fill_grey_btn load_more" onClick={loadMoreQuestionHandler}>View more</button>
@@ -1356,7 +1330,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                 </span>
 
                                                 <span className="rating">
-                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'}, ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
+                                                    {`${jobDetailsData?.postedBy?.ratings ? jobDetailsData?.postedBy?.ratings : '0'} | ${jobDetailsData?.postedBy?.reviews ? jobDetailsData?.postedBy?.reviews : '0'} reviews`}
                                                 </span>
                                             </div>
                                         </div>

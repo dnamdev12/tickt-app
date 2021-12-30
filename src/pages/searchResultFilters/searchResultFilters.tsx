@@ -305,7 +305,7 @@ const SearchResultFilters = (props: any) => {
                                 {props.jobTypeListData?.map(({ _id, name, image }: { _id: string, name: string, image: string }) => {
                                     const active = sortByFilter.jobTypes[0] == _id;
                                     return (
-                                        <li className={`draw ${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
+                                        <li className={`${active ? 'active' : ''}`} key={_id} onClick={() => filterChangeHandler(_id, 'jobTypes')}>
                                             <figure className="type_icon">
                                                 <img src={image} alt="" />
                                             </figure>

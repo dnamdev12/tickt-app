@@ -4,10 +4,11 @@ import { setShowToast } from '../../../../redux/common/actions';
 import { tradieCancelJob } from '../../../../redux/jobs/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
+import { JobCancelReasons } from '../../../../utils/common';
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
+import { MoEConstants } from '../../../../utils/constants';
 
 import close from '../../../../assets/images/icon-close-1.png';
-
-import { JobCancelReasons } from '../../../../utils/common';
 
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
@@ -127,6 +128,11 @@ const LodgeDispute = (props: PropTypes) => {
         if (!data.note) delete data.note;
         let response: any = await tradieCancelJob(data);
         if (response?.success) {
+            const mData = {
+                timeStamp: moengage.getCurrentTimeStamp(),
+            }
+            moengage.moE_SendEvent(MoEConstants.CANCEL_JOB, mData);
+            mixPanel.mixP_SendEvent(MoEConstants.CANCEL_JOB, mData);
             history.push('/cancel-job-success');
         }
     }

@@ -4,7 +4,8 @@ import noDataFound from '../../../../assets/images/no-search-data.png';
 import jobTypePlaceholder from '../../../../assets/images/job-type-placeholder.png';
 import { renderTime } from '../../../../utils/common';
 import NumberFormat from 'react-number-format';
-
+import { moengage, mixPanel } from '../../../../services/analyticsTools';
+import { MoEConstants } from '../../../../utils/constants';
 
 import {
     getAcceptDeclineTradie,
@@ -41,6 +42,8 @@ class ViewQuote extends Component<Props, State> {
         if (response.success) {
             if (status == 1) {
                 this.props.history.push('/quote-job-accepted');
+                moengage.moE_SendEvent(MoEConstants.ACCEPT_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.ACCEPT_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
             }
 
             if (status == 2) {
@@ -53,6 +56,8 @@ class ViewQuote extends Component<Props, State> {
 
     componentDidMount() {
         this.preFetchForQuotes();
+        moengage.moE_SendEvent(MoEConstants.VIEW_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
+        mixPanel.mixP_SendEvent(MoEConstants.VIEW_QUOTE, { timeStamp: moengage.getCurrentTimeStamp() });
     }
 
     preFetchForQuotes = () => {
@@ -225,7 +230,7 @@ class ViewQuote extends Component<Props, State> {
                                         <div className="details">
                                             <span className="name">{item?.tradieName}</span>
                                             <p className="commn_para">
-                                                <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'} , {item?.reviewCount} reviews</span>
+                                                <span className="rating">{item?.rating ? (item?.rating).toFixed(1) : '0'} | {item?.reviewCount} reviews</span>
                                             </p>
                                         </div>
                                     </div>

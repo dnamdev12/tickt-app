@@ -36,7 +36,7 @@ const JobTypeList = (props: any) => {
                     {props.jobTypeListData?.map((item: any) => {
                         return (
                             <ul className="job_categories">
-                                <li title={item.name} key={item._id} className="draw" onClick={() => jobTypeListClicked(item._id, item.name)}>
+                                <li title={item.name} key={item._id} onClick={() => jobTypeListClicked(item._id, item.name)}>
                                     <figure className="type_icon">
                                         <img src={item.image} alt="" />
                                     </figure>

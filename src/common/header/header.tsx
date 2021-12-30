@@ -9,11 +9,13 @@ import storageService from '../../utils/storageService';
 import AuthModal from '../auth/authModal';
 import Urls, { urlFor } from '../../network/Urls';
 import { useDispatch } from 'react-redux';
-import { setShowNotification } from '../../redux/common/actions';
+import { setLoading, setShowNotification } from '../../redux/common/actions';
 import { messaging, deleteToken, signOut } from '../../services/firebase';
 import { onNotificationClick, formatNotificationTime } from '../../utils/common';
 import { getNotificationList } from '../../redux/homeSearch/actions';
 import { markNotifAsRead } from '../../redux/auth/actions';
+import { moengage, mixPanel } from '../../services/analyticsTools';
+import { MoEConstants } from '../../utils/constants';
 
 import moment from 'moment';
 import _ from 'lodash';
@@ -178,7 +180,10 @@ const Header = (props: any) => {
         } else {
             setShowHeader(true);
         }
-        setUserType(storageService.getItem('userType'))
+        setUserType(storageService.getItem('userType'));
+        if (props.tradeListData?.length === 0) {
+            props.callTradeList();
+        }
     }
 
     useEffect(() => {
@@ -298,12 +303,9 @@ const Header = (props: any) => {
     };
 
     const logoutHandler = async () => {
-        signOut();
-        deleteToken();
         setLogoutClicked(false);
-        dispatch({ type: 'USER_LOGGED_OUT' });
-        history.push('/login');
-        fetch(urlFor(`${Urls.logout}?deviceId=${storageService.getItem('userInfo')?.deviceId}`), {
+        setLoading(true);
+        const response = await fetch(urlFor(`${Urls.logout}?deviceId=${storageService.getItem('userInfo')?.deviceId}`), {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
@@ -311,7 +313,18 @@ const Header = (props: any) => {
                 'timezone': moment.tz.guess()
             }
         });
+        const res = await response.json();
+        setLoading(false);
+        if (res.status_code === 200) {
+            moengage.moE_SendEvent(MoEConstants.LOG_OUT, { success_status: true, current_page: pathname })
+            mixPanel.mixP_SendEvent(MoEConstants.LOG_OUT, { success_status: true, current_page: pathname })
+            signOut();
+            deleteToken();
+            moengage.moE_LogoutEvent();
+        }
+        dispatch({ type: 'USER_LOGGED_OUT' });
         storageService.clearAll();
+        history.push('/login');
     }
 
     const postClicked = () => {

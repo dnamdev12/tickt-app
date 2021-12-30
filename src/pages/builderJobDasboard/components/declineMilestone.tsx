@@ -5,13 +5,16 @@ import addMedia from "../../../assets/images/add-image.png";
 import { onFileUpload } from '../../../redux/auth/actions';
 import { setShowToast } from '../../../redux/common/actions';
 import videoThumbnail from '../../../assets/images/add-video.png';
+
+import { moengage, mixPanel } from '../../../services/analyticsTools';
+import { MoEConstants } from '../../../utils/constants';
 interface Props {
     milestoneAcceptOrDecline: any
     jobId: any
     jobName: any,
     milestoneId: any,
     toggleBack: () => void,
-    resetStateLocal:any
+    resetStateLocal: any
 }
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
@@ -25,24 +28,24 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
 
     const onSubmitDecline = async () => {
 
-        if(!filesUrl?.length){
+        if (!filesUrl?.length) {
             setShowToast(true, 'Please attach at least one media file')
             return true;
         }
-        
+
         let data = {
             "status": 2,
             "jobId": jobId,
             "milestoneId": milestoneId,
             "reason": reason,
-            "url":filesUrl.length ? filesUrl.map((file:any) => file.link) : []
+            "url": filesUrl.length ? filesUrl.map((file: any) => file.link) : []
         }
 
         let response: any = await milestoneAcceptOrDecline(data);
         if (response?.success) {
-            console.log({response})
+            moengage.moE_SendEvent(MoEConstants.MILESTONE_DECLINED, { timeStamp: moengage.getCurrentTimeStamp() });
+            mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_DECLINED, { timeStamp: moengage.getCurrentTimeStamp() });
             resetStateLocal(true);
-            
         }
     }
 
@@ -151,12 +154,12 @@ const DeclineMilestone = ({ milestoneAcceptOrDecline, toggleBack, jobId, jobName
                                     onChange={(e: any) => { setReason((e.target.value).trimLeft()) }}
                                     placeholder="Your reason..."
                                 ></textarea>
-                            <span className="char_count">{'character length: '}{reason?.length + ' / 250'}</span>
+                                <span className="char_count">{'character length: '}{reason?.length + ' / 250'}</span>
                             </div>
-                        {reason?.length > 250 && (
-                            <span className="error_msg">{'Maximum 250 characters are allowed.'}</span>
+                            {reason?.length > 250 && (
+                                <span className="error_msg">{'Maximum 250 characters are allowed.'}</span>
                             )}
-                            </div>
+                        </div>
                     </div>
                 </div>
                 <div className="upload_img_video pt-10">

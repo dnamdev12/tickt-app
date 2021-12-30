@@ -90,7 +90,7 @@ const ActiveQuoteOuter = (props: any) => {
                             </figure>
                             <div className="details">
                                 <span className="name">{builderName}</span>
-                                <span className="rating">{ratings} , {reviews} reviews</span>
+                                <span className="rating">{ratings} | {reviews} reviews</span>
                             </div>
                         </div>
                     </div>

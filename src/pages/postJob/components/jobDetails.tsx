@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import question from '../../../assets/images/ic-question.png';
 import editIconBlue from '../../../assets/images/ic-edit-blue.png';
@@ -15,6 +16,8 @@ import docThumbnail from '../../../assets/images/add-document.png'
 
 import { renderTime, renderTimeWithFormat } from '../../../utils/common';
 import { useHistory } from "react-router-dom";
+import { moengage, mixPanel } from '../../../services/analyticsTools';
+import { MoEConstants } from '../../../utils/constants';
 
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
@@ -82,7 +85,7 @@ const JobDetails = ({
     const [fsSlideListner, setFsSlideListner] = useState<any>({});
 
     const history = useHistory();
-
+    const tradeListRedux = useSelector((state: any) => state.auth.tradeListData)
 
     const findSelectedCategory = () => {
         let preSelectedItem: any = null;
@@ -217,10 +220,25 @@ const JobDetails = ({
         if (data_clone.quoteJob == '1' && data_clone.amount) delete data_clone.amount;
         if (update) {
             delete data_clone.editJob;
-            if(data_clone.to_date === "Invalid date" || data_clone.to_date === "") delete data_clone.to_date;
+            if (data_clone.to_date === "Invalid date" || data_clone.to_date === "") delete data_clone.to_date;
             response = await publishOpenJobAgain(data_clone);
         } else {
             response = await createJob(data_clone);
+            if (jobId) {
+                moengage.moE_SendEvent(MoEConstants.REPUBLISHED_JOB, { timeStamp: moengage.getCurrentTimeStamp() });
+                mixPanel.mixP_SendEvent(MoEConstants.REPUBLISHED_JOB, { timeStamp: moengage.getCurrentTimeStamp() });
+            } else {
+                const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                    category: tradeListRedux.find((i: any) => i._id === data_clone?.categories[0])?.trade_name,
+                    location: data_clone?.location_name,
+                    'Number of milestones': data_clone?.milestones?.length,
+                    'start date': data_clone?.from_date,
+                    ...(data_clone?.to_date && { 'end date': data_clone?.to_date }),
+                };
+                moengage.moE_SendEvent(MoEConstants.POSTED_A_JOB, mData);
+                mixPanel.mixP_SendEvent(MoEConstants.POSTED_A_JOB, mData);
+            }
         }
         if (response?.success) {
             clearParentStates();
@@ -434,7 +452,7 @@ const JobDetails = ({
                                 </ul>
                                 <button
                                     style={{ cursor: 'default' }}
-                                    className="fill_grey_btn ques_btn">
+                                    className="fill_grey_btn ques_btn btn-effect">
                                     <img src={question} alt="question" />
                                     {'0 questions'}
                                 </button>
@@ -449,7 +467,7 @@ const JobDetails = ({
                                             </span>
                                         </span>
                                         <ul className="job_categories">
-                                            <li className="draw">
+                                            <li>
                                                 <figure className="type_icon">
                                                     <img src={categorySelected?.job_type?.image} alt="icon" />
                                                 </figure>
@@ -507,7 +525,7 @@ const JobDetails = ({
                                             </figure>
                                             <div className="details">
                                                 <span className="name">{builderProfile?.userName}</span>
-                                                <span className="rating">{builderProfile?.rating || '0'} , {builderProfile?.reviews || '0'} reviews</span>
+                                                <span className="rating">{builderProfile?.rating || '0'} | {builderProfile?.reviews || '0'} reviews</span>
                                                 {/* <span className="prof">Project Manager</span> */}
                                             </div>
                                         </div>

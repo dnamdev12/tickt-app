@@ -247,10 +247,23 @@ export const resendMobileOtp = async (data: any) => {
   return { success: false };
 };
 
-export const getStripeClientSecretkey = async () => {
-  const response: FetchResponse = await NetworkOps.get(Urls.getStripeClientSecretKey);
+export const getStripeClientSecretkey = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.getStripeClientSecretKey, data);
   if (response.status_code === 200) {
     return { success: true, stripeClientSecretkey: response.result?.clientSecret };
+  }
+  setLoading(false);
+  setShowToast(true, 'Something went wrong');
+  return { success: false };
+};
+
+export const saveStripeTransaction = async (data: any) => {
+  setLoading(true);
+  const response: FetchResponse = await NetworkOps.postToJson(Urls.saveStripeTransaction, data);
+  setLoading(false);
+  if (response.status_code === 200) {
+    return { success: true };
   }
   setShowToast(true, 'Something went wrong');
   return { success: false };

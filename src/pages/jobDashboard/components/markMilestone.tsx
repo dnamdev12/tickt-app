@@ -22,6 +22,8 @@ import pendingIcon from '../../../assets/images/exclamation-icon.png'
 import noDataFound from '../../../assets/images/no-search-data.png';
 import verifiedIcon from '../../../assets/images/checked-2.png';
 import cancel from "../../../assets/images/ic-cancel.png";
+import { moengage, mixPanel } from '../../../services/analyticsTools';
+import { MoEConstants } from '../../../utils/constants';
 
 const digitalInfoPoints: Array<string> = [
   'Passport',
@@ -63,6 +65,7 @@ interface JobDetails {
   jobName: string;
   milestones: Array<any>;
   postedBy: BuilderDetails;
+  categories: Array<any>
 }
 
 interface BankDetails {
@@ -106,7 +109,7 @@ const MarkMilestone = (props: Proptypes) => {
     tradeId: params.get('tradeId'),
     specializationId: params.get('specializationId'),
   };
-
+  
   const defaultData = {
     urls: [],
     description: '',
@@ -545,7 +548,7 @@ const MarkMilestone = (props: Proptypes) => {
                     <div className="details">
                       <span className="name">{builderName}</span>
                       {/* <span className="prof">Project Manager</span> */}
-                      <span className="rating">{ratings} , {reviews} reviews</span>
+                      <span className="rating">{ratings} | {reviews} reviews</span>
                     </div>
                   </div>
                 </div>
@@ -828,7 +831,23 @@ const MarkMilestone = (props: Proptypes) => {
               <button
                 className={`fill_btn full_btn btn-effect ${readOnly ? data?.accountVerified ? '' : 'disable_btn' : ''}`}
                 onClick={readOnly ? () => {
+                  const milestoneData = {
+                    evidence: milestones[milestoneIndex].isPhotoevidence ? data.urls : undefined,
+                    jobId: params.jobId,
+                    milestoneId: milestones[milestoneIndex].milestoneId,
+                    description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
+                    actualHours: data.actualHours,
+                    totalAmount: `${totalAmount?.toFixed(2)}`,
+                  };
+
                   const callback = (jobCompletedCount: number) => {
+                    const mData = {
+                      timeStamp: moengage.getCurrentTimeStamp(),
+                      category: milestoneList?.categories?.[0]?.trade_name,
+                      'Milestone number': milestoneIndex + 1
+                    }
+                    moengage.moE_SendEvent(MoEConstants.MILESTONE_COMPLETED, mData);
+                    mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_COMPLETED, mData);
                     if (isLastMilestone) {
                       showJobCompletePage(jobCompletedCount);
                     } else {
@@ -838,14 +857,6 @@ const MarkMilestone = (props: Proptypes) => {
                     }
                   };
 
-                  const milestoneData = {
-                    evidence: milestones[milestoneIndex].isPhotoevidence ? data.urls : undefined,
-                    jobId: params.jobId,
-                    milestoneId: milestones[milestoneIndex].milestoneId,
-                    description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
-                    actualHours: data.actualHours,
-                    totalAmount: `${totalAmount?.toFixed(2)}`,
-                  };
 
                   markMilestoneComplete(milestoneData, callback);
                 } : () => {
@@ -880,6 +891,11 @@ const MarkMilestone = (props: Proptypes) => {
                       );
                     } else {
                       addBankDetails(updatedBankDetails);
+                      const mData = {
+                        timeStamp: moengage.getCurrentTimeStamp(),
+                      }
+                      moengage.moE_SendEvent(MoEConstants.ADDED_PAYMENT_DETAILS, mData);
+                      mixPanel.mixP_SendEvent(MoEConstants.ADDED_PAYMENT_DETAILS, mData);
                     }
                   }
                 }}

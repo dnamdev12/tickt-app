@@ -6,6 +6,9 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import dummy from '../../../assets/images/u_placeholder.jpg';
 import approved from '../../../assets/images/approved.png';
 import noDataFound from "../../../assets/images/no-search-data.png";
+import { useHistory } from 'react-router-dom';
+import { moengage, mixPanel } from '../../../services/analyticsTools';
+import { MoEConstants } from '../../../utils/constants';
 
 interface Proptypes {
   loading: boolean;
@@ -20,9 +23,8 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
   const [isLoad, setIsLoad] = useState(true);
-
+  const history = useHistory();
   let totalJobsCount: number = newJobsCount;
-  console.log(totalJobsCount, "totalJobsCount", jobList, "jobList", hasMoreItems, "hasMoreItems");
 
   useEffect(() => {
     callJobList();
@@ -64,7 +66,16 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
           {!isLoad && !loading && jobList.length ? jobList.map(({ jobId, tradeId, specializationId, tradeSelectedUrl, jobName, tradeName, fromDate, toDate, timeLeft, amount, locationName, durations, milestoneNumber, totalMilestones, status, builderName, builderImage }) => (
             <div key={jobId} className="flex_col_sm_6">
               <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                <NavLink to={`/job-details-page?jobId=${jobId}&redirect_from=jobs`} className="more_detail circle"></NavLink>
+                <span className="more_detail circle" onClick={() => {
+                  const mData = {
+                    timeStamp: moengage.getCurrentTimeStamp(),
+                    category: tradeName,
+                    'Milestone number': milestoneNumber
+                  }
+                  moengage.moE_SendEvent(MoEConstants.VIEWED_APPROVED_MILESTONE, mData);
+                  mixPanel.mixP_SendEvent(MoEConstants.VIEWED_APPROVED_MILESTONE, mData);
+                  history.push(`/job-details-page?jobId=${jobId}&redirect_from=jobs`);
+                }}></span>
                 <div className="user_wrap">
                   <figure className="u_img">
                     <img
@@ -127,8 +138,8 @@ const ApprovedMilestones = ({ loading, getApprovedMilestoneList, approvedMilesto
             </div>
           )}
         </div>
-      </InfiniteScroll>
-    </div>
+      </InfiniteScroll >
+    </div >
   );
 };
 

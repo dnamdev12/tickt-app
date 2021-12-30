@@ -8,6 +8,9 @@ const Success = (props: any) => {
     const history = useHistory();
     const [isLoad, setImageLoad] = useState(true);
 
+    const params = new URLSearchParams(history?.location?.search);
+    const payMode: any = params.get('payMode') === 'bank';
+
     useEffect(() => { setLoading(true) }, [])
 
     useEffect(() => {
@@ -28,10 +31,10 @@ const Success = (props: any) => {
                 <div className="short_info">
                     <div className="content">
                         <h1 className="title">
-                            {'Payment sent!'}
+                            {`Payment ${payMode ? 'in progress' : 'sent'}!`}
                         </h1>
                         <span className="show_label">
-                            {'We’ll notify the tradesperson that payment has been received for completing this milestone.'}
+                            {`We’ll notify the tradesperson that payment has been ${payMode ? 'initiated' : 'received'} for completing this milestone.`}
                         </span>
                         <div className="flex_row">
                             <div className="flex_col_sm_6">

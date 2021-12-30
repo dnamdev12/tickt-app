@@ -174,7 +174,7 @@ const PaymentHistory = ({
                     </figure>
                     <div className="details">
                       <span className="name">{userType === 1 ? builderName : tradieName}</span>
-                      <span className="rating">{rating ? rating.toFixed(1) : 0}, {review || 0} reviews</span>
+                      <span className="rating">{rating ? rating.toFixed(1) : 0} | {review || 0} reviews</span>
                     </div>
                   </div>
                 </div>

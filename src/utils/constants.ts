@@ -79,6 +79,44 @@ const qaStgFirebaseConfig: Types = {
     measurementId: process.env.REACT_APP_MEASUREMENT_ID
 };
 
+
+export const MoEConstants: any = {
+    LOG_OUT: 'Log Out',
+    APP_OPEN: 'App Open',
+    SIGN_UP: 'Sign Up',
+    SEARCHED_FOR_TRADIES: 'Searched for tradies',
+    VIEWED_TRADIE_PROFILE: 'Viewed tradie profile',
+    POSTED_A_JOB: 'Posted a job',
+    VIEW_QUOTE: 'View Quote',
+    ACCEPT_QUOTE: 'Accept quote',
+    CANCEL_QUOTED_JOB: 'Cancel quoted job',
+    MILESTONE_CHECKED_AND_APPROVED: 'Milestone Checked and approved',
+    MADE_PAYMENT: 'Made Payment',
+    MILESTONE_DECLINED: 'Milestone declined',
+    SAVED_TRADIE:'Saved tradie',
+    CHAT: 'Chat',
+    VIEWED_REVIEWS: 'Viewed reviews',
+    LEFT_VOUCHER: 'Left voucher',
+    PAYMENT_SUCCESS: 'Payment success',
+    PAYMENT_FAILURE: 'Payment failure',
+    EDIT_MILESTONES: 'Edit milestones',
+    CANCEL_JOB: 'Cancel job',
+    REPUBLISHED_JOB: 'Republished job',
+    ADDED_INFO_ABOUT_COMPANY: 'Added info about company',
+    ADDED_PORTFOLIO: 'Added portfolio',
+    ADDED_PAYMENT_DETAILS: 'Added payment details',
+    SEARCHED_FOR_JOBS: 'Searched for jobs',
+    VIEWED_BUILDER_PROFILE: 'Viewed builder profile',
+    QUOTED_A_JOB: 'Quoted a job',
+    ASKED_A_QUESTION: 'Asked a question',
+    APPLIED_FOR_A_JOB: 'Applied for a job',
+    MILESTONE_COMPLETED: 'Milestone completed',
+    VIEWED_APPROVED_MILESTONE: 'Viewed approved milestone',
+    ADDED_REVIEW: 'Added review',
+    ACCEPT_CANCELLATION: 'Accept cancellation',
+    REJECT_CANCELLATION: 'Reject Cancellation',
+}
+
 export default {
     errorStrings,
     OTP_TIMER,
@@ -88,5 +126,5 @@ export default {
     BasicAuthorizationToken,
     FirebasePushServiceKey,
     qaStgFirebaseConfig,
-    FcmHeaderAuthorizationKey
+    FcmHeaderAuthorizationKey,
 }
