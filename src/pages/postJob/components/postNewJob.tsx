@@ -173,7 +173,7 @@ const PostNewJob = ({
                 <span className="error_msg">{errors.jobName}</span>
               </div>
               <div className="form_field">
-                <label className="form_label">Job Details</label>
+                <label className="form_label">Job Description</label>
                 <div className="text_field">
                    <textarea
                     placeholder="Please give a general description of your job."
