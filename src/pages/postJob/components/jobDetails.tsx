@@ -422,7 +422,7 @@ const JobDetails = ({
                             <div className="flex_col_sm_8">
                                 <div className="description">
                                     <span className="sub_title">
-                                        {'Details'}
+                                        {'Job Description'}
                                         <span onClick={() => { forwardScreenStep(1) }} className="edit_icon" title="Edit">
                                             <img src={editIconBlue} alt="edit" />
                                         </span>

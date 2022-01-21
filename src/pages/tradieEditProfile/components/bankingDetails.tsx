@@ -161,6 +161,20 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
           <span className="error_msg">{errors.account_name}</span>
         </div>
         <div className="form_field">
+          <label className="form_label">BSB Number</label>
+          <div className="text_field">
+            <input
+              type="text"
+              placeholder="Enter BSB Number"
+              name="bsb_number"
+              value={data.bsb_number}
+              onChange={handleChange}
+              maxLength={7}
+            />
+          </div>
+          <span className="error_msg">{errors.bsb_number}</span>
+        </div>
+        <div className="form_field">
           <label className="form_label">Account Number</label>
           <div className="text_field">
             <input
@@ -174,20 +188,6 @@ const BankingDetails = ({ getBankDetails, addBankDetails, updateBankDetails, ban
             />
           </div>
           <span className="error_msg">{errors.account_number}</span>
-        </div>
-        <div className="form_field">
-          <label className="form_label">BSB Number</label>
-          <div className="text_field">
-            <input
-              type="text"
-              placeholder="Enter BSB Number"
-              name="bsb_number"
-              value={data.bsb_number}
-              onChange={handleChange}
-              maxLength={7}
-            />
-          </div>
-          <span className="error_msg">{errors.bsb_number}</span>
         </div>
 
         {data.account_name && data.account_number && data.bsb_number && data.stripeAccountId &&

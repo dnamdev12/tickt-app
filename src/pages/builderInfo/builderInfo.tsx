@@ -463,7 +463,7 @@ const BuilderInfo = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     {props.isSkeletonLoading ? <Skeleton count={2} /> : <div className="description">
-                                        <span className="sub_title">About company</span>
+                                        <span className="sub_title">About us</span>
                                         <p className="commn_para">{profileData?.aboutCompany || ''}</p>
                                     </div>}
                                 </div>
