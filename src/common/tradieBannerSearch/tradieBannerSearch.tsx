@@ -103,7 +103,8 @@ const TradieBannerSearch = (props: PropsType) => {
         if (paramsData) {
             var data = {
                 page: paramsData?.page ? paramsData?.page : 1,
-                searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
+                // searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
+                searchedJob: paramsData?.isAllFilterSpecs ? paramsData.searchJob :  paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob,
                 isFiltered: paramsData?.isFiltered ? paramsData?.isFiltered : false,
                 isSearchedJobSelected: paramsData?.specializationId?.length > 1 ? false : true,
                 tradeId: paramsData?.tradeId ? paramsData?.tradeId : [],

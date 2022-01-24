@@ -40,6 +40,7 @@ const TradieSearchJobResult = (props: PropsType) => {
     const [jobListData, setJobListData] = useState<Array<any>>([]);
     const [apiRequestData, setApiRequestData] = useState<any>({});
     const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
+    const [isAllFilterSpecs, setIsAllFilterSpecs] = useState<boolean>(false);
 
     useEffect(() => {
         var queryParamsData = getQueryParamsData();
@@ -75,7 +76,7 @@ const TradieSearchJobResult = (props: PropsType) => {
             props.postHomeSearchData(data);
             const mData = {
                 timeStamp: moengage.getCurrentTimeStamp(),
-                category: props.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
+                category: props.tradeListData.find((i: any) => i._id === data?.tradeId?.[0])?.trade_name,
                 ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
                 ...(data?.max_budget && { 'Max budget': data?.max_budget }),
                 ...(data?.from_date && { 'start date': data?.from_date }),
@@ -85,6 +86,8 @@ const TradieSearchJobResult = (props: PropsType) => {
             mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
         }
         setApiRequestData(data);
+
+        setIsAllFilterSpecs(queryParamsData?.isAllFilterSpecs == true ? true : false);
         return () => {
             props.resetViewNearByJobData();
             props.resetHomeSearchJobData();
@@ -118,7 +121,8 @@ const TradieSearchJobResult = (props: PropsType) => {
             min_budget: Number(params.get('min_budget')),
             max_budget: Number(params.get('max_budget')),
             pay_type: params.get('pay_type'),
-            sortBy: Number(params.get('sortBy'))
+            sortBy: Number(params.get('sortBy')),
+            isAllFilterSpecs: params.get('isAllFilterSpecs') === 'true' ? true : false,
         }
         setParamsData(queryParamsData);
         return queryParamsData;
@@ -236,12 +240,16 @@ const TradieSearchJobResult = (props: PropsType) => {
         }
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length) {
             const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
+            const tradeName = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.trade_name;
             const specializationName = specializationList?.find((i: any) => i._id === allFiltersData?.specializationId[0])?.name;
             if (specializationName) {
                 data = {
                     ...data,
-                    searchJob: specializationName
+                    // searchJob: specializationName
+                    searchJob: allFiltersData?.specializationId?.length === specializationList?.length ? tradeName : specializationName,
+                    ...(allFiltersData?.specializationId?.length === specializationList?.length ? { isAllFilterSpecs: true } : { isAllFilterSpecs: false }),
                 }
+                setIsAllFilterSpecs(allFiltersData?.specializationId?.length === specializationList?.length ? true : false);
             }
         }
 
@@ -338,7 +346,7 @@ const TradieSearchJobResult = (props: PropsType) => {
                                 <div className="flex_row">
                                     <div className="flex_col_sm_8">
                                         {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
-                                        <span className="title">{paramsData.jobResults === 'viewNearByJob' ? 'All around me' : paramsData.jobResults === 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
+                                        <span className="title">{paramsData.jobResults === 'viewNearByJob' ? 'All around me' : paramsData.jobResults === 'jobTypeList' ? paramsData.heading : isAllFilterSpecs ? paramsData.searchJob : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
                                             <span className="count">{`${jobListData.length || 0} result(s)`}</span>
                                         </span>
                                         <SearchResultFilters

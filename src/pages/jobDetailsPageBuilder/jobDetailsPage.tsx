@@ -731,6 +731,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     ) : (
                                                     <img
                                                         key={`${image}${index}`}
+                                                        className='doc_icon'
                                                         onClick={() => {
                                                             let url = `/doc-view?url=${image.link}`//
                                                             window.open(url, '_blank');
