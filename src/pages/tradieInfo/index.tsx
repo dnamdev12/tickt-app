@@ -705,7 +705,7 @@ class TradieInfo extends Component<Props, State> {
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
-                                                <span className="title line-3" title="">{tradieInfo?.tradieName || ''}</span>
+                                                <span className="title line-1" title={tradieInfo?.tradieName}>{tradieInfo?.tradieName || ''}</span>
                                                 <span className="xs_sub_title">{tradieInfo?.businessName || ''}</span>
                                                 <span className="tagg">{tradieInfo?.areasOfSpecialization?.tradeData[0]?.tradeName || ''}</span>
                                                 <ul className="review_job">

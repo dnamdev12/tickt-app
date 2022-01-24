@@ -421,7 +421,7 @@ const BuilderInfo = (props: PropsType) => {
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
-                                                <span className="title">{profileData?.builderName || ''}</span>
+                                                <span className="title line-1" title={profileData?.builderName}>{profileData?.builderName || ''}</span>
                                                 <span className="xs_sub_title">{profileData?.companyName || ''}</span>
                                                 <span className="tagg">{profileData?.position || ''}</span>
                                                 <ul className="review_job">

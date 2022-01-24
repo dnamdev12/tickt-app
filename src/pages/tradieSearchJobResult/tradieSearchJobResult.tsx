@@ -204,7 +204,7 @@ const TradieSearchJobResult = (props: PropsType) => {
             delete newParamsData.searchJob;
         }
         if (allFiltersData.tradeId?.length && !allFiltersData.specializationId?.length) {
-            headingType = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.trade_name;
+            headingType = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId?.[0])?.trade_name;
             delete newParamsData.searchJob;
         }
 
@@ -239,9 +239,9 @@ const TradieSearchJobResult = (props: PropsType) => {
             delete data.pay_type;
         }
         if (allFiltersData?.specializationId?.length && allFiltersData?.tradeId?.length) {
-            const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.specialisations;
-            const tradeName = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId[0])?.trade_name;
-            const specializationName = specializationList?.find((i: any) => i._id === allFiltersData?.specializationId[0])?.name;
+            const specializationList = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId?.[0])?.specialisations;
+            const tradeName = props.tradeListData?.find((i: any) => i._id === allFiltersData?.tradeId?.[0])?.trade_name;
+            const specializationName = specializationList?.find((i: any) => i._id === allFiltersData?.specializationId?.[0])?.name;
             if (specializationName) {
                 data = {
                     ...data,
@@ -249,7 +249,7 @@ const TradieSearchJobResult = (props: PropsType) => {
                     searchJob: allFiltersData?.specializationId?.length === specializationList?.length ? tradeName : specializationName,
                     ...(allFiltersData?.specializationId?.length === specializationList?.length ? { isAllFilterSpecs: true } : { isAllFilterSpecs: false }),
                 }
-                setIsAllFilterSpecs(allFiltersData?.specializationId?.length === specializationList?.length ? true : false);
+                setIsAllFilterSpecs((specializationList?.length > 0 && allFiltersData?.specializationId?.length === specializationList?.length) ? true : false);
             }
         }
 
@@ -282,7 +282,7 @@ const TradieSearchJobResult = (props: PropsType) => {
         props.postHomeSearchData(newObjData);
         const mData = {
             timeStamp: moengage.getCurrentTimeStamp(),
-            category: props.tradeListData.find((i: any) => i._id === newObjData?.tradeId[0])?.trade_name,
+            category: props.tradeListData?.find((i: any) => i._id === newObjData?.tradeId?.[0])?.trade_name,
             ...(newObjData.address && { location: `${JSON.parse(newObjData.address)?.mainText} ${JSON.parse(newObjData.address)?.secondaryText}` }),
             ...(newObjData?.max_budget && { 'Max budget': newObjData?.max_budget }),
             ...(newObjData?.from_date && { 'start date': newObjData?.from_date }),
@@ -346,7 +346,7 @@ const TradieSearchJobResult = (props: PropsType) => {
                                 <div className="flex_row">
                                     <div className="flex_col_sm_8">
                                         {/* <span className="title">{paramsData.jobResults == 'viewNearByJob' ? 'All around me' : paramsData.jobResults == 'jobTypeList' ? paramsData.heading : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length == 2 ? ' + 1 other' : paramsData.specializationId?.length >= 3 ? ` + ${paramsData.specializationId?.length - 1} others` : ''}` : ''} */}
-                                        <span className="title">{paramsData.jobResults === 'viewNearByJob' ? 'All around me' : paramsData.jobResults === 'jobTypeList' ? paramsData.heading : isAllFilterSpecs ? paramsData.searchJob : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
+                                        <span className="title">{(paramsData?.tradeId?.length > 0 && !paramsData?.searchJob) ? '' : paramsData.jobResults === 'viewNearByJob' ? 'All around me' : paramsData.jobResults === 'jobTypeList' ? paramsData.heading : isAllFilterSpecs ? paramsData.searchJob : paramsData.searchJob ? `${paramsData.searchJob}${paramsData.specializationId?.length >= 2 ? ` +${paramsData.specializationId?.length - 1}` : ''}` : ''}
                                             <span className="count">{`${jobListData.length || 0} result(s)`}</span>
                                         </span>
                                         <SearchResultFilters
