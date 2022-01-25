@@ -68,7 +68,8 @@ const SearchResultTradie = (props: any) => {
 
         setLocalInfo({
             name: stateData?.name,
-            count: spec_count === 1 ? 0 : spec_count,
+            // count: spec_count === 1 ? 0 : spec_count,
+            count: 0,
             tradeId: data.tradeId,
             specializationId: data.specializationId,
             location: data.location,
@@ -195,6 +196,7 @@ const SearchResultTradie = (props: any) => {
                 <BannerSearchProps
                     {...props}
                     tradeListData={props.tradeListData}
+                    showOnlyTradeName={props.history?.location?.state?.showOnlyTradeName}
                     getTitleInfo={getTitleInfo}
                     localInfo={localInfo}
                     handleChangeToggle={handleChangeToggle} />
