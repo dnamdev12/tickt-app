@@ -239,19 +239,19 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
         }).filter((item: any) => item !== undefined);
 
-        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
+        var selectedFileSize = isDropbox ? dropBoxFile?.bytes / 1024 / 1024 : newFile?.size / 1024 / 1024; // size in mb
 
-        if ((docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) && !isDropbox) {
+        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
             setShowToast(true, "The file must be in proper format or size")
             return;
         }
 
-        if (imageFormats.includes(fileType) && selectedFileSize > 10 && !isDropbox) { // image validations
+        if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
             setShowToast(true, "The image file size must be below 10 mb")
             return;
         }
 
-        if (videoFormats.includes(fileType) && !isDropbox) { // video validations
+        if (videoFormats.includes(fileType)) { // video validations
             if (selectedFileSize > 10) {
                 setShowToast(true, "The video file size must be below 20 mb")
                 return;
@@ -485,7 +485,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                                     cancel={(err: any) => onDropBoxCancel(err)}
                                                     multiselect={false}
                                                     linkType={'direct'}
-                                                    // extensions={['.mp4', '.pdf', '.doc', '.docx']}
+                                                // extensions={['.mp4', '.pdf', '.doc', '.docx']}
                                                 // sizeLimit={ }
                                                 >
                                                     <button className="dropbox-button">Upload from Dropbox</button>
@@ -506,7 +506,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                                     cancel={(err: any) => onDropBoxCancel(err)}
                                                     multiselect={false}
                                                     linkType={'direct'}
-                                                    // extensions={['.mp4', '.pdf', '.doc', '.docx']}
+                                                // extensions={['.mp4', '.pdf', '.doc', '.docx']}
                                                 // sizeLimit={ }
                                                 >
                                                     <button className="dropbox-button">Upload from Dropbox</button>
