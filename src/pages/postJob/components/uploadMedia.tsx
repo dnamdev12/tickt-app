@@ -185,10 +185,15 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         onFileChange('', true, files[0]);
     }
 
-    const onFileChange = async (e: any, isDropbox?: boolean, dropBoxUrl?: string) => {
+    const onDropBoxCancel = (err: any) => {
+        console.log(err, "err --- Dropbox");
+    }
+
+    const onFileChange = async (e: any, isDropbox?: boolean, dropBoxFile?: any) => {
         const formData = new FormData();
         var fileType;
-        const newFile = isDropbox ? dropBoxUrl : e.target.files[0];
+        const newFile = isDropbox ? dropBoxFile?.link : e.target.files[0];
+        console.log('newFile: ', newFile, "isDropbox", isDropbox, "dropBoxUrl", dropBoxFile);
         if (isDropbox) {
             let dropBoxArr: any = newFile?.split(".");
             fileType = dropBoxArr[dropBoxArr.length - 1]?.toLowerCase();
@@ -262,7 +267,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         const res: any = isDropbox ? { success: true } : await onFileUpload(formData);
         setLoading(true);
         if (res.success) {
-            let link: string = isDropbox ? dropBoxUrl : res?.imgUrl;
+            let link: string = isDropbox ? dropBoxFile?.link : res?.imgUrl;
             let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx", "msword"].includes(fileType) ? 3 : 4
             setFilesUrl((prev: Array<any>) => [...prev, {
                 "mediaType": check_type,
@@ -271,7 +276,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             setLoadItems((prev: any) => ({
                 [filesUrl.length - 1]: false
             }))
-            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: isDropbox ? dropBoxUrl : URL.createObjectURL(newFile) }));
+            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: isDropbox ? dropBoxFile?.link : URL.createObjectURL(newFile) }));
         }
     }
 
@@ -477,9 +482,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                                 <DropboxChooser
                                                     appKey={'it3ugo6ojzf1ed5'}
                                                     success={(files: any) => onDropBoxSuccess(files)}
-                                                    // cancel={() => onDropBoxCancel()}
-                                                    multiselect={true}
-                                                    extensions={['.mp4', 'jpeg', 'jpg', 'doc']} >
+                                                    cancel={(err: any) => onDropBoxCancel(err)}
+                                                    multiselect={false}
+                                                    linkType={'direct'}
+                                                    // extensions={['.mp4', '.pdf', '.doc', '.docx']}
+                                                // sizeLimit={ }
+                                                >
                                                     <button className="dropbox-button">Upload from Dropbox</button>
                                                 </DropboxChooser>
                                             </>
@@ -495,9 +503,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                                 <DropboxChooser
                                                     appKey={'it3ugo6ojzf1ed5'}
                                                     success={(files: any) => onDropBoxSuccess(files)}
-                                                    // cancel={() => onDropBoxCancel()}
-                                                    multiselect={true}
-                                                    extensions={['.mp4', 'jpeg', 'jpg']} >
+                                                    cancel={(err: any) => onDropBoxCancel(err)}
+                                                    multiselect={false}
+                                                    linkType={'direct'}
+                                                    // extensions={['.mp4', '.pdf', '.doc', '.docx']}
+                                                // sizeLimit={ }
+                                                >
                                                     <button className="dropbox-button">Upload from Dropbox</button>
                                                 </DropboxChooser>
                                             </>
