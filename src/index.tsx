@@ -10,9 +10,9 @@ import '../src/assets/scss/common.scss'
 import loader from '../src/assets/images/loader.gif';
 
 // added this check to remove console from code (In-Production)
-if (process.env.NODE_ENV !== "development") {
-  console.log = () => { };
-}
+// if (process.env.NODE_ENV !== "development") {
+//   console.log = () => { };
+// }
 
 const Loader = () => (
   <div className={`loader active`}>
