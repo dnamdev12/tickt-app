@@ -62,6 +62,7 @@ interface PropsType {
     localInfo: any,
     recentLocationData: Array<any>,
     tradeListData: Array<any>,
+    showOnlyTradeName: boolean,
 }
 
 const example_calender = { startDate: '', endDate: '', key: 'selection1' };
@@ -79,6 +80,7 @@ const BannerSearch = (props: PropsType) => {
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
 
     const [checkOnChange, setOnChange] = useState(false);
+    const [showOnlyTradeName, setShowOnlyTradeName] = useState(false);
 
     const [locationStatus, setLocationStatus] = useState(null);
     const [stateData, setStateData] = useState<any>(null)
@@ -217,6 +219,7 @@ const BannerSearch = (props: PropsType) => {
 
     useEffect(() => {
         fetchItemsSearchWithLocation();
+        setShowOnlyTradeName(props.showOnlyTradeName);
     }, []);
 
     const fetchItemsSearchWithLocation = (fetch?: any) => {
@@ -383,8 +386,9 @@ const BannerSearch = (props: PropsType) => {
                                                     trade_name: trade_name,
                                                     _id: _id,
                                                 })
-                                                setSearchText(getItem?.name);
+                                                setSearchText(trade_name);
                                             }
+                                            setShowOnlyTradeName(true);
                                             setSelectedTrade({ _id, trade_name, selected_url, specialisations });
                                         }
                                     }}
@@ -550,7 +554,8 @@ const BannerSearch = (props: PropsType) => {
             props.getTitleInfo({
                 name: searchText,
                 isTradeName: false,
-                count: data?.specializationId?.length,
+                // count: data?.specializationId?.length,
+                count: 0,
                 tradeId: data.tradeId,
                 specializationId: data.specializationId,
                 location: data.location,
@@ -651,10 +656,7 @@ const BannerSearch = (props: PropsType) => {
             custom_name = `${custom_name} +${length_spec - 1}`;
         }
     }
-    console.log({
-        searchText,
-        custom_name
-    })
+    console.log("searchText",searchText,"custom_name",custom_name,"propsbannerSearch",props,"zz",props.showOnlyTradeName)
     return (
         <div className="home_search">
             <button
@@ -674,7 +676,7 @@ const BannerSearch = (props: PropsType) => {
                                 type="text"
                                 ref={searchRef}
                                 placeholder="What jobs are you after?"
-                                value={custom_name}
+                                value={showOnlyTradeName ? searchText : custom_name}
                                 onChange={(e) => {
                                     isHandleChanges(true)
                                     setOnChange(true);

@@ -83,6 +83,7 @@ const BannerSearch = (props: PropsType) => {
     const { selectedItem, isHandleChanges, localChanges, getRecentSearchList, getRecentLocationList } = props;
 
     const [checkOnChange, setOnChange] = useState(false);
+    const [showOnlyTradeName, setShowOnlyTradeName] = useState(false);
 
     const [locationStatus, setLocationStatus] = useState(null);
     const [stateData, setStateData] = useState<any>(null)
@@ -260,8 +261,9 @@ const BannerSearch = (props: PropsType) => {
                                                     trade_name: trade_name,
                                                     _id: _id,
                                                 })
-                                                setSearchText(getItem?.name);
+                                                setSearchText(trade_name);
                                             }
+                                            setShowOnlyTradeName(true);
                                             setSelectedTrade({ _id, trade_name, selected_url, specialisations });
                                         }
                                     }}
@@ -330,6 +332,11 @@ const BannerSearch = (props: PropsType) => {
 
         if (!stateData?._id && !props_trade?._id) {
             setShowToast(true, 'Please enter the valid search text');
+            return;
+        }
+
+        if (checkOnChange) {
+            setShowToast(true, 'Please select job type from the list');
             return;
         }
 
@@ -412,6 +419,7 @@ const BannerSearch = (props: PropsType) => {
                 pathname: `search-tradie-results`,
                 state: {
                     name: searchText,
+                    showOnlyTradeName: showOnlyTradeName,
                     tradeId: data.tradeId,
                     specializations: data.specializationId,
                     location: Object.keys(selected_address).length ? { "coordinates": [selected_address?.lng, selected_address?.lat] } : null,
@@ -530,7 +538,7 @@ const BannerSearch = (props: PropsType) => {
                                 type="text"
                                 ref={searchRef}
                                 placeholder="What trade are you looking for?"
-                                value={custom_name}
+                                value={showOnlyTradeName ? searchText : custom_name}
                                 onChange={(e) => {
                                     // isHandleChanges(true)
                                     setOnChange(true);

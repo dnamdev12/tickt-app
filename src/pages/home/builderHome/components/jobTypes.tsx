@@ -58,14 +58,14 @@ const JobTypes = (props: any) => {
                                 <ul>
                                     <li onClick={() => {
                                         let specializations: any = [];
-                                        let name_item: any = null;
-                                        if (item?.specialisations?.length) {
-                                            name_item = item?.specialisations[0].name;
-                                            specializations = item?.specialisations.map((item_spec: any) => item_spec?._id);
-                                        }
-
+                                        // let name_item: any = null;
+                                        // if (item?.specialisations?.length) {
+                                        //     name_item = item?.specialisations[0].name;
+                                        //     specializations = item?.specialisations.map((item_spec: any) => item_spec?._id);
+                                        // }
                                         let data = {
-                                            name: name_item,
+                                            // name: name_item,
+                                            name: item?.trade_name,
                                             tradeId: [item?._id],
                                             specializations: specializations,
                                             location: null,

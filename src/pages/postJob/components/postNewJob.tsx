@@ -62,7 +62,7 @@ const PostNewJob = ({
       case 'jobName':
         return !value.length ? `${label[name]} is required.` : value.length > 100 ? 'Maximum 100 characters are allowed.' : '';
       case 'job_description':
-        return !value.length ? `${label[name]} is required.` : value.length > 250 ? 'Maximum 250 characters are allowed.' : '';
+        return '';
     }
   }
   // return isEmpty(name, value);
@@ -124,7 +124,7 @@ const PostNewJob = ({
   const checkErrors = () => {
     let error_1 = isInvalid('jobName', basicDetails['jobName']);
     let error_2 = isInvalid('job_description', basicDetails['job_description']);
-    if (!error_1?.length && !error_2?.length) {
+    if (!error_1?.length) {
       return false;
     }
     return true;
@@ -173,10 +173,10 @@ const PostNewJob = ({
                 <span className="error_msg">{errors.jobName}</span>
               </div>
               <div className="form_field">
-                <label className="form_label">Job Details</label>
+                <label className="form_label">Job Description</label>
                 <div className="text_field">
                    <textarea
-                    placeholder="This Job..."
+                    placeholder="Please give a general description of your job."
                     name="job_description"
                     value={job_description}
                     onChange={handleChange}
@@ -195,11 +195,11 @@ const PostNewJob = ({
                       }
                     }}
                   />
-                  {job_description.length ?
+                  {/* {job_description.length ?
                     <span className="char_count">
                       {`character length : ${job_description.length} / 250`}
                     </span>
-                    : ''}
+                    : ''} */}
                 </div>
                 <span className="error_msg">{errors.job_description}</span>
               </div>

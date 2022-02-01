@@ -103,7 +103,8 @@ const TradieBannerSearch = (props: PropsType) => {
         if (paramsData) {
             var data = {
                 page: paramsData?.page ? paramsData?.page : 1,
-                searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
+                // searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
+                searchedJob: paramsData?.isFilterOn === 'isFilterOn' ? '' : paramsData?.jobResults === 'jobTypeList' ? '' : paramsData?.isAllFilterSpecs ? paramsData.searchJob :  paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.tradeId?.length > 0 ? paramsData.searchJob : '',
                 isFiltered: paramsData?.isFiltered ? paramsData?.isFiltered : false,
                 isSearchedJobSelected: paramsData?.specializationId?.length > 1 ? false : true,
                 tradeId: paramsData?.tradeId ? paramsData?.tradeId : [],
@@ -392,7 +393,7 @@ const TradieBannerSearch = (props: PropsType) => {
                 props.postHomeSearchData(data);
                 const mData = {
                     timeStamp: moengage.getCurrentTimeStamp(),
-                    category: props.tradeListData.find((i: any) => i._id === data?.tradeId[0])?.trade_name,
+                    category: props.tradeListData?.find((i: any) => i._id === data?.tradeId?.[0])?.trade_name,
                     ...(data.address && { location: `${JSON.parse(data.address)?.mainText} ${JSON.parse(data.address)?.secondaryText}` }),
                     ...(data?.max_budget && { 'Max budget': data?.max_budget }),
                     ...(data?.from_date && { 'start date': data?.from_date }),

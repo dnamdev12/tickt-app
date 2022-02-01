@@ -36,7 +36,8 @@ const PopularBuilders = (props: any) => {
                                         />
                                     </figure>
                                     <span className="name">{item?.firstName}</span>
-                                    <span className="post">{item?.trade && item?.trade[0] && item?.trade[0]?.trade_name ? item?.trade[0]?.trade_name : ''}</span>
+                                    <span className="post">{item?.company_name}</span>
+                                    {/* <span className="post">{item?.trade && item?.trade[0] && item?.trade[0]?.trade_name ? item?.trade[0]?.trade_name : ''}</span> */}
                                 </li>)
                         }) : <span>No Data Found</span>}
                     </ul>

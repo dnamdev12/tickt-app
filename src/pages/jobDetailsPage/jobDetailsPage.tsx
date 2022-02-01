@@ -752,6 +752,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     ) : (
                                                     <img
                                                         key={`${image}${index}`}
+                                                        className='doc_icon'
                                                         onClick={() => {
                                                             let url = `/doc-view?url=${image.link}`//
                                                             window.open(url, '_blank');
@@ -1093,7 +1094,7 @@ const JobDetailsPage = (props: PropsType) => {
                                     </button>
                                 </div>
                                 <div className="modal_message">
-                                    <p>This job search doesn't match with your category. Are you sure you still want to proceed?</p>
+                                    <p>This job doesn't match your specialisations. Do you want to apply anyway?</p>
                                 </div>
                                 <div className="dialog_actions">
                                     <button className="fill_btn btn-effect" onClick={applyJobClicked}>Yes</button>
@@ -1105,7 +1106,7 @@ const JobDetailsPage = (props: PropsType) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <div className="description">
-                                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Details'}</span>
+                                    <span className="sub_title">{props.isSkeletonLoading ? <Skeleton /> : 'Job Description'}</span>
                                     <p className="commn_para">{props.isSkeletonLoading ? <Skeleton /> : jobDetailsData?.details ? jobDetailsData?.details : ''}</p>
                                 </div>
                             </div>

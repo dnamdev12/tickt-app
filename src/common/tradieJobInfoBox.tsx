@@ -36,7 +36,7 @@ const TradieJobInfoBox = (props: any) => {
             <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
                 <a href="javascript:void(0)" className="more_detail circle" onClick={() => jobClickHandler(item)} />
                 <div className="user_wrap">
-                    <figure className="u_img">
+                    <figure className={`u_img ${props.userType === 2 ? 'icon' : ''}`}>
                         <img
                             src={props.userType === 2 ? item.tradeSelectedUrl : (item.builderImage || dummy)}
                             alt=""

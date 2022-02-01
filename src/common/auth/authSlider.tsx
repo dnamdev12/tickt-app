@@ -86,7 +86,7 @@ const AuthSlider = (props: Props) => {
                             </div>
                             <div className="bottom_txt">
                                 <span className="reg">{data.title}
-                                    <a className="link" onClick={onLoginSignupClicked}>{data.button}</a>
+                                    <a className="link" onClick={onLoginSignupClicked}>{` ${data.button}`}</a>
                                 </span>
                             </div>
                         </figure>

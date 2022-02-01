@@ -731,6 +731,7 @@ const JobDetailsPage = (props: PropsType) => {
                                                     ) : (
                                                     <img
                                                         key={`${image}${index}`}
+                                                        className='doc_icon'
                                                         onClick={() => {
                                                             let url = `/doc-view?url=${image.link}`//
                                                             window.open(url, '_blank');
@@ -1054,7 +1055,7 @@ const JobDetailsPage = (props: PropsType) => {
                         <div className="flex_row">
                             <div className="flex_col_sm_8">
                                 <div className="description">
-                                    <span className="sub_title">Details</span>
+                                    <span className="sub_title">Job Description</span>
                                     <p className="commn_para">{jobDetailsData.details}</p>
                                 </div>
                             </div>

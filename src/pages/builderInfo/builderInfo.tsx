@@ -421,7 +421,7 @@ const BuilderInfo = (props: PropsType) => {
                                     <div className="detail_card">
                                         {props.isSkeletonLoading ? <Skeleton count={5} height={25} /> :
                                             <>
-                                                <span className="title">{profileData?.builderName || ''}</span>
+                                                <span className="title line-1" title={profileData?.builderName}>{profileData?.builderName || ''}</span>
                                                 <span className="xs_sub_title">{profileData?.companyName || ''}</span>
                                                 <span className="tagg">{profileData?.position || ''}</span>
                                                 <ul className="review_job">
@@ -463,7 +463,7 @@ const BuilderInfo = (props: PropsType) => {
                             <div className="flex_row">
                                 <div className="flex_col_sm_8">
                                     {props.isSkeletonLoading ? <Skeleton count={2} /> : <div className="description">
-                                        <span className="sub_title">About company</span>
+                                        <span className="sub_title">About us</span>
                                         <p className="commn_para">{profileData?.aboutCompany || ''}</p>
                                     </div>}
                                 </div>

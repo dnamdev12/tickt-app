@@ -202,8 +202,8 @@ const SearchFilter = (props: any) => {
         let sort_: any = sort;
 
         console.log({ sort_, local_info }, '-------------------------->><<-------------- item_coord');
-        const tradeInfo = props.tradeListData.find((item: any) => item._id === sortByFilter.tradeId[0]);
-        const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
+        const tradeInfo = props.tradeListData?.find((item: any) => item._id === sortByFilter.tradeId?.[0]);
+        const specializationList = props.tradeListData?.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId?.[0])?.specialisations;
         const { specializationId, tradeId } = sortByFilter;
         console.log({ specializationId, sortByFilter, props })
         // if (specializationId?.length) {
@@ -308,7 +308,7 @@ const SearchFilter = (props: any) => {
         })
     }
 
-    const specializationList = props.tradeListData.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId[0])?.specialisations;
+    const specializationList = props.tradeListData?.find(({ _id }: { _id: string }) => _id === sortByFilter.tradeId?.[0])?.specialisations;
     let checkIfAllSelected = false;
     if (specializationList) {
         checkIfAllSelected = sortByFilter.specializationId?.length === specializationList?.length;
@@ -380,7 +380,7 @@ const SearchFilter = (props: any) => {
                                                 selected_url: string,
                                                 specialisations: []
                                             }) => {
-                                            const active = sortByFilter.tradeId[0] === _id;
+                                            const active = sortByFilter.tradeId?.[0] === _id;
                                             return (
                                                 <li
                                                     key={_id}

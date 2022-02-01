@@ -109,7 +109,7 @@ const MarkMilestone = (props: Proptypes) => {
     tradeId: params.get('tradeId'),
     specializationId: params.get('specializationId'),
   };
-  
+
   const defaultData = {
     urls: [],
     description: '',
@@ -751,6 +751,21 @@ const MarkMilestone = (props: Proptypes) => {
                 <span className="error_msg">{errors.account_name}</span>
               </div>
               <div className="form_field">
+                <label className="form_label">BSB Number</label>
+                <div className="text_field">
+                  <input
+                    type="text"
+                    placeholder="Enter BSB Number"
+                    name="bsb_number"
+                    value={data.bsb_number}
+                    onChange={handleChange}
+                    maxLength={7}
+                    readOnly={readOnly}
+                  />
+                </div>
+                <span className="error_msg">{errors.bsb_number}</span>
+              </div>
+              <div className="form_field">
                 <label className="form_label">Account Number</label>
                 <div className="text_field">
                   <input
@@ -765,21 +780,6 @@ const MarkMilestone = (props: Proptypes) => {
                   />
                 </div>
                 <span className="error_msg">{errors.account_number}</span>
-              </div>
-              <div className="form_field">
-                <label className="form_label">BSB Number</label>
-                <div className="text_field">
-                  <input
-                    type="text"
-                    placeholder="Enter BSB Number"
-                    name="bsb_number"
-                    value={data.bsb_number}
-                    onChange={handleChange}
-                    maxLength={7}
-                    readOnly={readOnly}
-                  />
-                </div>
-                <span className="error_msg">{errors.bsb_number}</span>
               </div>
               {data.account_name && data.account_number && data.bsb_number && data.stripeAccountId &&
                 <>
