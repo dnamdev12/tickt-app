@@ -181,7 +181,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     }
 
     const onDropBoxSuccess = (files: any) => {
-        console.log('onDropBoxSuccess: ', files);
         onFileChange('', true, files[0]);
     }
 
@@ -193,14 +192,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         const formData = new FormData();
         var fileType;
         const newFile = isDropbox ? dropBoxFile?.link : e.target.files[0];
-        console.log('newFile: ', newFile, "isDropbox", isDropbox, "dropBoxUrl", dropBoxFile);
         if (isDropbox) {
             let dropBoxArr: any = newFile?.split(".");
             fileType = dropBoxArr[dropBoxArr.length - 1]?.toLowerCase();
         } else {
             fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         }
-        console.log('fileType: ', fileType, "newFile", newFile, "hasDescription", hasDescription);
 
         if (hasDescription && !imageFormats.includes(fileType)) {
             setShowToast(true, "The file must be in proper format");
