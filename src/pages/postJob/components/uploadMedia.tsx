@@ -441,12 +441,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     <button
                                         onClick={() => { hasDescription ? handleStepBack() : handleStepForward(6) }}
                                         className="back"></button>
-                                    <span className={jobName ? "xs_sub_title" : "title"}>{jobName || 'Video upload or add photos'}</span>
+                                    <span className={jobName ? "xs_sub_title" : "title"}>{jobName || 'Photos and documents'}</span>
                                 </div>
                                 {title && <span className="sub_title">{title}</span>}
                                 <p className="commn_para">
-                                    {para || "Record maximum 2 short videos or 6 doc files/images to demonstrate your job and any unique requirements."}
-                                    {/* {para || 'Record a short video or add photos to demonstrate your job and any unique requirements.'} */}
+                                    {/* {para || "Record maximum 2 short videos or 6 doc files/images to demonstrate your job and any unique requirements."} */}
+                                    {para || 'Record a short video (up to 30 seconds) or add up to 6 photos and files to demonstrate your job and any unique requirements.'}
                                 </p>
                             </div>
                             {!jobName && !filesUrl?.length && !hasDescription ? (
