@@ -480,13 +480,11 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                                     id="upload_img_video"
                                                 />
                                                 <DropboxChooser
-                                                    appKey={'it3ugo6ojzf1ed5'}
+                                                    appKey={process.env.REACT_APP_DROPBOX_APP_KEY}
                                                     success={(files: any) => onDropBoxSuccess(files)}
                                                     cancel={(err: any) => onDropBoxCancel(err)}
                                                     multiselect={false}
                                                     linkType={'direct'}
-                                                // extensions={['.mp4', '.pdf', '.doc', '.docx']}
-                                                // sizeLimit={ }
                                                 >
                                                     <button className="dropbox-button">Upload from Dropbox</button>
                                                 </DropboxChooser>
@@ -501,19 +499,16 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                                     id="upload_img_video"
                                                 />
                                                 <DropboxChooser
-                                                    appKey={'it3ugo6ojzf1ed5'}
+                                                    appKey={process.env.REACT_APP_DROPBOX_APP_KEY}
                                                     success={(files: any) => onDropBoxSuccess(files)}
                                                     cancel={(err: any) => onDropBoxCancel(err)}
                                                     multiselect={false}
                                                     linkType={'direct'}
-                                                // extensions={['.mp4', '.pdf', '.doc', '.docx']}
-                                                // sizeLimit={ }
                                                 >
                                                     <button className="dropbox-button">Upload from Dropbox</button>
                                                 </DropboxChooser>
                                             </>
                                         )}
-
                                     </React.Fragment>
                                 ) : null}
                             </div>
