@@ -14,6 +14,8 @@ import FsLightbox from 'fslightbox-react';
 //@ts-ignore
 import Skeleton from 'react-loading-skeleton';
 import { thumbnailExtract } from '../../../common/thumbnail';
+//@ts-ignore
+import DropboxChooser from 'react-dropbox-chooser';
 
 interface Proptypes {
     jobName?: string;
@@ -125,8 +127,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
 
     const checkIfVideoExist = () => {
-        let videoItems:any = [];
-        let ImageItems:any = [];
+        let videoItems: any = [];
+        let ImageItems: any = [];
         let concatFormat = [...imageFormats, ...docformats];
         filesUrl.forEach((element: any) => {
             let split_items = element.link.split('.');
@@ -178,10 +180,22 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
     }
 
-    const onFileChange = async (e: any) => {
+    const onDropBoxSuccess = (files: any) => {
+        console.log('onDropBoxSuccess: ', files);
+        onFileChange('', true, files[0]);
+    }
+
+    const onFileChange = async (e: any, isDropbox?: boolean, dropBoxUrl?: string) => {
         const formData = new FormData();
-        const newFile = e.target.files[0];
-        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
+        var fileType;
+        const newFile = isDropbox ? dropBoxUrl : e.target.files[0];
+        if (isDropbox) {
+            let dropBoxArr: any = newFile?.split(".");
+            fileType = dropBoxArr[dropBoxArr.length - 1]?.toLowerCase();
+        } else {
+            fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
+        }
+        console.log('fileType: ', fileType, "newFile", newFile, "hasDescription", hasDescription);
 
         if (hasDescription && !imageFormats.includes(fileType)) {
             setShowToast(true, "The file must be in proper format");
@@ -202,7 +216,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         }
 
         if (checkCounts?.imageCount >= 6) {
-            let concatFormats = [...imageFormats,...docformats];
+            let concatFormats = [...imageFormats, ...docformats];
             if (concatFormats.includes(fileType)) {
                 return
             }
@@ -222,17 +236,17 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
 
         var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
 
-        if (docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
+        if ((docTypes.indexOf(fileType) < 0 || (selectedFileSize > 10)) && !isDropbox) {
             setShowToast(true, "The file must be in proper format or size")
             return;
         }
 
-        if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
+        if (imageFormats.includes(fileType) && selectedFileSize > 10 && !isDropbox) { // image validations
             setShowToast(true, "The image file size must be below 10 mb")
             return;
         }
 
-        if (videoFormats.includes(fileType)) { // video validations
+        if (videoFormats.includes(fileType) && !isDropbox) { // video validations
             if (selectedFileSize > 10) {
                 setShowToast(true, "The video file size must be below 20 mb")
                 return;
@@ -243,12 +257,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             }
         }
 
-        formData.append('file', newFile);
+        !isDropbox && formData.append('file', newFile);
         setLoadItems({});
-        const res = await onFileUpload(formData);
+        const res: any = isDropbox ? { success: true } : await onFileUpload(formData);
         setLoading(true);
         if (res.success) {
-            let link: string = res.imgUrl;
+            let link: string = isDropbox ? dropBoxUrl : res?.imgUrl;
             let check_type: any = imageFormats.includes(fileType) ? 1 : videoFormats.includes(fileType) ? 2 : ["doc", "docx", "msword"].includes(fileType) ? 3 : 4
             setFilesUrl((prev: Array<any>) => [...prev, {
                 "mediaType": check_type,
@@ -257,7 +271,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             setLoadItems((prev: any) => ({
                 [filesUrl.length - 1]: false
             }))
-            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
+            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: isDropbox ? dropBoxUrl : URL.createObjectURL(newFile) }));
         }
     }
 
@@ -315,8 +329,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     [index]: true
                                 }))
                             }}
-                            // onClick={() => { setItemToggle(index) }}
-                             />
+                        // onClick={() => { setItemToggle(index) }}
+                        />
                     )
                 } else {
                     image_render = (
@@ -330,8 +344,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     [index]: true
                                 }))
                             }}
-                            // onClick={() => { setItemToggle(index) }}
-                             />
+                        // onClick={() => { setItemToggle(index) }}
+                        />
                     )
                 }
             }
@@ -374,30 +388,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             )
             // }
         }
-    }
-
-    const renderFilteredItems = () => {
-        let sources: any = [];
-        let types: any = [];
-
-        if (filesUrl?.length) {
-            filesUrl.forEach((item: any) => {
-                if (item?.mediaType === 2) {
-                    sources.push(item.link);
-                    types.push('video');
-                }
-                if (item?.mediaType === 1) {
-                    sources.push(item.link);
-                    types.push('image');
-                }
-                if (item?.mediaType === 3) {
-                    sources.push(docThumbnail);
-                    types.push('image');
-                } 
-            })
-        }
-
-        return { sources, types };
     }
 
     // const { sources, types } = renderFilteredItems();
@@ -476,21 +466,41 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                             <img src={addMedia} alt="" />
                                         </label>
                                         {!hasDescription ? (
-                                            <input
-                                                onChange={onFileChange}
-                                                type="file"
-                                                accept={checkIfVideoExist()}
-                                                style={{ display: "none" }}
-                                                id="upload_img_video"
-                                            />
+                                            <>
+                                                <input
+                                                    onChange={onFileChange}
+                                                    type="file"
+                                                    accept={checkIfVideoExist()}
+                                                    style={{ display: "none" }}
+                                                    id="upload_img_video"
+                                                />
+                                                <DropboxChooser
+                                                    appKey={'it3ugo6ojzf1ed5'}
+                                                    success={(files: any) => onDropBoxSuccess(files)}
+                                                    // cancel={() => onDropBoxCancel()}
+                                                    multiselect={true}
+                                                    extensions={['.mp4', 'jpeg', 'jpg', 'doc']} >
+                                                    <button className="dropbox-button">Upload from Dropbox</button>
+                                                </DropboxChooser>
+                                            </>
                                         ) : (
-                                            <input
-                                                onChange={onFileChange}
-                                                type="file"
-                                                accept={hasDescription ? "image/png,image/jpg,image/jpeg" : "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"}
-                                                style={{ display: "none" }}
-                                                id="upload_img_video"
-                                            />
+                                            <>
+                                                <input
+                                                    onChange={onFileChange}
+                                                    type="file"
+                                                    accept={hasDescription ? "image/png,image/jpg,image/jpeg" : "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"}
+                                                    style={{ display: "none" }}
+                                                    id="upload_img_video"
+                                                />
+                                                <DropboxChooser
+                                                    appKey={'it3ugo6ojzf1ed5'}
+                                                    success={(files: any) => onDropBoxSuccess(files)}
+                                                    // cancel={() => onDropBoxCancel()}
+                                                    multiselect={true}
+                                                    extensions={['.mp4', 'jpeg', 'jpg']} >
+                                                    <button className="dropbox-button">Upload from Dropbox</button>
+                                                </DropboxChooser>
+                                            </>
                                         )}
 
                                     </React.Fragment>
