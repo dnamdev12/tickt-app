@@ -28,7 +28,6 @@ const BuilderPostedJobs = React.lazy(() => import('../pages/builderInfo/builderP
 const JobDetailsPageBuilder = React.lazy(() => import('../pages/jobDetailsPageBuilder/index'));
 const TradieEditProfile = React.lazy(() => import('../pages/tradieEditProfile'));
 const EmailUpdatedSuccess = React.lazy(() => import('../pages/tradieEditProfile/components/personalInformation/changeEmailModal/components/successPage'));
-const Dropbox = React.lazy(() => import('../pages/dropbox'));
 const RateSuccessTradie = React.lazy(() => import('../pages/builderJobDasboard/components/rateSuccess'));
 const TradieVouchers = React.lazy(() => import('../pages/tradieInfo/vouchers'));
 
@@ -363,11 +362,6 @@ const routes = [
         name: 'linkedin-oauth',
         path: '/linkedin',
         component: LinkedInPopUp
-    },
-    {
-        name: 'linkedin-oauth',
-        path: '/dropbox',
-        component: Dropbox
     },
     {
         name: 'builder-jobs',

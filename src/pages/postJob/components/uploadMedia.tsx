@@ -16,6 +16,7 @@ import Skeleton from 'react-loading-skeleton';
 import { thumbnailExtract } from '../../../common/thumbnail';
 //@ts-ignore
 import DropboxChooser from 'react-dropbox-chooser';
+import Menu from '@material-ui/core/Menu';
 
 interface Proptypes {
     jobName?: string;
@@ -45,6 +46,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [isItemsLoad, setLoadItems] = useState({});
     const [countMedia, setCountMedia] = useState({ photos: 0, video: 0 });
     const [renderAsyncLoad, setAsyncLoad] = useState<any>(null);
+    const [fileChoserModal, setFileChoserModal] = useState<any>(false);
 
     useEffect(() => {
         if (stepCompleted) {
@@ -462,52 +464,66 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item?.link, index, item?.base64)))
                                     : null}
 
-                                {filesUrl?.length < 8 ? (
-                                    <React.Fragment>
-                                        <label className="upload_media" htmlFor="upload_img_video">
-                                            <img src={addMedia} alt="" />
-                                        </label>
-                                        {!hasDescription ? (
-                                            <>
-                                                <input
-                                                    onChange={onFileChange}
-                                                    type="file"
-                                                    accept={checkIfVideoExist()}
-                                                    style={{ display: "none" }}
-                                                    id="upload_img_video"
-                                                />
-                                                <DropboxChooser
-                                                    appKey={process.env.REACT_APP_DROPBOX_APP_KEY}
-                                                    success={(files: any) => onDropBoxSuccess(files)}
-                                                    cancel={(err: any) => onDropBoxCancel(err)}
-                                                    multiselect={false}
-                                                    linkType={'direct'}
-                                                >
-                                                    <button className="dropbox-button">Upload from Dropbox</button>
-                                                </DropboxChooser>
-                                            </>
-                                        ) : (
-                                            <>
-                                                <input
-                                                    onChange={onFileChange}
-                                                    type="file"
-                                                    accept={hasDescription ? "image/png,image/jpg,image/jpeg" : "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"}
-                                                    style={{ display: "none" }}
-                                                    id="upload_img_video"
-                                                />
-                                                <DropboxChooser
-                                                    appKey={process.env.REACT_APP_DROPBOX_APP_KEY}
-                                                    success={(files: any) => onDropBoxSuccess(files)}
-                                                    cancel={(err: any) => onDropBoxCancel(err)}
-                                                    multiselect={false}
-                                                    linkType={'direct'}
-                                                >
-                                                    <button className="dropbox-button">Upload from Dropbox</button>
-                                                </DropboxChooser>
-                                            </>
-                                        )}
-                                    </React.Fragment>
-                                ) : null}
+                                <button onClick={() => setFileChoserModal(true)}>
+                                    <img src={addMedia} alt="" />
+                                </button>
+
+                                <Menu
+                                    className="fsp_modal range"
+                                    anchorEl={fileChoserModal}
+                                    keepMounted
+                                    open={Boolean(fileChoserModal)}
+                                    onClose={() => setFileChoserModal(false)}
+                                >
+                                    {filesUrl?.length < 8 ? (
+                                        <React.Fragment>
+                                            <label className="upload_media" htmlFor="upload_img_video">
+                                                {/* <img src={addMedia} alt="" /> */}
+                                                Upload from files
+                                            </label>
+                                            {!hasDescription ? (
+                                                <>
+                                                    <input
+                                                        onChange={onFileChange}
+                                                        type="file"
+                                                        accept={checkIfVideoExist()}
+                                                        style={{ display: "none" }}
+                                                        id="upload_img_video"
+                                                    />
+                                                    <DropboxChooser
+                                                        appKey={process.env.REACT_APP_DROPBOX_APP_KEY}
+                                                        success={(files: any) => onDropBoxSuccess(files)}
+                                                        cancel={(err: any) => onDropBoxCancel(err)}
+                                                        multiselect={false}
+                                                        linkType={'direct'}
+                                                    >
+                                                        <button className="dropbox-button">Upload from Dropbox</button>
+                                                    </DropboxChooser>
+                                                </>
+                                            ) : (
+                                                <>
+                                                    <input
+                                                        onChange={onFileChange}
+                                                        type="file"
+                                                        accept={hasDescription ? "image/png,image/jpg,image/jpeg" : "image/png,image/jpg,image/jpeg,.pdf, .doc, video/mp4, video/wmv, video/avi"}
+                                                        style={{ display: "none" }}
+                                                        id="upload_img_video"
+                                                    />
+                                                    <DropboxChooser
+                                                        appKey={process.env.REACT_APP_DROPBOX_APP_KEY}
+                                                        success={(files: any) => onDropBoxSuccess(files)}
+                                                        cancel={(err: any) => onDropBoxCancel(err)}
+                                                        multiselect={false}
+                                                        linkType={'direct'}
+                                                    >
+                                                        <button className="dropbox-button">Upload from Dropbox</button>
+                                                    </DropboxChooser>
+                                                </>
+                                            )}
+                                        </React.Fragment>
+                                    ) : null}
+                                </Menu>
+
                             </div>
                         </div>
                     </div>
