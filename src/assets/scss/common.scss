@@ -2308,6 +2308,21 @@ body {
         margin: 65px 0 0 90px;
       }
     }
+    &.dropbox{
+      .MuiMenu-paper{
+        // margin: 300px 0 0 140px;
+        width: 260px;
+        label, .dropbox-button{
+          font-size: 16px;
+          color: var(--blue);
+          cursor: pointer;
+        }
+        .dropbox-button{
+          background-color: transparent;
+          margin-top: 16px;
+        }
+      }
+    }
 	}
 }
 

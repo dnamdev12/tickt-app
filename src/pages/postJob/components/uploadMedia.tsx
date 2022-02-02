@@ -464,12 +464,12 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item?.link, index, item?.base64)))
                                     : null}
 
-                                <button onClick={() => setFileChoserModal(true)}>
+                                <button onClick={() => setFileChoserModal(true)} className='media_btn'>
                                     <img src={addMedia} alt="" />
                                 </button>
 
                                 <Menu
-                                    className="fsp_modal range"
+                                    className="fsp_modal range dropbox"
                                     anchorEl={fileChoserModal}
                                     keepMounted
                                     open={Boolean(fileChoserModal)}
