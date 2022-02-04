@@ -41,8 +41,8 @@ messaging.onBackgroundMessage((payload) => {
 const onNotificationClick = (notification) => {
     // const url = process.env.REACT_APP_BASE_URL;
     // const url = 'http://localhost:3000/';
-    // const url = 'https://ticktreactqa.appskeeper.in/';
-    const url = 'https://ticktreactdev.appskeeper.in/';
+    const url = 'https://ticktreactqa.appskeeper.in/';
+    // const url = 'https://ticktreactdev.appskeeper.in/';
     if (notification?.notificationType === '25') {
         return `${url}chat`;
     } else if (notification?.notificationType === '13') {
