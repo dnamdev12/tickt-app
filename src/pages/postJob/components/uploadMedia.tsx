@@ -17,6 +17,7 @@ import { thumbnailExtract } from '../../../common/thumbnail';
 //@ts-ignore
 import DropboxChooser from 'react-dropbox-chooser';
 import Menu from '@material-ui/core/Menu';
+import Fade from '@material-ui/core/Fade';
 
 interface Proptypes {
     jobName?: string;
@@ -46,7 +47,17 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [isItemsLoad, setLoadItems] = useState({});
     const [countMedia, setCountMedia] = useState({ photos: 0, video: 0 });
     const [renderAsyncLoad, setAsyncLoad] = useState<any>(null);
-    const [fileChoserModal, setFileChoserModal] = useState<any>(false);
+
+    const [anchorEl, setAnchorEl] = React.useState(null);
+    const isFileChoser = Boolean(anchorEl);
+
+    const fileChoserClicked = (event: any) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const fileChoserClosed = () => {
+        setAnchorEl(null);
+    };
 
     useEffect(() => {
         if (stepCompleted) {
@@ -464,16 +475,35 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item?.link, index, item?.base64)))
                                     : null}
 
-                                <button onClick={() => setFileChoserModal(true)} className='media_btn'>
+                                <button
+                                    className='media_btn'
+                                    id="fade-button"
+                                    aria-controls={isFileChoser ? 'fade-menu' : undefined}
+                                    aria-haspopup="true"
+                                    aria-expanded={isFileChoser ? 'true' : undefined}
+                                    onClick={fileChoserClicked}
+                                >
                                     <img src={addMedia} alt="" />
                                 </button>
 
                                 <Menu
                                     className="fsp_modal range dropbox"
-                                    anchorEl={fileChoserModal}
-                                    keepMounted
-                                    open={Boolean(fileChoserModal)}
-                                    onClose={() => setFileChoserModal(false)}
+                                    id="fade-menu"
+                                    MenuListProps={{
+                                        'aria-labelledby': 'fade-button',
+                                    }}
+                                    anchorEl={anchorEl}
+                                    open={isFileChoser}
+                                    onClose={fileChoserClosed}
+                                    TransitionComponent={Fade}
+                                    anchorOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'center',
+                                    }}
+                                    transformOrigin={{
+                                        vertical: 'top',
+                                        horizontal: 'left',
+                                    }}
                                 >
                                     {filesUrl?.length < 8 ? (
                                         <React.Fragment>
