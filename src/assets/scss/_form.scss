@@ -698,6 +698,9 @@ a.fill_grey_btn {
   align-items: center;
   flex-wrap: wrap;
   margin-bottom: 40px;
+  .media_btn{
+    background-color: transparent;
+  }
   .upload_media{
     cursor: pointer;
     width: 100px;
