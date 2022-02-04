@@ -115,7 +115,7 @@ const AuthParent = (props: any) => {
     return (
         <div className="onboard_wrapper">
             <div className="f_row">
-                <div className="left_col">
+                {props.steps === 0 && <div className="left_col">
                     <AuthSlider
                         type={props.sliderType}
                         history={props.history}
@@ -123,7 +123,7 @@ const AuthParent = (props: any) => {
                         setShowModal={props.setShowModal}
                         modalUpdateSteps={props.modalUpdateSteps}
                         setSocialData={props.setSocialData} />
-                </div>
+                </div>}
                 <div className="right_col">
                     <figure className="mob_logo hide">
                         <img src={colorLogo} alt="Tickt-logo" />
