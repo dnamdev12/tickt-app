@@ -212,6 +212,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
         }
 
+        fileChoserClosed();
+
         if (hasDescription && !imageFormats.includes(fileType)) {
             setShowToast(true, "The file must be in proper format");
             return;
