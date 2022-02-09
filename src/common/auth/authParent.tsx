@@ -113,54 +113,60 @@ const AuthParent = (props: any) => {
     let step_ = props.steps;
     let type = props.userType;
     return (
-        <div className="onboard_wrapper">
-            <div className="f_row">
-                {props.steps === 0 && <div className="left_col">
-                    <AuthSlider
-                        type={props.sliderType}
-                        history={props.history}
-                        showModal={props.showModal}
-                        setShowModal={props.setShowModal}
-                        modalUpdateSteps={props.modalUpdateSteps}
-                        setSocialData={props.setSocialData} />
-                </div>}
-                <div className="right_col">
-                    <figure className="mob_logo hide">
-                        <img src={colorLogo} alt="Tickt-logo" />
-                    </figure>
-                    <div className="onboarding_head">
-                        {(!!props.steps || props.sliderType === 'signup') && !props.modalLoginBackBtn && <button className="back_btn" onClick={props.backButtonHandler} />}
-                        <h1>{props.userType === 1 && props.header.tradieTitle ? props.header.tradieTitle : props.header.title}</h1>
-                        {props.header.subTitle &&
-                            <span className="show_label">
-                                {props.header.subTitle}
-                            </span>}
-                        {!!props.steps &&
-                            props.steps > 1 &&
-                            !props.hideProgres &&
-                            <ul className="custom_steppr">
-                                {/* <div style={{fontSize:30, color:'#fff'}}>
-                                    {props.userType === 1 ? 'true' : 'false'}
-                                    {` -- ${step_}`}
-                                </div> */}
-                                {/* <span style={{color:'#fff', marginRight:'20px'}}>{step_}</span> */}
-                                {Array.from(Array(type === 1 ?
-                                    tradieStepsLength :
-                                    builderStepsLength).keys()).map((i) => {
-                                        return (
-                                            <li
-                                                key={i}
-                                                className={handleSteps({ step: step_, index: i, type })}
-                                            // className={props.steps !== undefined && i + 1 < props.steps ? 'active' : ''}
-                                            />)
-                                    })
-                                }
-                            </ul>}
+        <>
+            <div className={`${props.steps === 0 ? 'onboarding_first' : 'onboard_wrapper'}`}>
+                <div className="f_row">
+                    <div className="onboarding_inner">
+                        {
+                            props.steps === 0 &&
+                            <div className="left_col">
+                                <AuthSlider
+                                    type={props.sliderType}
+                                    history={props.history}
+                                    showModal={props.showModal}
+                                    setShowModal={props.setShowModal}
+                                    modalUpdateSteps={props.modalUpdateSteps}
+                                    setSocialData={props.setSocialData} />
+                            </div>
+                        }
+
+                        <div className="heading_wrapper">
+                            {props.steps !== 0 && <figure className="desktop_logo">
+                                <img src={colorLogo} alt="Tickt home page" />
+                            </figure>}
+
+                            {props.steps !== 0 && <div className="onboarding_head">
+                                {(!!props.steps || props.sliderType === 'signup') && !props.modalLoginBackBtn && <button className="back_btn" onClick={props.backButtonHandler} />}
+                                <h1>{props.userType === 1 && props.header.tradieTitle ? props.header.tradieTitle : props.header.title}</h1>
+                                {props.header.subTitle &&
+                                    <span className="show_label">
+                                        {props.header.subTitle}
+                                    </span>}
+                                {!!props.steps &&
+                                    props.steps > 1 &&
+                                    !props.hideProgres &&
+                                    <ul className="custom_steppr">
+                                        {Array.from(Array(type === 1 ?
+                                            tradieStepsLength :
+                                            builderStepsLength).keys()).map((i) => {
+                                                return (
+                                                    <li
+                                                        key={i}
+                                                        className={handleSteps({ step: step_, index: i, type })}
+                                                    />)
+                                            })
+                                        }
+                                    </ul>}
+                            </div>}
+                        </div>
+
+                        <div className={`${props.steps === 0 ? 'onboarding_first_content' : 'onboard_content'}`}>
+                            {props.children}
+                        </div>
                     </div>
-                    {props.children}
                 </div>
             </div>
-        </div>
+        </>
     )
 }
 

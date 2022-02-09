@@ -5,7 +5,7 @@
 	font: 14px 'Neue Haas Grotesk Text Pro Medium';
 	color: var(--blue-two);
 	cursor: pointer;
-	@media (max-width: 812px) {
+	@media (max-width: 576px) {
 		font-size: 13px !important;
 	}
 	@media (max-width: 320px) {

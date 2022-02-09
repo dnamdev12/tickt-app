@@ -49,7 +49,7 @@ const AuthSlider = (props: Props) => {
 
     const responsive = {
         desktop: {
-            breakpoint: { max: 3000, min: 1024 },
+            breakpoint: { max: 5000, min: 270 },
             items: 1,
             slidesToSlide: 1, // optional, default to 1.
         },
@@ -72,27 +72,29 @@ const AuthSlider = (props: Props) => {
     }
 
     return (
-        <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false} infinite={true}>
-            {SLIDER_DATA.map((item: any, i: number) => {
-                return (
-                    <div key={i}>
-                        <figure className="banner_img">
-                            <figure className="logo">
-                                <img src={logoyellow} alt="logo" />
-                            </figure>
-                            <img src={item.image} alt="banner-img" />
-                            <div className="slider_txt">
-                                <span>{item.imageText}</span>
-                            </div>
-                            <div className="bottom_txt">
+        <div className='carousel_wrapper'>
+            <figure className="carousel_toplogo">
+                <img src={logoyellow} alt="logo" />
+            </figure>
+            <Carousel responsive={responsive} autoPlay={true} showDots={true} arrows={false} infinite={true}>
+                {SLIDER_DATA.map((item: any, i: number) => {
+                    return (
+                        <div key={i}>
+                            <figure className="banner_img">
+                                <img src={item.image} alt="banner-img" />
+                                <div className="slider_txt">
+                                    <span>{item.imageText}</span>
+                                </div>
+                                {/* <div className="bottom_txt">
                                 <span className="reg">{data.title}
                                     <a className="link" onClick={onLoginSignupClicked}>{` ${data.button}`}</a>
                                 </span>
-                            </div>
-                        </figure>
-                    </div>)
-            })}
-        </Carousel>
+                            </div> */}
+                            </figure>
+                        </div>)
+                })}
+            </Carousel>
+        </div>
     )
 }
 

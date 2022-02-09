@@ -411,6 +411,15 @@ body {
     height: 35px;
     display: inline-block;
     margin: 0 8px 0 0;
+    @media screen and (max-width: 576px) {
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+    }
+    img{
+      max-width: 100%;
+    }
   }
   .file_details {
     width: 73%;
@@ -439,8 +448,8 @@ body {
     width: 100%;
   }
   @media (max-width: 768px) {
-    max-width: 100%;
-    width: 427px;
+    width: 100%;
+    max-width: 427px;
   }
   @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     width: 400px;
@@ -973,18 +982,21 @@ body {
 .slider_txt {
   z-index: 9;
   text-align: center;
-  @include position(absolute, 45%, auto, auto, 50%);
-  transform: translate(-50%, 50%);
+  @include position(absolute, 27vh, 0, unset, 0);
+  // transform: translate(-50%, 50%);
   width: 100%;
   span {
-    font: 26px/1.25 'Neue Haas Grotesk Text Pro Medium';
+    font: 28px/1.25 'Neue Haas Grotesk Text Pro Medium';
     letter-spacing: 0.1px;
     color: var(--white);
     max-width: 262px;
     margin: auto;
     display: block;
-    @media (max-width: 1024px) {
+    @media screen and (max-width: 1200px) {
       font-size: 24px;
+    }
+    @media screen and (max-width: 992px) and (max-height: 500px) and (orientation: landscape) {
+      max-width: 330px;
     }
   }
 }

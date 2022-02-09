@@ -163,8 +163,8 @@ a.fill_btn {
   &:hover {
     background-color: #ecd501;
   }
-  @media (max-width: 650px) {
-    font-size: 12px;
+  @media (max-width: 576px) {
+    font-size: 13px;
     padding: 12px 18px;
   }
   &.disable_btn {
@@ -274,6 +274,7 @@ a.fill_grey_btn {
   cursor: pointer;
   font-size: 14px;
   color: var(--greyish-brown);
+  height: 24px;
   &.eye{
     width: 24px;
     height: 24px;
@@ -302,6 +303,9 @@ a.fill_grey_btn {
   font-size: 14px;
   color: var(--blue);
   line-height: 1.6;
+  @media screen and (max-width: 576px) {
+    line-height: normal;
+  }
   img {
     width: 17px;
     height: 17px;
@@ -532,9 +536,15 @@ a.fill_grey_btn {
       font-family: 'Neue Haas Grotesk Text Pro Medium';
       color: var(--blue);
     }
+    @media screen and (max-width: 576px) {
+      font-size: 13px;
+    }
   }
   .and {
     display: inline-block;
+    @media screen and (max-width: 576px) {
+      margin-right: 0;
+    }
   }
   .m-l-30 {
     display: inline-block;

@@ -62,13 +62,13 @@ const InitialSignupPage = (props: Propstype) => {
     return (
         <div className="form_wrapper">
             <div className="form_field"><button className="fill_btn btn-effect" onClick={() => nextPageHandler('builder')}>I’m a builder</button></div>
-            <div className="form_field text-center"><span className="show_label text-center">or</span></div>
+            {/* <div className="form_field text-center"><span className="show_label text-center">or</span></div> */}
             <div className="form_field"><button className="fill_grey_btn btn-effect" onClick={() => nextPageHandler('tradie')}>I’m a tradesperson</button></div>
-            {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>}
+            {/* {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>} */}
 
-            <div className="form_field hide text-center">
+            {/* <div className="form_field hide text-center">
                 <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Login</a></span>
-            </div>
+            </div> */}
         </div>
     )
 }
