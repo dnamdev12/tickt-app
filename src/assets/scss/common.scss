@@ -965,9 +965,9 @@ body {
 .banner_img {
   height: 100vh;
   position: relative;
-  // @media (max-width: 1366px) {
-  //   height: 100vh;
-  // }
+  @media (max-width: 1366px) {
+    height: 100vh;
+  }
   z-index: -1;
   img {
     width: 100%;
@@ -2746,7 +2746,7 @@ body {
 //-----------Loader close-------------//
 //-------------------Home----------------//
 .home_banner {
-  .banner_img {
+  .banner_img_img {
     position: relative;
     width: 100%;
     height: 410px;
