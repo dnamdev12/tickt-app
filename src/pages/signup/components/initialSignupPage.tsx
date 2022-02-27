@@ -1,74 +1,113 @@
-import React, { useEffect } from 'react';
-import storageService from '../../../utils/storageService';
+import React, { useEffect } from "react";
+import storageService from "../../../utils/storageService";
+import logoyellow from "../../../assets/images/ic-logo-yellow.png";
 //@ts-ignore
-import Intercom from 'intercom-client';
-
+import Intercom from "intercom-client";
 
 interface Propstype {
-    updateSteps: (num: number, data: any) => void,
-    step: number,
-    history: any,
-    showModal: boolean,
-    modalUpdateSteps: (data: any) => void,
-    callTradeList: () => void,
+  updateSteps: (num: number, data: any) => void;
+  step: number;
+  history: any;
+  showModal: boolean;
+  modalUpdateSteps: (data: any) => void;
+  callTradeList: () => void;
 }
 
 const InitialSignupPage = (props: Propstype) => {
-    let window_:any = window;
+  let window_: any = window;
 
-    useEffect(() => {
-        // prefetch();
-    }, [])
+  useEffect(() => {
+    // prefetch();
+  }, []);
 
-    useEffect(() => {
-        if (window_?.Intercom) {
-            window_?.Intercom('update', {
-                "hide_default_launcher": true
-            });
-        }
-    }, [window_])
-
-    const nextPageHandler = (userType: string) => {
-        var user_type = 1
-        if (userType === 'builder') {
-            user_type = 2
-        }
-        props.updateSteps(props.step + 1, { user_type });
-        if (user_type === 1) {
-            props.callTradeList();
-        }
+  useEffect(() => {
+    if (window_?.Intercom) {
+      window_?.Intercom("update", {
+        hide_default_launcher: true,
+      });
     }
+  }, [window_]);
 
-    const guestLoginClicked = (e: any) => {
-        e.preventDefault();
-        var today = new Date();
-        var date = today.getFullYear() + ":" + today.getMonth() + ":" + today.getDate() + ":" + today.getMinutes() + ":" + today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds() + ":" + today.getMilliseconds();
-        storageService.setItem("guestToken", date)
-        storageService.setItem("userType", 0)
-        props.history.push('/guest-user');
+  const nextPageHandler = (userType: string) => {
+    var user_type = 1;
+    if (userType === "builder") {
+      user_type = 2;
     }
-
-    const phoneViewHandler = (e: any) => {
-        e.preventDefault();
-        if (props.showModal) {
-            props.modalUpdateSteps(0)
-            return;
-        }
-        props.history.push('/login')
+    props.updateSteps(props.step + 1, { user_type });
+    if (user_type === 1) {
+      props.callTradeList();
     }
+  };
 
-    return (
-        <div className="form_wrapper">
-            <div className="form_field"><button className="fill_btn btn-effect" onClick={() => nextPageHandler('builder')}>I’m builder</button></div>
-            <div className="form_field text-center"><span className="show_label text-center">or</span></div>
-            <div className="form_field"><button className="fill_grey_btn btn-effect" onClick={() => nextPageHandler('tradie')}>I’m tradie</button></div>
-            {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>}
+  const guestLoginClicked = (e: any) => {
+    e.preventDefault();
+    var today = new Date();
+    var date =
+      today.getFullYear() +
+      ":" +
+      today.getMonth() +
+      ":" +
+      today.getDate() +
+      ":" +
+      today.getMinutes() +
+      ":" +
+      today.getHours() +
+      ":" +
+      today.getMinutes() +
+      ":" +
+      today.getSeconds() +
+      ":" +
+      today.getMilliseconds();
+    storageService.setItem("guestToken", date);
+    storageService.setItem("userType", 0);
+    props.history.push("/guest-user");
+  };
 
-            <div className="form_field hide text-center">
-                <span className="reg">Have an account? <a className="link" onClick={phoneViewHandler}>Login</a></span>
-            </div>
-        </div>
-    )
-}
+  const phoneViewHandler = (e: any) => {
+    e.preventDefault();
+    if (props.showModal) {
+      props.modalUpdateSteps(0);
+      return;
+    }
+    props.history.push("/login");
+  };
 
-export default InitialSignupPage
+  return (
+    <div className="form_wrapper">
+      {/* <figure className="signupLogo">
+        <img src={logoyellow} alt="logo" />
+      </figure> */}
+      <div className="form_field">
+        <button
+          className="fill_btn btn-effect"
+          onClick={() => nextPageHandler("builder")}
+        >
+          I’m builder
+        </button>
+      </div>
+      {/* <div className="form_field text-center">
+        <span className="show_label text-center">or</span>
+      </div> */}
+      <div className="form_field">
+        <button
+          className="fill_grey_btn btn-effect"
+          onClick={() => nextPageHandler("tradie")}
+        >
+          I’m tradie
+        </button>
+      </div>
+      {/* {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>} */}
+
+      <div className="form_field text-center">
+        <span className="reg">
+          Have an account?{" "}
+          <a className="link" onClick={phoneViewHandler}>
+            Login
+          </a>
+        </span>
+      </div>
+    </div>
+  );
+};
+
+export default InitialSignupPage;

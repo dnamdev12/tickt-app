@@ -361,10 +361,11 @@ body {
 
 .onboard_wrapper {
   .react-multi-carousel-dot-list {
-    bottom: 295px;
-    @media (max-width: 1366px) {
-      bottom: 100px;
-    }
+    bottom: auto;
+    top: 40%;
+    // @media (max-width: 1366px) {
+    //   bottom: 100px;
+    // }
   }
   .react-multi-carousel-dot {
     button {
@@ -833,12 +834,11 @@ table {
 }
 
 @mixin color_random_classes {
-    @for $i from 0 through $colors {
-      .color_#{$i} {
-        @include random-bgr();
-      }
+  @for $i from 0 through $colors {
+    .color_#{$i} {
+      @include random-bgr();
     }
+  }
 }
-  
+
 @include color_random_classes;
-  

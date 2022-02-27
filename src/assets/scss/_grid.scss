@@ -37,7 +37,6 @@
   }
 }
 
-
 .flex_col_sm_6 {
   width: 50%;
   padding: 0 10px;
@@ -45,7 +44,7 @@
     width: 100%;
   }
 }
-.flex_col_xs_6{
+.flex_col_xs_6 {
   width: 50%;
   padding: 0 10px;
 }
@@ -80,19 +79,19 @@
   align-items: flex-end;
 }
 
-.f_col{
+.f_col {
   @media (max-width: 650px) {
     flex-flow: column;
   }
 }
 
-.f_reverse{
+.f_reverse {
   @media (max-width: 650px) {
     flex-flow: column-reverse;
   }
 }
 
-.center_flex{
+.center_flex {
   align-items: center;
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     align-items: flex-start;
@@ -108,47 +107,55 @@
   flex-flow: column;
 }
 
-
-.row_wrap{
+.row_wrap {
   display: flex;
 }
 
-.f_center{
+.f_center {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.f_spacebw{
+.f_spacebw {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .show_label{
+  .show_label {
     margin-bottom: 0;
-    font-family: 'Neue Haas Grotesk Text Pro Bold';
+    font-family: "Neue Haas Grotesk Text Pro Bold";
   }
 }
-
-
-.onboard_wrapper{
+.text-left {
+  text-align: left;
+}
+.onboard_wrapper {
   position: relative;
-  background: url('../images/onboarding-clip.png') no-repeat;
+  background: url("../images/onboarding-clip.png") no-repeat;
   background-size: cover;
   background-position: bottom;
   width: 100%;
   height: 248px;
-  .onboarding_head{
+
+  .onboarding_head {
+    & > div {
+      width: 100%;
+      max-width: 327px;
+      margin: 0 auto;
+      position: relative;
+    }
     position: relative;
-    margin: 102px 0 0 140px;
-    @media (max-width: 768px){
+    text-align: center;
+    margin: 102px 0 auto;
+    @media (max-width: 768px) {
       margin: 50px auto;
       text-align: center;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       margin: 50px 0 0 140px;
     }
-    .back_btn{
-      background: url('../images/ic-back.png') center no-repeat;
+    .back_btn {
+      background: url("../images/ic-back.png") center no-repeat;
       position: absolute;
       top: 0;
       left: -100px;
@@ -164,99 +171,106 @@
       }
     }
 
-    h1{
+    h1 {
       position: relative;
-      font: 32px/1.16 'Neue Haas Grotesk Text Pro Bold';
+      font: 32px/1.16 "Neue Haas Grotesk Text Pro Bold";
       color: var(--white);
       margin-bottom: 15px;
-      @media (max-width: 650px){
+      @media (max-width: 650px) {
         font-size: 22px;
       }
     }
-    .show_label{
+    .show_label {
       color: var(--white);
     }
   }
 
-  .custom_steppr{
+  .custom_steppr {
     display: flex;
     align-items: center;
-    margin: 16px 0;
+    margin: 18px 0;
+    margin-right: 247px;
+    justify-content: center;
+    text-align: center;
     @media (max-width: 768px) {
       justify-content: center;
     }
-    li{
+    li {
       display: inline-block;
       width: 6px;
       height: 6px;
       margin-right: 12px;
       background-color: #748092;
       border-radius: 50%;
-      &.active{
+      &.active {
         background-color: var(--yellow);
       }
     }
   }
 }
 
-.choose_qf{
+.choose_qf {
   display: flex;
   flex-flow: column;
   margin-bottom: 10px;
-  [type="checkbox"] + label{
+  [type="checkbox"] + label {
     padding-left: 35px;
   }
-  .checkbox_wrap{
-    label{
+  .checkbox_wrap {
+    label {
       max-width: 240px;
     }
   }
-  .f_spacebw{
+  .f_spacebw {
     margin-bottom: 24px;
   }
 }
-.upload_btn{
+.upload_btn {
   @include border-radius(3px);
   background-color: var(--grey);
-  font: 12px 'Neue Haas Grotesk Text Pro Bold';
+  font: 12px "Neue Haas Grotesk Text Pro Bold";
   color: var(--blue);
   padding: 10px 15px;
   display: inline-block;
   cursor: pointer;
   z-index: 9;
-  &.disable{
+  &.disable {
     background-color: #dfe5ef6e;
     pointer-events: none;
     color: #c2c2c7;
   }
 }
 
-.add_qf_doc{
+.add_qf_doc {
   margin-bottom: 40px;
-  .upload_doc{
+  .upload_doc {
     text-align: center;
     margin: 0 0 50px;
   }
 }
 
-.left_col{
+.left_col {
   position: fixed;
-  height: 100%;
-  width: 500px;
-  @media (max-width: 1150px) {
-    width: 380px;
-  }
-  @media (max-width: 768px) {
-    display: none;
-  }
-  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    display: none;
-  }
+  height: 100vh;
+  width: 100%;
+  // @media (max-width: 1150px) {
+  //   width: 380px;
+  // }
+  // @media (max-width: 768px) {
+  //   display: none;
+  // }
+  // @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+  //   display: none;
+  // }
+}
+.left_col2 {
+  display: none;
 }
 
 .right_col {
   max-width: 1200px;
-  padding-left: 500px;
+  width: 100%;
+  margin: 0 auto;
   @media (max-width: 1420px) {
     width: 1400px;
   }
@@ -272,6 +286,4 @@
     width: 100%;
     padding: 0;
   }
-
 }
-
