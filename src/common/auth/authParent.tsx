@@ -27,39 +27,22 @@ const AuthParent = (props: any) => {
   return (
     <div className="onboard_wrapper">
       <div className="f_row">
-        {props.steps === 0 ? (
-          <div className="left_col">
-            <AuthSlider
-              type={props.sliderType}
-              history={props.history}
-              showModal={props.showModal}
-              setShowModal={props.setShowModal}
-              modalUpdateSteps={props.modalUpdateSteps}
-              setSocialData={props.setSocialData}
-            />
-          </div>
-        ) : (
-          <div className="left_col2">
-            <AuthSlider
-              type={props.sliderType}
-              history={props.history}
-              showModal={props.showModal}
-              setShowModal={props.setShowModal}
-              modalUpdateSteps={props.modalUpdateSteps}
-              setSocialData={props.setSocialData}
-            />
-          </div>
-        )}
+        <div className={props.steps == 0 ? "left_col" : "left_col2"}>
+          <AuthSlider
+            type={props.sliderType}
+            history={props.history}
+            showModal={props.showModal}
+            setShowModal={props.setShowModal}
+            modalUpdateSteps={props.modalUpdateSteps}
+            setSocialData={props.setSocialData}
+          />
+        </div>
         <div className="right_col">
-          {props.steps === 0 ? (
-            <figure className="mob_logo">
-              <img src={colorLogo} alt="Tickt-logo" />
-            </figure>
-          ) : (
-            <figure className="mob_logo left_logo">
-              <img src={colorLogo} alt="Tickt-logo" />
-            </figure>
-          )}
+          <figure
+            className={props.steps === 0 ? "mob_logo" : "mob_logo left_logo"}
+          >
+            <img src={colorLogo} alt="Tickt-logo" />
+          </figure>
 
           <div className="onboarding_head">
             {/* <figure className="signupLogo">

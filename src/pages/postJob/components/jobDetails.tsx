@@ -179,14 +179,16 @@ const JobDetails = ({
           let render_item: any = null;
           if (imageFormats.includes(item?.format)) {
             render_item = (
-              <img
-                onClick={() => {
-                  setToggler((prev: any) => !prev);
-                  setSelectSlide(index + 1);
-                }}
-                alt=""
-                src={item?.url}
-              />
+              <div className="img_cont">
+                <img
+                  onClick={() => {
+                    setToggler((prev: any) => !prev);
+                    setSelectSlide(index + 1);
+                  }}
+                  alt=""
+                  src={item?.url}
+                />
+              </div>
             );
           }
 
@@ -207,7 +209,7 @@ const JobDetails = ({
           if (render_item) {
             filterItems.push(
               <div className="item">
-                <span
+                {/* <span
                   onClick={(e: any) => {
                     e.preventDefault();
                     handleStepForward(13);
@@ -216,7 +218,7 @@ const JobDetails = ({
                   title="Edit"
                 >
                   <img src={editIconBlue} alt="edit" />
-                </span>
+                </span> */}
                 {render_item}
               </div>
             );
@@ -225,7 +227,7 @@ const JobDetails = ({
       } else {
         filterItems.push(
           <div className="item">
-            <span
+            {/* <span
               onClick={(e: any) => {
                 e.preventDefault();
                 handleStepForward(13);
@@ -234,7 +236,7 @@ const JobDetails = ({
               title="Edit"
             >
               <img src={editIconBlue} alt="edit" />
-            </span>
+            </span> */}
             {<img src={jobDummyImage} alt="item-url" />}
           </div>
         );
@@ -372,7 +374,7 @@ const JobDetails = ({
 
     return result;
   };
-
+  console.log(data_clone.urls, "ncskjdcj");
   const format = "MM-DD-YYYY";
   const { sources, types } = renderFilteredItems();
   return (
@@ -391,69 +393,55 @@ const JobDetails = ({
                 <button onClick={handleStepBack} className="back"></button>
               </div>
             </div>
-            <div className="flex_row">
-              <div className="flex_col_sm_8">
-                <figure className="vid_img_thumb">
-                  {data_clone?.urls?.length ? (
-                    <OwlCarousel className="owl-theme" {...options}>
-                      {renderByFileFormat(data)}
-                    </OwlCarousel>
-                  ) : (
-                    <img src={jobDummyImage} alt="item-url" />
-                  )}
-                </figure>
-              </div>
-              <div className="flex_col_sm_4 relative">
-                <div className="detail_card">
-                  <span className="title line-3 pr-20" title={data?.jobName}>
-                    {data?.jobName}
-                    <span
-                      onClick={() => {
-                        forwardScreenStep(1);
-                      }}
-                      className="edit_icon"
-                      title="Edit"
-                    >
-                      <img src={editIconBlue} alt="edit" />
-                    </span>
-                  </span>
-                  <span className="tagg">Job details</span>
-                  <div className="job_info">
-                    <ul>
-                      {/* <li className="icon clock">0 minutes ago</li> */}
-                      <li className="icon calendar">
-                        {renderTime(data)}
-                        {/* {data?.from_date?.length && !data?.to_date?.length ? '0 days' :
+            <div className="detail_card" style={{ width: "40%" }}>
+              <span className="title line-3 pr-20" title={data?.jobName}>
+                {data?.jobName}
+                <span
+                  onClick={() => {
+                    forwardScreenStep(1);
+                  }}
+                  className="edit_icon"
+                  title="Edit"
+                >
+                  <img src={editIconBlue} alt="edit" />
+                </span>
+              </span>
+              <span className="tagg">Job details</span>
+              <div className="job_info">
+                <ul>
+                  {/* <li className="icon clock">0 minutes ago</li> */}
+                  <li className="icon calendar">
+                    {renderTime(data)}
+                    {/* {data?.from_date?.length && !data?.to_date?.length ? '0 days' :
                                                     data?.from_date?.length && data?.to_date?.length ?
                                                         `${(moment(data?.to_date)).diff(moment(data.from_date), 'days')} days`
                                                         : '0 days'} */}
-                      </li>
-                      <li className="icon dollar">
-                        ${data?.amount}{" "}
-                        {data?.pay_type === "Fixed price" ? "f/p" : "p/h"}{" "}
-                      </li>
-                      <li
-                        className="icon location line-1"
-                        title={data?.location_name}
-                      >
-                        {data?.location_name}
-                      </li>
-                    </ul>
-                  </div>
-                  <button
-                    onClick={handlePost}
-                    className="fill_btn full_btn btn-effect mt-15"
+                  </li>
+                  <li className="icon dollar">
+                    ${data?.amount}{" "}
+                    {data?.pay_type === "Fixed price" ? "f/p" : "p/h"}{" "}
+                  </li>
+                  <li
+                    className="icon location line-1"
+                    title={data?.location_name}
                   >
-                    {jobId ? "Republish job" : "Post job"}
-                  </button>
-                </div>
+                    {data?.location_name}
+                  </li>
+                </ul>
               </div>
+              <button
+                onClick={handlePost}
+                className="fill_btn full_btn btn-effect mt-15"
+              >
+                {jobId ? "Republish job" : "Post job"}
+              </button>
             </div>
+
             <div className="flex_row">
               <div className="flex_col_sm_8">
                 <div className="description">
                   <span className="sub_title">
-                    {"Details"}
+                    {"Job description"}
                     <span
                       onClick={() => {
                         forwardScreenStep(1);
@@ -466,6 +454,27 @@ const JobDetails = ({
                   </span>
                   <p className="commn_para">{data?.job_description}</p>
                 </div>
+              </div>
+            </div>
+            <div>
+              <span className="sub_title">{"Photos & docs"}</span>
+              <div className="flex_row">
+                <div>
+                  <figure>
+                    {data_clone?.urls?.length ? (
+                      <OwlCarousel {...options}>
+                        {renderByFileFormat(data)}
+                      </OwlCarousel>
+                    ) : (
+                      <img
+                        src={jobDummyImage}
+                        alt="item-url"
+                        style={{ height: "85px" }}
+                      />
+                    )}
+                  </figure>
+                </div>
+                <div className="flex_col_sm_4 relative"></div>
               </div>
             </div>
             <div className="flex_row">

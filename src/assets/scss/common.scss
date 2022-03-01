@@ -1007,6 +1007,10 @@ body {
 //----------------------Onboard Model close----------------------//
 
 //----------------------Job/Story/Profile Detail-------------------//
+.img_cont {
+  height: 100px;
+  width: 100px;
+}
 .change_req_detail {
   ul {
     &:not(:last-child) {
@@ -1163,7 +1167,7 @@ body {
   }
   .detail_card {
     padding: 0 0 0 10px;
-    @include position(absolute, auto, auto, 0px, auto);
+    @include position(auto, auto, 0px, auto);
     width: 95%;
     .form_field {
       margin-bottom: 15px;
