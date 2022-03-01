@@ -1,67 +1,158 @@
 <?php /* Template Name: Home */ ?>
 <?php get_header(); ?>
-        <?php 
-            $banner_section = get_field('banner_section');
-        ?>
-        <section class="banner_block">
-            <figure class="banner_img">
-                <img src="<?php echo $banner_section['banner']; ?>" alt="Banner">
-                <div class="banner_container">
-                    <div class="banner_txt">
-                        <h1><?php echo $banner_section['banner_heading'];?></h1>
-                        <p><?php echo $banner_section['banner_subheading'];?></p>
-                        <a href="https://ticktreactstg.appskeeper.in/signup" class="fill_btn btn-effect"><?php echo $banner_section['banner_button_cta'];?></a>
+<!-- Main Content -->
+<main role="main">
+    <?php 
+        $banner_section = get_field('banner_section');
+    ?>
+    <div class="content_top_margin">
+        <div class="banner_wrapper" id="homepage_banner" style='background-image: url("<?php echo $banner_section['banner']; ?>");'>
+            <div class="banner_content container_inner">
+                <div class="main_heading">
+                    <h1 aria-hidden="true"><?php echo $banner_section['banner_heading'];?></h1>
+                    <h1 class="visually-hidden"><?php echo $banner_section['banner_heading'];?></h1>
+                    <h2 aria-hidden="true"><?php echo $banner_section['banner_subheading'];?></h2>
+                    <h2 class="visually-hidden"><?php echo $banner_section['banner_subheading'];?></h2>
+                </div>
+                <div class="action_btn_wrapper">
+                    <div class="btn_wrap">
+                        <button class="btn btn_primary">I'm a builder</button>
+                    </div>
+                    <div class="btn_wrap">
+                        <button class="btn btn_secondary">I'm a tradie</button>
                     </div>
                 </div>
-            </figure>
-        </section>
-        <section class="about_block clip" id="about">
-        <?php 
-            $section_1 = get_field('section_1');
-        ?>
-            <div class="custom_container">
-                <div class="flex_row align_center">
-                    <div class="flex_col_sm_6">
-                        <span class="sub_title"><?php echo $section_1['heading'];?></span>
-                        <p class="commn_para"><?php echo $section_1['description'];?></p>
+                <div class="action_btn_wrapper icon_wrapper">
+                    <div class="btn_wrap">
+                        On all platforms
                     </div>
-                    <div class="flex_col_sm_6">
-                        <figure>
-                            <img src="<?php echo $section_1['image'];?>" alt="<?php echo $section_1['heading'];?>" />
-                        </figure>
+                    <div class="btn_wrap icon">
+                        <i class="fa fa-apple" aria-hidden="true"></i>
+                    </div>
+                    <div class="btn_wrap icon">
+                        <i class="fa fa-android" aria-hidden="true"></i>
+                    </div>
+                    <div class="btn_wrap icon">
+                        <i class="fa fa-desktop" aria-hidden="true"></i>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <section class="for_builders" id="builders">
+        <div class="container_inner">
+            <div class="table_row">
+                <div class="column col_left">
+                    <div class="elements_holder">
+                        <h3>For builders</h3>
+                        <h1>Find the right tradie for your project</h1>
+                        <p class="paraText">
+                            Post jobs, get quotes, track job progress and make instant payments, all in one
+                            place. Stay organised, stay on budget, and exceed your expectations.
+                        </p>
+                        <button class="btn btn_primary">Find tradepeople</button>
+                    </div>
+                </div>
+                <div class="column col_right"></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="for_tradie" id="tradie">
+        <div class="container_inner">
+            <div class="flex_row">
+                <div class="column"></div>
+                <div class="column col_right">
+                    <div class="elements_holder">
+                        <h3>For tradies</h3>
+                        <h1>Find jobs that suit you</h1>
+                        <p class="paraText">
+                            Search jobs in your area, submit quotes, track progress and get paid all in one
+                            place. Grow your business, stay organised and get paid on time.
+                        </p>
+                        <button class="btn btn_primary">Find a job</button>
                     </div>
                 </div>
             </div>
-        </section>
-        <section class="tailord_block">
-        <?php 
-            $tailored_for_section = get_field('tailored_for_section');
-        ?>
-            <div class="container">
-                <span class="sub_title">Tailored for</span>
-                <ul>
-                    <li>
+        </div>
+    </section>
+
+    <section class="trades_banner">
+        <div class="container_inner">
+            <div class="flex_row">
+                <div class="column_left">
+                    <div class="full_section_inner">
                         <figure>
-                            <img src="<?php echo $tailored_for_section['icon_1'];?>" alt="<?php echo $tailored_for_section['heading_1'];?>" />
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/all-trades.png" role="presentation" alt="">
                         </figure>
-                        <span class="xs_title"><?php echo $tailored_for_section['heading_1'];?></span>
-                        <p class="commn_para"><?php echo $tailored_for_section['description_1'];?></p>
-                    </li>
-                    <li>
-                        <figure>
-                            <img src="<?php echo $tailored_for_section['icon_2'];?>" alt="<?php echo $tailored_for_section['heading_2'];?>" />
-                        </figure>
-                        <span class="xs_title"><?php echo $tailored_for_section['heading_2'];?></span>
-                        <p class="commn_para"><?php echo $tailored_for_section['description_2'];?></p>
-                    </li>
-                </ul>
+                        <div class="heading_wrapper">
+                            <h2>All trades in one place</h2>
+                            <button class="btn btn_primary">Find tradepeople</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="column_right">
+                    <div class="full_section_inner">
+                        <ul class="all_trades_list">
+                            <li>Electrical</li>
+                            <li>Framing</li>
+                            <li>Brick laying</li>
+                            <li>Plumbing</li>
+                            <li>Joinery</li>
+                            <li>Glazing</li>
+                            <li>Carpentry</li>
+                            <li>Demolition</li>
+                            <li>Rendering</li>
+                            <li>Tiling</li>
+                            <li>Waterproofing</li>
+                            <li>Landscaping</li>
+                            <li>Roofing</li>
+                            <li>Civil</li>
+                            <li>Masonry</li>
+                            <li>Concreting</li>
+                            <li>Painting</li>
+                            <li>Plastering</li>
+                        </ul>
+                    </div>
+                </div>
             </div>
-        </section>
-        <section class="mission_block">
-            <div class="custom_container">
-                <p class="sub_title"><?php echo $tailored_for_section['our_mission'];?></p>
+        </div>
+    </section>
+
+    <section class="why_join_tickt">
+        <div class="container_inner">
+            <div class="flex_row">
+                <div class="column_left">
+                    <h2>Why join Tickt?</h2>
+                    <dl class="description_list">
+                        <dt>Convenience & accountability</dt>
+                        <dd>Got an urgent job? Simply create a job post and you'll start getting applicants.
+                            Compare quotes, view profiles, and hire the tradesperson that suits your needs. Rate
+                            your experience and build your reputation.</dd>
+                        <dt>True value for users</dt>
+                        <dd>No one should pay for a service that doesn't deliver. That's why signing up to Tickt
+                            is free. We take a small cut if your job is successful. So we don't make money
+                            unless you do.</dd>
+                        <dt>Your jobs, on all devices</dt>
+                        <dd>Stay connected on-site or on the couch. Whether you're posting jobs from the office,
+                            or checking off milestones on site, Tickt has you covered across all devices. Stay
+                            connected anywhere, anytime.</dd>
+                    </dl>
+                    <button class="btn btn_primary">Sign up for free</button>
+                </div>
+                <div class="column_right">
+                    <figure>
+                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/app-devices.png" alt="">
+                    </figure>
+                </div>
             </div>
-        </section>
+        </div>
+    </section>
+
+    <section class="latest_jobs">
+        <div class="container_inner">
         <?php
 
         $curl = curl_init();
@@ -90,211 +181,62 @@
         //echo 'Hello <pre>';
         $res = json_decode($response);
         $results = $res->result->resultData;
-        //print_r($results[1]);
-        foreach($results as $result) {
-            //$result->categories[0]->trade_name
-            $cats[] = $result->categories[0];
-        }
-        //print_r($cats);
-        $arrs = array_unique(array_column($cats, 'trade_name'));
-        $arrsimg = array_unique(array_column($cats, 'selected_url'));
-        $gallery_arr = array_combine($arrs, $arrsimg);
-        //print_r($gallery_arr);
-        foreach ( $gallery_arr as $k=>$v )
-        {
-            $gallery_arrs[] = array('trade_name'=>$k, 'url'=> $v);
-        }
-                
-        //print_r($gallery_arrs);
-        //$tarr = array_unique(array_column($results, 'jobName'));
-        //$inters[] = array_intersect_key($cats, $arrs);
-        //$top_sphere_gallery = array_combine($arrs, $arrsimg);
-        //print_r($arrs);
         ?>
-        <section class="sphers_block" id="product">  
-        <?php 
-            $top_sphere_section = get_field('top_sphere_section');
-        ?>
-            <span class="title"><?php echo $top_sphere_section['top_sphere_heading']; ?></span>
-            <div class="sphere_wrap">
-                 <div class="owl-carousel owl-theme" id="sphere-owl-carousel"> 
-                     <?php 
-                     $i = 0;
-                     foreach($gallery_arrs as $gallery)
-                     {
-                      
-                        ?>
-                    <div class="item">
-                        <div class="sphere">
-                            <figure>
-                                <img src="<?php echo $gallery['url'];?>" />
-                            </figure>
-                            <span class="xs_title"><?php echo $gallery['trade_name'];?></span>
-                        </div>
-                    </div>
-                    <?php 
-                    $i++;
-                } ?>
-                </div>
+            <div class="heading_wrapper">
+                <h2>Latest job posts</h2>
             </div>
-        </section>
-        <section class="about_block">
-            <!-- <div class="custom_container"> -->
-                <?php 
-                    $section_2 = get_field('section_2');
-                    $i = 1;
-                    foreach($section_2 as $section_loop) 
-                    {
-                ?>
-                <div class="flex_row align_center flex_mob">
-                    <?php if ($i % 2 == 0) { ?>
-                    <div class="flex_col_sm_6">
-                        <figure>
-                            <img src="<?php echo $section_loop['section_image']; ?>" alt="<?php echo $section_loop['section_heading']; ?>" />
-                        </figure>
-                    </div>
-                    <?php } ?>
-                    <div class="flex_col_sm_6">
-                        <div class="content">
-                            <span class="sub_title"><?php echo $section_loop['section_heading']; ?></span>
-                            <p class="commn_para"><?php echo $section_loop['section_description']; ?></p>
-                            <a href="<?php echo $section_loop['section_button_text_url']; ?>" class="fill_btn btn-effect"><?php echo $section_loop['section_button_text']; ?></a>
-                        </div>
-                    </div>
-                    <?php if ($i % 2 != 0) { ?>
-                    <div class="flex_col_sm_6">
-                        <figure>
-                            <img src="<?php echo $section_loop['section_image']; ?>" alt="<?php echo $section_loop['section_heading']; ?>" />
-                        </figure>
-                    </div>
-                    <?php } ?>
-                </div>
-                <?php $i++; 
-                } ?>
-            <!-- </div> -->
-        </section>
-        <section class="features_block">
-            <div class="custom_container">
-                <span class="title">Six reasons the construction industry prefers Tickt</span>
-                <div class="flex_row">
-                <?php
-                $section_reasons = get_field('section_reasons');
-                $i = 1;
-                foreach($section_reasons as $section_reason) 
-                {
-                ?>
-                    <div class="flex_col_sm_4">
-                        <div class="feature_wrap">
-                            <figure>
-                                <img src="<?php echo $section_reason['section_reason_icon']; ?>" alt="<?php echo $section_reason['section_reason_heading']; ?>" />
-                            </figure>
-                            <span class="xs_title"><?php echo $section_reason['section_reason_heading']; ?></span>
-                            <p class="commn_para"><?php echo $section_reason['section_reason_description']; ?></p>
-                        </div>
-                    </div>
-                <?php } ?>
-                    
-                </div>
-            </div>
-        </section>
-        <section class="jobs_block">
-        
-            <span class="title text-center">Active jobs</span>
-            <div class="job_wrap">
-                <div class="owl-carousel owl-loaded owl-drag" id="jobs-owl-carousel">
+            <div class="carousel_wrapper">
+                <div class="owl-carousel owl-theme">
                 <?php 
                 foreach(array_slice($results, 0, 7) as $result) {
-                    
                     ?>
                     <div class="item">
                         <div class="job_card">
-                            <a href="https://ticktreactqa.appskeeper.in" class="more_detail circle"></a>
-                            <div class="user_wrap">
-                                <figure class="u_img">
-                                    <img src="<?php echo $result->categories[0]->selected_url;?>" alt="<?php echo $result->jobName;?>" />
-                                </figure>
-                                <div class="details">
-                                    <span class="name"><?php echo $result->categories[0]->trade_name;?></span>
-                                    <span class="prof"><?php echo $result->jobName;?></span>
+                            <div class="card_header">
+                                <div class="user_wrap">
+                                    <figure class="user_img flex-center">
+                                        <img src="<?php echo $result->categories[0]->selected_url;?>" alt="<?php echo $result->jobName;?>" />
+                                    </figure>
+                                    <div class="details">
+                                        <span class="name"><?php echo $result->categories[0]->trade_name;?></span>
+                                        <span class="date"><?php echo $result->jobName;?></span>
+                                    </div>
+                                </div>
+                                <button class="back_btn" type="button" aria-label="Back">
+                                    <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/right_icon.svg" alt="" role="presentation">
+                                </button>
+                            </div>
+                            <div class="card_body">
+                                <div class="job_info">
+                                    <ul>
+                                        <li class="icon time"><i class="fa fa-clock-o" aria-hidden="true"></i><?php echo time_elapsed_string(date('Y-m-d H:i:s', strtotime($result->updatedAt)));?></li>
+                                        <li class="icon charge"><i class="fa fa-usd" aria-hidden="true"></i>
+                                        <?php echo $result->totalAmounts;?> p/h</li>
+                                        <li class="icon location"><i class="fa fa-map-marker"
+                                                aria-hidden="true"></i><?php echo $result->location_name;?></li>
+                                        <li class="icon calendar"><i class="fa fa-calendar-o"
+                                                aria-hidden="true"></i>
+                                            2 days</li>
+                                    </ul>
+                                </div>
+                                <div class="job_desc"><?php echo $result->job_description;?>
+                                </div>
+                                <div class="action_btn_wrapper">
+                                    <div class="btn_wrap">
+                                        <i class="fa fa-eye" aria-hidden="true"></i> <?php echo $result->jobViewCount->views_count;?>
+                                    </div>
+                                    <div class="btn_wrap">
+                                        <i class="fa fa-comment-o" aria-hidden="true"></i> <?php echo $result->jobView->views_count;?>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="job_info">
-                                <ul>
-                                    <li class="icon clock"><?php echo time_elapsed_string(date('Y-m-d H:i:s', strtotime($result->updatedAt)));?></li>
-                                    <li class="icon dollar">$<?php echo $result->totalAmounts;?> p/h</li>
-                                    <li class="icon location line-1"><?php echo $result->location_name;?></li>
-                                    <li class="icon calendar">2 days</li>
-                                </ul>
-                            </div>
-                            <p class="commn_para line-2"><?php echo $result->job_description;?></p>
-                            <ul class="count_wrap">
-                                <li class="icon view"><?php echo $result->jobViewCount->views_count;?></li>
-                                <li class="icon comment"><?php echo $result->jobView->views_count;?></li>
-                            </ul>
                         </div>
                     </div>
                     <?php } ?>
-                </div> 
-            </div>
-        </section>
-        <section class="footer_banner_block" id="contact">
-            <figure class="banner_img">
-            <?php
-            $get_the_app_section = get_field('get_the_app_section');
-            ?>
-                <img src="<?php echo $get_the_app_section['get_app_section_banner']?>" alt="<?php echo $get_the_app_section['get_app_section_description']?>">
-                <div class="banner_container">
-                    <div class="banner_txt">
-                        <span class="title"><?php echo $get_the_app_section['get_app_section']?></span>
-                        <p class="commn_para"><?php echo $get_the_app_section['get_app_section_description']?></p>
-                    </div>
-                    <a href="<?php echo $get_the_app_section['apple_app_icon_url']?>">
-                        <img src="<?php echo $get_the_app_section['apple_app_icon']?>" alt="play-store" />
-                    </a>
-                    <a href="<?php echo $get_the_app_section['google_store_url']?>">
-                        <img src="<?php echo $get_the_app_section['google_store_icon']?>" alt="app-store" />
-                    </a>
+                    
                 </div>
-            </figure>
-        </section>
-
-    <?php get_footer(); ?>
-
-</body>
-
-</html>
-
-
-<?php 
-/* $result = wp_create_user('johndoe', 'passwordgoeshere', 'john.doe@example.com');
-if($result) {
-    echo 'user registered';
-} else {
-    echo 'registeration failed';
-} */
-/*{
-    "result": {
-        "_id": "612f5ed339355f247719119b",
-        "firstName": "test",
-        "user_image": "",
-        "trade": [
-            "60486a001abc8a08073cf0e1",
-            "60486a3d1abc8a08073cf0e2"
-        ],
-        "specialization": [
-            "6049c78102f48e868d8dfdbd",
-            "6049c85e02f48e868d8e0a40"
-        ],
-        "deviceToken": "323245356tergdfgrtuy68u566452354dcxs",
-        "mobileNumber": "412345678",
-        "email": "rohit.kumar@appinventiv.com",
-        "user_type": 1,
-        "accountType": "normal",
-        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVc2VySUQiOiI2MTJmNWVkMzM5MzU1ZjI0NzcxOTExOWIiLCJlbWFpbCI6InJvaGl0Lmt1bWFyQGFwcGludmVudGl2LmNvbSIsImZpcnN0TmFtZSI6InRlc3QiLCJ0cmFkZSI6WyI2MDQ4NmEwMDFhYmM4YTA4MDczY2YwZTEiLCI2MDQ4NmEzZDFhYmM4YTA4MDczY2YwZTIiXSwic3BlY2lhbGl6YXRpb24iOlsiNjA0OWM3ODEwMmY0OGU4NjhkOGRmZGJkIiwiNjA0OWM4NWUwMmY0OGU4NjhkOGUwYTQwIl0sImRldmljZVRva2VuIjoiMzIzMjQ1MzU2dGVyZ2RmZ3J0dXk2OHU1NjY0NTIzNTRkY3hzIiwidXNlcl90eXBlIjoxLCJjdXN0b21lcklkIjoiY3VzX0s5OWFSZ0I0YUZqdkpKIiwiaWF0IjoxNjMwNDk0NDE5fQ.RJL5KGb7EkX2f_5KE6zOVEKBO3ue8Ecj6WekTedywcU",
-        "createdAt": "2021-09-01T11:06:59.103Z"
-    },
-    "message": "Registration successful",
-    "status": true,
-    "status_code": 200
-}*/
-?>
+            </div>
+        </div>
+    </section>
+</main>
+<?php get_footer(); ?>

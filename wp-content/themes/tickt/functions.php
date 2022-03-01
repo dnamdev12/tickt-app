@@ -17,13 +17,9 @@ register_nav_menus(
 // Enqueue Js files in Footer
 function my_enqueue_stuff_js() {
    
-    wp_enqueue_script('jquery-2-4', get_stylesheet_directory_uri().'/assets/js/jquery-2.2.4.min.js', true );
-    
-    wp_enqueue_script('owl-carousel', get_stylesheet_directory_uri().'/assets/js/owl.carousel.min.js', true );
+    wp_enqueue_script('jquery-min', 'https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js', true );
 
-    wp_enqueue_script('bootstrap', 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js', true );
-
-    wp_enqueue_script('google-social', 'https://apis.google.com/js/platform.js', true );
+    wp_enqueue_script('owl-carousel', 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js', true );
 
     wp_enqueue_script('custom', get_stylesheet_directory_uri().'/assets/js/custom.js', true );
    
@@ -34,10 +30,10 @@ add_action( 'wp_footer', 'my_enqueue_stuff_js' );
 // Enqueue Js files in head
 function my_enqueue_stuff_css() {
     
-    wp_enqueue_style("bootstrap", 'https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css', 4.0 );
-    wp_enqueue_style('main-style', get_stylesheet_directory_uri().'/assets/css/style.css', false, 1.0 );    
-    wp_enqueue_style('media', get_stylesheet_directory_uri().'/assets/css/media.css', false, 1.0 );
-    wp_enqueue_style('owl-carousel', get_stylesheet_directory_uri().'/assets/css/owl.carousel.min.css', false, 1.0 );
+    wp_enqueue_style("font-awesome", 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css', 4.0 );
+    wp_enqueue_style("owl-carousel", 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css', 4.0 );
+    wp_enqueue_style("owl-theme", 'https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css', 4.0 );
+    wp_enqueue_style('main-style', get_stylesheet_directory_uri().'/css/styles.css', false, 1.0 );
     
     //wp_script_add_data( 'bootstrap', array( 'integrity', 'crossorigin' ) , array( 'sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm', 'anonymous' ) );
 
