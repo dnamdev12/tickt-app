@@ -69,7 +69,7 @@
                     <div class="elements_holder">
                         <h3><?php echo $tradie_section['top_heading']; ?></h3>
                         <h1><?php echo $tradie_section['heading']; ?></h1>
-                        <p class="paraText"><?php echo $tradie_section['description']; ?></p>
+                        <div class="paraText"><?php echo $tradie_section['description']; ?></div>
                         <a href="<?php echo $tradie_section['cta_url']; ?>" class="btn btn_primary"><?php echo $tradie_section['cta_text']; ?></a>
                     </div>
                 </div>

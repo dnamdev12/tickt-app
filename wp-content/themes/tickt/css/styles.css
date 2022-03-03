@@ -140,6 +140,8 @@ ol {
   font-size: 13px;
   cursor: pointer;
   font-family: var(--fontFamilyMed);
+  display:inline-block;
+  text-decoration: none;
 }
 
 @media screen and (max-width: 320px) {
@@ -994,7 +996,7 @@ ol {
 .why_join_tickt {
   padding-top: 60px;
   padding-bottom: 60px;
-  background-image: url("../images/join-tickt.jpg");
+  /* background-image: url("../images/join-tickt.jpg"); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center;
