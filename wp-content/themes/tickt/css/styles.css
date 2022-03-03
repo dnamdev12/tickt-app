@@ -130,7 +130,7 @@ ol {
   padding: 0 10px;
 }
 
-.btn {
+.btn, a.btn {
   border: 1px solid var(--linkColor);
   border-radius: 3px;
   letter-spacing: .2px;
@@ -637,7 +637,7 @@ ol {
 }
 
 .for_builders .table_row .column.col_right {
-  background-image: url("../images/builders.jpg");
+  /* background-image: url("../images/builders.jpg"); */
   background-position: center;
   background-size: cover;
   vertical-align: middle;
@@ -652,7 +652,7 @@ ol {
 }
 
 .for_tradie {
-  background-image: url("../images/tradie.jpg");
+  /* background-image: url("../images/tradie.jpg"); */
   background-repeat: no-repeat;
   background-size: cover;
   background-position: 0 0;
@@ -923,7 +923,7 @@ ol {
   }
 }
 
-.trades_banner .flex_row .column_right .all_trades_list {
+.trades_banner .flex_row .column_right .all_trades_list ul {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

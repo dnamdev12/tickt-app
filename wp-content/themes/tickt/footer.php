@@ -67,7 +67,7 @@ $(function () {
         margin: 4,
         loop: true,
         nav: true,
-        navText: ["<div class='nav-button owl-prev'><img src='./images/right_icon.svg'></div>", "<div class='nav-button owl-next'><img src='./images/right_icon.svg'></div>"],
+        navText: ["<div class='nav-button owl-prev'><img src='<?php echo get_stylesheet_directory_uri(); ?>/images/right_icon.svg'></div>", "<div class='nav-button owl-next'><img src='<?php echo get_stylesheet_directory_uri(); ?>/images/right_icon.svg'></div>"],
         responsive: {
             0: {
                 items: 1,

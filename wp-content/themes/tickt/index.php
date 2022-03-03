@@ -16,10 +16,10 @@
                 </div>
                 <div class="action_btn_wrapper">
                     <div class="btn_wrap">
-                        <button class="btn btn_primary">I'm a builder</button>
+                        <a href="<?php echo $banner_section['banner_builder_cta_url'];?>" class="btn btn_primary"><?php echo $banner_section['banner_builder_cta_text'];?></a>
                     </div>
                     <div class="btn_wrap">
-                        <button class="btn btn_secondary">I'm a tradie</button>
+                        <a href="<?php echo $banner_section['banner_tradie_cta_url'];?>" class="btn btn_secondary"><?php echo $banner_section['banner_tradie_cta_text'];?></a>
                     </div>
                 </div>
                 <div class="action_btn_wrapper icon_wrapper">
@@ -42,109 +42,81 @@
     </div>
 
     <section class="for_builders" id="builders">
+    <?php $builders_section = get_field('builders_section'); ?>
         <div class="container_inner">
             <div class="table_row">
                 <div class="column col_left">
                     <div class="elements_holder">
-                        <h3>For builders</h3>
-                        <h1>Find the right tradie for your project</h1>
-                        <p class="paraText">
-                            Post jobs, get quotes, track job progress and make instant payments, all in one
-                            place. Stay organised, stay on budget, and exceed your expectations.
+                        <h3><?php echo $builders_section['top_heading']; ?></h3>
+                        <h1><?php echo $builders_section['heading']; ?></h1>
+                        <p class="paraText"><?php echo $builders_section['description']; ?>
                         </p>
-                        <button class="btn btn_primary">Find tradepeople</button>
+                        <a href="<?php echo $builders_section['cta_url']; ?>" class="btn btn_primary"><?php echo $builders_section['cta_text']; ?></a>
                     </div>
                 </div>
-                <div class="column col_right"></div>
+                <div class="column col_right" style='background-image: url("<?php echo $builders_section['image']['url']; ?>");'></div>
             </div>
         </div>
     </section>
 
-    <section class="for_tradie" id="tradie">
+
+    <?php $tradie_section = get_field('tradie_section'); ?>
+    <section class="for_tradie" id="tradie" style='background-image: url("<?php echo $tradie_section['image']['url']; ?>");'>
         <div class="container_inner">
             <div class="flex_row">
                 <div class="column"></div>
                 <div class="column col_right">
                     <div class="elements_holder">
-                        <h3>For tradies</h3>
-                        <h1>Find jobs that suit you</h1>
-                        <p class="paraText">
-                            Search jobs in your area, submit quotes, track progress and get paid all in one
-                            place. Grow your business, stay organised and get paid on time.
-                        </p>
-                        <button class="btn btn_primary">Find a job</button>
+                        <h3><?php echo $tradie_section['top_heading']; ?></h3>
+                        <h1><?php echo $tradie_section['heading']; ?></h1>
+                        <p class="paraText"><?php echo $tradie_section['description']; ?></p>
+                        <a href="<?php echo $tradie_section['cta_url']; ?>" class="btn btn_primary"><?php echo $tradie_section['cta_text']; ?></a>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
+    <?php $all_trades_section = get_field('all_trades_section'); ?>
     <section class="trades_banner">
         <div class="container_inner">
             <div class="flex_row">
                 <div class="column_left">
                     <div class="full_section_inner">
                         <figure>
-                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/all-trades.png" role="presentation" alt="">
+                            <img src="<?php echo $all_trades_section['image']['url']; ?>" role="presentation" alt="<?php echo $all_trades_section['image']['alt']; ?>">
                         </figure>
                         <div class="heading_wrapper">
-                            <h2>All trades in one place</h2>
-                            <button class="btn btn_primary">Find tradepeople</button>
+                            <h2><?php echo $all_trades_section['heading']; ?></h2>
+                            <a href="<?php echo $all_trades_section['cta_url']; ?>" class="btn btn_primary"><?php echo $all_trades_section['cta_text']; ?></a>
                         </div>
                     </div>
                 </div>
                 <div class="column_right">
                     <div class="full_section_inner">
-                        <ul class="all_trades_list">
-                            <li>Electrical</li>
-                            <li>Framing</li>
-                            <li>Brick laying</li>
-                            <li>Plumbing</li>
-                            <li>Joinery</li>
-                            <li>Glazing</li>
-                            <li>Carpentry</li>
-                            <li>Demolition</li>
-                            <li>Rendering</li>
-                            <li>Tiling</li>
-                            <li>Waterproofing</li>
-                            <li>Landscaping</li>
-                            <li>Roofing</li>
-                            <li>Civil</li>
-                            <li>Masonry</li>
-                            <li>Concreting</li>
-                            <li>Painting</li>
-                            <li>Plastering</li>
-                        </ul>
+                        <div class="all_trades_list">
+                            <?php echo $all_trades_section['description']; ?>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="why_join_tickt">
+    <?php $why_join_tickt_section = get_field('why_join_tickt_section'); ?>
+    <section class="why_join_tickt" style='background-image: url("<?php echo $why_join_tickt_section['background_image']['url']; ?>");'>
         <div class="container_inner">
             <div class="flex_row">
                 <div class="column_left">
-                    <h2>Why join Tickt?</h2>
+                    <h2><?php echo $why_join_tickt_section['heading']; ?></h2>
                     <dl class="description_list">
-                        <dt>Convenience & accountability</dt>
-                        <dd>Got an urgent job? Simply create a job post and you'll start getting applicants.
-                            Compare quotes, view profiles, and hire the tradesperson that suits your needs. Rate
-                            your experience and build your reputation.</dd>
-                        <dt>True value for users</dt>
-                        <dd>No one should pay for a service that doesn't deliver. That's why signing up to Tickt
-                            is free. We take a small cut if your job is successful. So we don't make money
-                            unless you do.</dd>
-                        <dt>Your jobs, on all devices</dt>
-                        <dd>Stay connected on-site or on the couch. Whether you're posting jobs from the office,
-                            or checking off milestones on site, Tickt has you covered across all devices. Stay
-                            connected anywhere, anytime.</dd>
+                        <?php echo $why_join_tickt_section['description']; ?>
                     </dl>
-                    <button class="btn btn_primary">Sign up for free</button>
+                    <a href="<?php echo $why_join_tickt_section['cta_url']; ?>" class="btn btn_primary"><?php echo $why_join_tickt_section['cta_text']; ?></a>
                 </div>
                 <div class="column_right">
                     <figure>
-                        <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/app-devices.png" alt="">
+                        <img src="<?php echo $why_join_tickt_section['image']['url']; ?>" alt="">
                     </figure>
                 </div>
             </div>
