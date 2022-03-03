@@ -174,6 +174,15 @@ html {
 }
 .owl-carousel {
   touch-action: manipulation;
+  .owl-stage-outer {
+    .owl-stage {
+      width: 100% !important;
+      .owl-item {
+        width: 120px !important;
+        margin-right: 10px;
+      }
+    }
+  }
 }
 
 input::-webkit-outer-spin-button,
@@ -361,10 +370,11 @@ body {
 
 .onboard_wrapper {
   .react-multi-carousel-dot-list {
-    bottom: 295px;
-    @media (max-width: 1366px) {
-      bottom: 100px;
-    }
+    bottom: auto;
+    top: 40%;
+    // @media (max-width: 1366px) {
+    //   bottom: 100px;
+    // }
   }
   .react-multi-carousel-dot {
     button {
@@ -603,15 +613,16 @@ body {
 }
 
 .select_menu,
-.css-yk16xz-control, .css-1fhf3k1-control {
+.css-yk16xz-control,
+.css-1fhf3k1-control {
   min-height: 48px !important;
   border-radius: 3px !important;
   font-size: 14px;
   width: 100%;
   color: var(--blue);
-  background-color:  var(--grey) !important;
+  background-color: var(--grey) !important;
   letter-spacing: 0.5px;
-  font-family: 'Neue Haas Grotesk Text Pro Medium';
+  font-family: "Neue Haas Grotesk Text Pro Medium";
   .css-yk16xz-control {
     border: solid 1px var(--grey) !important;
     cursor: pointer;
@@ -626,10 +637,10 @@ body {
     }
   }
 }
-.css-1okebmr-indicatorSeparator{
+.css-1okebmr-indicatorSeparator {
   display: none;
 }
-.css-tlfecz-indicatorContainer{
+.css-tlfecz-indicatorContainer {
   color: var(--blue) !important;
 }
 .css-1pahdxg-control {
@@ -710,7 +721,6 @@ body {
 }
 // -----------No Internet close-------------//
 
-
 .disable_milstone {
   opacity: 0.6;
   pointer-events: none;
@@ -723,11 +733,11 @@ body {
   border: solid 1px var(--warm-gray);
   border-radius: 4px;
 }
-.ql-editor{
+.ql-editor {
   font-family: "Neue Haas Grotesk Text Pro Medium";
   text-transform: capitalize;
 }
-.ql-editor.ql-blank::before{
+.ql-editor.ql-blank::before {
   font-style: normal;
 }
 .ql-toolbar {
@@ -782,8 +792,6 @@ span.item-star {
 .rdrDayPassive {
   opacity: 0 !important;
 }
-
-
 
 .table_wrap {
   overflow-x: auto;
@@ -863,7 +871,6 @@ table {
 
 @include color_random_classes;
 
-
 // hide alt tag while image is loading.
 img:-moz-loading {
   visibility: hidden;
@@ -897,14 +904,13 @@ span.save_bookmark {
   justify-content: center;
 }
 
-
 /*  doc-viewer plugin */
 
 .doc-viewer-download-disabled {
   a#pdf-download {
     display: none;
   }
-  
+
   a#no-renderer-download {
     display: none;
   }

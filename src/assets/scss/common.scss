@@ -17,7 +17,7 @@ body {
 @import "./mixin";
 @import "./effects";
 
-@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter&display=swap");
 
 // -------------------Fonts-----------------------//
 // @font-face {
@@ -49,7 +49,8 @@ body {
   font-style: normal;
   font-weight: normal;
   src: local("Neue Haas Grotesk Text Pro Roman"),
-    url("../fonts/Neue\ Haas\ Grotesk\ Text\ Pro\ 55\ Roman.woff") format("woff"); //roman
+    url("../fonts/Neue\ Haas\ Grotesk\ Text\ Pro\ 55\ Roman.woff")
+      format("woff"); //roman
 }
 
 @font-face {
@@ -65,12 +66,12 @@ body {
   font-family: "Inter", sans-serif !important;
 }
 
-.ft_normal{
-  font-family: 'Inter';
+.ft_normal {
+  font-family: "Inter";
   font-weight: normal;
 }
-.ft_bold{
-  font-family: 'Neue Haas Grotesk Text Pro Medium';
+.ft_bold {
+  font-family: "Neue Haas Grotesk Text Pro Medium";
   font-size: 16px !important;
   color: var(--blue) !important;
 }
@@ -108,7 +109,7 @@ body {
   }
 }
 
-.mt-sm{
+.mt-sm {
   margin-top: 15px;
 }
 
@@ -131,28 +132,28 @@ body {
 }
 
 .title {
-  font: 32px/1.16 'Neue Haas Grotesk Text Pro Medium';
-	color: var(--blue);
-	margin-bottom: 32px;
-	display: block;
-	@media (max-width: 812px) {
-		font-size: 20px;
-		margin-bottom: 20px;
-	}
-	@media (max-width: 768px) {
-		font-size: 26px;
-		margin-bottom: 14px;
-		max-width: 85%;
-	}
-	@media (max-width: 650px) {
-		font-size: 18px;
-		max-width: 100%;
-		margin-bottom: 15px;
-	}
+  font: 32px/1.16 "Neue Haas Grotesk Text Pro Medium";
+  color: var(--blue);
+  margin-bottom: 32px;
+  display: block;
+  @media (max-width: 812px) {
+    font-size: 20px;
+    margin-bottom: 20px;
+  }
+  @media (max-width: 768px) {
+    font-size: 26px;
+    margin-bottom: 14px;
+    max-width: 85%;
+  }
+  @media (max-width: 650px) {
+    font-size: 18px;
+    max-width: 100%;
+    margin-bottom: 15px;
+  }
 }
 
 .sub_title {
-  font: 24px/1.33 'Neue Haas Grotesk Text Pro Medium';
+  font: 24px/1.33 "Neue Haas Grotesk Text Pro Medium";
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 16px;
@@ -170,7 +171,7 @@ body {
 }
 
 .xs_sub_title {
-  font: 18px/1.33 'Neue Haas Grotesk Text Pro Medium';
+  font: 18px/1.33 "Neue Haas Grotesk Text Pro Medium";
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 16px;
@@ -187,7 +188,7 @@ body {
 }
 
 .inner_title {
-  font: 16px/1.33 'Neue Haas Grotesk Text Pro Medium';
+  font: 16px/1.33 "Neue Haas Grotesk Text Pro Medium";
   color: var(--blue);
   letter-spacing: 0.1px;
   margin-bottom: 15px;
@@ -198,38 +199,37 @@ body {
 }
 
 .xs_head {
-  font: 14px 'Neue Haas Grotesk Text Pro Medium';
+  font: 14px "Neue Haas Grotesk Text Pro Medium";
   color: var(--blue);
   margin-bottom: 10px;
   display: block;
 }
 
-.tagg{
+.tagg {
   font-size: 15px;
   line-height: 1.13;
   color: var(--dark-grey);
   display: block;
   margin-bottom: 15px;
-  &.mb30{
+  &.mb30 {
     margin-bottom: 30px;
   }
 }
 
-
-.edit_icon{
-	position: absolute;
+.edit_icon {
+  position: absolute;
   right: auto;
   margin-left: 10px;
   top: 0px !important;
   cursor: pointer;
-	img{
-		width: 24px !important;
-		height: 24px !important;
+  img {
+    width: 24px !important;
+    height: 24px !important;
     @media (max-width: 650px) {
       width: 20px !important;
-		  height: 20px !important;
+      height: 20px !important;
     }
-	}
+  }
 }
 
 .icon {
@@ -247,10 +247,10 @@ body {
 }
 
 //------------------------Tags------------------//
-.show_more{
+.show_more {
   margin: 0 0 0 10px;
 }
- .tags_wrap {
+.tags_wrap {
   &.form_wrapper {
     width: 100%;
     max-width: 655px;
@@ -269,11 +269,11 @@ body {
     display: flex;
     flex-wrap: wrap;
     margin: 0 0 40px;
-    &.more_tags{
+    &.more_tags {
       max-height: 80px;
       overflow: hidden;
       margin: 0 0 8px;
-      &.active{
+      &.active {
         height: auto;
       }
     }
@@ -284,7 +284,7 @@ body {
       padding: 8px;
       @include border-radius(2px);
       background-color: #dfe4ed;
-      font: 12px/1.3 'Neue Haas Grotesk Text Pro Roman';
+      font: 12px/1.3 "Neue Haas Grotesk Text Pro Roman";
       color: var(--blue);
       cursor: pointer;
       &.active {
@@ -296,7 +296,7 @@ body {
         margin: 0;
         padding: 0;
         height: 90px;
-        img{
+        img {
           width: 100%;
           height: 100%;
           object-fit: contain;
@@ -328,7 +328,7 @@ body {
 .tag_status {
   padding: 4px 8px;
   @include border-radius(4px);
-  font: 10px/1.3 'Neue Haas Grotesk Text Pro Medium';
+  font: 10px/1.3 "Neue Haas Grotesk Text Pro Medium";
   letter-spacing: 0.5px;
   background-color: var(--light-gray);
   color: var(--greyish-brown);
@@ -373,22 +373,30 @@ body {
     align-items: center;
   }
   .reg {
-    @media (max-width: 812px) {
-      font-size: 13px;
-      font-weight: 500;
-    }
-    @media (max-width: 320px) {
-      font-size: 11px;
-    }
+    position: relative;
+    color: #fff;
+    // @media (max-width: 812px) {
+    //   font-size: 13px;
+    //   font-weight: 500;
+    // }
+    // @media (max-width: 320px) {
+    //   font-size: 11px;
+    // }
   }
 }
 
 .mob_logo {
   max-width: 200px;
-  margin: 30px auto 0;
+  margin: 120px auto 0;
   text-align: center;
+  position: relative;
 }
-
+.left_logo {
+  position: absolute;
+  left: 4%;
+  top: 102px;
+  margin: 0;
+}
 // preview
 .file_upload_box {
   border: 1px solid var(--warm-gray);
@@ -430,7 +438,7 @@ body {
 .form_wrapper {
   padding: 100px 0 30px;
   width: 327px;
-  margin: 0 auto 0 140px;
+  margin: 0 auto;
   max-width: 327px;
   @media (max-width: 1150px) {
     padding: 70px 30px 40px;
@@ -514,12 +522,12 @@ body {
   transform: translateY(-50%);
   width: 24px;
   height: 24px;
-  &.bk_white{
-    background: url('../images/icon-back-white.png') center no-repeat;
+  &.bk_white {
+    background: url("../images/icon-back-white.png") center no-repeat;
   }
 }
 .share {
-  font: 14px/1.14 'Neue Haas Grotesk Text Pro Medium';
+  font: 14px/1.14 "Neue Haas Grotesk Text Pro Medium";
   letter-spacing: 0.1px;
   color: var(--greyish-brown);
   position: relative;
@@ -611,7 +619,7 @@ body {
 }
 
 .autosuggestion_icon {
-  font: 14px 'Neue Haas Grotesk Text Pro Medium';
+  font: 14px "Neue Haas Grotesk Text Pro Medium";
   color: var(--greyish-brown);
   position: relative;
   padding-left: 55px;
@@ -642,11 +650,11 @@ body {
   border-radius: 50%;
   z-index: 9;
   cursor: pointer;
-  background: url('../images/save.png') center no-repeat;
+  background: url("../images/save.png") center no-repeat;
   background-size: auto;
-  @include position(absolute, 0, 10px, auto, auto);
-  &.active{
-    background: url('../images/saved.png') center no-repeat;
+  @include position(absolute, 0, auto, auto, 415px);
+  &.active {
+    background: url("../images/saved.png") center no-repeat;
     background-size: auto;
   }
 }
@@ -712,62 +720,61 @@ body {
       color: #ed1c24;
     }
   }
-  &.notifications{
+  &.notifications {
     .MuiMenu-paper {
       width: 433px;
-      .sub_title{
+      .sub_title {
         font-size: 20px;
         margin-bottom: 20px;
       }
     }
-    .mark_all{
+    .mark_all {
       @include position(absolute, 15px, 15px, auto, auto);
     }
-    
-    .MuiListItem-button{
+
+    .MuiListItem-button {
       background-color: #f6f7f9;
       padding-bottom: 10px;
       margin: 0 -32px 0px;
-      &:last-child{
+      &:last-child {
         padding-bottom: 0;
       }
-      &.unread{
+      &.unread {
         background-color: var(--white);
-        &:hover{
+        &:hover {
           background-color: #f6f7f9;
         }
-        .who{
-          font-family: 'Neue Haas Grotesk Text Pro Medium';
+        .who {
+          font-family: "Neue Haas Grotesk Text Pro Medium";
         }
       }
     }
-    .notif{
+    .notif {
       width: 92%;
     }
   }
-  
 }
 
-.more_notif{
+.more_notif {
   text-align: center;
   padding: 10px 0;
 }
 
-.notif{
+.notif {
   position: relative;
-  span{
+  span {
     font-size: 14px;
     line-height: 1.43;
     color: var(--greyish-brown);
     margin: 2px 0;
     display: block !important;
   }
-  .time{
+  .time {
     @include position(absolute, 0, 0, auto, auto);
     color: var(--dark-grey);
     font-size: 12px;
   }
-  .not_img{
+  .not_img {
     width: 64px;
     height: 64px;
     margin-right: 10px;
@@ -775,13 +782,13 @@ body {
     display: inline-block;
     vertical-align: top;
     position: relative;
-    img{
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: 50%;
     }
-    .dot{
+    .dot {
       width: 12px;
       height: 12px;
       background-color: var(--yellow);
@@ -789,33 +796,33 @@ body {
       @include position(absolute, 3px, auto, auto, 0px);
     }
   }
-  .see{
+  .see {
     color: #123f95;
-    font-family: 'Neue Haas Grotesk Text Pro Medium';
+    font-family: "Neue Haas Grotesk Text Pro Medium";
     padding: 2px 8px;
     border-radius: 6px;
     background-color: var(--grey);
     display: inline-block !important;
   }
-  .info{
+  .info {
     width: 55%;
     display: inline-block;
   }
 }
 
-.no_notification{
+.no_notification {
   display: flex;
   justify-content: center;
   align-items: center;
   flex-flow: column;
   height: 330px;
-  figure{
+  figure {
     height: 100px;
-    img{
+    img {
       height: 100px;
     }
   }
-  span{
+  span {
     color: #547ac2;
     font-size: 14px;
     display: block;
@@ -828,101 +835,100 @@ body {
 //------------------------Onboard Model-------------------------//
 .onboard_modal {
   padding: 0 !important;
-  .close_btn{
+  .close_btn {
     top: 20px !important;
     right: 30px !important;
   }
-	.react-multi-carousel-dot-list {
-		bottom: 135px;
-	}
-	.left_col {
-		width: 312px;
-		max-height: 100vh;
-		position: fixed;
-		overflow: hidden;
-		@media (max-width: 812px) {
-			display: none;
-		}
-		.banner_img {
-			@media (max-width: 1500px) {
-				height: 550px;
-			}
-			@media (max-width: 1024px) {
-				height: 667px;
-			}
-		}
-		.bottom_txt {
-			left: 45%;
-			bottom: 5%;
-		}
-	}
-	.right_col {
-		padding-left: 312px;
-		@media (max-width: 812px) {
-			padding-left: 0;
-		}
-		.form_wrapper {
-			margin: 0 32px;
-			padding: 0px 0px 30px;
-			@media (max-width: 812px) {
-				margin: 0 auto;
-				padding: 40px 20px;
-			}
-			&.select_sphere{
-				max-width: 530px;
-				@media (max-width: 768px){
-					max-width: 550px;
-				}
-				ul{
-					li{
-						margin: 0 11px 25px 11px;
-					}
-				}
-			}
-			&.tags_wrap{
-				max-width: 515px;
-			}
-		}
-	}
-	.onboard_wrapper {
-		background: var(--white);
-		.onboarding_head {
-			margin: 40px 0 40px 60px;
-			@media (max-width: 768px){
-				margin: 40px auto 30px
-			}
-			.back_btn {
-				left: -45px;
-				background: url('../images/icon-direction-left.png') center no-repeat;
-				@media (max-width: 768px){
-					left: 160px;
-					z-index: 9;
-				}
-			}
-			h1 {
-				color: var(--blue);
-				@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-					text-align: center;
-				}
-			}
-		}
-		.custom_steppr {
-			li{
-				&.active {
-					background-color: var(--blue-two);
-				}
-			}
-		}
-	}
-	.img_text_wrap {
-		.full_image{
-			height: 100%;
-			@media (max-width: 1366px)
-			{
-			   height: 100%;
-		   }
-		}
-	}
+  .react-multi-carousel-dot-list {
+    bottom: 135px;
+  }
+  .left_col {
+    width: 312px;
+    max-height: 100vh;
+    position: fixed;
+    overflow: hidden;
+    @media (max-width: 812px) {
+      display: none;
+    }
+    .banner_img {
+      @media (max-width: 1500px) {
+        height: 550px;
+      }
+      @media (max-width: 1024px) {
+        height: 667px;
+      }
+    }
+    .bottom_txt {
+      left: 45%;
+      bottom: 5%;
+    }
+  }
+  .right_col {
+    padding-left: 312px;
+    @media (max-width: 812px) {
+      padding-left: 0;
+    }
+    .form_wrapper {
+      margin: 0 32px;
+      padding: 0px 0px 30px;
+      @media (max-width: 812px) {
+        margin: 0 auto;
+        padding: 40px 20px;
+      }
+      &.select_sphere {
+        max-width: 530px;
+        @media (max-width: 768px) {
+          max-width: 550px;
+        }
+        ul {
+          li {
+            margin: 0 11px 25px 11px;
+          }
+        }
+      }
+      &.tags_wrap {
+        max-width: 515px;
+      }
+    }
+  }
+  .onboard_wrapper {
+    background: var(--white);
+    .onboarding_head {
+      margin: 40px 0 40px 60px;
+      @media (max-width: 768px) {
+        margin: 40px auto 30px;
+      }
+      .back_btn {
+        left: -45px;
+        background: url("../images/icon-direction-left.png") center no-repeat;
+        @media (max-width: 768px) {
+          left: 160px;
+          z-index: 9;
+        }
+      }
+      h1 {
+        color: var(--blue);
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+          text-align: center;
+        }
+      }
+    }
+    .custom_steppr {
+      li {
+        &.active {
+          background-color: var(--blue-two);
+        }
+      }
+    }
+  }
+  .img_text_wrap {
+    .full_image {
+      height: 100%;
+      @media (max-width: 1366px) {
+        height: 100%;
+      }
+    }
+  }
 }
 
 .bottom_txt {
@@ -935,11 +941,26 @@ body {
   @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
     bottom: 10%;
   }
-  .reg {
-    font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
-    letter-spacing: 0.1px;
-    color: var(--white);
-  }
+  // .reg {
+  //   font: 14px/1.29 "Neue Haas Grotesk Text Pro Medium";
+  //   letter-spacing: 0.1px;
+  //   color: var(--white);
+  // }
+  // .link {
+  //   color: var(--yellow);
+  //   &:after {
+  //     background-color: var(--yellow);
+  //   }
+  //   &:hover {
+  //     color: var(--yellow) !important;
+  //   }
+  // }
+}
+.reg {
+  position: relative;
+  font: 14px/1.29 "Neue Haas Grotesk Text Pro Bold";
+  letter-spacing: 0.1px;
+  color: var(--white);
   .link {
     color: var(--yellow);
     &:after {
@@ -950,18 +971,18 @@ body {
     }
   }
 }
-
 .banner_img {
   position: relative;
+  height: 100vh;
+  z-index: -1;
   @media (max-width: 1366px) {
     height: 100vh;
   }
   img {
     width: 100%;
-    @media (max-width: 1366px) {
-      height: 100%;
-      object-fit: cover;
-    }
+    height: 100%;
+    object-position: center;
+    object-fit: cover;
   }
 }
 
@@ -973,11 +994,11 @@ body {
 .slider_txt {
   z-index: 9;
   text-align: center;
-  @include position(absolute, 45%, auto, auto, 50%);
+  @include position(absolute, 20%, auto, auto, 50%);
   transform: translate(-50%, 50%);
   width: 100%;
   span {
-    font: 26px/1.25 'Neue Haas Grotesk Text Pro Medium';
+    font: 26px/1.25 "Neue Haas Grotesk Text Pro Bold";
     letter-spacing: 0.1px;
     color: var(--white);
     max-width: 262px;
@@ -992,19 +1013,19 @@ body {
 //----------------------Onboard Model close----------------------//
 
 //----------------------Job/Story/Profile Detail-------------------//
-.change_req_detail{
-  ul{
-    &:not(:last-child){
+.change_req_detail {
+  ul {
+    &:not(:last-child) {
       border-bottom: 1px solid var(--grey);
       margin-bottom: 10px;
     }
-    li{
+    li {
       margin-bottom: 10px;
     }
   }
-  .inner_title{
+  .inner_title {
     margin: 0;
-    font: 15px/1.33 'Neue Haas Grotesk Text Pro Roman';
+    font: 15px/1.33 "Neue Haas Grotesk Text Pro Roman";
   }
 }
 
@@ -1029,20 +1050,20 @@ body {
     }
   }
   .job_categories {
-    li{
+    li {
       cursor: auto;
     }
   }
-  .tags_wrap{
-    ul{
-      li{
+  .tags_wrap {
+    ul {
+      li {
         cursor: auto;
       }
     }
   }
   .back {
     top: -20px;
-	  left: 10px;
+    left: 10px;
     cursor: pointer;
     @media (max-width: 650px) {
       top: -20px !important;
@@ -1068,81 +1089,82 @@ body {
       width: 100%;
       height: 400px;
       object-fit: contain;
-	  @include border-radius(3px);
-    @media (max-width: 650px){
-      width: 100% !important;
-    }
-    }
-  .doc_icon{
-    padding-top: 125px;
-    padding-bottom: 125px;
-  }
-	.edit_icon{
-		top: 10px !important;
-		right: 20px;
-    img{
-      @media (max-width: 650px){
-        width: 24px !important;
-      }
-    }
-	}
-	.owl-nav{
-    .nav-btn{
-      width: 40px;
-			height: 40px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-		.owl-prev{
-			@include position(absolute, auto, 80px, 30px, auto);
-			@include border-radius(50%);
-			background-color: #938d8b;	
-			&:hover{
-				background-color: var(--blue-two);
-			}
+      @include border-radius(3px);
       @media (max-width: 650px) {
-        @include position(absolute, auto, 80px, 40px, auto);
+        width: 100% !important;
       }
-		}
-		.owl-next{
-			@include position(absolute, auto, 20px, 30px, auto);
-			@include border-radius(50%);
-			background-color: #938d8b;
-			&:hover{
-				background-color: var(--blue-two);
-			}
-      @media (max-width: 650px) {
-        @include position(absolute, auto, 20px, 40px, auto);
-      }
-		}
-		img{
-			width: 18px !important;
-			height: 18px;
-		}
-	}
-	.owl-dots{
-		@include position(absolute, auto, auto, 40px, 30px);
-    @media (max-width: 650px) {
-      @include position(absolute, auto, auto, 50px, 10px);
     }
-		.owl-dot span{
-			background: rgba(255, 255, 255, 0.4);
-		}
-		.owl-dot.active span, .owl-dot:hover span{
-			background: var(--white);
-		}
-	}
+    .doc_icon {
+      padding-top: 125px;
+      padding-bottom: 125px;
+    }
+    .edit_icon {
+      top: 10px !important;
+      right: 20px;
+      img {
+        @media (max-width: 650px) {
+          width: 24px !important;
+        }
+      }
+    }
+    .owl-nav {
+      .nav-btn {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .owl-prev {
+        @include position(absolute, auto, 80px, 30px, auto);
+        @include border-radius(50%);
+        background-color: #938d8b;
+        &:hover {
+          background-color: var(--blue-two);
+        }
+        @media (max-width: 650px) {
+          @include position(absolute, auto, 80px, 40px, auto);
+        }
+      }
+      .owl-next {
+        @include position(absolute, auto, 20px, 30px, auto);
+        @include border-radius(50%);
+        background-color: #938d8b;
+        &:hover {
+          background-color: var(--blue-two);
+        }
+        @media (max-width: 650px) {
+          @include position(absolute, auto, 20px, 40px, auto);
+        }
+      }
+      img {
+        width: 18px !important;
+        height: 18px;
+      }
+    }
+    .owl-dots {
+      @include position(absolute, auto, auto, 40px, 30px);
+      @media (max-width: 650px) {
+        @include position(absolute, auto, auto, 50px, 10px);
+      }
+      .owl-dot span {
+        background: rgba(255, 255, 255, 0.4);
+      }
+      .owl-dot.active span,
+      .owl-dot:hover span {
+        background: var(--white);
+      }
+    }
   }
   .description {
     margin: 45px 0px 20px;
     .sub_title {
       margin-bottom: 18px;
-      @media (max-width: 650px){
+      @media (max-width: 650px) {
         margin-bottom: 12px;
       }
     }
-    &.public_view_btn2{
+    &.public_view_btn2 {
       margin: 125px 0px 20px;
     }
     p {
@@ -1152,38 +1174,38 @@ body {
       margin: 0 0 15px 0;
     }
   }
-  .area{
+  .area {
     margin: 45px 0px 20px;
   }
   .detail_card {
     padding: 0 0 0 10px;
-    @include position(absolute, 0, auto, auto, auto);
+    @include position(0, auto, auto, auto);
     width: 95%;
-    .form_field{
+    .form_field {
       margin-bottom: 15px;
-      &:last-child{
+      &:last-child {
         margin: 0;
       }
     }
-	.full_btn{
-		width: 100%;
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    .full_btn {
       width: 100%;
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        width: 100%;
+      }
     }
-	}
     @media (max-width: 768px) {
       position: initial;
       width: 100%;
     }
-    .full_btn{
+    .full_btn {
       width: 100%;
       @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
         width: 100%;
       }
     }
     .job_info {
-		padding: 12px 15px;
-    margin: 0;
+      padding: 12px 15px;
+      margin: 0;
       ul {
         justify-content: initial;
         li {
@@ -1193,12 +1215,12 @@ body {
             font-size: 12px;
             padding-left: 5px;
           }
-          &.icon{
+          &.icon {
             padding-left: 38px;
             @media (max-width: 650px) {
               padding-left: 28px;
             }
-            &:before{
+            &:before {
               width: 24px;
               height: 24px;
               @media (max-width: 650px) {
@@ -1209,23 +1231,23 @@ body {
             }
             &.clock {
               &::before {
-                background: url('../images/clock-1.png') center no-repeat;
+                background: url("../images/clock-1.png") center no-repeat;
               }
             }
             &.dollar {
               &::before {
-                background: url('../images/dollar-1.png') center no-repeat;
+                background: url("../images/dollar-1.png") center no-repeat;
               }
             }
             &.location {
               line-height: 1.8;
               &::before {
-                background: url('../images/location-1.png') center no-repeat;
+                background: url("../images/location-1.png") center no-repeat;
               }
             }
             &.calendar {
               &::before {
-                background: url('../images/calendar-1.png') center no-repeat;
+                background: url("../images/calendar-1.png") center no-repeat;
               }
             }
           }
@@ -1242,21 +1264,21 @@ body {
       }
     }
     .title {
-		margin-bottom: 16px;
-    position: relative;
-    width: 100%;
+      margin-bottom: 16px;
+      position: relative;
+      width: 100%;
       @media (max-width: 1024px) {
         font-size: 22px;
       }
       @media (max-width: 812px) {
         font-size: 17px;
       }
-      .edit_icon{
+      .edit_icon {
         right: 0;
       }
     }
     .sub_title {
-		position: relative;
+      position: relative;
       @media (max-width: 812px) {
         font-size: 15px;
       }
@@ -1290,9 +1312,9 @@ body {
       }
     }
   }
-  .job_progress_wrap{
+  .job_progress_wrap {
     max-width: 345px;
-    .approval_info{
+    .approval_info {
       right: auto;
       left: 0;
       top: -22px;
@@ -1300,145 +1322,144 @@ body {
   }
 }
 
-.review_job{
+.review_job {
   display: flex;
   align-items: center;
   margin-bottom: 16px;
-  li{
-      // width: 180px;
-      width: 100%;
-      height: 80px;
-      padding: 16px;
-      background-color: #f7f8fa;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-flow: column;
-      &:not(:last-child){
-        margin-right: 16px;
+  li {
+    // width: 180px;
+    width: 100%;
+    height: 80px;
+    padding: 16px;
+    background-color: #f7f8fa;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-flow: column;
+    &:not(:last-child) {
+      margin-right: 16px;
+    }
+    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      padding: 10px;
+      margin-right: 10px;
+    }
+    .icon {
+      position: relative;
+      padding-left: 35px;
+      font: 24px "Neue Haas Grotesk Text Pro Medium";
+      color: var(--blue);
+      margin-bottom: 8px;
+      display: block;
+      min-height: 30px;
+      &::before {
+        width: 24px;
+        height: 24px;
       }
-      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-        padding: 10px;
-        margin-right: 10px;
+      &.reviews {
+        &::before {
+          background: url("../images/reviews.png") center no-repeat;
+          background-size: contain;
+        }
       }
-      .icon{
-          position: relative;
-          padding-left: 35px;
-          font: 24px 'Neue Haas Grotesk Text Pro Medium';
-          color: var(--blue);
-          margin-bottom: 8px;
-          display: block;
-          min-height: 30px;
-          &::before{
-              width: 24px;
-              height: 24px;
-          }
-          &.reviews{
-             &::before{
-                  background: url('../images/reviews.png') center no-repeat;
-                  background-size: contain;
-             }
-          }
-          &.job{
-              &::before{
-                  background: url('../images/jobs-complete.png') center no-repeat;
-                  background-size: contain;
-              }
-          }
+      &.job {
+        &::before {
+          background: url("../images/jobs-complete.png") center no-repeat;
+          background-size: contain;
+        }
       }
-      .review_count{
-        font-size: 14px;
-        color: var(--greyish-brown);
-        line-height: 1;
-        margin-top: 10px;
-      }
+    }
+    .review_count {
+      font-size: 14px;
+      color: var(--greyish-brown);
+      line-height: 1;
+      margin-top: 10px;
+    }
   }
 }
 
-
-.portfolio_wrappr{
+.portfolio_wrappr {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 30px;
-  .media{
-      display: inline-block;
-      cursor: pointer;
-      .line-3{
-        -webkit-line-clamp: 7;
+  .media {
+    display: inline-block;
+    cursor: pointer;
+    .line-3 {
+      -webkit-line-clamp: 7;
+    }
+    .portfolio_img {
+      width: 178px;
+      height: 178px;
+      border-radius: 3px;
+      position: relative;
+      overflow: hidden;
+      @media (max-width: 650px) {
+        width: 145px;
+        height: 145px;
       }
-      .portfolio_img{
-          width: 178px;
-          height: 178px;
-          border-radius: 3px;
-          position: relative;
-          overflow: hidden;
-          @media(max-width: 650px){
-            width: 145px;
-            height: 145px;
-          }
-          img{
-              width: 100%;
-              height: 100%;
-              object-fit: cover;
-          }
-          .xs_sub_title{
-            @include position(absolute, auto, auto, -100%, 0px);
-              margin: 0;
-              color: var(--white);
-              line-height: 1.3;
-              justify-content: center;
-              display: flex;
-              align-items: flex-end;
-              padding: 10px;
-              -webkit-transition: all ease .6s;
-              -o-transition: all ease .6s;
-              transition: all ease .6s;
-              width: 100%;
-              height: 100%;
-              opacity: 0;
-              visibility: hidden;
-          }
-          .edit_icon{
-            opacity: 0;
-            visibility: hidden;
-            right: -100%;
-            top: 10px !important;
-            -webkit-transition: all ease .6s;
-            -o-transition: all ease .6s;
-            transition: all ease .6s;
-            z-index: 9;
-          }
-          &.active, &:hover{
-              .xs_sub_title{
-                  visibility: visible;
-                  opacity: 1;
-                  background-color: rgba(22, 29, 74, 0.5);
-                  bottom: 0;
-              }
-              .edit_icon{
-                visibility: visible;
-                opacity: 1;
-                right: 10px;
-              }
-          }
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
       }
-      
+      .xs_sub_title {
+        @include position(absolute, auto, auto, -100%, 0px);
+        margin: 0;
+        color: var(--white);
+        line-height: 1.3;
+        justify-content: center;
+        display: flex;
+        align-items: flex-end;
+        padding: 10px;
+        -webkit-transition: all ease 0.6s;
+        -o-transition: all ease 0.6s;
+        transition: all ease 0.6s;
+        width: 100%;
+        height: 100%;
+        opacity: 0;
+        visibility: hidden;
+      }
+      .edit_icon {
+        opacity: 0;
+        visibility: hidden;
+        right: -100%;
+        top: 10px !important;
+        -webkit-transition: all ease 0.6s;
+        -o-transition: all ease 0.6s;
+        transition: all ease 0.6s;
+        z-index: 9;
+      }
+      &.active,
+      &:hover {
+        .xs_sub_title {
+          visibility: visible;
+          opacity: 1;
+          background-color: rgba(22, 29, 74, 0.5);
+          bottom: 0;
+        }
+        .edit_icon {
+          visibility: visible;
+          opacity: 1;
+          right: 10px;
+        }
+      }
+    }
   }
 }
 
-.chang_req_card{
+.chang_req_card {
   min-height: 140px;
   padding: 14px 10px 14px 14px;
   box-shadow: 0 10px 30px 0 rgba(183, 183, 211, 0.19);
   background-color: var(--white);
   margin-bottom: 16px;
-  button{
+  button {
     width: 140px;
     padding: 15px 10px;
-    &:last-child{
+    &:last-child {
       margin-left: 15px;
     }
-    @media(max-width: 1024px){
+    @media (max-width: 1024px) {
       width: 110px;
       padding: 12px 10px;
     }
@@ -1450,16 +1471,16 @@ body {
 //-------------------Review Rating card-----------------------//
 .review_parent {
   .flex_col_sm_3 {
-    @media(max-width: 1024px){
+    @media (max-width: 1024px) {
       width: 33.33%;
     }
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       width: 50%;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       width: 50%;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 100%;
     }
   }
@@ -1473,7 +1494,7 @@ body {
   @include border-radius(3px);
   background-color: #f7f8fa;
   position: relative;
-  &:hover{
+  &:hover {
     box-shadow: 0 0 20px 0 #00000014;
   }
   @media (max-width: 812px) {
@@ -1498,13 +1519,13 @@ body {
       width: 80%;
       .user_name {
         display: block;
-        font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
+        font: 14px/1.43 "Neue Haas Grotesk Text Pro Medium";
         color: var(--blue);
         max-width: 125px;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
-        @media(max-width: 1366px){
+        @media (max-width: 1366px) {
           max-width: 110px;
         }
       }
@@ -1516,7 +1537,7 @@ body {
       }
     }
   }
-  .commn_para{
+  .commn_para {
     margin: 0;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -1524,7 +1545,7 @@ body {
     -webkit-line-clamp: 4;
     -webkit-box-orient: vertical;
   }
-  
+
   .r_tag_wrap {
     display: flex;
     flex-flow: wrap;
@@ -1535,49 +1556,48 @@ body {
       @include border-radius(6px);
       background-color: var(--white);
       display: inline-flex;
-      font: 12px/1.5 'Neue Haas Grotesk Text Pro Medium';
+      font: 12px/1.5 "Neue Haas Grotesk Text Pro Medium";
       text-align: center;
       color: var(--greyish-brown);
     }
   }
   .bottom_note {
-    font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
+    font: 14px/1.29 "Neue Haas Grotesk Text Pro Medium";
     color: var(--blue);
   }
-  &.vouchers{
-    .commn_para{
+  &.vouchers {
+    .commn_para {
       -webkit-line-clamp: 4;
     }
   }
-  .vouch{
+  .vouch {
     margin-top: 15px;
-    .vouch_icon{
+    .vouch_icon {
       width: 18px;
       height: 18px;
       display: inline-block;
       vertical-align: middle;
       margin-right: 6px;
-      img{
+      img {
         width: 100%;
         height: 100%;
       }
     }
-    .link{
+    .link {
       font-size: 12px;
     }
   }
-  
 }
 
-.add_vouch{
-  padding: 16px 18px
+.add_vouch {
+  padding: 16px 18px;
 }
 
 .rating_star {
   @include position(absolute, 12px, 10px, auto, auto);
   font-size: 14px;
   .react-stars {
-    span{
+    span {
       margin: 0;
     }
   }
@@ -1585,48 +1605,48 @@ body {
 //-------------------Review Rating card close-----------------------//
 
 //-------------------Question Answer/ Custom/ Filter model------------------------//
-.custom_wh{
+.custom_wh {
   position: relative;
-	padding: 30px;
-	width: 880px;
-	max-width: 880px;
-	margin: 80px auto;
-	background-color: var(--white);
-	height: 666px;
-	max-height: 666px;
-	overflow-y: auto;
-	border-radius: 3px;
-	@media (max-width: 1500px) {
-		margin: 16px auto 0;
-		height: 550px;
-		max-height: 550px;
-	}
-	@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-		width: 90% !important;
-		margin: 30px auto;
-		height: 100% !important;
-	}
+  padding: 30px;
+  width: 880px;
+  max-width: 880px;
+  margin: 80px auto;
+  background-color: var(--white);
+  height: 666px;
+  max-height: 666px;
+  overflow-y: auto;
+  border-radius: 3px;
+  @media (max-width: 1500px) {
+    margin: 16px auto 0;
+    height: 550px;
+    max-height: 550px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    width: 90% !important;
+    margin: 30px auto;
+    height: 100% !important;
+  }
   @media (max-width: 1280px) {
-		margin: 20px auto 0;
+    margin: 20px auto 0;
     height: 460px;
     max-height: 460px;
-	}
-	@media (max-width: 768px) {
-		width: 95% !important;
-		height: 100% !important;
-		max-height: 90% !important;
-	}
-	@media (max-width: 650px) {
+  }
+  @media (max-width: 768px) {
+    width: 95% !important;
+    height: 100% !important;
+    max-height: 90% !important;
+  }
+  @media (max-width: 650px) {
     padding: 18px 15px;
-	}
+  }
   textarea {
     min-height: 95px;
   }
-  &.ask_ques{
+  &.ask_ques {
     width: 864px;
-	  max-width: 864px;
+    max-width: 864px;
     height: 503px;
-	  max-height: 503px;
+    max-height: 503px;
     @media (max-width: 1500px) {
       margin: 16px auto 0;
       height: 490px;
@@ -1654,17 +1674,17 @@ body {
     }
     textarea {
       min-height: 242px;
-    @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-      min-height: 130px;
-    }
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        min-height: 130px;
+      }
     }
   }
-  &.confirmation{
+  &.confirmation {
     width: 480px;
-	  max-width: 480px;
+    max-width: 480px;
     height: 255px;
-	  max-height: 255px;
-    @media (max-width: 1500px){
+    max-height: 255px;
+    @media (max-width: 1500px) {
       margin: 80px auto 0;
     }
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
@@ -1681,7 +1701,7 @@ body {
       height: auto !important;
       margin: 15px auto;
     }
-    .modal_message{
+    .modal_message {
       text-align: center;
       max-height: 115px;
       overflow-y: auto;
@@ -1689,59 +1709,60 @@ body {
       align-items: center;
       justify-content: center;
       height: 100%;
-      p{
+      p {
         font-size: 16px;
         line-height: 1.5;
-        @media (max-width: 650px){
+        @media (max-width: 650px) {
           font-size: 14px;
         }
       }
     }
-    .dialog_actions{
+    .dialog_actions {
       @include position(absolute, auto, auto, 18px, 50%);
       transform: translateX(-50%);
-      .fill_btn, .fill_grey_btn{
+      .fill_btn,
+      .fill_grey_btn {
         padding: 12px 25px;
       }
     }
   }
-  &.portfolio_preview{
+  &.portfolio_preview {
     width: 864px;
     max-width: 864px;
     height: 378px;
     max-height: 378px;
     padding: 30px 30px 0px;
-    @media (max-width: 650px){
-    padding: 30px 20px 0px;
+    @media (max-width: 650px) {
+      padding: 30px 20px 0px;
     }
     .dot_menu {
-      @media (max-width: 650px){
+      @media (max-width: 650px) {
         top: 6px;
       }
-  }
-    .heading{
+    }
+    .heading {
       margin: 0;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         margin-bottom: 25px;
         position: relative;
       }
-      .close_btn{
-        @media(max-width: 650px){
+      .close_btn {
+        @media (max-width: 650px) {
           top: -10px;
           right: 0;
         }
       }
     }
-    .xs_sub_title{
+    .xs_sub_title {
       max-width: 350px;
     }
-    .job_content{
+    .job_content {
       max-height: 275px;
       overflow-y: auto;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         max-height: 100%;
       }
-      p{
+      p {
         margin: 0;
         font-size: 14px;
         line-height: 1.43;
@@ -1749,7 +1770,7 @@ body {
       }
     }
     .portfolio_wrappr {
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         margin-bottom: 15px;
       }
       .media {
@@ -1759,7 +1780,7 @@ body {
           height: 314px;
         }
       }
-      .react-multi-carousel-dot-list{
+      .react-multi-carousel-dot-list {
         bottom: 16px;
         border-radius: 12px;
         -webkit-backdrop-filter: blur(27px);
@@ -1769,61 +1790,61 @@ body {
         transform: translateX(-50%);
         right: auto;
         padding: 4px 6px;
-        li{
+        li {
           display: flex;
           justify-content: center;
           align-items: center;
-          &:last-child{
-            button{
+          &:last-child {
+            button {
               margin: 0;
             }
           }
         }
       }
-      .react-multi-carousel-dot.react-multi-carousel-dot--active button{
+      .react-multi-carousel-dot.react-multi-carousel-dot--active button {
         background-color: var(--yellow) !important;
       }
-      .react-multi-carousel-dot button{
+      .react-multi-carousel-dot button {
         width: 6px;
         height: 6px;
       }
     }
   }
-  &.vouch_modal{
+  &.vouch_modal {
     textarea {
       min-height: 154px !important;
     }
-    .img_video{
+    .img_video {
       margin: 0 21px 21px 0;
     }
-    .descr{
+    .descr {
       max-height: 550px;
-      @media(max-width: 1500px){
+      @media (max-width: 1500px) {
         max-height: 440px;
       }
-      @media(max-width: 1366px){
+      @media (max-width: 1366px) {
         max-height: 350px;
       }
     }
   }
-  &.profile_modal{
+  &.profile_modal {
     width: 686px;
     max-width: 686px;
-    &.vouch_modal{
-      .inner_wrap{
+    &.vouch_modal {
+      .inner_wrap {
         padding-bottom: 25px;
-        @media(max-width: 1366px){
+        @media (max-width: 1366px) {
           padding-bottom: 40px;
         }
-        .upload_img_video{
+        .upload_img_video {
           margin-bottom: 5px;
         }
       }
     }
-    .inner_wrappr{
+    .inner_wrappr {
       max-width: 606px;
     }
-    .form_wrapper{
+    .form_wrapper {
       padding: 0;
       width: 540px;
       margin: 0 auto;
@@ -1838,47 +1859,44 @@ body {
         min-height: 220px;
       }
     }
-    .checkbox_wrap{   
-      label{
+    .checkbox_wrap {
+      label {
         font-size: 16px;
-        font-family: 'Neue Haas Grotesk Text Pro Roman';
+        font-family: "Neue Haas Grotesk Text Pro Roman";
         max-width: 550px;
       }
     }
     .full_btn {
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         width: 100%;
       }
     }
   }
-  
-  .back{
+
+  .back {
     top: 5px;
     transform: initial;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       top: 0;
     }
-    &.bk_white{
+    &.bk_white {
       top: 10px;
       left: 10px;
-      background: url('../images/icon-back-white.png') center no-repeat;
+      background: url("../images/icon-back-white.png") center no-repeat;
       z-index: 9;
       cursor: pointer;
     }
   }
-  .md_heading{
+  .md_heading {
     padding-left: 40px;
-    .sub_title{
+    .sub_title {
       margin-bottom: 5px;
     }
-    .info_note{
-      font-family: 'Inter';
+    .info_note {
+      font-family: "Inter";
     }
   }
-
 }
-
-
 
 .ques_ans_modal,
 .custom_modal {
@@ -1929,13 +1947,13 @@ body {
     max-height: 460px;
     overflow-y: auto;
     overflow-x: hidden;
-    @media (max-width: 1500px){
+    @media (max-width: 1500px) {
       max-height: 350px;
     }
-    @media (max-width: 1280px){
+    @media (max-width: 1280px) {
       max-height: 290px;
     }
-    @media (max-width: 768px){
+    @media (max-width: 768px) {
       max-height: 90%;
     }
   }
@@ -1962,7 +1980,7 @@ body {
       @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
         position: relative;
       }
-      
+
       .full_btn {
         @media (max-width: 1024px) {
           width: 200px;
@@ -2008,7 +2026,7 @@ body {
 }
 
 .filter_modal {
-  overflow:  hidden;
+  overflow: hidden;
   .filter_btn {
     padding: 0 12px 0;
     background-color: var(--white);
@@ -2089,11 +2107,11 @@ body {
     transition: all ease-in 0.3s;
     background-color: #f6f6f6;
     position: relative;
-    span{
+    span {
       font-size: 14px;
       color: var(--greyish-brown);
       position: relative;
-      font-family: 'Neue Haas Grotesk Text Pro Roman';
+      font-family: "Neue Haas Grotesk Text Pro Roman";
       cursor: pointer;
       line-height: 1.43;
       letter-spacing: 0.3px;
@@ -2102,10 +2120,10 @@ body {
     &.active {
       box-shadow: 2px 0 20px 0 rgba(46, 61, 73, 0.2);
     }
-    .remove_card{
+    .remove_card {
       @include position(absolute, -5px, -5px, auto, auto);
       overflow: initial;
-      img{
+      img {
         width: 18px;
         height: 18px;
       }
@@ -2118,23 +2136,23 @@ body {
         left: 5px;
       }
     }
-    &.ico_txt_wrap{
+    &.ico_txt_wrap {
       display: flex;
       min-height: 72px;
-      .ico{
+      .ico {
         width: 24px;
         height: 24px;
         padding: 2px;
         margin-right: 7px;
         background-image: linear-gradient(to top, #161d4a, #0b41a8);
         border-radius: 4px;
-        img{
+        img {
           width: 100%;
           height: 100%;
         }
       }
     }
-    .f_column{
+    .f_column {
       width: 81%;
     }
   }
@@ -2151,7 +2169,7 @@ body {
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     &.name {
-      font-family: 'Inter';
+      font-family: "Inter";
       margin-top: 2px;
     }
   }
@@ -2163,37 +2181,37 @@ body {
     .card {
       padding: 11px 10px 11px 65px;
       background-color: transparent;
-      &:hover{
+      &:hover {
         background-color: #f6f6f6;
       }
     }
   }
-  &.select_sphere{
-    ul{
-      @media(max-width: 812px){
+  &.select_sphere {
+    ul {
+      @media (max-width: 812px) {
         flex-flow: wrap !important;
       }
-      li{
+      li {
         width: 12% !important;
         margin: 0 12px 30px 12px;
         @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
           width: 20% !important;
         }
-        @media(max-width: 650px){
+        @media (max-width: 650px) {
           width: 25% !important;
         }
-        &::after{
+        &::after {
           right: 10px;
           @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
             right: 20px;
           }
-          @media(max-width: 768px){
+          @media (max-width: 768px) {
             right: -10px;
           }
-          @media(max-width: 650px){
+          @media (max-width: 650px) {
             right: 0;
           }
-          @media(max-width: 415px){
+          @media (max-width: 415px) {
             right: 8px;
           }
         }
@@ -2218,112 +2236,114 @@ body {
 
 //----------------Sort/Range modal---------------------//
 .fsp_modal {
-	position: relative;
-	ul {
-		display: flex;
-		margin: 0 -10px;
-		flex-wrap: wrap;
-		li {
-			width: 50%;
-			padding: 0 10px;
-			margin: 0 0 24px;
-		}
-	}
-	.sub_title {
-		font-size: 20px;
-		margin-bottom: 18px;
-	}
-	.close_btn {
+  position: relative;
+  ul {
+    display: flex;
+    margin: 0 -10px;
+    flex-wrap: wrap;
+    li {
+      width: 50%;
+      padding: 0 10px;
+      margin: 0 0 24px;
+    }
+  }
+  .sub_title {
+    font-size: 20px;
+    margin-bottom: 18px;
+  }
+  .close_btn {
     @include position(absolute, 30px, 30px, auto, auto);
-		display: flex;
-		align-items: center;
-		cursor: pointer;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
     z-index: 9;
-		img {
-			width: 16px;
-			height: 16px;
-		}
-	}
-	&.range {
-		.MuiMenu-paper{
-			width: 480px;
-			padding: 25px 32px 20px;
-			border-radius: 3px;
-  		box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.14);
-			background-color: var(--white);
-			z-index: 99;
-			margin: 65px 0 0;
-			@media(max-width: 650px) {
-				left: auto;
-				right: -83px;
-			}
-		}
-		.MuiList-root{
-			position: initial;
-			padding: 0;
-			display: block;
-		}
-    .MuiSlider-thumb{
+    img {
+      width: 16px;
+      height: 16px;
+    }
+  }
+  &.range {
+    .MuiMenu-paper {
+      width: 480px;
+      padding: 25px 32px 20px;
+      border-radius: 3px;
+      box-shadow: 0 4px 14px 0 rgba(0, 0, 0, 0.14);
+      background-color: var(--white);
+      z-index: 99;
+      margin: 65px 0 0;
+      @media (max-width: 650px) {
+        left: auto;
+        right: -83px;
+      }
+    }
+    .MuiList-root {
+      position: initial;
+      padding: 0;
+      display: block;
+    }
+    .MuiSlider-thumb {
       border: 3px solid var(--yellow);
     }
-    .MuiSlider-rail,.MuiSlider-track{
+    .MuiSlider-rail,
+    .MuiSlider-track {
       height: 3px;
     }
-		.per_day {
-			font: 16px/1.33 'Neue Haas Grotesk Text Pro Roman';
-			color: var(--blue);
-			display: block;
-		}
-		.price {
-      font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
-			color: var(--blue);
-			margin-bottom: 8px;
-			display: block;
-			cursor: pointer;
-			position: relative;
-			&::after{
-				width: 18px;
-				height: 18px;
-				content: "";
+    .per_day {
+      font: 16px/1.33 "Neue Haas Grotesk Text Pro Roman";
+      color: var(--blue);
+      display: block;
+    }
+    .price {
+      font: 14px/1.29 "Neue Haas Grotesk Text Pro Medium";
+      color: var(--blue);
+      margin-bottom: 8px;
+      display: block;
+      cursor: pointer;
+      position: relative;
+      &::after {
+        width: 18px;
+        height: 18px;
+        content: "";
         @include position(absolute, 1px, auto, auto, auto);
-				margin-left: 10px;
-			}
-			&.down{
-				&::after{
-					transform: rotate(90deg);
-					background: url("../images/ic-next-blue.png") center no-repeat;
-					background-size: contain;
-				}
-			}
-			&.up{
-				&::after{
-					transform: rotate(-90deg);
-					background: url("../images/ic-next-blue.png") center no-repeat;
-					background-size: contain;
-				}
-			}
-		}
-    &.sort{
-      .MuiMenu-paper{
+        margin-left: 10px;
+      }
+      &.down {
+        &::after {
+          transform: rotate(90deg);
+          background: url("../images/ic-next-blue.png") center no-repeat;
+          background-size: contain;
+        }
+      }
+      &.up {
+        &::after {
+          transform: rotate(-90deg);
+          background: url("../images/ic-next-blue.png") center no-repeat;
+          background-size: contain;
+        }
+      }
+    }
+    &.sort {
+      .MuiMenu-paper {
         margin: 65px 0 0 90px;
       }
     }
-    &.dropbox{
-      .MuiMenu-paper{
+    &.dropbox {
+      .MuiMenu-paper {
         // margin: 300px 0 0 140px;
         width: 260px;
-        label, .dropbox-button{
+        label,
+        .dropbox-button {
           font-size: 16px;
           color: var(--blue);
           cursor: pointer;
         }
-        .dropbox-button{
+        .dropbox-button {
           background-color: transparent;
           margin-top: 16px;
         }
       }
     }
-	}
+  }
 }
 
 //----------------Sort/Range modal close---------------------//
@@ -2331,7 +2351,7 @@ body {
 //----------------Edit menu---------------------//
 .edit_menu {
   @include position(absolute, 30px, -100%, auto, auto);
-  transition: all ease-in .3s;
+  transition: all ease-in 0.3s;
   opacity: 0;
   visibility: hidden;
   width: 165px;
@@ -2343,38 +2363,38 @@ body {
   z-index: 99;
   margin: 0px 0 0 0px;
   box-shadow: none;
-  .MuiList-root{
+  .MuiList-root {
     position: initial;
     padding: 0;
     display: block;
   }
   ul {
     li {
-      &:not(:last-child){
+      &:not(:last-child) {
         margin-bottom: 24px;
       }
       &.icon {
         padding-left: 32px;
-        font: 14px 'Neue Haas Grotesk Text Pro Medium';
+        font: 14px "Neue Haas Grotesk Text Pro Medium";
         text-align: left;
         &:before {
           width: 24px;
           height: 24px;
         }
         &.edit {
-        	&::before {
-        		background: url('../images/ic-edit.png') center no-repeat;
-        	}
+          &::before {
+            background: url("../images/ic-edit.png") center no-repeat;
+          }
         }
         &.edit_line {
-        	&::before {
-        		background: url('../images/ic-edit-line.png') center no-repeat;
-        	}
+          &::before {
+            background: url("../images/ic-edit-line.png") center no-repeat;
+          }
         }
         &.lodge {
-        	&::before {
-        		background: url('../images/ic-lodge.png') center no-repeat;
-        	}
+          &::before {
+            background: url("../images/ic-lodge.png") center no-repeat;
+          }
         }
         &.delete {
           color: #ed1c24;
@@ -2387,35 +2407,34 @@ body {
   }
 }
 
-.dot_menu{
+.dot_menu {
   @include position(absolute, 25px, 30px, auto, auto);
   cursor: pointer;
   width: 25px;
   height: 25px;
   z-index: 9;
-  @media(max-width: 650px){
+  @media (max-width: 650px) {
     right: 10px;
     top: 15px;
   }
-  &:hover{
-    .edit_menu{
+  &:hover {
+    .edit_menu {
       opacity: 1;
       visibility: visible;
       right: 0;
     }
   }
-  &.r0{
+  &.r0 {
     right: 0;
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       top: -20px;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       top: -8px;
     }
   }
 }
 //----------------Edit menu close---------------------//
-
 
 //---------------Success-img-text---------------//
 .img_text_wrap {
@@ -2449,25 +2468,27 @@ body {
     }
   }
   .tick_img {
-	  animation: tick_img 2s 0.5s forwards normal;
-	  opacity: 0; 
-	  width: 20% !important;
-	  height: 30% !important;
-	  margin: auto !important;
-	  padding-bottom: 30px !important;
-	}
-	@keyframes tick_img {
-		to   { opacity: 1; }
-		0% {
-		  transform: scale(1, 1);
-		}
-		50% {
-		  transform: scale(1.5, 1.5);
-		}
-		100% {
-		  transform: scale(1, 1);
-		}
-	  }
+    animation: tick_img 2s 0.5s forwards normal;
+    opacity: 0;
+    width: 20% !important;
+    height: 30% !important;
+    margin: auto !important;
+    padding-bottom: 30px !important;
+  }
+  @keyframes tick_img {
+    to {
+      opacity: 1;
+    }
+    0% {
+      transform: scale(1, 1);
+    }
+    50% {
+      transform: scale(1.5, 1.5);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
+  }
   .content {
     display: flex;
     flex-flow: column;
@@ -2494,15 +2515,15 @@ body {
     .full_btn {
       margin-bottom: 0;
     }
-    .btn_wrapr{
+    .btn_wrapr {
       display: flex;
       align-items: center;
-      .fill_btn{
+      .fill_btn {
         width: 250px;
         @media (max-width: 650px) {
           width: 120px;
         }
-        &.white_btn{
+        &.white_btn {
           background-color: var(--white);
           color: var(--blue);
           margin-left: 60px;
@@ -2538,7 +2559,7 @@ body {
     text-align: center;
     h1 {
       color: var(--blue);
-      font: 30px/1.5 'Neue Haas Grotesk Text Pro Medium';
+      font: 30px/1.5 "Neue Haas Grotesk Text Pro Medium";
       margin-bottom: 20px;
     }
   }
@@ -2566,7 +2587,7 @@ body {
     margin: 0 auto 10px;
     text-align: center;
     color: var(--blue);
-    font: 24px/1.5 'Neue Haas Grotesk Text Pro Medium';
+    font: 24px/1.5 "Neue Haas Grotesk Text Pro Medium";
     @media (max-width: 1024px) {
       max-width: 52%;
     }
@@ -2727,13 +2748,13 @@ body {
       width: 45px;
       height: 45px;
     }
-    span{
+    span {
       font-size: 12px;
-      &.time{
+      &.time {
         font-size: 11px;
       }
-      &.who{
-        font-family: 'Neue Haas Grotesk Text Pro Medium';
+      &.who {
+        font-family: "Neue Haas Grotesk Text Pro Medium";
       }
     }
   }
@@ -2764,7 +2785,7 @@ body {
   }
 }
 
-.page_loader{
+.page_loader {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -2785,7 +2806,7 @@ body {
 //-----------Loader close-------------//
 //-------------------Home----------------//
 .home_banner {
-  .banner_img {
+  .banner_img_img {
     position: relative;
     width: 100%;
     height: 410px;
@@ -2797,15 +2818,15 @@ body {
       height: 100%;
       object-fit: cover;
     }
-    &::before{
-      content: '';
-      background: url('../images/onboarding-clip.png') no-repeat;
+    &::before {
+      content: "";
+      background: url("../images/onboarding-clip.png") no-repeat;
       background-size: cover;
       background-position: bottom;
       width: 100%;
       height: 100px;
       @include position(absolute, 0px, auto, auto, 0px);
-      @media (max-width: 768px){
+      @media (max-width: 768px) {
         display: none;
       }
       @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
@@ -2847,7 +2868,7 @@ body {
       padding: 14px 20px;
       max-width: 176px;
       width: 100%;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         padding: 12px 15px;
         max-width: 135px;
       }
@@ -2867,7 +2888,7 @@ body {
     }
   }
   .heading {
-    font: 34px/1 'Neue Haas Grotesk Text Pro Medium';
+    font: 34px/1 "Neue Haas Grotesk Text Pro Medium";
     letter-spacing: 0.3px;
     color: var(--white);
     margin: 0 auto 5px;
@@ -2879,8 +2900,8 @@ body {
   }
 }
 
-.date_value{
- input::placeholder{
+.date_value {
+  input::placeholder {
     color: var(--blue);
   }
   #calender-input::placeholder {
@@ -2888,139 +2909,138 @@ body {
   }
 }
 
-
-
 .home_search {
-	margin-bottom: 55px;
-	position: relative;
-	width: 864px;
-	border-radius: 3px;
-	z-index: 99;
-	@media (max-width: 768px) {
-		width: 100%;
-		margin-bottom: 20px;
-	}
-	@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-		width: 100%;
-		margin-bottom: 35px;
-	}
-	.modal_srch_close {
-		display: none;
-	}
-	.detect_icon {
-		display: flex;
-		align-items: center;
-	}
-	input {
-		padding: 21px 26px 21px 40px;
-		border-color: transparent;
-		&:hover,
-		&:focus,
-		&.active {
-			@media (max-width: 768px) {
-				border-color: transparent !important;
-			}
-		}
-	}
-	.detect_icon_ltr {
-		left: 15px;
-		&.calendar {
-			background: url('../images/ic-calendar.png') 50% no-repeat;
-			background-size: contain;
-			width: 15px;
-			height: 15px;
-			cursor: pointer;
-		}
-	}
-	@media (max-width: 650px) {
-		margin-bottom: 40px;
-	}
-	.search_wrapr {
-		width: 100%;
-		border-radius: 3px;
-		border: solid 1px var(--light-gray);
-		background-color: var(--white);
-		position: relative;
-    &.first_input{
-      ul{
-        li{
+  margin-bottom: 55px;
+  position: relative;
+  width: 864px;
+  border-radius: 3px;
+  z-index: 99;
+  @media (max-width: 768px) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    width: 100%;
+    margin-bottom: 35px;
+  }
+  .modal_srch_close {
+    display: none;
+  }
+  .detect_icon {
+    display: flex;
+    align-items: center;
+  }
+  input {
+    padding: 21px 26px 21px 40px;
+    border-color: transparent;
+    &:hover,
+    &:focus,
+    &.active {
+      @media (max-width: 768px) {
+        border-color: transparent !important;
+      }
+    }
+  }
+  .detect_icon_ltr {
+    left: 15px;
+    &.calendar {
+      background: url("../images/ic-calendar.png") 50% no-repeat;
+      background-size: contain;
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+  }
+  @media (max-width: 650px) {
+    margin-bottom: 40px;
+  }
+  .search_wrapr {
+    width: 100%;
+    border-radius: 3px;
+    border: solid 1px var(--light-gray);
+    background-color: var(--white);
+    position: relative;
+    &.first_input {
+      ul {
+        li {
           width: 92.5%;
           @media (max-width: 650px) {
             width: 84%;
           }
-          &.loc_box, &.date_box{
+          &.loc_box,
+          &.date_box {
             display: none;
           }
         }
       }
     }
-		ul {
-			display: flex;
-			flex: 1;
-			@media (max-width: 768px) {
-				flex-flow: column;
-			}
-			@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-				flex-flow: column;
-			}
-			li {
-				width: 30.8%;
-				@media (max-width: 768px) {
-					width: 100%;
-				}
-				@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-					width: 100%;
-				}
-				&:last-child {
-					@media (max-width: 768px) {
-						width: 85%;
-					}
-				}
-				&.categ_box {
-					.selectd_input {
-						border-top-left-radius: 12px;
-						border-bottom-left-radius: 12px;
-						input {
-							padding: 21px 30px 21px 60px;
-						}
-					}
-				}
-				&.loc_box {
-					input {
-						padding: 21px 32px 21px 40px;
-					}
-				}
-			}
-			.search_btn {
+    ul {
+      display: flex;
+      flex: 1;
+      @media (max-width: 768px) {
+        flex-flow: column;
+      }
+      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        flex-flow: column;
+      }
+      li {
+        width: 30.8%;
+        @media (max-width: 768px) {
+          width: 100%;
+        }
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+          width: 100%;
+        }
+        &:last-child {
+          @media (max-width: 768px) {
+            width: 85%;
+          }
+        }
+        &.categ_box {
+          .selectd_input {
+            border-top-left-radius: 12px;
+            border-bottom-left-radius: 12px;
+            input {
+              padding: 21px 30px 21px 60px;
+            }
+          }
+        }
+        &.loc_box {
+          input {
+            padding: 21px 32px 21px 40px;
+          }
+        }
+      }
+      .search_btn {
         @include position(absolute, 0px, 0px, auto, auto);
-				@media (max-width: 768px) {
-					top: auto;
-					bottom: 0px;
-				}
-				@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-					top: auto;
-					bottom: 0px;
-				}
-				.fill_btn,
-				.outline_btn {
-					padding: 12px 15px;
-					width: 64px;
-					height: 63px;
-					display: flex;
-					align-items: center;
-					justify-content: center;
-					@media (max-width: 812px) {
-						width: 62px;
-						height: 62px;
-					}
-					img {
-						width: 18px;
-						height: 18px;
-					}
-				}
-			}
-		}
-	}
+        @media (max-width: 768px) {
+          top: auto;
+          bottom: 0px;
+        }
+        @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+          top: auto;
+          bottom: 0px;
+        }
+        .fill_btn,
+        .outline_btn {
+          padding: 12px 15px;
+          width: 64px;
+          height: 63px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @media (max-width: 812px) {
+            width: 62px;
+            height: 62px;
+          }
+          img {
+            width: 18px;
+            height: 18px;
+          }
+        }
+      }
+    }
+  }
 }
 .top_search {
   background-color: var(--blue);
@@ -3121,7 +3141,7 @@ body {
     }
   }
 
-  .select_sphere{
+  .select_sphere {
     max-height: 320px;
     overflow-y: auto;
   }
@@ -3139,8 +3159,9 @@ body {
       padding: 10px 15px;
       border-radius: 5px;
       cursor: pointer;
-      &:hover, &.active{
-        background-color: rgba(0,0,0,.04);
+      &:hover,
+      &.active {
+        background-color: rgba(0, 0, 0, 0.04);
       }
       .category {
         width: 40px;
@@ -3173,9 +3194,8 @@ body {
       }
     }
   }
-  
 }
-.rdrDateRangePickerWrapper{
+.rdrDateRangePickerWrapper {
   width: 100%;
 }
 .rdrCalendarWrapper {
@@ -3202,7 +3222,7 @@ body {
   background-color: var(--grey);
   display: flex;
   align-items: center;
-  font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
+  font: 14px/1.43 "Neue Haas Grotesk Text Pro Medium";
   text-align: center;
   color: #120e24;
   @media (max-width: 768px) {
@@ -3213,17 +3233,16 @@ body {
   }
   .gps_icon {
     margin-right: 20px;
-    @media (max-width: 768px){
+    @media (max-width: 768px) {
       margin-right: 15px;
     }
-    img{
-      @media (max-width: 768px){
+    img {
+      @media (max-width: 768px) {
         width: 20px;
         height: 20px;
-      } 
+      }
     }
   }
-  
 }
 
 .blocked_note {
@@ -3256,9 +3275,9 @@ body {
   }
 }
 
-.job_status{
+.job_status {
   color: var(--blue-two);
-  font: 10px/1.7 'Neue Haas Grotesk Text Pro Medium';
+  font: 10px/1.7 "Neue Haas Grotesk Text Pro Medium";
   letter-spacing: 0.3px;
   text-transform: uppercase;
   display: block;
@@ -3266,102 +3285,102 @@ body {
 }
 
 .tradie_card {
-	// min-height: 285px;
-	min-height: 130px;
-	padding: 16px;
-	box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
-	background-color: var(--white);
-	position: relative;
-	margin-bottom: 20px;
-	&:hover {
-		box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.02);
-	}
-	@media (max-width: 1024px) {
-		width: 100%;
-		margin-bottom: 20px;
-	}
-	@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-		width: 100%;
-		margin-bottom: 20px;
-	}
-  .full_btn{
+  // min-height: 285px;
+  min-height: 130px;
+  padding: 16px;
+  box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.08);
+  background-color: var(--white);
+  position: relative;
+  margin-bottom: 20px;
+  &:hover {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.02);
+  }
+  @media (max-width: 1024px) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+  .full_btn {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
-    img{
+    img {
       margin-right: 10px;
       width: 20px;
       height: 20px;
     }
   }
-	.more_detail {
+  .more_detail {
     @include position(absolute, 16px, 16px, auto, auto);
-		width: 40px;
-		height: 40px;
-		background: url('../images/more.png') center no-repeat;
-		background-size: contain;
-		overflow: hidden;
+    width: 40px;
+    height: 40px;
+    background: url("../images/more.png") center no-repeat;
+    background-size: contain;
+    overflow: hidden;
     cursor: pointer;
-    &.new_top{
+    &.new_top {
       @include position(absolute, 58px, 20px, auto, auto);
     }
-	}
-  .tag_review{
+  }
+  .tag_review {
     margin: 0 0 20px;
   }
-	.user_wrap {
-		display: flex;
-		// margin: 0 0 24px;
-		.u_img {
-			width: 40px;
-			height: 40px;
-			overflow: hidden;
-			border-radius: 50%;
-			margin-right: 16px;
-			border: 1px solid #e6e6e6;
-			img {
-				width: 40px;
-				height: 40px;
-				object-fit: cover;
-			}
+  .user_wrap {
+    display: flex;
+    // margin: 0 0 24px;
+    .u_img {
+      width: 40px;
+      height: 40px;
+      overflow: hidden;
+      border-radius: 50%;
+      margin-right: 16px;
+      border: 1px solid #e6e6e6;
+      img {
+        width: 40px;
+        height: 40px;
+        object-fit: cover;
+      }
       &.icon {
         border-radius: 4px;
         border: none;
-        background-image: linear-gradient(to top, #161d4a, #0b41a8);;
+        background-image: linear-gradient(to top, #161d4a, #0b41a8);
       }
-		}
-		.details {
-			width: 70%;
+    }
+    .details {
+      width: 70%;
       min-height: 57px;
-			.name {
-				display: block;
-        font: 16px 'Neue Haas Grotesk Text Pro Medium';
-				color: var(--blue);
-				margin-bottom: 2px;
-			}
-			.prof{
-				font-size: 14px;
-				line-height: 1;
-				color: var(--greyish-brown);
+      .name {
         display: block;
-        margin-bottom: 4px;
-			}
-      .job{
-        font: 14px 'Neue Haas Grotesk Text Pro Medium';
-				color: var(--blue-two);
+        font: 16px "Neue Haas Grotesk Text Pro Medium";
+        color: var(--blue);
+        margin-bottom: 2px;
+      }
+      .prof {
+        font-size: 14px;
+        line-height: 1;
+        color: var(--greyish-brown);
         display: block;
         margin-bottom: 4px;
       }
-		}
-	}
-	.tags_wrap {
-		ul {
-			margin: 0;
-		}
-	}
-	
-  .count_wrap{
+      .job {
+        font: 14px "Neue Haas Grotesk Text Pro Medium";
+        color: var(--blue-two);
+        display: block;
+        margin-bottom: 4px;
+      }
+    }
+  }
+  .tags_wrap {
+    ul {
+      margin: 0;
+    }
+  }
+
+  .count_wrap {
     display: flex;
     align-items: center;
     @include position(absolute, auto, 20px, 20px, auto);
@@ -3424,66 +3443,66 @@ body {
       .details {
         width: 60%;
         min-height: auto;
-        .name{
+        .name {
           font-size: 14px;
           cursor: pointer;
         }
       }
     }
   }
-  &.quote_card{
+  &.quote_card {
     min-height: 187px;
   }
 }
 
 .job_info {
-	background-color: #f7f8fa;
-	padding: 22px 16px;
-	margin-bottom: 15px;
-	@media(max-width: 812px){
-		padding: 10px 15px;
-	}
-	ul {
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		flex-wrap: wrap;
-		li {
-			display: inline-block;
+  background-color: #f7f8fa;
+  padding: 22px 16px;
+  margin-bottom: 15px;
+  @media (max-width: 812px) {
+    padding: 10px 15px;
+  }
+  ul {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    li {
+      display: inline-block;
       flex: 1;
-			@media(max-width: 812px){
-				margin: 5px 0;
-				flex: 1 1 50%;
-			}
-			&.icon {
-				padding-left: 20px;
-				&:before {
-					width: 16px;
-					height: 16px;
-				}
-				&.clock {
-					&::before {
-						background: url('../images/ic-clock.png') center no-repeat;
-					}
-				}
-				&.dollar {
-					&::before {
-						background: url('../images/ic-dollar.png') center no-repeat;
-					}
-				}
-				&.location {
-					&::before {
-						background: url('../images/ic-location.png') center no-repeat;
-					}
-				}
-				&.calendar {
-					&::before {
-						background: url('../images/ic-calendar.png') center no-repeat;
-					}
-				}
-			}
-		}
-	}
+      @media (max-width: 812px) {
+        margin: 5px 0;
+        flex: 1 1 50%;
+      }
+      &.icon {
+        padding-left: 20px;
+        &:before {
+          width: 16px;
+          height: 16px;
+        }
+        &.clock {
+          &::before {
+            background: url("../images/ic-clock.png") center no-repeat;
+          }
+        }
+        &.dollar {
+          &::before {
+            background: url("../images/ic-dollar.png") center no-repeat;
+          }
+        }
+        &.location {
+          &::before {
+            background: url("../images/ic-location.png") center no-repeat;
+          }
+        }
+        &.calendar {
+          &::before {
+            background: url("../images/ic-calendar.png") center no-repeat;
+          }
+        }
+      }
+    }
+  }
 }
 
 //-----------------Tradie card close--------------------//
@@ -3550,7 +3569,7 @@ body {
         }
       }
       .categ_name {
-        font: 12px/1.29 'Neue Haas Grotesk Text Pro Medium';
+        font: 12px/1.29 "Neue Haas Grotesk Text Pro Medium";
         text-align: center;
         color: var(--greyish-brown);
       }
@@ -3560,7 +3579,7 @@ body {
 .home_job_categories {
   padding: 40px 0;
   position: relative;
-  .page_loader{
+  .page_loader {
     width: 1216px;
     @media (max-width: 1366px) {
       max-width: 1150px;
@@ -3583,15 +3602,15 @@ body {
       margin: 0 15px;
       .name {
         font-size: 18px;
-        @media(max-width: 650px){
+        @media (max-width: 650px) {
           font-size: 16px;
         }
       }
     }
   }
   .select_sphere {
-    ul{
-      li{
+    ul {
+      li {
         margin: 0;
       }
     }
@@ -3609,10 +3628,10 @@ body {
     background-color: var(--grey);
     border-radius: 3px;
     margin: 0px 20px 20px 0;
-	  cursor: pointer;
-	// &:last-child{
-	// 	margin: 0;
-	// }
+    cursor: pointer;
+    // &:last-child{
+    // 	margin: 0;
+    // }
     @media (max-width: 650px) {
       margin: 0px 10px 10px 0 !important;
       padding: 10px 5px !important;
@@ -3712,7 +3731,7 @@ body {
     }
     .name {
       color: var(--blue);
-      font: 20px 'Neue Haas Grotesk Text Pro Medium';
+      font: 20px "Neue Haas Grotesk Text Pro Medium";
       display: block;
       margin-bottom: 8px;
       @media (max-width: 768px) {
@@ -3746,7 +3765,7 @@ body {
   @include position(absolute, 12px, 12px, auto, auto);
   display: flex;
   align-items: center;
-  &.tr{
+  &.tr {
     top: 0;
     right: 0;
   }
@@ -3821,7 +3840,6 @@ body {
   }
 }
 
-
 .milestone_templates {
   display: flex;
   flex-flow: column;
@@ -3833,10 +3851,10 @@ body {
     justify-content: space-between;
     align-items: center;
     margin-bottom: 16px;
-	  cursor: pointer;
+    cursor: pointer;
     .name {
       color: var(--blue);
-      font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
+      font: 14px/1.43 "Neue Haas Grotesk Text Pro Medium";
       max-width: 500px;
       display: block;
       width: 100%;
@@ -3848,7 +3866,7 @@ body {
       @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
         max-width: 360px;
       }
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         max-width: 250px;
         padding-left: 30px;
       }
@@ -3860,7 +3878,7 @@ body {
         height: 24px;
         background: url("../images/ic-template.png") center no-repeat;
         background-size: contain;
-        @media(max-width: 650px){
+        @media (max-width: 650px) {
           width: 20px;
           height: 20px;
         }
@@ -3898,7 +3916,7 @@ body {
   }
 }
 
-.job_milestone{
+.job_milestone {
   max-width: 345px;
   margin: 0 0 20px;
   min-height: 90px;
@@ -3906,14 +3924,14 @@ body {
     min-height: 70px;
     max-width: 100%;
   }
-  li{
+  li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    &:not(:last-child){
+    &:not(:last-child) {
       margin-bottom: 20px;
     }
-    span{
+    span {
       font-size: 16px;
       color: var(--blue);
       line-height: 1;
@@ -3926,276 +3944,275 @@ body {
 //----------------Post job and detail close----------------------//
 
 //----------------Search result----------------------//
-.search_result{
-	padding-top: 80px;
-	@media (max-width: 812px) {
-		padding-top: 0;
-	}
-	.flex_col_sm_8{
-		@media (max-width: 812px) {
-			width: 50%;
-		}
-		@media (max-width: 650px) {
-			width: 70%;
-		}
-	}
-	.flex_col_sm_4{
-		@media (max-width: 650px) {
-			width: 30%;
-		}
-	}
- 
-	.result_heading{
-		margin-bottom: 40px;
-		.flex_row{
-			align-items: flex-end;
-		}
-	}
-	.title {
-		margin-bottom: 24px;
-		@media (max-width: 650px) {
-			margin-bottom: 20px;
-		}
-		.count {
-		  margin: 8px 0 0;
-		  font-size: 16px;
-		  color: var(--dark-grey);
-		  line-height: 1.13;
-		  display: block;
-		  font-family: 'Inter';
-		  @media (max-width: 650px) {
-			font-size: 14px;
-			}
-		}
-	}
-	.filters_wrapr {
-		position: relative;
-		.filters_row {
-		  display: flex;
-		  li {
-			display: inline-block;
-			margin-right: 24px;
-			position: relative;
-			@media (max-width: 650px) {
-				margin-right: 12px;
-			}
-			a {
-			  font-size: 14px;
-			  font-family: 'Neue Haas Grotesk Text Pro Roman';
-			  line-height: 1.43;
-			  color: var(--blue);
-			  padding: 13px 15px;
-			  border-radius: 6px;
-			  border: 1px solid var(--grey);
-			  background-color: var(--grey);
-			  display: flex;
-			  align-items: center;
-			  @media (max-width: 650px) {
-				font-size: 12px;
-				padding: 7px 10px;
-				border-radius: 4px;
-				}
-			  &:hover{
-				border-color: var(--blue-two);
-			  }
-			  &.active,
-			  &:focus,
-			  &:active {
-				background-color: var(--blue-two);
-				color: var(--white);
-				border-color: var(--blue-two);
-			  }
-			  img {
-        width: 20px;
-        height: 20px;
-				margin-right: 5px;
-				@media (max-width: 650px){
-					width: 15px;
-    				height: 15px;
-				}
-			  }
-			}
-		  }
-		}
-	}
-	.map_btn{
-    font: 14px/1.43 'Neue Haas Grotesk Text Pro Medium';
-		color: var(--blue);
-		padding: 13px 15px;
-		border-radius: 6px;
-		border: 1px solid var(--grey);
-		background-color: var(--grey);
-		display: inline-flex;
-		align-items: center;
-		cursor: pointer;
-		@media (max-width: 650px) {
-			font-size: 12px;
-			padding: 7px 10px;
-			border-radius: 4px;
-		}
-		&:hover, &.active{
-		  border-color: var(--blue-two);
-		}
-		img {
-			width: 24px;
-			height: 24px;
-			margin-right: 5px;
-			@media (max-width: 650px){
-				width: 15px;
-				height: 15px;
-			}
-		}
-	}
-	.tradies_row{
-		.card_col{
-			flex: 1 1 50%;
-			@media (max-width: 1000px){
-				flex: 1 1 100%;
-			}
-			.flex_col_sm_6{
-				width: 70%;
-			}
-		}
-		.map_col{
-			flex: 1 1 50%;
+.search_result {
+  padding-top: 80px;
+  @media (max-width: 812px) {
+    padding-top: 0;
+  }
+  .flex_col_sm_8 {
+    @media (max-width: 812px) {
+      width: 50%;
+    }
+    @media (max-width: 650px) {
+      width: 70%;
+    }
+  }
+  .flex_col_sm_4 {
+    @media (max-width: 650px) {
+      width: 30%;
+    }
+  }
+
+  .result_heading {
+    margin-bottom: 40px;
+    .flex_row {
+      align-items: flex-end;
+    }
+  }
+  .title {
+    margin-bottom: 24px;
+    @media (max-width: 650px) {
+      margin-bottom: 20px;
+    }
+    .count {
+      margin: 8px 0 0;
+      font-size: 16px;
+      color: var(--dark-grey);
+      line-height: 1.13;
+      display: block;
+      font-family: "Inter";
+      @media (max-width: 650px) {
+        font-size: 14px;
+      }
+    }
+  }
+  .filters_wrapr {
+    position: relative;
+    .filters_row {
+      display: flex;
+      li {
+        display: inline-block;
+        margin-right: 24px;
+        position: relative;
+        @media (max-width: 650px) {
+          margin-right: 12px;
+        }
+        a {
+          font-size: 14px;
+          font-family: "Neue Haas Grotesk Text Pro Roman";
+          line-height: 1.43;
+          color: var(--blue);
+          padding: 13px 15px;
+          border-radius: 6px;
+          border: 1px solid var(--grey);
+          background-color: var(--grey);
+          display: flex;
+          align-items: center;
+          @media (max-width: 650px) {
+            font-size: 12px;
+            padding: 7px 10px;
+            border-radius: 4px;
+          }
+          &:hover {
+            border-color: var(--blue-two);
+          }
+          &.active,
+          &:focus,
+          &:active {
+            background-color: var(--blue-two);
+            color: var(--white);
+            border-color: var(--blue-two);
+          }
+          img {
+            width: 20px;
+            height: 20px;
+            margin-right: 5px;
+            @media (max-width: 650px) {
+              width: 15px;
+              height: 15px;
+            }
+          }
+        }
+      }
+    }
+  }
+  .map_btn {
+    font: 14px/1.43 "Neue Haas Grotesk Text Pro Medium";
+    color: var(--blue);
+    padding: 13px 15px;
+    border-radius: 6px;
+    border: 1px solid var(--grey);
+    background-color: var(--grey);
+    display: inline-flex;
+    align-items: center;
+    cursor: pointer;
+    @media (max-width: 650px) {
+      font-size: 12px;
+      padding: 7px 10px;
+      border-radius: 4px;
+    }
+    &:hover,
+    &.active {
+      border-color: var(--blue-two);
+    }
+    img {
+      width: 24px;
+      height: 24px;
+      margin-right: 5px;
+      @media (max-width: 650px) {
+        width: 15px;
+        height: 15px;
+      }
+    }
+  }
+  .tradies_row {
+    .card_col {
+      flex: 1 1 50%;
+      @media (max-width: 1000px) {
+        flex: 1 1 100%;
+      }
+      .flex_col_sm_6 {
+        width: 70%;
+      }
+    }
+    .map_col {
+      flex: 1 1 50%;
       z-index: 9;
-			@media (max-width: 1000px){
-				flex: 1 1 100%;
-			}
-		}
-		.flex_col_sm_6{
-			@media (max-width: 768px){
-				width: 50%;
-			}
-			@media (max-width: 650px){
-				width: 100%;
-			}
-		}
-	}
-	.mob_srch_option {
-		display: none;
-		@media (max-width: 812px) {
-		  display: flex;
-		  margin-bottom: 15px;
-		}
-		.flex_col_sm_6{
-		  @media (max-width: 768px) {
-			width: 50%;
-		  }
-		}
-	  }
+      @media (max-width: 1000px) {
+        flex: 1 1 100%;
+      }
+    }
+    .flex_col_sm_6 {
+      @media (max-width: 768px) {
+        width: 50%;
+      }
+      @media (max-width: 650px) {
+        width: 100%;
+      }
+    }
+  }
+  .mob_srch_option {
+    display: none;
+    @media (max-width: 812px) {
+      display: flex;
+      margin-bottom: 15px;
+    }
+    .flex_col_sm_6 {
+      @media (max-width: 768px) {
+        width: 50%;
+      }
+    }
+  }
 }
 .map_stick {
-	height: 100vh;
+  height: 100vh;
   @include position(fixed, 206px, 0px, auto, auto);
-	width: 60%;
-	transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-	z-index: 99;
-	@media (max-width: 1000px) {
-	  width: 100%;
-	  top: 80px;
-	}
-	@media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-		top: 80px;
-	}
-	+div{
-		height: 100%;
-	}
-	.close_map{
+  width: 60%;
+  transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  z-index: 99;
+  @media (max-width: 1000px) {
+    width: 100%;
+    top: 80px;
+  }
+  @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+    top: 80px;
+  }
+  + div {
+    height: 100%;
+  }
+  .close_map {
     @include position(absolute, 20px, auto, auto, 20px);
-		z-index: 9;
-		cursor: pointer;
-		img {
-			width: 70px;
-			height: 70px;
-		}
-		
-	}
+    z-index: 9;
+    cursor: pointer;
+    img {
+      width: 70px;
+      height: 70px;
+    }
+  }
 }
 .preview_card {
-	.tradie_card {
+  .tradie_card {
     max-width: 372px;
-	  min-height: 145px;
-	  margin-bottom: 0;
-	  padding: 0px;
-	  @media(max-width: 650px){
-		flex-flow: row;
-		padding: 4px;
-	  }
-	  &:hover {
-		box-shadow: none;
-	  }
-	  .more_detail{
-		top: 0px;
-		right: 5px;
-		width: 35px;
-		height: 35px;
-	  }
-	  .job_info{
-		padding: 8px 10px;
-		margin: 0;
-		li{
-			flex: 1 1 50%;
-    		margin: 5px 0;
-        &.location{
+    min-height: 145px;
+    margin-bottom: 0;
+    padding: 0px;
+    @media (max-width: 650px) {
+      flex-flow: row;
+      padding: 4px;
+    }
+    &:hover {
+      box-shadow: none;
+    }
+    .more_detail {
+      top: 0px;
+      right: 5px;
+      width: 35px;
+      height: 35px;
+    }
+    .job_info {
+      padding: 8px 10px;
+      margin: 0;
+      li {
+        flex: 1 1 50%;
+        margin: 5px 0;
+        &.location {
           padding-right: 5px;
         }
-		}
-	  }
-	}
+      }
+    }
   }
+}
 //----------------Search result close----------------------//
- 
+
 //----------------Data not found---------------------//
-.no_record{
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	position: relative;
-	flex-flow: column;
-	width: 100%;
+.no_record {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  flex-flow: column;
+  width: 100%;
   height: 100%;
-  &.align_centr{
+  &.align_centr {
     height: 95%;
   }
-	.no_img{
-		height: 100px;
-		margin: 0 auto 15px;
-		width: 100%;
+  .no_img {
+    height: 100px;
+    margin: 0 auto 15px;
+    width: 100%;
     @media (max-width: 1366px) {
       height: 90px;
     }
     @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       height: 90px;
     }
-		img{
-			width: 100%;
-			height: 100%;
-			object-fit: contain;
-		}
-	}
-  .no_data_img{
-		height: 80px;
-		margin: 0 auto 5px;
-		width: 100%;
-    img{
-			width: 100%;
-			height: 100%;
-			object-fit: contain;
-		}
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
   }
-	span {
-		text-align: center;
-		color: #2f5cb5;
+  .no_data_img {
+    height: 80px;
+    margin: 0 auto 5px;
+    width: 100%;
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  span {
+    text-align: center;
+    color: #2f5cb5;
     margin: 0 0 10px;
-    font: 16px/1 'Neue Haas Grotesk Text Pro Medium';
-	}
+    font: 16px/1 "Neue Haas Grotesk Text Pro Medium";
+  }
 }
 //----------------Data not found close---------------------//
 
-
 //----------------Job Dashboard-------------------//
-.p-b-0{
+.p-b-0 {
   padding-bottom: 0;
 }
 
@@ -4205,12 +4222,12 @@ body {
   height: 22px;
   cursor: pointer;
   display: none;
-  img{
-      width: 100%;
-      height: 100%;
+  img {
+    width: 100%;
+    height: 100%;
   }
-  @media(max-width: 768px){
-      display: block;
+  @media (max-width: 768px) {
+    display: block;
   }
 }
 
@@ -4221,22 +4238,22 @@ body {
   padding: 48px 0px 20px 0px;
   margin: 0 0 0 -122px;
   position: fixed;
-  &.active{
-    @media(max-width: 768px){
+  &.active {
+    @media (max-width: 768px) {
       left: 0;
       width: 350px;
       z-index: 99;
       padding: 32px 0 0;
-      .close_nav{
+      .close_nav {
         display: block;
       }
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 280px;
       padding: 15px;
     }
   }
-  .close_nav{
+  .close_nav {
     width: 40px;
     height: 40px;
     background-color: transparent;
@@ -4248,17 +4265,17 @@ body {
     @include position(absolute, 18px, 18px, auto, auto);
     z-index: 999;
     display: none;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       right: 7px;
       top: 7px;
       border: none;
     }
-    img{
+    img {
       width: 24px;
       height: 24px;
     }
   }
-  @media(max-width: 768px){
+  @media (max-width: 768px) {
     left: -100%;
     margin: 0;
     padding: 0;
@@ -4266,11 +4283,11 @@ body {
   }
   .title {
     margin: 0 0 40px 120px;
-    @media (max-width: 1366px){
-     margin: 0 0 15px 120px;
+    @media (max-width: 1366px) {
+      margin: 0 0 15px 120px;
     }
     @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-     margin: 0 0 15px 120px;
+      margin: 0 0 15px 120px;
     }
     @media only screen and (min-device-width: 414px) and (max-device-width: 736px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       margin: 0 0 15px 100px;
@@ -4278,40 +4295,40 @@ body {
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       margin: 0 0 25px 130px;
     }
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       margin: 0 0 15px 50px;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       margin: 0 0 15px 10px;
     }
   }
-}  
+}
 
 .dashboard_menu {
   li {
     .icon {
       padding: 19px 10px 19px 160px;
       color: var(--blue);
-      display: block;   
-      margin-bottom: 12px;   
-      @media (max-width: 1366px){
+      display: block;
+      margin-bottom: 12px;
+      @media (max-width: 1366px) {
         padding: 15px 10px 17px 160px;
         margin-bottom: 8px;
-       }
-       @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-        padding: 15px 10px 17px 160px;
-        margin-bottom: 8px;
-       }
-       @media(max-width: 768px){
-         padding: 15px 10px 17px 100px;
-       }
-      @media(max-width: 650px){
-       padding: 12px 10px 12px 40px;
       }
-      &:hover{
+      @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+        padding: 15px 10px 17px 160px;
+        margin-bottom: 8px;
+      }
+      @media (max-width: 768px) {
+        padding: 15px 10px 17px 100px;
+      }
+      @media (max-width: 650px) {
+        padding: 12px 10px 12px 40px;
+      }
+      &:hover {
         background: #ffffff;
       }
-      &.active{
+      &.active {
         font-family: "Neue Haas Grotesk Text Pro Medium";
         background: #ffffff;
       }
@@ -4319,10 +4336,10 @@ body {
         width: 24px;
         height: 24px;
         left: 120px;
-        @media(max-width: 768px){
+        @media (max-width: 768px) {
           left: 40px;
         }
-        @media(max-width: 650px){
+        @media (max-width: 650px) {
           width: 20px;
           height: 20px;
           background-size: contain !important;
@@ -4344,7 +4361,8 @@ body {
           background: url("../images/date-1.png") center no-repeat;
         }
       }
-      &.new, &.open {
+      &.new,
+      &.open {
         &::before {
           background: url("../images/ic-job.png") center no-repeat;
         }
@@ -4384,7 +4402,7 @@ body {
           background: url("../images/ico-terms.png") center no-repeat;
         }
       }
-      .menu_txt{
+      .menu_txt {
         position: relative;
         white-space: pre-wrap;
         max-width: 145px;
@@ -4405,34 +4423,34 @@ body {
     @include position(absolute, 50%, -40px, auto, auto);
     transform: translateY(-50%);
     color: var(--blue);
-    font: 14px 'Neue Haas Grotesk Text Pro Medium';
+    font: 14px "Neue Haas Grotesk Text Pro Medium";
   }
 }
 .detail_col {
   width: 1135px;
   padding: 48px 0 0;
   margin-left: 300px;
-  @media(max-width: 1500px){
+  @media (max-width: 1500px) {
     width: 1075px;
   }
-  @media(max-width: 1366px){
+  @media (max-width: 1366px) {
     width: 907px;
   }
-  @media(max-width: 1200px){
+  @media (max-width: 1200px) {
     width: 705px;
   }
-  @media(max-width: 768px){
+  @media (max-width: 768px) {
     width: 100%;
     padding: 30px 20px 0 !important;
     margin-left: 0 !important;
     .flex_col_sm_2 {
       width: 20%;
     }
-    .flex_col_sm_3{
+    .flex_col_sm_3 {
       width: 50%;
     }
   }
-  @media(max-width: 650px){
+  @media (max-width: 650px) {
     padding: 30px 10px 0 !important;
     .flex_col_sm_6 {
       width: 100%;
@@ -4446,41 +4464,42 @@ body {
     padding: 20px;
     .flex_col_sm_6 {
       width: 100%;
-      }
+    }
     .flex_col_sm_2 {
       width: 100%;
       text-align: center;
     }
   }
   @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-    .flex_col_sm_6, .flex_col_sm_8 {
-      width: 100%;
-      }
-  }
-  .flex_col_sm_9{
-    @media(max-width: 650px){
+    .flex_col_sm_6,
+    .flex_col_sm_8 {
       width: 100%;
     }
   }
-  .tradies_row{
-    .flex_col_sm_6{
+  .flex_col_sm_9 {
+    @media (max-width: 650px) {
+      width: 100%;
+    }
+  }
+  .tradies_row {
+    .flex_col_sm_6 {
       @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
         width: 100%;
       }
-      @media(max-width: 768px){
+      @media (max-width: 768px) {
         width: 50%;
       }
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         width: 100%;
       }
     }
   }
   .tradie_card {
     min-height: 337px;
-    .user_wrap{
+    .user_wrap {
       margin: 0 0 16px;
     }
-    .count_wrap{
+    .count_wrap {
       justify-content: space-around;
       width: 100%;
     }
@@ -4488,44 +4507,44 @@ body {
   .job_info {
     padding: 15px;
     margin-bottom: 20px;
-    ul{
-      li{
+    ul {
+      li {
         margin: 5px 0;
         flex: 1 1 50%;
       }
     }
   }
-  .relate{
-    .back{
+  .relate {
+    .back {
       width: 20px;
       height: 20px;
     }
-    .remove_icon{
+    .remove_icon {
       right: 0px !important;
-      @media(max-width: 768px){
+      @media (max-width: 768px) {
         right: 50px !important;
       }
     }
-    .edit_icon{
+    .edit_icon {
       right: 30px;
-      @media(max-width: 768px){
+      @media (max-width: 768px) {
         right: 80px;
       }
     }
-    .dot_menu{
+    .dot_menu {
       top: 0;
       right: 10px;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         top: -2px;
         right: 40px;
       }
     }
-    .xs_sub_title{
+    .xs_sub_title {
       font-size: 16px;
       padding-left: 30px;
       max-width: 86%;
       height: 20px;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         max-width: 80%;
       }
     }
@@ -4534,29 +4553,29 @@ body {
       right: 0px;
     }
   }
-  hr{
+  hr {
     width: 1px;
     height: 100vh;
     @include position(absolute, auto, auto, auto, 50%);
     transform: translateX(95px);
     background-color: #f7f8fa;
     margin: 0;
-    @media(max-width: 1024px){
+    @media (max-width: 1024px) {
       display: none;
     }
   }
-  .total_payment{
+  .total_payment {
     margin: 48px 0 32px;
     max-width: 250px;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       max-width: 100%;
       margin: 30px 0 25px;
     }
-    span{
-      font-family: 'Neue Haas Grotesk Text Pro Medium';
+    span {
+      font-family: "Neue Haas Grotesk Text Pro Medium";
     }
   }
-  .bank_btn{
+  .bank_btn {
     width: 250px;
     display: flex;
     justify-content: center;
@@ -4564,14 +4583,14 @@ body {
     padding: 17px 20px;
     border: 1px solid var(--blue-two);
     margin-bottom: 40px;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 100%;
       padding: 12px 20px;
       margin-bottom: 30px;
     }
-    img{
+    img {
       margin-right: 30px;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         width: 18px;
         height: 18px;
         margin-right: 20px;
@@ -4580,37 +4599,37 @@ body {
   }
   .upload_img_video {
     margin-bottom: 30px;
-    .img_video{
+    .img_video {
       margin: 0 16px 0px 0;
     }
   }
 }
-.profile_info{
+.profile_info {
   padding: 48px 0px 0 40px;
-  @media(max-width: 768px){
+  @media (max-width: 768px) {
     margin-top: 15px;
   }
 
-  .title_view_wrap{
+  .title_view_wrap {
     position: relative;
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       font-size: 12px;
     }
-    .view_profile{
+    .view_profile {
       display: flex;
       align-items: center;
       @include position(absolute, 0px, 0px, auto, auto);
-      font: 14px 'Neue Haas Grotesk Text Pro Medium';
+      font: 14px "Neue Haas Grotesk Text Pro Medium";
       color: var(--blue-two);
-      @media(max-width: 768px){
+      @media (max-width: 768px) {
         font-size: 12px;
       }
-      &:hover{
+      &:hover {
         color: var(--blue);
       }
-      img{
+      img {
         margin-right: 10px;
-        @media(max-width: 768px){
+        @media (max-width: 768px) {
           width: 20px;
           height: 20px;
           margin-right: 8px;
@@ -4618,31 +4637,31 @@ body {
       }
     }
   }
-  .job_progress_wrap{
-    .approval_info{
+  .job_progress_wrap {
+    .approval_info {
       top: 25px;
       right: -40px;
       font-size: 12px;
       color: var(--blue);
     }
   }
-  .title{
+  .title {
     position: relative;
     margin-bottom: 12px;
     max-width: 55%;
     min-height: 37px;
     padding-right: 35px;
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       max-width: 60%;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       max-width: 55%;
     }
     .edit_icon {
       right: 10px;
     }
   }
-  .tagg{
+  .tagg {
     color: var(--blue);
   }
   .review_job {
@@ -4650,117 +4669,117 @@ body {
       width: 156px;
     }
   }
-  .tags_wrap{
-    ul{
+  .tags_wrap {
+    ul {
       margin: 0;
     }
   }
-  .portfolio_wrappr{
+  .portfolio_wrappr {
     max-width: 600px;
-    .media{
+    .media {
       margin: 0 20px 20px 0;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         margin: 0 18px 18px 0;
       }
     }
-    .upload_media{
+    .upload_media {
       cursor: pointer;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         width: 145px;
         height: 145px;
-        img{
+        img {
           width: 145px;
           height: 145px;
         }
       }
     }
   }
-  .flex_col_sm_8{
-    @media(max-width: 1024px){
+  .flex_col_sm_8 {
+    @media (max-width: 1024px) {
       width: 58.333333%;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 100%;
     }
   }
-  .flex_col_sm_4{
-    @media(max-width: 1024px){
+  .flex_col_sm_4 {
+    @media (max-width: 1024px) {
       width: 41.666667%;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 100%;
     }
   }
-  .p_settings{
-    .inner_title{
+  .p_settings {
+    .inner_title {
       margin-bottom: 5px;
     }
-    .form_label{
+    .form_label {
       color: #120e24;
       margin: 0;
     }
-    .info_note{
+    .info_note {
       color: var(--dark-grey);
       line-height: 1.4;
     }
   }
-  .support_categ{
+  .support_categ {
     margin: 35px 0;
-    .radio_wrap{
-      label{
-        font-family: 'Neue Haas Grotesk Text Pro Roman';
+    .radio_wrap {
+      label {
+        font-family: "Neue Haas Grotesk Text Pro Roman";
       }
     }
   }
 }
 
-.id_info{
+.id_info {
   position: relative;
   padding-left: 30px;
   margin-bottom: 30px;
   max-width: 280px;
   cursor: pointer;
-  &::before{
-    content: '';
+  &::before {
+    content: "";
     @include position(absolute, 2px, auto, auto, 0);
     width: 22px;
     height: 22px;
-    background: url('../images/information-line.svg') center no-repeat;
+    background: url("../images/information-line.svg") center no-repeat;
     background-size: contain;
   }
 }
 
-.verificationid_list{
+.verificationid_list {
   padding-left: 30px;
-  li{
+  li {
     list-style-type: disc;
     margin-bottom: 10px;
     display: list-item;
   }
 }
 
-.id_verified{
+.id_verified {
   display: flex;
   justify-content: center;
   align-items: center;
-  img{
+  img {
     margin-right: 12px;
   }
 }
 
-.applicants_row{
-  .flex_col_sm_4{
+.applicants_row {
+  .flex_col_sm_4 {
     width: 50%;
     @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       width: 100%;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 100%;
     }
   }
 }
 
-.card_btn{
+.card_btn {
   padding: 16px 10px;
   margin-bottom: 24px;
   border-radius: 3px;
@@ -4768,29 +4787,29 @@ body {
   background-color: #f7f8fa;
   position: relative;
   display: block;
-  font: 14px 'Neue Haas Grotesk Text Pro Medium';
-  span{
+  font: 14px "Neue Haas Grotesk Text Pro Medium";
+  span {
     display: inline-block;
-    font-family: 'Inter';
+    font-family: "Inter";
     margin: 0;
   }
-  .pos{
+  .pos {
     @include position(absolute, 50%, auto, auto, auto);
     transform: translateY(-50%);
     height: 25px;
-    &.card{
+    &.card {
       left: 12px;
     }
-    &.check{
+    &.check {
       right: 0px;
     }
-    ~img{
+    ~ img {
       right: 12px !important;
     }
   }
 }
 
-.payment_note{
+.payment_note {
   font-size: 14px;
   line-height: 1.43;
   color: var(--greyish-brown);
@@ -4798,14 +4817,14 @@ body {
   position: relative;
   display: block;
   margin-bottom: 30px;
-  &::before{
+  &::before {
     @include position(absolute, 0px, auto, auto, 0px);
     content: "";
     width: 24px;
     height: 24px;
     background: url("../images/ic-dollarr.png") center no-repeat;
     background-size: contain;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 20px;
       height: 20px;
     }
@@ -4813,72 +4832,76 @@ body {
 }
 .job_progress_wrap {
   padding: 8px 0;
-    .progress_wrapper{
-        position: relative;
+  .progress_wrapper {
+    position: relative;
+  }
+  @keyframes approval_info {
+    to {
+      opacity: 1;
     }
-    @keyframes approval_info {
-      to   { opacity: 1; }
+  }
+  @keyframes approval_img {
+    to {
+      opacity: 1;
     }
-    @keyframes approval_img {
-      to   { opacity: 1; }
+  }
+  .approval_info {
+    @include position(absolute, 2px, 0px, auto, auto);
+    animation: approval_info 1.5s 2s forwards;
+    opacity: 0;
+    font: 10px/1.8 "Neue Haas Grotesk Text Pro Medium";
+    letter-spacing: 0.3px;
+    display: flex;
+    align-items: center;
+    color: var(--blue-two);
+    text-transform: uppercase;
+    img {
+      animation: approval_img 1s 3s forwards;
+      opacity: 0;
+      margin-right: 5px;
+      width: 12px;
+      height: 12px;
+      object-fit: none;
     }
-    .approval_info{
-      @include position(absolute, 2px, 0px, auto, auto);
-      animation: approval_info 1.5s 2s forwards;
-      opacity: 0; 
-      font: 10px/1.8 'Neue Haas Grotesk Text Pro Medium';
-      letter-spacing: 0.3px;
-      display: flex;
-      align-items: center;
-      color: var(--blue-two);
-      text-transform: uppercase;
-      img{
-          animation: approval_img 1s 3s forwards;
-          opacity: 0; 
-          margin-right: 5px;
-          width: 12px;
-          height: 12px;
-          object-fit: none;
-      }
-    }
+  }
 }
 
-.time_spent{
+.time_spent {
   display: block;
   max-width: 280px;
   width: 100%;
-  @media(max-width: 650px){
+  @media (max-width: 650px) {
     max-width: 100%;
   }
-  input{
+  input {
     width: 215px;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       width: 80%;
     }
   }
-  .detect_icon{
-    font-family: "Neue Haas Grotesk Text Pro Roman";    
+  .detect_icon {
+    font-family: "Neue Haas Grotesk Text Pro Roman";
   }
 }
-.pending_info{
-  margin-top:15px;
-  span{
+.pending_info {
+  margin-top: 15px;
+  span {
     display: flex;
     justify-content: center;
     align-items: center;
-    img{
+    img {
       margin-right: 10px;
     }
   }
 }
 
-.milestones_check{
+.milestones_check {
   margin: 20px 0px;
-  li{
+  li {
     min-height: 64px;
     position: relative;
     margin-bottom: 30px;
-    &::before{
+    &::before {
       @include position(absolute, 32px, auto, auto, 11px);
       border: 1px dashed var(--grey);
       height: 80%;
@@ -4886,22 +4909,22 @@ body {
       z-index: -1;
       content: "";
     }
-    &:last-child{
-      &::before{
+    &:last-child {
+      &::before {
         display: none;
       }
     }
-    &.inactive{
-      &::before{
+    &.inactive {
+      &::before {
         display: none;
       }
-      .full_btn{
+      .full_btn {
         width: 327px;
       }
     }
-    &.active{
-      .circle_stepper{
-        span{
+    &.active {
+      .circle_stepper {
+        span {
           opacity: 1;
           visibility: visible;
           width: 12px;
@@ -4909,58 +4932,61 @@ body {
           background-color: var(--blue-two);
           display: inline-block;
           border-radius: 50%;
-         }
+        }
       }
-      &::before{
+      &::before {
         display: none;
       }
-      .full_btn{
+      .full_btn {
         margin-top: 16px;
         width: 250px;
       }
     }
-    &.check{
-      &::before{
+    &.check {
+      &::before {
         border-color: var(--blue-two);
       }
-      .circle_stepper{
+      .circle_stepper {
         border: none;
-        span{
+        span {
           opacity: 1;
           visibility: visible;
           display: inline-block;
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: var(--blue-two) url('../images/checked-2.png') center no-repeat;
+          background: var(--blue-two) url("../images/checked-2.png") center
+            no-repeat;
           background-size: contain;
-         }
+        }
       }
-      .info{
-        label, span{
+      .info {
+        label,
+        span {
           color: var(--dark-grey);
         }
       }
     }
-    &.declined{
-      &::before{
+    &.declined {
+      &::before {
         display: none;
       }
-      .circle_stepper{
+      .circle_stepper {
         border: none;
-        span{
+        span {
           opacity: 1;
           visibility: visible;
           display: inline-block;
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          background: var(--blue-two) url('../images/ic-exclamation.png') center no-repeat;
+          background: var(--blue-two) url("../images/ic-exclamation.png") center
+            no-repeat;
           background-size: contain;
-         }
+        }
       }
     }
-    .circle_stepper{
+    .circle_stepper {
       @include position(absolute, 0px, auto, auto, 0px);
       width: 24px;
       height: 24px;
@@ -4970,13 +4996,12 @@ body {
       justify-content: center;
       align-items: center;
       cursor: pointer;
-      span{
+      span {
         opacity: 0;
         visibility: hidden;
       }
-      
     }
-    .info{
+    .info {
       padding-left: 40px;
       margin-bottom: 15px;
       label {
@@ -4987,64 +5012,66 @@ body {
         max-width: 400px;
         display: block;
       }
-      span{
+      span {
         margin: 3px 0;
         display: block;
         font-size: 14px;
       }
-      .fill_btn{
+      .fill_btn {
         margin-top: 15px;
       }
     }
   }
 }
 
-.change_req{
+.change_req {
   max-width: 100% !important;
 }
-.decline_reason, .change_req{
+.decline_reason,
+.change_req {
   background-color: #f6f7f9;
   margin: 15px 0;
   padding: 30px 10px 30px 15px;
   max-width: 327px;
   position: relative;
-  .show_label{
-    font-family: 'Neue Haas Grotesk Text Pro Roman';
+  .show_label {
+    font-family: "Neue Haas Grotesk Text Pro Roman";
     color: var(--blue);
   }
-  .decline_media{
-    li{
+  .decline_media {
+    li {
       margin: 0;
-      &::before{
+      &::before {
         display: none;
       }
     }
-    .react-multiple-carousel__arrow{
+    .react-multiple-carousel__arrow {
       min-width: 30px;
       min-height: 30px;
-      &.react-multiple-carousel__arrow--left{
-        &::before{
+      &.react-multiple-carousel__arrow--left {
+        &::before {
           width: 18px;
           height: 18px;
         }
       }
-      &.react-multiple-carousel__arrow--right{
-        &::before{
+      &.react-multiple-carousel__arrow--right {
+        &::before {
           width: 18px;
           height: 18px;
         }
       }
     }
   }
-  .upload_img_video{
+  .upload_img_video {
     margin: 0;
-    .img_video{
+    .img_video {
       width: 140px;
       height: 122px;
       margin: 0;
     }
   }
-  input,textarea{
+  input,
+  textarea {
     background-color: transparent;
   }
   .delete_quote {
@@ -5056,17 +5083,17 @@ body {
     flex-flow: column-reverse;
     align-items: center;
     font-size: 13px;
-    font-family: 'Neue Haas Grotesk Text Pro Roman';
+    font-family: "Neue Haas Grotesk Text Pro Roman";
     cursor: pointer;
-    img{
+    img {
       margin-bottom: 5px;
     }
   }
-  .edit_delete{
+  .edit_delete {
     top: 20px;
   }
 }
-.total_quote{
+.total_quote {
   margin: 0 0 55px 150px;
   text-align: right;
 }
@@ -5074,71 +5101,69 @@ body {
 .view_quote {
   display: inline-block;
   color: var(--blue-two);
-  font: 13px 'Neue Haas Grotesk Text Pro Roman';
+  font: 13px "Neue Haas Grotesk Text Pro Roman";
   background-color: #dfe5ef;
   padding: 5px;
   border-radius: 6px;
   cursor: pointer;
 }
 
-.reason_wrap{
+.reason_wrap {
   margin-bottom: 40px;
-  .f_spacebw{
+  .f_spacebw {
     align-items: initial;
     margin-bottom: 24px;
-    .checkbox_wrap{
+    .checkbox_wrap {
       flex: 1;
-      label{
+      label {
         font-size: 16px;
         color: var(--blue);
-        font-family: 'Neue Haas Grotesk Text Pro Roman';
+        font-family: "Neue Haas Grotesk Text Pro Roman";
         margin: 0;
       }
     }
   }
 }
 
-.payment_details{
+.payment_details {
   min-height: 175px;
   padding: 24px 15px 20px 24px;
   background-color: #f6f7f9;
   margin-bottom: 30px;
-  .f_spacebw{
-    &:not(:last-child){
+  .f_spacebw {
+    &:not(:last-child) {
       margin-bottom: 12px;
     }
   }
-
 }
 
-.bank_detail{
+.bank_detail {
   position: relative;
   padding-left: 50px;
   display: flex;
   flex-flow: column;
   margin-bottom: 100px;
-  &::before{
+  &::before {
     @include position(absolute, 50%, auto, auto, 0px);
     transform: translateY(-50%);
     content: "";
     width: 40px;
     height: 40px;
     background: url("../images/ic-bank.png") center no-repeat;
-    background-size: contain;    
+    background-size: contain;
   }
-  span{
+  span {
     margin: 0;
   }
-  &.view_more{
-    &:hover{
-      &::after{
+  &.view_more {
+    &:hover {
+      &::after {
         right: 0;
       }
     }
   }
 }
 //----------------Job Dashboard close-------------------//
-
 
 //------------Ques-Ans list modal--------------------//
 .question_ans_card {
@@ -5207,7 +5232,7 @@ body {
     .details {
       width: 80%;
       .user_name {
-        font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
+        font: 14px/1.29 "Neue Haas Grotesk Text Pro Medium";
         color: var(--black-two);
         display: block;
       }
@@ -5234,50 +5259,44 @@ body {
   .action {
     cursor: pointer;
     display: inline-block;
-    font: 14px/1.29 'Neue Haas Grotesk Text Pro Medium';
+    font: 14px/1.29 "Neue Haas Grotesk Text Pro Medium";
     color: var(--blue-two);
     margin-right: 16px;
   }
 }
 //------------Ques-Ans list modal close--------------------//
 
-
-
-
-
-
-
 div#light-box div {
   background-color: #00000073 !important;
-  z-index: '9999' !important;
-  height: '10%' !important;
-  width: '100%' !important;
+  z-index: "9999" !important;
+  height: "10%" !important;
+  width: "100%" !important;
 }
 .padding_0 {
   padding: 0px;
-  .flex_col_sm_6{
+  .flex_col_sm_6 {
     width: 66.666667%;
   }
 }
 
 //---------------------- Job Dashboard -------------------------//
 
-
 //----------Revenue-----------//
-.flex_row.center_flex{
-  .flex_col_sm_2,  .flex_col_sm_4{
-    @media(max-width: 650px){
+.flex_row.center_flex {
+  .flex_col_sm_2,
+  .flex_col_sm_4 {
+    @media (max-width: 650px) {
       width: 50%;
       margin-bottom: 10px;
     }
   }
 }
 
-.total_count_card{
+.total_count_card {
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 50px;
-  li{
+  li {
     display: inline-block;
     width: 100%;
     max-width: 628px;
@@ -5288,103 +5307,104 @@ div#light-box div {
     justify-content: center;
     align-items: center;
     flex-flow: column;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       min-height: 110px;
       padding: 10px 15px;
     }
-    &:not(:last-child){
+    &:not(:last-child) {
       margin: 0 32px 0 0;
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         margin: 0 20px 0 0;
       }
     }
-    &:hover{
-	    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
+    &:hover {
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.05);
     }
-    .sub_title{
+    .sub_title {
       margin: 0;
     }
-    .title{
+    .title {
       margin: 3px 0 0;
     }
-    &.revenue{
+    &.revenue {
       max-width: 488px;
-      @media(max-width: 768px){
+      @media (max-width: 768px) {
         max-width: 47%;
       }
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         max-width: 45%;
       }
     }
-    &.job{
+    &.job {
       max-width: 384px;
-      @media(max-width: 768px){
+      @media (max-width: 768px) {
         max-width: 47%;
       }
     }
   }
 }
 
-.payment_check{
+.payment_check {
   max-width: 670px;
-  .f_spacebw{
+  .f_spacebw {
     align-items: flex-end;
   }
-  .xs_sub_title, .info{
+  .xs_sub_title,
+  .info {
     margin-bottom: 0 !important;
   }
 }
 
-.last_jobs{
+.last_jobs {
   margin: 32px 0 15px;
   .center_flex {
-    &:not(:last-child){
+    &:not(:last-child) {
       margin-bottom: 24px;
     }
   }
-  .inner_title{
+  .inner_title {
     margin: 0;
   }
 }
 
-.img_txt_wrap{
+.img_txt_wrap {
   display: flex;
   align-items: center;
-  .job_img{
+  .job_img {
     width: 56px;
     height: 56px;
     margin: 0 16px 0 0;
     border-radius: 50%;
     overflow: hidden;
     border: 1px solid #f7f8fa;
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       width: 40px;
       height: 40px;
     }
-    img{
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
   }
-  .details{
+  .details {
     cursor: pointer;
     width: 70%;
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       width: 66%;
     }
-    .inner_title, .xs_head{
+    .inner_title,
+    .xs_head {
       margin: 0;
     }
   }
 }
 
-
-.search_bar{
+.search_bar {
   position: relative;
   overflow: hidden;
   transition: all 0.5s ease;
-  input{
+  input {
     border-color: transparent !important;
     position: relative;
     padding: 12px 10px 12px 35px;
@@ -5392,91 +5412,88 @@ div#light-box div {
     z-index: 9;
     opacity: 0;
     visibility: hidden;
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       padding: 8px 10px 8px 35px;
     }
   }
-  .detect_icon_ltr{
+  .detect_icon_ltr {
     cursor: pointer;
   }
-  &.active{
-    input{
+  &.active {
+    input {
       background-color: #f7f8fa;
       opacity: 1;
       visibility: visible;
       width: 100%;
       box-shadow: none;
     }
-    .detect_icon_ltr{
+    .detect_icon_ltr {
       z-index: 9;
     }
   }
 }
 
-.revenue_detail{
+.revenue_detail {
   position: relative;
-  .back{
+  .back {
     top: 0;
     transform: initial;
   }
-  .total_count_card{
+  .total_count_card {
     padding-left: 45px;
-    li{
+    li {
       align-items: initial;
     }
   }
-  .edit_icon{
+  .edit_icon {
     right: 20px;
   }
 }
 
-
 //---------Revenue close------------//
 
-
-
 //----------Chat-------------//
-  .chat_wrapr{
-    height: 100%;
+.chat_wrapr {
+  height: 100%;
   .side_nav_col {
     width: 490px;
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       width: 0;
     }
-    &.active{
-      @media(max-width: 768px){
+    &.active {
+      @media (max-width: 768px) {
         width: 550px;
       }
-      @media(max-width: 650px){
+      @media (max-width: 650px) {
         width: 360px;
       }
     }
   }
-  .u_img{
+  .u_img {
     width: 40px;
     height: 40px;
     margin: 0 12px 0 0;
     border-radius: 50%;
     overflow: hidden;
-    img{
+    img {
       width: 100%;
       height: 100%;
       object-fit: cover;
     }
   }
-  .search_bar{
+  .search_bar {
     @include position(absolute, 45px, 15px, auto, auto);
     overflow: initial;
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       top: 22px;
       right: 85px;
     }
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       top: 5px;
       right: 45px;
     }
-    &.active{
-      input{
+    &.active {
+      input {
         background-color: var(--white);
       }
       .detect_icon_ltr {
@@ -5487,88 +5504,88 @@ div#light-box div {
       }
     }
     .detect_icon_ltr {
-      img{
+      img {
         width: 42px;
         height: 42px;
-        @media(max-width: 650px){
+        @media (max-width: 650px) {
           width: 30px;
           height: 30px;
         }
       }
     }
   }
-  .detail_col{
+  .detail_col {
     margin-left: 390px;
     padding: 48px 0px 0 20px;
     overflow: hidden;
-    @media (max-width: 1366px){
+    @media (max-width: 1366px) {
       margin-left: 350px;
     }
     @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
       margin-left: 350px;
     }
-    .chat_col{
+    .chat_col {
       width: 100%;
       position: relative;
       padding: 0px 10px 20px 20px;
       height: calc(100vh - 150px);
       transition: all ease-in 0.3s;
-      @media(max-width: 1366px){
+      @media (max-width: 1366px) {
         width: 95%;
       }
-      &.active{
+      &.active {
         width: 55%;
-        @media(max-width: 768px){
+        @media (max-width: 768px) {
           width: 100%;
           padding: 5px 0;
         }
-        ~ .view_detail_col{
+        ~ .view_detail_col {
           transform: translateX(0);
         }
       }
-      .chat_user{
+      .chat_user {
         display: flex;
         align-items: center;
         position: relative;
-        .u_img{
+        .u_img {
           width: 40px;
           height: 40px;
           margin: 0 16px 0 0;
           border-radius: 50%;
           overflow: hidden;
-          img{
+          img {
             width: 100%;
             height: 100%;
             object-fit: cover;
           }
         }
-        .name{
-          font: 20px 'Neue Haas Grotesk Text Pro Medium';
+        .name {
+          font: 20px "Neue Haas Grotesk Text Pro Medium";
           display: block;
           width: 74%;
           white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
           cursor: pointer;
-          @media(max-width: 650px){
+          @media (max-width: 650px) {
             width: 48%;
           }
         }
-        .view_detail{
+        .view_detail {
           @include position(absolute, auto, 0px, auto, auto);
           display: flex;
           align-items: center;
           color: var(--blue-two);
-          font: 14px 'Neue Haas Grotesk Text Pro Medium';
+          font: 14px "Neue Haas Grotesk Text Pro Medium";
           cursor: pointer;
-          @media(max-width: 650px){
+          @media (max-width: 650px) {
             top: 10px;
             right: 5px;
             font-size: 11px;
           }
-          img{
+          img {
             margin-left: 10px;
-            @media(max-width: 650px){
+            @media (max-width: 650px) {
               width: 15px;
               height: 15px;
               margin-left: 5px;
@@ -5576,7 +5593,7 @@ div#light-box div {
           }
         }
       }
-      .message_wrapr{
+      .message_wrapr {
         height: calc(100vh - 270px);
         max-height: 100%;
         overflow-y: auto;
@@ -5585,37 +5602,37 @@ div#light-box div {
         align-items: flex-end;
         flex-flow: column;
         // justify-content: flex-end;
-        @media (max-width: 1366px){
+        @media (max-width: 1366px) {
           height: 415px;
         }
-        @media(max-width: 768px){
+        @media (max-width: 768px) {
           height: 75%;
         }
-        .date_time{
+        .date_time {
           text-align: center;
           width: 100%;
-          span{
+          span {
             font-size: 14px;
             line-height: 1.29;
             color: #aeaeae;
             display: block;
           }
         }
-        .message{
+        .message {
           display: block;
           text-align: right;
           margin: 0 0 24px;
           width: 100%;
-          @media (max-width: 1366px){
+          @media (max-width: 1366px) {
             margin: 0 0 18px;
           }
-          .time{
+          .time {
             font-size: 12px;
             line-height: 1.33;
             color: #aeaeae;
             @include position(absolute, auto, auto, 0px, -38px);
           }
-          .media{
+          .media {
             width: 84px;
             height: 84px;
             border-radius: 12px;
@@ -5624,11 +5641,11 @@ div#light-box div {
             position: relative;
             overflow: hidden;
             cursor: pointer;
-            &.media_video{
+            &.media_video {
               background-color: var(--blue);
               position: relative;
               border-radius: 0px;
-              video{
+              video {
                 width: 30px;
                 height: 30px;
                 position: absolute;
@@ -5637,7 +5654,7 @@ div#light-box div {
                 transform: translate(-50%, -50%);
               }
             }
-            img{
+            img {
               width: 100%;
               height: 100%;
               object-fit: contain;
@@ -5655,16 +5672,16 @@ div#light-box div {
             padding: 10px;
             border-radius: 3px;
             position: relative;
-            &.mark{
+            &.mark {
               background-image: linear-gradient(to top, #161d4a, #0b41a8);
               color: #fff;
             }
           }
           &.recive_msg {
             text-align: left;
-            p{
+            p {
               background-color: #dfe5ef;
-              .time{
+              .time {
                 right: -38px;
                 left: auto;
               }
@@ -5677,72 +5694,74 @@ div#light-box div {
         width: 100%;
         background: var(--white);
         box-shadow: 0 -2px 40px 0 rgba(174, 174, 174, 0.2);
-        @media(max-width: 1366px){
+        @media (max-width: 1366px) {
           width: 98%;
         }
-        @media(max-width: 768px){
+        @media (max-width: 768px) {
           bottom: 50px;
         }
-        input, textarea{
+        input,
+        textarea {
           border: none;
           padding: 16px 40px 16px 60px;
-          &:focus,&:hover{
+          &:focus,
+          &:hover {
             border: none !important;
-            box-shadow:  none !important;
+            box-shadow: none !important;
           }
         }
-        .hide{
+        .hide {
           display: none !important;
         }
-        textarea{
+        textarea {
           padding: 1px 2px 1px 60px;
           margin: 16px 0 0;
           min-height: auto;
           width: 92%;
-          @media(max-width: 768px){
+          @media (max-width: 768px) {
             width: 88%;
           }
-          &::placeholder{
+          &::placeholder {
             color: #858e97;
           }
         }
-        img{
+        img {
           width: 100%;
           height: 100%;
           cursor: pointer;
         }
       }
     }
-    .view_detail_col{
+    .view_detail_col {
       width: 45%;
       border-left: 1px solid var(--grey);
       padding: 20px;
       transform: translateX(100%);
-      @media(max-width: 768px){
+      @media (max-width: 768px) {
         width: 100%;
         height: 100%;
         position: absolute;
         border: none;
         background-color: var(--white);
       }
-      &.active{
-        @media(max-width: 768px){
+      &.active {
+        @media (max-width: 768px) {
           right: 0;
         }
       }
-      .center_flex{
+      .center_flex {
         margin-bottom: 24px;
-        .title{
+        .title {
           margin: 0;
         }
       }
-      .close{
+      .close {
         @include position(absolute, 10px, 0px, auto, auto);
         cursor: pointer;
       }
     }
   }
-  .tradies_row{
+  .tradies_row {
     height: 100%;
   }
 }
@@ -5752,40 +5771,41 @@ div#light-box div {
   max-height: 100%;
   overflow-y: auto;
   li {
-    .chat{
+    .chat {
       padding: 19px 10px 19px 120px;
       color: var(--blue);
-      display: flex;   
+      display: flex;
       position: relative;
-      @media (max-width: 1366px){
+      @media (max-width: 1366px) {
         padding: 15px 10px 17px 120px;
-        }
-        @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
+      }
+      @media only screen and (min-device-width: 700px) and (max-device-width: 1366px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
         padding: 15px 10px 17px 120px;
-        }
-        @media(max-width: 768px){
-          padding: 15px 10px 17px 20px;
-        }
-      @media(max-width: 650px){
+      }
+      @media (max-width: 768px) {
+        padding: 15px 10px 17px 20px;
+      }
+      @media (max-width: 650px) {
         padding: 12px 10px;
       }
-      &.active, &:hover{
+      &.active,
+      &:hover {
         background: var(--white);
       }
-      .u_img{
+      .u_img {
         width: 64px;
         height: 64px;
       }
-      .detail{
+      .detail {
         width: 64%;
-        .inner_title{
+        .inner_title {
           font-size: 14px;
           margin-bottom: 2px;
-          &.job{
+          &.job {
             padding-left: 18px;
             position: relative;
             font-family: "Neue Haas Grotesk Text Pro Roman";
-            &::before{
+            &::before {
               @include position(absolute, 50%, auto, auto, 0px);
               transform: translateY(-50%);
               content: "";
@@ -5796,18 +5816,18 @@ div#light-box div {
             }
           }
         }
-        .commn_para{
+        .commn_para {
           margin: 0;
         }
       }
-      .date_time{
+      .date_time {
         font-size: 14px;
         line-height: 1.43;
         color: var(--dark-grey);
         @include position(absolute, 15px, 15px, auto, auto);
       }
-      .count{
-        font: 12px/1.67 'Neue Haas Grotesk Text Pro Medium';
+      .count {
+        font: 12px/1.67 "Neue Haas Grotesk Text Pro Medium";
         color: var(--greyish-brown);
         width: 20px;
         height: 20px;
@@ -5817,7 +5837,7 @@ div#light-box div {
         display: flex;
         justify-content: center;
         align-items: center;
-        &.grey{
+        &.grey {
           background-color: var(--dark-grey);
           color: var(--white);
         }
@@ -5826,7 +5846,6 @@ div#light-box div {
   }
 }
 //----------Chat close-------------//
-
 
 //----------Tour Guide-------------//
 
@@ -5838,18 +5857,20 @@ div#light-box div {
   overflow: hidden;
 }
 
-#react-joyride-step-4, #react-joyride-step-5, #react-joyride-step-3{
+#react-joyride-step-4,
+#react-joyride-step-5,
+#react-joyride-step-3 {
   .tour-tooltip {
     margin: 20px 0 0 0px;
     transform: translateX(-70%);
-    @media(max-width: 650px){
+    @media (max-width: 650px) {
       transform: translateX(-48%);
     }
-    &-content{
-      &::before{
+    &-content {
+      &::before {
         @include position(absolute, -32px, -65px, auto, auto);
         background: url("../images/arrow-2.png") center no-repeat;
-        @media(max-width: 650px){
+        @media (max-width: 650px) {
           top: -32px;
           right: -25px;
         }
@@ -5858,9 +5879,9 @@ div#light-box div {
   }
 }
 
-#react-joyride-step-4{
+#react-joyride-step-4 {
   .tour-tooltip {
-    @media(max-width: 768px){
+    @media (max-width: 768px) {
       transform: translateX(-40%);
     }
   }
@@ -5868,28 +5889,28 @@ div#light-box div {
 
 .tour-tooltip {
   margin: 20px 0 0 250px;
-  @media(max-width: 768px){
+  @media (max-width: 768px) {
     margin: 20px 0 0 270px;
   }
-  @media(max-width: 650px){
+  @media (max-width: 650px) {
     margin: 10px 0 0 80px;
   }
   &-content {
     color: var(--white);
-    font-family: 'Neue Haas Grotesk Text Pro Roman';
+    font-family: "Neue Haas Grotesk Text Pro Roman";
     max-width: 210px;
     margin: 0 0 20px auto;
     font-size: 16px;
     line-height: 1.4;
     text-shadow: 0 0 20px #00000066;
     position: relative;
-    &::before{
+    &::before {
       @include position(absolute, -32px, auto, auto, -68px);
       content: "";
       width: 68px;
       height: 68px;
       background: url("../images/arrow-1.png") center no-repeat;
-      background-size: contain;   
+      background-size: contain;
     }
   }
   &-footer {
@@ -5902,7 +5923,7 @@ div#light-box div {
       align-items: center;
       font-size: 16px;
       color: #fff;
-      span{
+      span {
         margin-left: 5px;
       }
     }
@@ -5915,7 +5936,7 @@ div#light-box div {
 
 .xs_alert_dialog_title {
   h2 {
-    font: 18px 'Neue Haas Grotesk Text Pro Medium';
+    font: 18px "Neue Haas Grotesk Text Pro Medium";
     color: var(--blue);
     display: block;
     text-align: center;
