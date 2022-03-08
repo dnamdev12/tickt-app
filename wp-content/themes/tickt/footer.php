@@ -5,16 +5,16 @@
                 <div class="column1">
                     <div class="column_left">
                         <figure class="logo_wrapper">
-                            <img src="./images/footer-logo.png" alt="" role="presentation">
+                            <img src="<?php echo get_stylesheet_directory_uri(); ?>/images/footer-logo.png" alt="" role="presentation">
                         </figure>
                     </div>
                     <div class="column_right">
                         <ul class="footer_list">
                             <li>
-                                <a href="javascript:void();">Find tradespeople</a>
+                                <a href="http://tickt.com.au/">Find tradespeople</a>
                             </li>
                             <li>
-                                <a href="javascript:void();">Find jobs</a>
+                                <a href="http://tickt.com.au/">Find jobs</a>
                             </li>
                             <li>
                                 <a href="javascript:void();">About us</a>
@@ -28,14 +28,14 @@
                 <div class="column2">
                     <div class="action_btn_wrapper">
                         <div class="btn_wrap">
-                            <button class="btn btn_primary">
+                            <a href="https://ticktreactqa.appskeeper.in/login" class="btn btn_primary">
                                 Log in
-                            </button>
+                            </a>
                         </div>
                         <div class="btn_wrap">
-                            <button class="btn btn_secondary">
+                            <a href="https://ticktreactqa.appskeeper.in/signup" class="btn btn_secondary">
                                 Sign up
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
