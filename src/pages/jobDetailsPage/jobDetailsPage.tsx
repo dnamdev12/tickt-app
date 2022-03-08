@@ -1125,7 +1125,7 @@ const JobDetailsPage = (props: PropsType) => {
                   {props.isSkeletonLoading ? (
                     <Skeleton style={{ lineHeight: 2, height: 400 }} />
                   ) : (
-                    <OwlCarousel {...options}>
+                    <OwlCarousel {...options} className="customOwlCarousel">
                       {itemsMedia.length ? (
                         itemsMedia.map((image: any, index: number) => {
                           console.log({ image }, "---?");

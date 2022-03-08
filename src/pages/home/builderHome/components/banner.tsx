@@ -3,6 +3,7 @@ import Searchicon from "../../../../assets/images/main-search.png";
 import search from "../../../../assets/images/ic-search.png";
 import cross from "../../../../assets/images/close-black.png";
 import bannerimg from "../../../../assets/images/home-banner.png";
+import ticktHomeImg from "../../../../assets/images/tickt_home_screen.png";
 import close from "../../../../assets/images/icon-close-1.png";
 import Location from "../../../../assets/images/ic-location.png";
 import uc from "../../../../assets/images/uc.png";
@@ -54,11 +55,11 @@ const Banner = (props: any) => {
       preFetch(true);
     }
   };
-
+  console.log(props, "!234-------------------->");
   return (
     <div className="home_banner">
       <figure className="banner_img_img">
-        <img src={bannerimg} alt="bannerimg" />
+        <img src={ticktHomeImg} alt="bannerimg" />
         <div className="banner_container">
           <BannerSearch {...props} />
           <div className="text-center">

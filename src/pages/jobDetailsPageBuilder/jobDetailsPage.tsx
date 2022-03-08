@@ -1236,7 +1236,7 @@ const JobDetailsPage = (props: PropsType) => {
             <div className="flex_row">
               <div className="flex_col_sm_8">
                 <figure className="">
-                  <OwlCarousel {...options}>
+                  <OwlCarousel {...options} className="customOwlCarousel">
                     {itemsMedia.length ? (
                       itemsMedia.map((image: any, index: number) => {
                         console.log(

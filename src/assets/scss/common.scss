@@ -3012,7 +3012,7 @@ body {
         }
       }
       .search_btn {
-        @include position(absolute, 0px, 0px, auto, auto);
+        @include position(absolute, -1px, 0px, auto, auto);
         @media (max-width: 768px) {
           top: auto;
           bottom: 0px;

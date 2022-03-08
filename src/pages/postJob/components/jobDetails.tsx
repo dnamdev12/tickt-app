@@ -425,7 +425,7 @@ const JobDetails = ({
               <div className="flex_col_sm_8">
                 <figure className="">
                   {data_clone?.urls?.length ? (
-                    <OwlCarousel {...options}>
+                    <OwlCarousel {...options} className="customOwlCarousel">
                       {/* {renderByFileFormat(data)} */}
                       {data?.urls?.length ? (
                         data?.urls?.map((image: any, index: number) => {

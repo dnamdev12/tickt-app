@@ -1,6 +1,7 @@
 import BannerSearch from "../../../../common/tradieBannerSearch/index";
 
 import bannerimg from "../../../../assets/images/tradie-banner.png";
+import ticktHomeImg from "../../../../assets/images/tickt_home_screen.png";
 
 interface PropsType {
   history: any;
@@ -19,7 +20,7 @@ const HomeBanner = (props: PropsType) => {
   return (
     <div className="home_banner">
       <figure className="banner_img_img">
-        <img src={bannerimg} alt="bannerimg" />
+        <img src={ticktHomeImg} alt="bannerimg" />
         <div className="banner_container">
           <BannerSearch {...props} />
           <div className="text-center">
