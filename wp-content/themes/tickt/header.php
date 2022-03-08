@@ -52,12 +52,12 @@
                                     </a>
                                 </li>
                                 <li class="nav-menu-item">
-                                    <a class="menu-btn" href="javascript:void();">
+                                    <a class="menu-btn" href="https://ticktreactqa.appskeeper.in/login">
                                         <span>Log in</span>
                                     </a>
                                 </li>
                                 <li class="nav-menu-item">
-                                    <a class="menu-btn secondary" href="javascript:void();">
+                                    <a class="menu-btn secondary" href="https://ticktreactqa.appskeeper.in/signup">
                                         <span>Sign up</span>
                                     </a>
                                 </li>
