@@ -37,6 +37,13 @@ switch ($hostname) {
 		define( 'DB_HOST', '52.9.226.235' );
 		define( 'DB_HOST_SLAVE', '52.9.226.235' );
         break;
+	case 'ticktstgwp.appskeeper.in':
+		define( 'DB_NAME', 'tickt_stgwp' );
+		define( 'DB_USER', 'ticktwp_usr' );
+		define( 'DB_PASSWORD', 'Z5PdpTNUR479hNOM' );
+		define( 'DB_HOST', '52.9.226.235' );
+		define( 'DB_HOST_SLAVE', '52.9.226.235' );
+		break;
     default:
 		define( 'DB_NAME', 'ticktwp_usr' );
 		define( 'DB_USER', 'ticktwp_usr' );
