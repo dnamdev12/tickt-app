@@ -1,0 +1,2 @@
+(this["webpackJsonptickt-web"]=this["webpackJsonptickt-web"]||[]).push([[55],{610:function(t,e,n){"use strict";n.r(e);n(0);var r=n(1);e.default=function(t){return function(t){if(null==t)throw new TypeError("Cannot destructure undefined")}(t),Object(r.jsx)("div",{children:"Tradesperson Details"})}}}]);
+//# sourceMappingURL=55.8adbc66f.chunk.js.map
