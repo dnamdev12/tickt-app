@@ -125,7 +125,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
             return true;
         }
 
-        if (hasDescription && (!description.trim() || description.length > 250)) {
+        if (hasDescription && (!description.trim() || description.length > 1000)) {
             return true;
         }
 
@@ -568,11 +568,11 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                         <textarea placeholder="The item has.." value={description} onChange={({ target: { value } }: any) => setDescription(value)} />
                                         {description.length ?
                                             <span className="char_count">
-                                                {`character length : ${description.length} / 250`}
+                                                {`character length : ${description.length} / 1000`}
                                             </span>
                                             : ''}
                                     </div>
-                                    <span className="error_msg">{submitClicked && !description.trim() ? 'Photo Description is required.' : description.length > 250 ? 'Maximum 250 characters are allowed.' : ''}</span>
+                                    <span className="error_msg">{submitClicked && !description.trim() ? 'Photo Description is required.' : description.length > 1000 ? 'Maximum 1000 characters are allowed.' : ''}</span>
                                 </div>
                             )}
                             <div className="form_field">

@@ -61,7 +61,7 @@ const UserMessages = (props: any) => {
         }
     }, [props.roomId]);
     // }, [props.roomId, props.roomData]);
-    console.log('props.roomData: ', props.roomData);
+    //console.log('props.roomData: ', props.roomData);
 
     useEffect(() => {
         scrollToBottom();
@@ -78,7 +78,7 @@ const UserMessages = (props: any) => {
     }
 
     const onReceiveOfNewMsg = (arrmsg: any) => {
-        console.log('arrmsg: ', arrmsg);
+       // console.log('arrmsg: ', arrmsg);
         setMessages(arrmsg);
     }
 
@@ -97,7 +97,7 @@ const UserMessages = (props: any) => {
             setFsSlideListner(fsSlideObj);
         }
     }, [messages]);
-    console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
+   // console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
     const setInboxToTopWithLastMsg = (lastMsg: any) => {
         const newInboxData = [...props.inBoxData];
@@ -106,9 +106,9 @@ const UserMessages = (props: any) => {
         newInboxData.splice(currentIndex, 1);
         newInboxData.unshift(props.inBoxData[currentIndex]);
         props.setInBoxData(newInboxData);
-        console.log('lastMsg: ', lastMsg);
-        console.log('currentIndex: ', currentIndex);
-        console.log('newInboxData: ', newInboxData);
+        // console.log('lastMsg: ', lastMsg);
+        // console.log('currentIndex: ', currentIndex);
+        // console.log('newInboxData: ', newInboxData);
     }
 
     const sendMessage = async () => {

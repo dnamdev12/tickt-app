@@ -18,3 +18,6 @@ export const setShowNotification = (showNotification: boolean, data: any = undef
     store.dispatch({type: actionTypes.SHOW_HIDE_NOTIFICATION, showNotification, data})
 };
 
+export const unReadMessageCount=(count:number)=>{
+    store.dispatch({type: actionTypes.UNREAD_MESSAGE_COUNT, count})
+}

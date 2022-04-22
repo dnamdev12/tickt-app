@@ -562,6 +562,18 @@ class TradieInfo extends Component<Props, State> {
     }
   };
 
+  capitalize = (input: any) => {
+    console.log(input, "inputttts");
+    if (!input) return;
+    let words = input?.split(" ");
+    let CapitalizedWords: any = [];
+    words.forEach((element: any) => {
+      CapitalizedWords.push(
+        element[0].toUpperCase() + element.slice(1, element.length)
+      );
+    });
+    return CapitalizedWords.join(" ");
+  };
   submitAcceptDeclineRequest = (status: any) => {
     let props: any = this.props;
     const { getAcceptDeclineTradie } = props;
@@ -820,7 +832,7 @@ class TradieInfo extends Component<Props, State> {
                           {tradieInfo?.tradieName || ""}
                         </span>
                         <span className="xs_sub_title">
-                          {tradieInfo?.businessName || ""}
+                          {this.capitalize(tradieInfo?.businessName || "")}
                         </span>
                         <span className="tagg">
                           {tradieInfo?.areasOfSpecialization?.tradeData[0]

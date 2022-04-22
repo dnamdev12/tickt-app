@@ -82,7 +82,7 @@ const InitialSignupPage = (props: Propstype) => {
           className="fill_btn btn-effect"
           onClick={() => nextPageHandler("builder")}
         >
-          I’m builder
+          I’m a builder
         </button>
       </div>
       {/* <div className="form_field text-center">
@@ -93,7 +93,7 @@ const InitialSignupPage = (props: Propstype) => {
           className="fill_grey_btn btn-effect"
           onClick={() => nextPageHandler("tradie")}
         >
-          I’m tradesperson
+          I’m a tradesperson
         </button>
       </div>
       {/* {!props.showModal && <div className="form_field text-center"><a className="link" onClick={guestLoginClicked}>Login as Guest</a></div>} */}

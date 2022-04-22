@@ -373,7 +373,7 @@ body {
 .onboard_wrapper {
   .react-multi-carousel-dot-list {
     bottom: auto;
-    top: 40%;
+    top: calc(120px + 250px);
     // @media (max-width: 1366px) {
     //   bottom: 100px;
     // }

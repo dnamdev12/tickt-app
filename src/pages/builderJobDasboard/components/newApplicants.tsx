@@ -1,175 +1,200 @@
-import React, { useEffect, useState } from 'react'
-import dummy from '../../../assets/images/u_placeholder.jpg';
-import approved from '../../../assets/images/approved.png';
-import { withRouter } from 'react-router';
-import noDataFound from '../../../assets/images/no-search-data.png';
-import noData from '../../../assets/images/no-search-data.png';
-import moment from 'moment';
-import { renderTime } from '../../../utils/common';
+import React, { useEffect, useState } from "react";
+import dummy from "../../../assets/images/u_placeholder.jpg";
+import approved from "../../../assets/images/approved.png";
+import { withRouter } from "react-router";
+import newApplicants from "../../../assets/images/newApplicants.png";
+import noData from "../../../assets/images/no-search-data.png";
+import moment from "moment";
+import { renderTime } from "../../../utils/common";
 interface Applicant {
-    amount: any,
-    builderId: any,
-    builderImage: any,
-    durations: any,
-    fromDate: any,
-    jobName: any,
-    jobDescription: any,
-    jobId: any,
-    quote:any,
-    quoteCount: any,
-    quoteJob: any,
-    specializationName: any,
-    timeLeft: any,
-    toDate: any,
-    total: any,
-    tradeId: any,
-    location: any,
-    location_name: any,
-    specializationId: any,
-    tradeName: any,
-    tradieId: any,
-    isLoading?: any,
-    tradeSelectedUrl: any,
-    activeType?: any
+  amount: any;
+  builderId: any;
+  builderImage: any;
+  durations: any;
+  fromDate: any;
+  jobName: any;
+  jobDescription: any;
+  jobId: any;
+  quote: any;
+  quoteCount: any;
+  quoteJob: any;
+  specializationName: any;
+  timeLeft: any;
+  toDate: any;
+  total: any;
+  tradeId: any;
+  location: any;
+  location_name: any;
+  specializationId: any;
+  tradeName: any;
+  tradieId: any;
+  isLoading?: any;
+  tradeSelectedUrl: any;
+  activeType?: any;
 }
 
 const NewApplicants = (props: any) => {
-    const { dataItems, jobType, setJobLabel, isLoading } = props;
-    let listData: any = dataItems;
+  const { dataItems, jobType, setJobLabel, isLoading } = props;
+  let listData: any = dataItems;
 
-    const [isRender, setRender] = useState(false);
+  const [isRender, setRender] = useState(false);
 
-    const redirectToInfo = ({ jobId }: any) => {
-        const props_: any = props;
-        if (jobId?.length) {
-            // let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
-            let urlEncode: any = `?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`
-            props_.history.push(`/job-detail?${urlEncode}`);
-        }
+  const redirectToInfo = ({ jobId }: any) => {
+    const props_: any = props;
+    if (jobId?.length) {
+      // let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
+      let urlEncode: any = `?jobId=${jobId}&activeType=${
+        props_?.activeType || "applicant"
+      }`;
+      props_.history.push(`/job-detail?${urlEncode}`);
     }
+  };
 
-    useEffect(() => {
-        if (isLoading == false) {
-            setRender(true);
-        }
-    }, [isLoading])
-
-    if (!isRender) {
-        return null;
+  useEffect(() => {
+    if (isLoading == false) {
+      setRender(true);
     }
+  }, [isLoading]);
 
-    return (
-        <React.Fragment>
-            <span className="sub_title">New Applicants</span>
-            <div className="flex_row tradies_row">
-                {listData?.length ?
-                    listData.map(({
-                        amount,
-                        builderId,
-                        builderImage,
-                        durations,
-                        fromDate,
-                        jobName,
-                        jobDescription,
-                        jobId,
-                        quote,
-                        quoteCount,
-                        quoteJob,
-                        location,
-                        location_name,
-                        specializationName,
-                        specializationId,
-                        timeLeft,
-                        toDate,
-                        total,
-                        tradeId,
-                        tradieId,
-                        tradeName,
-                        tradeSelectedUrl,
-                    }: Applicant) => (
-                        <div className="flex_col_sm_6">
-                            <div className="tradie_card" data-aos="fade-in" data-aos-delay="250" data-aos-duration="1000">
-                                <span
-                                    onClick={() => { redirectToInfo({ jobId }) }}
-                                    className="more_detail circle">
-                                </span>
-                                <div className="user_wrap">
-                                    <figure className="u_img icon">
-                                        <img
-                                            src={tradeSelectedUrl || dummy}
-                                            alt="traide-img"
-                                            onError={(e: any) => {
-                                                if (e?.target?.onerror) {
-                                                    e.target.onerror = null;
-                                                }
-                                                if (e?.target?.src) {
-                                                    e.target.src = dummy;
-                                                }
-                                            }}
-                                        />
-                                    </figure>
-                                    <div className="details">
-                                        <span className="name">{tradeName}</span>
-                                        <p className="commn_para">{jobName}</p>
-                                    </div>
-                                </div>
-                                <p className="commn_para line-2">{jobDescription}</p>
-                                <div className="job_info">
-                                    <ul>
-                                        <li className="icon dollar">{amount}</li>
-                                        <li className="">
-                                            <span>
-                                                {total}
-                                            </span>
-                                        </li>
-                                        <li className="icon calendar">
-                                            {renderTime(fromDate, toDate)}
-                                        </li>
-                                        <li className="">
-                                            <span>
-                                                {timeLeft}
-                                            </span>
-                                        </li>
-                                    </ul>
-                                </div>
+  if (!isRender) {
+    return null;
+  }
 
-                                {quoteJob ? (
-                                    <button
-                                        onClick={() => {
-                                            if (quoteCount?.length || quoteCount) {
-                                                // setJobLabel('applicantList', jobId, 1, specializationId)
-                                                // props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`);
-                                                setJobLabel('listQuote');
-                                                props.history.replace(`/jobs?active=applicant&quote=true&jobId=${jobId}`)
-                                            }
-                                        }}
-                                        className="fill_grey_btn full_btn btn-effect">
-                                        {`${quoteCount?.length || quoteCount} Application${quoteCount === 1 ? '' : 's'}`}
-                                    </button>
-                                ) : (
-                                    <button
-                                        onClick={() => {
-                                            setJobLabel('applicantList', jobId, 1, specializationId)
-                                        }}
-                                        className="fill_grey_btn full_btn btn-effect">
-                                        {'Applications'}
-                                    </button>
-                                )}
+  return (
+    <React.Fragment>
+      <span className="sub_title">New Applicants</span>
+      <div className="flex_row tradies_row">
+        {listData?.length
+          ? listData.map(
+              ({
+                amount,
+                builderId,
+                builderImage,
+                durations,
+                fromDate,
+                jobName,
+                jobDescription,
+                jobId,
+                quote,
+                quoteCount,
+                quoteJob,
+                location,
+                location_name,
+                specializationName,
+                specializationId,
+                timeLeft,
+                toDate,
+                total,
+                tradeId,
+                tradieId,
+                tradeName,
+                tradeSelectedUrl,
+              }: Applicant) => (
+                <div className="flex_col_sm_6">
+                  <div
+                    className="tradie_card"
+                    data-aos="fade-in"
+                    data-aos-delay="250"
+                    data-aos-duration="1000"
+                  >
+                    <span
+                      onClick={() => {
+                        redirectToInfo({ jobId });
+                      }}
+                      className="more_detail circle"
+                    ></span>
+                    <div className="user_wrap">
+                      <figure className="u_img icon">
+                        <img
+                          src={tradeSelectedUrl || dummy}
+                          alt="traide-img"
+                          onError={(e: any) => {
+                            if (e?.target?.onerror) {
+                              e.target.onerror = null;
+                            }
+                            if (e?.target?.src) {
+                              e.target.src = dummy;
+                            }
+                          }}
+                        />
+                      </figure>
+                      <div className="details">
+                        <span className="name">{tradeName}</span>
+                        <p className="commn_para">{jobName}</p>
+                      </div>
+                    </div>
+                    <p className="commn_para line-2">{jobDescription}</p>
+                    <div className="job_info">
+                      <ul>
+                        <li className="icon dollar">{amount}</li>
+                        <li className="">
+                          <span>{total}</span>
+                        </li>
+                        <li className="icon calendar">
+                          {renderTime(fromDate, toDate)}
+                        </li>
+                        <li className="">
+                          <span>{timeLeft}</span>
+                        </li>
+                      </ul>
+                    </div>
 
-                            </div>
-                        </div>
-                    )) :
-                    !isLoading && (
-                        <div className="no_record  m-t-vh">
-                            <figure className="no_img">
-                                <img src={noData} alt="data not found" />
-                            </figure>
-                            <span>{'No Data Found'}</span>
-                        </div>
+                    {quoteJob ? (
+                      <button
+                        onClick={() => {
+                          if (quoteCount?.length || quoteCount) {
+                            // setJobLabel('applicantList', jobId, 1, specializationId)
+                            // props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`);
+                            setJobLabel("listQuote");
+                            props.history.replace(
+                              `/jobs?active=applicant&quote=true&jobId=${jobId}`
+                            );
+                          }
+                        }}
+                        className="fill_grey_btn full_btn btn-effect"
+                      >
+                        {`${quoteCount?.length || quoteCount} Application${
+                          quoteCount === 1 ? "" : "s"
+                        }`}
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setJobLabel(
+                            "applicantList",
+                            jobId,
+                            1,
+                            specializationId
+                          );
+                        }}
+                        className="fill_grey_btn full_btn btn-effect"
+                      >
+                        {"Applications"}
+                      </button>
                     )}
-            </div>
-        </React.Fragment>
-    )
-}
+                  </div>
+                </div>
+              )
+            )
+          : !isLoading && (
+              <div className="no_record  m-t-vh">
+                <figure>
+                  <figure className="no_img">
+                    <img src={newApplicants} alt="data not found" />
+                  </figure>
+                </figure>
+                <span className="empty_screen_text">
+                  You don't have any applicants yet
+                </span>
+                <span className="empty_screen_subtext">
+                  As soon as someone will apply for your job post you will be
+                  notified
+                </span>
+              </div>
+            )}
+      </div>
+    </React.Fragment>
+  );
+};
 
-export default withRouter(NewApplicants)
+export default withRouter(NewApplicants);

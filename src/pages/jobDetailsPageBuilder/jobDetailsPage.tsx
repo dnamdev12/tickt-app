@@ -160,7 +160,7 @@ const JobDetailsPage = (props: PropsType) => {
     } else {
       if (params.get("jobId")) {
         let res = await jobDetailsBuilder({ jobId: params.get("jobId") });
-        console.log({ res }, "---->");
+
         if (res.success) {
           setJobDetailsData(res.data);
         }
@@ -187,7 +187,7 @@ const JobDetailsPage = (props: PropsType) => {
           showAllQuestionsClicked: true,
         }));
       }
-      console.log({ res2 }, "question-list");
+
       let data_elements = res2?.data?.list || res2?.data;
       setQuestionList(data_elements);
     }
@@ -232,7 +232,6 @@ const JobDetailsPage = (props: PropsType) => {
     };
     const res = await getQuestionsList(data);
     if (res.success) {
-      console.log({ res }, "question-list");
       let data_elements = res?.data?.list || res?.data;
       setQuestionList((prevData: any) => [...prevData, ...data_elements]);
       setQuestionListPageNo(data.page);
@@ -250,7 +249,6 @@ const JobDetailsPage = (props: PropsType) => {
   };
 
   const submitQuestionHandler = async (type: string) => {
-    console.log("Here!------->", { questionsData });
     if (["askQuestion", "deleteQuestion", "updateQuestion"].includes(type)) {
       if (!validateForm(type)) {
         return;
@@ -383,7 +381,7 @@ const JobDetailsPage = (props: PropsType) => {
     e: React.ChangeEvent<HTMLTextAreaElement>,
     type: string
   ) => {
-    if (e.target.value.trim().length <= 250) {
+    if (e.target.value.trim().length <= 1000) {
       setQuestionsData((prevData: any) => ({
         ...prevData,
         [type]: e.target.value,
@@ -455,7 +453,6 @@ const JobDetailsPage = (props: PropsType) => {
       hideDispute = params.get("hide_dipute");
     }
   }
-  console.log({ activeType, hideDispute });
 
   const renderByStatus = () => {
     return (
@@ -916,19 +913,6 @@ const JobDetailsPage = (props: PropsType) => {
                     </ul>
                   )}
                 </div>
-                {console.log({
-                  changeRequestDeclineReason:
-                    jobDetailsData.changeRequestDeclineReason,
-                  isCancelJobRequest: jobDetailsData.isCancelJobRequest,
-                  isChangeRequest: jobDetailsData.isChangeRequest,
-                  isPublishedAgain: jobDetailsData.isPublishedAgain,
-                  reasonForCancelJobRequest:
-                    jobDetailsData.reasonForCancelJobRequest,
-                  reasonNoteForCancelJobRequestjob:
-                    jobDetailsData.reasonNoteForCancelJobRequest,
-                  rejectReasonNoteForCancelJobRequest:
-                    jobDetailsData.rejectReasonNoteForCancelJobRequest,
-                })}
 
                 {(CASE_1 || CASE_2 || CASE_3 || CASE_4) && (
                   <button
@@ -1139,15 +1123,15 @@ const JobDetailsPage = (props: PropsType) => {
                       <div className="text_field">
                         <textarea
                           placeholder={`I disagree with this cancelling`}
-                          maxLength={250}
+                          maxLength={1000}
                           value={replyText}
                           onChange={(e: any) => {
                             setReplyText(e.target.value.trimLeft());
                           }}
                         />
-                        <span className="char_count">{`${replyText?.length}/250`}</span>
+                        <span className="char_count">{`${replyText?.length}/1000`}</span>
                       </div>
-                      {replyText?.length > 250 && (
+                      {replyText?.length > 1000 && (
                         <span className="error_msg">
                           {errors.replyCancelReason}
                         </span>
@@ -1239,13 +1223,6 @@ const JobDetailsPage = (props: PropsType) => {
                   <OwlCarousel {...options} className="customOwlCarousel">
                     {itemsMedia.length ? (
                       itemsMedia.map((image: any, index: number) => {
-                        console.log(
-                          {
-                            image,
-                            mediaType: image?.mediaType,
-                          },
-                          "---?"
-                        );
                         return image?.mediaType === 1 ? (
                           <img
                             key={`${image}${index}`}
@@ -1341,7 +1318,6 @@ const JobDetailsPage = (props: PropsType) => {
                             <span>{`${index + 1}. ${
                               item?.milestoneName
                             }`}</span>
-                            {console.log({ item })}
                             <span>
                               {renderTime(item?.fromDate, item?.toDate)}
                             </span>
@@ -1496,6 +1472,10 @@ const JobDetailsPage = (props: PropsType) => {
                           </div>
                         )}
                       </div>
+                      {console.log(
+                        questionsData,
+                        "2222222222222222222222222222222"
+                      )}
                       {questionList?.length === 0 && (
                         <div className="no_record align_centr">
                           <figure className="no_img">
@@ -1546,7 +1526,7 @@ const JobDetailsPage = (props: PropsType) => {
                         ></textarea>
                         <span className="char_count">{`${
                           questionsData.questionData.trim().length
-                        }/250`}</span>
+                        }/1000`}</span>
                       </div>
                       {!!errors.questionData && (
                         <span className="error_msg">{errors.questionData}</span>

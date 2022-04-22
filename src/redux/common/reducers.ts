@@ -8,6 +8,7 @@ const initialState = {
     toastMessage: undefined,
     showNotification: false,
     notificationData: null,
+    unreadMessageCount:0,
 }
 
 const reducer = (state = initialState, action: any) => {
@@ -34,6 +35,11 @@ const reducer = (state = initialState, action: any) => {
                 ...state,
                 showNotification: action.showNotification,
                 notificationData: action.data,
+            }
+        case actionTypes.UNREAD_MESSAGE_COUNT:
+            return {
+                ...state,
+                unreadMessageCount: action.count,
             }
         default: return state
     }

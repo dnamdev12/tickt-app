@@ -501,7 +501,7 @@ const JobDetailsPage = (props: PropsType) => {
     e: React.ChangeEvent<HTMLTextAreaElement>,
     type: string
   ) => {
-    if (e.target.value.trim().length <= 250) {
+    if (e.target.value.trim().length <= 1000) {
       setQuestionsData((prevData: any) => ({
         ...prevData,
         [type]: e.target.value,
@@ -1506,7 +1506,7 @@ const JobDetailsPage = (props: PropsType) => {
                           ? "cancelling"
                           : "change request"
                       }`}
-                      maxLength={250}
+                      maxLength={1000}
                       value={jobActionState.replyCancelReason}
                       onChange={({
                         target: { value },
@@ -1519,7 +1519,7 @@ const JobDetailsPage = (props: PropsType) => {
                         }))
                       }
                     />
-                    <span className="char_count">{`${jobActionState.replyCancelReason?.length}/250`}</span>
+                    <span className="char_count">{`${jobActionState.replyCancelReason?.length}/1000`}</span>
                   </div>
                   {!!errors.replyCancelReason && (
                     <span className="error_msg">
@@ -1856,11 +1856,11 @@ const JobDetailsPage = (props: PropsType) => {
                                 jobDetailsData?.postedBy?.builderName || ""
                               } what do you want to know`
                         }`}
-                        maxLength={250}
+                        maxLength={1000}
                         value={questionsData.questionData}
                         onChange={(e) => handleChange(e, "questionData")}
                       ></textarea>
-                      <span className="char_count">{`${questionsData.questionData?.length}/250`}</span>
+                      <span className="char_count">{`${questionsData.questionData?.length}/1000`}</span>
                     </div>
                     {!!errors.questionData && (
                       <span className="error_msg">{errors.questionData}</span>

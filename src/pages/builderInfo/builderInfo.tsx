@@ -82,6 +82,7 @@ const BuilderInfo = (props: PropsType) => {
   const [profilePictureLoading, setProfilePictureLoading] = useState(true);
   const [profileData, setProfileData] = useState<any>("");
   const [reviewList, setReviewList] = useState<Array<any>>([]);
+  const [companyName, setCompanyName] = useState<string>("");
   const [reviewListPageNo, setReviewListPageNo] = useState<number>(1);
   const [portfolioData, setPortfolioData] = useState<any>({
     portfolioImageClicked: false,
@@ -106,18 +107,6 @@ const BuilderInfo = (props: PropsType) => {
   });
   const [showError, setShowError] = useState(false);
   const [showSpecs, setShowSpecs] = useState<boolean>(false);
-  console.log(
-    reviewsData,
-    "reviewData",
-    reviewList,
-    "reviewList",
-    profileData,
-    "profileData",
-    reviewListPageNo,
-    "reviewListPageNo",
-    props.history,
-    "history"
-  );
 
   useEffect(() => {
     setItems();
@@ -152,12 +141,6 @@ const BuilderInfo = (props: PropsType) => {
       getItemsFromLocation();
 
     if (user_type == "2" || props.userType == 2) {
-      console.log(
-        user_type,
-        "user_type",
-        props.userType,
-        "this.props.userType"
-      );
       props.getBuilderProfileView();
     } else {
       const res1 = await getBuilderProfile(builderId);
@@ -418,6 +401,19 @@ const BuilderInfo = (props: PropsType) => {
     );
   };
 
+  function capitalize(input: any) {
+    console.log(input, "inputttts");
+    if (!input) return;
+    let words = input?.split(" ");
+    let CapitalizedWords: any = [];
+    words.forEach((element: any) => {
+      CapitalizedWords.push(
+        element[0].toUpperCase() + element.slice(1, element.length)
+      );
+    });
+    return CapitalizedWords.join(" ");
+  }
+
   const { user_type } = getItemsFromLocation();
   let userType: number = Number(user_type);
 
@@ -498,7 +494,7 @@ const BuilderInfo = (props: PropsType) => {
                           {profileData?.builderName || ""}
                         </span>
                         <span className="xs_sub_title">
-                          {profileData?.companyName || ""}
+                          {capitalize(profileData?.companyName || "")}
                         </span>
                         <span className="tagg">
                           {profileData?.position || ""}
@@ -521,7 +517,7 @@ const BuilderInfo = (props: PropsType) => {
                             </span>
                             <span className="review_count">
                               {" "}
-                              {"jobs completed"}{" "}
+                              {"Jobs Completed"}{" "}
                             </span>
                           </li>
                         </ul>

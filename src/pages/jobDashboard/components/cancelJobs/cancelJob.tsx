@@ -225,7 +225,7 @@ const LodgeDispute = (props: PropTypes) => {
                                     setStateData((prev: any) => ({ ...prev, detail: e.target.value }))
                                 }}
                                 placeholder="It’s really bad work, because..."
-                                maxLength={250}
+                                maxLength={1000}
                             />
                         </div>
                         <span className="error_msg">
