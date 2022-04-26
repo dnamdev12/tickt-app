@@ -21,7 +21,21 @@ header {
       transition: transform 0.6s cubic-bezier(0.215, 0.61, 0.355, 1);
     }
   }
-  
+   .unreadCountBadge{
+    width: 22px;
+          height: 22px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 20px;
+          background-color: var(--white);
+          position: absolute;
+          left: 46px;
+          top: -9px;
+          color: var(--blue);
+          font-family: 'Neue Haas Grotesk Text Pro Roman';
+          font-size: 10px;
+  }
   .brand_wrap {
     width: 176px;
     height: 34px;
@@ -147,7 +161,7 @@ header {
         }
       }
     }
-  
+ 
     .profile_notification {
       display: flex;
       align-items: center;

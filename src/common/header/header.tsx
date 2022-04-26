@@ -10,7 +10,12 @@ import AuthModal from "../auth/authModal";
 import Urls, { urlFor } from "../../network/Urls";
 import { useDispatch } from "react-redux";
 import { setLoading, setShowNotification } from "../../redux/common/actions";
-import { messaging, deleteToken, signOut } from "../../services/firebase";
+import {
+  messaging,
+  deleteToken,
+  signOut,
+  getFirebaseInboxDataForUnreadMsgCount,
+} from "../../services/firebase";
 import {
   onNotificationClick,
   formatNotificationTime,
@@ -49,7 +54,6 @@ const DISABLE_HEADER = [
 ];
 
 const Header = (props: any) => {
-  console.log(props, "propsssssssssssssssssss");
   let window_: any = window;
   const dispatch = useDispatch();
   let { pathname } = useLocation();
@@ -77,16 +81,16 @@ const Header = (props: any) => {
   const [activeTarget, setActiveTarget] = useState("");
   const [logoutClicked, setLogoutClicked] = useState(false);
   const [profileData, setProfileData] = useState("");
+  const [unreadMessages, setUnreadMessages] = useState<Number>();
 
   function useForceUpdate() {
     const [value, setValue] = useState(0); // integer state
+
     return () => setValue((value) => value + Math.random()); // update the state to force render
   }
 
   const onMessageListner = () => {
-    console.log(messaging, "################################");
     if (messaging) {
-      console.log("hi#######%%%%%%%%%%");
       messaging.onMessage((payload: any) => {
         console.log("hi#######%%%%%%%%%%", payload);
         console.log("firebase notification received inside header : ", payload);
@@ -118,6 +122,16 @@ const Header = (props: any) => {
       });
     }
   };
+  const onUpdateofInbox = (res: any) => {
+    let unreadMessagesCount: any = 0;
+    res.map((item: any) => {
+      unreadMessagesCount = unreadMessagesCount + item.unreadMessages;
+    });
+    setUnreadMessages(unreadMessagesCount);
+  };
+  useEffect(() => {
+    getFirebaseInboxDataForUnreadMsgCount(onUpdateofInbox);
+  });
 
   const callNotificationList = async (
     resetUnreadNotif?: boolean,
@@ -161,8 +175,6 @@ const Header = (props: any) => {
       }
     }
   };
-  // console.log("notificationDataHeader: ", notificationData);
-
   useEffect(() => {
     onMessageListner();
     setActiveLink("discover");
@@ -264,7 +276,6 @@ const Header = (props: any) => {
         forceUpdate();
         setIsFalse(true);
         callOnPathChange();
-        // console.log({ type }, "user_id");
       }
     }
   };
@@ -668,8 +679,14 @@ const Header = (props: any) => {
                     onClick={chatClicked}
                   >
                     {"Chat"}
-                    {props.unreadMessageCount !== 0 ? (
-                      <span className="count">{props.unreadMessageCount}</span>
+                    {unreadMessages !== 0 ? (
+                      <span
+                        className={`${
+                          unreadMessages ? "unreadCountBadge" : ""
+                        }`}
+                      >
+                        {unreadMessages}
+                      </span>
                     ) : (
                       ""
                     )}

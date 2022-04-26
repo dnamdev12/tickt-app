@@ -5,7 +5,7 @@ import chatSearch from "../../assets/images/search-chat.png";
 import menu from "../../assets/images/menu-line-blue.png";
 import close from "../../assets/images/ic-cancel-blue.png";
 
-import { setLoading, unReadMessageCount } from "../../redux/common/actions";
+import { setLoading } from "../../redux/common/actions";
 import { formatDateTime } from "../../utils/common";
 import noData from "../../assets/images/no-search-data.png";
 import emptyChat from "../../assets/images/emptyChat.png";
@@ -44,7 +44,6 @@ const Chat = (props: PropTypes) => {
   const [searchActive, setSearchActive] = useState(false);
   const [isInitialLoader, setIsInitialLoader] = useState(true);
   const [isMobInbox, setIsMobInbox] = useState<boolean>(false);
-  const [unreadMessages, setUnreadMessages] = useState<number>();
 
   const { tradieId, builderId, jobName, jobId } = props.history?.location?.state
     ? props.history?.location?.state
@@ -70,9 +69,6 @@ const Chat = (props: PropTypes) => {
       selectedRoomID = "";
     };
   }, []);
-  useEffect(() => {
-    unReadMessageCount(unreadMessages || 0);
-  }, [unreadMessages]);
 
   const setInitialItems = async () => {
     const roomID: string = `${jobId}_${tradieId}_${builderId}`;
@@ -193,14 +189,6 @@ const Chat = (props: PropTypes) => {
     }
   }, [searchQuery, inBoxData]);
 
-  useEffect(() => {
-    let unreadMessagesCount: any = 0;
-    inBoxData.map((item: any) => {
-      unreadMessagesCount = unreadMessagesCount + item.unreadMessages;
-    });
-    setUnreadMessages(unreadMessagesCount);
-  }, [inBoxData]);
-
   return (
     <div className="app_wrapper">
       <div className="custom_container">
@@ -213,7 +201,9 @@ const Chat = (props: PropTypes) => {
               <img src={close} alt="close" />
             </button>
             <div className="stick">
-              <span className="title">Chat</span>
+              <span className="title" style={{ marginLeft: "50px" }}>
+                Chat
+              </span>
 
               <div
                 className={`search_bar ${searchActive ? "active" : ""}`}
@@ -291,6 +281,7 @@ const Chat = (props: PropTypes) => {
                                   )}
                                 </span>
                               )}
+
                               {selectedRoomID ===
                               item.roomId ? null : item.unreadMessages ===
                                 0 ? null : (

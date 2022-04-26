@@ -17,7 +17,3 @@ export const setShowToast = (showToast: boolean, toastMessage: string | undefine
 export const setShowNotification = (showNotification: boolean, data: any = undefined) => {
     store.dispatch({type: actionTypes.SHOW_HIDE_NOTIFICATION, showNotification, data})
 };
-
-export const unReadMessageCount=(count:number)=>{
-    store.dispatch({type: actionTypes.UNREAD_MESSAGE_COUNT, count})
-}
