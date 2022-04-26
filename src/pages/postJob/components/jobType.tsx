@@ -65,7 +65,7 @@ const JobType = ({
           className={categories.includes(_id) ? "active" : undefined}
           onClick={() => {
             handleChange(_id, "categories");
-            setIsCategoryChecked(!isCategoryChecked);
+            setIsCategoryChecked(true);
             // setSelectedAll(true);
           }}
         >
@@ -226,13 +226,15 @@ const JobType = ({
   };
 
   const checkErrors = () => {
+    console.log("229");
     let error_1 = isInvalid("categories", jobTypeDetails["categories"]);
     let error_2 = isInvalid("job_type", jobTypeDetails["job_type"]);
     let error_3 = isInvalid("specialization", jobTypeDetails["specialization"]);
+    console.log(error_3, "error_3");
     if (
       !error_1?.length &&
       !error_2?.length &&
-      (!error_3?.length || (selectedAll && specializations?.length))
+      (selectedAll || (specializations?.length && !error_3?.length))
     ) {
       return false;
     }
