@@ -104,7 +104,9 @@ const JobDashboard = ({
               <button
                 className="fill_btn btn-effect"
                 onClick={() => {
-                  history.push(`/mark-milestone?jobId=${params.jobId}&redirect_from=jobs`);
+                  history.push(
+                    `/mark-milestone?jobId=${params.jobId}&redirect_from=jobs`
+                  );
                   setMilestoneComplete(false);
                 }}
               >
@@ -123,16 +125,18 @@ const JobDashboard = ({
           <div className="content">
             <h1 className="title">Your {jobCompleteCount} job is completed!</h1>
             <span className="show_label">
-              You have completed your {jobCompleteCount} Job using Tickt! Click here to view
-              your completed jobs or leave a review. You will be paid as soon as
-              the builder signs off.
+              You have completed your {jobCompleteCount} Job using Tickt! Click
+              here to view your completed jobs or leave a review. You will be
+              paid as soon as the builder signs off.
             </span>
             {/* <img className="tick_img" src={tickIcon} /> */}
             <div className="btn_wrapr">
               <button
                 className="fill_btn btn-effect"
                 onClick={() => {
-                  history.push(`/mark-milestone?jobId=${params.jobId}&redirect_from=jobs`);
+                  history.push(
+                    `/mark-milestone?jobId=${params.jobId}&redirect_from=jobs`
+                  );
                   setJobComplete(false);
                 }}
               >
@@ -141,7 +145,7 @@ const JobDashboard = ({
               <button
                 className="fill_btn white_btn"
                 onClick={() => {
-                  history.push('/past-jobs');
+                  history.push("/past-jobs");
                   setJobComplete(false);
                 }}
               >
@@ -161,8 +165,8 @@ const JobDashboard = ({
         >
           <img src={menu} alt="mob-side-nav" />
         </span>
-        <div className="f_row">
-          <div className={`side_nav_col${openSidebar ? ' active' : ''}`}>
+        <div className="f_row h-100">
+          <div className={`side_nav_col${openSidebar ? " active" : ""}`}>
             <button className="close_nav" onClick={() => setOpenSidebar(false)}>
               <img src={close} alt="close" />
             </button>
@@ -170,14 +174,28 @@ const JobDashboard = ({
               <span className="title">Job Dashboard</span>
               <ul className="dashboard_menu">
                 <li>
-                  <NavLink className="icon star" to="/active-jobs"
-                    isActive={() => ['/active-jobs', '/mark-milestone', '/active-quote-job'].includes(pathname)}>
+                  <NavLink
+                    className="icon star"
+                    to="/active-jobs"
+                    isActive={() =>
+                      [
+                        "/active-jobs",
+                        "/mark-milestone",
+                        "/active-quote-job",
+                      ].includes(pathname)
+                    }
+                  >
                     <span className="menu_txt">Active</span>
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink className="icon applied" to="/applied-jobs"
-                    isActive={() => ['/applied-jobs', '/quote-job'].includes(pathname)}>
+                  <NavLink
+                    className="icon applied"
+                    to="/applied-jobs"
+                    isActive={() =>
+                      ["/applied-jobs", "/quote-job"].includes(pathname)
+                    }
+                  >
                     <span className="menu_txt">Applied</span>
                   </NavLink>
                 </li>
@@ -189,22 +207,23 @@ const JobDashboard = ({
                 {/* <hr></hr> */}
                 <li>
                   <NavLink className="icon new" to="/new-jobs">
-                    <span className="menu_txt">New
+                    <span className="menu_txt">
+                      New
                       {!!newJobsCount && (
                         <span className="badge_count">
-                          {newJobsCount > 9 ? '9+' : newJobsCount}
+                          {newJobsCount > 9 ? "9+" : newJobsCount}
                         </span>
                       )}
                     </span>
-
                   </NavLink>
                 </li>
                 <li>
                   <NavLink className="icon approved" to="/approved-milestones">
-                    <span className="menu_txt">Approved Milestones
+                    <span className="menu_txt">
+                      Approved Milestones
                       {!!milestonesCount && (
                         <span className="badge_count">
-                          {milestonesCount > 9 ? '9+' : milestonesCount}
+                          {milestonesCount > 9 ? "9+" : milestonesCount}
                         </span>
                       )}
                     </span>
@@ -293,7 +312,9 @@ const JobDashboard = ({
                     getMilestoneList={getMilestoneList}
                     milestoneList={milestoneList}
                     showMilestoneCompletePage={() => setMilestoneComplete(true)}
-                    showJobCompletePage={(jobCompletedCount) => setJobComplete(jobCompletedCount)}
+                    showJobCompletePage={(jobCompletedCount) =>
+                      setJobComplete(jobCompletedCount)
+                    }
                     getBankDetails={getBankDetails}
                     addBankDetails={addBankDetails}
                     updateBankDetails={updateBankDetails}
@@ -306,27 +327,16 @@ const JobDashboard = ({
               />
               <Route
                 path="/quote-job"
-                render={(props) => (
-                  <QuoteOuter
-                    {...props}
-                  />
-                )}
+                render={(props) => <QuoteOuter {...props} />}
               />
               <Route
                 path="/active-quote-job"
-                render={(props) => (
-                  <ActiveQuoteOuter
-                    {...props}
-                  />
-                )}
+                render={(props) => <ActiveQuoteOuter {...props} />}
               />
               <Route
                 path="/review-builder"
                 render={(props) => (
-                  <ReviewBuilder
-                    {...props}
-                    history={history}
-                  />
+                  <ReviewBuilder {...props} history={history} />
                 )}
               />
             </Switch>

@@ -195,7 +195,7 @@ const Chat = (props: PropTypes) => {
         <span className="mob_side_nav" onClick={() => setIsMobInbox(true)}>
           <img src={menu} alt="mob-side-nav" />
         </span>
-        <div className="f_row chat_wrapr">
+        <div className="f_row chat_wrapr h-100">
           <div className={`side_nav_col ${isMobInbox ? "active" : ""}`}>
             <button className="close_nav" onClick={() => setIsMobInbox(false)}>
               <img src={close} alt="close" />

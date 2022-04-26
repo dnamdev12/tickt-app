@@ -36,7 +36,8 @@ const JobType = ({
   });
   const [continueClicked, setContinueClicked] = useState(false);
   const [selectedAll, setSelectedAll] = useState(false);
-
+  const [isCategoryChecked, setIsCategoryChecked] = useState(false);
+  console.log("isCategoryChecked - > ", isCategoryChecked);
   const specializations: Array<{ _id: string; name: string }> = [];
   const categoriesHTML: JSX.Element[] = [];
 
@@ -64,6 +65,7 @@ const JobType = ({
           className={categories.includes(_id) ? "active" : undefined}
           onClick={() => {
             handleChange(_id, "categories");
+            setIsCategoryChecked(!isCategoryChecked);
             // setSelectedAll(true);
           }}
         >
@@ -226,11 +228,11 @@ const JobType = ({
   const checkErrors = () => {
     let error_1 = isInvalid("categories", jobTypeDetails["categories"]);
     let error_2 = isInvalid("job_type", jobTypeDetails["job_type"]);
-    // let error_3 = isInvalid("specialization", jobTypeDetails["specialization"]);
+    let error_3 = isInvalid("specialization", jobTypeDetails["specialization"]);
     if (
       !error_1?.length &&
-      !error_2?.length
-      //  (!error_3?.length || (selectedAll && specializations?.length))
+      !error_2?.length &&
+      (!error_3?.length || (selectedAll && specializations?.length))
     ) {
       return false;
     }
@@ -312,10 +314,12 @@ const JobType = ({
               <div className="tags_wrap">
                 <ul>
                   {console.log(
-                    { selectedAll, specializations },
-                    "11111111111111111111"
+                    specializations?.length,
+                    "specializations?.length",
+                    specializations
                   )}
-                  {specializations?.length > 0 && (
+                  {console.log("specializations => ", specializations)}
+                  {isCategoryChecked && specializations?.length >= 0 && (
                     <li
                       onClick={() => {
                         if (!selectedAll) {

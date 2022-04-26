@@ -113,7 +113,7 @@ const AuthParent = (props: any) => {
   let type = props.userType;
   return (
     <div className="onboard_wrapper">
-      <div className="f_row">
+      <div className="f_row h-100" >
         <div className={props.steps === 0 ? "left_col" : "left_col_hide"}>
           <AuthSlider
             type={props.sliderType}
