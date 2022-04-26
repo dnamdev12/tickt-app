@@ -589,201 +589,252 @@ class JobDashboard extends Component<Props, State> {
         }
 
         return (
-            <div className="app_wrapper">
-                <div className="custom_container">
-                    <span
-                        className="mob_side_nav"
-                        onClick={() => { toggleSidebar() }}
-                    >
-                        <img src={menu} alt="mob-side-nav" />
-                    </span>
-                    <div className="f_row">
-                        <div className={`side_nav_col${isToggleSidebar ? ' active' : ''}`}>
-                            <button className="close_nav" onClick={() => { toggleSidebar() }}>
-                                <img src={close} alt="close" />
-                            </button>
-                            <div className="stick">
-                                <span className="title">Job Dashboard</span>
-                                <ul className="dashboard_menu">
-                                    <li>
-                                        <span className={`icon star ${activeType === "active" ? 'active' : ''}`}>
-                                            <span
-                                                onClick={() => {
-                                                    console.log('Here!!!!')
-                                                    // setResetItem(true);
-                                                    setSelected('active');
-                                                    this.setState({ toggleClearActiveChecks: true });
-                                                }}
-                                                className="menu_txt">Active</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className={`icon open ${activeType === "open" ? 'active' : ''}`}>
-                                            <span
-                                                onClick={() => { setSelected('open') }}
-                                                className="menu_txt">Open</span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        <span className={`icon past ${activeType === "past" ? 'active' : ''}`}>
-                                            <span
-                                                onClick={() => { setSelected('past') }}
-                                                className="menu_txt">Past</span>
-                                        </span>
-                                    </li>
-                                    {/* <hr></hr> */}
-                                    <li>
-                                        <span className={`icon applicants ${activeType === "applicant" ? 'active' : ''}`}>
-                                            <span
-                                                onClick={() => { setSelected('applicant') }}
-                                                className="menu_txt">
-                                                {'New applicants'}
-                                                {!!applicantCount && (
-                                                    <span className="badge_count">
-                                                        {applicantCount > 9 ? '9+' : applicantCount}
-                                                    </span>
-                                                )}
-                                            </span>
-                                        </span>
-                                    </li>
-                                    <li>
-                                        {/* <span className="icon approved"> */}
-                                        <span className={`icon approved ${activeType === "approval" ? 'active' : ''}`}>
-                                            <span
-                                                onClick={() => {
-                                                    setSelected('approval')
-                                                }}
-                                                className="menu_txt">
-                                                {'Need approval'}
-                                                {!!approveCount && (
-                                                    <span className="badge_count">
-                                                        {approveCount > 9 ? '9+' : approveCount}
-                                                    </span>
-                                                )}
-                                            </span>
-                                        </span>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-
-                        <InfiniteScroll
-                            dataLength={totalCount}
-                            next={() => {
-                                if (totalCount == this.state.currentPage * 10) {
-                                    this.setState({ currentPage: this.state.currentPage + 1 }, () => {
-                                        let cp: any = this.state.currentPage;
-
-                                        if (jobtype === 'active') {
-                                            this.props.getActiveJobsBuilder(cp);
-                                        }
-
-                                        if (jobtype === 'past') {
-                                            this.props.getPastJobsBuilder(cp)
-                                        }
-
-                                        if (jobtype === 'open') {
-                                            this.props.getOpenJobsBuilder(cp);
-                                        }
-
-                                        if (jobtype === 'applicant') {
-                                            this.props.getNewApplicantsBuilder(cp);
-                                        }
-
-                                        if (jobtype === 'approval') {
-                                            this.props.getNewApprovalList(cp);
-                                        }
-
-                                    });
-                                } else {
-                                    // this.setState({ hasLoad: false })
-                                }
+          <div className="app_wrapper">
+            <div className="custom_container">
+              <span
+                className="mob_side_nav"
+                onClick={() => {
+                  toggleSidebar();
+                }}
+              >
+                <img src={menu} alt="mob-side-nav" />
+              </span>
+              <div className="f_row h-100">
+                <div
+                  className={`side_nav_col${isToggleSidebar ? " active" : ""}`}
+                >
+                  <button
+                    className="close_nav"
+                    onClick={() => {
+                      toggleSidebar();
+                    }}
+                  >
+                    <img src={close} alt="close" />
+                  </button>
+                  <div className="stick">
+                    <span className="title">Job Dashboard</span>
+                    <ul className="dashboard_menu">
+                      <li>
+                        <span
+                          className={`icon star ${
+                            activeType === "active" ? "active" : ""
+                          }`}
+                        >
+                          <span
+                            onClick={() => {
+                              console.log("Here!!!!");
+                              // setResetItem(true);
+                              setSelected("active");
+                              this.setState({ toggleClearActiveChecks: true });
                             }}
-                            hasMore={hasLoad}
-                            loader={<></>}
-                            style={{ overflowX: 'hidden' }}
-                            className={`detail_col element-side-scroll hide_scroll`}>
-                            {jobtype === 'past' && (
-                                <PastJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={pastJobs}
-                                    jobType={jobtype}
-                                    activeType={activeType}
-                                    history={props.history}
-                                    getPastJobsBuilder={props?.getPastJobsBuilder}
-                                />)}
-                            {jobtype === 'active' && (
-                                <ActiveJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={activeJobs}
-                                    jobType={jobtype}
-                                    activeType={activeType}
-                                    setJobLabel={setSelected}
-                                    setToggleActiveToFalse={this.setToggleActiveToFalse}
-                                    recallHeaderNotification={this.props.recallHeaderNotification}
-                                    toggleClearActiveChecks={this.state.toggleClearActiveChecks}
-                                    history={props.history}
-                                    globalJobId={globalJobId}
-                                    enableEditMilestone={enableEditMilestone}
-                                    enableLodgeDispute={enableLodgeDispute}
-                                    enableCancelJob={enableCancelJob}
-                                    enableMakMilestone={enableMakMilestone}
-                                />)}
-                            {jobtype === 'open' && (
-                                <OpenJobsComponent
-                                    isLoading={isLoading}
-                                    dataItems={openJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
-                                />)}
-                            {jobtype === 'applicant' && (
-                                <NewApplicantComponent
-                                    isLoading={isLoading}
-                                    dataItems={applicantJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    history={props.history}
-                                />)}
-                            {jobtype === 'approval' && (
-                                <NeedApproval
-                                    isLoading={isLoading}
-                                    dataItems={approvalJobs}
-                                    jobType={jobtype}
-                                    setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
-                                />
+                            className="menu_txt"
+                          >
+                            Active
+                          </span>
+                        </span>
+                      </li>
+                      <li>
+                        <span
+                          className={`icon open ${
+                            activeType === "open" ? "active" : ""
+                          }`}
+                        >
+                          <span
+                            onClick={() => {
+                              setSelected("open");
+                            }}
+                            className="menu_txt"
+                          >
+                            Open
+                          </span>
+                        </span>
+                      </li>
+                      <li>
+                        <span
+                          className={`icon past ${
+                            activeType === "past" ? "active" : ""
+                          }`}
+                        >
+                          <span
+                            onClick={() => {
+                              setSelected("past");
+                            }}
+                            className="menu_txt"
+                          >
+                            Past
+                          </span>
+                        </span>
+                      </li>
+                      {/* <hr></hr> */}
+                      <li>
+                        <span
+                          className={`icon applicants ${
+                            activeType === "applicant" ? "active" : ""
+                          }`}
+                        >
+                          <span
+                            onClick={() => {
+                              setSelected("applicant");
+                            }}
+                            className="menu_txt"
+                          >
+                            {"New applicants"}
+                            {!!applicantCount && (
+                              <span className="badge_count">
+                                {applicantCount > 9 ? "9+" : applicantCount}
+                              </span>
                             )}
-                            {jobtype === 'applicantList' && (
-                                <ApplicantsList
-                                    isLoading={isLoading}
-                                    items={applicantsListJobs}
-                                    jobid={jobid}
-                                    specializationId={specializationId}
-                                    setJobLabel={setSelected}
-                                    activeType={activeType}
-                                    history={props.history}
-                                />)}
-                            {jobtype === 'listQuote' && (
-                                <ListQuotes
-                                    {...props}
-                                    setJobLabel={setSelected}
-                                />
+                          </span>
+                        </span>
+                      </li>
+                      <li>
+                        {/* <span className="icon approved"> */}
+                        <span
+                          className={`icon approved ${
+                            activeType === "approval" ? "active" : ""
+                          }`}
+                        >
+                          <span
+                            onClick={() => {
+                              setSelected("approval");
+                            }}
+                            className="menu_txt"
+                          >
+                            {"Need approval"}
+                            {!!approveCount && (
+                              <span className="badge_count">
+                                {approveCount > 9 ? "9+" : approveCount}
+                              </span>
                             )}
-                            {jobtype === 'quotes' && (
-                                <ViewQuote
-                                    {...props}
-                                    setJobLabel={setSelected}
-                                />
-                            )}
-
-                        </InfiniteScroll>
-                    </div>
+                          </span>
+                        </span>
+                      </li>
+                    </ul>
+                  </div>
                 </div>
-            </div >
-        )
+
+                <InfiniteScroll
+                  dataLength={totalCount}
+                  next={() => {
+                    if (totalCount == this.state.currentPage * 10) {
+                      this.setState(
+                        { currentPage: this.state.currentPage + 1 },
+                        () => {
+                          let cp: any = this.state.currentPage;
+
+                          if (jobtype === "active") {
+                            this.props.getActiveJobsBuilder(cp);
+                          }
+
+                          if (jobtype === "past") {
+                            this.props.getPastJobsBuilder(cp);
+                          }
+
+                          if (jobtype === "open") {
+                            this.props.getOpenJobsBuilder(cp);
+                          }
+
+                          if (jobtype === "applicant") {
+                            this.props.getNewApplicantsBuilder(cp);
+                          }
+
+                          if (jobtype === "approval") {
+                            this.props.getNewApprovalList(cp);
+                          }
+                        }
+                      );
+                    } else {
+                      // this.setState({ hasLoad: false })
+                    }
+                  }}
+                  hasMore={hasLoad}
+                  loader={<></>}
+                  style={{ overflowX: "hidden" }}
+                  className={`detail_col element-side-scroll hide_scroll`}
+                >
+                  {jobtype === "past" && (
+                    <PastJobsComponent
+                      isLoading={isLoading}
+                      dataItems={pastJobs}
+                      jobType={jobtype}
+                      activeType={activeType}
+                      history={props.history}
+                      getPastJobsBuilder={props?.getPastJobsBuilder}
+                    />
+                  )}
+                  {jobtype === "active" && (
+                    <ActiveJobsComponent
+                      isLoading={isLoading}
+                      dataItems={activeJobs}
+                      jobType={jobtype}
+                      activeType={activeType}
+                      setJobLabel={setSelected}
+                      setToggleActiveToFalse={this.setToggleActiveToFalse}
+                      recallHeaderNotification={
+                        this.props.recallHeaderNotification
+                      }
+                      toggleClearActiveChecks={
+                        this.state.toggleClearActiveChecks
+                      }
+                      history={props.history}
+                      globalJobId={globalJobId}
+                      enableEditMilestone={enableEditMilestone}
+                      enableLodgeDispute={enableLodgeDispute}
+                      enableCancelJob={enableCancelJob}
+                      enableMakMilestone={enableMakMilestone}
+                    />
+                  )}
+                  {jobtype === "open" && (
+                    <OpenJobsComponent
+                      isLoading={isLoading}
+                      dataItems={openJobs}
+                      jobType={jobtype}
+                      setJobLabel={setSelected}
+                      activeType={activeType}
+                      history={props.history}
+                    />
+                  )}
+                  {jobtype === "applicant" && (
+                    <NewApplicantComponent
+                      isLoading={isLoading}
+                      dataItems={applicantJobs}
+                      jobType={jobtype}
+                      setJobLabel={setSelected}
+                      history={props.history}
+                    />
+                  )}
+                  {jobtype === "approval" && (
+                    <NeedApproval
+                      isLoading={isLoading}
+                      dataItems={approvalJobs}
+                      jobType={jobtype}
+                      setJobLabel={setSelected}
+                      activeType={activeType}
+                      history={props.history}
+                    />
+                  )}
+                  {jobtype === "applicantList" && (
+                    <ApplicantsList
+                      isLoading={isLoading}
+                      items={applicantsListJobs}
+                      jobid={jobid}
+                      specializationId={specializationId}
+                      setJobLabel={setSelected}
+                      activeType={activeType}
+                      history={props.history}
+                    />
+                  )}
+                  {jobtype === "listQuote" && (
+                    <ListQuotes {...props} setJobLabel={setSelected} />
+                  )}
+                  {jobtype === "quotes" && (
+                    <ViewQuote {...props} setJobLabel={setSelected} />
+                  )}
+                </InfiniteScroll>
+              </div>
+            </div>
+          </div>
+        );
     }
 }
 
