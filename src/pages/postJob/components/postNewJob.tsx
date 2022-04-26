@@ -92,7 +92,7 @@ const PostNewJob = ({
       if (name === "jobName") {
         valueElem = valueElem.replace(alphaNumericPunctuation, "");
       }
-      valueElem = capitalize(valueElem); //.charAt(0).toUpperCase() + valueElem.substring(1);
+      // valueElem = capitalize(valueElem); //.charAt(0).toUpperCase() + valueElem.substring(1);
     }
 
     // if (stepCompleted || continueClicked) {
