@@ -221,6 +221,7 @@ const PostNewJob = ({
                     name="job_description"
                     value={job_description}
                     onChange={handleChange}
+                    maxLength={1000}
                     onBlur={() => {
                       if (job_description?.length) {
                         let stringItem = job_description;

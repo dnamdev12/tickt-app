@@ -36,11 +36,6 @@ const reducer = (state = initialState, action: any) => {
                 showNotification: action.showNotification,
                 notificationData: action.data,
             }
-        case actionTypes.UNREAD_MESSAGE_COUNT:
-            return {
-                ...state,
-                unreadMessageCount: action.count,
-            }
         default: return state
     }
 }

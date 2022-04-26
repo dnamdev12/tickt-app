@@ -11,14 +11,12 @@ import {
 } from '../../redux/auth/actions';
 
 const mapStateToProps = (state: any) => {
-    console.log(state,"stateeeeeeeeeeeeeeee")
     return {
         tradieProfileData: state.profile.tradieProfileData,
         builderProfile: state.profile.builderProfile,
         userType: state.profile.userType,
         tradeListData: state.auth.tradeListData,
         recallHeaderNotif: state.homeSearch.recallHeaderNotif,
-        unreadMessageCount:state.common.unreadMessageCount,
     }
 }
 

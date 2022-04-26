@@ -856,7 +856,10 @@ const JobDetailsPage = (props: PropsType) => {
       });
     return val;
   };
-
+  console.log(
+    jobDetailsData,
+    "jobDetailsDatajobDetailsDatajobDetailsDatajobDetailsData"
+  );
   return (
     <div className="app_wrapper">
       <div className="section_wrapper">
@@ -1797,19 +1800,16 @@ const JobDetailsPage = (props: PropsType) => {
                     )}
                   </div>
 
-                  {jobDetailsData?.jobStatus?.length &&
-                    jobDetailsData.jobStatus !== "cancelled" &&
-                    jobDetailsData.jobStatus !== "expired" &&
-                    jobDetailsData.jobStatus !== "completed" && (
-                      <div className="bottom_btn custom_btn">
-                        <button
-                          className="fill_grey_btn full_btn btn-effect"
-                          onClick={() => questionHandler("askQuestion")}
-                        >
-                          {"Ask question"}
-                        </button>
-                      </div>
-                    )}
+                  {
+                    <div className="bottom_btn custom_btn">
+                      <button
+                        className="fill_grey_btn full_btn btn-effect"
+                        onClick={() => questionHandler("askQuestion")}
+                      >
+                        {"Ask question"}
+                      </button>
+                    </div>
+                  }
                 </div>
               </Modal>
 

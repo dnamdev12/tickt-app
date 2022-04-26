@@ -1489,6 +1489,10 @@ const JobDetailsPage = (props: PropsType) => {
                 </Modal>
               )}
               {/* show ask question modal */}
+              {console.log(
+                questionsData.askQuestionsClicked,
+                "questionsData.askQuestionsClicked"
+              )}
               {questionsData.askQuestionsClicked && (
                 <Modal
                   className="ques_ans_modal"

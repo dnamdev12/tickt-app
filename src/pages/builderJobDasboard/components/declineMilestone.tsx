@@ -171,6 +171,7 @@ const DeclineMilestone = ({
               <div className="text_field">
                 <textarea
                   value={reason}
+                  maxLength={1000}
                   onChange={(e: any) => {
                     setReason(e.target.value.trimLeft());
                   }}
