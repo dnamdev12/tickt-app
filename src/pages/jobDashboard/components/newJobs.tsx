@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import dummy from "../../../assets/images/u_placeholder.jpg";
 import newJobs from "../../../assets/images/newJobs.png";
+import noDataFound from "../../../assets/images/no-search-data.png";
 
 interface Proptypes {
   loading: boolean;
@@ -154,22 +155,28 @@ const NewJobs = ({
             : !isLoad &&
               !loading && (
                 <div className="no_record  m-t-vh">
-                  <figure>
-                    <figure className="no_img">
-                      <img src={newJobs} alt="data not found" />
-                    </figure>
+                  <figure className="no_img">
+                    <img src={noDataFound} alt="data not found" />
                   </figure>
-
-                  <span className="empty_screen_text">
-                    You don't have any new job yet
-                  </span>
-                  <button
-                    className="empty_screen_button"
-                    onClick={() => history.push("/")}
-                  >
-                    View recommened jobs
-                  </button>
+                  <span>{"No Data Found"}</span>
                 </div>
+                // <div className="no_record  m-t-vh">
+                //   <figure>
+                //     <figure className="no_img">
+                //       <img src={newJobs} alt="data not found" />
+                //     </figure>
+                //   </figure>
+
+                //   <span className="empty_screen_text">
+                //     You don't have any new job yet
+                //   </span>
+                //   <button
+                //     className="empty_screen_button"
+                //     onClick={() => history.push("/")}
+                //   >
+                //     View recommened jobs
+                //   </button>
+                // </div>
               )}
         </div>
       </InfiniteScroll>

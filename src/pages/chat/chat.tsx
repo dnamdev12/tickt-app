@@ -365,6 +365,12 @@ const Chat = (props: PropTypes) => {
                   <li>
                     <a href="javascript:void(0)" className="chat">
                       <div className="detail">
+                        <span className="inner_title line-1">
+                          No Record Found
+                        </span>
+                      </div>
+
+                      {/* <div className="detail">
                         <span className="no_record">
                           <figure>
                             <figure className="no_img">
@@ -385,7 +391,7 @@ const Chat = (props: PropTypes) => {
                             View Recommended tradespeople
                           </button>
                         </span>
-                      </div>
+                      </div> */}
                     </a>
                   </li>
                 )}

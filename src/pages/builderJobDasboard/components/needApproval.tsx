@@ -5,6 +5,7 @@ import ApplicantsList from "./applicantsList";
 import { withRouter } from "react-router-dom";
 import newApprovals from "../../../assets/images/newApprovals.png";
 import jobTypePlaceholder from "../../../assets/images/job-type-placeholder.png";
+import noDataFound from "../../../assets/images/no-search-data.png";
 import waiting from "../../../assets/images/exclamation.png";
 import moment from "moment";
 import MarkMilestones from "./markMilestones";
@@ -260,17 +261,23 @@ class NeedApproval extends Component<Props, State> {
             : !isLoading && (
                 <div className="no_record  m-t-vh">
                   <figure className="no_img">
-                    <img src={newApprovals} alt="data not found" />
+                    <img src={noDataFound} alt="data not found" />
                   </figure>
-
-                  <span className="empty_screen_text">
-                    You don't have any approval requests yet
-                  </span>
-                  <span className="empty_screen_subtext">
-                    As soon as someone will request your approval you will be
-                    notified
-                  </span>
+                  <span>{"No Data Found"}</span>
                 </div>
+                // <div className="no_record  m-t-vh">
+                //   <figure className="no_img">
+                //     <img src={newApprovals} alt="data not found" />
+                //   </figure>
+
+                //   <span className="empty_screen_text">
+                //     You don't have any approval requests yet
+                //   </span>
+                //   <span className="empty_screen_subtext">
+                //     As soon as someone will request your approval you will be
+                //     notified
+                //   </span>
+                // </div>
               )}
         </div>
       </React.Fragment>

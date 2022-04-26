@@ -4,6 +4,7 @@ import approved from "../../../assets/images/approved.png";
 import { withRouter } from "react-router";
 import newApplicants from "../../../assets/images/newApplicants.png";
 import noData from "../../../assets/images/no-search-data.png";
+import noDataFound from "../../../assets/images/no-search-data.png";
 import moment from "moment";
 import { renderTime } from "../../../utils/common";
 interface Applicant {
@@ -178,19 +179,25 @@ const NewApplicants = (props: any) => {
             )
           : !isLoading && (
               <div className="no_record  m-t-vh">
-                <figure>
-                  <figure className="no_img">
-                    <img src={newApplicants} alt="data not found" />
-                  </figure>
+                <figure className="no_img">
+                  <img src={noDataFound} alt="data not found" />
                 </figure>
-                <span className="empty_screen_text">
-                  You don't have any applicants yet
-                </span>
-                <span className="empty_screen_subtext">
-                  As soon as someone will apply for your job post you will be
-                  notified
-                </span>
+                <span>{"No Data Found"}</span>
               </div>
+              // <div className="no_record  m-t-vh">
+              //   <figure>
+              //     <figure className="no_img">
+              //       <img src={newApplicants} alt="data not found" />
+              //     </figure>
+              //   </figure>
+              //   <span className="empty_screen_text">
+              //     You don't have any applicants yet
+              //   </span>
+              //   <span className="empty_screen_subtext">
+              //     As soon as someone will apply for your job post you will be
+              //     notified
+              //   </span>
+              // </div>
             )}
       </div>
     </React.Fragment>

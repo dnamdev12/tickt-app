@@ -4,6 +4,7 @@ import approved from "../../../assets/images/approved.png";
 import rateStar from "../../../assets/images/ic-star-fill.png";
 import pastJobs from "../../../assets/images/pastJobs.png";
 import jobTypePlaceholder from "../../../assets/images/job-type-placeholder.png";
+import noDataFound from "../../../assets/images/no-search-data.png";
 import moment from "moment";
 import RateThisJob from "./ratethisJob/index";
 
@@ -240,22 +241,28 @@ const PastJobs = (props: any) => {
             )
           : !isLoading && (
               <div className="no_record  m-t-vh">
-                <figure>
-                  <figure className="no_img">
-                    <img src={pastJobs} alt="data not found" />
-                  </figure>
+                <figure className="no_img">
+                  <img src={noDataFound} alt="data not found" />
                 </figure>
-
-                <span className="empty_screen_text">
-                  You don't have any past job yet
-                </span>
-                <button
-                  className="empty_screen_button"
-                  onClick={() => props.history.push("/post-new-job")}
-                >
-                  Post a job
-                </button>
+                <span>{"No Data Found"}</span>
               </div>
+              // <div className="no_record  m-t-vh">
+              //   <figure>
+              //     <figure className="no_img">
+              //       <img src={pastJobs} alt="data not found" />
+              //     </figure>
+              //   </figure>
+
+              //   <span className="empty_screen_text">
+              //     You don't have any past job yet
+              //   </span>
+              //   <button
+              //     className="empty_screen_button"
+              //     onClick={() => props.history.push("/post-new-job")}
+              //   >
+              //     Post a job
+              //   </button>
+              // </div>
             )}
       </div>
     </React.Fragment>

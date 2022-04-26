@@ -9,6 +9,7 @@ import moment from "moment";
 import { renderTime } from "../../../utils/common";
 import ListQuotes from "./quoteJobs/ListQuotes";
 import ViewQuote from "./quoteJobs/viewQuote";
+import noDataFound from "../../../assets/images/no-search-data.png";
 
 import { quoteByJobId } from "../../../redux/quotes/actions";
 
@@ -262,22 +263,28 @@ class OpenJobs extends Component<Props, State> {
               )
             : !isLoading && (
                 <div className="no_record  m-t-vh">
-                  <figure>
-                    <figure className="no_img">
-                      <img src={newJobs} alt="data not found" />
-                    </figure>
+                  <figure className="no_img">
+                    <img src={noDataFound} alt="data not found" />
                   </figure>
-
-                  <span className="empty_screen_text">
-                    You don't have any open job yet
-                  </span>
-                  <button
-                    className="empty_screen_button"
-                    onClick={() => props.history.push("/post-new-job")}
-                  >
-                    Post a job
-                  </button>
+                  <span>{"No Data Found"}</span>
                 </div>
+                // <div className="no_record  m-t-vh">
+                //   <figure>
+                //     <figure className="no_img">
+                //       <img src={newJobs} alt="data not found" />
+                //     </figure>
+                //   </figure>
+
+                //   <span className="empty_screen_text">
+                //     You don't have any open job yet
+                //   </span>
+                //   <button
+                //     className="empty_screen_button"
+                //     onClick={() => props.history.push("/post-new-job")}
+                //   >
+                //     Post a job
+                //   </button>
+                // </div>
               )}
         </div>
       </React.Fragment>

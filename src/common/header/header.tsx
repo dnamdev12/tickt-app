@@ -39,6 +39,8 @@ import guide from "../../assets/images/ic-tutorial.png";
 import savedJobs from "../../assets/images/ic-job.png";
 import notification from "../../assets/images/notification.png";
 
+import noNotification from "../../assets/images/no-notifications.png";
+
 import skipBtn from "../../assets/images/skip.png";
 import backBtn from "../../assets/images/back.png";
 import nextBtn from "../../assets/images/next.png";
@@ -986,26 +988,33 @@ const Header = (props: any) => {
                       )}
 
                       {notificationData?.list?.length === 0 && (
-                        <div className="no_record">
+                        <div className="no_notification">
                           <figure>
-                            <figure className="no_img">
-                              <img src={notification} alt="data not found" />
-                            </figure>
+                            <img src={noNotification} alt="no-notifications" />
                           </figure>
-
-                          <span className="empty_screen_text">
-                            You don't have any notification yet.
-                          </span>
-                          <span className="notification_subtext">
-                            Explore our local network
-                          </span>
-                          <button
-                            className="empty_screen_button"
-                            onClick={() => history.push("/")}
-                          >
-                            Search tradespeople
-                          </button>
+                          <span>No Notifications</span>
                         </div>
+
+                        // <div className="no_record">
+                        //   <figure>
+                        //     <figure className="no_img">
+                        //       <img src={notification} alt="data not found" />
+                        //     </figure>
+                        //   </figure>
+
+                        //   <span className="empty_screen_text">
+                        //     You don't have any notification yet.
+                        //   </span>
+                        //   <span className="notification_subtext">
+                        //     Explore our local network
+                        //   </span>
+                        //   <button
+                        //     className="empty_screen_button"
+                        //     onClick={() => history.push("/")}
+                        //   >
+                        //     Search tradespeople
+                        //   </button>
+                        // </div>
                       )}
                     </Menu>
                     {/* Notification close */}

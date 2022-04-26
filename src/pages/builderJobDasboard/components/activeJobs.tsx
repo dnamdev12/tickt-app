@@ -9,6 +9,7 @@ import jobTypePlaceholder from "../../../assets/images/job-type-placeholder.png"
 import LodgeDispute from "./lodgeDispute/lodgeDispute";
 import CancelJobs from "./cancelJobs/cancelJob";
 import { renderTime } from "../../../utils/common";
+import noDataFound from "../../../assets/images/no-search-data.png";
 interface Active {
   amount: any;
   durations: any;
@@ -282,22 +283,29 @@ const ActiveJobs = ({
             )
           : !isLoading && (
               <div className="no_record  m-t-vh">
-                <figure>
-                  <figure className="no_img">
-                    <img src={activeJobs} alt="data not found" />
-                  </figure>
+                <figure className="no_img">
+                  <img src={noDataFound} alt="data not found" />
                 </figure>
-
-                <span className="empty_screen_text">
-                  You don't have any active job yet
-                </span>
-                <button
-                  className="empty_screen_button"
-                  onClick={() => history.push("/post-new-job")}
-                >
-                  Post a job
-                </button>
+                <span>{"No Data Found"}</span>
               </div>
+
+              // <div className="no_record  m-t-vh">
+              //   <figure>
+              //     <figure className="no_img">
+              //       <img src={activeJobs} alt="data not found" />
+              //     </figure>
+              //   </figure>
+
+              //   <span className="empty_screen_text">
+              //     You don't have any active job yet
+              //   </span>
+              //   <button
+              //     className="empty_screen_button"
+              //     onClick={() => history.push("/post-new-job")}
+              //   >
+              //     Post a job
+              //   </button>
+              // </div>
             )}
       </div>
     </React.Fragment>

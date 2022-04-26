@@ -9,6 +9,7 @@ import newApprovals from "../../../assets/images/newApprovals.png";
 import { useHistory } from "react-router-dom";
 import { moengage, mixPanel } from "../../../services/analyticsTools";
 import { MoEConstants } from "../../../utils/constants";
+import noDataFound from "../../../assets/images/no-search-data.png";
 
 interface Proptypes {
   loading: boolean;
@@ -192,16 +193,22 @@ const ApprovedMilestones = ({
               !loading && (
                 <div className="no_record  m-t-vh">
                   <figure className="no_img">
-                    <img src={newApprovals} alt="data not found" />
+                    <img src={noDataFound} alt="data not found" />
                   </figure>
-                  <span className="empty_screen_text">
-                    You don't have any milestones approved yet
-                  </span>
-                  <span className="empty_screen_subtext">
-                    As soon as the completation your builder will approve a
-                    milestone you will be notified
-                  </span>
+                  <span>{"No Data Found"}</span>
                 </div>
+                // <div className="no_record  m-t-vh">
+                //   <figure className="no_img">
+                //     <img src={newApprovals} alt="data not found" />
+                //   </figure>
+                //   <span className="empty_screen_text">
+                //     You don't have any milestones approved yet
+                //   </span>
+                //   <span className="empty_screen_subtext">
+                //     As soon as the completation your builder will approve a
+                //     milestone you will be notified
+                //   </span>
+                // </div>
               )}
         </div>
       </InfiniteScroll>

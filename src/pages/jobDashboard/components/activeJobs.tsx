@@ -8,6 +8,7 @@ import dummy from "../../../assets/images/u_placeholder.jpg";
 import approved from "../../../assets/images/approved.png";
 import waiting from "../../../assets/images/exclamation.png";
 import activeJobs from "../../../assets/images/activeJobs.png";
+import noDataFound from "../../../assets/images/no-search-data.png";
 
 interface Proptypes {
   loading: boolean;
@@ -209,22 +210,28 @@ const ActiveJobs = ({
             : !isLoad &&
               !loading && (
                 <div className="no_record  m-t-vh">
-                  <figure>
-                    <figure className="no_img">
-                      <img src={activeJobs} alt="data not found" />
-                    </figure>
+                  <figure className="no_img">
+                    <img src={noDataFound} alt="data not found" />
                   </figure>
-
-                  <span className="empty_screen_text">
-                    You don't have any active job yet
-                  </span>
-                  <button
-                    className="empty_screen_button"
-                    onClick={() => history.push("/")}
-                  >
-                    View recommened jobs
-                  </button>
+                  <span>{"No Data Found"}</span>
                 </div>
+                // <div className="no_record  m-t-vh">
+                //   <figure>
+                //     <figure className="no_img">
+                //       <img src={activeJobs} alt="data not found" />
+                //     </figure>
+                //   </figure>
+
+                //   <span className="empty_screen_text">
+                //     You don't have any active job yet
+                //   </span>
+                //   <button
+                //     className="empty_screen_button"
+                //     onClick={() => history.push("/")}
+                //   >
+                //     View recommened jobs
+                //   </button>
+                // </div>
               )}
         </div>
       </InfiniteScroll>
