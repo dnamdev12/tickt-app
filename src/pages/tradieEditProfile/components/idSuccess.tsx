@@ -7,10 +7,8 @@ const IDSuccess = (props: any) => {
         <img src={templateImage} alt="template-item" loading="eager" />
         <div className="short_info">
           <div className="content">
-            <h1 className="title">
-              {"thanks.if we need anything else,we will reach out."}
-            </h1>
-            <span className="show_label">
+            <h1 className="title">{"Thanks!"}</h1>
+            <span className="id_verification_label">
               {`If we need anything we will reach out`}
             </span>
             <div className="btn_wrapr">

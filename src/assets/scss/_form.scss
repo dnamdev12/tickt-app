@@ -10,6 +10,14 @@
 .text_field, .relative{
   position: relative;
 }
+.id_verification_label {
+  font-size: 24px;
+  margin-bottom: 20px;
+  margin-top: -15px;
+  color: var(--white);
+  display: block;
+  // line-height: 1.5;
+}
 .relate {
   position: relative;
   .title, .xs_sub_title{
