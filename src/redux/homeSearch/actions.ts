@@ -31,8 +31,22 @@ export const getNotificationList = async (page: number, resetUnreadNotif: boolea
 }
 
 export const getHomeJobDetails = async (data: any) => {
+    let response: FetchResponse;
+    console.log(data,"34")
     setSkeletonLoading(true);
-    const response: FetchResponse = await NetworkOps.get(Urls.homeJobDetails + `?jobId=${data.jobId}&tradeId=${data.tradeId}&specializationId=${data.specializationId}`);
+    let url = '';
+    if (data.jobId) {
+        url+=`jobId=${data.jobId}`
+    }
+    if (data.tradeId) {
+        url+=`&tradeId=${data.tradeId}`
+    }
+
+    if (data.specializationId) {
+         url+=`&specializationId=${data.specializationId}`
+        // response = await NetworkOps.get(Urls.homeJobDetails + `?jobId=${data.jobId}&tradeId=${data.tradeId}`);
+    }
+     response = await NetworkOps.get(Urls.homeJobDetails + `?${url}`);
     setSkeletonLoading(false);
     if (response.status_code === 200) {
         return { success: true, data: response.result };
@@ -63,6 +77,7 @@ export const getHomeSaveJob = async (data: any) => {
 }
 
 export const postHomeApplyJob = async (data: any) => {
+    console.log(data,"data")
     setLoading(true);
     const response: FetchResponse = await NetworkOps.postToJson(Urls.homeApplyJob, data)
     setLoading(false);

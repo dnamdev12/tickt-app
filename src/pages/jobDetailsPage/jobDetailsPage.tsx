@@ -140,6 +140,7 @@ const JobDetailsPage = (props: PropsType) => {
     "jobInviteAction"
   );
   useEffect(() => {
+    console.log("143");
     const params = new URLSearchParams(props.location?.search);
     const jobInviteAction: any = params.get("jobAction");
     setJobInviteAction(jobInviteAction);
@@ -152,10 +153,15 @@ const JobDetailsPage = (props: PropsType) => {
         data.jobId = params.get("jobId");
         res1 = await getJobDetails(data.jobId);
       } else {
+        console.log(params.get("specializationId"), "params.get");
         data.jobId = params.get("jobId");
         data.tradeId = params.get("tradeId");
-        data.specializationId = params.get("specializationId");
+        if (params.get("specializationId")) {
+          console.log("160");
+          data.specializationId = params.get("specializationId");
+        }
         res1 = await getHomeJobDetails(data);
+        console.log(res1, "164");
       }
       if (res1.success) {
         setJobDetailsData(res1.data);
@@ -218,12 +224,15 @@ const JobDetailsPage = (props: PropsType) => {
     }
 
     if (isValid && !jobDetailsData?.quoteJob) {
-      const data = {
+      const data: any = {
         jobId: jobDetailsData?.jobId,
         builderId: jobDetailsData?.postedBy?.builderId,
         tradeId: jobDetailsData?.tradeId,
-        specializationId: jobDetailsData?.specializationId,
+        //specializationId: jobDetailsData?.specializationId,
       };
+      if (jobDetailsData?.specializationId) {
+        data.specializationId = jobDetailsData?.specializationId;
+      }
       const res = await postHomeApplyJob(data);
       if (res.success) {
         const mData = {

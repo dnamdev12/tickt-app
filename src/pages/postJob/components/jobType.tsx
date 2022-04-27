@@ -233,7 +233,7 @@ const JobType = ({
     if (
       !error_1?.length &&
       !error_2?.length &&
-      (!error_3?.length || (selectedAll && specializations?.length))
+      (selectedAll || (!error_3?.length && specializations?.length))
     ) {
       return false;
     }
