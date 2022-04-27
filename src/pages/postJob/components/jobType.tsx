@@ -36,8 +36,7 @@ const JobType = ({
   });
   const [continueClicked, setContinueClicked] = useState(false);
   const [selectedAll, setSelectedAll] = useState(false);
-  const [isCategoryChecked, setIsCategoryChecked] = useState(false);
-  console.log("isCategoryChecked - > ", isCategoryChecked);
+
   const specializations: Array<{ _id: string; name: string }> = [];
   const categoriesHTML: JSX.Element[] = [];
 
@@ -65,9 +64,7 @@ const JobType = ({
           className={categories.includes(_id) ? "active" : undefined}
           onClick={() => {
             handleChange(_id, "categories");
-            setSelectedAll(false);
-            setIsCategoryChecked(true);
-            // setSelectedAll(true);
+            setSelectedAll(true);
           }}
         >
           <figure>
@@ -227,7 +224,6 @@ const JobType = ({
   };
 
   const checkErrors = () => {
-    console.log("229");
     let error_1 = isInvalid("categories", jobTypeDetails["categories"]);
     let error_2 = isInvalid("job_type", jobTypeDetails["job_type"]);
     let error_3 = isInvalid("specialization", jobTypeDetails["specialization"]);
@@ -235,7 +231,7 @@ const JobType = ({
     if (
       !error_1?.length &&
       !error_2?.length &&
-      (selectedAll || (specializations?.length && !error_3?.length))
+      (!error_3?.length || (selectedAll && specializations?.length))
     ) {
       return false;
     }
@@ -316,13 +312,8 @@ const JobType = ({
             <div className="flex_col_sm_6">
               <div className="tags_wrap">
                 <ul>
-                  {console.log(
-                    specializations?.length,
-                    "specializations?.length",
-                    specializations
-                  )}
-                  {console.log("specializations => ", specializations)}
-                  {isCategoryChecked && specializations?.length >= 0 && (
+                  {console.log({ selectedAll, specializations })}
+                  {specializations?.length > 0 && (
                     <li
                       onClick={() => {
                         if (!selectedAll) {
