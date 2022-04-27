@@ -36,6 +36,7 @@ const JobType = ({
   });
   const [continueClicked, setContinueClicked] = useState(false);
   const [selectedAll, setSelectedAll] = useState(false);
+  const [isCategorySelected, setIsCategorySelected] = useState(false);
 
   const specializations: Array<{ _id: string; name: string }> = [];
   const categoriesHTML: JSX.Element[] = [];
@@ -64,7 +65,8 @@ const JobType = ({
           className={categories.includes(_id) ? "active" : undefined}
           onClick={() => {
             handleChange(_id, "categories");
-            setSelectedAll(true);
+            setIsCategorySelected(true);
+            setSelectedAll(false);
           }}
         >
           <figure>
@@ -312,7 +314,7 @@ const JobType = ({
             <div className="flex_col_sm_6">
               <div className="tags_wrap">
                 <ul>
-                  {console.log({ selectedAll, specializations })}
+                  {/* {console.log({ selectedAll, specializations })} */}
                   {specializations?.length > 0 && (
                     <li
                       onClick={() => {
