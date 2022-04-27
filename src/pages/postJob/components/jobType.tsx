@@ -315,7 +315,7 @@ const JobType = ({
               <div className="tags_wrap">
                 <ul>
                   {/* {console.log({ selectedAll, specializations })} */}
-                  {specializations?.length > 0 && (
+                  {specializations?.length >= 0 && categories?.length > 0 && (
                     <li
                       onClick={() => {
                         if (!selectedAll) {
