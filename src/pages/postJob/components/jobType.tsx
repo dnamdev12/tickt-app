@@ -65,6 +65,7 @@ const JobType = ({
           className={categories.includes(_id) ? "active" : undefined}
           onClick={() => {
             handleChange(_id, "categories");
+            setSelectedAll(false);
             setIsCategoryChecked(true);
             // setSelectedAll(true);
           }}
