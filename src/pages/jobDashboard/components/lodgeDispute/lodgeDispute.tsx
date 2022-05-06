@@ -39,7 +39,7 @@ const LodgeDispute = (props: PropTypes) => {
   const [toggler, setToggler] = useState(false);
   const [selectedSlide, setSelectSlide] = useState(1);
 
-  const { reason, detail, upload } = stateData;
+  const { reason, detail } = stateData;
 
   const isValid = ({ name, value, title }: any) => {
     if (name === "reason") {
@@ -50,25 +50,12 @@ const LodgeDispute = (props: PropTypes) => {
 
   const checkErrors = () => {
     let error_1 = isValid({ name: "reason", value: reason, title: "Reason" });
-    let error_2 = isValid({ name: "detail", value: detail, title: "Detail" });
-    let error_3 = isValid({
-      name: "upload",
-      value: filesUrl,
-      title: "Media file",
-    });
 
     if (!error_1?.length) {
       return false;
     }
     return true;
   };
-
-  // useEffect(() => {
-  //     setErrorData((prev: any) => ({
-  //         ...prev,
-  //         detail: stateData?.detail?.length > 1000 ? 'Maximum 1000 characters are allowed.' : ''
-  //     }))
-  // }, [stateData]);
 
   const removeFromItem = (index: any) => {
     filesUrl.splice(index, 1);

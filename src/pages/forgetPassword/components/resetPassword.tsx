@@ -38,16 +38,11 @@ const ResetPassword = (props: Propstype) => {
             const data: any = {
                 email: email.replaceAll(' ', '')
             }
-            // const checkIfExist = await checkEmailId(data.email, true);
-            // if (checkIfExist?.success) {
                 const res: any = await callForgotPassword(data)
                 if (res.success) {
                     const email_ = email.replaceAll(' ', '');
                     props.updateSteps(props.step + 1, { email: email_ })
                 }
-            // } else {
-            //     setShowToast(true, 'Email not exist.')
-            // }
         }
     }
 

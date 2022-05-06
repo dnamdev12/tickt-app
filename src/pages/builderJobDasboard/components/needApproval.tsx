@@ -1,13 +1,8 @@
 import React, { Component } from "react";
-import dummy from "../../../assets/images/u_placeholder.jpg";
 import approved from "../../../assets/images/approved.png";
-import ApplicantsList from "./applicantsList";
-import { withRouter } from "react-router-dom";
-import newApprovals from "../../../assets/images/newApprovals.png";
 import jobTypePlaceholder from "../../../assets/images/job-type-placeholder.png";
 import noDataFound from "../../../assets/images/no-search-data.png";
 import waiting from "../../../assets/images/exclamation.png";
-import moment from "moment";
 import MarkMilestones from "./markMilestones";
 
 import { renderTime } from "../../../utils/common";
@@ -76,7 +71,6 @@ class NeedApproval extends Component<Props, State> {
   redirectToInfo = ({ jobId, status }: any) => {
     let props: any = this.props;
     if (jobId?.length && status?.length) {
-      // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType || 'approval'}`)
       let urlEncode: any = `?jobId=${jobId}&status=${status}&activeType=${
         props?.activeType || "approval"
       }`;
@@ -100,8 +94,7 @@ class NeedApproval extends Component<Props, State> {
   };
 
   render() {
-    const { setJobLabel, dataItems, applicantsList, jobType, isLoading } =
-      this.props;
+    const { dataItems, applicantsList, jobType, isLoading } = this.props;
     let listData: any = dataItems;
     let { isToggleApplicants, localState, selectedIndex, isRender } =
       this.state;
@@ -127,33 +120,23 @@ class NeedApproval extends Component<Props, State> {
         <span className="sub_title">
           {titleText == "Approval" ? "Need Approval" : ""}
         </span>
-        {/* {'Jobs'} */}
+
         <div className="flex_row tradies_row">
           {listData?.length
             ? listData.map(
                 (
                   {
                     amount,
-                    durations,
-                    jobId,
                     jobName,
                     fromDate,
                     toDate,
                     milestoneNumber,
-                    specializationId,
-                    specializationName,
-                    locationName,
                     status,
                     timeLeft,
                     total,
-                    totalmem,
                     totalMilestones,
-                    tradieListData,
                     tradeName,
-                    tradieId,
-                    location,
                     tradeSelectedUrl,
-                    tradieImage,
                   }: Active,
                   index: number
                 ) => (
@@ -170,7 +153,6 @@ class NeedApproval extends Component<Props, State> {
                             localState: true,
                             selectedIndex: index,
                           });
-                          // this.redirectToInfo({ jobId, status })
                         }}
                         className="more_detail circle"
                       ></span>

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import Constants from "../../utils/constants";
-import { renderTime } from "../../utils/common";
+import { renderTime, JobCancelReasons } from "../../utils/common";
 import {
   getHomeJobDetails,
   getHomeSaveJob,
@@ -39,12 +38,10 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 import FsLightbox from "fslightbox-react";
 import Skeleton from "react-loading-skeleton";
 import storageService from "../../utils/storageService";
-
-import { JobCancelReasons } from "../../utils/common";
 import docThumbnail from "../../assets/images/add-document.png";
 import { setShowToast } from "../../redux/common/actions";
 import { moengage, mixPanel } from "../../services/analyticsTools";
-import { MoEConstants } from "../../utils/constants";
+import Constants, { MoEConstants } from "../../utils/constants";
 
 interface PropsType {
   history: any;
@@ -122,28 +119,11 @@ const JobDetailsPage = (props: PropsType) => {
   const [pendingRequestClicked, setPendingRequestClicked] =
     useState<boolean>(false);
   const [fsSlideListner, setFsSlideListner] = useState<any>({});
-
-  console.log(
-    props,
-    "props",
-    questionsData,
-    "questionsData",
-    jobDetailsData,
-    "jobDetailsData",
-    questionList,
-    "questionList",
-    questionListPageNo,
-    "questionListPageNo",
-    jobConfirmation,
-    "jobConfirmation",
-    jobInviteAction,
-    "jobInviteAction"
-  );
   useEffect(() => {
     console.log("143");
     const params = new URLSearchParams(props.location?.search);
-    const jobInviteAction: any = params.get("jobAction");
-    setJobInviteAction(jobInviteAction);
+    const jobInviteActions: any = params.get("jobAction");
+    setJobInviteAction(jobInviteActions);
     (async () => {
       const redirectFrom: any = params.get("redirect_from");
       setRedirectFrom(redirectFrom);
@@ -228,7 +208,6 @@ const JobDetailsPage = (props: PropsType) => {
         jobId: jobDetailsData?.jobId,
         builderId: jobDetailsData?.postedBy?.builderId,
         tradeId: jobDetailsData?.tradeId,
-        //specializationId: jobDetailsData?.specializationId,
       };
       if (jobDetailsData?.specializationId) {
         data.specializationId = jobDetailsData?.specializationId;
@@ -249,7 +228,6 @@ const JobDetailsPage = (props: PropsType) => {
     const data: any = {
       jobId: jobDetailsData?.jobId,
       tradeId: jobDetailsData?.tradeId,
-      //specializationId: jobDetailsData?.specializationId,
       isSave: !jobDetailsData?.isSaved,
     };
     if (jobDetailsData?.specializationId) {

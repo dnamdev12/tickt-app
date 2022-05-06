@@ -1,17 +1,8 @@
 import React, { Component } from "react";
-import dummy from "../../../assets/images/u_placeholder.jpg";
 import approved from "../../../assets/images/approved.png";
-import ApplicantsList from "./applicantsList";
-import { withRouter } from "react-router-dom";
-import newJobs from "../../../assets/images/newJobs.png";
 import jobTypePlaceholder from "../../../assets/images/job-type-placeholder.png";
-import moment from "moment";
 import { renderTime } from "../../../utils/common";
-import ListQuotes from "./quoteJobs/ListQuotes";
-import ViewQuote from "./quoteJobs/viewQuote";
 import noDataFound from "../../../assets/images/no-search-data.png";
-
-import { quoteByJobId } from "../../../redux/quotes/actions";
 
 interface Active {
   amount: any;
@@ -67,11 +58,9 @@ class OpenJobs extends Component<Props, State> {
   redirectToInfo = ({ jobId, status }: any) => {
     let props: any = this.props;
     if (jobId?.length && status?.length) {
-      // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${status}&activeType=${props?.activeType}`)
       let urlEncode: any = `?jobId=${jobId}&status=${status}&activeType=${props?.activeType}`;
       this.props.history.push(`/job-detail?${urlEncode}`);
     } else {
-      // let urlEncode: any = window.btoa(`?jobId=${jobId}&status=${'open'}&activeType=${props?.activeType}`)
       let urlEncode: any = `?jobId=${jobId}&status=${"open"}&activeType=${
         props?.activeType
       }`;
@@ -79,9 +68,6 @@ class OpenJobs extends Component<Props, State> {
     }
   };
 
-  componentDidMount() {
-    // this.preFetchForQuotes();
-  }
 
   setToggle = () =>
     this.setState({ isToggleApplicants: !this.state.isToggleApplicants });
@@ -89,15 +75,10 @@ class OpenJobs extends Component<Props, State> {
   render() {
     // props defined & render by params
     const props: any = this.props;
-    const params = new URLSearchParams(props?.history?.location?.search);
-    const quotes_param: any = params.get("quotes");
-    const viewQuotesParam: any = params.get("viewQuotes");
-    const jobId: any = params.get("jobId");
 
-    const { setJobLabel, dataItems, applicantsList, jobType, isLoading } =
-      this.props;
+    const { setJobLabel, dataItems, jobType, isLoading } =
+      props;
     let listData: any = dataItems;
-    let { isToggleApplicants, quotesData, toggleQuoteSort } = this.state;
 
     if (isLoading) {
       return null;
@@ -107,35 +88,27 @@ class OpenJobs extends Component<Props, State> {
       <React.Fragment>
         <span className="sub_title">
           {jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs
-          {/* {listData?.length} */}
         </span>
         <div className="flex_row tradies_row">
           {listData?.length
             ? listData.map(
                 ({
                   amount,
-                  durations,
                   jobId,
                   jobName,
                   fromDate,
                   toDate,
                   milestoneNumber,
                   specializationId,
-                  specializationName,
-                  locationName,
                   status,
                   timeLeft,
                   total,
-                  totalmem,
                   totalMilestones,
-                  tradieListData,
                   tradeName,
                   quoteCount,
                   quoteJob,
                   tradieId,
-                  location,
                   tradeSelectedUrl,
-                  tradieImage,
                 }: Active) => (
                   <div className="flex_col_sm_6">
                     <div

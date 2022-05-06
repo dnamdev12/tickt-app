@@ -1,18 +1,15 @@
 import React, { useState, useEffect } from "react";
-import Constants from "../../utils/constants";
 import {
   getHomeJobDetails,
-  getHomeSaveJob,
   jobDetailsBuilder,
-  postHomeApplyJob,
 } from "../../redux/homeSearch/actions";
-import { closeOpenedJob } from "../../redux/jobs/actions";
 import {
   getQuestionsList,
   answerQuestion,
   updateAnswer,
   deleteAnswer,
   handleCancelReply,
+  deleteOpenJob,
 } from "../../redux/jobs/actions";
 import Modal from "@material-ui/core/Modal";
 import moment from "moment";
@@ -30,8 +27,6 @@ import noDataFound from "../../assets/images/no-search-data.png";
 import approved from "../../assets/images/approved.png";
 import waiting from "../../assets/images/exclamation.png";
 
-import { renderTime } from "../../utils/common";
-
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
@@ -42,13 +37,11 @@ import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogTitle from "@material-ui/core/DialogTitle";
-
-import { deleteOpenJob } from "../../redux/jobs/actions";
 import { moengage, mixPanel } from "../../services/analyticsTools";
-import { MoEConstants } from "../../utils/constants";
+import Constants, { MoEConstants } from "../../utils/constants";
 //@ts-ignore
 import FsLightbox from "fslightbox-react";
-import { JobCancelReasons } from "../../utils/common";
+import { JobCancelReasons, renderTime } from "../../utils/common";
 import docThumbnail from "../../assets/images/add-document.png";
 interface PropsType {
   history: any;
@@ -165,9 +158,6 @@ const JobDetailsPage = (props: PropsType) => {
           setJobDetailsData(res.data);
         }
       }
-    }
-    if (params.get("tradieId")) {
-      const id: string | null = params.get("tradieId");
     }
     fetchQuestionsList();
   };
@@ -344,9 +334,6 @@ const JobDetailsPage = (props: PropsType) => {
       }));
       setErrors({});
     } else if (type == "hideAnswerClicked") {
-      // const newData = [...questionsData.answerShownHideList].filter(id => id !== questionId);
-      // setQuestionsData((prevData: any) => ({ ...prevData, answerShownHideList: newData }));
-
       let item_: any = {};
       let question_id: any = questionId;
       item_ = questionsData?.showHideAnswer;
@@ -364,12 +351,7 @@ const JobDetailsPage = (props: PropsType) => {
       let item_: any = {};
       let question_id: any = questionId;
       item_ = questionsData?.showHideAnswer;
-      if (item_[question_id] === undefined) {
-        item_[question_id] = !item_[question_id];
-      } else {
-        item_[question_id] = !item_[question_id];
-      }
-
+      item_[question_id] = !item_[question_id];
       setQuestionsData((prevData: any) => ({
         ...prevData,
         showHideAnswer: item_,
@@ -508,7 +490,6 @@ const JobDetailsPage = (props: PropsType) => {
       } else {
         props.history.push("/request-monitored/cc/bb");
       }
-      // await preFetch();
     }
   };
 
@@ -537,7 +518,6 @@ const JobDetailsPage = (props: PropsType) => {
   const { sources, types } = renderFilteredItems(itemsMedia);
 
   const deleteJob = async (jobId: any) => {
-    let response: any = await deleteOpenJob({ jobId });
     moengage.moE_SendEvent(
       jobDetailsData?.quoteJob
         ? MoEConstants.CANCEL_QUOTED_JOB
@@ -724,14 +704,6 @@ const JobDetailsPage = (props: PropsType) => {
                             {"Delete"}
                           </li>
                         )}
-                      {/* :
-                                            <li
-                                                onClick={() => {
-                                                    setToggleDelete((prev: any) => !prev);
-                                                }}
-                                                className="icon delete">
-                                                {'Delete'}
-                                            </li> */}
                     </React.Fragment>
                   )}
                   {activeType == "active" && (
@@ -787,21 +759,13 @@ const JobDetailsPage = (props: PropsType) => {
           >
             <DialogTitle id="alert-dialog-title">
               {activeType == "open" && jobDetailsData?.quoteJob
-                ? "Are you sure you want to delete the job ?"
+                ? "Are you sure you want to Delete the job ?"
                 : "Are you sure you want to delete the job ?"}
             </DialogTitle>
             <DialogActions>
               <Button
                 onClick={async () => {
-                  // if (activeType == "open" && jobDetailsData?.quoteJob) {
-                  //     let response = await closeOpenedJob({ jobId: paramJobId });
-                  //     setToggleDelete((prev: any) => !prev);
-                  //     if (response?.success) {
-                  //         props.history.push('/jobs?active=past');
-                  //     }
-                  // } else {
                   if (activeType == "open") deleteJob(paramJobId);
-                  // }
                 }}
                 color="primary"
                 autoFocus
@@ -973,15 +937,6 @@ const JobDetailsPage = (props: PropsType) => {
                           className="fill_btn btn-effect"
                           onClick={() => {
                             handleCancelJob(1, jobDetailsData);
-                            // if (jobDetailsData?.quoteJob) {
-                            //     let quote: any = jobDetailsData?.quote;
-                            //     if (quote && Array.isArray(quote) && quote[0] && quote[0]?.tradieId) {
-                            //         let quoteId: any = quote[0].tradieId;
-                            //         props.history.push(`/quote-job-cancel?jobId=${jobDetailsData?.jobId}&tradieId=${quoteId}`);
-                            //     }
-                            // } else {
-                            //     handleCancelJob(1, jobDetailsData) ;
-                            // }
                           }}
                         >
                           {"Accept"}
@@ -1040,8 +995,6 @@ const JobDetailsPage = (props: PropsType) => {
                         </p>
                       </div>
                     )}
-
-                    {/* {} */}
                   </div>
                 </Modal>
 
@@ -1278,7 +1231,6 @@ const JobDetailsPage = (props: PropsType) => {
               <div className="flex_col_sm_4">
                 <span className="sub_title">
                   Job Milestones
-                  {/* <b>{`Job Milestones ${jobDetailsData?.milestoneNumber} `}</b>{`of ${jobDetailsData?.totalMilestones}`} */}
                   <b className="ft_normal">
                     {" "}
                     {`${jobDetailsData?.milestoneNumber} `}
@@ -1408,26 +1360,6 @@ const JobDetailsPage = (props: PropsType) => {
                                     </div>
                                   </div>
                                   <p>{item?.question || ""}</p>
-                                  {/* {Object.keys(questionsData?.showHideAnswer).length &&
-                                                                        questionsData?.showHideAnswer[questionData?.questionId] ? (
-                                                                        <span
-                                                                            onClick={() => questionHandler('showAnswerClicked', item?.questionData?.questionId)}
-                                                                            className="show_hide_ans link">
-                                                                            {'Hide answer'}
-                                                                        </span>
-                                                                    ) : Object.keys(item?.questionData?.answerData).length ? (
-                                                                        <span
-                                                                            onClick={() => questionHandler('hideAnswerClicked', item?.questionData?.questionId)}
-                                                                            className="show_hide_ans link">
-                                                                            {'Show answer'}
-                                                                        </span>
-                                                                    ) : (
-                                                                        <span
-                                                                            onClick={() => questionHandler('askQuestion', item?.questionData?.questionId)}
-                                                                            className="show_hide_ans link">
-                                                                            {'Answer'}
-                                                                        </span>
-                                                                    )} */}
 
                                   {item?.answers?.length === 0 && (
                                     <span
@@ -1449,14 +1381,6 @@ const JobDetailsPage = (props: PropsType) => {
                                     item?._id,
                                     index
                                   )}
-                                {/* {item?.answers?.length && item?.answers?.[0]?.hasOwnProperty('answer') && item?.answers?.[item?.answers?.length - 1]?.sender_user_type === 2 &&
-                                                                    <>
-                                                                        <span onClick={() => questionHandler('updateQuestion', item?.questionData?.questionId, item?.questionData?.answerData?.answer, null, item?.questionData?.answerData?.answerId)}
-                                                                            className="show_hide_ans link">Edit</span>
-                                                                        <span onClick={() => questionHandler('deleteQuestion', item?.questionData?.questionId, '', index, item?.questionData?.answerData?.answerId)}
-                                                                            className="show_hide_ans link">Delete</span>
-                                                                    </>
-                                                                } */}
                               </div>
                             );
                           })}
@@ -1472,10 +1396,6 @@ const JobDetailsPage = (props: PropsType) => {
                           </div>
                         )}
                       </div>
-                      {console.log(
-                        questionsData,
-                        "2222222222222222222222222222222"
-                      )}
                       {questionList?.length === 0 && (
                         <div className="no_record align_centr">
                           <figure className="no_img">

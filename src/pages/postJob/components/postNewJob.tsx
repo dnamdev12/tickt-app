@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from "react";
-import Constants from "../../../utils/constants";
 import { useLocation } from "react-router-dom";
-//@ts-ignore
-import _ from "lodash";
 //@ts-ignore
 import "quill/dist/quill.snow.css"; // Add css for snow theme
 
@@ -10,7 +7,7 @@ interface Proptypes {
   data: any;
   jobUpdateParam?: any;
   editDetailPage: any;
-  stepCompleted: Boolean;
+  stepCompleted: boolean;
   handleStepComplete: (data: any) => void;
   handleStepJustUpdate: (data: any, goto: any) => void;
   handleStepForward: (data: any) => void;
@@ -25,7 +22,6 @@ const PostNewJob = ({
   handleStepForward,
   handleStepComplete,
 }: Proptypes) => {
-  const { errorStrings } = Constants;
 
   const [basicDetails, setBasicDetails] = useState<{ [index: string]: string }>(
     { jobName: "", job_description: "" }
@@ -58,7 +54,6 @@ const PostNewJob = ({
     job_description: "Job Details",
   };
 
-  // const isEmpty = (name: string, value: string) => !value ? errorStrings.pleaseEnter + label[name] : '';
   const isInvalid = (name: string, value: string) => {
     switch (name) {
       case "jobName":

@@ -41,7 +41,6 @@ export default function BecsForm(props) {
     }
     if (name === 'accountEmail') {
       setAccountEmail(value);
-      return;
     }
   }
 

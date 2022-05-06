@@ -1,5 +1,9 @@
 /*-------------------Link hover effect---------------*/
 
+* {
+	font-family:  sans-serif;
+}
+
 .link {
 	position: relative;
 	font: 14px 'Neue Haas Grotesk Text Pro Medium';
@@ -320,7 +324,6 @@
 		top: 0;
 		left: 0;
 		box-sizing: inherit;
-		content: '';
 		position: absolute;
 		width: 100%;
 		height: 100%;

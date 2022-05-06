@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { setLoading, setShowToast } from '../../../redux/common/actions';
+import { setLoading } from '../../../redux/common/actions';
 import templateImage from '../../../assets/images/teplate-saved-bg.jpg';
 import { useLocation, useHistory } from "react-router-dom";
 interface Proptypes {
     data: any;
-    stepCompleted: Boolean;
+    stepCompleted: boolean;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
     handleStepBack: () => void;
@@ -12,7 +12,7 @@ interface Proptypes {
 //  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
 const TemplateSavedSuccess = (props: Proptypes) => {
-    const { data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack } = props;
+    const {  handleStepForward } = props;
     const [isLoad, setImageLoad] = useState(true);
     const location: any = useLocation();
     const history: any = useHistory();

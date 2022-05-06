@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import media from "../../../assets/images/portfolio-placeholder.jpg";
 import close from "../../../assets/images/icon-close-1.png";
 import addMedia from "../../../assets/images/add-image.png";
 import { onFileUpload } from "../../../redux/auth/actions";
 import { setShowToast } from "../../../redux/common/actions";
-import videoThumbnail from "../../../assets/images/add-video.png";
 
 import { moengage, mixPanel } from "../../../services/analyticsTools";
 import { MoEConstants } from "../../../utils/constants";

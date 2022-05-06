@@ -1,10 +1,9 @@
-import { retry } from "@redux-saga/core/effects";
 import colorLogo from "../../assets/images/ic-logo-yellow.png";
 import AuthSlider from "./authSlider";
 
 interface Props {
   backButtonHandler?: () => void;
-  steps?: number | undefined;
+  steps?: number;
   header: any;
   children: any;
   sliderType?: string;
@@ -26,7 +25,6 @@ const builderEnableSteps = [
 ];
 const AuthParent = (props: any) => {
   const handleSteps = ({ step, index, type }: any) => {
-    console.log({ step, index, type });
     if (type == 2 && props.socialId) {
       if (index == 0) {
         return step > 3 ? "active" : "";
@@ -113,7 +111,7 @@ const AuthParent = (props: any) => {
   let type = props.userType;
   return (
     <div className="onboard_wrapper">
-      <div className="f_row h-100" >
+      <div className="f_row h-100">
         <div className={props.steps === 0 ? "left_col" : "left_col_hide"}>
           <AuthSlider
             type={props.sliderType}

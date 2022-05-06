@@ -20,12 +20,11 @@ import {
   sendImageVideoMessage,
 } from "../../services/firebase";
 
-import Constants from "../../utils/constants";
+import Constants, { MoEConstants } from "../../utils/constants";
 
 //@ts-ignore
 import FsLightbox from "fslightbox-react";
 import { moengage, mixPanel } from "../../services/analyticsTools";
-import { MoEConstants } from "../../utils/constants";
 interface Types {
   [key: string]: any | string;
 }
@@ -47,7 +46,6 @@ const UserMessages = (props: any) => {
   const [toggler, setToggler] = useState(false);
   const [selectedSlide, setSelectSlide] = useState<any>(1);
   const [fsSlideListner, setFsSlideListner] = useState<any>({});
-  const [oppUserFcmToken, setOppUserFcmToken] = useState<any>("");
 
   useEffect(() => {
     if (props.roomId !== "") {
@@ -60,9 +58,6 @@ const UserMessages = (props: any) => {
       setToggle(false);
     }
   }, [props.roomId]);
-  // }, [props.roomId, props.roomData]);
-  //console.log('props.roomData: ', props.roomData);
-
   useEffect(() => {
     scrollToBottom();
   });
@@ -71,13 +66,11 @@ const UserMessages = (props: any) => {
     if (null !== divRref?.current) {
       const scroll =
         divRref.current.scrollHeight - divRref.current.clientHeight;
-      // divRref.current.scrollIntoView({ behavior: "smooth" })
       divRref.current.scrollTo(0, scroll);
     }
   };
 
   const onReceiveOfNewMsg = (arrmsg: any) => {
-    // console.log('arrmsg: ', arrmsg);
     setMessages(arrmsg);
   };
 
@@ -96,7 +89,6 @@ const UserMessages = (props: any) => {
       setFsSlideListner(fsSlideObj);
     }
   }, [messages]);
-  // console.log('itemsMedia: ', itemsMedia, "fsSlideListner", fsSlideListner);
 
   const setInboxToTopWithLastMsg = (lastMsg: any) => {
     const newInboxData = [...props.inBoxData];
@@ -107,13 +99,9 @@ const UserMessages = (props: any) => {
     newInboxData.splice(currentIndex, 1);
     newInboxData.unshift(props.inBoxData[currentIndex]);
     props.setInBoxData(newInboxData);
-    // console.log('lastMsg: ', lastMsg);
-    // console.log('currentIndex: ', currentIndex);
-    // console.log('newInboxData: ', newInboxData);
   };
 
   const sendMessage = async () => {
-    //setIsLoading(true);
     if (messageText && messageText.trimLeft() !== "") {
       setMessageText("");
       const lastMsg: any = await sendTextMessage(props.roomId, messageText);
@@ -145,7 +133,6 @@ const UserMessages = (props: any) => {
   };
 
   const sendImageVideoMsg = async (url: string, msgType: string) => {
-    //setIsLoading(true);
     if (url && url !== "") {
       const lastMsg: any = await sendImageVideoMessage(
         props.roomId,
@@ -296,7 +283,6 @@ const UserMessages = (props: any) => {
       headers: headers_,
       body: JSON.stringify(newData),
     });
-    // const res: any = await response.json();
     if (response.status === 200) {
       console.log("Chat push notification send to opposite user: success");
     } else {
@@ -336,7 +322,6 @@ const UserMessages = (props: any) => {
         setShowToast(true, "There is some technical issue");
       }
       setIsDocUploading(false);
-      // setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
     }
   };
 
@@ -509,7 +494,6 @@ const UserMessages = (props: any) => {
   return props.isNoRecords ? (
     <div className="detail_col">
       <div className="flex_row">
-        {/* <div>No Record Found</div> */}
         <div></div>
       </div>
     </div>
@@ -521,7 +505,6 @@ const UserMessages = (props: any) => {
         sources={sources}
         types={types}
         key={sources?.length}
-        // disableLocalStorage={true}
         onClose={() => {
           setSelectSlide(1);
         }}
@@ -670,7 +653,6 @@ const UserMessages = (props: any) => {
                       `/job-details-page?jobId=${currentJobDetails?.jobId}&redirect_from=jobs`
                     );
                   } else {
-                    // let urlEncode: any = window.btoa(`?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`)
                     let urlEncode: any = `?jobId=${currentJobDetails?.jobId}&status=${currentJobDetails?.status}&edit=true&activeType=active`;
                     props.history.push(`/job-detail?${urlEncode}`);
                   }

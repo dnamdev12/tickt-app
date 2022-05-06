@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
 import { renderTime } from "../../../utils/common";
 import InfiniteScroll from "react-infinite-scroll-component";
 
@@ -31,7 +30,7 @@ const ApprovedMilestones = ({
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
   const [isLoad, setIsLoad] = useState(true);
   const history = useHistory();
-  let totalJobsCount: number = newJobsCount;
+
 
   useEffect(() => {
     callJobList();
@@ -40,24 +39,13 @@ const ApprovedMilestones = ({
   }, []);
 
   const callJobList = async () => {
-    // if (newJobsCount && jobList.length >= totalJobsCount) {
-    //   setHasMoreItems(false);
-    //   return;
-    // }
     getApprovedMilestoneList(pageNo);
   };
 
   useEffect(() => {
     if (approvedMilestoneList?.length || Array.isArray(approvedMilestoneList)) {
       const allJobs = [...jobList, ...approvedMilestoneList];
-      console.log(
-        jobList,
-        "jobList",
-        approvedMilestoneList,
-        "props.approvedMilestoneList",
-        allJobs,
-        "allJobs"
-      );
+     
       setJobList(allJobs);
       setIsLoad(false);
       setPageNo(pageNo + 1);
@@ -83,9 +71,6 @@ const ApprovedMilestones = ({
             ? jobList.map(
                 ({
                   jobId,
-                  tradeId,
-                  specializationId,
-                  tradeSelectedUrl,
                   jobName,
                   tradeName,
                   fromDate,
@@ -93,10 +78,8 @@ const ApprovedMilestones = ({
                   timeLeft,
                   amount,
                   locationName,
-                  durations,
                   milestoneNumber,
                   totalMilestones,
-                  status,
                   builderName,
                   builderImage,
                 }) => (

@@ -4,7 +4,6 @@ import visaIcon from '../../../../assets/images/visacard.svg';
 import check from '../../../../assets/images/checked-2.png';
 
 import PaymentDetails from './paymentDetails';
-import Success from './suceess';
 import { withRouter } from 'react-router-dom';
 
 import dotMenu from '../../../../assets/images/menu-dot.png'
@@ -12,8 +11,6 @@ import dotMenu from '../../../../assets/images/menu-dot.png'
 import Button from '@material-ui/core/Button';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import { getCardList, deleteCard } from '../../../../redux/jobs/actions'
 

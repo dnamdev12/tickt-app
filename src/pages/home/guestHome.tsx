@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import storageService from '../../utils//storageService';
 
 import uc from '../../assets/images/uc.png';

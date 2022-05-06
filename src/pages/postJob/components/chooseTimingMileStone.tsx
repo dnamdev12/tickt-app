@@ -9,7 +9,7 @@ import { setShowToast } from '../../../redux/common/actions';
 
 interface Proptypes {
     data: any;
-    stepCompleted: Boolean;
+    stepCompleted: boolean;
     milestones: any,
     randomColors: any,
     editMilestoneTiming: any;
@@ -26,15 +26,12 @@ const default_format = 'YYYY-MM-DD';
 const STRING_ERROR = 'Selected data is fully engage';
 const ChooseTimingMileStone = ({
     data,
-    stepCompleted,
     randomColors,
     handleStepForward,
     updateMileStoneTimings,
     editMileStone,
     addTimeToMileStone,
     milestones,
-    handleStepComplete,
-    handleStepMileStone,
     handleStepBack }: Proptypes) => {
     const [range, setRange] = useState<{ [index: string]: string | Date }>({
         startDate: '', //new Date(),
@@ -43,15 +40,10 @@ const ChooseTimingMileStone = ({
     });
     const [formattedDates, setFormattedDates] = useState({});
     const [error, setError] = useState('');
-    const [localChanges, setLocalChanges] = useState(false);
 
-    const [isToggle, setIsToggle] = useState(false);
-
-    const [force, forceUpdate] = useState<any>([]);
 
     const onMountCallable = () => {
         let count_times: any = {};
-        // console.log({ randomColors })
         let filteredItems = milestones.filter((item: any) => {
             let to_date = item?.to_date;
             let from_date = item?.from_date;
@@ -84,8 +76,6 @@ const ChooseTimingMileStone = ({
                 let from_date = item?.from_date;
                 let color_index = index;
                 if(index > 500){
-                    // make random index from the limit 0 to 500.
-                    // if the index is greater than 500.
                     color_index = Math.floor((Math.random()*500) + 1);
                 }
 
@@ -115,8 +105,6 @@ const ChooseTimingMileStone = ({
                     if (count_times[to_date] > -1) {
                         count_times[to_date]++;
                     }
-
-                    // let colorbyIndex = randomColors[index];
                     let from_element: any = document.getElementsByClassName(`color_${count_times[from_date]}_${from_date}`);
                     if (from_element) {
                         let element_from = null;
@@ -269,7 +257,6 @@ const ChooseTimingMileStone = ({
                 handleStepForward(15);
             }
         }
-        // handleStepComplete(formattedDates);
     }
 
     const checkDisable = () => {
@@ -317,7 +304,6 @@ const ChooseTimingMileStone = ({
                                     showPreview={true}
                                     minDate={data?.from_date?.length ? moment(data?.from_date, 'YYYY-MM-DD').toDate() : new Date()}
                                     maxDate={moment().add(2, 'years').toDate()}
-                                    // maxDate={data?.to_date?.length && data?.from_date !== data?.to_date ? moment(data?.to_date, 'YYYY-MM-DD').toDate() : moment().add(2, 'years').toDate()}
                                     fixedHeight={true}
                                 />
                             </div>

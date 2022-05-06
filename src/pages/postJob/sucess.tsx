@@ -1,24 +1,21 @@
 import React, { useState, useEffect } from 'react';
-import { setLoading, setShowToast } from '../../redux/common/actions';
+import { setLoading } from '../../redux/common/actions';
 import templateImage from '../../assets/images/job-posted-bg.jpg';
-import { withRouter } from 'react-router-dom'
 
-//@ts-ignore
-import Skeleton from 'react-loading-skeleton';
 
 interface Proptypes {
     data: any;
     history: any
     editDetailPage: any;
     templateImage: any;
-    stepCompleted: Boolean;
+    stepCompleted: boolean;
     handleStepComplete: (data: any) => void;
     handleStepForward: (data: any) => void;
     handleStepBack: () => void;
 }
-//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
-const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, handleStepComplete, handleStepBack }: Proptypes) => {
+
+const JobPostedSuccess = ({ history}: Proptypes) => {
     const [isLoad, setImageLoad] = useState(true);
 
     useEffect(() => { setLoading(true) }, [])

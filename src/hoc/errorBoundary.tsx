@@ -1,4 +1,4 @@
-import React, { Component, ErrorInfo, ReactNode } from "react";
+import React, { Component, ReactNode } from "react";
 import { BrowserRouter as Router, Redirect } from "react-router-dom";
 
 class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -7,7 +7,7 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     this.state = { hasError: false };
   }
 
-  static getDerivedStateFromError(error: any) {
+  static getDerivedStateFromError() {
     return { hasError: true };
   }
 
@@ -15,10 +15,13 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
     console.log(error, errorInfo, "ErrorBoundary error");
   }
 
-
   render() {
     if (this.state.hasError) {
-      return (<Router><Redirect to="/404"/></Router>)
+      return (
+        <Router>
+          <Redirect to="/404" />
+        </Router>
+      );
     }
     return this.props.children;
   }
@@ -27,9 +30,9 @@ class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
 export default ErrorBoundary;
 
 interface ErrorBoundaryState {
-  hasError: boolean
+  hasError: boolean;
 }
 
 interface ErrorBoundaryProps {
-  children: ReactNode
+  children: ReactNode;
 }

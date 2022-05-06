@@ -1,10 +1,6 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import BuilderInfoComponent from './builderInfo';
-import {
-    getTradieReviewList,
-
-} from '../../redux/jobs/actions';
 import { callTradeList } from '../../redux/auth/actions';
 import { getBuilderProfileView } from '../../redux/profile/actions';
 

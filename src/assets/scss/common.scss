@@ -1,4 +1,7 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+	font-family:  sans-serif;
+}
 
 html,
 body {
@@ -831,7 +834,6 @@ body {
 
 //------------------------- empty screens---------------------------//
 .empty_screen_text {
-   font-size: 20px;
    text-align: center;
    font: 20px/1.33 "Neue Haas Grotesk Text Pro Medium";
                       align-items: center;
@@ -858,7 +860,6 @@ body {
                     text-align:center;
 }
 .notification_subtext{
-  font-size: 16px;
   font: 16px/1.33 "Neue Haas Grotesk Text Pro Medium";
                               align-items: center;
                               display: inline-block;
@@ -1102,13 +1103,6 @@ body {
       cursor: auto;
     }
   }
-  .tags_wrap {
-    ul {
-      li {
-        cursor: auto;
-      }
-    }
-  }
   .back {
     top: -20px;
     left: 10px;
@@ -1119,6 +1113,9 @@ body {
   }
   .tags_wrap {
     ul {
+      li {
+        cursor: auto;
+      }
       @media (max-width: 768px) {
         margin: 0 0 15px;
       }
@@ -1233,12 +1230,6 @@ body {
       margin-bottom: 15px;
       &:last-child {
         margin: 0;
-      }
-    }
-    .full_btn {
-      width: 100%;
-      @media only screen and (min-device-width: 375px) and (max-device-width: 812px) and (orientation: landscape) and (-webkit-min-device-pixel-ratio: 2) {
-        width: 100%;
       }
     }
     @media (max-width: 768px) {
@@ -3741,7 +3732,6 @@ body {
     width: 16.66666667%;
     padding: 0 10px;
     text-align: center;
-    padding: 10px;
     border-radius: 3px;
     cursor: pointer;
     @media (max-width: 1024px) {
@@ -4308,12 +4298,14 @@ body {
     background-color: transparent;
     border-radius: 12px;
     border: solid 1px rgba(160, 159, 167, 0.35);
-    display: flex;
+    // display: flex;
     justify-content: center;
     align-items: center;
     @include position(absolute, 18px, 18px, auto, auto);
     z-index: 999;
+   
     display: none;
+    
     @media (max-width: 650px) {
       right: 7px;
       top: 7px;

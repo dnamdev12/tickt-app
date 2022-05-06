@@ -1,10 +1,8 @@
 import TradieBox from '../../../shared/tradieBox';
 import noData from '../../../../assets/images/no-search-data.png';
-import dummy from '../../../../assets/images/u_placeholder.jpg';
 import React, { useEffect, useState } from 'react'
 import { withRouter } from 'react-router-dom';
 import { getSavedTradies, getPopularTradies, getRecommendedTradies, getMostViewedTradies } from '../../../../redux/jobs/actions'
-import { setShowToast, setLoading } from '../../../../redux/common/actions';
 
 //@ts-ignore
 import InfiniteScroll from "react-infinite-scroll-component";
@@ -133,14 +131,6 @@ const SavedJobs = (props: any) => {
 
     if (!isLoad) {
         return null;
-    }
-
-    if (props?.location?.state?.title === "Saved tradespeople" || props.location.pathname === '/saved-tradespeople') {
-
-    }
-
-    if (props?.location?.state?.title === "Popular tradespeople" || props.location.pathname === '/popular-tradespeople') {
-
     }
     let dataItems = stateData?.length;
     return (

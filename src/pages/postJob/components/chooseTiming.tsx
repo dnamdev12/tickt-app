@@ -15,7 +15,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 interface Proptypes {
   data: any;
   milestones: any;
-  stepCompleted: Boolean;
+  stepCompleted: boolean;
   handleStepComplete: (data: any) => void;
   handleStepBack: () => void;
 }
@@ -42,7 +42,6 @@ const ChooseTiming = ({
     return date;
   };
   const [range, setRange] = useState<{ [index: string]: any }>({
-    //startDate: '', //new Date(), // ''
     startDate: setCurrentDateWithoutTime(), // ''
     endDate: setCurrentDateWithoutTime(),
     key: "selection",
@@ -195,7 +194,6 @@ const ChooseTiming = ({
     if (
       moment(from_date, default_format).isAfter(moment(to_date, default_format))
     ) {
-      // isAfter
       setError("finish date is greater then the start date.");
     } else {
       setError("");
@@ -224,7 +222,6 @@ const ChooseTiming = ({
         <div className="custom_container">
           <Dialog
             open={singleDayModal}
-            // onClose={handleClose}
             aria-labelledby="alert-dialog-title"
             aria-describedby="alert-dialog-description"
           >

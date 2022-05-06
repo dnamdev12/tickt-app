@@ -42,19 +42,11 @@ const RateThisJob = (props: any) => {
     }
   };
 
-  const startDate = moment(data?.fromDate).format("MMM DD");
-  const endDate = moment(data?.toDate).format("MMM DD");
-
   const submitReviewClicked = async () => {
     if (reviewBuilderData.rating === 0) {
       setShowToast(true, "Star rating is required");
       return;
     }
-    if (reviewBuilderData.review.trim().length < 1) {
-      // setShowToast(true, 'Comment is required');
-      // return;
-    }
-    // if (reviewBuilderData.review.trim().length > 1 && reviewBuilderData.rating > 0) {
     if (reviewBuilderData.rating > 0) {
       const dataItem: any = {
         jobId: data?.jobId,

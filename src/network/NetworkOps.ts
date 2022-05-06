@@ -27,9 +27,6 @@ class NetworkOps {
                 ...headerOverrides
             },
         };
-
-        //if giving multipart/form-data in Content-Type: giving boundary error
-        //if also adding boundary: loader continues from server end 
         const token = storageService.getItem('jwtToken');
         if (headerOverrides['Content-Type'] === 'multipart/form-data') {
             delete request.headers['Content-Type'];
@@ -39,7 +36,6 @@ class NetworkOps {
                 ...request.headers,
                 Authorization: token,
                 'timezone': moment.tz.guess(),
-                // Authorization: `Bearer ${token}`,
             }
         }
         return request;

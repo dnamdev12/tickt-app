@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
-import dummy from "../../../assets/images/u_placeholder.jpg";
-import approved from "../../../assets/images/approved.png";
+import dummy from "../../../assets/images/u_placeholder.jpg"
 import { withRouter } from "react-router";
-import newApplicants from "../../../assets/images/newApplicants.png";
-import noData from "../../../assets/images/no-search-data.png";
 import noDataFound from "../../../assets/images/no-search-data.png";
-import moment from "moment";
 import { renderTime } from "../../../utils/common";
 interface Applicant {
   amount: any;
@@ -35,7 +31,7 @@ interface Applicant {
 }
 
 const NewApplicants = (props: any) => {
-  const { dataItems, jobType, setJobLabel, isLoading } = props;
+  const { dataItems,setJobLabel, isLoading } = props;
   let listData: any = dataItems;
 
   const [isRender, setRender] = useState(false);
@@ -43,7 +39,7 @@ const NewApplicants = (props: any) => {
   const redirectToInfo = ({ jobId }: any) => {
     const props_: any = props;
     if (jobId?.length) {
-      // let urlEncode: any = window.btoa(`?jobId=${jobId}&activeType=${props_?.activeType || 'applicant'}`)
+     
       let urlEncode: any = `?jobId=${jobId}&activeType=${
         props_?.activeType || "applicant"
       }`;
@@ -69,25 +65,16 @@ const NewApplicants = (props: any) => {
           ? listData.map(
               ({
                 amount,
-                builderId,
-                builderImage,
-                durations,
                 fromDate,
                 jobName,
                 jobDescription,
                 jobId,
-                quote,
                 quoteCount,
                 quoteJob,
-                location,
-                location_name,
-                specializationName,
                 specializationId,
                 timeLeft,
                 toDate,
                 total,
-                tradeId,
-                tradieId,
                 tradeName,
                 tradeSelectedUrl,
               }: Applicant) => (
@@ -144,8 +131,6 @@ const NewApplicants = (props: any) => {
                       <button
                         onClick={() => {
                           if (quoteCount?.length || quoteCount) {
-                            // setJobLabel('applicantList', jobId, 1, specializationId)
-                            // props.history.push(`/jobs?active=open&quotes=true&jobId=${jobId}`);
                             setJobLabel("listQuote");
                             props.history.replace(
                               `/jobs?active=applicant&quote=true&jobId=${jobId}`

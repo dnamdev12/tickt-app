@@ -49,7 +49,7 @@ const SearchResultTradie = (props: any) => {
 
     if (stateData?.specializations) {
       data["specializationId"] = stateData?.specializations;
-      data["specializationId"] = specialiZationName;
+      data["specializationName"] = specialiZationName;
     }
     // tradeId: stateData?.tradeId,
     // specializationId: stateData?.specializations,
@@ -77,7 +77,7 @@ const SearchResultTradie = (props: any) => {
     let spec_count: any = stateData?.specializations?.length;
 
     if (!data?.address || !data?.address?.length) {
-      delete data?.address;
+      delete data.address;
     }
 
     setLocalInfo({

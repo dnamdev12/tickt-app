@@ -43,24 +43,12 @@ const AppliedJobs = ({
   }, []);
 
   const callJobList = async () => {
-    // if (newJobsCount && jobList.length >= totalJobsCount) {
-    //   setHasMoreItems(false);
-    //   return;
-    // }
     getAppliedJobList(pageNo);
   };
 
   useEffect(() => {
     if (appliedJobList?.length || Array.isArray(appliedJobList)) {
       const allJobs = [...jobList, ...appliedJobList];
-      console.log(
-        jobList,
-        "jobList",
-        appliedJobList,
-        "props.appliedJobList",
-        allJobs,
-        "allJobs"
-      );
       setJobList(allJobs);
       setIsLoad(false);
       setPageNo(pageNo + 1);
@@ -86,22 +74,18 @@ const AppliedJobs = ({
             ? jobList.map(
                 ({
                   jobId,
-                  tradeSelectedUrl,
                   tradeId,
                   specializationId,
                   jobName,
-                  tradeName,
                   time,
                   amount,
                   locationName,
                   durations,
                   milestoneNumber,
                   totalMilestones,
-                  status,
                   builderName,
                   builderImage,
                   quoteJob,
-                  quoteSent,
                 }) => (
                   <div className="flex_col_sm_6">
                     <div

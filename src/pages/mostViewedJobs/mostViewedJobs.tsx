@@ -42,7 +42,6 @@ const MostViewedJobs = (props: any) => {
     const backButtonClicked = () => {
         props.history?.goBack();
     }
-    // const mostViewJobsData = props.jobDataWithJobTypeLatLong?.most_viewed_jobs;
 
     return (
         <InfiniteScroll

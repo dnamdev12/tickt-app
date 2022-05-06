@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import Location from "../../../../assets/images/ic-location.png";
 import dummy from '../../../../assets/images/u_placeholder.jpg';
 
 
@@ -73,11 +72,11 @@ export default class RecommendedTradies extends Component {
                                             <div className="tags_wrap">
                                                 <ul>
                                                     {isItemSpec[index] ?
-                                                        item?.specializationData?.map((item_spec: any, index_spec: any) => (
+                                                        item?.specializationData?.map((item_spec: any) => (
                                                             <li>{item_spec?.specializationName}</li>
                                                         ))
                                                         :
-                                                        item?.specializationData?.slice(0, 4)?.map((item_spec: any, index_spec: any) => (
+                                                        item?.specializationData?.slice(0, 4)?.map((item_spec: any) => (
                                                             <li>{item_spec?.specializationName}</li>
                                                         ))}
                                                     {item?.specializationData?.length > 4 && !isItemSpec[index] ?

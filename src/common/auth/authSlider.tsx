@@ -1,6 +1,5 @@
 import "react-multi-carousel/lib/styles.css";
 import Carousel from "react-multi-carousel";
-import logoyellow from "../../assets/images/ic-logo-yellow.png";
 import bannerimage1 from "../../assets/images/onboarding-banner-1.jpg";
 import bannerimage2 from "../../assets/images/onboarding-banner-2.jpg";
 import bannerimage3 from "../../assets/images/onboarding-banner-3.jpg";
@@ -55,21 +54,6 @@ const AuthSlider = (props: Props) => {
     },
   };
   const data = DATA[props.type];
-
-  const onLoginSignupClicked = (e: any) => {
-    e.preventDefault();
-    if (props.showModal) {
-      if (data.nav === "login") {
-        props.modalUpdateSteps(0);
-        return;
-      } else {
-        props.modalUpdateSteps(2);
-        props.setSocialData("");
-        return;
-      }
-    }
-    props.history.push(`/${data.nav}`);
-  };
 
   return (
     <Carousel

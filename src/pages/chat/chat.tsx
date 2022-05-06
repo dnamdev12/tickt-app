@@ -48,10 +48,8 @@ const Chat = (props: PropTypes) => {
   const { tradieId, builderId, jobName, jobId } = props.history?.location?.state
     ? props.history?.location?.state
     : { tradieId: "", builderId: "", jobName: "", jobId: "" };
-  // console.log('tradieId, builderId, jobName, jobId: ', tradieId, builderId, jobName, jobId);
 
   useEffect(() => {
-    //  console.log("roomId:: from didmout", selectedRoomID);
     (async () => {
       setLoading(true);
       if (tradieId && builderId && jobName && jobId) {
@@ -60,11 +58,9 @@ const Chat = (props: PropTypes) => {
         isFreshChatRoute = true;
       }
       await getFirebaseInboxData(onUpdateofInbox);
-      // debugger;
     })();
 
     return () => {
-      // debugger;
       stopListeningOfRoom(selectedRoomID);
       selectedRoomID = "";
     };
@@ -74,16 +70,13 @@ const Chat = (props: PropTypes) => {
     const roomID: string = `${jobId}_${tradieId}_${builderId}`;
     selectedRoomID = roomID;
     if (await checkRoomExist(roomID)) {
-      //console.log('RoomAlreadyExist: =================>');
       return;
     } else {
       await createRoom(jobId, tradieId, builderId, jobName);
-      // console.log('NewRoomCreated: ============>');
     }
   };
 
   const onUpdateofInbox = async (res: any) => {
-    //  console.log("roomId::", selectedRoomID);
     let selectedRoomInfo: any = "";
     const sortedRes = res.filter((item: any, index: number) => {
       if (item.hasOwnProperty("lastMsg") || item.roomId === selectedRoomID) {
@@ -114,7 +107,6 @@ const Chat = (props: PropTypes) => {
       ress = [...sortedRes];
       ress.unshift(selectedRoomInfo);
     }
-    // console.log('ress: ', ress, "sortedRes", sortedRes, "res", res, "selectedRoomInfo", selectedRoomInfo);
     const newRes = Array.isArray(ress) && selectedRoomInfo ? ress : sortedRes;
     setInBoxData(newRes.length === 0 ? [{ firstKey: "emptyRes" }] : newRes);
     if (newRes.length > 0 && selectedRoomID === "") {
@@ -126,7 +118,6 @@ const Chat = (props: PropTypes) => {
       }
       setRoomData(newRes[0]);
       return;
-      // fetchJobDetail(res[0].item?.jobId);
     }
 
     if (newRes.length > 0) {
@@ -159,15 +150,12 @@ const Chat = (props: PropTypes) => {
     return unsubscribe;
   }, [initializing]);
 
-  // console.log(props.history, "history", roomId, "roomId", roomData, "roomData", selectedRoomID, "selectedRoomID", inBoxData, 'inBoxData');
-
   const getRoomDetails = async (item: any) => {
     stopListeningOfRoom(selectedRoomID);
     selectedRoomID = item.roomId;
     setRoomId(item.roomId);
     setRoomData(item);
     resetUnreadCounter(item.roomId);
-    // fetchEquipmentDetail(item.itemId);
   };
 
   useEffect(() => {
@@ -398,7 +386,6 @@ const Chat = (props: PropTypes) => {
               </ul>
             </div>
           </div>
-          {/* {(isInitialLoader || inBoxData?.length === 0) ? null : */}
           {isInitialLoader ? null : !isInitialLoader &&
             inBoxData?.length === 0 ? (
             <div className="detail_col">

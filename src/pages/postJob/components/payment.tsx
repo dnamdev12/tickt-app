@@ -1,15 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
-import Constants from '../../../utils/constants';
-import Select from 'react-select';
-import MenuItem from '@material-ui/core/MenuItem';
-
-
-function valuetext(value: number) {
-  return `${value}°C`;
-}
+import React, { useEffect, useState } from "react";
+import Constants from "../../../utils/constants";
+import Select from "react-select";
 
 interface Proptypes {
   data: any;
@@ -18,35 +9,41 @@ interface Proptypes {
   handleStepBack: () => void;
 }
 // "Per hour" and "Fixed price"
-const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
-  const { errorStrings } = Constants;
-
-  const [paymentDetails, setPaymentDetails] = useState<{ [index: string]: string }>({ pay_type: 'Per hour', amount: '' });
-  const [errors, setErrors] = useState({ pay_type: '', amount: '' });
+const Payment = ({
+  data,
+  stepCompleted,
+  handleStepComplete,
+  handleStepBack,
+}: Proptypes) => {
+  const [paymentDetails, setPaymentDetails] = useState<{
+    [index: string]: string;
+  }>({ pay_type: "Per hour", amount: "" });
+  const [errors, setErrors] = useState({ pay_type: "", amount: "" });
   const [continueClicked, setContinueClicked] = useState(false);
   const [localChanges, setLocationChanges] = useState(false);
-  const [reactSelect, setReactSelect] = useState({ value: "Per hour", label: "Per Hour" });
+  const [reactSelect, setReactSelect] = useState({
+    value: "Per hour",
+    label: "Per Hour",
+  });
 
-  const [checkType, setCheckType] = useState('1');
-  const [canDisable, setCanDisable] = useState('0');
+  const [checkType, setCheckType] = useState("1");
 
   useEffect(() => {
     if (stepCompleted && !localChanges) {
       setPaymentDetails({
-        pay_type: data.pay_type || 'Fixed price',
-        amount: data.amount
+        pay_type: data.pay_type || "Fixed price",
+        amount: data.amount,
       });
 
-      if (data.quoteJob == '0') {
-        if (data.pay_type === 'Per hour') {
-          setReactSelect({ value: 'Per hour', label: 'Per Hour' });
+      if (data.quoteJob == "0") {
+        if (data.pay_type === "Per hour") {
+          setReactSelect({ value: "Per hour", label: "Per Hour" });
         } else {
-          setReactSelect({ value: 'Fixed price', label: 'Fixed Price' });
+          setReactSelect({ value: "Fixed price", label: "Fixed Price" });
         }
-        setCheckType('1');
+        setCheckType("1");
       } else {
-        setCheckType('2');
-        // setCanDisable('1');
+        setCheckType("2");
       }
 
       setLocationChanges(true);
@@ -55,62 +52,59 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
 
   // for error messages
   const label: { [index: string]: string } = {
-    pay_type: 'Pay Type',
-    amount: 'Price',
-  }
+    pay_type: "Pay Type",
+    amount: "Price",
+  };
 
-  const checkDecimal = (name: string, value: string) => {
-    let split_values = value.split('.');
+  const checkDecimal = (value: string) => {
+    let split_values = value.split(".");
     console.log({
-      split_values
-    })
+      split_values,
+    });
     if (split_values.length) {
       let first: any = split_values[0];
       let last: any = split_values[1];
 
       if (last && last?.length > 2) {
-        return 'Price field must have maximum 2 digits after decimal';
+        return "Price field must have maximum 2 digits after decimal";
       }
 
       if (first && first?.length > 6) {
-        return 'Price field must have 6 or less digits before decimal';
+        return "Price field must have 6 or less digits before decimal";
       }
 
       let value_: number = +value;
       if (value_ !== 0 && value_ < 10) {
-        return 'Minimum amount value is 10.'
+        return "Minimum amount value is 10.";
       }
-      return ''
-
+      return "";
     } else {
-      return '';
+      return "";
     }
-  }
+  };
   const isInvalid = (name: string, value: string) => {
     switch (name) {
-      case 'pay_type':
-        return !value.length ? `${label[name]} is required.` : '';
-      case 'amount':
-        return !value.length || +value < 1 ? `${label[name]} is required.` : checkDecimal(name, value);
+      case "pay_type":
+        return !value.length ? `${label[name]} is required.` : "";
+      case "amount":
+        return !value.length || +value < 1
+          ? `${label[name]} is required.`
+          : checkDecimal(value);
     }
-  }
+  };
 
   const handleChange = (value: string, name: string) => {
-
     setErrors((prevErrors: any) => ({
       ...prevErrors,
       [name]: isInvalid(name, value),
     }));
 
     setPaymentDetails((prevDetails) => {
-      // if (name === "pay_type" && prevDetails.pay_type !== value) {
-      //   prevDetails.amount = '';
-      // }
-      return ({
+      return {
         ...prevDetails,
         [name]: value,
-      })
-    })
+      };
+    });
   };
 
   const handleContinue = (e: any) => {
@@ -120,12 +114,11 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     if (!continueClicked) {
       setContinueClicked(true);
 
-
-      if (checkType == '2') {
+      if (checkType == "2") {
         handleStepComplete({
-          quoteJob: '1'
+          quoteJob: "1",
         });
-        return
+        return;
       }
 
       hasErrors = Object.keys(paymentDetails).reduce((prevError, name) => {
@@ -141,42 +134,38 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
     if (!hasErrors) {
       let paymentdt = {
         ...paymentDetails,
-        quoteJob: '0'
+        quoteJob: "0",
       };
-      console.log({ paymentdt })
+      console.log({ paymentdt });
       handleStepComplete(paymentdt);
-
     } else {
       setContinueClicked(false);
     }
   };
 
   const checkErrors = () => {
-
-    if (checkType == '2') {
+    if (checkType == "2") {
       return false;
     }
-    let value_1 = paymentDetails['pay_type'];
-    let value_2 = paymentDetails['amount'];
+    let value_1 = paymentDetails["pay_type"];
+    let value_2 = paymentDetails["amount"];
     if (value_1 && value_2) {
-      let error_1 = isInvalid('pay_type', paymentDetails['pay_type']);
-      let error_2 = isInvalid('amount', paymentDetails['amount']);
+      let error_1 = isInvalid("pay_type", paymentDetails["pay_type"]);
+      let error_2 = isInvalid("amount", paymentDetails["amount"]);
       if (!error_1?.length && !error_2?.length) {
         return false;
       }
     }
     return true;
-  }
+  };
 
   const priceOptions = [
-    { value: 'Per hour', label: 'Per Hour' },
-    { value: 'Fixed price', label: 'Fixed Price' },
+    { value: "Per hour", label: "Per Hour" },
+    { value: "Fixed price", label: "Fixed Price" },
   ];
 
-
-  const { pay_type, amount } = paymentDetails;
+  const { amount } = paymentDetails;
   return (
-
     <div className="app_wrapper">
       <div className="section_wrapper">
         <div className="custom_container">
@@ -190,24 +179,19 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
               </div>
             </div>
           </div>
-
-          {/* {'CR Change'} */}
           <div className="form_field">
             <div className="checkbox_wrap agree_check">
               <input
                 onChange={() => {
-                  // if (canDisable !== '1') {
-                    checkType !== '1' ? setCheckType('1') : setCheckType('0')
-                  // }
+                  checkType !== "1" ? setCheckType("1") : setCheckType("0");
                 }}
-                checked={checkType === '1' ? true : false}
+                checked={checkType === "1" ? true : false}
                 className="filter-type filled-in"
                 type="checkbox"
-                id="milestone1" />
+                id="milestone1"
+              />
               <label htmlFor="milestone1">
-              <span className="ft_bold">
-                  {'I have a budget'}
-                  </span>
+                <span className="ft_bold">{"I have a budget"}</span>
                 <div className="sub-title">
                   How would you like to pay for it?
                 </div>
@@ -215,7 +199,7 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
             </div>
           </div>
 
-          <div className="flex_row" style={{ paddingLeft: '35px' }}>
+          <div className="flex_row" style={{ paddingLeft: "35px" }}>
             <div className="flex_col_sm_5">
               <div className="flex_row">
                 <div className="flex_col_sm_5">
@@ -230,9 +214,11 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         // min="1"
                         step=".01"
                         required
-                        value={Number(amount) ? amount : ''}
-                        readOnly={checkType === '2' ? true : false}
-                        onChange={({ target: { value } }) => handleChange(value, 'amount')}
+                        value={Number(amount) ? amount : ""}
+                        readOnly={checkType === "2" ? true : false}
+                        onChange={({ target: { value } }) =>
+                          handleChange(value, "amount")
+                        }
                       />
                       <span className="detect_icon_ltr dollar">$</span>
                     </div>
@@ -246,10 +232,10 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
                         className="select_menu"
                         value={reactSelect}
                         options={priceOptions}
-                        isDisabled={checkType === '2' ? true : false}
+                        isDisabled={checkType === "2" ? true : false}
                         onChange={(item: any) => {
                           setReactSelect(item);
-                          handleChange(item?.value, 'pay_type')
+                          handleChange(item?.value, "pay_type");
                         }}
                       />
                     </div>
@@ -258,45 +244,47 @@ const Payment = ({ data, stepCompleted, handleStepComplete, handleStepBack }: Pr
               </div>
             </div>
           </div>
-          
-            <div className="form_field">
-              <div className="checkbox_wrap agree_check">
-                <input
-                  onChange={() => {
-                    if (checkType !== '2') {
-                      setCheckType('2')
-                    } else {
-                      setCheckType('0')
-                    }
-                    setPaymentDetails({ pay_type: 'Per hour', amount: '' })
-                    setErrors({ pay_type: '', amount: '' });
-                  }}
-                  checked={checkType === '2' ? true : false}
-                  className="filter-type filled-in"
-                  type="checkbox"
-                  id="milestone2" />
-                <label htmlFor="milestone2">
-                  <span className="ft_bold">
-                  {'I need a quote'}
-                  </span>
-                  <div className="sub-title">
-                    Find a quote that suits your budget
-                  </div>
-                </label>
-              </div>
+
+          <div className="form_field">
+            <div className="checkbox_wrap agree_check">
+              <input
+                onChange={() => {
+                  if (checkType !== "2") {
+                    setCheckType("2");
+                  } else {
+                    setCheckType("0");
+                  }
+                  setPaymentDetails({ pay_type: "Per hour", amount: "" });
+                  setErrors({ pay_type: "", amount: "" });
+                }}
+                checked={checkType === "2" ? true : false}
+                className="filter-type filled-in"
+                type="checkbox"
+                id="milestone2"
+              />
+              <label htmlFor="milestone2">
+                <span className="ft_bold">{"I need a quote"}</span>
+                <div className="sub-title">
+                  Find a quote that suits your budget
+                </div>
+              </label>
             </div>
-          
+          </div>
 
           <div className="form_field">
             <button
-              className={`fill_btn full_btn btn-effect ${checkErrors() ? 'disable_btn' : ''}`}
-              onClick={handleContinue}>Continue</button>
+              className={`fill_btn full_btn btn-effect ${
+                checkErrors() ? "disable_btn" : ""
+              }`}
+              onClick={handleContinue}
+            >
+              Continue
+            </button>
           </div>
         </div>
       </div>
+    </div>
+  );
+};
 
-    </div >
-  )
-}
-
-export default Payment
+export default Payment;

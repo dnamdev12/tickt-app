@@ -11,9 +11,6 @@ export default function PaymentSetupForm(props) {
   const stripe = useStripe();
   const elements = useElements();
   const history = useHistory();
-  //   const stripe = useStripe('stripePublishableKey', {
-  //     stripeAccount: 'stripeAccountId',
-  //   });
 
   const handleSubmit = async (e, accountName, accountEmail) => {
     e.preventDefault();
@@ -58,8 +55,8 @@ export default function PaymentSetupForm(props) {
           milestoneId: props.milestoneId,
           status: paymentIntent?.status,
         };
-        const res = await saveStripeTransaction(data);
-        if (res.success) {
+        const res1 = await saveStripeTransaction(data);
+        if (res1.success) {
           let data_ = {
             "status": 1,
             "jobId": props.jobId,

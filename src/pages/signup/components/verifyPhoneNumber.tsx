@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { checkMobileNumber, verifyOtp, verifyMobileOtp , resendOtp, resendMobileOtp} from '../../../redux/auth/actions';
+import { verifyMobileOtp , resendMobileOtp} from '../../../redux/auth/actions';
 import Constants from '../../../utils/constants';
 import regex from '../../../utils/regex';
 import OtpInput from "react-otp-input";

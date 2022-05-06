@@ -1,16 +1,10 @@
 import { useState } from 'react';
-import { onFileUpload } from '../../../../redux/auth/actions';
-import { setShowToast } from '../../../../redux/common/actions';
 import { tradieCancelJob } from '../../../../redux/jobs/actions';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
 import { JobCancelReasons } from '../../../../utils/common';
 import { moengage, mixPanel } from '../../../../services/analyticsTools';
 import { MoEConstants } from '../../../../utils/constants';
-
-import close from '../../../../assets/images/icon-close-1.png';
-
-const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
 interface PropTypes {
     item: any,
@@ -23,14 +17,11 @@ const LodgeDispute = (props: PropTypes) => {
     const [stateData, setStateData] = useState({ reason: 0, detail: '', upload: [] });
     const [errorData, setErrorData] = useState({ reason: '', detail: '', upload: '' });
     const [filesUrl, setFilesUrl] = useState([] as any);
-    const [localFiles, setLocalFiles] = useState({});
-
-    const [update, forceUpdate] = useState({});
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
 
 
-    const { reason, detail, upload } = stateData;
+    const { reason, detail } = stateData;
 
     const isValid = ({ name, value, title }: any) => {
         if (name === 'reason') {
@@ -41,83 +32,12 @@ const LodgeDispute = (props: PropTypes) => {
 
     const checkErrors = () => {
         let error_1 = isValid({ name: 'reason', value: reason, title: 'Reason' });
-        let error_2 = isValid({ name: 'detail', value: detail, title: 'Detail' });
-
-        // if (!error_1?.length && !error_2?.length) {
         if (!error_1?.length) {
             return false;
         }
         return true;
     }
 
-    const removeFromItem = (index: any) => {
-        filesUrl.splice(index, 1);
-        setFilesUrl(filesUrl);
-        Array.isArray(update) ? forceUpdate([]) : forceUpdate({});
-    }
-
-    const onFileChange = async (e: any) => {
-        const formData = new FormData();
-        const newFile = e.target.files[0];
-
-        if (filesUrl?.length === 6) {
-            setShowToast(true, "Max files upload limit is 6")
-            return;
-        }
-
-        var fileType = (newFile?.type?.split('/')[1])?.toLowerCase();
-        var selectedFileSize = newFile?.size / 1024 / 1024; // size in mib
-
-        if (imageFormats.indexOf(fileType) < 0 || (selectedFileSize > 10)) {
-            setShowToast(true, "The file must be in proper format or size")
-            return;
-        }
-
-        if (imageFormats.includes(fileType) && selectedFileSize > 10) { // image validations
-            setShowToast(true, "The image file size must be below 10 mb")
-            return;
-        }
-
-        formData.append('file', newFile);
-        const res = await onFileUpload(formData)
-        if (res.success) {
-            let link: string = res.imgUrl;
-            let check_type: any = 1;
-            setFilesUrl((prev: Array<any>) => [...prev, {
-                "mediaType": check_type,
-                "link": link
-            }]);
-            setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: URL.createObjectURL(newFile) }));
-        }
-    }
-
-    const setItemToggle = (index: any) => {
-        setToggler((prev: boolean) => !prev);
-        setSelectSlide(index + 1);
-    }
-
-    const renderbyFileFormat = (item: any, index: any) => {
-        let split_item_format = item.split('.');
-        let get_split_fromat = split_item_format[split_item_format.length - 1];
-
-        let split_item_name = item.split('/');
-        let get_split_name = split_item_name[split_item_name.length - 1];
-        let image_render: any = null;
-        if (get_split_fromat) {
-            if (imageFormats.includes(get_split_fromat)) {
-                image_render = <img onClick={() => { setItemToggle(index) }} title={get_split_name} src={item} alt="media" />
-            }
-            return (
-                <figure className="img_video">
-                    {image_render}
-                    <img
-                        onClick={() => { removeFromItem(index) }}
-                        src={close} alt="remove" className="remove" />
-                    {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
-                </figure>
-            )
-        }
-    }
 
     const handleSubmit = async () => {
         let data: any = {

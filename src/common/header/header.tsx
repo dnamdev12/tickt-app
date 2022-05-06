@@ -37,7 +37,6 @@ import profile from "../../assets/images/ic-profile.png";
 import revenue from "../../assets/images/ic-revenue.png";
 import guide from "../../assets/images/ic-tutorial.png";
 import savedJobs from "../../assets/images/ic-job.png";
-import notification from "../../assets/images/notification.png";
 
 import noNotification from "../../assets/images/no-notifications.png";
 
@@ -60,7 +59,6 @@ const Header = (props: any) => {
   const dispatch = useDispatch();
   let { pathname } = useLocation();
   let history = useHistory();
-  let type = storageService.getItem("userType");
 
   const [userType, setUserType] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -88,7 +86,7 @@ const Header = (props: any) => {
   function useForceUpdate() {
     const [value, setValue] = useState(0); // integer state
 
-    return () => setValue((value) => value + Math.random()); // update the state to force render
+    return () => setValue((val) => val + Math.random()); // update the state to force render
   }
 
   const onMessageListner = () => {
@@ -266,7 +264,6 @@ const Header = (props: any) => {
     if (data) {
       if (!Object.values(data).includes([""])) {
         if (window_.Intercom) {
-          // window_.Intercom('shutdown');
           window_.Intercom("update", {
             app_id: "tvbm4bhr",
             name: data.userName,
@@ -283,9 +280,6 @@ const Header = (props: any) => {
   };
 
   useEffect(() => {
-    if (pathname === "/login") {
-      // window_.Intercom('hide');
-    }
     if (pathname === "/") {
       setActiveLink("discover");
       setHidden();
@@ -346,16 +340,16 @@ const Header = (props: any) => {
     }
   }, [startTour]);
 
-  const handleClick = (event: any, type: string) => {
-    if (type === "notification") {
+  const handleClick = (event: any, type1: string) => {
+    if (type1 === "notification") {
       setAnchorElNotif(event.currentTarget);
     } else {
       setAnchorEl(event.currentTarget);
     }
   };
 
-  const handleClose = (type: string) => {
-    if (type === "notification") {
+  const handleClose = (typee: string) => {
+    if (typee === "notification") {
       setAnchorElNotif(null);
     } else {
       setAnchorEl(null);

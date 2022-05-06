@@ -5,7 +5,6 @@ import InfiniteScroll from "react-infinite-scroll-component";
 
 import dummy from "../../../assets/images/u_placeholder.jpg";
 import rateStar from "../../../assets/images/ic-star-fill.png";
-import pastJobs from "../../../assets/images/pastJobs.png";
 import noDataFound from "../../../assets/images/no-search-data.png";
 
 interface Proptypes {
@@ -40,24 +39,12 @@ const PastJobs = (props: Proptypes) => {
   }, []);
 
   const callJobList = async () => {
-    // if (props.newJobsCount && jobList.length >= totalJobsCount) {
-    //   setHasMoreItems(false);
-    //   return;
-    // }
     props.getPastJobList(pageNo);
   };
 
   useEffect(() => {
     if (props.pastJobList?.length || Array.isArray(props.pastJobList)) {
       const allJobs = [...jobList, ...props.pastJobList];
-      console.log(
-        jobList,
-        "jobList",
-        props.pastJobList,
-        "props.pastJobList",
-        allJobs,
-        "allJobs"
-      );
       setJobList(allJobs);
       setIsLoad(false);
       setPageNo(pageNo + 1);
@@ -130,9 +117,6 @@ const PastJobs = (props: Proptypes) => {
                         )}
                       </ul>
                     </div>
-                    {/* <p className="commn_para line-3">
-                {builderData.jobDescription}
-              </p> */}
                     <div className="job_progress_wrap" id="scroll-progress-bar">
                       <div className="progress_wrapper">
                         <span className="completed-digit" id="digit-progress">

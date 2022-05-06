@@ -1,40 +1,40 @@
-import { useEffect, useState } from 'react';
-import { useHistory } from 'react-router';
-import { setShowToast } from '../../../redux/common/actions';
-import UploadMedia from '../../postJob/components/uploadMedia';
-import { renderTime } from '../../../utils/common';
-import LodgeDispute from './lodgeDispute/lodgeDispute';
-import CancelJobs from './cancelJobs/cancelJob'
-import DigitalIdVerification from '../../tradieEditProfile/components/digitalIdVerification';
-import Modal from '@material-ui/core/Modal';
+import { useEffect, useState } from "react";
+import { useHistory } from "react-router";
+import { setShowToast } from "../../../redux/common/actions";
+import UploadMedia from "../../postJob/components/uploadMedia";
+import { renderTime } from "../../../utils/common";
+import LodgeDispute from "./lodgeDispute/lodgeDispute";
+import CancelJobs from "./cancelJobs/cancelJob";
+import DigitalIdVerification from "../../tradieEditProfile/components/digitalIdVerification";
+import Modal from "@material-ui/core/Modal";
 
 //@ts-ignore
-import FsLightbox from 'fslightbox-react';
-import storageService from '../../../utils/storageService';
-import Carousel from 'react-multi-carousel';
+import FsLightbox from "fslightbox-react";
+import storageService from "../../../utils/storageService";
+import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
-import dummy from '../../../assets/images/u_placeholder.jpg';
-import editIconBlue from '../../../assets/images/ic-edit-blue.png';
-import more from '../../../assets/images/icon-direction-right.png';
-import check from '../../../assets/images/checked-2.png';
-import pendingIcon from '../../../assets/images/exclamation-icon.png'
-import noDataFound from '../../../assets/images/no-search-data.png';
-import verifiedIcon from '../../../assets/images/checked-2.png';
+import dummy from "../../../assets/images/u_placeholder.jpg";
+import editIconBlue from "../../../assets/images/ic-edit-blue.png";
+import more from "../../../assets/images/icon-direction-right.png";
+import check from "../../../assets/images/checked-2.png";
+import pendingIcon from "../../../assets/images/exclamation-icon.png";
+import noDataFound from "../../../assets/images/no-search-data.png";
+import verifiedIcon from "../../../assets/images/checked-2.png";
 import cancel from "../../../assets/images/ic-cancel.png";
-import { moengage, mixPanel } from '../../../services/analyticsTools';
-import { MoEConstants } from '../../../utils/constants';
+import { moengage, mixPanel } from "../../../services/analyticsTools";
+import { MoEConstants } from "../../../utils/constants";
 
 const digitalInfoPoints: Array<string> = [
-  'Passport',
-  'Driver Licence (Driver\'s license) - scans of front and back are required',
-  'Photo Card - scans of front and back are required',
-  'New South Wales Driving Instructor Licence - scans of front and back are required',
-  'Tasmanian Government Personal Information Card - scans of front and back are required',
-  'ImmiCard - scans of front and back are required',
-  'Proof of Age card - scans of front and back are required',
-  'Australian Defence Force (ADF) identification card (Military ID) - scans of front and back are required'
-]
+  "Passport",
+  "Driver Licence (Driver's license) - scans of front and back are required",
+  "Photo Card - scans of front and back are required",
+  "New South Wales Driving Instructor Licence - scans of front and back are required",
+  "Tasmanian Government Personal Information Card - scans of front and back are required",
+  "ImmiCard - scans of front and back are required",
+  "Proof of Age card - scans of front and back are required",
+  "Australian Defence Force (ADF) identification card (Military ID) - scans of front and back are required",
+];
 
 const declinedImages = {
   desktop: {
@@ -44,12 +44,12 @@ const declinedImages = {
   },
   tablet: {
     breakpoint: { max: 1024, min: 768 },
-    items: 1
+    items: 1,
   },
   mobile: {
     breakpoint: { max: 650, min: 0 },
-    items: 1
-  }
+    items: 1,
+  },
 };
 
 interface BuilderDetails {
@@ -65,7 +65,7 @@ interface JobDetails {
   jobName: string;
   milestones: Array<any>;
   postedBy: BuilderDetails;
-  categories: Array<any>
+  categories: Array<any>;
 }
 
 interface BankDetails {
@@ -85,7 +85,10 @@ interface Proptypes {
   updateBankDetails: (data: any) => void;
   getBankDetails: () => void;
   removeBankDetails: () => void;
-  markMilestoneComplete: (data: any, callback: (jobCompletedCount: number) => void) => void;
+  markMilestoneComplete: (
+    data: any,
+    callback: (jobCompletedCount: number) => void
+  ) => void;
   bankDetails: BankDetails;
 }
 
@@ -105,40 +108,44 @@ const MarkMilestone = (props: Proptypes) => {
   const history: any = useHistory();
   let params: any = new URLSearchParams(history.location?.search);
   params = {
-    jobId: params.get('jobId'),
-    tradeId: params.get('tradeId'),
-    specializationId: params.get('specializationId'),
+    jobId: params.get("jobId"),
+    tradeId: params.get("tradeId"),
+    specializationId: params.get("specializationId"),
   };
 
   const defaultData = {
     urls: [],
-    description: '',
-    actualHours: '',
-    totalAmount: '0',
-    account_name: '',
-    account_number: '',
-    bsb_number: '',
+    description: "",
+    actualHours: "",
+    totalAmount: "0",
+    account_name: "",
+    account_number: "",
+    bsb_number: "",
     accountVerified: false,
-    stripeAccountId: '',
+    stripeAccountId: "",
   };
   const [data, setData] = useState<any>(defaultData);
   const [errors, setErrors] = useState({
-    actualHours: '',
-    account_name: '',
-    account_number: '',
-    bsb_number: '',
+    actualHours: "",
+    account_name: "",
+    account_number: "",
+    bsb_number: "",
   });
   const [step, setStep] = useState(1);
   const [stepCompleted, setStepCompleted] = useState<Array<number>>([]);
   const [isLastMilestone, setIsLastMilestone] = useState(false);
   const [milestoneIndex, setMilestoneIndex] = useState(0);
   const [readOnly, setReadOnly] = useState(false);
-  const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({ edit: false, cancel: false, lodge: false });
-  const [isQuoteScreen, setQuoteScreen] = useState(false);
+  const [toggleItem, setToggleItem] = useState<{ [index: string]: boolean }>({
+    edit: false,
+    cancel: false,
+    lodge: false,
+  });
+
   const [milestoneDeclineData, setMilestoneDeclineData] = useState<any>({
     multipleDeclineListCount: 0,
-    prevMilestoneDeclineId: '',
-    currentMilestoneDeclineId: '',
+    prevMilestoneDeclineId: "",
+    currentMilestoneDeclineId: "",
   });
   const [mediaList, setMediaList] = useState([]);
   const [toggler, setToggler] = useState(false);
@@ -147,10 +154,10 @@ const MarkMilestone = (props: Proptypes) => {
 
   useEffect(() => {
     const params = new URLSearchParams(history.location?.search);
-    const jobActionType: any = params.get('jobAction');
-    if (jobActionType === 'dispute') {
+    const jobActionType: any = params.get("jobAction");
+    if (jobActionType === "dispute") {
       setToggleItem((prev: any) => ({ ...prev, lodge: true }));
-    } else if (jobActionType === 'cancel') {
+    } else if (jobActionType === "cancel") {
       setToggleItem((prev: any) => ({ ...prev, cancel: true }));
     }
   }, []);
@@ -171,25 +178,23 @@ const MarkMilestone = (props: Proptypes) => {
 
   const validateActualHours = (value: any) => {
     if (!value) {
-      return 'Time Spent is required.';
+      return "Time Spent is required.";
     }
 
     let pattern = "^([0-9]?[0-9]?[0-9]?[0-9]?[0-9]):[0-5][0-9]$";
     if (value.match(pattern) !== null) {
-      if (!((+value.split(':')[1]) % 5 === 0)) {
-        return 'Time should be in mutiples of 5 like 10:05, 10:10';
+      if (!(+value.split(":")[1] % 5 === 0)) {
+        return "Time should be in mutiples of 5 like 10:05, 10:10";
       }
-      return '';
+      return "";
     }
-    return 'Please enter a valid pattern like : 10:05';
-    // '([0-9]?[0-9]{1}|2[0-9]{1}|3[0-9]{1}|4[0-9]{1}|5[0-9]{1}|6[0-9]{1}):[0-5]{1}[0-9]{1}';
-    // return 'Hours should be in hh:mm format.';
+    return "Please enter a valid pattern like : 10:05";
   };
 
   const errorLabel = {
-    'account_number': 'Account Number',
-    'account_name': 'Account Name',
-    'bsb_number': 'BSB Number',
+    account_number: "Account Number",
+    account_name: "Account Name",
+    bsb_number: "BSB Number",
   } as { [key: string]: string };
 
   const validateBankDetails = (name: string, value: string) => {
@@ -198,25 +203,34 @@ const MarkMilestone = (props: Proptypes) => {
     }
 
     switch (name) {
-      case 'account_number':
-        return value.length > 10 ? 'Maximum 10 digits are allowed' : value.length < 6 ? 'Minimum 6 digits are required' : '';
-      case 'bsb_number':
-        return !/^\d{3}-\d{3}$/.test(value) ? 'Please enter valid BSB Number like 123-444' : '';
+      case "account_number":
+        return value.length > 10
+          ? "Maximum 10 digits are allowed"
+          : value.length < 6
+          ? "Minimum 6 digits are required"
+          : "";
+      case "bsb_number":
+        return !/^\d{3}-\d{3}$/.test(value)
+          ? "Please enter valid BSB Number like 123-444"
+          : "";
     }
 
-    return '';
+    return "";
   };
 
   const handleChange = ({ target: { name, value } }: any) => {
-    let newVal: '';
+    let newVal: "";
     value = value.trimLeft();
-    if (name === 'actualHours') {
-      let tim = value?.split(':')[0];
-      if (value.includes(':') && tim?.length < 3) {
+    if (name === "actualHours") {
+      let tim = value?.split(":")[0];
+      if (value.includes(":") && tim?.length < 3) {
         if (tim?.length === 2) {
           newVal = value;
         } else {
-          newVal = (value.split(':')[0] < 10 && value.split(':')[0] > 0) ? `0${value}` : value;
+          newVal =
+            value.split(":")[0] < 10 && value.split(":")[0] > 0
+              ? `0${value}`
+              : value;
         }
       } else {
         newVal = value;
@@ -224,7 +238,7 @@ const MarkMilestone = (props: Proptypes) => {
     }
     setData((prevData: any) => ({
       ...prevData,
-      [name]: name === 'actualHours' ? newVal : value,
+      [name]: name === "actualHours" ? newVal : value,
     }));
 
     if (step === 3 && stepCompleted.includes(3)) {
@@ -242,22 +256,44 @@ const MarkMilestone = (props: Proptypes) => {
     }
   };
 
-
   const { jobId, jobName, milestones, postedBy } = milestoneList || {};
-  const { builderId, builderImage, builderName, reviews, ratings } = postedBy || {};
+  const { builderId, builderImage, builderName, reviews, ratings } =
+    postedBy || {};
 
-  const hoursMinutes = data.actualHours?.split(':').map((key: string) => parseInt(key));
-  const totalAmount = milestones?.[milestoneIndex].amount * (milestones?.[milestoneIndex].pay_type === 'Fixed price' ? 1 : hoursMinutes?.[0] + (hoursMinutes?.[1] / 60));
+  const hoursMinutes = data.actualHours
+    ?.split(":")
+    .map((key: string) => parseInt(key));
+  const totalAmount =
+    milestones?.[milestoneIndex].amount *
+    (milestones?.[milestoneIndex].pay_type === "Fixed price"
+      ? 1
+      : hoursMinutes?.[0] + hoursMinutes?.[1] / 60);
 
   useEffect(() => {
-    const multipleList: any = milestones?.filter(({ status }: { status: number }) => status === 3);
+    const multipleList: any = milestones?.filter(
+      ({ status }: { status: number }) => status === 3
+    );
     if (multipleList?.length > 1) {
-      const list: any = milestones?.find(({ status }: { status: number }) => status === 3);
-      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: list?.milestoneId, currentMilestoneDeclineId: list?.milestoneId }));
+      const list: any = milestones?.find(
+        ({ status }: { status: number }) => status === 3
+      );
+      setMilestoneDeclineData((prevData: any) => ({
+        ...prevData,
+        multipleDeclineListCount: multipleList?.length,
+        prevMilestoneDeclineId: list?.milestoneId,
+        currentMilestoneDeclineId: list?.milestoneId,
+      }));
       setMediaList(list?.declinedReason?.url);
     } else if (multipleList?.length === 1) {
-      const list: any = milestones?.find(({ status }: { status: number }) => status === 3);
-      setMilestoneDeclineData((prevData: any) => ({ ...prevData, multipleDeclineListCount: multipleList?.length, prevMilestoneDeclineId: list?.milestoneId, currentMilestoneDeclineId: list?.milestoneId }));
+      const list: any = milestones?.find(
+        ({ status }: { status: number }) => status === 3
+      );
+      setMilestoneDeclineData((prevData: any) => ({
+        ...prevData,
+        multipleDeclineListCount: multipleList?.length,
+        prevMilestoneDeclineId: list?.milestoneId,
+        currentMilestoneDeclineId: list?.milestoneId,
+      }));
       setMediaList(list?.declinedReason?.url);
     }
   }, [milestones]);
@@ -266,7 +302,7 @@ const MarkMilestone = (props: Proptypes) => {
   const setItemToggle = (index: any) => {
     setToggler((prev: boolean) => !prev);
     setSelectSlide(index + 1);
-  }
+  };
 
   const renderFilteredItems = () => {
     let sources: any = [];
@@ -276,29 +312,29 @@ const MarkMilestone = (props: Proptypes) => {
       mediaList.forEach((item: any) => {
         if (item?.mediaType === 2) {
           sources.push(item.link);
-          types.push('video');
+          types.push("video");
         } else if (item?.mediaType === 1) {
           sources.push(item.link);
-          types.push('image');
+          types.push("image");
         } else {
           sources.push(item);
-          types.push('image');
+          types.push("image");
         }
-      })
+      });
     }
 
     return { sources, types };
-  }
+  };
 
   const backTab = (name: string) => {
     const params = new URLSearchParams(history.location?.search);
-    const jobActionType: any = params.get('jobAction');
+    const jobActionType: any = params.get("jobAction");
     if (jobActionType) {
       history.goBack();
       return;
     }
-    setToggleItem((prev: any) => ({ ...prev, [name]: false }))
-  }
+    setToggleItem((prev: any) => ({ ...prev, [name]: false }));
+  };
 
   if (toggleItem?.lodge) {
     return (
@@ -307,7 +343,7 @@ const MarkMilestone = (props: Proptypes) => {
         backTab={backTab}
         history={history}
       />
-    )
+    );
   }
 
   if (toggleItem?.cancel) {
@@ -317,68 +353,93 @@ const MarkMilestone = (props: Proptypes) => {
         backTab={backTab}
         history={history}
       />
-    )
+    );
   }
 
   const markMilestoneVerif = (val: any) => {
-    if (val === 'backStep') setStep(5)
-    if (val === 'verifSuccess') {
+    if (val === "backStep") setStep(5);
+    if (val === "verifSuccess") {
       setData((prevData: any) => ({
         ...prevData,
         accountVerified: true,
       }));
       setStep(5);
     }
-  }
+  };
 
   const { sources, types } = renderFilteredItems();
   let page = null;
   let isMilestoneList: any = props?.milestoneList || false;
   let isShowError = false;
-  if (isMilestoneList && isMilestoneList[0] && isMilestoneList[0]?.status === 404) {
+  if (
+    isMilestoneList &&
+    isMilestoneList[0] &&
+    isMilestoneList[0]?.status === 404
+  ) {
     isShowError = true;
   }
   const renderSteps = () => {
     switch (step) {
       case 1:
-        return page = (
-          !isShowError ? (
-            <div className="flex_row">
-              <div className="flex_col_sm_6">
-                <div className="relate">
-                  <button
-                    className="back"
-                    onClick={() => history.push('/active-jobs')}
-                  >
-                  </button>
+        return (page = !isShowError ? (
+          <div className="flex_row">
+            <div className="flex_col_sm_6">
+              <div className="relate">
+                <button
+                  className="back"
+                  onClick={() => history.push("/active-jobs")}
+                ></button>
 
-                  <span className="xs_sub_title">{jobName}</span>
-                  <span className="dot_menu">
-                    <img src={editIconBlue} alt="edit" />
-                    <div className="edit_menu">
-                      <ul>
-                        <li
-                          onClick={() => { setToggleItem((prev: any) => ({ ...prev, lodge: true })) }}
-                          className="icon lodge">Lodge dispute</li>
-                        <li
-                          onClick={() => { setToggleItem((prev: any) => ({ ...prev, cancel: true })) }}
-                          className="icon delete">Cancel job</li>
-                      </ul>
-                    </div>
+                <span className="xs_sub_title">{jobName}</span>
+                <span className="dot_menu">
+                  <img src={editIconBlue} alt="edit" />
+                  <div className="edit_menu">
+                    <ul>
+                      <li
+                        onClick={() => {
+                          setToggleItem((prev: any) => ({
+                            ...prev,
+                            lodge: true,
+                          }));
+                        }}
+                        className="icon lodge"
+                      >
+                        Lodge dispute
+                      </li>
+                      <li
+                        onClick={() => {
+                          setToggleItem((prev: any) => ({
+                            ...prev,
+                            cancel: true,
+                          }));
+                        }}
+                        className="icon delete"
+                      >
+                        Cancel job
+                      </li>
+                    </ul>
+                  </div>
+                </span>
+              </div>
+
+              <p className="commn_para">
+                Your job point of contact has indicated they want to be notified
+                when you reach the following milestones. Tap the milestone and
+                Submit when a milestone is completed
+              </p>
+              {milestoneDeclineData.multipleDeclineListCount > 1 && (
+                <button className="fill_grey_btn full_btn pending_info">
+                  <span>
+                    <img src={pendingIcon} alt="icon" />
+                    {`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}
                   </span>
-                </div>
+                </button>
+              )}
 
-                <p className="commn_para">
-                  Your job point of contact has indicated they want to be notified
-                  when you reach the following milestones. Tap the milestone and
-                  Submit when a milestone is completed
-                </p>
-                {milestoneDeclineData.multipleDeclineListCount > 1 && <button className="fill_grey_btn full_btn pending_info">
-                  <span><img src={pendingIcon} alt="icon" />{`${milestoneDeclineData.multipleDeclineListCount} Milestones were declined`}</span>
-                </button>}
-
-                <ul className="milestones_check">
-                  {milestones?.sort(({ order: prevOrder }, { order }) => prevOrder - order)?.map(
+              <ul className="milestones_check">
+                {milestones
+                  ?.sort(({ order: prevOrder }, { order }) => prevOrder - order)
+                  ?.map(
                     (
                       {
                         milestoneId,
@@ -395,7 +456,7 @@ const MarkMilestone = (props: Proptypes) => {
                       // As discussed now we take this status 4 as status 0 bacause after the decline on the change-request the status becomes 4.
                       const prevMilestoneStatus = milestones[index - 1]?.status;
                       const isActive =
-                        (status === 0 || status === 4 || status === 5) && // here changes done for status 4 
+                        (status === 0 || status === 4 || status === 5) && // here changes done for status 4
                         // completed or approved
                         ([1, 2].includes(prevMilestoneStatus) ||
                           prevMilestoneStatus === undefined);
@@ -405,85 +466,118 @@ const MarkMilestone = (props: Proptypes) => {
                         <li
                           key={milestoneId}
                           className={
-                            [1, 2,].includes(status)
+                            [1, 2].includes(status)
                               ? `check`
                               : isActive
-                                ? 'active'
-                                : status === 3
-                                  ? 'declined'
-                                  : 'disabled'
+                              ? "active"
+                              : status === 3
+                              ? "declined"
+                              : "disabled"
                           }
                         >
-                          <div className="circle_stepper" onClick={() => {
-                            setMediaList(declinedReason?.url);
-                            setMilestoneDeclineData((prevData: any) => ({ ...prevData, currentMilestoneDeclineId: milestoneId }))
-                          }}>
+                          <div
+                            className="circle_stepper"
+                            onClick={() => {
+                              setMediaList(declinedReason?.url);
+                              setMilestoneDeclineData((prevData: any) => ({
+                                ...prevData,
+                                currentMilestoneDeclineId: milestoneId,
+                              }));
+                            }}
+                          >
                             <span></span>
                           </div>
                           <div className="info">
-                            <label>{`${milestoneName} ${status === 3 ? 'declined' : ''}`}</label>
+                            <label>{`${milestoneName} ${
+                              status === 3 ? "declined" : ""
+                            }`}</label>
                             {isPhotoevidence && (
                               <span>Photo evidence required</span>
                             )}
-                            <span>
-                              {renderTime(fromDate, toDate)}
-                            </span>
+                            <span>{renderTime(fromDate, toDate)}</span>
                           </div>
 
+                          {isDeclined &&
+                            milestoneDeclineData.currentMilestoneDeclineId ===
+                              milestoneId && (
+                              <>
+                                {Object.keys(declinedReason)?.length > 0 && (
+                                  <div className="decline_reason">
+                                    <FsLightbox
+                                      toggler={toggler}
+                                      slide={selectedSlide}
+                                      sources={sources}
+                                      types={types}
+                                    />
+                                    <label className="form_label">
+                                      Decline reason:
+                                    </label>
+                                    <div className="text_field">
+                                      <p className="commn_para">
+                                        {declinedReason?.reason}
+                                      </p>
+                                    </div>
 
-                          {isDeclined && milestoneDeclineData.currentMilestoneDeclineId === milestoneId && (
-                            <>
-                              {Object.keys(declinedReason)?.length > 0 && <div className="decline_reason">
-                                <FsLightbox
-                                  toggler={toggler}
-                                  slide={selectedSlide}
-                                  sources={sources}
-                                  types={types}
-                                />
-                                <label className="form_label">Decline reason:</label>
-                                <div className="text_field">
-                                  <p className="commn_para">{declinedReason?.reason}</p>
-                                </div>
+                                    {declinedReason?.url?.length > 0 && (
+                                      <Carousel
+                                        className="decline_media"
+                                        responsive={declinedImages}
+                                        showDots={false}
+                                        arrows={true}
+                                      >
+                                        {declinedReason?.url?.map(
+                                          (image: string, index: number) => {
+                                            return (
+                                              <div className="upload_img_video">
+                                                <figure className="img_video">
+                                                  <img
+                                                    src={image}
+                                                    alt="image"
+                                                    onClick={() =>
+                                                      setItemToggle(index)
+                                                    }
+                                                  />
+                                                </figure>
+                                              </div>
+                                            );
+                                          }
+                                        )}
+                                      </Carousel>
+                                    )}
+                                  </div>
+                                )}
+                                <button
+                                  onClick={() => {
+                                    if (declinedCount >= 5) {
+                                      setShowToast(
+                                        true,
+                                        "You have exceeded maximum number of chances to submit the milestone"
+                                      );
+                                      return;
+                                    }
+                                    setMilestoneIndex(index);
 
-                                {declinedReason?.url?.length > 0 &&
-                                  <Carousel
-                                    className="decline_media"
-                                    responsive={declinedImages}
-                                    showDots={false}
-                                    arrows={true}
-                                  >
-                                    {declinedReason?.url?.map((image: string, index: number) => {
-                                      return (
-                                        <div className="upload_img_video">
-                                          <figure className="img_video">
-                                            <img src={image} alt="image" onClick={() => setItemToggle(index)} />
-                                          </figure>
-                                        </div>)
-                                    })}
-                                  </Carousel>
-                                }
-                              </div>}
-                              <button
-                                onClick={() => {
-                                  if (declinedCount >= 5) {
-                                    setShowToast(true, 'You have exceeded maximum number of chances to submit the milestone');
-                                    return;
-                                  }
-                                  setMilestoneIndex(index);
+                                    if (index === milestones?.length - 1) {
+                                      setIsLastMilestone(true);
+                                    }
 
-                                  if (index === milestones?.length - 1) {
-                                    setIsLastMilestone(true);
-                                  }
-
-                                  if (isPhotoevidence) {
-                                    setStep(2);
-                                  } else {
-                                    setStep(3);
-                                  }
-                                }}
-                                className={`fill_btn full_btn btn-effect ${milestoneDeclineData.prevMilestoneDeclineId !== milestoneId ? 'disable_btn' : ''}`} >Remark as Complete</button>
-                            </>
-                          )}
+                                    if (isPhotoevidence) {
+                                      setStep(2);
+                                    } else {
+                                      setStep(3);
+                                    }
+                                  }}
+                                  className={`fill_btn full_btn btn-effect ${
+                                    milestoneDeclineData.prevMilestoneDeclineId !==
+                                    milestoneId
+                                      ? "disable_btn"
+                                      : ""
+                                  }`}
+                                >
+                                  Remark as Complete
+                                </button>
+                              </>
+                            )}
                           {isActive && (
                             <button
                               className="fill_btn full_btn btn-effect"
@@ -504,93 +598,102 @@ const MarkMilestone = (props: Proptypes) => {
                               Done
                             </button>
                           )}
-
                         </li>
                       );
                     }
                   )}
-                </ul>
-
-              </div>
-              {/* )} */}
-              <div className="flex_col_sm_6 col_ruler">
-                <span className="sub_title">Posted by</span>
-                <div className="tradie_card posted_by ">
-                  <a href="javascript:void(0)" className="chat circle"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      history.push({
-                        pathname: `/chat`,
-                        state: {
-                          tradieId: storageService.getItem('userInfo')?._id,
-                          builderId: builderId,
-                          jobId: jobId,
-                          jobName: jobName
+              </ul>
+            </div>
+            <div className="flex_col_sm_6 col_ruler">
+              <span className="sub_title">Posted by</span>
+              <div className="tradie_card posted_by ">
+                <a
+                  href="javascript:void(0)"
+                  className="chat circle"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    history.push({
+                      pathname: `/chat`,
+                      state: {
+                        tradieId: storageService.getItem("userInfo")?._id,
+                        builderId: builderId,
+                        jobId: jobId,
+                        jobName: jobName,
+                      },
+                    });
+                  }}
+                />
+                <div
+                  className="user_wrap"
+                  onClick={() =>
+                    history.push(`/builder-info?builderId=${builderId}`)
+                  }
+                >
+                  <figure className="u_img">
+                    <img
+                      src={builderImage || dummy}
+                      alt="traide-img"
+                      onError={(e: any) => {
+                        if (e?.target?.onerror) {
+                          e.target.onerror = null;
                         }
-                      })
-                    }
-                    } />
-                  <div className="user_wrap" onClick={() => history.push(`/builder-info?builderId=${builderId}`)}>
-                    <figure className="u_img">
-                      <img
-                        src={builderImage || dummy}
-                        alt="traide-img"
-                        onError={(e: any) => {
-                          if (e?.target?.onerror) {
-                            e.target.onerror = null;
-                          }
-                          if (e?.target?.src) {
-                            e.target.src = dummy;
-                          }
-                        }}
-                      />
-                    </figure>
-                    <div className="details">
-                      <span className="name">{builderName}</span>
-                      {/* <span className="prof">Project Manager</span> */}
-                      <span className="rating">{ratings} | {reviews} reviews</span>
-                    </div>
+                        if (e?.target?.src) {
+                          e.target.src = dummy;
+                        }
+                      }}
+                    />
+                  </figure>
+                  <div className="details">
+                    <span className="name">{builderName}</span>
+                    {/* <span className="prof">Project Manager</span> */}
+                    <span className="rating">
+                      {ratings} | {reviews} reviews
+                    </span>
                   </div>
                 </div>
-                <div className="relate">
-                  <span className="sub_title">Job details</span>
-                  <span
-                    className="edit_icon"
-                    title="More"
-                    onClick={() =>
-                      history.push(
-                        `/job-details-page?jobId=${params.jobId}&redirect_from=jobs`
-                      )
-                    }
-                  >
-                    <img src={more} alt="more" />
-                  </span>
-                </div>
+              </div>
+              <div className="relate">
+                <span className="sub_title">Job details</span>
+                <span
+                  className="edit_icon"
+                  title="More"
+                  onClick={() =>
+                    history.push(
+                      `/job-details-page?jobId=${params.jobId}&redirect_from=jobs`
+                    )
+                  }
+                >
+                  <img src={more} alt="more" />
+                </span>
               </div>
             </div>
-          ) : (
-            <div className="custom_container">
-              <div className="vid_img_wrapper pt-20">
-                <div className="flex_row">
-                  <div className="flex_col_sm_8 relative">
-                    <button className="back" onClick={() => {
+          </div>
+        ) : (
+          <div className="custom_container">
+            <div className="vid_img_wrapper pt-20">
+              <div className="flex_row">
+                <div className="flex_col_sm_8 relative">
+                  <button
+                    className="back"
+                    onClick={() => {
                       history.goBack();
-                    }}></button>
-                  </div>
+                    }}
+                  ></button>
                 </div>
               </div>
-
-              <div className="no_record  m-t-vh">
-                <figure className="no_img">
-                  <img src={noDataFound} alt="data not found" />
-                </figure>
-                <span>{'This builder is no longer available.'}</span>
-                <span>{'Please contact admin.'}</span>
-              </div>
             </div>
-          ));
+
+            <div className="no_record  m-t-vh">
+              <figure className="no_img">
+                <img src={noDataFound} alt="data not found" />
+              </figure>
+              <span>{"This builder is no longer available."}</span>
+              <span>{"Please contact admin."}</span>
+            </div>
+          </div>
+        ));
       case 2:
-        return page = (
+        return (page = (
           <UploadMedia
             jobName={jobName}
             title="Photo required"
@@ -598,7 +701,7 @@ const MarkMilestone = (props: Proptypes) => {
             stepCompleted={stepCompleted.includes(2)}
             data={data}
             handleStepBack={() => setStep(1)}
-            handleStepForward={() => { }}
+            handleStepForward={() => {}}
             handleStepComplete={(stepData: any) => {
               setData((prevData: any) => ({
                 ...prevData,
@@ -610,9 +713,9 @@ const MarkMilestone = (props: Proptypes) => {
             }}
             hasDescription
           />
-        );
+        ));
       case 3:
-        return page = (
+        return (page = (
           <div className="flex_row">
             <div className="flex_col_sm_8">
               <div className="relate">
@@ -670,9 +773,9 @@ const MarkMilestone = (props: Proptypes) => {
               </button>
             </div>
           </div>
-        );
+        ));
       case 4:
-        return page = (
+        return (page = (
           <div className="flex_row">
             <div className="flex_col_sm_7">
               <div className="relate">
@@ -680,12 +783,12 @@ const MarkMilestone = (props: Proptypes) => {
                 <span className="xs_sub_title">{jobName}</span>
               </div>
               <span className="sub_title">
-                {isLastMilestone ? 'Job Complete' : 'Add payment details'}
+                {isLastMilestone ? "Job Complete" : "Add payment details"}
               </span>
               <p className="commn_para">
                 {isLastMilestone
-                  ? 'Please enter your prefered payment method below so your point of contact can organise payment'
-                  : 'You need to add your bank account details for payment from the builder after approving this milestone'}
+                  ? "Please enter your prefered payment method below so your point of contact can organise payment"
+                  : "You need to add your bank account details for payment from the builder after approving this milestone"}
               </p>
               {isLastMilestone && (
                 <div className="f_spacebw total_payment">
@@ -696,28 +799,30 @@ const MarkMilestone = (props: Proptypes) => {
               <button className="fill_grey_btn bank_btn">
                 {data.userId && <img src={check} alt="check" />} Bank account
               </button>
-
             </div>
             <div className="flex_col_sm_9">
               <div className="form_field">
                 <span className="payment_note">
-                  Tickt does not store your payment information.{' '}
+                  Tickt does not store your payment information.{" "}
                 </span>
                 <p className="commn_para">
-                  {' '}
+                  {" "}
                   Tickt does not handle payment for jobs, we only facilitate
-                  communication between tradespeople and builders. If you have problems
-                  receiving your payment, please contact your builder.
+                  communication between tradespeople and builders. If you have
+                  problems receiving your payment, please contact your builder.
                 </p>
               </div>
-              <button className="fill_btn full_btn btn-effect" onClick={() => setStep(5)}>
-                {data.userId ? 'Continue' : 'Add Details'}
+              <button
+                className="fill_btn full_btn btn-effect"
+                onClick={() => setStep(5)}
+              >
+                {data.userId ? "Continue" : "Add Details"}
               </button>
             </div>
           </div>
-        );
+        ));
       case 5:
-        return page = (
+        return (page = (
           <div className="flex_row">
             <div className="flex_col_sm_8">
               <div className="relate">
@@ -726,8 +831,16 @@ const MarkMilestone = (props: Proptypes) => {
                 {data?.userId && readOnly && (
                   <>
                     <div className="edit_delete">
-                      <span className="edit" title="Edit" onClick={() => setReadOnly(!readOnly)}></span>
-                      <span className="delete" title="Remove" onClick={() => removeBankDetails()}></span>
+                      <span
+                        className="edit"
+                        title="Edit"
+                        onClick={() => setReadOnly(!readOnly)}
+                      ></span>
+                      <span
+                        className="delete"
+                        title="Remove"
+                        onClick={() => removeBankDetails()}
+                      ></span>
                     </div>
                   </>
                 )}
@@ -781,22 +894,38 @@ const MarkMilestone = (props: Proptypes) => {
                 </div>
                 <span className="error_msg">{errors.account_number}</span>
               </div>
-              {data.account_name && data.account_number && data.bsb_number && data.stripeAccountId &&
-                <>
-                  <div className="form_field">
-                    <button className="fill_grey_btn full_btn btn-effect id_verified"
-                      onClick={() => {
-                        if (data?.accountVerified) return;
-                        setStep(6);
-                      }}
+              {data.account_name &&
+                data.account_number &&
+                data.bsb_number &&
+                data.stripeAccountId && (
+                  <>
+                    <div className="form_field">
+                      <button
+                        className="fill_grey_btn full_btn btn-effect id_verified"
+                        onClick={() => {
+                          if (data?.accountVerified) return;
+                          setStep(6);
+                        }}
+                      >
+                        {data?.accountVerified && (
+                          <img src={verifiedIcon} alt="verified" />
+                        )}
+                        {`${
+                          data?.accountVerified
+                            ? "ID Verified"
+                            : "Add ID Verification"
+                        }`}
+                      </button>
+                    </div>
+                    <span
+                      className="show_label id_info"
+                      onClick={() => setDigitalIDInfo(true)}
                     >
-                      {data?.accountVerified && <img src={verifiedIcon} alt="verified" />}
-                      {`${data?.accountVerified ? 'ID Verified' : 'Add ID Verification'}`}
-                    </button>
-                  </div>
-                  <span className="show_label id_info" onClick={() => setDigitalIDInfo(true)}>ID verification is required as part of Stripe ID verification process.</span>
-                </>
-              }
+                      ID verification is required as part of Stripe ID
+                      verification process.
+                    </span>
+                  </>
+                )}
 
               <Modal
                 className="custom_modal"
@@ -805,125 +934,162 @@ const MarkMilestone = (props: Proptypes) => {
                 aria-labelledby="simple-modal-title"
                 aria-describedby="simple-modal-description"
               >
-                <div className="custom_wh profile_modal" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
+                <div
+                  className="custom_wh profile_modal"
+                  data-aos="zoom-in"
+                  data-aos-delay="30"
+                  data-aos-duration="1000"
+                >
                   <div className="heading">
                     <span className="sub_title">ID verification</span>
-                    <button className="close_btn" onClick={() => setDigitalIDInfo(false)}>
+                    <button
+                      className="close_btn"
+                      onClick={() => setDigitalIDInfo(false)}
+                    >
                       <img src={cancel} alt="cancel" />
                     </button>
                   </div>
                   <div className="inner_wrap">
-                    <span className="show_label">ID verification is required as part of Stripe ID verification process.</span>
-                    <span className="show_label">Below is a spansting of documents that can accept as proof of identity, address, and entity.</span>
+                    <span className="show_label">
+                      ID verification is required as part of Stripe ID
+                      verification process.
+                    </span>
+                    <span className="show_label">
+                      Below is a spansting of documents that can accept as proof
+                      of identity, address, and entity.
+                    </span>
                     <ul className="verificationid_list">
-                      {digitalInfoPoints.map((info, index) => <li className="show_label" key={index}>{info}</li>)}
+                      {digitalInfoPoints.map((info, index) => (
+                        <li className="show_label" key={index}>
+                          {info}
+                        </li>
+                      ))}
                     </ul>
                     <div className="bottom_btn custom_btn center">
                       <button
                         className={`fill_btn full_btn btn-effect`}
                         onClick={() => setDigitalIDInfo(false)}
-                      >Ok</button>
+                      >
+                        Ok
+                      </button>
                     </div>
                   </div>
                 </div>
               </Modal>
 
               <button
-                className={`fill_btn full_btn btn-effect ${readOnly ? data?.accountVerified ? '' : 'disable_btn' : ''}`}
-                onClick={readOnly ? () => {
-                  const milestoneData = {
-                    evidence: milestones[milestoneIndex].isPhotoevidence ? data.urls : undefined,
-                    jobId: params.jobId,
-                    milestoneId: milestones[milestoneIndex].milestoneId,
-                    description: milestones[milestoneIndex].isPhotoevidence ? data.description : undefined,
-                    actualHours: data.actualHours,
-                    totalAmount: `${totalAmount?.toFixed(2)}`,
-                  };
+                className={`fill_btn full_btn btn-effect ${
+                  readOnly ? (data?.accountVerified ? "" : "disable_btn") : ""
+                }`}
+                onClick={
+                  readOnly
+                    ? () => {
+                        const milestoneData = {
+                          evidence: milestones[milestoneIndex].isPhotoevidence
+                            ? data.urls
+                            : undefined,
+                          jobId: params.jobId,
+                          milestoneId: milestones[milestoneIndex].milestoneId,
+                          description: milestones[milestoneIndex]
+                            .isPhotoevidence
+                            ? data.description
+                            : undefined,
+                          actualHours: data.actualHours,
+                          totalAmount: `${totalAmount?.toFixed(2)}`,
+                        };
 
-                  const callback = (jobCompletedCount: number) => {
-                    const mData = {
-                      timeStamp: moengage.getCurrentTimeStamp(),
-                      category: milestoneList?.categories?.[0]?.trade_name,
-                      'Milestone number': milestoneIndex + 1
-                    }
-                    moengage.moE_SendEvent(MoEConstants.MILESTONE_COMPLETED, mData);
-                    mixPanel.mixP_SendEvent(MoEConstants.MILESTONE_COMPLETED, mData);
-                    if (isLastMilestone) {
-                      showJobCompletePage(jobCompletedCount);
-                    } else {
-                      setStepCompleted([]);
-                      setData(defaultData);
-                      showMilestoneCompletePage();
-                    }
-                  };
+                        const callback = (jobCompletedCount: number) => {
+                          const mData = {
+                            timeStamp: moengage.getCurrentTimeStamp(),
+                            category:
+                              milestoneList?.categories?.[0]?.trade_name,
+                            "Milestone number": milestoneIndex + 1,
+                          };
+                          moengage.moE_SendEvent(
+                            MoEConstants.MILESTONE_COMPLETED,
+                            mData
+                          );
+                          mixPanel.mixP_SendEvent(
+                            MoEConstants.MILESTONE_COMPLETED,
+                            mData
+                          );
+                          if (isLastMilestone) {
+                            showJobCompletePage(jobCompletedCount);
+                          } else {
+                            setStepCompleted([]);
+                            setData(defaultData);
+                            showMilestoneCompletePage();
+                          }
+                        };
 
-
-                  markMilestoneComplete(milestoneData, callback);
-                } : () => {
-                  setStepCompleted((prevValue) => prevValue.concat([5]));
-
-                  const hasErrors = [
-                    'account_name',
-                    'account_number',
-                    'bsb_number',
-                  ].reduce((prevValue, name) => {
-                    const error = validateBankDetails(name, data[name]);
-                    setErrors((prevErrors) => ({
-                      ...prevErrors,
-                      [name]: error,
-                    }));
-
-                    return prevValue || error;
-                  }, '');
-
-                  const updatedBankDetails = {
-                    account_name: data.account_name,
-                    account_number: data.account_number,
-                    bsb_number: data.bsb_number,
-                  };
-                  if (!hasErrors) {
-                    if (bankDetails.userId) {
-                      updateBankDetails(
-                        {
-                          userId: data.userId,
-                          ...updatedBankDetails,
-                        },
-                      );
-                    } else {
-                      addBankDetails(updatedBankDetails);
-                      const mData = {
-                        timeStamp: moengage.getCurrentTimeStamp(),
+                        markMilestoneComplete(milestoneData, callback);
                       }
-                      moengage.moE_SendEvent(MoEConstants.ADDED_PAYMENT_DETAILS, mData);
-                      mixPanel.mixP_SendEvent(MoEConstants.ADDED_PAYMENT_DETAILS, mData);
-                    }
-                  }
-                }}
+                    : () => {
+                        setStepCompleted((prevValue) => prevValue.concat([5]));
+
+                        const hasErrors = [
+                          "account_name",
+                          "account_number",
+                          "bsb_number",
+                        ].reduce((prevValue, name) => {
+                          const error = validateBankDetails(name, data[name]);
+                          setErrors((prevErrors) => ({
+                            ...prevErrors,
+                            [name]: error,
+                          }));
+
+                          return prevValue || error;
+                        }, "");
+
+                        const updatedBankDetails = {
+                          account_name: data.account_name,
+                          account_number: data.account_number,
+                          bsb_number: data.bsb_number,
+                        };
+                        if (!hasErrors) {
+                          if (bankDetails.userId) {
+                            updateBankDetails({
+                              userId: data.userId,
+                              ...updatedBankDetails,
+                            });
+                          } else {
+                            addBankDetails(updatedBankDetails);
+                            const mData = {
+                              timeStamp: moengage.getCurrentTimeStamp(),
+                            };
+                            moengage.moE_SendEvent(
+                              MoEConstants.ADDED_PAYMENT_DETAILS,
+                              mData
+                            );
+                            mixPanel.mixP_SendEvent(
+                              MoEConstants.ADDED_PAYMENT_DETAILS,
+                              mData
+                            );
+                          }
+                        }
+                      }
+                }
               >
-                {readOnly ? 'Continue' : 'Save changes'}
+                {readOnly ? "Continue" : "Save changes"}
               </button>
             </div>
           </div>
-        );
+        ));
       case 6:
-        return page = (
+        return (page = (
           <DigitalIdVerification
             redirect_from={"mark-milestone"}
             markMilestoneVerif={markMilestoneVerif}
             stripeAccountId={data.stripeAccountId}
           />
-        )
+        ));
 
       default:
         return null;
     }
-  }
+  };
 
-  return (
-    <div className="detail_col">
-      {renderSteps()}
-    </div>
-  )
+  return <div className="detail_col">{renderSteps()}</div>;
 };
 
 export default MarkMilestone;

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import Constants from "../../utils/constants";
+import Constants, { MoEConstants } from "../../utils/constants";
 import { useDetectClickOutside } from "react-detect-click-outside";
 import { deleteRecentSearch } from "../../redux/homeSearch/actions";
 import { setShowToast } from "../../redux/common/actions";
@@ -26,7 +26,6 @@ import icgps from "../../assets/images/ic-gps.png";
 import residential from "../../assets/images/ic-residential.png";
 import close from "../../assets/images/icon-close-1.png";
 import { moengage, mixPanel } from "../../services/analyticsTools";
-import { MoEConstants } from "../../utils/constants";
 
 Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
@@ -76,7 +75,6 @@ const TradieBannerSearch = (props: PropsType) => {
     endDate: "",
   });
 
-  // const [errors, setErrors] = useState<any>({});
   const [inputFocus1, setInputFocus1] = useState<boolean>(false);
   const [inputFocus2, setInputFocus2] = useState<boolean>(false);
   const [inputFocus3, setInputFocus3] = useState<boolean>(false);
@@ -85,7 +83,6 @@ const TradieBannerSearch = (props: PropsType) => {
     endDate: new Date(),
     key: "selection1",
   });
-  const [recentLocation, setRecentLocation] = useState<any>([]);
 
   const handleOnOutsideSearch = () => setInputFocus1(false);
   const handleOnOutsideLocation = () => setInputFocus2(false);
@@ -108,14 +105,12 @@ const TradieBannerSearch = (props: PropsType) => {
   useEffect(() => {
     props.getRecentSearchList();
     props.getRecentLocationList();
-    // getRecentLocationData();
   }, []);
 
   useEffect(() => {
     if (paramsData) {
       var data = {
         page: paramsData?.page ? paramsData?.page : 1,
-        // searchedJob: paramsData?.searchJob ? paramsData?.specializationId?.length >= 2 ? `${paramsData?.searchJob} +${paramsData?.specializationId?.length - 1}` : paramsData?.searchJob : '',
         searchedJob:
           paramsData?.isFilterOn === "isFilterOn"
             ? ""
@@ -472,7 +467,6 @@ const TradieBannerSearch = (props: PropsType) => {
     if (type === "showErrorToast") {
       return newErrors;
     }
-    // setErrors(newErrors);
     return !Object.keys(newErrors).length;
   };
 
@@ -510,7 +504,6 @@ const TradieBannerSearch = (props: PropsType) => {
         ...(stateData.isMapLocationSelected && {
           location: stateData?.location,
         }),
-        // location: stateData?.location,
         specializationId: newSearchData?.specializationId
           ? newSearchData?.specializationId
           : stateData?.specializationId,
@@ -537,7 +530,6 @@ const TradieBannerSearch = (props: PropsType) => {
         moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
         mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_JOBS, mData);
       }
-      // delete data.address;
       const newData = {
         ...data,
         lat: stateData.location.coordinates[1],
@@ -632,7 +624,6 @@ const TradieBannerSearch = (props: PropsType) => {
             />
           </span>
         )}
-        {/* {!!errors.selectedMapLocation && <span className="error_msg">{errors.selectedMapLocation}</span>} */}
       </div>
       {suggestions?.length > 0 &&
       stateData?.selectedMapLocation.length >= 3 &&
@@ -738,7 +729,6 @@ const TradieBannerSearch = (props: PropsType) => {
                 </span>
               )}
             </div>
-            {/* {!!errors.searchedJob && <span className="error_msg">{errors.searchedJob}</span>} */}
           </li>
           {!stateData?.searchedJob &&
             inputFocus1 &&
@@ -772,10 +762,8 @@ const TradieBannerSearch = (props: PropsType) => {
                 highlightFirstSuggestion={true}
                 searchOptions={{
                   componentRestrictions: { country: "au" },
-                  // types: ["address"]
                   types: ["(cities)"],
                 }}
-                // debounce={400}
               >
                 {renderPlacesData}
               </PlacesAutocomplete>
@@ -806,16 +794,6 @@ const TradieBannerSearch = (props: PropsType) => {
                     {props?.recentLocationData?.length > 0 ? (
                       <span className="sub_title">Recent searches</span>
                     ) : null}
-                    {/* {recentLocation?.map((item: any) => {
-                                        return (
-                                            <div className="flex_col_sm_4"
-                                                onClick={() => setStateData((prevData: any) => ({ ...prevData, location: item.location, selectedMapLocation: item.allText?.mainText, isMapLocationSelected: true }))}>
-                                                <div className="autosuggestion_icon card loc name">
-                                                    <span>{item.allText?.mainText}</span>
-                                                    <span className="name">{item.allText?.secondaryText}</span>
-                                                </div>
-                                            </div>)
-                                    })} */}
                     <div className="flex_row">
                       {props?.recentLocationData?.map((item: any) => {
                         return (
@@ -831,13 +809,6 @@ const TradieBannerSearch = (props: PropsType) => {
                                   isMapLocationSelected: true,
                                 }));
                                 setSuggestion(JSON.parse(item?.address));
-
-                                // let location_coordinates: any = item.location.coordinates
-                                // setAddressText(item.formatted_address);
-                                // setSelectedAddress({
-                                //     lat: location_coordinates[1],
-                                //     lng: location_coordinates[0]
-                                // });
                               }}
                             >
                               <div className="autosuggestion_icon card loc name">

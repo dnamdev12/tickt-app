@@ -1,7 +1,6 @@
 import { useEffect } from 'react';
 import { connect } from 'react-redux';
 import { setShowNotification } from '../redux/common/actions';
-import { formatNotificationTime } from '../utils/common';
 import { onNotificationClick } from '../utils/common';
 import { markNotifAsRead } from '../redux/auth/actions';
 import { useHistory } from 'react-router-dom';

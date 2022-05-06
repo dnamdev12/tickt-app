@@ -71,16 +71,10 @@ class ViewQuote extends Component<Props, State> {
   preFetchForQuotes = () => {
     const props: any = this.props;
     const params = new URLSearchParams(props?.history?.location?.search);
-    const quotes_param: any = params.get("quotes");
-    const viewQuotesParam: any = params.get("viewQuotes");
     const jobId: any = params.get("jobId");
     const tradieId: any = params.get("tradieId");
     if (jobId?.length && !tradieId) {
-      if (quotes_param === "true") {
-        this.fetchQuotesById({ jobId: jobId, sortBy: 1 });
-      } else {
-        this.fetchQuotesById({ jobId: jobId, sortBy: 1 });
-      }
+      this.fetchQuotesById({ jobId: jobId, sortBy: 1 });
     } else {
       if (tradieId?.length) {
         console.log({ tradieId });
@@ -94,16 +88,14 @@ class ViewQuote extends Component<Props, State> {
     sortBy,
     tradieId,
   }: {
-    jobId: String;
-    sortBy: Number;
-    tradieId?: String;
+    jobId: string;
+    sortBy: number;
+    tradieId?: string;
   }) => {
     let result = null;
     console.log({ tradieId }, "tradieId");
     if (tradieId) {
       result = await quoteByJobId({ jobId, tradieId });
-    } else {
-      result = await quoteByJobId({ jobId, sortBy });
     }
 
     if (result?.success) {
@@ -115,14 +107,6 @@ class ViewQuote extends Component<Props, State> {
   };
 
   render() {
-    const styleItem = {
-      listStyle: "none",
-      display: "inline-block",
-      width: "calc(100% / 3)",
-      height: "50px",
-      textAlign: "center",
-      paddingTop: "20px",
-    };
     let { dataItems } = this.state;
     const props: any = this.props;
     const quotesData = dataItems || [];

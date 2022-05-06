@@ -1,9 +1,6 @@
 importScripts("https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js");
 importScripts("https://www.gstatic.com/firebasejs/8.7.1/firebase-messaging.js");
 
-// import firebase from "firebase/app";
-// import "firebase/messaging";
-
 const qaStgFirebaseConfig = {
   apiKey: "AIzaSyDKFFrKp0D_5gBsA_oztQUhrrgpKnUpyPo",
   authDomain: "tickt-app.firebaseapp.com",
@@ -41,11 +38,7 @@ messaging.onBackgroundMessage((payload) => {
 });
 
 const onNotificationClick = (notification) => {
-  // const url = process.env.REACT_APP_BASE_URL;
-  // const url = 'http://localhost:3000/';
   const url = "https://ticktreactstg.appskeeper.in/";
-  // const url = 'https://ticktreactqa.appskeeper.in/';
-  // const url = 'https://ticktreactdev.appskeeper.in/';
   if (notification?.notificationType === "25") {
     return `${url}chat`;
   } else if (notification?.notificationType === "13") {
@@ -67,7 +60,7 @@ const onNotificationClick = (notification) => {
       } else {
         return `${url}builder-info?builderId=${receiverId}&type=2`;
       }
-    case 3: //JOB
+    case 3: //JOB and DISPUTES
       if (user_type == 1) {
         return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
       } else {
@@ -78,7 +71,7 @@ const onNotificationClick = (notification) => {
       return `${url}payment-history`;
     case 5: //DISPUTES
       if (user_type == 1) {
-        return `${url}job-details-page?jobId=${jobId}&redirect_from=jobs`;
+        return `${url}job-detailss-page?jobId=${jobId}&redirect_from=jobs`;
       } else {
         let urlEncode = `?jobId=${jobId}&status=${extra_data?.jobStatusText}&tradieId=${senderId}&edit=true&activeType=active`;
         return `${url}job-detail?${urlEncode}`;
@@ -188,25 +181,6 @@ self.addEventListener("notificationclick", (event) => {
   }
   console.log("url ", url);
   event.waitUntil(self.clients.openWindow(`${url}`));
-
-  // event.waitUntil(
-  //     self.clients.matchAll({ type: 'window' }).then(windowClients => {
-  //         console.log('windowClients: ', windowClients);
-  //         // Check if there is already a window/tab open with the target URL
-  //         for (var i = 0; i < windowClients.length; i++) {
-  //             var client = windowClients[i];
-  //             // If so, just focus it.
-  //             if (client.url == url && 'focus' in client) {
-  //                 return client.focus();
-  //             }
-  //         }
-  //         // If not, then open the target URL in a new window/tab.
-  //         if (self.clients.openWindow) {
-  //             return self.clients.openWindow(url);
-  //         }
-  //     })
-  // );
-  // return self.clients.openWindow();
 });
 
 self.addEventListener("notificationclose", (event) => {

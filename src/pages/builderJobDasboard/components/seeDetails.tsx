@@ -1,15 +1,10 @@
 import React, { useState } from 'react'
-import { withRouter } from 'react-router-dom';
 //@ts-ignore
 import FsLightbox from 'fslightbox-react';
-//@ts-ignore
-import Skeleton from 'react-loading-skeleton';
 
 
 const SeeDetails = (props: any) => {
-    const { backToScreen, data, resetStateLocal } = props;
-    const [isToggle, setToggle] = useState(false);
-    const [IsToggleAccept, setToggleAccept] = useState(false);
+    const { backToScreen, data } = props;
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
 
@@ -19,7 +14,7 @@ const SeeDetails = (props: any) => {
             selectedMilestoneIndex: { index },
             itemDetails: { milestones },
             selectedMile: { description, hoursWorked, images },
-            selectedItem: { jobName, jobId }
+            selectedItem: { jobName }
         } = data;
 
         let item: any = milestones[index];

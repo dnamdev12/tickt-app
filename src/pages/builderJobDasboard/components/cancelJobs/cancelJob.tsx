@@ -1,10 +1,5 @@
-import React, { ReactElement, useState, useEffect } from "react";
-import dummy from "../../../../assets/images/u_placeholder.jpg";
-import approved from "../../../../assets/images/approved.png";
-import waiting from "../../../../assets/images/exclamation.png";
+import React, { useState, useEffect } from "react";
 import close from "../../../../assets/images/icon-close-1.png";
-import addMedia from "../../../../assets/images/add-image.png";
-import noDataFound from "../../../../assets/images/no-search-data.png";
 
 import { onFileUpload } from "../../../../redux/auth/actions";
 import { setShowToast } from "../../../../redux/common/actions";
@@ -42,7 +37,7 @@ const LodgeDispute = (props: any) => {
   const [toggler, setToggler] = useState(false);
   const [selectedSlide, setSelectSlide] = useState(1);
 
-  const { reason, detail, upload } = stateData;
+  const { reason, detail } = stateData;
 
   const isValid = ({ name, value, title }: any) => {
     if (name === "reason") {
@@ -53,9 +48,7 @@ const LodgeDispute = (props: any) => {
 
   const checkErrors = () => {
     let error_1 = isValid({ name: "reason", value: reason, title: "Reason" });
-    let error_2 = isValid({ name: "detail", value: detail, title: "Detail" });
 
-    // if (!error_1?.length && !error_2?.length) {
     if (!error_1?.length) {
       return false;
     }

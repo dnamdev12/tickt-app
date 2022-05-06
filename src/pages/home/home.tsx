@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import GuestHome from './guestHome';
 import TradieHome from './tradieHome/index';
 import BuilderHome from './builderHome/index';
@@ -7,9 +7,8 @@ import storageService from '../../utils//storageService';
 import { addFCMNotifToken } from '../../redux/auth/actions';
 import { requestPermission, updateChatUserDetails } from "../../services/firebase";
 
-const Home = (props: any) => {
+const Home = () => {
     const [userType] = useState(storageService.getItem('userType'))
-    const location: any = useLocation();
     const history: any = useHistory();
 
     const setTokenSentToServer = (sent: any) => {

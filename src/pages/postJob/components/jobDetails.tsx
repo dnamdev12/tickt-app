@@ -18,7 +18,7 @@ import "owl.carousel/dist/assets/owl.theme.default.css";
 
 import docThumbnail from "../../../assets/images/add-document.png";
 
-import { renderTime, renderTimeWithFormat } from "../../../utils/common";
+import { renderTimeWithFormat } from "../../../utils/common";
 import { useHistory } from "react-router-dom";
 import { moengage, mixPanel } from "../../../services/analyticsTools";
 import { MoEConstants } from "../../../utils/constants";
@@ -30,7 +30,7 @@ interface Proptypes {
   data: any;
   milestones: any;
   builderProfile: any;
-  stepCompleted: Boolean;
+  stepCompleted: boolean;
   categories: any;
   jobTypes: any;
   handleStepComplete: (data: any) => void;
@@ -67,10 +67,6 @@ const options = {
   },
 };
 
-const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
-const videoFormats: Array<any> = ["mp4", "wmv", "avi"];
-const docformats: Array<any> = ["pdf", "doc", "docx", "msword"];
-
 const JobDetails = ({
   data,
   milestones,
@@ -80,7 +76,6 @@ const JobDetails = ({
   stepCompleted,
   updateDetailScreen,
   handleStepForward,
-  handleStepComplete,
   clearParentStates,
   handleStepBack,
   jobId,
@@ -89,7 +84,6 @@ const JobDetails = ({
     category: {},
     job_type: {},
   });
-  const [isEnablePopup, setPopUp] = useState(false);
   const [toggler, setToggler] = useState(false);
   const [selectedSlide, setSelectSlide] = useState(1);
   const [fsSlideListner, setFsSlideListner] = useState<any>({});
@@ -190,11 +184,11 @@ const JobDetails = ({
     let filter_milestones = milestones_clone.filter((item: any, index: any) => {
       if (Object.keys(item).length) {
         if (!item?.to_date?.length) {
-          delete item?.to_date;
+          delete item.to_date;
         }
 
         if (!item?.from_date?.length || item?.from_date === "Invalid date") {
-          delete item?.from_date;
+          delete item.from_date;
         }
         item["order"] = index + 1;
         return item;
@@ -209,22 +203,22 @@ const JobDetails = ({
       !data_clone.isSingleDayJob &&
       moment(from_date).isSame(moment(to_date))
     ) {
-      delete data_clone?.to_date;
+      delete data_clone.to_date;
     }
 
     if (!to_date?.length) {
-      delete data_clone?.to_date;
+      delete data_clone.to_date;
     }
 
     if (!data_clone?.urls?.length) {
-      delete data_clone?.urls;
+      delete data_clone.urls;
     } else {
       let urls_: any = data_clone?.urls;
       let filteredItems: any = [];
       if (urls_ && Array.isArray(urls_) && urls_?.length) {
         filteredItems = urls_.map((item_dt: any) => {
           if (item_dt?.base64) {
-            delete item_dt?.base64;
+            delete item_dt.base64;
           }
           return item_dt;
         });
@@ -276,7 +270,6 @@ const JobDetails = ({
       clearParentStates();
       handleStepForward(12);
     }
-    // console.log({data: data_clone, filter_milestones });
   };
 
   let data_clone: any = data;
@@ -426,7 +419,6 @@ const JobDetails = ({
                 <figure className="">
                   {data_clone?.urls?.length ? (
                     <OwlCarousel {...options} className="customOwlCarousel">
-                      {/* {renderByFileFormat(data)} */}
                       {data?.urls?.length ? (
                         data?.urls?.map((image: any, index: number) => {
                           console.log(
@@ -614,7 +606,6 @@ const JobDetails = ({
                     }}
                     className="tradie_card posted_by "
                   >
-                    {/* <span className="chat circle"></span> */}
                     <div className="user_wrap">
                       <figure className="u_img">
                         <img
@@ -636,7 +627,6 @@ const JobDetails = ({
                           {builderProfile?.rating || "0"} |{" "}
                           {builderProfile?.reviews || "0"} reviews
                         </span>
-                        {/* <span className="prof">Project Manager</span> */}
                       </div>
                     </div>
                   </div>

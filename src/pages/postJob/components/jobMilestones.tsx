@@ -21,7 +21,7 @@ interface Proptypes {
     editMileStone: any;
     editDetailPage: any;
     editMilestoneTiming: any;
-    stepCompleted: Boolean;
+    stepCompleted: boolean;
     newMileStoneScreen: (data: any) => void;
     handleStepComplete: (data: any) => void;
     handleStepJustUpdate: (data: any, goto?: any) => void;
@@ -33,7 +33,7 @@ interface Proptypes {
     removeMilestoneByIndex: (data: any) => void;
 }
 
-const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage, editMileStone, editMilestoneTiming, handleStepJustUpdate, handleCombineMileStones, removeMilestoneByIndex, handleStepForward, updateMileStoneIndex, updateMileStoneTimings, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
+const JobMilestones = ({ data, newMileStoneScreen, editDetailPage, handleCombineMileStones, removeMilestoneByIndex, handleStepForward, updateMileStoneIndex, updateMileStoneTimings, milestones, handleStepComplete, handleStepBack }: Proptypes) => {
     const [localMilestones, setLocalMilestones] = useState<Array<any>>([]);
     const [editItem, setEditItems] = useState<{ [index: string]: any }>({});
     const [open, setOpen] = React.useState(false);
@@ -107,8 +107,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                 }
             }
         });
-
-        let not_lie_between = false;
         if (filteredItem?.length) {
             filteredItem.forEach((item_date: any) => {
                 let start: any = moment(item_date.from_date, 'MM-DD-YYYY').isValid() ? item_date.from_date : null;
@@ -116,7 +114,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
 
                 if (start && end) {
                     if (start_selection && end_selection) {
-                        // if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY')) || moment(end_selection, 'MM-DD-YYYY').isBefore(moment(end, 'MM-DD-YYYY'))) {
                         if (moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))) {
                             item_find = true
                         }
@@ -127,7 +124,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                             moment(start_selection, 'MM-DD-YYYY').isAfter(moment(start, 'MM-DD-YYYY'))
                         ) {
                             item_find = true;
-                            // not_lie_between = true;
                         }
                     }
                 }
@@ -140,7 +136,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                     }
                 } else {
                     if (start_selection && end_selection && !end) {
-                        // if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY')) && moment(start, 'MM-DD-YYYY').isSameOrBefore(moment(end_selection, 'MM-DD-YYYY'))) {
                         if (moment(start, 'MM-DD-YYYY').isSameOrAfter(moment(start_selection, 'MM-DD-YYYY'))) {
                             item_find = false;
                         } else {
@@ -152,11 +147,7 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
         }
 
         if (item_find) {
-            // if (not_lie_between) {
-            //     setShowToast(true, 'Milestones dates should be lie between the job details');
-            // } else {
                 setShowToast(true, 'Please check the milestone dates');
-            // }
             return item_find;
         }
 
@@ -195,12 +186,9 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
 
     const onDragEnd = (result: DropResult) => {
         const { source, destination } = result;
-        // dropped outside the list
         if (!destination) {
             return;
         }
-
-        // if (source.droppableId === destination.droppableId) {
         const reOrderedMilestones = reorder(
             localMilestones,
             source.index,
@@ -335,9 +323,6 @@ const JobMilestones = ({ data, stepCompleted, newMileStoneScreen, editDetailPage
                                                                             onClick={(e) => {
                                                                                 e.preventDefault();
                                                                                 handleClickOpen(index);
-                                                                                // removeMilestoneByIndex(index);
-
-                                                                                // setEditItems({}); // too old comment
                                                                             }}
                                                                             className="delete"></span>
                                                                     </div>

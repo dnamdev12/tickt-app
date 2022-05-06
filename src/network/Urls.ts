@@ -157,7 +157,7 @@ const Urls = {
     getAdminNotificationData: `${versions.v1}${ServiceEnum.home}notification/admin`, //Admin
 }
 
-export const urlFor = (service: String): string => {
+export const urlFor = (service: string) => {
     return `${ACTIVE_HOST}/${service}`;
 };
 

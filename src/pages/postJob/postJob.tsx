@@ -42,7 +42,6 @@ const PostJob = (props: Proptypes) => {
 
     const {
         callTradeList,
-        isLoading,
         tradeListData,
         updateMileStoneIndex,
         updateMileStoneTimings,
@@ -178,7 +177,7 @@ const PostJob = (props: Proptypes) => {
         let checkIsValid: any = true;
 
         if (!skip && milestone_clone?.length) {
-            let filter_milestone: any = milestone_clone.filter((item_mile: any, index_mile: any) => index_mile !== index);
+            let filter_milestone: any = milestone_clone.filter((index_mile: any) => index_mile !== index);
             let count_times: any = {};
             if (filter_milestone?.length)
 
@@ -226,39 +225,6 @@ const PostJob = (props: Proptypes) => {
                             return
                         }
                     }
-
-
-                    if (msw && mew) {
-                        if (tsw && tew) {
-                            // let checkIfSame = moment(time_start, default_format).isSame(moment(mile_start, default_format)) && moment(time_end, default_format).isSame(moment(mile_end, default_format));
-
-                            // if (checkIfSame) {
-                            //     checkIsValid = false;
-                            // }
-
-                            // if (!checkIfSame) {
-                            //     if (
-                            //         moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
-                            //         moment(time_start, default_format).isSameOrBefore(moment(mile_end, default_format))
-                            //     ) {
-                            //         checkIsValid = false;
-                            //     }
-
-                            //     if (
-                            //         moment(time_end, default_format).isSameOrAfter(moment(mile_start, default_format)) &&
-                            //         moment(time_end, default_format).isSameOrBefore(moment(mile_end, default_format))
-                            //     ) {
-                            //         checkIsValid = false;
-                            //     }
-                            // }
-                        }
-
-                        //     if (!tew) {
-                        //         // if (moment(time_start, default_format).isSameOrAfter(moment(mile_start, default_format)) && moment(time_start, default_format).isSameOrBefore(moment(mile_start, default_format))) {
-                        //         //     checkIsValid = false;
-                        //         // }
-                    }
-                    // here conditions
                 })
         }
 

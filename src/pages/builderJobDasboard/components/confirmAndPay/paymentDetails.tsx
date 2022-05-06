@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react'
-import deleteIcon from '../../../../assets/images/ic-bin.png'
 import cardValidator, { cardholderName } from "card-validator";
 import moment from 'moment';
 import { addNewCard, updateCard } from '../../../../redux/jobs/actions'

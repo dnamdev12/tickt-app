@@ -1,18 +1,9 @@
-import React, { SyntheticEvent, useRef, useEffect, useState } from 'react';
-import colorLogo from '../../../assets/images/ic-logo-yellow.png';
-import menu from '../../../assets/images/menu-line-white.svg';
-import bell from '../../../assets/images/ic-notification.png';
-import dummy from '../../../assets/images/u_placeholder.jpg';
+import React, { useEffect, useState } from 'react';
 import remove from "../../../assets/images/icon-close-1.png";
 import addMedia from "../../../assets/images/add-image.png";
-import videoThumbnail from '../../../assets/images/add-video.png';
 import docThumbnail from '../../../assets/images/add-document.png'
 import { onFileUpload } from '../../../redux/auth/actions';
 import { setLoading, setShowToast } from '../../../redux/common/actions';
-//@ts-ignore
-import FsLightbox from 'fslightbox-react';
-//@ts-ignore
-import Skeleton from 'react-loading-skeleton';
 import { thumbnailExtract } from '../../../common/thumbnail';
 //@ts-ignore
 import DropboxChooser from 'react-dropbox-chooser';
@@ -45,7 +36,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
     const [toggler, setToggler] = useState(false);
     const [selectedSlide, setSelectSlide] = useState(1);
     const [isItemsLoad, setLoadItems] = useState({});
-    const [countMedia, setCountMedia] = useState({ photos: 0, video: 0 });
     const [renderAsyncLoad, setAsyncLoad] = useState<any>(null);
 
     const [anchorEl, setAnchorEl] = React.useState(null);
@@ -285,7 +275,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                 "mediaType": check_type,
                 "link": link
             }]);
-            setLoadItems((prev: any) => ({
+            setLoadItems(() => ({
                 [filesUrl.length - 1]: false
             }))
             setLocalFiles((prev: any) => ({ ...prev, [filesUrl?.length]: isDropbox ? dropBoxFile?.link : URL.createObjectURL(newFile) }));
@@ -306,13 +296,11 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         let get_split_name = split_item_name[split_item_name.length - 1];
         let image_render: any = null;
         let loadByIndex = { [index]: true };
-        // setLoading(true);
         if (get_split_fromat) {
             if (imageFormats.includes(get_split_fromat)) {
                 image_render = (
                     <img
                         id={`media_${index}`}
-                        // onClick={() => { setItemToggle(index) }}
                         title={get_split_name}
                         src={item}
                         async-src={item}
@@ -322,7 +310,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             console.log('Loaded!')
                             loadByIndex[index] = false;
                             console.log('image_render', '--->', { loadByIndex })
-                            setLoadItems((prev: any) => ({
+                            setLoadItems(() => ({
                                 [index]: true
                             }))
                         }}
@@ -341,12 +329,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             poster={base64}
                             controls={false}
                             onLoadedData={() => {
-                                console.log('Loaded!')
-                                setLoadItems((prev: any) => ({
+                                setLoadItems(() => ({
                                     [index]: true
                                 }))
                             }}
-                        // onClick={() => { setItemToggle(index) }}
                         />
                     )
                 } else {
@@ -357,11 +343,10 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                             title={get_split_name}
                             onLoadedData={() => {
                                 console.log('Loaded!')
-                                setLoadItems((prev: any) => ({
+                                setLoadItems(() => ({
                                     [index]: true
                                 }))
                             }}
-                        // onClick={() => { setItemToggle(index) }}
                         />
                     )
                 }
@@ -379,7 +364,7 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                         onLoad={() => {
                             loadByIndex[index] = false;
                             console.log('Loaded!')
-                            setLoadItems((prev: any) => ({
+                            setLoadItems(() => ({
                                 [index]: true
                             }))
                         }}
@@ -403,11 +388,8 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     </React.Fragment>
                 </figure>
             )
-            // }
         }
     }
-
-    // const { sources, types } = renderFilteredItems();
     let IsRenderValues = null;
     if (Object.values(isItemsLoad)?.length) {
         IsRenderValues = Array.isArray(Object.values(isItemsLoad)) && Object.values(isItemsLoad)[0] === true ? Object.values(isItemsLoad)[0] : false;
@@ -427,18 +409,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
         <div className={`app_wrapper${jobName ? ' padding_0' : ''}`}>
             <div className={`section_wrapper${jobName ? ' padding_0' : ''}`}>
                 <div className="custom_container">
-
-                    {/* <FsLightbox
-                        toggler={toggler}
-                        slide={selectedSlide}
-                        sources={sources}
-                        types={types}
-                        key={sources?.length}
-                        onClose={() => {
-                            setSelectSlide(1)
-                        }}
-                    /> */}
-
                     <canvas id="canvas-extractor" style={{ display: 'none' }}></canvas>
 
                     <div className="form_field">
@@ -452,7 +422,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                 </div>
                                 {title && <span className="sub_title">{title}</span>}
                                 <p className="commn_para">
-                                    {/* {para || "Record maximum 2 short videos or 6 doc files/images to demonstrate your job and any unique requirements."} */}
                                     {para || 'Record a short video (up to 30 seconds) or add up to 6 photos and files to demonstrate your job and any unique requirements.'}
                                 </p>
                             </div>
@@ -472,7 +441,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                     <div className="flex_row">
                         <div className="flex_col_sm_12">
                             <div className="upload_img_video">
-                                {/* {renderAsyncLoad ? renderAsyncLoad : null} */}
                                 {filesUrl?.length ?
                                     filesUrl.map((item: any, index: number) => (renderbyFileFormat(item?.link, index, item?.base64)))
                                     : null}
@@ -510,7 +478,6 @@ const UploadMedia = ({ jobName, title, para, hasDescription, data, stepCompleted
                                     {filesUrl?.length < 8 ? (
                                         <React.Fragment>
                                             <label className="upload_media" htmlFor="upload_img_video">
-                                                {/* <img src={addMedia} alt="" /> */}
                                                 Upload from files
                                             </label>
                                             {!hasDescription ? (

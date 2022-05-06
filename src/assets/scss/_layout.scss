@@ -1,10 +1,14 @@
 
+* {
+	font-family:  sans-serif;
+}
+
+
 header {
     position: fixed;
     width: 100%;
     padding: 17px 0;
     -webkit-transition: 0.5s all;
-    transition: 0.5s all;
     background-color: var(--blue);
     z-index: 999;
     top: 0;

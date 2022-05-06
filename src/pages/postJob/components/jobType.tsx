@@ -1,12 +1,11 @@
 import { useEffect, useState } from "react";
-import Constants from "../../../utils/constants";
 
 interface Proptypes {
   categories: any;
   jobTypes: any;
   data: any;
   editDetailPage: any;
-  stepCompleted: Boolean;
+  stepCompleted: boolean;
   handleStepComplete: (data: any) => void;
   handleStepBack: () => void;
   handleStepForward: (data: any) => void;
@@ -24,7 +23,6 @@ const JobType = ({
   handleStepComplete,
   handleStepBack,
 }: Proptypes) => {
-  const { errorStrings } = Constants;
 
   const [jobTypeDetails, setJobTypeDetails] = useState<{
     [index: string]: string[];
@@ -168,7 +166,6 @@ const JobType = ({
       if (name !== "specialization") {
         jobTypeDetails[name] = [value];
         updateDetails(jobTypeDetails[name], name);
-        // updateDetails([], 'specialization');
       } else {
         updateDetails(jobTypeDetails[name].concat([value]), name);
       }
@@ -229,7 +226,6 @@ const JobType = ({
     let error_1 = isInvalid("categories", jobTypeDetails["categories"]);
     let error_2 = isInvalid("job_type", jobTypeDetails["job_type"]);
     let error_3 = isInvalid("specialization", jobTypeDetails["specialization"]);
-    console.log(error_3, "error_3");
     if (
       !error_1?.length &&
       !error_2?.length &&
@@ -314,7 +310,6 @@ const JobType = ({
             <div className="flex_col_sm_6">
               <div className="tags_wrap">
                 <ul>
-                  {/* {console.log({ selectedAll, specializations })} */}
                   {specializations?.length >= 0 && categories?.length > 0 && (
                     <li
                       onClick={() => {
@@ -364,7 +359,6 @@ const JobType = ({
               }`}
               onClick={() => {
                 if (selectedAll) {
-                  // setJobTypeDetails((prev: any) => ({ ...prev, 'specialization': specializations.map((item: any) => item._id) }))
                   updateDetails(
                     specializations.map((item: any) => item._id),
                     "specialization"

@@ -7,7 +7,6 @@ import {
   deleteItem,
   quoteByJobId,
 } from "../../../../redux/quotes/actions";
-import { acceptDeclineJobInvitation } from "../../../../redux/jobs/actions";
 import NumberFormat from "react-number-format";
 import Modal from "@material-ui/core/Modal";
 import storageService from "../../../../utils/storageService";
@@ -279,8 +278,6 @@ const QuoteMark = (props: any) => {
       saveAddItem();
     }
   };
-
-  let item_number = localQuote.item_number;
   let description = localQuote.description;
   let price: any = localQuote.price;
   let qty: any = localQuote.quantity;
@@ -312,7 +309,7 @@ const QuoteMark = (props: any) => {
   const deleteItemHandler = async () => {
     let index = isEdit;
     let items_ = Items;
-    let filtered = items_.filter((item: any, index: any) => index !== isEdit);
+    let filtered = items_.filter(( index: any) => index !== isEdit);
     setItems(filtered);
     setEdit(null);
     let length = filtered[filtered?.length - 1]?.item_number;
@@ -454,7 +451,7 @@ const QuoteMark = (props: any) => {
                     isNumericString={true}
                     prefix={"$"}
                     onValueChange={(values) => {
-                      const { formattedValue, value } = values;
+                      const { value } = values;
                       handleChange("price", value);
                     }}
                   />
@@ -471,7 +468,7 @@ const QuoteMark = (props: any) => {
                     thousandSeparator={true}
                     isNumericString={true}
                     onValueChange={(values) => {
-                      const { formattedValue, value } = values;
+                      const {  value } = values;
                       handleChange("quantity", value);
                     }}
                   />
@@ -570,29 +567,6 @@ const QuoteMark = (props: any) => {
         </DialogActions>
       </Dialog>
 
-      {/* <Modal
-                className="custom_modal"
-                open={isQuoteDialog}
-                onClose={() => handleQuoteDialog('no')}
-                aria-labelledby="simple-modal-title"
-                aria-describedby="simple-modal-description"
-            >
-                <div className="custom_wh confirmation" data-aos="zoom-in" data-aos-delay="30" data-aos-duration="1000">
-                    <div className="heading">
-                        <span className="xs_sub_title">{'This quote will be send to builder'}</span>
-                        <button className="close_btn" onClick={() => handleQuoteDialog('no')}>
-                            <img src={cancel} alt="cancel" />
-                        </button>
-                    </div>
-                    <div className="modal_message">
-                        <p>Are you sure you want to update quote?</p>
-                    </div>
-                    <div className="dialog_actions">
-                        <button className="fill_btn btn-effect" onClick={() => handleQuoteDialog('no', true)}>Yes</button>
-                        <button className="fill_grey_btn btn-effect" onClick={() => handleQuoteDialog('no')}>No</button>
-                    </div>
-                </div>
-            </Modal> */}
 
       {Items?.length > 0 && !isEditTrue && (
         <div className="total_quote">

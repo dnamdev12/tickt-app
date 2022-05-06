@@ -1,6 +1,11 @@
 @import "./variable";
 @import "./mixin";
 
+* {
+	font-family:  sans-serif;
+}
+
+
 .form_field {
   margin-bottom: 25px;
 }
@@ -82,7 +87,7 @@ textarea {
     border: solid 1px var(--blue) !important;
     box-shadow: 0 0 5px var(--blue);
   }
-  &:read-only, &:read-only {
+  &:read-only{
     // border: none;
     // padding: 0;
     pointer-events: none;
@@ -121,7 +126,7 @@ textarea {
     min-height: 225px;
     width: 100%;
   }
-  &:read-only, &:read-only{
+  &:read-only{
     min-height: 60px
   }
 }
@@ -799,10 +804,8 @@ a.fill_grey_btn {
   100%{
       width: 100%;
   }
-};
+}
 .progress_bar {
-  position: relative;
-  width: 100%;
   position: relative;
   width: 100%;
   background-color: #dfe5ef;

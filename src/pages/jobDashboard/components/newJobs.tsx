@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { NavLink, useHistory } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import InfiniteScroll from "react-infinite-scroll-component";
 
 import dummy from "../../../assets/images/u_placeholder.jpg";
@@ -18,24 +18,12 @@ const NewJobs = ({
   loading,
   getNewJobList,
   newJobList,
-  newJobsCount,
   resetNewJobList,
 }: Proptypes) => {
-  const history = useHistory();
   const [jobList, setJobList] = useState<Array<any>>([]);
   const [pageNo, setPageNo] = useState<number>(1);
   const [hasMoreItems, setHasMoreItems] = useState<boolean>(true);
   const [isLoad, setIsLoad] = useState(true);
-
-  let totalJobsCount: number = newJobsCount;
-  console.log(
-    totalJobsCount,
-    "totalJobsCount",
-    jobList,
-    "jobList",
-    hasMoreItems,
-    "hasMoreItems"
-  );
 
   useEffect(() => {
     callJobList();
@@ -44,24 +32,12 @@ const NewJobs = ({
   }, []);
 
   const callJobList = async () => {
-    // if (newJobsCount && jobList.length >= totalJobsCount) {
-    //   setHasMoreItems(false);
-    //   return;
-    // }
     getNewJobList(pageNo);
   };
 
   useEffect(() => {
     if (newJobList?.length || Array.isArray(newJobList)) {
       const allJobs = [...jobList, ...newJobList];
-      console.log(
-        jobList,
-        "jobList",
-        newJobList,
-        "props.newJobList",
-        allJobs,
-        "allJobs"
-      );
       setJobList(allJobs);
       setIsLoad(false);
       setPageNo(pageNo + 1);
@@ -87,11 +63,7 @@ const NewJobs = ({
             ? jobList.map(
                 ({
                   jobId,
-                  tradeId,
-                  specializationId,
-                  tradeSelectedUrl,
                   jobName,
-                  tradeName,
                   jobDescription,
                   time,
                   amount,

@@ -1,3 +1,8 @@
+* {
+	font-family:  sans-serif;
+}
+
+
 @mixin random-bgr() {
   background-color: rgb(random(255), random(255), random(255));
   border: 1px solid #000;
@@ -280,7 +285,6 @@ body.loader_show {
   align-items: center;
   background: #000000cc;
   z-index: 99;
-  display: flex;
   img {
     width: 150px;
   }
@@ -343,7 +347,7 @@ html {
 }
 
 body {
-  scrollbar-3dlight-color: #000000;
+  //scrollbar-3dlight-color: #000000;
   scrollbar-arrow-color: #ffffff;
   scrollbar-darkshadow-color: #000000;
   scrollbar-face-color: #000000;

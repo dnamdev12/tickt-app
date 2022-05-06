@@ -4,7 +4,6 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { getPopularBuilder } from '../../redux/homeSearch/actions';
 
 import dummy from '../../assets/images/u_placeholder.jpg';
-import menu from '../../assets/images/menu-line-blue.png';
 
 import noData from '../../assets/images/no-search-data.png';
 
@@ -92,22 +91,8 @@ const PopularBuilders = (props: any) => {
                                                 <div className="details">
                                                     <span className="name">{item.firstName}</span>
                                                     <span className="job">{item?.company_name}</span>
-                                                    {/* <span className="rating">{`${item.reviewCount ? `${item.rating % 1 === 0 ? item.rating : item.rating?.toFixed(2)} | ${item.review} reviews` : `0, 0 reviews`}`}</span> */}
                                                 </div>
                                             </div>
-                                            {/* <div className="tags_wrap">
-                                                <ul>
-                                                    {item.trade?.length ? item.trade.map(({ _id, selected_url, trade_name }: { _id: string, selected_url: string, trade_name: string }) => (
-                                                        <li key={_id} className="main">
-                                                            <img src={selected_url || menu} alt="" />
-                                                            {trade_name || ''}
-                                                        </li>)) : <i style={{ color: '#929292' }}>
-                                                        {'No Trade Found'}
-                                                    </i>}
-                                                    {item.trade?.length > 0 && item.specializations.slice(0, 5 - item.trade?.length).map((item: any) => <li key={item._id}>{item.name}</li>)}
-                                                    {item.trade?.length > 0 && (item.trade?.length + item.specializations?.length > 5) && <li>More</li>}
-                                                </ul>
-                                            </div> */}
                                         </div>
                                     </div>)
                             }) : <div className="no_record">

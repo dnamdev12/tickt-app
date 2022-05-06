@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { NavLink } from 'react-router-dom';
 import reviewBuilderSuccess from '../../../../assets/images/review-builder-success.png';
-import { setLoading, setShowToast } from '../../../../redux/common/actions';
+import { setLoading } from '../../../../redux/common/actions';
 
 const BuilderReviewSuccess = () => {
     const [isLoad, setImageLoad] = useState(true);

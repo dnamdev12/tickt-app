@@ -9,11 +9,8 @@ import {
     getViewNearByJob,
     postHomeSearchData
 } from '../../../redux/homeSearch/actions';
-import {
-    getClearJobs
-} from '../../../redux/jobs/actions';   
+import { getClearJobs, setHomeBuilder } from "../../../redux/jobs/actions";   
 import { callTradeList } from '../../../redux/auth/actions';
-import { setHomeBuilder } from '../../../redux/jobs/actions';
 
 const mapStateToProps = (state: any) => {
     return {

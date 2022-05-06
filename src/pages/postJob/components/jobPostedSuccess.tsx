@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 interface Proptypes {
     data: any;
@@ -10,10 +10,8 @@ interface Proptypes {
     handleStepForward: (data: any) => void;
     handleStepBack: () => void;
 }
-//  ({ data, stepCompleted, handleStepComplete, handleStepBack }: Proptypes) => {
 
-const JobPostedSuccess = ({ history, data, stepCompleted, handleStepForward, templateImage, handleStepComplete, handleStepBack }: Proptypes) => {
-    const [isLoad, setImageLoad] = useState(false);
+const JobPostedSuccess = ({ history }: Proptypes) => {
 
     const redirectToSuccess = () => {
         history.push('/post-job-success');

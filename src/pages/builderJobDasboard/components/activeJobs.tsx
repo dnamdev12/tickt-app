@@ -1,13 +1,10 @@
-import React, { ReactElement, useState, useEffect } from "react";
-import dummy from "../../../assets/images/u_placeholder.jpg";
+import React, { useState, useEffect } from "react";
 import approved from "../../../assets/images/approved.png";
 import waiting from "../../../assets/images/exclamation.png";
 import MarkMilestones from "./markMilestones";
 import { withRouter } from "react-router-dom";
 import activeJobs from "../../../assets/images/activeJobs.png";
 import jobTypePlaceholder from "../../../assets/images/job-type-placeholder.png";
-import LodgeDispute from "./lodgeDispute/lodgeDispute";
-import CancelJobs from "./cancelJobs/cancelJob";
 import { renderTime } from "../../../utils/common";
 import noDataFound from "../../../assets/images/no-search-data.png";
 interface Active {
@@ -130,7 +127,6 @@ const ActiveJobs = ({
     <React.Fragment>
       <span className="sub_title">
         {jobType.charAt(0).toUpperCase() + jobType.slice(1)} Jobs
-        {/* {listData?.length} */}
       </span>
       <div className="flex_row tradies_row">
         {listData?.length
@@ -138,28 +134,18 @@ const ActiveJobs = ({
               (
                 {
                   amount,
-                  durations,
                   jobId,
                   jobName,
                   fromDate,
                   toDate,
                   milestoneNumber,
-                  specializationId,
-                  specializationName,
                   status,
                   timeLeft,
-                  location,
-                  locationName,
                   total,
                   quote,
-                  totalmem,
                   totalMilestones,
-                  tradieListData,
                   tradeName,
-                  tradieId,
                   tradeSelectedUrl,
-                  tradieImage,
-                  mathrandom,
                 }: Active,
                 index: number
               ) => (
@@ -175,7 +161,6 @@ const ActiveJobs = ({
                       onClick={() => {
                         setLocalState(true);
                         setSelectedIndex(index);
-                        // redirectToInfo({ jobId, tradieId, specializationId, status });
                       }}
                     ></span>
                     <div className="user_wrap">
@@ -223,7 +208,6 @@ const ActiveJobs = ({
                           )}
                         </li>
                         <li className="icon calendar">
-                          {/* {durations} */}
                           {renderTime(fromDate, toDate)}
                         </li>
                         <li className="">

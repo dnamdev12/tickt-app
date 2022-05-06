@@ -1,6 +1,4 @@
 import BannerSearch from "../../../../common/tradieBannerSearch/index";
-
-import bannerimg from "../../../../assets/images/tradie-banner.png";
 import ticktHomeImg from "../../../../assets/images/tickt_home_screen.png";
 
 interface PropsType {

@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import media from '../../../assets/images/portfolio-placeholder.jpg';
 import DeclineMilestone from './declineMilestone';
 import { milestoneAcceptOrDecline } from '../../../redux/homeSearch/actions'
 

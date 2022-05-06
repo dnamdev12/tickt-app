@@ -71,7 +71,6 @@ const RenderMap = (props: any) => {
       jobsData = props.homeSearchJobData;
       return jobsData;
     }
-    return null;
   };
 
   const jobClickHandler = (item: any) => {

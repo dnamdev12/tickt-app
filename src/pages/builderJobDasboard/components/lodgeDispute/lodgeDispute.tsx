@@ -1,10 +1,6 @@
-import React, { ReactElement, useState, useEffect } from "react";
-import dummy from "../../../../assets/images/u_placeholder.jpg";
-import approved from "../../../../assets/images/approved.png";
-import waiting from "../../../../assets/images/exclamation.png";
+import React, { useState, useEffect } from "react";
 import close from "../../../../assets/images/icon-close-1.png";
 import addMedia from "../../../../assets/images/add-image.png";
-import noDataFound from "../../../../assets/images/no-search-data.png";
 
 import { onFileUpload } from "../../../../redux/auth/actions";
 import { setShowToast, setLoading } from "../../../../redux/common/actions";
@@ -21,7 +17,6 @@ import { JobLodgeReasons } from "../../../../utils/common";
 const imageFormats: Array<any> = ["jpeg", "jpg", "png"];
 
 const LodgeDispute = (props: any) => {
-  let item = props?.item;
   let jobId = props?.item?.jobId;
   let jobName = props?.item?.jobName;
   let history = props?.history;
@@ -44,7 +39,7 @@ const LodgeDispute = (props: any) => {
 
   const [isItemsLoad, setLoadItems] = useState({});
 
-  const { reason, detail, upload } = stateData;
+  const { reason, detail } = stateData;
 
   const isValid = ({ name, value, title }: any) => {
     if (name === "reason") {
@@ -55,14 +50,6 @@ const LodgeDispute = (props: any) => {
 
   const checkErrors = () => {
     let error_1 = isValid({ name: "reason", value: reason, title: "Reason" });
-    let error_2 = isValid({ name: "detail", value: detail, title: "Detail" });
-    let error_3 = isValid({
-      name: "upload",
-      value: filesUrl,
-      title: "Media file",
-    });
-
-    // if (!error_1?.length && !error_2?.length && !error_3?.length) {
     if (!error_1?.length) {
       return false;
     }
@@ -140,7 +127,7 @@ const LodgeDispute = (props: any) => {
           link: link,
         },
       ]);
-      setLoadItems((prev: any) => ({
+      setLoadItems(() => ({
         [filesUrl.length - 1]: false,
       }));
       setLocalFiles((prev: any) => ({
@@ -173,7 +160,7 @@ const LodgeDispute = (props: any) => {
             src={item}
             alt="media"
             onLoad={() => {
-              setLoadItems((prev: any) => ({
+              setLoadItems(() => ({
                 [index]: true,
               }));
             }}
@@ -191,7 +178,6 @@ const LodgeDispute = (props: any) => {
             alt="remove"
             className="remove"
           />
-          {/* <span style={{ fontSize: '10px' }}>{get_split_name}</span> */}
         </figure>
       );
     }

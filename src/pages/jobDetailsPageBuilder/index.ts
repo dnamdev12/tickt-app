@@ -5,7 +5,7 @@ import {
     getHomeSaveJob,
 } from '../../redux/homeSearch/actions';
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = () => {
     return {
     }
 }

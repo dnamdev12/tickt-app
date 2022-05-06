@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
+import { withRouter, useHistory } from "react-router-dom";
 
 import templateImage from '../../../../assets/images/thanks-bg.jpg';
 

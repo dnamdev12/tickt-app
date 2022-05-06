@@ -7,15 +7,11 @@ import rootReducer from "./redux/rootReducer";
 import rootSaga from "./redux/rootSaga";
 import Loader from "./common/loader";
 import Toast from "./common/toast";
-import CustomNotification from "./common/customNotification";
-
 import { useEffect } from "react";
 import { useClearCache } from "react-clear-cache";
 
 import AOS from "aos";
 import "aos/dist/aos.css";
-
-
 
 declare global {
   interface Window {
@@ -28,19 +24,18 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const sagaMiddleware = createSagaMiddleware();
 
 // mount it on the Store
-const store = createStore(rootReducer, composeEnhancers(
-  applyMiddleware(sagaMiddleware)
-))
+const store = createStore(
+  rootReducer,
+  composeEnhancers(applyMiddleware(sagaMiddleware))
+);
 
 //run the saga
 sagaMiddleware.run(rootSaga);
-
 
 const App = () => {
   const { isLatestVersion, emptyCacheStorage } = useClearCache();
 
   useEffect(() => {
-
     AOS.init({
       duration: 2000,
     });
@@ -66,7 +61,5 @@ const App = () => {
   );
 };
 
-export {
-  store
-}
+export { store };
 export default App;

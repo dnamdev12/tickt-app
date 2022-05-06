@@ -1,11 +1,7 @@
-import React, { ReactElement, useState, useEffect } from "react";
-import dummy from "../../../assets/images/u_placeholder.jpg";
-import approved from "../../../assets/images/approved.png";
+import React, { useState, useEffect } from "react";
 import rateStar from "../../../assets/images/ic-star-fill.png";
-import pastJobs from "../../../assets/images/pastJobs.png";
 import jobTypePlaceholder from "../../../assets/images/job-type-placeholder.png";
 import noDataFound from "../../../assets/images/no-search-data.png";
-import moment from "moment";
 import RateThisJob from "./ratethisJob/index";
 
 import { useLocation } from "react-router-dom";

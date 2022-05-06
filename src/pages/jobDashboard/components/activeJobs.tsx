@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { NavLink, useHistory } from "react-router-dom";
 import { renderTime } from "../../../utils/common";
 //@ts-ignore
@@ -48,24 +48,13 @@ const ActiveJobs = ({
   }, []);
 
   const callJobList = async () => {
-    // if (newJobsCount && jobList.length >= totalJobsCount) {
-    //   setHasMoreItems(false);
-    //   return;
-    // }
     getActiveJobList(pageNo);
   };
 
   useEffect(() => {
     if (activeJobList?.length || Array.isArray(activeJobList)) {
       const allJobs = [...jobList, ...activeJobList];
-      console.log(
-        jobList,
-        "jobList",
-        activeJobList,
-        "props.activeJobList",
-        allJobs,
-        "allJobs"
-      );
+  
       setJobList(allJobs);
       setIsLoad(false);
       setPageNo(pageNo + 1);
@@ -82,7 +71,6 @@ const ActiveJobs = ({
         dataLength={jobList.length}
         next={callJobList}
         style={{ overflowX: "hidden" }}
-        // height={600}
         hasMore={hasMoreItems}
         loader={<></>}
       >
@@ -94,9 +82,7 @@ const ActiveJobs = ({
                   jobId,
                   tradeId,
                   specializationId,
-                  tradeSelectedUrl,
                   jobName,
-                  tradeName,
                   fromDate,
                   toDate,
                   timeLeft,

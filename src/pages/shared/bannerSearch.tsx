@@ -462,7 +462,7 @@ const BannerSearch = (props: PropsType) => {
       }
 
       if (!data?.address || !data?.address?.length) {
-        delete data?.address;
+        delete data.address;
       }
 
       if (!localChanges) {

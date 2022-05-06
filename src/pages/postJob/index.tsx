@@ -2,8 +2,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import PostJobComponent from './postJob';
 import { callTradeList } from '../../redux/auth/actions';
-import { callCategories } from '../../redux/jobs/actions';
-import { updateMileStoneIndex, updateMileStoneTimings, updateDetailScreen } from '../../redux/jobs/actions';
+import { updateMileStoneIndex,callCategories, updateMileStoneTimings, updateDetailScreen } from '../../redux/jobs/actions';
 import { getProfileBuilder } from '../../redux/profile/actions'
 
 

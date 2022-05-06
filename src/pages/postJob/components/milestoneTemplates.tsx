@@ -1,10 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
-import Slider from '@material-ui/core/Slider';
-import Constants from '../../../utils/constants';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
 import { profileTemplateList, getMileStoneByTempId } from '../../../redux/jobs/actions';
 import moment from 'moment';
 import noData from '../../../assets/images/no-search-data.png';
@@ -20,7 +14,7 @@ interface Proptypes {
 }
 
 const MileStoneTemplates = (props: Proptypes) => {
-    const { data, isLoading, stepCompleted, handleCombineMileStones, handleStepForward, handleStepComplete, handleStepBack } = props;
+    const {  isLoading, handleCombineMileStones, handleStepForward} = props;
     const [list, setList] = useState([]);
     const [localFetch, setLocalFetch] = useState(false);
 
@@ -31,30 +25,10 @@ const MileStoneTemplates = (props: Proptypes) => {
             setLocalFetch(true)
         }
     }
-
-    const formatMilestones = ({ items }: any) => {
-        let miles: any = items?.milestones;
-        if (miles?.length) {
-            return miles.map((item: any) => {
-                if (item?.fromDate) {
-                    item['fromDate'] = moment(item?.fromDate).format('MM-DD-YYYY');
-                }
-
-                if (item?.toDate) {
-                    item['toDate'] = moment(item?.toDate).format('MM-DD-YYYY');
-                }
-
-                return item;
-            })
-        }
-    }
-
     const handleContinue = async (id: any) => {
         let { success, data } = await getMileStoneByTempId(id);
 
         if (success && data) {
-            let { to_date, from_date } = props?.data;
-            let selected_milestone: any = formatMilestones({ items: data });
             let filter_milestones = data?.milestones?.map((item: any) => ({
                 from_date: moment(item?.fromDate, 'MM-DD-YYYY').format('MM-DD-YYYY'),
                 to_date: moment(item?.toDate, 'MM-DD-YYYY').isValid() ? moment(item?.toDate, 'MM-DD-YYYY').format('MM-DD-YYYY') : '',

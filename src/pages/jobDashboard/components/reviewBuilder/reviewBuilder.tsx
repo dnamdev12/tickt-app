@@ -85,7 +85,6 @@ const ReviewBuilder = (props: Proptypes) => {
   };
 
   const jobClickHandler = () => {
-    // props.history.push(`/job-details-page?jobId=${item?.jobId}&tradeId=${item?.tradeId}&specializationId=${item?.specializationId}`);
     props.history.push(
       `/job-details-page?jobId=${item?.jobId}&redirect_from=jobs`
     );
