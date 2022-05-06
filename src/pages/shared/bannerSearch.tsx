@@ -1,14 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import Constants from "../../utils/constants";
 // @ts-ignore
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
-import regex from "../../utils/regex";
-// @ts-ignore
-import { format } from "date-fns";
+import PlacesAutocomplete from "react-places-autocomplete";
 // @ts-ignore
 import { DateRange } from "react-date-range";
 import "react-date-range/dist/styles.css"; // main style file
@@ -39,14 +32,13 @@ import { setShowToast } from "../../redux/common/actions";
 
 import { deleteRecentSearch } from "../../redux/homeSearch/actions";
 
-import { renderTime, renderTimeWithCustomFormat } from "../../utils/common";
+import {renderTimeWithCustomFormat } from "../../utils/common";
 import { moengage, mixPanel } from "../../services/analyticsTools";
-import { MoEConstants } from "../../utils/constants";
+import Constants,{ MoEConstants } from "../../utils/constants";
 
 Geocode.setApiKey(Constants.SocialAuth.GOOGLE_GEOCODE_KEY);
 Geocode.setLanguage("en");
 Geocode.setRegion("au");
-// Geocode?.setLocationType("ROOFTOP");
 
 interface PropsType {
   history: any;
@@ -85,9 +77,7 @@ export function useStateFromProp(initialValue: any) {
 }
 
 const BannerSearch = (props: PropsType) => {
-  let props_selected = props.selectedItem;
   const {
-    selectedItem,
     isHandleChanges,
     localChanges,
     getRecentSearchList,
@@ -125,23 +115,12 @@ const BannerSearch = (props: PropsType) => {
   };
   const handleOnOutsideCalender = () => setInputFocus3(false);
 
-  const [addressRef, setAddressRef] = useState("");
-
   const searchRef = useDetectClickOutside({
     onTriggered: handleOnOutsideSearch,
   });
   const locationRef = useDetectClickOutside({
     onTriggered: () => {
-      // if (addressText?.length > 3) {
       handleOnOutsideLocation();
-      // }
-    },
-  });
-  const locationRefClone = useDetectClickOutside({
-    onTriggered: () => {
-      // if (!addressText || addressText?.length < 2) {
-      // handleOnOutsideLocation()
-      // }
     },
   });
   const calenderRef = useDetectClickOutside({
@@ -159,7 +138,6 @@ const BannerSearch = (props: PropsType) => {
     if (getRecentLocationList) {
       getRecentLocationList();
     }
-    // getRecentLocationData();
   }, []);
 
   useEffect(() => {
@@ -169,11 +147,6 @@ const BannerSearch = (props: PropsType) => {
     };
   }, [props]);
 
-  useEffect(() => {
-    // if (props.recentLocationData?.length && JSON.stringify(props.recentLocationData[0]?.location?.coordinates) !== JSON.stringify(recentLocation[0]?.location?.coordinates)) {
-    //     getRecentLocationData();
-    // }
-  }, [props.recentLocationData, recentLocation]);
 
   useEffect(() => {
     if (searchText?.length > 2) {
@@ -246,8 +219,6 @@ const BannerSearch = (props: PropsType) => {
                               address: addressText,
                             },
                           });
-                          // setItemSearch(item);
-                          // setSelectedTrade({});
                         }}
                       >
                         <div className="card ico_txt_wrap">
@@ -632,12 +603,10 @@ const BannerSearch = (props: PropsType) => {
                 placeholder="What jobs are you after?"
                 value={showOnlyTradeName ? searchText : custom_name}
                 onChange={(e) => {
-                  // isHandleChanges(true)
                   setOnChange(true);
                   setSearchText(e.target.value.trimLeft());
                 }}
                 autoComplete="none"
-                // readOnly={props?.selectedItem ? true : false}
                 onFocus={() => {
                   setInputFocus1(true);
                   setInputFocus2(false);
@@ -654,8 +623,6 @@ const BannerSearch = (props: PropsType) => {
                     src={cross}
                     alt="cross"
                     onClick={() => {
-                      // clear here
-                      // isHandleChanges(true)
                       setOnChange(false);
                       setSearchText("");
                       setStateData({});
@@ -671,8 +638,6 @@ const BannerSearch = (props: PropsType) => {
           </li>
           {!searchText?.length && inputFocus1 ? recentJobSearches() : null}
           {searchText?.length > 2 && inputFocus1 ? renderJobResult() : null}
-
-          {/* {'location search start here!'} */}
           <li className="loc_box" style={{ display: "block" }}>
             <div id="location-text-field-div">
               <div>
@@ -682,7 +647,6 @@ const BannerSearch = (props: PropsType) => {
                     componentRestrictions: {
                       country: "au",
                     },
-                    // types: ["address"]
                     types: ["(cities)"],
                   }}
                   onChange={(item: any) => {
@@ -725,7 +689,6 @@ const BannerSearch = (props: PropsType) => {
                   }: any) => (
                     <div>
                       <div className={`text_field`}>
-                        {/* className={`text_field ${addressText?.length > 2 ? '' : 'none'}`}> */}
                         <input
                           {...getInputProps({
                             placeholder: "Where?",

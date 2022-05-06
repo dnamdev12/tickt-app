@@ -13,7 +13,7 @@ class TradieListData extends Component<TradieListData & RouteProps, Props> {
         let props: any = this.props;
         const { jobDataWithJobTypeLatLong } = props;
         let home_data: any = jobDataWithJobTypeLatLong;
-        let { recomended_tradespeople, saved_tradespeople } = home_data;
+        let { recomended_tradespeople } = home_data;
  
         return (
             <div className={'app_wrapper'} >

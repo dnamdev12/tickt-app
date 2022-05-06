@@ -1,17 +1,13 @@
 import { useState, useEffect } from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import SearchFilters from "./searchFilters";
 import noData from "../../assets/images/no-search-data.png";
-import closeMap from "../../assets/images/close-white.png";
-// import BannerSearch from '../shared/bannerSearch'
 import BannerSearchProps from "../shared/bannerSearchProps";
 import TradieBox from "../shared/tradieBox";
 import moment from "moment";
 import InfiniteScroll from "react-infinite-scroll-component";
-import { addListener } from "process";
 import { moengage, mixPanel } from "../../services/analyticsTools";
 import { MoEConstants } from "../../utils/constants";
-import JobTypeList from "../home/tradieHome/components/jobTypeList";
 
 const SearchResultTradie = (props: any) => {
   const location: any = useLocation();
@@ -20,7 +16,7 @@ const SearchResultTradie = (props: any) => {
   const [specialiZationName, setSpecialiZationName] = useState<any>([]);
   const [isToggle, setToggleSearch] = useState(false);
   const [localInfo, setLocalInfo] = useState({}); // localInfo
-  const [loading, setLoading] = useState(false);
+ 
   const [localData, setLocalData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -74,7 +70,6 @@ const SearchResultTradie = (props: any) => {
         "YYYY-MM-DD"
       );
     }
-    let spec_count: any = stateData?.specializations?.length;
 
     if (!data?.address || !data?.address?.length) {
       delete data.address;
@@ -82,7 +77,6 @@ const SearchResultTradie = (props: any) => {
 
     setLocalInfo({
       name: stateData?.name,
-      // count: spec_count === 1 ? 0 : spec_count,
       count: 0,
       tradeId: data.tradeId,
       specializationId: data.specializationId,
@@ -95,8 +89,6 @@ const SearchResultTradie = (props: any) => {
     if (data?.address) {
       return;
     }
-
-    // if (!stateData?.suggestionSelected || (data?.location?.coordinates && Array.isArray(data?.location?.coordinates) && data?.location?.coordinates?.length)) {
     props.postHomeSearchData(data);
     const mData = {
       timeStamp: moengage.getCurrentTimeStamp(),
@@ -108,13 +100,11 @@ const SearchResultTradie = (props: any) => {
           JSON.parse(data.address)?.secondaryText
         }`,
       }),
-      //'length of hire': '',
       ...(data?.from_date && { "start date": data?.from_date }),
       ...(data?.to_date && { "end date": data?.to_date }),
     };
     moengage.moE_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
     mixPanel.mixP_SendEvent(MoEConstants.SEARCHED_FOR_TRADIES, mData);
-    // }
   }, []);
 
   const getTitleInfo = (info: any) => {
@@ -152,19 +142,11 @@ const SearchResultTradie = (props: any) => {
           newData = [...prevData.specializationId];
           newNameData = [...prevData.specializationName];
         }
-
-        // if (
-        //   Array.isArray(prevData.specializationName) &&
-        //   prevData?.specializationName?.length
-        // ) {
-        //   newNameData = [...prevData.specializationName];
-        // }
         if (sortByFilter.allSpecializationClicked) {
           newData = [];
           newNameData = [];
         }
         const itemIndex = newData.indexOf(id);
-        const itemnameIndex = newData.indexOf(newName);
         if (newData.indexOf(id) < 0) {
           newData.push(id);
           newNameData.push(newName);
@@ -172,13 +154,7 @@ const SearchResultTradie = (props: any) => {
           newData.splice(itemIndex, 1);
           newNameData.splice(itemIndex, 1);
         }
-        // if (newData.indexOf(newName) < 0) {
-        //   newNameData.push(newName);
-        // } else {
-        //   newNameData.splice(itemnameIndex, 1);
-        // }
-
-        setSpecialiZationName(newNameData);
+setSpecialiZationName(newNameData);
         return {
           ...prevData,
           specializationId: newData,
@@ -266,7 +242,6 @@ const SearchResultTradie = (props: any) => {
       localTradeId = localData[0]?.tradeData[0]?.tradeId;
     }
 
-    let cp = currentPage * 10;
 
     if (!local_info_tradeId?.length && localTradeId?.length) {
       getTitleInfo({
@@ -319,14 +294,8 @@ const SearchResultTradie = (props: any) => {
   const handleChangeToggle = (value: any) => {
     setToggleSearch(value);
   };
-
-  // let homeSearchJobData: any = props.homeSearchJobData;
   let local_info: any = localInfo;
   let isLoading: any = props.isLoading;
-  console.log(
-    specialiZationName,
-    "bchdbchjdbcjdcbjdbcjdcbjdc========================================="
-  );
   return (
     <div className="app_wrapper">
       <div className={`top_search ${isToggle ? "active" : ""}`}>
@@ -391,7 +360,6 @@ const SearchResultTradie = (props: any) => {
               dataLength={localData?.length}
               next={() => {
                 if (localData?.length < currentPage * 10) {
-                  // setHasMore(false);
                 } else {
                   let cp = currentPage + 1;
                   setCurrentPage((prev: any) => prev + 1);

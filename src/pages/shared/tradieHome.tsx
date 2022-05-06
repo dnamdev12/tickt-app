@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import Location from "../../assets/images/ic-location.png";
-import dummy from '../../assets/images/u_placeholder.jpg';
 import TradieBox from './tradieBox';
 import noData from '../../assets/images/no-search-data.png';
-import { setShowToast } from '../../redux/common/actions';
-
-import { useLocation, withRouter } from "react-router-dom";
 
 interface Props {
     data: any,
